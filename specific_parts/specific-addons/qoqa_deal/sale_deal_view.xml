@@ -35,6 +35,9 @@
                     <field name="message_unread" invisible="1"/>
                     <field name="name" string="Numéro de planning"/>
                     <field name="product_tmpl_id"/>
+                    <field name="sum_stock_available"/>
+                    <field name="sum_stock_sold"/>
+                    <field name="stock_progress" widget="progressbar"/>
                     <!--<field name="user_id"/>-->
                     <!--<field name="amount_total" sum="Total Tax Included"/>-->
                     <field name="state"/>
@@ -92,10 +95,10 @@
                                     <tree string="Sale Deal Variants" editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="product_id"/>
-                                        <field name="stock_available"/>
-                                        <field name="stock_sold"/>
+                                        <field name="stock_available" sum="Disponible"/>
                                         <field name="stock_reserved"/>
-                                        <field name="stock_residual"/>
+                                        <field name="stock_sold"/>
+                                        <field name="stock_residual" sum="Solde"/>
                                         <field name="stock_progress" widget="progressbar"/>
                                     </tree>
                                 </field>

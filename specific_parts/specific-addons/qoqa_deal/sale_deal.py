@@ -38,15 +38,17 @@ class SaleDealVariant(orm.Model):
             # XXX base search on deal_id
             sold_product_ids = order_line_obj.search(cr, uid, [('product_id', '=', variant.product_id.id)], context=context)
             num_sold = len(sold_product_ids)
-            res[variant.id]['stock_sold'] = num_sold
             residual = variant.stock_available - variant.stock_reserved - num_sold
 
-            res[variant.id]['stock_residual'] = residual
+            progress = 0.0
             if residual > 0:
                 progress = float(variant.stock_available - residual) / float(variant.stock_available)
-                res[variant.id]['stock_progress'] = progress * 100.0
-            else:
-                res[variant.id]['stock_progress'] = 0
+
+            res[variant.id] = {
+                    'stock_sold': num_sold,
+                    'stock_residual': residual,
+                    'stock_progress': progress * 100.0,
+                    }
 
         return res
 
@@ -58,12 +60,12 @@ class SaleDealVariant(orm.Model):
         'stock_reserved': fields.integer('Reservé'),
         # XXX sum sale orders (related to this deal)
         #'stock_sold': fields.integer('Vendu'),
-        'stock_sold': fields.function(_get_stock, string='Vendu', multi='stock'),
+        'stock_sold': fields.function(_get_stock, string='Vendu', type='integer', multi='stock'),
         #'stock_residual': fields.integer('Solde'),
-        'stock_residual': fields.function(_get_stock, string='Solde', multi='stock'),
+        'stock_residual': fields.function(_get_stock, string='Solde', type='integer', multi='stock'),
         # XXX compute percent
         #'stock_progress': fields.float('Stock Progress'),
-        'stock_progress': fields.function(_get_stock, string='Stock Progress', multi='stock'),
+        'stock_progress': fields.function(_get_stock, string='Stock Progress', type='float', multi='stock'),
         }
 
 
@@ -74,6 +76,33 @@ class SaleDeal(orm.Model):
     _inherit = ['mail.thread']
 
     _order = 'date_begin'
+
+    def _get_stock(self, cr, uid, ids, fields, args, context=None):
+        """Get number of 
+        @return: Dictionary of function fields value.
+        """
+        res = {}
+
+        for deal in self.browse(cr, uid, ids, context=context):
+            res[deal.id] = {}
+
+            available = 0
+            residual = 0
+            for variant in deal.variant_ids:
+                available += variant.stock_available
+                residual += variant.stock_residual
+
+            progress = 0.0
+            if residual > 0:
+                progress = float(available - residual) / float(available)
+
+
+            res[deal.id] = {
+                    'sum_stock_available': available,
+                    'sum_stock_sold': available - residual,
+                    'stock_progress': progress * 100.0,
+                    }
+        return res
 
     _columns = {
         'name': fields.integer('Numéro de Planning'),
@@ -97,10 +126,12 @@ class SaleDeal(orm.Model):
             'Type expédition', required=True),
         'shipping_costs': fields.float('Montant expédition', required=True, digits_compute= dp.get_precision('Product Price')),
         'currency_id': fields.many2one('res.currency', 'Currency', required=True, readonly=True, states={'draft':[('readonly',False)]}, track_visibility='always'),
+        #'sum_stock_available': fields.integer('Stock disponible', help='Stock reservé chez le fournisseur'),
+        'sum_stock_available': fields.function(_get_stock, string='Stock disponible', type='integer', multi='stock'),
+        'sum_stock_sold': fields.function(_get_stock, string='Stock vendu et reservé', type='integer', multi='stock'),
         # XXX sum of stock of variants
-        'sum_stock_available': fields.integer('Stock disponible', help='Stock reservé chez le fournisseur'),
-        # XXX sum of stock of variants
-        'sum_stock_local': fields.integer('Stock local', help='Stock disponible'),
+        #'sum_stock_local': fields.integer('Stock local', help='Stock disponible'),
+        'stock_progress': fields.function(_get_stock, string='Stock Progress', type='float', multi='stock'),
         'image': fields.binary("Image",
             help="This field holds the image used as image for the product, limited to 1024x1024px."),
         #'image_small': fields.function(_get_image, fnct_inv=_set_image,

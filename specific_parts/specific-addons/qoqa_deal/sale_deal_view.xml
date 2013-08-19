@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_sales_deal_filter" model="ir.ui.view">
+            <field name="name">sale.deal.list.select</field>
+            <field name="model">sale.deal</field>
+            <field name="arch" type="xml">
+                <search string="Search Sale Deal">
+                    <field name="name" string="Sales Order" filter_domain="['|',('name','ilike',self),('product_tmpl_id.name','ilike',self)]"/>
+                    <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                    <separator/>
+                    <filter icon="terp-document-new" string="Proposition" name="draft" domain="[('state','in',('draft'))]" help="Sales Deal that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Négociation" name="open" domain="[('state','in',('open'))]"/>
+                    <filter icon="terp-dolar_ok!" string="Planifié" domain="[('state','=','confirm')]" help="Sales Deal ready"/>
+                    <filter icon="terp-dolar_ok!" string="Done" domain="[('state','=','done')]" help="Sales Order done"/>
+                    <separator/>
+                    <!--<filter string="My Sales Deals" domain="[('user_id','=',uid)]" help="My Sales Orders" icon="terp-personal" name="my_sale_orders_filter"/>-->
+                    <!--<field name="user_id"/>-->
+                    <group expand="0" string="Group By...">
+                        <!--<filter string="Customer" icon="terp-personal" domain="[]" context="{'group_by':'partner_id'}"/>-->
+                        <!--<filter string="Salesperson" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>-->
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Start Date" icon="terp-go-month" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="view_sale_deal_tree" model="ir.ui.view">
+            <field name="name">sale.deal.tree</field>
+            <field name="model">sale.deal</field>
+            <field name="arch" type="xml">
+                <tree string="Planning" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name" string="Numéro de planning"/>
+                    <field name="product_tmpl_id"/>
+                    <!--<field name="user_id"/>-->
+                    <!--<field name="amount_total" sum="Total Tax Included"/>-->
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sale_deal_form" model="ir.ui.view">
+            <field name="name">sale.deal.form</field>
+            <field name="model">sale.deal</field>
+            <field name="arch" type="xml">
+                <form string="Planning" version="7.0">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,confirmed,done" statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <field name="image" widget="image" class="oe_avatar oe_left"/>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name" string="Numéro du Planning"/>
+                            </div>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <group>
+                                <field name="product_tmpl_id"/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="date_begin"/>
+                                    <field name="date_end"/>
+                                </group>
+                                <group>
+                                    <field name="site"/>
+                                </group>
+                            </group>
+                        </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                        </div>
+                        <group>
+                            <group>
+                                <field name="currency_id"/>
+                                <field name="price_sale"/>
+                                <field name="price_recommended"/>
+                                <field name="price_observed"/>
+                            </group>
+                            <group>
+                                <field name="shipping_type"/>
+                                <field name="shipping_costs"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Produits">
+                                <field name="variant_ids">
+                                    <tree string="Sale Deal Variants" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="product_id"/>
+                                        <field name="stock_available"/>
+                                        <field name="stock_sold"/>
+                                        <field name="stock_reserved"/>
+                                        <field name="stock_residual"/>
+                                        <field name="stock_progress" widget="progressbar"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Indicateurs">
+                                <group>
+                                    <group name="delay" string="Delays">
+                                        <label for="shipping_max_delay"/>
+                                        <div>
+                                            <field name="shipping_max_delay" class="oe_inline"/> days
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Descriptions">
+                                <separator string="Internal Description"/>
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Sale Deal  Calendar  View -->
+
+        <record id="view_sale_deal_calendar" model="ir.ui.view">
+            <field name="name">sale.deal.calendar</field>
+            <field name="model">sale.deal</field>
+            <field name="arch" type="xml">
+                <calendar color="site" date_start="date_begin" date_stop="date_end" string="Planning Deal">
+                    <field name="name"/>
+                    <field name="site"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="action_deal" model="ir.actions.act_window">
+            <field name="name">Planning</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.deal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <!--<field name="search_view_id" ref="view_sale_order_filter"/>-->
+            <field name="context">{}</field>
+            <field name="domain">[('state','!=','cancel')]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a deal to insert in the planning.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_sale_deal"
+            name="Planning"
+            parent="base.menu_product"
+            sequence="10" action="action_deal"/>
+    </data>
+</openerp>

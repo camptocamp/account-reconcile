@@ -33,6 +33,7 @@
             <field name="arch" type="xml">
                 <tree string="Planning" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
+                    <field name="date_begin"/>
                     <field name="name" string="Numéro de planning"/>
                     <field name="product_tmpl_id"/>
                     <field name="sum_stock_available"/>
@@ -42,6 +43,79 @@
                     <!--<field name="amount_total" sum="Total Tax Included"/>-->
                     <field name="state"/>
                 </tree>
+            </field>
+        </record>
+
+        <!-- Deal Kanban View  -->
+
+        <record model="ir.ui.view" id="view_sale_deal_kanban">
+            <field name="name">Planning Kanban</field>
+            <field name="model">sale.deal</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="date_begin"/>
+                    <field name="date_end"/>
+                    <field name="site"/>
+                    <field name="name"/>
+                    <field name="image"/>
+                    <field name="stock_progress"/>
+                    <field name="sum_stock_available"/>
+                    <field name="sum_stock_sold"/>
+                    <field name="variant_ids"/>
+                    <field name="price_sale"/>
+                    <field name="price_recommended"/>
+                    <field name="product_tmpl_id"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!--<div class="oe_kanban_vignette oe_semantic_html_override">-->
+                            <div t-attf-class="oe_kanban_card oe_kanban_deal oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <h1>
+                                        <a type="open">
+                                            <field name="name"/>
+                                        </a>
+                                    </h1>
+                                    <h4>
+                                        <a type="open">
+                                            <span>
+                                                <div class="qoqa_date_left">
+                                                    <b>Début</b><br />
+                                                    <field name="date_begin"/>
+                                                </div>
+                                                <div class="qoqa_date_right">
+                                                    <b>Fin</b><br />
+                                                    <field name="date_end"/>
+                                                </div>
+                                            </span>
+                                        </a>
+                                    </h4>
+                                    <div>
+                                        <a type="open">
+                                            <img t-att-src="kanban_image('sale.deal', 'image', record.id.value)" class="oe_kanban_image qoqa_deal_image"/>
+                                            <ul>
+                                                <li><b><field name="product_tmpl_id"/></b></li>
+                                                <li><field name="currency_id"/> <field name="price_sale"/> ( <field name="currency_id"/> <field name="price_recommended"/> )</li>
+                                            </ul>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <progress t-att-value="record.stock_progress.raw_value" max="100"/>
+                                        <div name="tags"/>
+                                        <ul>
+                                            <t t-if="record.variant_ids.raw_value gt 1">
+                                            <li t-foreach="record.variant_ids.raw_value" t-as="variant">
+                                                <field name="stock_progress"></field>
+                                            </li>
+                                            </t>
+                                            <li>Stock: <field name="sum_stock_sold"/> / <field name="sum_stock_available"/></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
 
@@ -141,7 +215,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.deal</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_mode">kanban,tree,form,calendar</field>
             <!--<field name="search_view_id" ref="view_sale_order_filter"/>-->
             <field name="context">{}</field>
             <field name="domain">[('state','!=','cancel')]</field>

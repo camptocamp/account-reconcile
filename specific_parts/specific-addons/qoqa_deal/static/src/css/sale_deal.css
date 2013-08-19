@@ -1,0 +1,56 @@
+.oe_kanban_deal {
+    width: 250px;
+    min-height: 160px;
+}
+
+.qoqa_date_left {
+    float: left;
+    margin: 8px;
+}
+
+.qoqa_date_right {
+    float: right;
+    margin: 8px;
+}
+
+.qoqa_deal_image {
+    float: left;
+    margin: 8px;
+}
+
+.openerp .oe_kanban_content h1 {
+    margin: 0 0 8px;
+    background-color: lightgrey;
+}
+
+.openerp .oe_kanban_content h4 {
+    margin: 0 0 8px;
+    font-weight: normal;
+    font-size: 80%;
+}
+
+.oe_kanban_content > table {
+    width: 100%;
+}
+
+.oe_kanban_content > table > th {
+    padding: 0;
+    border-right: 1px solid #DDD;
+    vertical-align: top;
+    font-weight: normal;
+}
+
+.oe_kanban_content > table > td {
+    padding: 2px 0 2px 8px;
+    color: #888;
+}
+
+.oe_kanban_content .oe_ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 100px;
+}
+
+.oe_kanban_content progress {
+    width: 100%;
+}

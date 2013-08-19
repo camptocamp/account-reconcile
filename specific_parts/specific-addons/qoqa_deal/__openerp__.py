@@ -31,4 +31,5 @@
  'installable': True,
  'auto_install': False,
  'application': True,
+ 'css': ['static/src/css/sale_deal.css'],
  }

@@ -26,18 +26,44 @@ class SaleDealVariant(orm.Model):
     _name = 'sale.deal.variant'
     _description = 'Sale Deal Variant'
 
+    def _get_stock(self, cr, uid, ids, fields, args, context=None):
+        """Get number of 
+        @return: Dictionary of function fields value.
+        """
+        res = {}
+
+        order_line_obj = self.pool.get('sale.order.line')
+        for variant in self.browse(cr, uid, ids, context=context):
+            res[variant.id] = {}
+            # XXX base search on deal_id
+            sold_product_ids = order_line_obj.search(cr, uid, [('product_id', '=', variant.product_id.id)], context=context)
+            num_sold = len(sold_product_ids)
+            res[variant.id]['stock_sold'] = num_sold
+            residual = variant.stock_available - variant.stock_reserved - num_sold
+
+            res[variant.id]['stock_residual'] = residual
+            if residual > 0:
+                progress = float(variant.stock_available - residual) / float(variant.stock_available)
+                res[variant.id]['stock_progress'] = progress * 100.0
+            else:
+                res[variant.id]['stock_progress'] = 0
+
+        return res
 
     _columns = {
-        'product_id': fields.many2one('product.product', 'Product', required=True, ondelete='cascade'),
+        'product_id': fields.many2one('product.product', 'Product', required=True, domain=[('product_tmpl_id', '=', 'deal_id.product_tmpl_id')], ondelete='cascade'),
         'deal_id': fields.many2one('sale.deal', 'Deal', required=True, ondelete='cascade'),
         'sequence': fields.integer('Sequence'),
         'stock_available': fields.integer('Disponible'),
         'stock_reserved': fields.integer('Reservé'),
         # XXX sum sale orders (related to this deal)
-        'stock_sold': fields.integer('Vendu'),
-        'stock_residual': fields.integer('Solde'),
+        #'stock_sold': fields.integer('Vendu'),
+        'stock_sold': fields.function(_get_stock, string='Vendu', multi='stock'),
+        #'stock_residual': fields.integer('Solde'),
+        'stock_residual': fields.function(_get_stock, string='Solde', multi='stock'),
         # XXX compute percent
-        'stock_progress': fields.float('Stock Progress'),
+        #'stock_progress': fields.float('Stock Progress'),
+        'stock_progress': fields.function(_get_stock, string='Stock Progress', multi='stock'),
         }
 
 
@@ -74,7 +100,7 @@ class SaleDeal(orm.Model):
         # XXX sum of stock of variants
         'sum_stock_available': fields.integer('Stock disponible', help='Stock reservé chez le fournisseur'),
         # XXX sum of stock of variants
-        'sum_stock_local': fields.integer('Stock local', help='Stock reservé chez le fournisseur'),
+        'sum_stock_local': fields.integer('Stock local', help='Stock disponible'),
         'image': fields.binary("Image",
             help="This field holds the image used as image for the product, limited to 1024x1024px."),
         #'image_small': fields.function(_get_image, fnct_inv=_set_image,

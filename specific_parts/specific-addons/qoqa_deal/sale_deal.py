@@ -41,7 +41,7 @@ class SaleDealVariant(orm.Model):
             residual = variant.stock_available - variant.stock_reserved - num_sold
 
             progress = 0.0
-            if residual > 0:
+            if variant.stock_available - residual > 0:
                 progress = float(variant.stock_available - residual) / float(variant.stock_available)
 
             res[variant.id] = {
@@ -93,7 +93,7 @@ class SaleDeal(orm.Model):
                 residual += variant.stock_residual
 
             progress = 0.0
-            if residual > 0:
+            if available - residual > 0:
                 progress = float(available - residual) / float(available)
 
 

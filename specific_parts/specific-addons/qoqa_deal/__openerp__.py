@@ -18,10 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Short name',
+{'name' : 'Qoqa Deal Planning',
  'version' : '1.0',
  'category': '',
- 'description': """display the product and sale markup in the appropriate views""",
+ 'description': """Add a notion of deal planning to have a special offer for each day (sometimes an offer is on multiple days)""",
  'author' : 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',

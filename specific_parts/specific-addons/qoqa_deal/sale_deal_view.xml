@@ -105,7 +105,7 @@
                                         <ul>
                                             <t t-if="record.variant_ids.raw_value.length gt 1">
                                                 <li t-foreach="record.variant_ids.raw_value" t-as="variant">
-                                                    Variant <b t-esc="variant_index"/>
+                                                    Variant <b t-esc="variant_index"/>: Stock reservé / Stock dispo
                                                 </li>
                                             </t>
                                             <li>Stock: <field name="sum_stock_sold"/> / <field name="sum_stock_available"/></li>

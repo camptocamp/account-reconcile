@@ -78,7 +78,7 @@ class SaleDeal(orm.Model):
     _order = 'date_begin'
 
     def _get_stock(self, cr, uid, ids, fields, args, context=None):
-        """Get number of 
+        """Get stock numbers
         @return: Dictionary of function fields value.
         """
         res = {}
@@ -105,7 +105,7 @@ class SaleDeal(orm.Model):
         return res
 
     _columns = {
-        'name': fields.integer('Numéro de Planning'),
+        'name': fields.integer('Numéro de Planning', required=True),
         'description': fields.text('Description',translate=True),
         'product_tmpl_id': fields.many2one('product.template', 'Product', required=True, readonly=True, states={'draft': [('readonly', False)]}, ondelete='set null', select=True),
         'variant_ids': fields.one2many('sale.deal.variant', 'deal_id', 'Product variants'),
@@ -121,8 +121,8 @@ class SaleDeal(orm.Model):
         'price_recommended': fields.float('Prix Conseillé', required=True, digits_compute= dp.get_precision('Product Price')),
         'price_observed': fields.float('Prix Constaté', required=True, digits_compute= dp.get_precision('Product Price')),
         'shipping_type': fields.selection([
-            ('express', 'Express'),
-            ('standard', 'standard')],
+            ('postmail', 'PostMail CH: SmallSmall'),
+            ('postlogistic', 'PostLogistics CH: Basic')],
             'Type expédition', required=True),
         'shipping_costs': fields.float('Montant expédition', required=True, digits_compute= dp.get_precision('Product Price')),
         'currency_id': fields.many2one('res.currency', 'Currency', required=True, readonly=True, states={'draft':[('readonly',False)]}, track_visibility='always'),

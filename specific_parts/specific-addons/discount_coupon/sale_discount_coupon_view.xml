@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_sale_discount_coupon_filter" model="ir.ui.view">
+            <field name="name">sale.discount.coupon.list.select</field>
+            <field name="model">sale.discount.coupon</field>
+            <field name="arch" type="xml">
+                <search string="Search Discount Coupon">
+                    <field name="name" string="Discount Coupon" filter_domain="['|',('name','ilike',self),('product_id.name','ilike',self)]"/>
+                    <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Start Date" icon="terp-go-month" domain="[]" context="{'group_by':'date_begin'}"/>
+                        <filter string="End Date" icon="terp-go-month" domain="[]" context="{'group_by':'date_end'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="view_sale_discount_coupon_tree" model="ir.ui.view">
+            <field name="name">sale.discount.coupon.tree</field>
+            <field name="model">sale.discount.coupon</field>
+            <field name="arch" type="xml">
+                <tree string="Discount Coupon" fonts="bold:message_unread==True">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name"/>
+                    <field name="date_end"/>
+                    <field name="residual"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sale_discount_coupon_form" model="ir.ui.view">
+            <field name="name">sale.discount.coupon.form</field>
+            <field name="model">sale.discount.coupon</field>
+            <field name="arch" type="xml">
+                <form string="Discount Coupon" version="7.0">
+                    <sheet>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name" string="Numéro du bon"/>
+                            </div>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <group>
+                                <field name="product_id"/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="date_begin"/>
+                                    <field name="date_end"/>
+                                </group>
+                                <group>
+                                    <field name="amount"/>
+                                </group>
+                            </group>
+                        </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                        </div>
+                        <field name="order_line_ids">
+                            <tree>
+                                <field name="so_date_order"/>
+                                <field name="so_partner_id"/>
+                                <field name="so_name"/>
+                                <field name="price_subtotal" string='Montant' sum="Solde"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="residual"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_discount_coupon" model="ir.actions.act_window">
+            <field name="name">Discount Coupon</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.discount.coupon</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="search_view_id" ref="view_sale_order_filter"/>-->
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a discount coupon.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_sale_discount_coupon"
+            name="Discount Coupon"
+            parent="base.menu_sales"
+            sequence="20" action="action_discount_coupon"/>
+    </data>
+</openerp>

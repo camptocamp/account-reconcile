@@ -145,9 +145,9 @@ class SaleDeal(orm.Model):
         'state': fields.selection([
             ('draft', 'Proposition'),
             ('open', 'Négociation'),
-            ('cancel', 'Annulé'),
-            ('confirm', 'Planifié'),
-            ('done', 'Terminé')],
+            ('planned', 'Planifié'),
+            ('done', 'Terminé'),
+            ('cancel', 'Annulé')],
             'Status', readonly=True, required=True,
             track_visibility='onchange',
             help='If event is created, the status is \'Draft\'.If event is confirmed for the particular dates the status is set to \'Confirmed\'. If the event is over, the status is set to \'Done\'.If event is cancelled the status is set to \'Cancelled\'.'),
@@ -165,4 +165,16 @@ class SaleDeal(orm.Model):
         'state': 'draft',
         'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'event.event', context=c),
         #'user_id': lambda obj, cr, uid, context: uid,
-    }
+        }
+
+    def action_cancel(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
+        return True
+
+    def action_done(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'done'}, context=context)
+        return True
+
+    def action_plan(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'planned'}, context=context)
+        return True

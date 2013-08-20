@@ -125,7 +125,13 @@
             <field name="arch" type="xml">
                 <form string="Planning" version="7.0">
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,open,confirmed,done" statusbar_colors='{"cancel":"red"}'/>
+                        <button name="action_plan" string="Plannifier" type="object" class="oe_highlight"
+                            states="draft,open" groups="base.group_user"/>
+                        <button name="action_done" string="Terminer" type="object" class="oe_highlight"
+                                states="planned" groups="base.group_user"/>
+                        <button name="action_cancel" string="Cancel" type="object" groups="base.group_user"
+                                states="draft,open,planned"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,planned,done" statusbar_colors='{"cancel":"red"}'/>
                     </header>
                     <sheet>
                         <field name="image" widget="image" class="oe_avatar oe_left"/>

@@ -29,5 +29,5 @@ class SaleOrderLine(orm.Model):
         'coupon_id': fields.many2one('sale.discount.coupon', 'Coupon de réduction'),
         'so_date_order': fields.related('order_id', 'date_order', type='date', string='Date'),
         'so_partner_id': fields.related('order_id', 'partner_id', type='many2one', relation='res.partner', string='Client'),
-        'so_name': fields.related('order_id', 'name', type='integer', string='No de commande'),
+        'so_name': fields.related('order_id', 'name', type='char', string='No de commande'),
         }

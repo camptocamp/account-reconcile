@@ -43,5 +43,5 @@ class SaleDiscountCoupon(orm.Model):
         'date_end': fields.datetime('Date de fin de validité', required=True),
         'amount': fields.float('Montant du bon', required=True, digits_compute= dp.get_precision('Product Price')),
         'order_line_ids': fields.one2many('sale.order.line', 'coupon_id', 'Historique', readonly=True),
-        'residual': fields.function(_get_residual, string='Solde', type='integer'),
+        'residual': fields.function(_get_residual, string='Solde', type='float'),
         }

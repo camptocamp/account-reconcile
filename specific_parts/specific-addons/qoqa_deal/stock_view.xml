@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_picking_out_form_add_deal" model="ir.ui.view">
+            <field name="name">stock.picking.out.form.add.deal</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="deal_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -18,24 +18,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Qoqa Deal Planning',
- 'version' : '1.0',
- 'category': '',
- 'description': """Add a notion of deal planning to have a special offer for each day (sometimes an offer is on multiple days)""",
- 'author' : 'Camptocamp',
- 'maintainer': 'Camptocamp',
- 'website': 'http://www.camptocamp.com/',
- 'depends' : ['sale', 'sale_stock', 'product'],
- 'data': [
-     'product_view.xml',
-     'sale_order_view.xml',
-     'account_invoice_view.xml',
-     'stock_view.xml',
-     'sale_deal_view.xml',
-     ],
- 'test': [],
- 'installable': True,
- 'auto_install': False,
- 'application': True,
- 'css': ['static/src/css/sale_deal.css'],
- }
+
+from openerp.osv import orm, fields
+
+class StockPicking(orm.Model):
+
+    _inherit = 'stock.picking'
+
+    _columns = {
+        'deal_id': fields.many2one('sale.deal', 'Deal')
+        }
+
+class StockPickingOut(orm.Model):
+
+    _inherit = 'stock.picking.out'
+
+    _columns = {
+        'deal_id': fields.many2one('sale.deal', 'Deal')
+        }

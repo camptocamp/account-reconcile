@@ -19,4 +19,7 @@
 #
 ##############################################################################
 
+from . import sale_order
+from . import account_invoice
+from . import stock
 from . import sale_deal

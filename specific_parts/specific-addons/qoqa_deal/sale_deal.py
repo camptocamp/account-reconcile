@@ -41,7 +41,7 @@ class SaleDealVariant(orm.Model):
             residual = variant.stock_available - variant.stock_reserved - num_sold
 
             progress = 0.0
-            if variant.stock_available - residual > 0:
+            if variant.stock_available > 0:
                 progress = float(variant.stock_available - residual) / float(variant.stock_available)
 
             res[variant.id] = {
@@ -58,13 +58,9 @@ class SaleDealVariant(orm.Model):
         'sequence': fields.integer('Sequence'),
         'stock_available': fields.integer('Disponible'),
         'stock_reserved': fields.integer('Reservé'),
-        # XXX sum sale orders (related to this deal)
-        #'stock_sold': fields.integer('Vendu'),
+
         'stock_sold': fields.function(_get_stock, string='Vendu', type='integer', multi='stock'),
-        #'stock_residual': fields.integer('Solde'),
         'stock_residual': fields.function(_get_stock, string='Solde', type='integer', multi='stock'),
-        # XXX compute percent
-        #'stock_progress': fields.float('Stock Progress'),
         'stock_progress': fields.function(_get_stock, string='Stock Progress', type='float', multi='stock'),
         }
 
@@ -93,7 +89,7 @@ class SaleDeal(orm.Model):
                 residual += variant.stock_residual
 
             progress = 0.0
-            if available - residual > 0:
+            if available > 0:
                 progress = float(available - residual) / float(available)
 
 
@@ -178,3 +174,41 @@ class SaleDeal(orm.Model):
     def action_plan(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'planned'}, context=context)
         return True
+
+    def on_change_product_template_id(self, cr, uid, ids, product_tmpl_id, context=None):
+        """
+        Define the content of variant_ids depending on product_tmpl_id
+
+        We will set automatically the variant if only one exists.
+
+        If we replace a product by another, and if the new one has no variant,
+        we try to keep the data of the stock data of first variant.
+
+        Actually we erase everything if the template has many variants
+        """
+        res = {'value':{}}
+        product_obj = self.pool.get('product.product')
+        variant_obj = self.pool.get('sale.deal.variant')
+        product_ids = product_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id)], context=context)
+
+        for deal in self.browse(cr, uid, ids, context=context):
+            if len(product_ids) == 1:
+                if not deal.variant_ids:
+                    variant_data = {
+                            'deal_id': deal.id,
+                            'product_id': product_ids[0],
+                            }
+                    variant_id = variant_obj.create(cr, uid, variant_data, context=context)
+                    res['value'] = {'variant_ids': [variant_id]}
+                else:
+                    if deal.variant_ids > 1:
+                        variant2unlink_ids = [v.id for v in deal.variant_ids[1:]]
+                        variant_obj.unlink(cr, uid, variant2unlink_ids, context=context)
+                    variant_obj.write(cr, uid, deal.variant_ids[0].id, {'product_id': product_ids[0]}, context=context)
+                    res['value'] = {'variant_ids': [deal.variant_ids[0].id]}
+            else:
+                variant2unlink_ids = [v.id for v in deal.variant_ids]
+                variant_obj.unlink(cr, uid, variant2unlink_ids, context=context)
+                res['value'] = {'variant_ids': []}
+
+        return res

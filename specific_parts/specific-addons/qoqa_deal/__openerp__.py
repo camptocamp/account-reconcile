@@ -26,7 +26,10 @@
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
  'depends' : ['sale', 'product'],
- 'data': ['sale_deal_view.xml'],
+ 'data': [
+     'product_view.xml',
+     'sale_deal_view.xml',
+     ],
  'test': [],
  'installable': True,
  'auto_install': False,

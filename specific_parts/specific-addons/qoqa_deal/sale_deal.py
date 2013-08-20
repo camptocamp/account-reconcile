@@ -53,8 +53,8 @@ class SaleDealVariant(orm.Model):
         return res
 
     _columns = {
-        'product_id': fields.many2one('product.product', 'Product', required=True, domain=[('product_tmpl_id', '=', 'deal_id.product_tmpl_id')], ondelete='cascade'),
         'deal_id': fields.many2one('sale.deal', 'Deal', required=True, ondelete='cascade'),
+        'product_id': fields.many2one('product.product', 'Product', required=True, domain="[('product_tmpl_id', '=', product_tmpl_id)]", ondelete='cascade'),
         'sequence': fields.integer('Sequence'),
         'stock_available': fields.integer('Disponible'),
         'stock_reserved': fields.integer('Reservé'),

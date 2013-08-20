@@ -103,10 +103,10 @@
                                         <progress t-att-value="record.stock_progress.raw_value" max="100"/>
                                         <div name="tags"/>
                                         <ul>
-                                            <t t-if="record.variant_ids.raw_value gt 1">
-                                            <li t-foreach="record.variant_ids.raw_value" t-as="variant">
-                                                <field name="stock_progress"></field>
-                                            </li>
+                                            <t t-if="record.variant_ids.raw_value.length gt 1">
+                                                <li t-foreach="record.variant_ids.raw_value" t-as="variant">
+                                                    Variant <b t-esc="variant_index"/>
+                                                </li>
                                             </t>
                                             <li>Stock: <field name="sum_stock_sold"/> / <field name="sum_stock_available"/></li>
                                         </ul>
@@ -168,10 +168,10 @@
                                 <field name="variant_ids">
                                     <tree string="Sale Deal Variants" editable="bottom">
                                         <field name="sequence" widget="handle"/>
-                                        <field name="product_id"/>
+                                        <field name="product_id" domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
                                         <field name="stock_available" sum="Disponible"/>
-                                        <field name="stock_reserved"/>
-                                        <field name="stock_sold"/>
+                                        <field name="stock_reserved" sum="Reservé"/>
+                                        <field name="stock_sold" sum="Vendu"/>
                                         <field name="stock_residual" sum="Solde"/>
                                         <field name="stock_progress" widget="progressbar"/>
                                     </tree>

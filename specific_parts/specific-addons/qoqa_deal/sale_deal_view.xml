@@ -73,12 +73,12 @@
                             <div t-attf-class="oe_kanban_card oe_kanban_deal oe_kanban_global_click">
                                 <div class="oe_kanban_content">
                                     <h1>
-                                        <a type="open">
+                                        <!--<a type="open">-->
                                             <field name="name"/>
-                                        </a>
+                                        <!--</a>-->
                                     </h1>
                                     <h4>
-                                        <a type="open">
+                                        <!--<a type="open">-->
                                             <span>
                                                 <div class="qoqa_date_left">
                                                     <b>Début</b><br />
@@ -89,16 +89,22 @@
                                                     <field name="date_end"/>
                                                 </div>
                                             </span>
-                                        </a>
+                                        <!--</a>-->
                                     </h4>
                                     <div>
-                                        <a type="open">
+                                        <!--<a type="open">-->
+                                            <field name="shipping_type"/>
+                                        <!--</a>-->
+                                    </div>
+                                    <hr/>
+                                    <div>
+                                        <!--<a type="open">-->
                                             <img t-att-src="kanban_image('sale.deal', 'image', record.id.value)" class="oe_kanban_image qoqa_deal_image"/>
                                             <ul>
                                                 <li><b><field name="product_tmpl_id"/></b></li>
                                                 <li><field name="currency_id"/> <field name="price_sale"/> ( <field name="currency_id"/> <field name="price_recommended"/> )</li>
                                             </ul>
-                                        </a>
+                                        <!--</a>-->
                                     </div>
                                     <div>
                                         <progress t-att-value="record.stock_progress.raw_value" max="100"/>

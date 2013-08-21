@@ -38,7 +38,7 @@ class SaleDiscountCoupon(orm.Model):
 
     _columns = {
         'name': fields.integer('Numéro de Planning', required=True),
-        'product_id': fields.many2one('product.product', 'Type de bon', required=True, ondelete='cascade'),
+        'product_id': fields.many2one('product.product', 'Type de bon', required=True, ondelete='cascade', domain=[('is_discount_coupon', '=', True)]),
         'date_begin': fields.datetime('Date début de validité', required=True),
         'date_end': fields.datetime('Date de fin de validité', required=True),
         'amount': fields.float('Montant du bon', required=True, digits_compute= dp.get_precision('Product Price')),

@@ -20,4 +20,5 @@
 ##############################################################################
 
 from . import sale
+from . import product
 from . import sale_discount_coupon

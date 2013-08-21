@@ -18,21 +18,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Discount and Bonus Coupons',
- 'version' : '1.0',
- 'category': '',
- 'description': """Adds discount coupon""",
- 'author' : 'Camptocamp',
- 'maintainer': 'Camptocamp',
- 'website': 'http://www.camptocamp.com/',
- 'depends' : ['sale'],
- 'data': [
-     'sale_view.xml',
-     'product_view.xml',
-     'sale_discount_coupon_view.xml',
-     ],
- 'test': [],
- 'installable': True,
- 'auto_install': False,
- 'application': True,
- }
+
+from openerp.osv import orm, fields
+
+class ProductProduct(orm.Model):
+
+    _inherit = 'product.product'
+
+    _columns = {
+        'is_discount_coupon': fields.boolean('Is discount coupon'),
+        }

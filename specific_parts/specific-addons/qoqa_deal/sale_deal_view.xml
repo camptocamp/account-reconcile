@@ -15,13 +15,14 @@
                     <filter icon="terp-dolar_ok!" string="Planifié" domain="[('state','=','confirm')]" help="Sales Deal ready"/>
                     <filter icon="terp-dolar_ok!" string="Done" domain="[('state','=','done')]" help="Sales Order done"/>
                     <separator/>
+                    <!--<filter icon="terp-go-today" string="This Month" name="this_month" domain="[('date_begin','&gt;=',current_date),('date_end','&lt;=',current_date)]" />-->
                     <!--<filter string="My Sales Deals" domain="[('user_id','=',uid)]" help="My Sales Orders" icon="terp-personal" name="my_sale_orders_filter"/>-->
                     <!--<field name="user_id"/>-->
                     <group expand="0" string="Group By...">
                         <!--<filter string="Customer" icon="terp-personal" domain="[]" context="{'group_by':'partner_id'}"/>-->
                         <!--<filter string="Salesperson" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>-->
                         <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
-                        <filter string="Start Date" icon="terp-go-month" domain="[]" context="{'group_by':'date_begin'}"/>
+                        <filter string="Day" icon="terp-go-today" domain="[]" context="{'group_by':'day'}"/>
                     </group>
                </search>
             </field>

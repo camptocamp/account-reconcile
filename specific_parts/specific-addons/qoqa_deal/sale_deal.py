@@ -19,6 +19,8 @@
 #
 ##############################################################################
 
+import time
+
 import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
@@ -101,6 +103,18 @@ class SaleDeal(orm.Model):
                     }
         return res
 
+    def _day_compute(self, cr, uid, ids, fieldnames, args, context=None):
+        res = dict.fromkeys(ids, '')
+        for obj in self.browse(cr, uid, ids, context=context):
+            res[obj.id] = time.strftime('%Y-%m-%d', time.strptime(obj.date_begin, '%Y-%m-%d %H:%M:%S'))
+        return res
+
+    def _month_compute(self, cr, uid, ids, fieldnames, args, context=None):
+        res = dict.fromkeys(ids, '')
+        for obj in self.browse(cr, uid, ids, context=context):
+            res[obj.id] = time.strftime('%Y-%m', time.strptime(obj.date_begin, '%Y-%m-%d %H:%M:%S'))
+        return res
+
     _columns = {
         'name': fields.integer('Numéro de Planning', required=True),
         'description': fields.text('Description',translate=True),
@@ -108,6 +122,10 @@ class SaleDeal(orm.Model):
         'variant_ids': fields.one2many('sale.deal.variant', 'deal_id', 'Product variants'),
         'date_begin': fields.datetime('Start Date', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'date_end': fields.datetime('End Date', required=True, readonly=True, states={'draft': [('readonly', False)]}),
+
+        'day': fields.function(_day_compute, type='char', string='Day', store=True, select=1, size=32),
+        'month': fields.function(_month_compute, type='char', string='Month', store=True, select=1, size=32),
+
         'site': fields.selection([
             ('qoqa', 'QoQa'),
             ('qwine', 'QWine'),

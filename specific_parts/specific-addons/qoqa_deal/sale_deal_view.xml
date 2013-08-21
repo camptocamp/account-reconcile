@@ -25,6 +25,7 @@
                         <!--<filter string="Salesperson" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>-->
                         <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
                         <filter string="Day" icon="terp-go-today" domain="[]" context="{'group_by':'day'}"/>
+                        <filter string="Site" domain="[]" context="{'group_by':'site'}"/>
                     </group>
                </search>
             </field>
@@ -37,6 +38,8 @@
                 <tree string="Planning" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin"/>
+                    <field name="site" invisible="1"/>
+                    <field name="day" invisible="1"/>
                     <field name="name" string="Numéro de planning"/>
                     <field name="product_tmpl_id"/>
                     <field name="sum_stock_available"/>

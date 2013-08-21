@@ -37,7 +37,7 @@ class SaleDiscountCoupon(orm.Model):
         return res
 
     _columns = {
-        'name': fields.integer('Numéro de Planning', required=True),
+        'name': fields.integer('Numéro de Planning', required=True, readonly=True),
         'product_id': fields.many2one('product.product', 'Type de bon', required=True, ondelete='cascade', domain=[('is_discount_coupon', '=', True)]),
         'date_begin': fields.datetime('Date début de validité', required=True),
         'date_end': fields.datetime('Date de fin de validité', required=True),
@@ -45,3 +45,20 @@ class SaleDiscountCoupon(orm.Model):
         'order_line_ids': fields.one2many('sale.order.line', 'coupon_id', 'Historique', readonly=True),
         'residual': fields.function(_get_residual, string='Solde', type='float'),
         }
+
+    def _get_reference(self, cr, uid, context=None):
+        """
+        Generate the reference based on sequence
+        """
+        if context is None:
+            context = {}
+        seq_obj = self.pool.get('ir.sequence')
+        code = 'discount_coupon'
+        return seq_obj.get(cr, uid, code)
+
+    def create(self, cr, uid, values, context=None):
+
+        ref = self._get_reference(cr, uid, context=context)
+        values.update({'name': ref})
+
+        return super(SaleDiscountCoupon, self).create(cr, uid, values, context=None)

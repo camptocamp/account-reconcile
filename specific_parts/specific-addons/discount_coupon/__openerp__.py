@@ -27,6 +27,7 @@
  'website': 'http://www.camptocamp.com/',
  'depends' : ['sale'],
  'data': [
+     'sale_discount_coupon_data.xml',
      'sale_view.xml',
      'product_view.xml',
      'sale_discount_coupon_view.xml',

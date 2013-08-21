@@ -37,7 +37,8 @@ class SaleDealVariant(orm.Model):
             res[variant.id] = {}
             # XXX base search on deal_id
             sold_product_ids = order_line_obj.search(cr, uid, [('product_id', '=', variant.product_id.id)], context=context)
-            num_sold = len(sold_product_ids)
+            sold_products = order_line_obj.browse(cr, uid, sold_product_ids, context=context)
+            num_sold = sum([line.product_uom_qty for line in sold_products if line.order_id.state not in ['draft', 'cancel']])
             residual = variant.stock_available - variant.stock_reserved - num_sold
 
             progress = 0.0

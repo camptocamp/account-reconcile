@@ -146,13 +146,14 @@ class SaleDeal(orm.Model):
             ('done', 'Terminé'),
             ('cancel', 'Annulé')],
             'Status', readonly=True, required=True,
-            track_visibility='onchange',
-            help='If event is created, the status is \'Draft\'.If event is confirmed for the particular dates the status is set to \'Confirmed\'. If the event is over, the status is set to \'Done\'.If event is cancelled the status is set to \'Cancelled\'.'),
+            track_visibility='onchange'),
         'company_id': fields.many2one('res.company', 'Company', required=False, change_default=True, readonly=False, states={'done': [('readonly', True)]}),
 
 
+        'date_warranty': fields.date('Date expiration garantie', readonly=True, states={'draft': [('readonly', False)]}),
+
         # Indicateurs
-        'shipping_max_delay': fields.integer('Délai expédition max.', help='Stock reservé chez le fournisseur'),
+        'shipping_max_delay': fields.integer('Délai expédition max.', help='Délai maximum en jours pour la livraison. Ce délai ne peut pas être suppérieur à 10 jours.'),
         #'shipping_max_delay': fields.datetime('Délai expédition max.', readonly=True, states={'draft': [('readonly', False)]}),
 
 

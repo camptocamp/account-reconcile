@@ -167,6 +167,7 @@
                             <group>
                                 <field name="shipping_type"/>
                                 <field name="shipping_costs"/>
+                                <field name="date_warranty"/>
                             </group>
                         </group>
                         <notebook>

@@ -7,13 +7,14 @@
             <field name="model">sale.deal</field>
             <field name="arch" type="xml">
                 <search string="Search Sale Deal">
-                    <field name="name" string="Sales Order" filter_domain="['|',('name','ilike',self),('product_tmpl_id.name','ilike',self)]"/>
+                    <field name="name" string="Sales Deal" filter_domain="['|',('name','=',self),('product_tmpl_id.name','ilike',self)]"/>
                     <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
                     <separator/>
-                    <filter icon="terp-document-new" string="Proposition" name="draft" domain="[('state','in',('draft'))]" help="Sales Deal that haven't yet been confirmed"/>
-                    <filter icon="terp-check" string="Négociation" name="open" domain="[('state','in',('open'))]"/>
-                    <filter icon="terp-dolar_ok!" string="Planifié" domain="[('state','=','confirm')]" help="Sales Deal ready"/>
-                    <filter icon="terp-dolar_ok!" string="Done" domain="[('state','=','done')]" help="Sales Order done"/>
+                    <field name="product_tmpl_id"/>
+                    <filter icon="terp-document-new" string="Proposition" name="draft" domain="[('state','=','draft')]" help="Sales Deal that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Négociation" name="open" domain="[('state','=','open')]"/>
+                    <filter icon="terp-dolar_ok!" string="Planifié" domain="[('state','=','planned')]" help="Sales Deal ready"/>
+                    <filter icon="terp-dolar_ok!" string="Terminé" domain="[('state','=','done')]" help="Sales Order done"/>
                     <separator/>
                     <!--<filter icon="terp-go-today" string="This Month" name="this_month" domain="[('date_begin','&gt;=',current_date),('date_end','&lt;=',current_date)]" />-->
                     <!--<filter string="My Sales Deals" domain="[('user_id','=',uid)]" help="My Sales Orders" icon="terp-personal" name="my_sale_orders_filter"/>-->

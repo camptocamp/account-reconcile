@@ -197,7 +197,7 @@
                             </page>
                             <page string="Descriptions">
                                 <separator string="Internal Description"/>
-                                <field name="description"/>
+                                <field name="description" widget="html"/>
                             </page>
                         </notebook>
                     </sheet>

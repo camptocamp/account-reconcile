@@ -164,6 +164,23 @@ class SaleDeal(orm.Model):
         #'user_id': lambda obj, cr, uid, context: uid,
         }
 
+    def _get_reference(self, cr, uid, context=None):
+        """
+        Generate the reference based on sequence
+        """
+        if context is None:
+            context = {}
+        seq_obj = self.pool.get('ir.sequence')
+        code = 'deal'
+        return seq_obj.get(cr, uid, code)
+
+    def create(self, cr, uid, values, context=None):
+
+        ref = self._get_reference(cr, uid, context=context)
+        values.update({'name': ref})
+
+        return super(SaleDeal, self).create(cr, uid, values, context=None)
+
     def action_cancel(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
         return True

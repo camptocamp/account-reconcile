@@ -27,6 +27,7 @@
  'website': 'http://www.camptocamp.com/',
  'depends' : ['sale', 'sale_stock', 'product'],
  'data': [
+     'sale_deal_data.xml',
      'product_view.xml',
      'sale_order_view.xml',
      'account_invoice_view.xml',

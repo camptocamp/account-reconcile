@@ -11,6 +11,7 @@
                     <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
                     <separator/>
                     <field name="product_tmpl_id"/>
+                    <field name="site"/>
                     <filter icon="terp-document-new" string="Proposition" name="draft" domain="[('state','=','draft')]" help="Sales Deal that haven't yet been confirmed"/>
                     <filter icon="terp-check" string="Négociation" name="open" domain="[('state','=','open')]"/>
                     <filter icon="terp-dolar_ok!" string="Planifié" domain="[('state','=','planned')]" help="Sales Deal ready"/>

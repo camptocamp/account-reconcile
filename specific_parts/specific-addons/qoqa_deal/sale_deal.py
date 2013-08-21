@@ -109,6 +109,7 @@ class SaleDeal(orm.Model):
             res[obj.id] = time.strftime('%Y-%m-%d', time.strptime(obj.date_begin, '%Y-%m-%d %H:%M:%S'))
         return res
 
+    # XXX delete ?
     def _month_compute(self, cr, uid, ids, fieldnames, args, context=None):
         res = dict.fromkeys(ids, '')
         for obj in self.browse(cr, uid, ids, context=context):
@@ -147,6 +148,7 @@ class SaleDeal(orm.Model):
         # XXX sum of stock of variants
         #'sum_stock_local': fields.integer('Stock local', help='Stock disponible'),
         'stock_progress': fields.function(_get_stock, string='Stock Progress', type='float', multi='stock'),
+        # XXX take product image ?
         'image': fields.binary("Image",
             help="This field holds the image used as image for the product, limited to 1024x1024px."),
         #'image_small': fields.function(_get_image, fnct_inv=_set_image,
@@ -227,6 +229,12 @@ class SaleDeal(orm.Model):
         product_obj = self.pool.get('product.product')
         variant_obj = self.pool.get('sale.deal.variant')
         product_ids = product_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id)], context=context)
+
+        # if we are in a new form
+        if not ids:
+            if len(product_ids) == 1:
+                res['value'] = {'variant_ids': [{'product_id': product_ids[0]}]}
+
 
         for deal in self.browse(cr, uid, ids, context=context):
             if len(product_ids) == 1:

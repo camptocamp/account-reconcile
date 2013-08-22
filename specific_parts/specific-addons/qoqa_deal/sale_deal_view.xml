@@ -137,7 +137,7 @@
             <field name="arch" type="xml">
                 <form string="Planning" version="7.0">
                     <header>
-                        <button name="action_plan" string="Plannifier" type="object" class="oe_highlight"
+                        <button name="action_plan" string="Planifier" type="object" class="oe_highlight"
                             states="draft,open" groups="base.group_user"/>
                         <button name="action_done" string="Terminer" type="object" class="oe_highlight"
                                 states="planned" groups="base.group_user"/>

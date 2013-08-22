@@ -29,6 +29,12 @@ class StockPicking(orm.Model):
         'deal_id': fields.many2one('sale.deal', 'Deal')
         }
 
+    def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
+        invoice_vals = super(StockPicking, self)._prepare_invoice(cr, uid, picking, partner, inv_type, journal_id, context)
+
+        invoice_vals.update(deal_id=picking.deal_id.id)
+        return invoice_vals
+
 class StockPickingOut(orm.Model):
 
     _inherit = 'stock.picking.out'

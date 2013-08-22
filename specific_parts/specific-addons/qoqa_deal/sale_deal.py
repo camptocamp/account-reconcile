@@ -258,3 +258,15 @@ class SaleDeal(orm.Model):
                 res['value'] = {'variant_ids': []}
 
         return res
+
+    def name_get(self, cursor, user, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        if not ids:
+            return []
+        res = []
+        data = self.browse(cursor, user, ids, context=context)
+        for deal in data:
+            name = deal.name + ' - ' + deal.product_tmpl_id.name
+            res.append((deal.id, name))
+        return res

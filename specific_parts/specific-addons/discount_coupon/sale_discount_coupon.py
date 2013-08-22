@@ -37,13 +37,17 @@ class SaleDiscountCoupon(orm.Model):
         return res
 
     _columns = {
-        'name': fields.integer('Numéro de Planning', required=True, readonly=True),
+        'name': fields.char('Numéro de Planning', required=True, readonly=True),
         'product_id': fields.many2one('product.product', 'Type de bon', required=True, ondelete='cascade', domain=[('is_discount_coupon', '=', True)]),
         'date_begin': fields.datetime('Date début de validité', required=True),
         'date_end': fields.datetime('Date de fin de validité', required=True),
         'amount': fields.float('Montant du bon', required=True, digits_compute= dp.get_precision('Product Price')),
         'order_line_ids': fields.one2many('sale.order.line', 'coupon_id', 'Historique', readonly=True),
         'residual': fields.function(_get_residual, string='Solde', type='float'),
+        }
+
+    _defaults = {
+        'name': '/',
         }
 
     def _get_reference(self, cr, uid, context=None):

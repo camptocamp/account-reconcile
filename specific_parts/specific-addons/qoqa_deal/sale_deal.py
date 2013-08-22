@@ -117,7 +117,7 @@ class SaleDeal(orm.Model):
         return res
 
     _columns = {
-        'name': fields.integer('Numéro de Planning', required=True),
+        'name': fields.char('Numéro de Planning', required=True),
         'description': fields.text('Description',translate=True),
         'product_tmpl_id': fields.many2one('product.template', 'Product', required=True, readonly=True, states={'draft': [('readonly', False)]}, ondelete='set null', select=True),
         'variant_ids': fields.one2many('sale.deal.variant', 'deal_id', 'Product variants'),
@@ -180,6 +180,7 @@ class SaleDeal(orm.Model):
         }
 
     _defaults = {
+        'name': '/',
         'state': 'draft',
         'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'event.event', context=c),
         #'user_id': lambda obj, cr, uid, context: uid,

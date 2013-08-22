@@ -38,5 +38,13 @@
             </field>
         </record>
 
+        <act_window name="Create Picking Dispatch"
+                    res_model="picking.dispatch.creator"
+                    src_model="stock.picking.out"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"
+                    id="picking_dispatch_create_act_window"/>
+
     </data>
 </openerp>

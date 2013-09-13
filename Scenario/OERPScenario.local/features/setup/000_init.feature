@@ -33,20 +33,7 @@ Feature: Parameter the new database
         | stock                          |
         | sale                           |
         | sale_order_webkit              |
-        | sale_validity                  |
-        | sale_stock_prebook             |
-        | sale_ownership                 |
-        | purchase                       |
-        | mail                           |
-        | purchase_extended              |
-        | purchase_requisition_extended  |
-        | transport_plan                 |
-        | logistic_requisition           |
-        | logistic_order                 |
-        | document                       |
-        | sale_exceptions                |
-        | stock_split_picking            |
-        | sale_cancel_reason             |
+        | connector_ecommerce            |
     Then my modules should have been installed and models reloaded
 
   @ged_setting
@@ -77,37 +64,19 @@ Feature: Parameter the new database
   Given I find a "res.company" with oid: base.main_company
     And having:
          | key        | value                      |
-         | name       | GAIN                       |
-         | street     | Rue de Vermont 37-39       |
+         | name       | QoQa Services SA           |
+         | street     | Rue de l'Arc-en-Ciel 14    |
          | street2    |                            |
-         | zip        | 1202                       |
-         | city       | Geneva                     |
+         | zip        | 1030                       |
+         | city       | Bussigny-Lausanne          |
          | country_id | by code: CH                |
-         | phone      | +41 22 749 1850            |
-         | fax        | +41 22 749 1851            |
-         | email      |                            |
-         | website    | http://www.gainhealth.org/ |
+         | phone      | +41 21 633 20 80           |
+         | fax        | +41 21 633 20 81           |
+         | email      | contact@qoqa.ch            |
+         | website    | http://www.qoqa.ch         |
 
-    Given the company has the "images/logo.jpg" logo
+    Given the company has the "images/logo_qoqa_ch.jpg" logo
     And the company currency is "CHF" with a rate of "1.00"
-    Given I need a "res.partner" with oid: scenario.partner_gain
-    And having:
-       | key        | value                                                    |
-       | name       | Fédération internationale des Sociétés de la Croix-Rouge |
-       | lang       | en_US                                                    |
-       | website    | http://ifrc.org/                                         |
-       | customer   | false                                                    |
-       | supplier   | false                                                    |
-       | street     | Chemin des Crêts, 17                                     |
-       | street2    | Petit-Saconnex                                           |
-       | zip        | 1211                                                     |
-       | city       | Genève                                                   |
-       | country_id | by code: CH                                              |
-       | phone      | +41 22 730 42 22                                         |
-       | fax        | +41 22 733 03 95                                         |
-       | email      |                                                          |
-       | is_company | True                                                     |
-       | company_id | by id: 1                                                 |
 
   @user_admin
   Scenario: Assign groups concerning the accounting to some users
@@ -115,7 +84,3 @@ Feature: Parameter the new database
     | login |
     | admin |
   Then we assign all groups to the users
-
-   @defaults
-   Scenario: Create default values (ir.values)
-      Given I load the data file "setup/purchase.requisition.yml"

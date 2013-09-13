@@ -11,14 +11,14 @@
 # Branch      # Module       # Processes     # System
 @core_setup
 
-Feature: Setup the finance for GAIN
+Feature: Setup the finance for QoQa
 
   @account_chart
   Scenario: Generate account chart
     Given I have the module account installed
-    And I want to generate account chart from chart template named "Plan comptable STERCHI" with "4" digits for company "GAIN"
+    And I want to generate account chart from chart template named "Plan comptable STERCHI" with "4" digits for company "QoQa"
     When I generate the chart
-    Then accounts should be available for company "GAIN"
+    Then accounts should be available for company "QoQa"
 
   @fiscalyear
     Scenario: create fiscal years

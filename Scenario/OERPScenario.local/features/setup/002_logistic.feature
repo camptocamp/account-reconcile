@@ -11,4 +11,4 @@
 # Branch      # Module       # Processes     # System
 @core_setup
 
-Feature: Setup the logistic for GAIN
+Feature: Setup the logistic for QoQa

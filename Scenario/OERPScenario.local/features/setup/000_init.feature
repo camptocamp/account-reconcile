@@ -75,7 +75,7 @@ Feature: Parameter the new database
          | email      | contact@qoqa.ch            |
          | website    | http://www.qoqa.ch         |
 
-    Given the company has the "images/logo_qoqa_ch.jpg" logo
+    Given the company has the "images/logo_qoqa_ch.png" logo
     And the company currency is "CHF" with a rate of "1.00"
 
   @user_admin

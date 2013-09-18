@@ -6,28 +6,46 @@
             <field name="name">sale.deal.list.select</field>
             <field name="model">sale.deal</field>
             <field name="arch" type="xml">
-                <search string="Search Sale Deal">
-                    <field name="name" string="Sales Deal" filter_domain="['|',('name','=',self),('product_tmpl_id.name','ilike',self)]"/>
-                    <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                <search string="Search Sales Deal">
+                    <field name="name" string="Sales Deal"
+                        filter_domain="['|', ('name', '=', self),
+                        ('product_tmpl_id.name', 'ilike', self)]"/>
+                    <filter icon="terp-mail-message-new"
+                        string="Unread Messages" name="message_unread"
+                        domain="[('message_unread', '=', True)]"/>
                     <separator/>
                     <field name="product_tmpl_id"/>
                     <field name="site"/>
-                    <filter icon="terp-document-new" string="Proposition" name="draft" domain="[('state','=','draft')]" help="Sales Deal that haven't yet been confirmed"/>
-                    <filter icon="terp-check" string="Négociation" name="open" domain="[('state','=','open')]"/>
-                    <filter icon="terp-dolar_ok!" string="Planifié" domain="[('state','=','planned')]" help="Sales Deal ready"/>
-                    <filter icon="terp-dolar_ok!" string="Terminé" domain="[('state','=','done')]" help="Sales Order done"/>
+                    <filter icon="terp-document-new"
+                        string="Proposal"
+                        name="draft"
+                        domain="[('state', '=', 'draft')]"
+                        help="Sales Deal that haven't yet been confirmed"/>
+                    <filter icon="terp-check"
+                        string="Negociation"
+                        name="open"
+                        domain="[('state', '=', 'open')]"/>
+                    <filter icon="terp-dolar_ok!"
+                        string="Planned"
+                        domain="[('state', '=', 'planned')]"
+                        help="Sales Deals Ready"/>
+                    <filter icon="terp-dolar_ok!"
+                        string="Done"
+                        domain="[('state', '=', 'done')]"
+                        help="Sales Deals done"/>
                     <separator/>
-                    <!--<filter icon="terp-go-today" string="This Month" name="this_month" domain="[('date_begin','&gt;=',current_date),('date_end','&lt;=',current_date)]" />-->
-                    <!--<filter string="My Sales Deals" domain="[('user_id','=',uid)]" help="My Sales Orders" icon="terp-personal" name="my_sale_orders_filter"/>-->
-                    <!--<field name="user_id"/>-->
                     <group expand="0" string="Group By...">
-                        <!--<filter string="Customer" icon="terp-personal" domain="[]" context="{'group_by':'partner_id'}"/>-->
-                        <!--<filter string="Salesperson" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>-->
-                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
-                        <filter string="Day" icon="terp-go-today" domain="[]" context="{'group_by':'day'}"/>
-                        <filter string="Site" domain="[]" context="{'group_by':'site'}"/>
+                        <filter string="Status"
+                            icon="terp-stock_effects-object-colorize"
+                            domain="[]"
+                            context="{'group_by': 'state'}"/>
+                        <filter string="Day" icon="terp-go-today"
+                            domain="[]"
+                            context="{'group_by': 'day'}"/>
+                        <filter string="Site" domain="[]"
+                            context="{'group_by': 'site'}"/>
                     </group>
-               </search>
+                </search>
             </field>
         </record>
 
@@ -35,19 +53,17 @@
             <field name="name">sale.deal.tree</field>
             <field name="model">sale.deal</field>
             <field name="arch" type="xml">
-                <tree string="Planning" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
+                <tree string="Sale Deal" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="site" invisible="1"/>
                     <field name="day" invisible="1"/>
-                    <field name="name" string="Numéro de planning"/>
+                    <field name="name"/>
                     <field name="product_tmpl_id"/>
                     <field name="sum_stock_available"/>
                     <field name="sum_stock_sold"/>
                     <field name="stock_progress" widget="progressbar"/>
-                    <!--<field name="user_id"/>-->
-                    <!--<field name="amount_total" sum="Total Tax Included"/>-->
                     <field name="state"/>
                 </tree>
             </field>
@@ -87,11 +103,11 @@
                                         <!--<a type="open">-->
                                             <span>
                                                 <div class="qoqa_date_left">
-                                                    <b>Début</b><br />
+                                                    <b>Start</b><br />
                                                     <field name="date_begin"/>
                                                 </div>
                                                 <div class="qoqa_date_right">
-                                                    <b>Fin</b><br />
+                                                    <b>End</b><br />
                                                     <field name="date_end"/>
                                                 </div>
                                             </span>
@@ -118,7 +134,7 @@
                                         <ul>
                                             <t t-if="record.variant_ids.raw_value.length gt 1">
                                                 <li t-foreach="record.variant_ids.raw_value" t-as="variant">
-                                                    Variant <b t-esc="variant_index"/>: Stock reservé / Stock dispo
+                                                    Variants <b t-esc="variant_index"/>: Stock (Sold / Available)
                                                 </li>
                                             </t>
                                             <li>Stock: <field name="sum_stock_sold"/> / <field name="sum_stock_available"/></li>
@@ -138,25 +154,33 @@
             <field name="arch" type="xml">
                 <form string="Planning" version="7.0">
                     <header>
-                        <button name="action_plan" string="Planifier" type="object" class="oe_highlight"
+                        <button name="action_plan" string="Confirm"
+                            type="object" class="oe_highlight"
                             states="draft,open" groups="base.group_user"/>
-                        <button name="action_done" string="Terminer" type="object" class="oe_highlight"
-                                states="planned" groups="base.group_user"/>
-                        <button name="action_cancel" string="Cancel" type="object" groups="base.group_user"
-                                states="draft,open,planned"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,open,planned,done" statusbar_colors='{"cancel":"red"}'/>
+                        <button name="action_done" string="Close"
+                            type="object" class="oe_highlight"
+                            states="planned" groups="base.group_user"/>
+                        <button name="action_cancel"
+                            string="Cancel" type="object"
+                            groups="base.group_user"
+                            states="draft,open,planned"/>
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,open,planned,done"
+                            statusbar_colors='{"cancel": "red"}'/>
                     </header>
                     <sheet>
-                        <field name="image" widget="image" class="oe_avatar oe_left"/>
+                        <field name="image" widget="image"
+                            class="oe_avatar oe_left"/>
                         <div class="oe_title">
                             <div class="oe_edit_only">
-                                <label for="name" string="Numéro du Planning"/>
+                                <label for="name"/>
                             </div>
                             <h1>
                                 <field name="name"/>
                             </h1>
                             <group>
-                                <field name="product_tmpl_id" on_change="on_change_product_template_id(product_tmpl_id)"/>
+                                <field name="product_tmpl_id"
+                                    on_change="on_change_product_template_id(product_tmpl_id)"/>
                             </group>
                             <group>
                                 <group>
@@ -184,20 +208,20 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Produits">
+                            <page string="Products">
                                 <field name="variant_ids">
-                                    <tree string="Sale Deal Variants" editable="bottom">
+                                    <tree string="Variants" editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="product_id" domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
-                                        <field name="stock_available" sum="Disponible"/>
-                                        <field name="stock_reserved" sum="Reservé"/>
-                                        <field name="stock_sold" sum="Vendu"/>
-                                        <field name="stock_residual" sum="Solde"/>
+                                        <field name="stock_available" sum="Available"/>
+                                        <field name="stock_reserved" sum="Reserved"/>
+                                        <field name="stock_sold" sum="Sold"/>
+                                        <field name="stock_residual" sum="Remaining"/>
                                         <field name="stock_progress" widget="progressbar"/>
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Indicateurs">
+                            <page string="Indicators">
                                 <group>
                                     <group name="delay" string="Delays">
                                         <label for="shipping_max_delay"/>
@@ -236,12 +260,11 @@
             <field name="res_model">sale.deal</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
-            <!--<field name="search_view_id" ref="view_sale_order_filter"/>-->
             <field name="context">{}</field>
-            <field name="domain">[('state','!=','cancel')]</field>
+            <field name="domain">[('state', '!=', 'cancel')]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
-                Click to create a deal to insert in the planning.
+                Click to create a deal in the planning.
               </p>
             </field>
         </record>
@@ -249,7 +272,7 @@
         <menuitem
             id="menu_sale_deal"
             name="Planning"
-            parent="base.menu_product"
+            parent="base.menu_sales"
             sequence="10" action="action_deal"/>
     </data>
 </openerp>

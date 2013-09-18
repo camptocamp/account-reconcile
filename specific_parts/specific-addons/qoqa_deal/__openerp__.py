@@ -18,22 +18,33 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Qoqa Deal Planning',
+{'name' : 'QoQa Deal Planning',
  'version' : '1.0',
  'category': '',
- 'description': """Add a notion of deal planning to have a special offer for each day (sometimes an offer is on multiple days)""",
+ 'description': """
+QoQa Deal Planning
+==================
+
+Adds a *Deal Planning* model.
+That's a special offer for a product (eventually with variants) for a
+duration (usually 1 day, but may be a few days).
+
+""",
  'author' : 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends' : ['sale', 'sale_stock', 'product'],
- 'data': [
-     'sale_deal_data.xml',
-     'product_view.xml',
-     'sale_order_view.xml',
-     'account_invoice_view.xml',
-     'stock_view.xml',
-     'sale_deal_view.xml',
-     ],
+ 'depends' : ['sale',
+              'sale_stock',
+              'product',
+              'picking_dispatch',  # stock-logistic-flows
+              ],
+ 'data': ['sale_deal_data.xml',
+          'product_view.xml',
+          'sale_order_view.xml',
+          'account_invoice_view.xml',
+          'stock_view.xml',
+          'sale_deal_view.xml',
+          ],
  'test': [],
  'installable': True,
  'auto_install': False,

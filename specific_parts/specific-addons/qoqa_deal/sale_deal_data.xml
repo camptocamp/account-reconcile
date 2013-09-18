@@ -4,12 +4,12 @@
 
         <record model="ir.sequence.type" id="sequence_type_deal">
             <field name="name">Sale Deal</field>
-            <field name="code">deal</field>
+            <field name="code">sale.deal</field>
         </record>
 
         <record model="ir.sequence" id="sequence_deal">
             <field name="name">Sale Deal Sequence</field>
-            <field name="code">deal</field>
+            <field name="code">sale.deal</field>
             <field name="prefix"></field>
             <field name="padding">0</field>
             <field name="number_increment">1</field>

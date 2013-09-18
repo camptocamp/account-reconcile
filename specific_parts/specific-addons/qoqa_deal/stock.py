@@ -21,24 +21,32 @@
 
 from openerp.osv import orm, fields
 
-class StockPicking(orm.Model):
 
+class stock_picking(orm.Model):
     _inherit = 'stock.picking'
 
     _columns = {
-        'deal_id': fields.many2one('sale.deal', 'Deal')
-        }
+        'deal_id': fields.many2one(
+            'sale.deal',
+            string='Deal',
+            readonly=True),
+    }
 
-    def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
-        invoice_vals = super(StockPicking, self)._prepare_invoice(cr, uid, picking, partner, inv_type, journal_id, context)
+    def _prepare_invoice(self, cr, uid, picking, partner, inv_type,
+                         journal_id, context=None):
+        vals = super(stock_picking, self)._prepare_invoice(
+            cr, uid, picking, partner, inv_type, journal_id, context=context)
+        if picking.deal_id:
+            vals['deal_id'] = picking.deal_id.id
+        return vals
 
-        invoice_vals.update(deal_id=picking.deal_id.id)
-        return invoice_vals
 
-class StockPickingOut(orm.Model):
-
+class stock_picking_out(orm.Model):
     _inherit = 'stock.picking.out'
 
     _columns = {
-        'deal_id': fields.many2one('sale.deal', 'Deal')
-        }
+        'deal_id': fields.many2one(
+            'sale.deal',
+            string='Deal',
+            readonly=True),
+    }

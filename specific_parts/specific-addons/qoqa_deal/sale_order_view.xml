@@ -18,7 +18,7 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_tree"/>
             <field name="arch" type="xml">
-                <field name="name" string="Order Number" position="after">
+                <field name="name" position="after">
                     <field name="deal_id"/>
                 </field>
             </field>
@@ -29,7 +29,7 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
-                <filter string="Customer" icon="terp-personal" domain="[]" context="{'group_by':'partner_id'}" position="after">
+                <filter string="Customer" position="after">
                   <filter string="Deal" icon="terp-personal" domain="[]" context="{'group_by':'deal_id'}"/>
                </filter>
             </field>

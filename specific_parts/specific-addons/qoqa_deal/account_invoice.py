@@ -21,11 +21,13 @@
 
 from openerp.osv import orm, fields
 
-class AccountInvoice(orm.Model):
 
+class account_invoice(orm.Model):
     _inherit = 'account.invoice'
 
     _columns = {
-        'deal_id': fields.many2one('sale.deal', 'Deal')
-        }
-
+        'deal_id': fields.many2one(
+            'sale.deal',
+            string='Deal',
+            readonly=True),
+    }

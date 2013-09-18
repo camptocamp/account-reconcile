@@ -10,7 +10,9 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="product_template" id="menu_template" parent="product.prod_config_main" />
+        <menuitem action="product_template" id="menu_template"
+            sequence="15"
+            parent="base.menu_product" />
 
         <record id="product_variant" model="ir.actions.act_window">
             <field name="name">Product Variants</field>
@@ -33,7 +35,9 @@
             <field name="view_id" ref="product.product_variant_form_view" />
         </record>
 
-        <menuitem action="product_variant" id="menu_variant" parent="product.prod_config_main" />
+        <menuitem action="product_variant" id="menu_variant"
+            sequence="20"
+            parent="base.menu_product" />
 
     </data>
 </openerp>

@@ -361,4 +361,16 @@ class sale_deal(orm.Model):
             res.append((deal.id, name))
         return res
 
-    # TODO: name_search
+    def name_search(self, cr, uid, name='', args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        if name:
+            domain = ['|', ('name', operator, name),
+                           ('product_tmpl_id.name', operator, name)]
+            ids = self.search(cr, uid,
+                              domain + args,
+                              limit=limit, context=context)
+        else:
+            ids = self.search(cr, uid, args, limit=limit, context=context)
+        result = self.name_get(cr, uid, ids, context=context)
+        return result

@@ -330,7 +330,8 @@ class sale_deal(orm.Model):
         self.write(cr, uid, ids, {'state': 'planned'}, context=context)
         return True
 
-    def on_change_product_template_id(self, cr, uid, ids, product_tmpl_id, context=None):
+    def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
+                                 context=None):
         """
         Define the content of variant_ids depending on product_tmpl_id
 
@@ -343,42 +344,12 @@ class sale_deal(orm.Model):
         """
         res = {'value': {}}
         product_obj = self.pool.get('product.product')
-        variant_obj = self.pool.get('sale.deal.variant')
-        product_ids = product_obj.search(
+        tmpl_variant_ids = product_obj.search(
             cr, uid,
             [('product_tmpl_id', '=', product_tmpl_id)],
             context=context)
-
-        # if we are in a new form
-        if not ids:
-            # TODO: add a line per variant
-            if len(product_ids) == 1:
-                res['value'] = {'variant_ids': [{'product_id': product_ids[0]}]}
-
-        for deal in self.browse(cr, uid, ids, context=context):
-            # TODO: add a line per variant
-            if len(product_ids) == 1:
-                if not deal.variant_ids:
-                    variant_data = {
-                            'deal_id': deal.id,
-                            'product_id': product_ids[0],
-                            }
-                    # FIXME onchange should not call create
-                    variant_id = variant_obj.create(cr, uid, variant_data, context=context)
-                    res['value'] = {'variant_ids': [variant_id]}
-                else:
-                    # FIXME onchange should not call unlink
-                    if deal.variant_ids > 1:
-                        variant2unlink_ids = [v.id for v in deal.variant_ids[1:]]
-                        variant_obj.unlink(cr, uid, variant2unlink_ids, context=context)
-                    variant_obj.write(cr, uid, deal.variant_ids[0].id, {'product_id': product_ids[0]}, context=context)
-                    res['value'] = {'variant_ids': [deal.variant_ids[0].id]}
-            else:
-                variant2unlink_ids = [v.id for v in deal.variant_ids]
-                # FIXME onchange should not call unlink
-                variant_obj.unlink(cr, uid, variant2unlink_ids, context=context)
-                res['value'] = {'variant_ids': []}
-
+        lines = [{'product_id': variant_id} for variant_id in tmpl_variant_ids]
+        res['value']['variant_ids'] = lines
         return res
 
     def name_get(self, cr, uid, ids, context=None):

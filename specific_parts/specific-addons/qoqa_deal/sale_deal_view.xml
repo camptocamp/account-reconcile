@@ -180,7 +180,7 @@
                             </h1>
                             <group>
                                 <field name="product_tmpl_id"
-                                    on_change="on_change_product_template_id(product_tmpl_id)"/>
+                                    on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
                             </group>
                             <group>
                                 <group>

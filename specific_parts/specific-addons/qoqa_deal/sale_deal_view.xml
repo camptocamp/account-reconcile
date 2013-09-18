@@ -173,25 +173,24 @@
                             class="oe_avatar oe_left"/>
                         <div class="oe_title">
                             <div class="oe_edit_only">
-                                <label for="name"/>
+                                <label for="product_tmpl_id"/>
                             </div>
                             <h1>
-                                <field name="name"/>
-                            </h1>
-                            <group>
                                 <field name="product_tmpl_id"
                                     on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
-                            </group>
+                            </h1>
                             <group>
-                                <group>
-                                    <field name="date_begin"/>
-                                    <field name="date_end"/>
-                                </group>
-                                <group>
-                                    <field name="site"/>
-                                </group>
+                                <field name="name" readonly="1"/>
                             </group>
                         </div>
+                        <group>
+                            <label for="date_begin" string="Dates"/>
+                            <div>
+                                <field name="date_begin" class="oe_inline"/> - 
+                                <field name="date_end" class="oe_inline"/>
+                            </div>
+                            <field name="site"/>
+                        </group>
                         <div class="oe_right oe_button_box" name="buttons">
                         </div>
                         <group>

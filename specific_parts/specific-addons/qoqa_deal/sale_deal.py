@@ -385,7 +385,7 @@ class sale_deal(orm.Model):
         if isinstance(ids, (int, long)):
             ids = [ids]
         res = []
-        for deal in self.browse(cursor, user, ids, context=context):
+        for deal in self.browse(cr, uid, ids, context=context):
             name = deal.name + ' - ' + deal.product_tmpl_id.name
             res.append((deal.id, name))
         return res

@@ -18,35 +18,30 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'QoQa Deal Planning',
+{'name' : 'Simple Product Variants',
  'version' : '1.0',
  'category': '',
  'description': """
-QoQa Deal Planning
-==================
+Simple Product Variants
+=======================
 
-Adds a *Deal Planning* model.
-That's a special offer for a product (eventually with variants) for a
-duration (usually 1 day, but may be a few days).
+A simple module for handling the product variants.
+It provides views for templates and for variants,
+so they can be created manually. It doesn't provide
+all the bells and whistles of the product_variant_multi
+module (generators wizards, ...).
 
 """,
  'author' : 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends' : ['sale',
-              'sale_stock',
-              'product_variant_simple',  # specific-addons
-              'picking_dispatch',  # stock-logistic-flows
+ 'depends' : ['product',
               ],
- 'data': ['sale_deal_data.xml',
-          'sale_order_view.xml',
-          'account_invoice_view.xml',
-          'stock_view.xml',
-          'sale_deal_view.xml',
+ 'data': ['product_view.xml',
+          'security/security.xml',
           ],
  'test': [],
  'installable': True,
  'auto_install': False,
  'application': True,
- 'css': ['static/src/css/sale_deal.css'],
  }

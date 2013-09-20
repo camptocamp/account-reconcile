@@ -29,12 +29,16 @@ Feature: Parameter the new database
     Given I install the required modules with dependencies:
         | name                           |
         | account                        |
+        | multi_company                  |
+        | base_import                    |
         | l10n_ch                        |
+        | l10n_fr                        |
         | stock                          |
         | sale                           |
         | sale_order_webkit              |
         | connector_ecommerce            |
         | connector_qoqa                 |
+        | specific_fct                   |
     Then my modules should have been installed and models reloaded
 
   @ged_setting
@@ -64,8 +68,9 @@ Feature: Parameter the new database
   Scenario: Configure main partner and company
   Given I find a "res.company" with oid: base.main_company
     And having:
-         | key        | value                      |
-         | name       | QoQa Holding               |
+         | key                       | value        |
+         | name                      | QoQa Holding |
+         | expects_chart_of_accounts | false        |
 
     Given the company has the "images/logo_qoqa_ch.png" logo
     And the company currency is "CHF" with a rate of "1.00"
@@ -108,7 +113,7 @@ Feature: Parameter the new database
          | parent_id  | by oid: base.main_company  |
 
     Given the company has the "images/logo_qoqa_fr.png" logo
-    And the company currency is "EUR" with a rate of "0.811"
+    And the company currency is "EUR" with a rate of "0.811035"
 
   @user_admin
   Scenario: Assign groups concerning the accounting to some users

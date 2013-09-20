@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Activate the following options:
+
+        Sales:
+            * Use pricelists to adapt your price per customers
+            * Allow a different address for delivery and invoicing
+            * Allow setting a discount on the sales order lines
+            * Manage multiple shops
+
+        Purchases:
+            *
+
+        Warehouse:
+            * Manage multiple locations and warehouses
+
+        Accounting:
+            * Allow multi currencies
+
+        General Settings:
+            *
+        -->
+        <record model="res.groups" id="base.group_user">
+            <field name="implied_ids"
+                eval="[(4, ref('product.group_sale_pricelist')),
+                       (4, ref('sale.group_delivery_invoice_address')),
+                       (4, ref('sale.group_discount_per_so_line')),
+                       (4, ref('stock.group_locations')),
+                       (4, ref('base.group_multi_currency')),
+                       ]"/>
+        </record>
+
+    </data>
+</openerp>

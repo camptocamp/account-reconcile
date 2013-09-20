@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@core_setup
+@finance @core_setup
 
 Feature: Setup the finance for QoQa
 

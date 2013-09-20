@@ -34,6 +34,7 @@ Feature: Parameter the new database
         | sale                           |
         | sale_order_webkit              |
         | connector_ecommerce            |
+        | connector_qoqa                 |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model="qoqa.backend" id="qoqa_backend_config">
+            <field name="name">QoQa Services</field>
+        </record>
+    </data>
+</openerp>

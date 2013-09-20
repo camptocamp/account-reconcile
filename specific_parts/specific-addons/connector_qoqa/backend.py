@@ -58,6 +58,11 @@ qsport_ch = Backend(parent=qoqa, version='qsport.ch')
 """ QoQa Backend for qsport.ch """
 
 
+# qstyle.ch
+qstyle_ch = Backend(parent=qoqa, version='qstyle.ch')
+""" QoQa Backend for qstyle.ch """
+
+
 # qooking.ch
 qooking_ch = Backend(parent=qoqa, version='qooking.ch')
 """ QoQa Backend for qooking.ch """

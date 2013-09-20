@@ -21,6 +21,7 @@
 
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
+from openerp.addons.connector import backend
 from .backend import qoqa
 
 """
@@ -40,6 +41,14 @@ class qoqa_backend(orm.Model):
     _description = 'QoQa Backend'
     _inherit = 'connector.backend'
     _backend_type = 'qoqa'
+
+    _columns = {
+        # override because the version has no meaning here
+        'version': fields.dummy('Version'),
+    }
+
+    def check_connection(self, cr, uid, ids, context=None):
+        raise NotImplementedError
 
     def get_backend(self, cr, uid, id, context=None):
         """ For a record of backend, returns the appropriate instance
@@ -62,7 +71,11 @@ class qoqa_backend(orm.Model):
 class qoqa_store(orm.Model):
     _name = 'qoqa.store'
     _description = 'QoQa Store'
-    _inherit = 'connector.backend'
+    # should be _inherit'ed from connector.backend, but it adds a 'name'
+    # fields which comes on top of sale.shop's name and prevent
+    # creation of a qoqa.store
+    # _inherit = 'connector.backend'
+    _inherits = {'sale.shop': 'openerp_id'}
     _backend_type = 'qoqa'
 
     def _select_versions(self, cr, uid, context=None):
@@ -75,7 +88,9 @@ class qoqa_store(orm.Model):
                 ('qwine.ch', 'Qwine.ch'),
                 ('qwine.fr', 'Qwine.fr'),
                 ('qsport.ch', 'Qsport.ch'),
+                ('qstyle.ch', 'Qstyle.ch'),
                 ('qooking.ch', 'Qooking.ch'),
+                ('generic', 'Generic'),
                 ]
 
     _columns = {
@@ -83,4 +98,38 @@ class qoqa_store(orm.Model):
             lambda self, *args, **kwargs: self._select_versions(*args, **kwargs),
             string='Version',
             required=True),
+        'backend_id': fields.many2one(
+            'qoqa.backend',
+            string='Backend',
+            required=True,
+            ondelete='restrict'),
+        'openerp_id': fields.many2one(
+            'sale.shop',
+            string='Sale Shop',
+            required=True,
+            readonly=True,
+            ondelete='cascade'),
     }
+
+    _defaults = {
+        'version': 'generic',
+    }
+
+    def get_backend(self, cr, uid, id, context=None):
+        """ For a record of backend, returns the appropriate instance
+        of :py:class:`~connector.backend.Backend`.
+
+        Override: when the selected version is 'generic',
+        returns the :py:class:`~connector.backend.Backend` of the related
+        ``qoqa.backend``.
+        """
+        if hasattr(id, '__iter__'):
+            assert len(id) == 1, "One ID expected, got: %r" % id
+            id = id[0]
+        store = self.browse(cr, uid, id, context=context)
+
+        if store.version == 'generic':
+            return store.backend_id.get_backend()
+
+        backend_record = self.browse(cr, uid, id, context=context)
+        return backend.get_backend(self._backend_type, backend_record.version)

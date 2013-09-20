@@ -43,6 +43,7 @@ duration (usually 1 day, but may be a few days).
           'account_invoice_view.xml',
           'stock_view.xml',
           'sale_deal_view.xml',
+          'security/ir.model.access.csv',
           ],
  'test': [],
  'installable': True,

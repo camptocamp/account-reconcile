@@ -9,6 +9,9 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@core_setup
+@logistic @core_setup
 
-Feature: Set base data for the DB
+Feature: Setup the logistic for QoQa
+  For each company, we need the following locations:
+  SAV, Non-réclamé, Stock, Défectueux
+

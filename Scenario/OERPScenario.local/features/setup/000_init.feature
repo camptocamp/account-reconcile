@@ -75,46 +75,6 @@ Feature: Parameter the new database
     Given the company has the "images/logo_qoqa_ch.png" logo
     And the company currency is "CHF" with a rate of "1.00"
 
-  @company_ch
-  Scenario: Configure main partner and company
-  Given I need a "res.company" with oid: scenario.qoqa_ch
-    And having:
-         | key        | value                      |
-         | name       | QoQa Services SA           |
-         | street     | Rue de l'Arc-en-Ciel 14    |
-         | street2    |                            |
-         | zip        | 1030                       |
-         | city       | Bussigny-Lausanne          |
-         | country_id | by code: CH                |
-         | phone      | +41 21 633 20 80           |
-         | fax        | +41 21 633 20 81           |
-         | email      | contact@qoqa.ch            |
-         | website    | http://www.qoqa.ch         |
-         | parent_id  | by oid: base.main_company  |
-
-    Given the company has the "images/logo_qoqa_ch.png" logo
-    And the company currency is "CHF" with a rate of "1.00"
-
-  @company_fr
-  Scenario: Configure main partner and company for France
-  Given I need a "res.company" with oid: scenario.qoqa_fr
-    And having:
-         | key        | value                      |
-         | name       | QoQa Services France       |
-         | street     | 20 rue Georges Barres      |
-         | street2    |                            |
-         | zip        | 33300                      |
-         | city       | Bordeaux                   |
-         | country_id | by code: FR                |
-         | phone      | +33 5 56 37 57 08          |
-         | fax        | +33 5 56 37 57 08          |
-         | email      | clients@qoqa.fr            |
-         | website    | http://www.qoqa.fr         |
-         | parent_id  | by oid: base.main_company  |
-
-    Given the company has the "images/logo_qoqa_fr.png" logo
-    And the company currency is "EUR" with a rate of "0.811035"
-
   @user_admin
   Scenario: Assign groups concerning the accounting to some users
     Given we select users below:

@@ -79,7 +79,7 @@ Feature: Configure QoQa.fr
     | name        | Défectueux                                 |
     | location_id | by oid: scenario.stock_location_company_fr |
     | company_id  | by oid: scenario.qoqa_fr                   |
-    Given I need a "stock.warehouse" with oid: scenario.warehouse0
+    Given I need a "stock.warehouse" with oid: scenario.warehouse_fr
     And having:
     | name          | value                                     |
     | name          | QoQa Services France                      |
@@ -89,6 +89,7 @@ Feature: Configure QoQa.fr
     | company_id    | by oid: scenario.qoqa_fr                  |
     Given I need a "sale.shop" with oid: sale.sale_shop_fr
     And having:
-    | name       | value                    |
-    | name       | QoQa Services SA         |
-    | company_id | by oid: scenario.qoqa_fr |
+    | name         | value                         |
+    | name         | QoQa Services France          |
+    | company_id   | by oid: scenario.qoqa_fr      |
+    | warehouse_id | by oid: scenario.warehouse_fr |

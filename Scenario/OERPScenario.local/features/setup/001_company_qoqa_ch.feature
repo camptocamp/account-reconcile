@@ -77,8 +77,9 @@ Feature: Configure QoQa.ch
     | name       | value                    |
     | name       | QoQa Services SA         |
     | company_id | by oid: scenario.qoqa_ch |
-    Given I need a "sale.shop" with oid: sale.sale_shop_ch
+    Given I find a "sale.shop" with oid: sale.sale_shop_1
     And having:
-    | name       | value                    |
-    | name       | QoQa Services SA         |
-    | company_id | by oid: scenario.qoqa_ch |
+    | name         | value                    |
+    | name         | QoQa Services SA         |
+    | company_id   | by oid: scenario.qoqa_ch |
+    | warehouse_id | by oid: stock.warehouse0 |

@@ -19,14 +19,23 @@
 #
 ##############################################################################
 
-import test_company_binder
-import test_import_metadata
+import mock
+from contextlib import contextmanager
+from functools import partial
 
-fast_suite = [
-]
 
-checks = [
-    test_company_binder,
-    test_import_metadata,
-]
+def get_qoqa_response(responses, url):
+    if not url in responses:
+        raise Exception('Unhandled request: %s' % url)
+    return responses[url]
 
+
+@contextmanager
+def mock_api_responses(responses):
+    """
+    :param responses: responses returned by QoQa
+    :type responses: dict
+    """
+    with mock.patch('requests.get') as mock_get:
+        mock_get.side_effect = partial(get_qoqa_response, responses)
+        yield

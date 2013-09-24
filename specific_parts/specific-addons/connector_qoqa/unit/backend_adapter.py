@@ -19,7 +19,9 @@
 #
 ##############################################################################
 
+import json
 import logging
+import requests
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import (NetworkRetryableError,
                                                 RetryableJobError)
@@ -27,8 +29,24 @@ from openerp.addons.connector.exception import (NetworkRetryableError,
 _logger = logging.getLogger(__name__)
 
 
-class QoQaCRUDAdapter(CRUDAdapter):
-    """ External Records Adapter for QoQa """
+class QoQaClient(object):
+
+    def __init__(self, url, key, oauth_token):
+        if not url.endswith('/'):
+            url += '/'
+        self.url = url
+        self.key = key
+        self.oauth_token = oauth_token
+
+    def __getattr__(self, attr):
+        return getattr(requests, attr)
+    # TODO: add auth in post, get, put, delete, head, patch
+
+
+class QoQaAdapter(CRUDAdapter):
+    """ External Records Adapter for Trello """
+
+    _endpoint = None  # to define in subclasses
 
     def __init__(self, environment):
         """
@@ -36,30 +54,39 @@ class QoQaCRUDAdapter(CRUDAdapter):
         :param environment: current environment (backend, session, ...)
         :type environment: :py:class:`connector.connector.Environment`
         """
-        super(QoQaCRUDAdapter, self).__init__(environment)
+        assert self._endpoint, "_endpoint needs to be defined"
+        super(QoQaAdapter, self).__init__(environment)
+        # XXX: cache the connection informations?
+        url = self.backend_record.url
+        key = self.backend_record.key
+        oauth = self.backend_record.oauth_token
+        self.client = QoQaClient(url, key, oauth)
+        self.version = self.backend_record.version
+        self.lang = self.session.context['lang'][:2]
 
-    def search(self, filters=None):
-        """ Search records according to some criterias
-        and returns a list of ids """
-        raise NotImplementedError
+    @property
+    def url(self):
+        values = {'url': self.client.url,
+                  'version': self.version,
+                  'lang': self.lang,
+                  'endpoint': self._endpoint,
+                  }
+        return "{url}api/{version}/{lang}/{endpoint}/".format(**values)
 
-    def read(self, id, attributes=None):
-        """ Returns the information of a record """
-        raise NotImplementedError
+    def create(self, vals):
+        # TODO: check
+        record = self.client.post(self.url, params=vals)
+        result = json.loads(record)
+        return result['data']
 
-    def search_read(self, filters=None):
-        """ Search records according to some criterias
-        and returns their information"""
-        raise NotImplementedError
+    def read(self, id):
+        record = self.client.get("{0}{1}".format(self.url, id))
+        assert record['data']
+        return record['data'][0]
 
-    def create(self, data):
-        """ Create a record on the external system """
-        raise NotImplementedError
-
-    def write(self, id, data):
-        """ Update records on the external system """
-        raise NotImplementedError
-
-    def delete(self, id):
-        """ Delete a record on the external system """
-        raise NotImplementedError
+    def search(self, id, only_ids=True):
+        records = self.client.get(self.url)
+        records = json.loads(records)
+        if only_ids:
+            return [r['id'] for r in records['data']]
+        return records['data']

@@ -24,5 +24,5 @@ from openerp.addons.connector.backend import Backend
 qoqa = Backend('qoqa')
 """ Generic QoQa Backend. """
 
-qoqa_1 = Backend(parent=qoqa, version='1.0')
-""" Backend for version 1.0 of QoQa (start of the project) """
+qoqa_1 = Backend(parent=qoqa, version='1')
+""" Backend for version 1 of QoQa API """

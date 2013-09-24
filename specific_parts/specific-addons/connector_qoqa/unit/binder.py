@@ -104,7 +104,8 @@ class QoQaInheritsBinder(QoQaBinder):
     the QoQa ID, the ID of the QoQa Backend and the additional
     fields belonging to the QoQa instance.
     """
-    _model_name = []
+    _model_name = ['qoqa.shop',
+                   ]
 
     def to_openerp(self, external_id, unwrap=False):
         """ Give the OpenERP ID for an external ID
@@ -157,10 +158,6 @@ class QoQaInheritsBinder(QoQaBinder):
         now_fmt = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         # avoid to trigger the export when we modify the `qoqa_id`
         with self.session.change_context({'connector_no_export': True}):
-            self.environment.model.write(
-                self.session.cr,
-                self.session.uid,
-                binding_id,
-                {'qoqa_id': str(external_id),
-                 'sync_date': now_fmt},
-                context=context)
+            values = {'qoqa_id': str(external_id),
+                      'sync_date': now_fmt}
+            self.session.write(self.model._name, binding_id, values)

@@ -233,7 +233,8 @@ class AddCheckpoint(ConnectorUnit):
     """ Add a connector.checkpoint on the underlying model
     (not the qoqa.* but the _inherits'ed model) """
 
-    _model_name = []
+    _model_name = ['qoqa.shop',
+                   ]
 
     def run(self, openerp_binding_id):
         binding = self.session.browse(self.model._name,

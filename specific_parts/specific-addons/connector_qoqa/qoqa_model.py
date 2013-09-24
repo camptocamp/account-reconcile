@@ -22,7 +22,18 @@
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.addons.connector import backend
+from openerp.addons.connector.session import ConnectorSession
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  only_create,
+                                                  ImportMapper
+                                                  )
 from .backend import qoqa
+from .unit.import_synchronizer import (import_batch,
+                                       BatchImportSynchronizer,
+                                       QoQaImportSynchronizer,
+                                       AddCheckpoint,
+                                       )
+from .unit.backend_adapter import QoQaAdapter
 
 """
 Models that represent the structure of the QoQa Shops.
@@ -47,7 +58,7 @@ class qoqa_backend(orm.Model):
 
         Can be inherited to add custom versions.
         """
-        return [('1.0', '1.0'),
+        return [('1', '1'),
                 ]
 
     _columns = {
@@ -56,10 +67,31 @@ class qoqa_backend(orm.Model):
             _select_versions,
             string='Version',
             required=True),
+        'default_lang_id': fields.many2one(
+            'res.lang',
+            'Default Language',
+            required=True,
+            help="If a default language is selected, the records "
+                 "will be imported in the translation of this language.\n"
+                 "Note that a similar configuration exists for each shop."),
+        'url': fields.char('URL', required=True),
+        'key': fields.char('Key'),
+        'oauth_token': fields.char('oAuth Token'),
     }
 
     def check_connection(self, cr, uid, ids, context=None):
         raise NotImplementedError
+
+    def synchronize_metadata(self, cr, uid, ids, context=None):
+        if not hasattr(ids, '__iter__'):
+            ids = [ids]
+        session = ConnectorSession(cr, uid, context=context)
+        for backend_id in ids:
+            # import directly, do not delay because this
+            # is a fast operation, a direct return is fine
+            # and it is simpler to import them sequentially
+            import_batch(session, 'qoqa.shop', backend_id)
+        return True
 
     def create(self, cr, uid, vals, context=None):
         existing_ids = self.search(cr, uid, [], context=context)
@@ -83,4 +115,118 @@ class qoqa_shop(orm.Model):
             required=True,
             readonly=True,
             ondelete='cascade'),
+        'domain': fields.char('Domain', readonly=True),
     }
+
+
+class sale_shop(orm.Model):
+    _inherit = 'sale.shop'
+
+    _columns = {
+        'qoqa_bind_ids': fields.one2many(
+            'qoqa.shop', 'openerp_id',
+            string='QoQa Bindings',
+            readonly=True),
+        'lang_id': fields.many2one(
+            'res.lang',
+            'Default Language',
+            required=True,
+            help="If a default language is selected, the records "
+                 "will be imported in the translation of this language.\n"
+                 "Note that a similar configuration exists for each shop."),
+    }
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default['qoqa_bind_ids'] = False
+        return super(sale_shop, self).copy_data(cr, uid, id,
+                                                default=default,
+                                                context=context)
+
+
+@qoqa
+class QoQaShopAdapter(QoQaAdapter):
+    _model_name = 'qoqa.shop'
+    _endpoint = 'shops'
+
+
+@qoqa
+class ShopBatchImport(BatchImportSynchronizer):
+    """ Import the records directly, without delaying the jobs.
+
+    Import the QoQa Shops
+
+    They are imported directly because this is a rare and fast operation,
+    and we don't really bother if it blocks the UI during this time.
+    """
+    _model_name = 'qoqa.shop'
+
+    def run(self, filters=None):
+        """ Run the synchronization """
+        records = self.backend_adapter.search(filters, only_ids=False)
+        for record in records:
+            self._import_record(record)
+
+    def _import_record(self, record):
+        """ Import the record directly.
+
+        For the shops, the import does only 1 call to the
+        API, it returns the data from all the shops.
+        """
+        importer = self.get_connector_unit_for_model(ShopImport)
+        record_id = record['id']
+        importer.run(record_id, record=record)
+
+
+@qoqa
+class ShopImport(QoQaImportSynchronizer):
+    """ Import one QoQa Shop (and create a sale.shop via _inherits).
+
+    A record can be given, so the batch import can import all
+    the shops at the same time.
+    """
+    _model_name = 'qoqa.shop'
+
+    def run(self, qoqa_id, force=False, record=None):
+        if record is not None:
+            self.qoqa_record = record
+        return super(ShopImport, self).run(qoqa_id, force=force)
+
+    def _create(self, data):
+        openerp_binding_id = super(ShopImport, self)._create(data)
+        checkpoint = self.get_connector_unit_for_model(AddCheckpoint)
+        checkpoint.run(openerp_binding_id)
+        return openerp_binding_id
+
+    def _get_qoqa_data(self):
+        """ Return the raw QoQa data for ``self.qoqa_id`` """
+        if self.qoqa_record:
+            return self.qoqa_record
+        else:
+            return super(ShopImport, self)._get_qoqa_data()
+
+
+@qoqa
+class ShopImportMapper(ImportMapper):
+    _model_name = 'qoqa.shop'
+
+    direct = []
+    # XXX maybe should we map: languages
+
+    @mapping
+    @only_create
+    def company(self, record):
+        qoqa_company_id = record['company']['id']
+        binder = self.get_binder_for_model('res.company')
+        openerp_id = binder.to_openerp(qoqa_company_id)
+        return {'company_id': openerp_id}
+
+    @mapping
+    def name(self, record):
+        name = record['name']
+        return {'name': name}
+
+    @mapping
+    def backend_id(self, record):
+        return {'backend_id': self.backend_record.id}

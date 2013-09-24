@@ -13,10 +13,10 @@
         parent="menu_qoqa_root"
         action="action_qoqa_backend"/>
 
-    <menuitem id="menu_qoqa_store"
-        name="Stores"
+    <menuitem id="menu_qoqa_shop"
+        name="Shops"
         parent="menu_qoqa_root"
-        action="action_qoqa_store"/>
+        action="action_qoqa_shop"/>
 
   </data>
 </openerp>

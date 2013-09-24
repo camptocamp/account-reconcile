@@ -24,45 +24,5 @@ from openerp.addons.connector.backend import Backend
 qoqa = Backend('qoqa')
 """ Generic QoQa Backend. """
 
-
-# qoqa.ch and qoqa.fr
-qoqa_all = Backend(parent=qoqa)
-""" QoQa Backend common to qoqa.ch and qoqa.fr
-
-Can't be used directly but can be used to share the knowledge
-for both websites."""
-
-qoqa_ch = Backend(parent=qoqa_all, version='qoqa.ch')
-""" QoQa Backend for qoqa.ch """
-
-qoqa_fr = Backend(parent=qoqa_all, version='qoqa.fr')
-""" QoQa Backend for qoqa.fr """
-
-
-# qwine.ch and qwine.fr
-qwine_all = Backend(parent=qoqa)
-""" QoQa Backend common to qwine.ch and qwine.fr
-
-Can't be used directly but can be used to share the knowledge
-for both websites."""
-
-qoqa_fr = Backend(parent=qwine_all, version='qwine.ch')
-""" QoQa Backend for qwine.ch """
-
-qwine_fr = Backend(parent=qwine_all, version='qwine.fr')
-""" QoQa Backend for qwine.fr """
-
-
-# qsport.ch
-qsport_ch = Backend(parent=qoqa, version='qsport.ch')
-""" QoQa Backend for qsport.ch """
-
-
-# qstyle.ch
-qstyle_ch = Backend(parent=qoqa, version='qstyle.ch')
-""" QoQa Backend for qstyle.ch """
-
-
-# qooking.ch
-qooking_ch = Backend(parent=qoqa, version='qooking.ch')
-""" QoQa Backend for qooking.ch """
+qoqa_1 = Backend(parent=qoqa, version='1.0')
+""" Backend for version 1.0 of QoQa (start of the project) """

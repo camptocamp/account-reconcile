@@ -27,16 +27,14 @@ from openerp.addons.connector.checkpoint import checkpoint
 install_in_connector()
 
 
-
-# TODO will need to be adapted to be able to get an environment from
-# a qoqa.backend OR a qoqa.store
 def get_environment(session, model_name, backend_id):
     """ Create an environment to work with.  """
     backend_record = session.browse('qoqa.backend', backend_id)
     env = Environment(backend_record, session, model_name)
-    lang = backend_record.default_lang_id
-    lang_code = lang.code if lang else 'en_US'
-    env.set_lang(code=lang_code)
+    # TODO
+    # lang = backend_record.default_lang_id
+    # lang_code = lang.code if lang else 'en_US'
+    # env.set_lang(code=lang_code)
     return env
 
 
@@ -56,6 +54,7 @@ class qoqa_binding(orm.AbstractModel):
             'qoqa.backend',
             'QoQa Backend',
             required=True,
+            readonly=True,
             ondelete='restrict'),
         'qoqa_id': fields.char('ID on QoQa'),
     }

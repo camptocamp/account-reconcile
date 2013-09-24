@@ -29,6 +29,70 @@ class QoQaBinder(Binder):
     """ Generic Binder for QoQa """
 
 
+class QoQaDirectBinder(QoQaBinder):
+    """
+    Bindings are done directly on the model, the ``qoqa_id`` field in
+    the model contains the ID on QoQa. This is possible because we have
+    only 1 QoQa Backend. This is preferred when there is no synchronization
+    of the models.
+    Example: the ``qoqa_id`` on the company is setup manually once, there
+    is no import of export of the companies, but we need its ID to link
+    the ``qoqa.shop`` to the correct company.
+    """
+    _model_name = []
+
+    def to_openerp(self, external_id, unwrap=False):
+        """ Give the OpenERP ID for an external ID
+
+        :param external_id: external ID for which we want the OpenERP ID
+        :param unwrap: No effect in the direct binding
+        :return: ID of the record in OpenERP
+                 or None if the external_id is not mapped
+        :rtype: int
+        """
+        binding_ids = self.session.search(
+            self.model._name,
+            [('qoqa_id', '=', str(external_id))])
+        if not binding_ids:
+            return None
+        assert len(binding_ids) == 1, "Several records found: %s" % binding_ids
+        return binding_ids[0]
+
+    def to_backend(self, binding_id):
+        """ Give the external ID for an OpenERP ID
+
+        :param binding_id: OpenERP ID for which we want the external id
+        :return: backend identifier of the record
+        """
+        qoqa_record = self.session.read(self.model._name,
+                                        binding_id,
+                                        ['qoqa_id'])
+        assert qoqa_record
+        qoqa_id = qoqa_record['qoqa_id']
+        if not qoqa_id:  # prefer None over False
+            return None
+        return qoqa_id
+
+    def bind(self, external_id, binding_id):
+        """ Create the link between an external ID and an OpenERP ID and
+        update the last synchronization date.
+
+        :param external_id: External ID to bind
+        :param binding_id: OpenERP ID to bind
+        :type binding_id: int
+        """
+        now_fmt = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        # avoid to trigger the export when we modify the `qoqa_id`
+        with self.session.change_context({'connector_no_export': True}):
+            self.environment.model.write(
+                self.session.cr,
+                self.session.uid,
+                binding_id,
+                {'qoqa_id': str(external_id),
+                 'sync_date': now_fmt},
+                context=context)
+
+
 @qoqa
 class QoQaInheritsBinder(QoQaBinder):
     """
@@ -77,7 +141,10 @@ class QoQaInheritsBinder(QoQaBinder):
                                         binding_id,
                                         ['qoqa_id'])
         assert qoqa_record
-        return qoqa_record['qoqa_id']
+        qoqa_id = qoqa_record['qoqa_id']
+        if not qoqa_id:  # prefer None over False
+            return None
+        return qoqa_id
 
     def bind(self, external_id, binding_id):
         """ Create the link between an external ID and an OpenERP ID and
@@ -87,14 +154,13 @@ class QoQaInheritsBinder(QoQaBinder):
         :param binding_id: OpenERP ID to bind
         :type binding_id: int
         """
-        # avoid to trigger the export when we modify the `qoqa_id`
-        context = self.session.context.copy()
-        context['connector_no_export'] = True
         now_fmt = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        self.environment.model.write(
-            self.session.cr,
-            self.session.uid,
-            binding_id,
-            {'qoqa_id': str(external_id),
-             'sync_date': now_fmt},
-            context=context)
+        # avoid to trigger the export when we modify the `qoqa_id`
+        with self.session.change_context({'connector_no_export': True}):
+            self.environment.model.write(
+                self.session.cr,
+                self.session.uid,
+                binding_id,
+                {'qoqa_id': str(external_id),
+                 'sync_date': now_fmt},
+                context=context)

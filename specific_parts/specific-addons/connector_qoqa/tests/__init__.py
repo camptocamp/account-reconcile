@@ -19,32 +19,12 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Connector',
- 'version': '0.0.1',
- 'category': 'Connector',
- 'depends': ['connector',
-             'sale',
-             'qoqa_deal',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Connector
-==============
+import test_company_binder
 
-Synchronize OpenERP with the different QoQa Stores
-(qoqa.ch, qwine.ch, qsport.ch, qooking.ch).
+fast_suite = [
+]
 
-""",
- 'images': [],
- 'demo': [],
- 'data': ['data.xml',
-          'qoqa_model_view.xml',
-          'qoqa_menu.xml',
-          'res_company_view.xml',
-          'security/ir.model.access.csv',
-          ],
- 'installable': True,
- 'application': True,
-}
+checks = [
+    test_company_binder,
+]
+

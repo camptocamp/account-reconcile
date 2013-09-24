@@ -73,15 +73,10 @@ class qoqa_backend(orm.Model):
 class qoqa_shop(orm.Model):
     _name = 'qoqa.shop'
     _description = 'QoQa Shop'
+    _inherit = 'qoqa.binding'
     _inherits = {'sale.shop': 'openerp_id'}
 
     _columns = {
-        'backend_id': fields.many2one(
-            'qoqa.backend',
-            string='Backend',
-            required=True,
-            readonly=True,
-            ondelete='restrict'),
         'openerp_id': fields.many2one(
             'sale.shop',
             string='Sale Shop',

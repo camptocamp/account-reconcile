@@ -3,7 +3,7 @@
     <data noupdate="1">
         <record model="qoqa.backend" id="qoqa_backend_config">
             <field name="name">QoQa Services</field>
-            <field name="url">http://ch.test02.qoqa.com</field>
+            <field name="url">https://ch.test02.qoqa.com</field>
             <field name="version">1</field>
         </record>
     </data>

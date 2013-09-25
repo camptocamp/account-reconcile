@@ -58,7 +58,7 @@ class qoqa_backend(orm.Model):
 
         Can be inherited to add custom versions.
         """
-        return [('1', '1'),
+        return [('v1', 'v1'),
                 ]
 
     _columns = {

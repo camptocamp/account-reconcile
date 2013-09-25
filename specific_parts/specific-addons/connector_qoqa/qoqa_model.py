@@ -65,7 +65,7 @@ class qoqa_backend(orm.Model):
         # override because the version has no meaning here
         'version': fields.selection(
             _select_versions,
-            string='Version',
+            string='API Version',
             required=True),
         'default_lang_id': fields.many2one(
             'res.lang',

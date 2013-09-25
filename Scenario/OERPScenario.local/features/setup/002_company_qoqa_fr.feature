@@ -93,3 +93,23 @@ Feature: Configure QoQa.fr
     | name         | QoQa Services France          |
     | company_id   | by oid: scenario.qoqa_fr      |
     | warehouse_id | by oid: scenario.warehouse_fr |
+
+  @account_chart_fr
+  Scenario: Generate account chart QoQa Services France
+    Given I have the module account installed
+    And I want to generate account chart from chart template named "Plan Comptable Général (France)" with "6" digits for company "QoQa Services France"
+    When I generate the chart
+    Then accounts should be available for company "QoQa Services France"
+
+  @fiscalyear_fr
+    Scenario: create fiscal years
+    Given I need a "account.fiscalyear" with oid: scenario.fy2013_fr
+    And having:
+    | name       | value                    |
+    | name       | 2013                     |
+    | code       | 2013                     |
+    | date_start | 2013-01-01               |
+    | date_stop  | 2013-12-31               |
+    | company_id | by oid: scenario.qoqa_fr |
+    And I create monthly periods on the fiscal year with reference "scenario.fy2013_fr"
+    Then I find a "account.fiscalyear" with oid: scenario.fy2013_fr

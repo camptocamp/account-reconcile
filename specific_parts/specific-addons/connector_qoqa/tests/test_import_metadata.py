@@ -40,7 +40,7 @@ class test_import_metadata(common.TransactionCase):
         self.backend_id = self.ref('connector_qoqa.qoqa_backend_config')
         # ensure we use the tested version, otherwise the response
         # of the test data would not be found
-        vals = {'version': '1',
+        vals = {'version': 'v1',
                 'url': 'http://test02.qoqa.com',
                 'default_lang_id': self.ref('base.lang_en'),
                 }

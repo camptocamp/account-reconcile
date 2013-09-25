@@ -9,7 +9,7 @@ to be sure that the tests are working even if the
 """
 
 qoqa_shops = {
-    'http://test02.qoqa.com/api/1/en/shops/':
+    'http://test02.qoqa.com/api/v1/en/shops/':
     '''{"data": [
             {
                 "id": 1,

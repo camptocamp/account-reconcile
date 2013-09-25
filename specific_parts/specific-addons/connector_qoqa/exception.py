@@ -24,3 +24,11 @@ from openerp.addons.connector.exception import ConnectorException
 
 class QoQaError(ConnectorException):
     """ Base Exception class for the QoQa Connector. """
+
+
+class QoQaAPIError(QoQaError):
+    """ Error with the QoQa API. """
+
+
+class QoQaResponseNotParsable(QoQaAPIError):
+    """ Happens when a response from the QoQa API is not parsable. """

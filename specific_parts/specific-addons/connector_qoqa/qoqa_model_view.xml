@@ -22,7 +22,7 @@
                         <h1>
                             <field name="name" class="oe_inline" />
                         </h1>
-                        <group name="qoqa" string="QoQa Configuration" groups="connector.group_connector_manager">
+                        <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
                             <group colspan="4" col="4">
                                 <field name="version" colspan="4"/>
                                 <field name="url"
@@ -32,6 +32,9 @@
                                 <field name="key" colspan="2"/>
                                 <field name="oauth_token" colspan="2"/>
                             </group>
+                        </group>
+                        <group name="main_configuration" string="Main Configuration">
+                            <field name="default_lang_id"/>
                         </group>
                     </sheet>
                 </form>

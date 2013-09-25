@@ -27,7 +27,9 @@ from functools import partial
 def get_qoqa_response(responses, url):
     if not url in responses:
         raise Exception('Unhandled request: %s' % url)
-    return responses[url]
+    response = mock.Mock()
+    response.content = responses[url]
+    return response
 
 
 @contextmanager

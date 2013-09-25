@@ -25,6 +25,7 @@ import requests
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import (NetworkRetryableError,
                                                 RetryableJobError)
+from ..exception import QoQaResponseNotParsable
 
 _logger = logging.getLogger(__name__)
 
@@ -64,7 +65,6 @@ class QoQaAdapter(CRUDAdapter):
         self.version = self.backend_record.version
         self.lang = self.session.context['lang'][:2]
 
-    @property
     def url(self):
         values = {'url': self.client.url,
                   'version': self.version,
@@ -73,20 +73,34 @@ class QoQaAdapter(CRUDAdapter):
                   }
         return "{url}api/{version}/{lang}/{endpoint}/".format(**values)
 
+    def _handle_response(self, response):
+        _logger.debug("%s %s returned %s %s", response.request.method,
+                      response.url, response.status_code, response.reason)
+        response.raise_for_status()
+        try:
+            parsed = json.loads(response.content)
+        except ValueError as err:
+            raise QoQaResponseNotParsable(err)
+        return parsed
+
     def create(self, vals):
         # TODO: check
-        record = self.client.post(self.url, params=vals)
-        result = json.loads(record)
+        url = self.url()
+        response = self.client.post(url, params=vals)
+        result = self._handle_response(response)
         return result['data']
 
     def read(self, id):
-        record = self.client.get("{0}{1}".format(self.url, id))
-        assert record['data']
-        return record['data'][0]
+        url = "{0}{1}".format(self.url(), id)
+        response = self.client.get(url)
+        result = self._handle_response(response)
+        assert result['data']
+        return result['data'][0]
 
     def search(self, id, only_ids=True):
-        records = self.client.get(self.url)
-        records = json.loads(records)
+        url = self.url()
+        response = self.client.get(url)
+        records = self._handle_response(response)
         if only_ids:
             return [r['id'] for r in records['data']]
         return records['data']

@@ -19,9 +19,9 @@
 #
 ##############################################################################
 
+import requests
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
-from openerp.addons.connector import backend
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   only_create,
@@ -33,7 +33,7 @@ from .unit.import_synchronizer import (import_batch,
                                        QoQaImportSynchronizer,
                                        AddCheckpoint,
                                        )
-from .unit.backend_adapter import QoQaAdapter
+from .unit.backend_adapter import QoQaAdapter, QoQaClient
 
 """
 Models that represent the structure of the QoQa Shops.
@@ -75,12 +75,31 @@ class qoqa_backend(orm.Model):
                  "will be imported in the translation of this language.\n"
                  "Note that a similar configuration exists for each shop."),
         'url': fields.char('URL', required=True),
-        'key': fields.char('Key'),
-        'oauth_token': fields.char('oAuth Token'),
+        'client_key': fields.char('Client Key'),
+        'client_secret': fields.char('Client Secret'),
+        'access_token': fields.char('OAuth Token'),
+        'access_token_secret': fields.char('OAuth Token Secret'),
+        'debug': fields.boolean('Debug'),
     }
 
     def check_connection(self, cr, uid, ids, context=None):
-        raise NotImplementedError
+        if isinstance(ids, (list, tuple)):
+            assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
+            ids = ids[0]
+        backend = self.browse(cr, uid, ids, context=context)
+        args = (backend.url,
+                backend.client_key or '',
+                backend.client_secret or '',
+                backend.access_token or '',
+                backend.access_token_secret or '')
+        client = QoQaClient(*args, debug=backend.debug)
+        url = client.base_url + 'api/' + backend.version + '/me'
+        response = client.head(url)
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise orm.except_orm('Error', err)
+        raise orm.except_orm('Ok', 'Connection is successful.')
 
     def synchronize_metadata(self, cr, uid, ids, context=None):
         if not hasattr(ids, '__iter__'):

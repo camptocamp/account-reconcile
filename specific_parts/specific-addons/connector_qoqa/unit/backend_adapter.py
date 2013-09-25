@@ -22,6 +22,7 @@
 import json
 import logging
 import requests
+from requests_oauthlib import OAuth1Session
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import (NetworkRetryableError,
                                                 RetryableJobError)
@@ -32,16 +33,36 @@ _logger = logging.getLogger(__name__)
 
 class QoQaClient(object):
 
-    def __init__(self, url, key, oauth_token):
-        if not url.endswith('/'):
-            url += '/'
-        self.url = url
-        self.key = key
-        self.oauth_token = oauth_token
+    def __init__(self, base_url, client_key, client_secret,
+                 access_token, access_token_secret, debug=False):
+        if not base_url.endswith('/'):
+            base_url += '/'
+        self.base_url = base_url
+        self.client_key = client_key
+        self.client_secret = client_secret
+        self.access_token = access_token
+        self.access_token_secret = access_token_secret
+        self.debug = debug
+        self._session = None
+
+    @property
+    def session(self):
+        if self._session is None:
+            self._session = OAuth1Session(
+                self.client_key,
+                client_secret=self.client_secret,
+                resource_owner_key=self.access_token,
+                resource_owner_secret=self.access_token_secret)
+        return self._session
 
     def __getattr__(self, attr):
-        return getattr(requests, attr)
-    # TODO: add auth in post, get, put, delete, head, patch
+        dispatch = getattr(self.session, attr)
+        if self.debug:
+            def with_debug(*args, **kwargs):
+                kwargs['verify'] = False
+                return dispatch(*args, **kwargs)
+            return with_debug
+        return dispatch
 
 
 class QoQaAdapter(CRUDAdapter):
@@ -57,16 +78,19 @@ class QoQaAdapter(CRUDAdapter):
         """
         assert self._endpoint, "_endpoint needs to be defined"
         super(QoQaAdapter, self).__init__(environment)
-        # XXX: cache the connection informations?
-        url = self.backend_record.url
-        key = self.backend_record.key
-        oauth = self.backend_record.oauth_token
-        self.client = QoQaClient(url, key, oauth)
+        # XXX: cache the connection informations
+        backend = self.backend_record
+        args = (backend.url,
+                backend.client_key or '',
+                backend.client_secret or '',
+                backend.access_token or '',
+                backend.access_token_secret or '')
+        self.client = QoQaClient(*args, debug=backend.debug)
         self.version = self.backend_record.version
         self.lang = self.session.context['lang'][:2]
 
     def url(self):
-        values = {'url': self.client.url,
+        values = {'url': self.client.base_url,
                   'version': self.version,
                   'lang': self.lang,
                   'endpoint': self._endpoint,

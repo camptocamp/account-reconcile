@@ -1,0 +1,13 @@
+User:
+- Récupérer un user par son ID
+- Récupérer les adresses d'un USER (selon un ID de user), ou dans le même JSON
+  que le user
+
+Commandes:
+- Lire les détails d'une commande par son ID
+- Argument dans la recherche pour retourner uniquement les IDs au lieu du JSON
+  complet (permet de découper l'import en transactions atomique par commande, si 1 erreur arrive sur 1 commande, les autres continuent)
+
+Deals:
+- Lire les détails d'un deal par son ID
+

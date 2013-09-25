@@ -13,6 +13,9 @@
                         type="object"
                         class="oe_highlight"
                         string="Synchronize Metadata"/>
+                      <button name="%(action_qoqa_backend_oauth)d"
+                        type="action"
+                        string="Get Authentication Tokens"/>
                       <button name="check_connection"
                         type="object"
                         string="Check Connection"/>
@@ -29,8 +32,7 @@
                                     placeholder="e.g. http://www.qoqa.ch"
                                     colspan="4"
                                     />
-                                <field name="key" colspan="2"/>
-                                <field name="oauth_token" colspan="2"/>
+                                <field name="debug" colspan="2"/>
                             </group>
                         </group>
                         <group name="main_configuration" string="Main Configuration">

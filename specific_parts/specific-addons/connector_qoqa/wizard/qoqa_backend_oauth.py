@@ -23,8 +23,6 @@ import requests
 from requests_oauthlib import OAuth1Session
 from openerp.osv import orm, fields
 
-
-# TODO move to config parameters
 REQUEST_URL_PART = "/oauth1.0a/request_token"
 ACCESS_URL_PART = "/oauth1.0a/access_token"
 
@@ -76,10 +74,18 @@ class qoqa_backend_oauth(orm.TransientModel):
         return res
 
     def request_token(self, cr, uid, ids, context=None):
+        """ Request the authorization tokens from the OAuth API,
+
+        using the client key and client secret.
+
+        First part of the process.
+        """
         if isinstance(ids, (list, tuple)):
             assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
             ids = ids[0]
         form = self.browse(cr, uid, ids, context=context)
+        # request the tokens and get the autorization url
+        # from the OAuth API
         oauth = OAuth1Session(form.client_key,
                               client_secret=form.client_secret)
         url = form.backend_id.url + REQUEST_URL_PART
@@ -89,6 +95,8 @@ class qoqa_backend_oauth(orm.TransientModel):
         request_secret = fetch_response.get('oauth_token_secret')
         auth_url = oauth.authorization_url(authorize_url)
 
+        # the wizards reopens itself with tokens and url in the context
+        # for the second step: request access tokens
         data_obj = self.pool.get('ir.model.data')
         act_obj = self.pool.get('ir.actions.act_window')
         action_xmlid = ('connector_qoqa', 'action_qoqa_backend_oauth')
@@ -104,6 +112,10 @@ class qoqa_backend_oauth(orm.TransientModel):
         return action
 
     def access_token(self, cr, uid, ids, context=None):
+        """ Request the access tokens from the OAuth API
+
+        Second part of the process.
+        """
         if isinstance(ids, (list, tuple)):
             assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
             ids = ids[0]

@@ -41,135 +41,51 @@ Feature: Configure the connector's backend
       | validate_invoice | True        |
 
   @sale_payment_methods_ch
-  Given I need a "payment.method" with oid: scenario.payment_method_postfinance
+  Scenario Outline: Create the automatic payment methods for CH
+  Given I need a "payment.method" with oid: <oid>
     And having:
       | key                 | value                                                |
-      | name                | Postfinance (CH)                                     |
+      | name                | <name> (CH)                                          |
       | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
       | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_postfinance                 |
-  Given I need a "payment.method" with oid: scenario.payment_method_visa_ch
-    And having:
-      | key                 | value                                                |
-      | name                | Visa (CH)                                            |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_visa_ch                     |
-  Given I need a "payment.method" with oid: scenario.payment_method_mastercard_ch
-    And having:
-      | key                 | value                                                |
-      | name                | Mastercard (CH)                                      |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_mastercard_ch               |
-  Given I need a "payment.method" with oid: scenario.payment_method_paypal_ch
-    And having:
-      | key                 | value                                                |
-      | name                | Paypal (CH)                                          |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_paypal_ch                   |
-  Given I need a "payment.method" with oid: scenario.payment_method_swissbilling
-    And having:
-      | key                 | value                                                |
-      | name                | Swissbilling (paiement par facture) (CH)             |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_swissbilling                |
+      | journal_id          | <journal_id>                                         |
 
-  @sale_payment_methods_ch_old
-  Given I need a "payment.method" with oid: scenario.payment_method_swikey_ch_old
-    And having:
-      | key                 | value                                                |
-      | name                | Swikey (CH) - plus utilisé                           |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_swikey_old                  |
-  Given I need a "payment.method" with oid: scenario.payment_method_visa_postfinance_ch_old
-    And having:
-      | key                 | value                                                |
-      | name                | Postfinance (CH) - plus utilisé                      |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_postfinance_old             |
-  Given I need a "payment.method" with oid: scenario.payment_method_mastercard_ch_old
-    And having:
-      | key                 | value                                                |
-      | name                | Mastercard (CH) - plus utilisé                       |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_mastercard_ch_old           |
-  Given I need a "payment.method" with oid: scenario.payment_method_visa_ch_old
-    And having:
-      | key                 | value                                                |
-      | name                | Visa (CH) - plus utilisé                             |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_visa_ch_old                 |
+    Examples: Payment Methods
+      | oid                                   | name                                | journal_id                             |
+      | scenario.payment_method_postfinance   | Postfinance                         | by oid: scenario.journal_postfinance   |
+      | scenario.payment_method_visa_ch       | Visa                                | by oid: scenario.journal_visa_ch       |
+      | scenario.payment_method_mastercard_ch | Mastercard                          | by oid: scenario.journal_mastercard_ch |
+      | scenario.payment_method_paypal_ch     | Paypal                              | by oid: scenario.journal_paypal_ch     |
+      | scenario.payment_method_swissbilling  | Swissbilling (paiement par facture) | by oid: scenario.journal_swissbilling  |
+
+    Examples: Payment Methods (unused now but kept for the history)
+      | oid                                        | name                       | journal_id                                 |
+      | scenario.payment_method_swikey_ch_old      | Swikey - plus utilisé      | by oid: scenario.journal_swikey_old        |
+      | scenario.payment_method_postfinance_ch_old | Postfinance - plus utilisé | by oid: scenario.journal_postfinance_old   |
+      | scenario.payment_method_mastercard_ch_old  | Mastercard - plus utilisé  | by oid: scenario.journal_mastercard_ch_old |
+      | scenario.payment_method_visa_ch_old        | Visa - plus utilisé        | by oid: scenario.journal_visa_ch_old       |
 
   @sale_payment_methods_fr
-  Given I need a "payment.method" with oid: scenario.payment_method_carte_bleue
+  Scenario Outline: Create the automatic payment methods for FR
+  Given I need a "payment.method" with oid: <oid>
     And having:
       | key                 | value                                                |
-      | name                | Carte Bleue Visa (FR)                                |
+      | name                | <name> (FR)                                          |
       | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
       | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_carte_bleue                 |
-  Given I need a "payment.method" with oid: scenario.payment_method_visa_fr
-    And having:
-      | key                 | value                                                |
-      | name                | Visa (FR)                                            |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_visa_fr                     |
-  Given I need a "payment.method" with oid: scenario.payment_method_mastercard_fr
-    And having:
-      | key                 | value                                                |
-      | name                | Mastercard (FR)                                      |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_mastercard_fr               |
-  Given I need a "payment.method" with oid: scenario.payment_method_paiement_3x_fr
-    And having:
-      | key                 | value                                                |
-      | name                | Paiement 3x (FR)                                     |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_paiement_3x                 |
-  Given I need a "payment.method" with oid: scenario.payment_method_paypal_fr
-    And having:
-      | key                 | value                                                |
-      | name                | Paypal (FR)                                          |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_paypal_fr                   |
+      | journal_id          | <journal_id>                                         |
 
-  @sale_payment_methods_fr_old
-  Given I need a "payment.method" with oid: scenario.payment_method_carte_bleue_fr_old
-    And having:
-      | key                 | value                                                |
-      | name                | Carte Bleue Visa (FR) - plus utilisé                 |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_carte_bleue_old             |
-  Given I need a "payment.method" with oid: scenario.payment_method_visa_fr_old
-    And having:
-      | key                 | value                                                |
-      | name                | Visa (FR) - plus utilisé                             |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_visa_fr_old                 |
-  Given I need a "payment.method" with oid: scenario.payment_method_mastercard_fr_old
-    And having:
-      | key                 | value                                                |
-      | name                | Mastercard (FR) - plus utilisé                       |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_mastercard_fr_old           |
-  Given I need a "payment.method" with oid: scenario.payment_method_sogenactif_fr_old
-    And having:
-      | key                 | value                                                |
-      | name                | ? Sogenactif (FR) - plus utilisé                     |
-      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
-      | import_rule         | paid                                                 |
-      | journal_id          | by oid: scenario.journal_sogenactif_old              |
+    Examples: Payment Methods
+      | oid                                    | name             | journal_id                             |
+      | scenario.payment_method_carte_bleue    | Carte Bleue Visa | by oid: scenario.journal_carte_bleue   |
+      | scenario.payment_method_visa_fr        | Visa             | by oid: scenario.journal_visa_fr       |
+      | scenario.payment_method_mastercard_fr  | Mastercard       | by oid: scenario.journal_mastercard_fr |
+      | scenario.payment_method_paiement_3x_fr | Paiement 3x      | by oid: scenario.journal_paiement_3x   |
+      | scenario.payment_method_paypal_fr      | Paypal           | by oid: scenario.journal_paypal_fr     |
+
+    Examples: Payment Methods (unused now but kept for the history)
+      | oid                                        | name                             | journal_id                                 |
+      | scenario.payment_method_carte_bleue_fr_old | Carte Bleue Visa  - plus utilisé | by oid: scenario.journal_carte_bleue_old   |
+      | scenario.payment_method_visa_fr_old        | Visa  - plus utilisé             | by oid: scenario.journal_visa_fr_old       |
+      | scenario.payment_method_mastercard_fr_old  | Mastercard  - plus utilisé       | by oid: scenario.journal_mastercard_fr_old |
+      | scenario.payment_method_sogenactif_fr_old  | ? Sogenactif  - plus utilisé     | by oid: scenario.journal_sogenactif_old    |

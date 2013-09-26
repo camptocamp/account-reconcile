@@ -51,16 +51,16 @@ Feature: Configure the CH's accounting
     Then I save it
 
     Examples: Bank Journals
-      | oid                           | name         | code  |
-      | scenario.journal_postfinance  | Postfinance  | POSTF |
-      | scenario.journal_visa         | Visa         | VISA  |
-      | scenario.journal_mastercard   | Mastercard   | MASTR |
-      | scenario.journal_paypal       | Paypal       | PAYPA |
-      | scenario.journal_swissbilling | Swissbilling | SWISS |
+      | oid                            | name         | code  |
+      | scenario.journal_postfinance   | Postfinance  | POSTF |
+      | scenario.journal_visa_ch       | Visa         | VISA  |
+      | scenario.journal_mastercard_ch | Mastercard   | MASTR |
+      | scenario.journal_paypal_ch     | Paypal       | PAYPA |
+      | scenario.journal_swissbilling  | Swissbilling | SWISS |
 
     Examples: Bank Journals (unused - for historic)
-      | oid                              | name                      | code  |
-      | scenario.journal_swikey_old      | Swikey - plus utilisé      | OLDSW |
-      | scenario.journal_postfinance_old | Postfinance - plus utilisé | OLDPF |
-      | scenario.journal_mastercard_old  | Mastercard - plus utilisé  | OLDMS |
-      | scenario.journal_visa_old        | Visa - plus utilisé        | OLDVI |
+      | oid                                | name                       | code  |
+      | scenario.journal_swikey_old        | Swikey - plus utilisé      | OLDSW |
+      | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |
+      | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |
+      | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |

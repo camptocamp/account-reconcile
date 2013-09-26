@@ -54,6 +54,7 @@ Feature: Parameter the new database
    Given I install the following language :
       | lang  |
       | fr_FR |
+      | de_DE |
    Then the language should be available
     Given I find a "res.lang" with code: en_US
     And having:
@@ -63,6 +64,11 @@ Feature: Parameter the new database
     And having:
          | key      | value  |
          | grouping | [3, 0] |
+    Given I find a "res.lang" with code: de_DE
+    And having:
+         | key      | value  |
+         | grouping | [3, 0] |
+
 
   @company
   Scenario: Configure main partner and company

@@ -24,11 +24,15 @@ from contextlib import contextmanager
 from functools import partial
 
 
-def get_qoqa_response(responses, url):
+def get_qoqa_response(responses, url, *args, **kwargs):
     if not url in responses:
         raise Exception('Unhandled request: %s' % url)
     response = mock.Mock()
     response.content = responses[url]
+    response.status_code = 200
+    response.reason = 'OK'
+    response.url = url
+    response.request.method = 'GET'
     return response
 
 

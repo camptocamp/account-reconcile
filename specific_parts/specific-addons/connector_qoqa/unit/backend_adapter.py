@@ -22,7 +22,7 @@
 import json
 import logging
 import requests
-from requests_oauthlib import OAuth1Session
+from requests_oauthlib import OAuth1
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import (NetworkRetryableError,
                                                 RetryableJobError)
@@ -38,31 +38,29 @@ class QoQaClient(object):
         if not base_url.endswith('/'):
             base_url += '/'
         self.base_url = base_url
-        self.client_key = client_key
-        self.client_secret = client_secret
-        self.access_token = access_token
-        self.access_token_secret = access_token_secret
         self.debug = debug
+        self._client_key = client_key
+        self._client_secret = client_secret
+        self._access_token = access_token
+        self._access_token_secret = access_token_secret
         self._session = None
-
-    @property
-    def session(self):
-        if self._session is None:
-            self._session = OAuth1Session(
-                self.client_key,
-                client_secret=self.client_secret,
-                resource_owner_key=self.access_token,
-                resource_owner_secret=self.access_token_secret)
-        return self._session
+        self._auth = OAuth1(
+            self._client_key,
+            client_secret=self._client_secret,
+            resource_owner_key=self._access_token,
+            resource_owner_secret=self._access_token_secret)
 
     def __getattr__(self, attr):
-        dispatch = getattr(self.session, attr)
+        dispatch = getattr(requests, attr)
+        def with_auth(*args, **kwargs):
+            kwargs['auth'] = self._auth
+            return dispatch(*args, **kwargs)
         if self.debug:
             def with_debug(*args, **kwargs):
                 kwargs['verify'] = False
-                return dispatch(*args, **kwargs)
+                return with_auth(*args, **kwargs)
             return with_debug
-        return dispatch
+        return with_auth
 
 
 class QoQaAdapter(CRUDAdapter):

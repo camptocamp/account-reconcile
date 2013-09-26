@@ -51,6 +51,17 @@ class QoQaClient(object):
             resource_owner_secret=self._access_token_secret)
 
     def __getattr__(self, attr):
+        """ Forward attributes to ``requests``.
+
+        This allows to call a ``post`` or ``get`` directly
+        on a ``QoQaClient`` instance.
+
+        It automatically adds the ``auth`` keyword argument
+        to the request with the OAuth1 tokens.
+
+        When the debug mode is activated, it disables the check
+        on the SSL certificat.
+        """
         dispatch = getattr(requests, attr)
         def with_auth(*args, **kwargs):
             kwargs['auth'] = self._auth

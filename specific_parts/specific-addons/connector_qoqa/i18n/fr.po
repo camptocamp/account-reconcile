@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 15:24+0000\n"
-"PO-Revision-Date: 2013-09-26 15:24+0000\n"
+"POT-Creation-Date: 2013-09-26 15:27+0000\n"
+"PO-Revision-Date: 2013-09-26 15:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,64 +19,64 @@ msgstr ""
 #: code:addons/connector_qoqa/unit/delete_synchronizer.py:37
 #, python-format
 msgid "Record %s deleted on QoQa"
-msgstr ""
+msgstr "Enregistrement %s supprimé sur QoQa"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,client_key:0
 #: field:qoqa.backend.oauth,client_key:0
 msgid "Client Key"
-msgstr ""
+msgstr "Client Key"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmer"
 
 #. module: connector_qoqa
 #: field:qoqa.shop,openerp_id:0
 msgid "Sale Shop"
-msgstr ""
+msgstr "Magasin"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,access_token:0
 msgid "OAuth Token"
-msgstr ""
+msgstr "Token OAuth"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,version:0
 msgid "API Version"
-msgstr ""
+msgstr "Version de l'API"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
 msgid "Check Connection"
-msgstr ""
+msgstr "Contrôler la connexion"
 
 #. module: connector_qoqa
 #: field:qoqa.binding,sync_date:0
 #: field:qoqa.shop,sync_date:0
 msgid "Last synchronization date"
-msgstr ""
+msgstr "Dernière date de synchronisation"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "Request a token"
-msgstr ""
+msgstr "Récupérer un token"
 
 #. module: connector_qoqa
 #: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_backend
 msgid "Backends"
-msgstr ""
+msgstr "Backends"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "Open the link below in a new tab and copy the PIN."
-msgstr ""
+msgstr "Suivre le lien suivant puis copier le PIN."
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
 msgid "Get Authentication Tokens"
-msgstr ""
+msgstr "Récupérer les tokens d'authentification"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_backend
@@ -85,235 +85,236 @@ msgstr ""
 #: field:qoqa.binding,backend_id:0
 #: field:qoqa.shop,backend_id:0
 msgid "QoQa Backend"
-msgstr ""
+msgstr "QoQa Backend"
 
 #. module: connector_qoqa
 #: help:qoqa.backend,default_lang_id:0
 #: help:sale.shop,lang_id:0
 msgid "If a default language is selected, the records will be imported in the translation of this language.\n"
 "Note that a similar configuration exists for each shop."
-msgstr ""
+msgstr "If a default language is selected, the records will be imported in the translation of this language.\n"
+"Note that a similar configuration exists for each shop."
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "Get the PIN on this page"
-msgstr ""
+msgstr "Récupérer le PIN sur cette page"
 
 #. module: connector_qoqa
 #: field:qoqa.backend.oauth,pin:0
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_binding
 msgid "QoQa Binding (abstract)"
-msgstr ""
+msgstr "QoQa Binding (abstract)"
 
 #. module: connector_qoqa
 #: field:qoqa.backend.oauth,request_secret:0
 msgid "Request Secret"
-msgstr ""
+msgstr "Request Secret"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "Authenticate with OAuth"
-msgstr ""
+msgstr "Authentification avec OAuth"
 
 #. module: connector_qoqa
 #: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend_oauth
 msgid "QoQa Oauth"
-msgstr ""
+msgstr "QoQa Oauth"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_sale_shop
 msgid "Sales Shop"
-msgstr ""
+msgstr "Magasin"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,access_token_secret:0
 msgid "OAuth Token Secret"
-msgstr ""
+msgstr "Token OAuth Secret"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_store
 msgid "QoQa Store"
-msgstr ""
+msgstr "Boutique QoQa"
 
 #. module: connector_qoqa
 #: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend
 msgid "QoQa Backends"
-msgstr ""
+msgstr "QoQa Backends"
 
 #. module: connector_qoqa
 #: field:sale.shop,qoqa_bind_ids:0
 msgid "QoQa Bindings"
-msgstr ""
+msgstr "Liens QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
 msgid "Main Configuration"
-msgstr ""
+msgstr "Configuration principale"
 
 #. module: connector_qoqa
 #: field:qoqa.backend.oauth,request_key:0
 msgid "Request Key"
-msgstr ""
+msgstr "Request Key"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/export_synchronizer.py:195
 #, python-format
 msgid "Record exported with ID %s on QoQa."
-msgstr ""
+msgstr "Enregistrement exporté sur QoQa avec l'ID %s"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,name:0
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #. module: connector_qoqa
 #: view:qoqa.shop:0
 msgid "Informations"
-msgstr ""
+msgstr "Informations"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,url:0
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_backend_oauth
 msgid "QoQa Backend OAuth Wizard"
-msgstr ""
+msgstr "Wizard OAuth QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Sociétés"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/export_synchronizer.py:184
 #: code:addons/connector_qoqa/unit/export_synchronizer.py:191
 #, python-format
 msgid "Nothing to export."
-msgstr ""
+msgstr "Rien à exporter."
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
 msgid "Synchronize Metadata"
-msgstr ""
+msgstr "Synchroniser les métadonnées"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,default_lang_id:0
 #: field:sale.shop,lang_id:0
 msgid "Default Language"
-msgstr ""
+msgstr "Language par défaut"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/qoqa_model.py:119
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #. module: connector_qoqa
 #: field:qoqa.backend,debug:0
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 #. module: connector_qoqa
 #: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shop
 msgid "Shops"
-msgstr ""
+msgstr "Boutiques"
 
 #. module: connector_qoqa
 #: field:qoqa.backend.oauth,authorize_url:0
 msgid "Authorize URL"
-msgstr ""
+msgstr "Autoriser l'URL"
 
 #. module: connector_qoqa
 #: view:qoqa.shop:0
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/qoqa_model.py:120
 #, python-format
 msgid "Only 1 QoQa configuration is allowed."
-msgstr ""
+msgstr "Une seule configuration QoQa est possible."
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_shop
 #: view:qoqa.shop:0
 msgid "QoQa Shop"
-msgstr ""
+msgstr "Boutique QoQa"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/import_synchronizer.py:148
 #, python-format
 msgid "Already up-to-date."
-msgstr ""
+msgstr "Déjà à jour."
 
 #. module: connector_qoqa
 #: field:qoqa.shop,domain:0
 msgid "Domain"
-msgstr ""
+msgstr "Domaine"
 
 #. module: connector_qoqa
 #: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_root
 #: view:res.company:0
 msgid "QoQa"
-msgstr ""
+msgstr "QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "or"
-msgstr ""
+msgstr "ou"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_connector_qoqa_installed
 msgid "connector_qoqa.installed"
-msgstr ""
+msgstr "connector_qoqa.installed"
 
 #. module: connector_qoqa
 #: field:qoqa.binding,qoqa_id:0
 #: field:qoqa.shop,qoqa_id:0
 #: field:res.company,qoqa_id:0
 msgid "ID on QoQa"
-msgstr ""
+msgstr "ID sur QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
 msgid "API Configuration"
-msgstr ""
+msgstr "API Configuration"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
 msgid "e.g. http://www.qoqa.ch"
-msgstr ""
+msgstr "Par ex. http://www.qoqa.ch"
 
 #. module: connector_qoqa
 #: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_shop
 msgid "QoQa Shops"
-msgstr ""
+msgstr "QoQa Shops"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/import_synchronizer.py:144
 #, python-format
 msgid "Record does no longer exist in QoQa"
-msgstr ""
+msgstr "L'enregistrement n'existe plus sur QoQa."
 
 #. module: connector_qoqa
 #: field:qoqa.backend,client_secret:0
 #: field:qoqa.backend.oauth,client_secret:0
 msgid "Client Secret"
-msgstr ""
+msgstr "Client Secret"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "QoQa OAuth"
-msgstr ""
+msgstr "QoQa OAuth"
 

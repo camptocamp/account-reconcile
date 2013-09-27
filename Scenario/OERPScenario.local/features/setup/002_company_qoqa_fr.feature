@@ -120,3 +120,28 @@ Feature: Configure QoQa.fr
     | company_id | by oid: scenario.qoqa_fr |
     And I create monthly periods on the fiscal year with reference "scenario.fy2013_fr"
     Then I find a "account.fiscalyear" with oid: scenario.fy2013_fr
+
+  @pricelist_fr
+    Scenario: Pricelist for QoQa.fr
+    Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_fr
+    And having:
+    | name                | value                             |
+    | name                | Liste de prix publique            |
+    | type                | sale                              |
+    | company_id          | by oid: scenario.qoqa_fr          |
+    | currency_id         | by oid: base.EUR                  |
+
+    Given I need a "product.pricelist.version" with oid: scenario.pricelist_version_qoqa_fr
+    And having:
+    | name         | value                                           |
+    | name         | Version de la liste de Prix Publique par défaut |
+    | pricelist_id | by oid: scenario.pricelist_qoqa_fr              |
+    | company_id   | by oid: scenario.qoqa_fr                        |
+
+    Given I need a "product.pricelist.item" with oid: scenario.pricelist_item_qoqa_fr
+    And having:
+    | name             | value                                      |
+    | name             | Ligne de list de prix publique par défaut  |
+    | price_version_id | by oid: scenario.pricelist_version_qoqa_fr |
+    | company_id       | by oid: scenario.qoqa_fr                   |
+     And I set selection field "base" with 1

@@ -100,3 +100,11 @@ Feature: Configure QoQa.ch
     | company_id | by oid: scenario.qoqa_ch |
     And I create monthly periods on the fiscal year with reference "scenario.fy2013_ch"
     Then I find a "account.fiscalyear" with oid: scenario.fy2013_ch
+
+  @pricelist_ch
+    Scenario: Pricelist for QoQa.ch
+    Given I find a "product.pricelist" with oid: product.list0
+    And having:
+    | name                | value                             |
+    | company_id          | by oid: scenario.qoqa_ch          |
+    | currency_id         | by oid: base.CHF                  |

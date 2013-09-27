@@ -5,6 +5,8 @@
             <field name="name">QoQa Services</field>
             <field name="url">https://ch.test02.qoqa.com</field>
             <field name="version">v1</field>
+            <field name="default_lang_id" ref="base.lang_en"/>
+            <field name="debug" eval="1"/>
         </record>
     </data>
 </openerp>

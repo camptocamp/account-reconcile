@@ -1,5 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_qoqa_backend","qoqa_backend connector manager","model_qoqa_backend","connector.group_connector_manager",1,1,1,1
-"access_qoqa_store","qoqa_store connector manager","model_qoqa_store","connector.group_connector_manager",1,1,1,1
+"access_qoqa_shop","qoqa_shop connector manager","model_qoqa_shop","connector.group_connector_manager",1,1,1,1
 "access_qoqa_backend_user","qoqa_backend user","model_qoqa_backend","base.group_user",1,0,0,0
-"access_qoqa_store_user","qoqa_store user","model_qoqa_store","base.group_user",1,0,0,0
+"access_qoqa_shop_user","qoqa_shop user","model_qoqa_shop","base.group_user",1,0,0,0

@@ -28,7 +28,6 @@ Feature: Configure the CH's accounting
   #     | reconcile  | True                                          |
   #     | company_id | by oid: scenario.qoqa_ch                      |
   #     | active     | True                                          |
-  #   Then I save it
 
   #   Examples: Bank Accounts
   #     | oid                          | name        | code      |
@@ -48,7 +47,6 @@ Feature: Configure the CH's accounting
       | default_debit_account_id  | by code: 102.02          |
       | default_credit_account_id | by code: 102.02          |
       | allow_date                | false                    |
-    Then I save it
 
     Examples: Bank Journals
       | oid                            | name         | code  |

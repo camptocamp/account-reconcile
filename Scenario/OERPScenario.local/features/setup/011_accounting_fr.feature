@@ -25,7 +25,6 @@ Feature: Configure the FR's accounting
       | default_debit_account_id  | by code: 512102          |
       | default_credit_account_id | by code: 512102          |
       | allow_date                | false                    |
-    Then I save it
 
     Examples: Bank Journals
       | oid                            | name             | code  |

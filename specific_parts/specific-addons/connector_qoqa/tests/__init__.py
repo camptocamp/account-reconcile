@@ -21,6 +21,7 @@
 
 import test_company_binder
 import test_import_metadata
+import test_product_attribute
 
 fast_suite = [
 ]
@@ -28,5 +29,6 @@ fast_suite = [
 checks = [
     test_company_binder,
     test_import_metadata,
+    test_product_attribute,
 ]
 

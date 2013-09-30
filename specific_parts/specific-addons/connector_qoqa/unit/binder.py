@@ -89,7 +89,7 @@ class QoQaDirectBinder(QoQaBinder):
                 self.session.uid,
                 binding_id,
                 {'qoqa_id': str(external_id),
-                 'sync_date': now_fmt},
+                 'qoqa_sync_date': now_fmt},
                 context=context)
 
 
@@ -105,6 +105,8 @@ class QoQaInheritsBinder(QoQaBinder):
     fields belonging to the QoQa instance.
     """
     _model_name = ['qoqa.shop',
+                   'qoqa.product.template',
+                   'qoqa.product.product',
                    ]
 
     def to_openerp(self, external_id, unwrap=False):

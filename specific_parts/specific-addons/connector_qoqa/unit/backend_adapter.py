@@ -119,7 +119,7 @@ class QoQaAdapter(CRUDAdapter):
     def create(self, vals):
         # TODO: check
         url = self.url()
-        response = self.client.post(url, params=vals)
+        response = self.client.post(url, data=vals)
         result = self._handle_response(response)
         return result['data']
 

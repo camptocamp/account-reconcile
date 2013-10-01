@@ -33,9 +33,11 @@ class ProductAttribute(ConnectorUnit):
                    ]
 
     def _get_select_option(self, option, attribute):
+        if not option:
+            return None
         if attribute.relation_model_id:
-            # TODO: get external ID from binding
-            value = option.value_ref
+            binder = self.get_binder_for_model(option._model._name)
+            value = binder.to_backend(option.id, wrap=True)
         else:
             value = option.name
         return value

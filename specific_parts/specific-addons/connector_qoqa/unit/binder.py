@@ -58,10 +58,15 @@ class QoQaDirectBinder(QoQaBinder):
         assert len(binding_ids) == 1, "Several records found: %s" % binding_ids
         return binding_ids[0]
 
-    def to_backend(self, binding_id):
+    def to_backend(self, binding_id, wrap=False):
         """ Give the external ID for an OpenERP ID
 
+        Wrap is not applicable for this binder because the binded record
+        is the same than the binding record.
+
         :param binding_id: OpenERP ID for which we want the external id
+        :param wrap: if True, the value passed in binding_id is the ID of the
+                     binded record, not the binding record.
         :return: backend identifier of the record
         """
         qoqa_record = self.session.read(self.model._name,
@@ -134,12 +139,23 @@ class QoQaInheritsBinder(QoQaBinder):
         else:
             return binding_id
 
-    def to_backend(self, binding_id):
+    def to_backend(self, binding_id, wrap=False):
         """ Give the external ID for an OpenERP ID
 
         :param binding_id: OpenERP ID for which we want the external id
+        :param wrap: if True, the value passed in binding_id is the ID of the
+                     binded record, not the binding record.
         :return: backend identifier of the record
         """
+        if wrap:
+            binding_id = self.session.search(
+                self.model._name,
+                [('openerp_id', '=', binding_id),
+                 ('backend_id', '=', self.backend_id)])
+            if binding_id:
+                binding_id = binding_id[0]
+            else:
+                return None
         qoqa_record = self.session.read(self.model._name,
                                         binding_id,
                                         ['qoqa_id'])
@@ -163,3 +179,68 @@ class QoQaInheritsBinder(QoQaBinder):
             values = {'qoqa_id': str(external_id),
                       'sync_date': now_fmt}
             self.session.write(self.model._name, binding_id, values)
+
+
+class ByAnyFieldBinder(QoQaBinder):
+    """
+    The binding is matched using a field (example: a code).
+
+    There is no synchro, so no ``sync()`` method.
+
+    The ``_matching_field`` should be implemented in sub-classes.
+    """
+    _model_name = None
+    _matching_field = None
+
+    def __init__(self, environment):
+        """
+        :param environment: current environment (backend, session, ...)
+        :type environment: :py:class:`connector.connector.Environment`
+        """
+        super(ByAnyFieldBinder, self).__init__(environment)
+        if self._matching_field is None:
+            raise TypeError('_matching_field not defined')
+
+    def to_openerp(self, external_id, unwrap=False):
+        """ Give the OpenERP ID for an external ID
+
+        :param external_id: external ID for which we want the OpenERP ID
+        :param unwrap: No effect in the direct binding
+        :return: ID of the record in OpenERP
+                 or None if the external_id is not mapped
+        :rtype: int
+        """
+        binding_ids = self.session.search(
+            self.model._name,
+            [(self._matching_field, '=', str(external_id))])
+        if not binding_ids:
+            return None
+        assert len(binding_ids) == 1, "Several records found: %s" % binding_ids
+        return binding_ids[0]
+
+    def to_backend(self, binding_id, wrap=False):
+        """ Give the external ID for an OpenERP ID
+
+        :param binding_id: OpenERP ID for which we want the external id
+        :param wrap: if True, the value passed in binding_id is the ID of the
+                     binded record, not the binding record.
+        :return: backend identifier of the record
+        """
+        qoqa_record = self.session.read(self.model._name,
+                                        binding_id,
+                                        [self._matching_field])
+        assert qoqa_record
+        qoqa_id = qoqa_record[self._matching_field]
+        if not qoqa_id:  # prefer None over False
+            return None
+        return qoqa_id
+
+    def bind(self, external_id, binding_id):
+        """ Create the link between an external ID and an OpenERP ID and
+        update the last synchronization date.
+
+        :param external_id: External ID to bind
+        :param binding_id: OpenERP ID to bind
+        :type binding_id: int
+        """
+        raise NotImplementedError

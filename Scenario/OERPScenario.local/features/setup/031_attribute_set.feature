@@ -34,31 +34,68 @@ Feature: Configure the attribute sets
         | field_description | <descr>                             |
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
+        | required          | <required>                          |
 
   Examples: Template attributes
-      | name       | descr      | type | translate |
-      | brand      | Brand      | char | True      |
-      | highlights | Highlights | text | True      |
+      | name       | descr      | type | translate | required |
+      | brand      | Brand      | char | True      | False    |
+      | highlights | Highlights | text | True      | False    |
 
   Examples: Template attributes for the wine
-      | name         | descr       | type   | translate |
-      | winemaker    | Winemaker   | char   | False     |
-      | appellation  | Appellation | char   | False     |
-      | wine_name    | Wine Name   | char   | False     |
-      | AOC          | Wine Name   | char   | False     |
-      | wine_region  | Region      | char   | False     |
-      | capacity     | Capacity    | char   | False     |
-      | wine_color   | Color       | char   | False     |
-      | wine_type    | Type        | char   | False     |
-      | country      | Country     | select | False     |
+      | name         | descr       | type   | translate | required |
+      | winemaker    | Winemaker   | char   | False     | True     |
+      | appellation  | Appellation | char   | False     | True     |
+      | wine_name    | Wine Name   | char   | False     | False    |
+      | millesime    | Millésime   | char   | False     | False    |
+      | AOC          | AOC         | boolean| False     | False    |
+      | wine_region  | Region      | char   | False     | False    |
+      | capacity     | Capacity    | float  | False     | False    |
+      | wine_color   | Color       | select | False     | True     |
+      | wine_type    | Type        | select | False     | True     |
 
   @country_options
-  Scenario: Create m2o attributes on template
-  Given I find a "attribute.attribute" with oid: scenario.attr_country
+  Scenario: Create the options for the country attribute
+  Given I need a "attribute.attribute" with oid: scenario.attr_country
+    And I set the attribute model to oid: procurement.model_product_template
     And having:
         | key               | value                               |
+        | name              | x_country                           |
+        | field_description | Country                             |
+        | attribute_type    | select                              |
+        | required          | True                                |
+        | relation          | res.country                         |
         | relation_model_id | by oid: base.model_res_country      |
     And I generate the attribute options from the model res.country
+
+  @wine_color_options
+  Scenario Outline: Create the options for the wine_color attribute
+  Given I need a "attribute.option" with oid: scenario.attr_option_wine_color_<oid>
+    And having:
+        | key          | value                            |
+        | name         | <name>                           |
+        | attribute_id | by oid: scenario.attr_wine_color |
+        | sequence     | <sequence>                       |
+
+  Examples: Options
+      | oid   | name  | sequence |
+      | red   | Rouge | 0        |
+      | white | Blanc | 1        |
+      | rose  | Rosé  | 2        |
+
+  @wine_type_options
+  Scenario Outline: Create the options for the wine_type attribute
+  Given I need a "attribute.option" with oid: scenario.attr_option_wine_type_<oid>
+    And having:
+        | key          | value                            |
+        | name         | <name>                           |
+        | attribute_id | by oid: scenario.attr_wine_type  |
+        | sequence     | <sequence>                       |
+
+  Examples: Options
+      | oid      | name     | sequence |
+      | sec      | Sec      | 0        |
+      | mousseux | Mousseux | 1        |
+      | other    | Autre    | 2        |
 
   @variant_attributes
   Scenario Outline: Create attributes for product products

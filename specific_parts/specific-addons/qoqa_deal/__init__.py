@@ -19,8 +19,8 @@
 #
 ##############################################################################
 
-from . import sale_order
 from . import account_invoice
 from . import stock
 from . import qoqa_deal
 from . import qoqa_offer
+from . import sale_order

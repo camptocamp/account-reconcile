@@ -15,7 +15,6 @@
                         domain="[('message_unread', '=', True)]"/>
                     <separator/>
                     <field name="product_tmpl_id"/>
-                    <field name="site"/>
                     <filter icon="terp-document-new"
                         string="Proposal"
                         name="draft"
@@ -40,10 +39,9 @@
                             domain="[]"
                             context="{'group_by': 'state'}"/>
                         <filter string="Day" icon="terp-go-today"
+                            name="groupby_day"
                             domain="[]"
                             context="{'group_by': 'day'}"/>
-                        <filter string="Site" domain="[]"
-                            context="{'group_by': 'site'}"/>
                     </group>
                 </search>
             </field>
@@ -57,7 +55,6 @@
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
-                    <field name="site" invisible="1"/>
                     <field name="day" invisible="1"/>
                     <field name="name"/>
                     <field name="product_tmpl_id"/>
@@ -78,7 +75,6 @@
                 <kanban>
                     <field name="date_begin"/>
                     <field name="date_end"/>
-                    <field name="site"/>
                     <field name="name"/>
                     <field name="image"/>
                     <field name="stock_progress"/>
@@ -189,7 +185,6 @@
                                 <field name="date_begin" class="oe_inline"/> - 
                                 <field name="date_end" class="oe_inline"/>
                             </div>
-                            <field name="site"/>
                         </group>
                         <div class="oe_right oe_button_box" name="buttons">
                         </div>
@@ -246,9 +241,8 @@
             <field name="name">qoqa.deal.calendar</field>
             <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
-                <calendar color="site" date_start="date_begin" date_stop="date_end" string="Planning Deal">
+                <calendar color="name" date_start="date_begin" date_stop="date_end" string="Planning Deal">
                     <field name="name"/>
-                    <field name="site"/>
                 </calendar>
             </field>
         </record>

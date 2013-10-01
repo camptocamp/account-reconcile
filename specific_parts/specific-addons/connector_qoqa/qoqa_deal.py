@@ -19,35 +19,21 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Connector',
- 'version': '0.0.1',
- 'category': 'Connector',
- 'depends': ['connector',
-             'sale',
-             'qoqa_deal',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Connector
-==============
+from openerp.osv import orm, fields
 
-Synchronize OpenERP with the different QoQa Stores
-(qoqa.ch, qwine.ch, qsport.ch, qooking.ch).
 
-""",
- 'images': [],
- 'demo': [],
- 'data': ['data.xml',
-          'wizard/qoqa_backend_oauth_view.xml',
-          'qoqa_model_view.xml',
-          'qoqa_menu.xml',
-          'res_company_view.xml',
-          'product_view.xml',
-          'qoqa_deal_view.xml',
-          'security/ir.model.access.csv',
-          ],
- 'installable': True,
- 'application': True,
-}
+class qoqa_deal(orm.Model):
+    _inherit = 'qoqa.deal'
+
+    _columns = {
+        'qoqa_shop_id': fields.many2one(
+            'qoqa.shop',
+            string='Sell on',
+            required=True),
+        'backend_id': fields.related(
+            'qoqa_shop_id', 'backend_id',
+            type='many2one',
+            relation='qoqa.backend',
+            string='QoQa Backend',
+            readonly=True),
+    }

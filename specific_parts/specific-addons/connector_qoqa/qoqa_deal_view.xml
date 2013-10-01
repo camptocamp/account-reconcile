@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record id="view_sales_deal_filter" model="ir.ui.view">
+            <field name="name">qoqa.deal.list.select</field>
+            <field name="model">qoqa.deal</field>
+            <field name="inherit_id" ref="qoqa_deal.view_sales_deal_filter"/>
+            <field name="arch" type="xml">
+                <field name="product_tmpl_id" position="after">
+                    <field name="qoqa_shop_id"/>
+                </field>
+                <filter name="groupby_day" position="after">
+                    <filter string="QoQa Shop" domain="[]"
+                        name="groupby_qoqa_shop_id"
+                        context="{'group_by': 'qoqa_shop_id'}"/>
+                </filter>
+            </field>
+        </record>
+
+        <record id="view_qoqa_deal_tree" model="ir.ui.view">
+            <field name="name">qoqa.deal.tree</field>
+            <field name="model">qoqa.deal</field>
+            <field name="inherit_id" ref="qoqa_deal.view_qoqa_deal_tree"/>
+            <field name="arch" type="xml">
+                <field name="date_end" position="after">
+                    <field name="qoqa_shop_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_qoqa_deal_form" model="ir.ui.view">
+            <field name="name">qoqa.deal.form</field>
+            <field name="model">qoqa.deal</field>
+            <field name="inherit_id" ref="qoqa_deal.view_qoqa_deal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/group[1]" position="inside">
+                    <field name="qoqa_shop_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_qoqa_deal_kanban" model="ir.ui.view">
+            <field name="name">Planning Kanban</field>
+            <field name="model">qoqa.deal</field>
+            <field name="inherit_id" ref="qoqa_deal.view_qoqa_deal_kanban"/>
+            <field name="arch" type="xml">
+                <field name="date_end" position="after">
+                    <field name="qoqa_shop_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_qoqa_deal_calendar" model="ir.ui.view">
+            <field name="name">qoqa.deal.calendar</field>
+            <field name="model">qoqa.deal</field>
+            <field name="inherit_id" ref="qoqa_deal.view_qoqa_deal_calendar"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="qoqa_shop_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -163,6 +163,10 @@ class qoqa_deal(orm.Model):
             'qoqa.deal.variant',
             'deal_id',
             'Variants'),
+        'offer_ids': fields.one2many(
+            'qoqa.offer',
+            'deal_id',
+            'Offers'),
         'date_begin': fields.datetime(
             'Start Date',
             required=True,
@@ -188,15 +192,6 @@ class qoqa_deal(orm.Model):
             store=True,
             select=1,
             size=32),
-
-        # TODO replace by a m2o to a qoqa.backend
-        'site': fields.selection(
-            [('qoqa', 'QoQa'),
-             ('qwine', 'QWine'),
-             ('qstyle', 'QStyle'),
-             ('qsport', 'QSport')],
-            string='Sell on',
-            required=True),
         'price_sale': fields.float(
             'Sale Price',
             required=True,
@@ -301,8 +296,7 @@ class qoqa_deal(orm.Model):
     def _get_reference(self, cr, uid, context=None):
         """ Generate the reference based on a sequence """
         seq_obj = self.pool.get('ir.sequence')
-        code = 'qoqa.deal'
-        return seq_obj.get(cr, uid, code)
+        return seq_obj.next_by_code(cr, uid, 'qoqa.deal')
 
     def create(self, cr, uid, vals, context=None):
         if (vals.get('name', '/') or '/') == '/':

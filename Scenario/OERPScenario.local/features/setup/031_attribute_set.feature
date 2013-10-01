@@ -46,7 +46,7 @@ Feature: Configure the attribute sets
       | winemaker    | Winemaker   | char   | False     | True     |
       | appellation  | Appellation | char   | False     | True     |
       | wine_name    | Wine Name   | char   | False     | False    |
-      | millesime    | Millésime   | char   | False     | False    |
+      | millesime    | Millesime   | char   | False     | False    |
       | AOC          | AOC         | boolean| False     | False    |
       | wine_region  | Region      | char   | False     | False    |
       | capacity     | Capacity    | float  | False     | False    |
@@ -107,14 +107,15 @@ Feature: Configure the attribute sets
         | field_description | <descr>                             |
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
+        | required          | <required>                          |
 
   Examples: Variant attributes
-      | name             | descr            | type      | translate |
-      | warranty         | Warranty         | char      | True      |
-      | dimension_big    | Dimension big    | float     | True      |
-      | dimension_medium | Dimension medium | float     | False     |
-      | dimension_small  | Dimension small  | float     | False     |
-      | variant_weight   | Variant Weight   | float     | False     |
+      | name             | descr            | type      | translate | required |
+      | warranty         | Warranty         | char      | True      | True     |
+      | dimension_big    | Dimension big    | float     | True      | False    |
+      | dimension_medium | Dimension medium | float     | False     | False    |
+      | dimension_small  | Dimension small  | float     | False     | False    |
+      | variant_weight   | Variant Weight   | float     | False     | False    |
       # warranty will probably change for the RMA
 
   @general
@@ -204,9 +205,10 @@ Feature: Configure the attribute sets
        | winemaker      | 10       |
        | appellation    | 11       |
        | wine_name      | 12       |
-       | AOC            | 13       |
-       | country        | 14       |
-       | wine_region    | 15       |
-       | capacity       | 16       |
-       | wine_color     | 17       |
+       | millesime      | 13       |
+       | AOC            | 14       |
+       | country        | 15       |
+       | wine_region    | 16       |
+       | capacity       | 17       |
+       | wine_color     | 18       |
        | wine_type      | 18       |

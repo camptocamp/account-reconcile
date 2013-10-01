@@ -62,7 +62,7 @@ class qoqa_backend_oauth(orm.TransientModel):
         if not backend_id:
             return res
         backend_obj = self.pool.get('qoqa.backend')
-        backend = self.browse(cr, uid, backend_id, context=context)
+        backend = backend_obj.browse(cr, uid, backend_id, context=context)
         res.update({
             'backend_id': backend_id,
             'client_key': backend.client_key,

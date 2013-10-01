@@ -58,6 +58,19 @@ class qoqa_binding(orm.AbstractModel):
         'qoqa_id': fields.char('ID on QoQa'),
     }
 
+    def _get_default_backend_id(self, cr, uid, context=None):
+        data_obj = self.pool.get('ir.model.data')
+        try:
+            xmlid = ('connector_qoqa', 'qoqa_backend_config')
+            __, backend_id = data_obj.get_object_reference(cr, uid, *xmlid)
+        except ValueError:
+            return False
+        return backend_id
+
+    _defaults = {
+        'backend_id': _get_default_backend_id,
+    }
+
     # the _sql_contraints cannot be there due to this bug:
     # https://bugs.launchpad.net/openobject-server/+bug/1151703
 

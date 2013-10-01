@@ -31,6 +31,7 @@ from . import consumer
 from .backend import qoqa
 from .unit.export_synchronizer import QoQaExporter
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
+from .unit.backend_adapter import QoQaAdapter
 from .product_attribute import ProductAttribute
 
 
@@ -109,14 +110,21 @@ class ProductExporter(QoQaExporter):
         if not template.qoqa_bind_ids:
             with self.session.change_context({'connector_no_export': True}):
                 self.session.create('qoqa.product.template',
-                                    {'backend_id': binding.backend_id,
+                                    {'backend_id': binding.backend_id.id,
                                      'openerp_id': template.id})
-
+        template.refresh()
         for tmpl_bind in template.qoqa_bind_ids:
             if tmpl_bind.qoqa_id:
                 continue
-            exporter = self.get_connector_unit_for_model(QoQaExporter)
+            exporter = self.get_connector_unit_for_model(
+                    QoQaExporter, 'qoqa.product.template')
             exporter.run(tmpl_bind.id)
+
+
+@qoqa
+class QoQaProductAdapter(QoQaAdapter):
+    _model_name = 'qoqa.product.product'
+    _endpoint = 'variant'
 
 
 @qoqa

@@ -102,13 +102,14 @@ class QoQaBaseExporter(ExportSynchronizer):
         self.binding_record = self._get_openerp_data()
 
         self.qoqa_id = self.binder.to_backend(self.binding_id)
-        try:
-            should_import = self._should_import()
-        except IDMissingInBackend:
-            self.qoqa_id = None
-            should_import = False
-        if should_import:
-            self._delay_import()
+        # TODO check if necessary and reimplement
+        # try:
+        #     should_import = self._should_import()
+        # except IDMissingInBackend:
+        #     self.qoqa_id = None
+        #     should_import = False
+        # if should_import:
+        #     self._delay_import()
 
         result = self._run(*args, **kwargs)
 

@@ -31,6 +31,8 @@ from . import consumer
 from .backend import qoqa
 from .unit.export_synchronizer import QoQaExporter
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
+from .unit.backend_adapter import QoQaAdapter
+from .product_attribute import ProductAttribute
 
 
 class qoqa_product_template(orm.Model):
@@ -99,6 +101,12 @@ class TemplateDeleteSynchronizer(QoQaDeleteSynchronizer):
 @qoqa
 class TemplateExporter(QoQaExporter):
     _model_name = ['qoqa.product.template']
+
+
+@qoqa
+class QoQaTemplateAdapter(QoQaAdapter):
+    _model_name = 'qoqa.product.template'
+    _endpoint = 'template'
 
 
 @qoqa

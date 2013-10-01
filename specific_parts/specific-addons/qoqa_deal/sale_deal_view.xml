@@ -3,8 +3,8 @@
     <data>
 
         <record id="view_sales_deal_filter" model="ir.ui.view">
-            <field name="name">sale.deal.list.select</field>
-            <field name="model">sale.deal</field>
+            <field name="name">qoqa.deal.list.select</field>
+            <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
                 <search string="Search Sales Deal">
                     <field name="name" string="Sales Deal"
@@ -49,11 +49,11 @@
             </field>
         </record>
 
-        <record id="view_sale_deal_tree" model="ir.ui.view">
-            <field name="name">sale.deal.tree</field>
-            <field name="model">sale.deal</field>
+        <record id="view_qoqa_deal_tree" model="ir.ui.view">
+            <field name="name">qoqa.deal.tree</field>
+            <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
-                <tree string="Sale Deal" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
+                <tree string="QoQa Deal" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
@@ -71,9 +71,9 @@
 
         <!-- Deal Kanban View  -->
 
-        <record model="ir.ui.view" id="view_sale_deal_kanban">
+        <record model="ir.ui.view" id="view_qoqa_deal_kanban">
             <field name="name">Planning Kanban</field>
-            <field name="model">sale.deal</field>
+            <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
                 <kanban>
                     <field name="date_begin"/>
@@ -121,7 +121,7 @@
                                     <hr/>
                                     <div>
                                         <!--<a type="open">-->
-                                            <img t-att-src="kanban_image('sale.deal', 'image', record.id.value)" class="oe_kanban_image qoqa_deal_image"/>
+                                            <img t-att-src="kanban_image('qoqa.deal', 'image', record.id.value)" class="oe_kanban_image qoqa_deal_image"/>
                                             <ul>
                                                 <li><b><field name="product_tmpl_id"/></b></li>
                                                 <li><field name="currency_id"/> <field name="price_sale"/> ( <field name="currency_id"/> <field name="price_recommended"/> )</li>
@@ -148,9 +148,9 @@
             </field>
         </record>
 
-        <record id="view_sale_deal_form" model="ir.ui.view">
-            <field name="name">sale.deal.form</field>
-            <field name="model">sale.deal</field>
+        <record id="view_qoqa_deal_form" model="ir.ui.view">
+            <field name="name">qoqa.deal.form</field>
+            <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
                 <form string="Planning" version="7.0">
                     <header>
@@ -240,11 +240,11 @@
             </field>
         </record>
 
-        <!-- Sale Deal  Calendar  View -->
+        <!-- QoQa Deal  Calendar  View -->
 
-        <record id="view_sale_deal_calendar" model="ir.ui.view">
-            <field name="name">sale.deal.calendar</field>
-            <field name="model">sale.deal</field>
+        <record id="view_qoqa_deal_calendar" model="ir.ui.view">
+            <field name="name">qoqa.deal.calendar</field>
+            <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
                 <calendar color="site" date_start="date_begin" date_stop="date_end" string="Planning Deal">
                     <field name="name"/>
@@ -256,7 +256,7 @@
         <record id="action_deal" model="ir.actions.act_window">
             <field name="name">Planning</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.deal</field>
+            <field name="res_model">qoqa.deal</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
             <field name="context">{}</field>
@@ -269,7 +269,7 @@
         </record>
 
         <menuitem
-            id="menu_sale_deal"
+            id="menu_qoqa_deal"
             name="Planning"
             parent="base.menu_sales"
             sequence="10" action="action_deal"/>

@@ -27,7 +27,7 @@ class sale_order(orm.Model):
 
     _columns = {
         'deal_id': fields.many2one(
-            'sale.deal',
+            'qoqa.deal',
             string='Deal',
             readonly=True)
     }

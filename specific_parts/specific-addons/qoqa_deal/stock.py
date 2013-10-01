@@ -27,7 +27,7 @@ class stock_picking(orm.Model):
 
     _columns = {
         'deal_id': fields.many2one(
-            'sale.deal',
+            'qoqa.deal',
             string='Deal',
             readonly=True),
     }
@@ -46,7 +46,7 @@ class stock_picking_out(orm.Model):
 
     _columns = {
         'deal_id': fields.many2one(
-            'sale.deal',
+            'qoqa.deal',
             string='Deal',
             readonly=True),
     }

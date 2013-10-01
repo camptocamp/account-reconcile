@@ -16,82 +16,82 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Sales Deal"
 msgstr "Deals"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Planning Deal"
 msgstr "Planning des Deals"
 
 #. module: qoqa_deal
-#: selection:sale.deal,site:0
+#: selection:qoqa.deal,site:0
 msgid "QStyle"
 msgstr ""
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "End"
 msgstr "Fin"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Sales Deal that haven't yet been confirmed"
 msgstr "Deals qui n'ont pas encore été confirmés"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Confirm"
 msgstr "Confirmer"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "days"
 msgstr "jours"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Internal Description"
 msgstr "Description interne"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Delays"
 msgstr "Délais"
 
 #. module: qoqa_deal
-#: selection:sale.deal,shipping_type:0
+#: selection:qoqa.deal,shipping_type:0
 msgid "PostMail CH: SmallSmall"
 msgstr ""
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Site"
 msgstr ""
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Group By..."
 msgstr "Grouper par..."
 
 #. module: qoqa_deal
-#: field:sale.deal,message_summary:0
+#: field:qoqa.deal,message_summary:0
 msgid "Summary"
 msgstr "Résumé"
 
 #. module: qoqa_deal
-#: field:sale.deal,name:0
+#: field:qoqa.deal,name:0
 msgid "Deal Reference"
 msgstr "Référence du Deal"
 
 #. module: qoqa_deal
-#: field:sale.deal,message_follower_ids:0
+#: field:qoqa.deal,message_follower_ids:0
 msgid "Followers"
 msgstr ""
 
 #. module: qoqa_deal
-#: field:sale.deal,sum_stock_sold:0
+#: field:qoqa.deal,sum_stock_sold:0
 msgid "Sold and reserved"
 msgstr "Vendu et réservé"
 
@@ -101,41 +101,41 @@ msgid "Picking List"
 msgstr ""
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Indicators"
 msgstr "Indicateurs"
 
 #. module: qoqa_deal
-#: field:sale.deal,price_observed:0
+#: field:qoqa.deal,price_observed:0
 msgid "Observed Price"
 msgstr "Prix observé"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: selection:sale.deal,state:0
+#: view:qoqa.deal:0
+#: selection:qoqa.deal,state:0
 msgid "Proposal"
 msgstr "Proposition"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: selection:sale.deal,state:0
+#: view:qoqa.deal:0
+#: selection:qoqa.deal,state:0
 msgid "Negociation"
 msgstr "Négociation"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal.variant,stock_residual:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal.variant,stock_residual:0
 msgid "Remaining"
 msgstr "Restant"
 
 #. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_sale_deal_variant
-msgid "Sale Deal Variant"
+#: model:ir.model,name:qoqa_deal.model_qoqa_deal_variant
+msgid "QoQa Deal Variant"
 msgstr "Variante de Deal"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal,sum_stock_available:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal,sum_stock_available:0
 msgid "Available"
 msgstr "Disponible"
 
@@ -152,94 +152,94 @@ msgstr "<p class=\"oe_view_nocontent_create\">\n"
 
 
 #. module: qoqa_deal
-#: field:sale.deal,product_tmpl_id:0
-#: field:sale.deal.variant,product_id:0
+#: field:qoqa.deal,product_tmpl_id:0
+#: field:qoqa.deal.variant,product_id:0
 msgid "Product"
 msgstr "Produit"
 
 #. module: qoqa_deal
-#: field:sale.deal,shipping_type:0
+#: field:qoqa.deal,shipping_type:0
 msgid "Shipping Type"
 msgstr "Type d'expédition"
 
 #. module: qoqa_deal
-#: field:sale.deal,description:0
+#: field:qoqa.deal,description:0
 msgid "Description"
 msgstr "Description"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Start"
 msgstr "Début"
 
 #. module: qoqa_deal
-#: field:sale.deal,currency_id:0
+#: field:qoqa.deal,currency_id:0
 msgid "Currency"
 msgstr "Devise"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal,message_unread:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal,message_unread:0
 msgid "Unread Messages"
 msgstr ""
 
 #. module: qoqa_deal
-#: field:sale.deal,company_id:0
+#: field:qoqa.deal,company_id:0
 msgid "Company"
 msgstr "Société"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid ": Stock (Sold / Available)"
 msgstr "Stock (Vendu / Disponible)"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Stock:"
 msgstr "Stock :"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal.variant,stock_sold:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal.variant,stock_sold:0
 msgid "Sold"
 msgstr "Vendu"
 
 #. module: qoqa_deal
-#: help:sale.deal,shipping_max_delay:0
+#: help:qoqa.deal,shipping_max_delay:0
 msgid "Maximum number of days before the delivery.\n"
 "It can't be more than 10 days."
 msgstr "Nombre maxima de jours avant la livraison.\n"
 "Ne doit pas être au dessus de 10 jours."
 
 #. module: qoqa_deal
-#: field:sale.deal,message_is_follower:0
+#: field:qoqa.deal,message_is_follower:0
 msgid "Is a Follower"
 msgstr ""
 
 #. module: qoqa_deal
-#: field:sale.deal,date_warranty:0
+#: field:qoqa.deal,date_warranty:0
 msgid "Warranty Expiration"
 msgstr "Expiration de la garantie"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal,variant_ids:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal,variant_ids:0
 msgid "Variants"
 msgstr "Variantes"
 
 #. module: qoqa_deal
-#: selection:sale.deal,shipping_type:0
+#: selection:qoqa.deal,shipping_type:0
 msgid "PostLogistics CH: Basic"
 msgstr ""
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal,day:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal,day:0
 msgid "Day"
 msgstr "Jour"
 
 #. module: qoqa_deal
-#: help:sale.deal,image:0
+#: help:qoqa.deal,image:0
 msgid "This field holds the image used as image for the product, limited to 1024x1024px."
 msgstr "Contient le image du produit, limité à 1024x1024px."
 
@@ -249,50 +249,50 @@ msgid "Customer"
 msgstr "Client"
 
 #. module: qoqa_deal
-#: field:sale.deal,date_end:0
+#: field:qoqa.deal,date_end:0
 msgid "End Date"
 msgstr "Date de fin"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Dates"
 msgstr "Dates"
 
 #. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_sale_deal
-#: view:sale.deal:0
-msgid "Sale Deal"
+#: model:ir.model,name:qoqa_deal.model_qoqa_deal
+#: view:qoqa.deal:0
+msgid "QoQa Deal"
 msgstr "Deal"
 
 #. module: qoqa_deal
-#: help:sale.deal,message_ids:0
+#: help:qoqa.deal,message_ids:0
 msgid "Messages and communication history"
 msgstr ""
 
 #. module: qoqa_deal
-#: field:sale.deal,stock_progress:0
-#: field:sale.deal.variant,stock_progress:0
+#: field:qoqa.deal,stock_progress:0
+#: field:qoqa.deal.variant,stock_progress:0
 msgid "Progress"
 msgstr "Progression"
 
 #. module: qoqa_deal
-#: field:sale.deal,message_ids:0
+#: field:qoqa.deal,message_ids:0
 msgid "Messages"
 msgstr ""
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Search Sales Deal"
 msgstr "Rechercher des Deals"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Products"
 msgstr "Produits"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: selection:sale.deal,state:0
+#: view:qoqa.deal:0
+#: selection:qoqa.deal,state:0
 msgid "Planned"
 msgstr "Planifié"
 
@@ -302,51 +302,51 @@ msgid "Create Picking Dispatch"
 msgstr "Créer un Picking Dispatch"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Sales Deals done"
 msgstr "Deals terminés"
 
 #. module: qoqa_deal
-#: selection:sale.deal,site:0
+#: selection:qoqa.deal,site:0
 msgid "QWine"
 msgstr ""
 
 #. module: qoqa_deal
-#: help:sale.deal,message_unread:0
+#: help:qoqa.deal,message_unread:0
 msgid "If checked new messages require your attention."
 msgstr ""
 
 #. module: qoqa_deal
-#: field:sale.deal.variant,stock_available:0
+#: field:qoqa.deal.variant,stock_available:0
 msgid "Quantity on Hand"
 msgstr "Quantité disponible"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal,state:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal,state:0
 #: view:stock.picking.out:0
 msgid "Status"
 msgstr "État"
 
 #. module: qoqa_deal
-#: field:sale.deal,price_recommended:0
+#: field:qoqa.deal,price_recommended:0
 msgid "Recommended Price"
 msgstr "Prix recommandé"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: field:sale.deal.variant,stock_reserved:0
+#: view:qoqa.deal:0
+#: field:qoqa.deal.variant,stock_reserved:0
 msgid "Reserved"
 msgstr "Réservé"
 
 #. module: qoqa_deal
-#: field:sale.deal,site:0
+#: field:qoqa.deal,site:0
 msgid "Sell on"
 msgstr "Vendu sur"
 
 #. module: qoqa_deal
 #: field:account.invoice,deal_id:0
-#: field:sale.deal.variant,deal_id:0
+#: field:qoqa.deal.variant,deal_id:0
 #: view:sale.order:0
 #: field:sale.order,deal_id:0
 #: field:stock.picking,deal_id:0
@@ -356,65 +356,65 @@ msgid "Deal"
 msgstr ""
 
 #. module: qoqa_deal
-#: field:sale.deal.variant,sequence:0
+#: field:qoqa.deal.variant,sequence:0
 msgid "Sequence"
 msgstr "Séquence"
 
 #. module: qoqa_deal
-#: field:sale.deal,price_sale:0
+#: field:qoqa.deal,price_sale:0
 msgid "Sale Price"
 msgstr "Prix de vente"
 
 #. module: qoqa_deal
-#: field:sale.deal,image:0
+#: field:qoqa.deal,image:0
 msgid "Image"
 msgstr "Image"
 
 #. module: qoqa_deal
-#: field:sale.deal,shipping_max_delay:0
+#: field:qoqa.deal,shipping_max_delay:0
 msgid "Ship before (in days)"
 msgstr "Livrer avant (en jours)"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Sales Deals Ready"
 msgstr "Deals prêts"
 
 #. module: qoqa_deal
-#: field:sale.deal,month:0
+#: field:qoqa.deal,month:0
 msgid "Month"
 msgstr "Mois"
 
 #. module: qoqa_deal
-#: field:sale.deal,shipping_costs:0
+#: field:qoqa.deal,shipping_costs:0
 msgid "Shipping Fees"
 msgstr "Frais de livraison"
 
 #. module: qoqa_deal
-#: selection:sale.deal,state:0
+#: selection:qoqa.deal,state:0
 msgid "Canceled"
 msgstr "Annulé"
 
 #. module: qoqa_deal
-#: help:sale.deal,message_summary:0
+#: help:qoqa.deal,message_summary:0
 msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
 msgstr ""
 
 #. module: qoqa_deal
 #: model:ir.actions.act_window,name:qoqa_deal.action_deal
-#: model:ir.ui.menu,name:qoqa_deal.menu_sale_deal
-#: view:sale.deal:0
+#: model:ir.ui.menu,name:qoqa_deal.menu_qoqa_deal
+#: view:qoqa.deal:0
 msgid "Planning"
 msgstr "Planning"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
-#: selection:sale.deal,state:0
+#: view:qoqa.deal:0
+#: selection:qoqa.deal,state:0
 msgid "Done"
 msgstr "Prêt"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Descriptions"
 msgstr "Descriptions"
 
@@ -424,17 +424,17 @@ msgid "Invoice"
 msgstr "Facture"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Cancel"
 msgstr "Annuler"
 
 #. module: qoqa_deal
-#: view:sale.deal:0
+#: view:qoqa.deal:0
 msgid "Close"
 msgstr "Fermer"
 
 #. module: qoqa_deal
-#: field:sale.deal,date_begin:0
+#: field:qoqa.deal,date_begin:0
 msgid "Start Date"
 msgstr "Date de début"
 
@@ -449,12 +449,12 @@ msgid "Delivery Orders"
 msgstr "Bulletins de livraisons"
 
 #. module: qoqa_deal
-#: selection:sale.deal,site:0
+#: selection:qoqa.deal,site:0
 msgid "QoQa"
 msgstr ""
 
 #. module: qoqa_deal
-#: selection:sale.deal,site:0
+#: selection:qoqa.deal,site:0
 msgid "QSport"
 msgstr ""
 

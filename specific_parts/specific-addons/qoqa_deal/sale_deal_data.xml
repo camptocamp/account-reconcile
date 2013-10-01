@@ -3,13 +3,13 @@
     <data noupdate="1">
 
         <record model="ir.sequence.type" id="sequence_type_deal">
-            <field name="name">Sale Deal</field>
-            <field name="code">sale.deal</field>
+            <field name="name">QoQa Deal</field>
+            <field name="code">qoqa.deal</field>
         </record>
 
         <record model="ir.sequence" id="sequence_deal">
-            <field name="name">Sale Deal Sequence</field>
-            <field name="code">sale.deal</field>
+            <field name="name">QoQa Deal Sequence</field>
+            <field name="code">qoqa.deal</field>
             <field name="prefix"></field>
             <field name="padding">0</field>
             <field name="number_increment">1</field>

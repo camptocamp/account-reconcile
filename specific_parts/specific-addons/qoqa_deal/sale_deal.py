@@ -26,9 +26,9 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
 
-class sale_deal_variant(orm.Model):
-    _name = 'sale.deal.variant'
-    _description = 'Sale Deal Variant'
+class qoqa_deal_variant(orm.Model):
+    _name = 'qoqa.deal.variant'
+    _description = 'QoQa Deal Variant'
 
     def _get_stock(self, cr, uid, ids, fields, args, context=None):
         """Get number of products sold, remaining and the progress.
@@ -68,7 +68,7 @@ class sale_deal_variant(orm.Model):
 
     _columns = {
         'deal_id': fields.many2one(
-            'sale.deal',
+            'qoqa.deal',
             string='Deal',
             required=True,
             ondelete='cascade'),
@@ -100,9 +100,9 @@ class sale_deal_variant(orm.Model):
     }
 
 
-class sale_deal(orm.Model):
-    _name = 'sale.deal'
-    _description = 'Sale Deal'
+class qoqa_deal(orm.Model):
+    _name = 'qoqa.deal'
+    _description = 'QoQa Deal'
     _inherit = ['mail.thread']
 
     _order = 'date_begin'
@@ -160,7 +160,7 @@ class sale_deal(orm.Model):
             ondelete='set null',
             select=True),
         'variant_ids': fields.one2many(
-            'sale.deal.variant',
+            'qoqa.deal.variant',
             'deal_id',
             'Variants'),
         'date_begin': fields.datetime(
@@ -290,7 +290,7 @@ class sale_deal(orm.Model):
 
     def _default_company(self, cr, uid, context=None):
         company_obj = self.pool.get('res.company')
-        return company_obj._company_default_get(cr, uid, 'sale.deal', context=context)
+        return company_obj._company_default_get(cr, uid, 'qoqa.deal', context=context)
 
     _defaults = {
         'name': '/',
@@ -301,13 +301,13 @@ class sale_deal(orm.Model):
     def _get_reference(self, cr, uid, context=None):
         """ Generate the reference based on a sequence """
         seq_obj = self.pool.get('ir.sequence')
-        code = 'sale.deal'
+        code = 'qoqa.deal'
         return seq_obj.get(cr, uid, code)
 
     def create(self, cr, uid, vals, context=None):
         if (vals.get('name', '/') or '/') == '/':
             vals['name'] = self._get_reference(cr, uid, context=context)
-        return super(sale_deal, self).create(cr, uid, vals, context=context)
+        return super(qoqa_deal, self).create(cr, uid, vals, context=context)
 
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
@@ -315,7 +315,7 @@ class sale_deal(orm.Model):
         else:
             default = default.copy()
         default['name'] = '/'
-        return super(sale_deal, self).copy_data(
+        return super(qoqa_deal, self).copy_data(
             cr, uid, id, default=default, context=context)
 
     def action_cancel(self, cr, uid, ids, context=None):

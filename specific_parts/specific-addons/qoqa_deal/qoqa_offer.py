@@ -35,7 +35,7 @@ class qoqa_offer(orm.Model):
 
     _columns = {
         'deal_id': fields.many2one(
-            'sale.deal',
+            'qoqa.deal',
             string='Deal',
             required=True),
         'product_tmpl_id': fields.many2one(

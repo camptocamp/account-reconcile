@@ -38,16 +38,16 @@ duration (usually 1 day, but may be a few days).
               'product_variant_simple',  # specific-addons
               'picking_dispatch',  # stock-logistic-flows
               ],
- 'data': ['sale_deal_data.xml',
+ 'data': ['qoqa_deal_data.xml',
           'sale_order_view.xml',
           'account_invoice_view.xml',
           'stock_view.xml',
-          'sale_deal_view.xml',
+          'qoqa_deal_view.xml',
           'security/ir.model.access.csv',
           ],
  'test': [],
  'installable': True,
  'auto_install': False,
  'application': True,
- 'css': ['static/src/css/sale_deal.css'],
+ 'css': ['static/src/css/qoqa_deal.css'],
  }

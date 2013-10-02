@@ -157,9 +157,9 @@ class qoqa_deal_position(orm.Model):
             string='Currency',
             readonly=True),
         # TODO: remove? use vat of product
-        'vat_id': fields.many2one(
+        'tax_id': fields.many2one(
             'account.tax',
-            string='VAT',
+            string='Tax',
             required=True,
             domain="[('type_tax_use', '=', 'sale')]"),
         'lot_size': fields.integer('Lot Size', required=True),
@@ -218,13 +218,32 @@ class qoqa_deal_position(orm.Model):
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
                                  context=None):
-        """ Automatically adds all the variants of the template """
+        """ Automatically adds all the variants of the template and
+        set sensible default values for some fields.
+
+        It does not uses the pricelist to get the price as they are based
+        on the products and not the templates.
+
+        When it defines the tax for the position, it takes the tax configured
+        on the template, but leaves the field empty if the product has several
+        taxes (as of today, only 1 tax is supported on the QoQa backend).
+        """
         res = {'value': {}}
-        product_obj = self.pool.get('product.product')
-        tmpl_variant_ids = product_obj.search(
-            cr, uid,
-            [('product_tmpl_id', '=', product_tmpl_id)],
-            context=context)
-        lines = [{'product_id': variant_id} for variant_id in tmpl_variant_ids]
-        res['value']['variant_ids'] = lines
+        template_obj = self.pool.get('product.template')
+        if not product_tmpl_id:
+            return res
+        template = template_obj.browse(cr, uid, product_tmpl_id,
+                                       context=context)
+        tax_id = False
+        if len(template.taxes_id) == 1:
+            tax_id = template.taxes_id[0].id
+        lines = [{'product_id': variant.id, 'quantity': 1} for
+                 variant in template.variant_ids]
+        values = {
+            'variant_ids': lines,
+            'unit_price': template.list_price,
+            'buy_price': template.standard_price,
+            'tax_id': tax_id,
+        }
+        res['value'] = values
         return res

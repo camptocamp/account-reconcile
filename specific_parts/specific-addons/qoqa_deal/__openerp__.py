@@ -18,17 +18,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'QoQa Deals and Offers',
+{'name' : 'QoQa Deals',
  'version' : '1.0',
  'category': '',
  'description': """
 QoQa Deal
 =========
 
-Adds *Deal* and *Offer* models.
+Adds *Deal* models.
 
-Roughly, an offer has a price and a quantity for a product and variants
-and a deal has a stard and end date and sell one to many offers.
+A Deal is a sell of one to many positions over a given time period.
+A position has, roughly, a price and a quantity for a product template,
+when a product has variants, a position may sell several of them.
 
 """,
  'author' : 'Camptocamp',

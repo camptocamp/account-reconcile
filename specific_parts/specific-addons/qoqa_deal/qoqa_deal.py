@@ -68,7 +68,7 @@ class qoqa_deal(orm.Model):
             required=True,
             track_visibility='onchange'),
         'position_ids': fields.one2many(
-            'qoqa.offer',
+            'qoqa.deal.position',
             'deal_id',
             'Positions'),
         # TODO: add link to main_position_id

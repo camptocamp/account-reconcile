@@ -212,7 +212,7 @@
             <field name="domain">[('state', '!=', 'cancel')]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
-                Click to create a deal in the planning.
+                Click to create a new deal.
               </p>
             </field>
         </record>

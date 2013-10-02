@@ -61,7 +61,7 @@ class qoqa_deal_position_variant(orm.Model):
 
     _columns = {
         'position_id': fields.many2one(
-            'qoqa.offer',
+            'qoqa.deal.position',
             string='Position',
             readonly=True,
             required=True,
@@ -92,9 +92,9 @@ class qoqa_deal_position_variant(orm.Model):
 
 
 # TODO rename to qoqa.deal.position
-class qoqa_offer(orm.Model):
-    _name = 'qoqa.offer'
-    _description = 'QoQa Offer'
+class qoqa_deal_position(orm.Model):
+    _name = 'qoqa.deal.position'
+    _description = 'QoQa Deal Position'
 
     REGULAR_PRICE_TYPE = [('normal', 'Normal Price'),
                           ('no_price', 'No Price'),

@@ -192,8 +192,11 @@ class qoqa_deal_position(orm.Model):
         # TODO: many2one with phrases
         #'buyphrase_id': 
         'order_url': fields.char('Order URL'),
-        'is_net_price': fields.boolean('Is Net Price'),
-
+        'is_net_price': fields.related(
+            'tax_id', 'price_include',
+            type='boolean',
+            string='Tax Included in Price',
+            readonly=True),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',
@@ -229,9 +232,9 @@ class qoqa_deal_position(orm.Model):
         taxes (as of today, only 1 tax is supported on the QoQa backend).
         """
         res = {'value': {}}
-        template_obj = self.pool.get('product.template')
         if not product_tmpl_id:
             return res
+        template_obj = self.pool.get('product.template')
         template = template_obj.browse(cr, uid, product_tmpl_id,
                                        context=context)
         tax_id = False
@@ -246,4 +249,19 @@ class qoqa_deal_position(orm.Model):
             'tax_id': tax_id,
         }
         res['value'] = values
+        return res
+
+    def onchange_tax_id(self, cr, uid, ids, tax_id, context=None):
+        """ Change the is_net_price boolean according to the
+        configuration of the tax.
+
+        This is just for the display as the related is update only on
+        save.
+        """
+        res = {'value': {}}
+        if not tax_id:
+            return res
+        tax_obj = self.pool.get('account.tax')
+        tax = tax_obj.browse(cr, uid, tax_id, context=context)
+        res['value']['is_net_price'] = tax.price_include
         return res

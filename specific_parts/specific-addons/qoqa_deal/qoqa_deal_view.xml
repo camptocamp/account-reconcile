@@ -108,9 +108,13 @@
                             <group name="configuration" string="Configuration">
                                 <label for="date_begin" string="Dates"/>
                                 <div>
-                                    <field name="date_begin" class="oe_inline"/> - 
+                                    <field name="date_begin" class="oe_inline"
+                                        on_change="onchange_date_begin(date_begin, date_end)"
+                                        /> - 
                                     <field name="date_end" class="oe_inline"/>
                                 </div>
+                                <label colspan="4"
+                                    string="Warning: dates are stored in UTC"/>
                                 <field name="shipper_service_id"/>
                                 <field name="carrier_id"/>
                                 <field name="pricelist_id"/>

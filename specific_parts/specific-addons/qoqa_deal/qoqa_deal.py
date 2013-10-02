@@ -21,6 +21,9 @@
 
 from __future__ import division
 import time
+from datetime import datetime, timedelta
+from openerp.tools import (DEFAULT_SERVER_DATETIME_FORMAT,
+                           DEFAULT_SERVER_DATE_FORMAT)
 
 import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
@@ -133,10 +136,22 @@ class qoqa_deal(orm.Model):
         company_obj = self.pool.get('res.company')
         return company_obj._company_default_get(cr, uid, 'qoqa.deal', context=context)
 
+    def _default_date_begin(self, cr, uid, context=None):
+        """ Generate a default begin date for the user.
+
+        Ideally we should be able to configure a timezone on the QoQa shop
+        and to setup the fields to display the timestamps using this TZ.
+        """
+        today_str = fields.date.context_today(self, cr, uid, context=context)
+        today = datetime.strptime(today_str, DEFAULT_SERVER_DATE_FORMAT)
+        timestamp_str = today.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        return timestamp_str
+
     _defaults = {
         'name': '/',
         'state': 'draft',
         'company_id': _default_company,
+        'date_begin': _default_date_begin,
     }
 
     def _get_reference(self, cr, uid, context=None):
@@ -192,3 +207,15 @@ class qoqa_deal(orm.Model):
             ids = self.search(cr, uid, args, limit=limit, context=context)
         result = self.name_get(cr, uid, ids, context=context)
         return result
+
+    def onchange_date_begin(self, cr, uid, ids, date_begin, date_end,
+                            context=None):
+        """ When changing the beginning date, automatically set the
+        end date 24 hours later
+        """
+        if not date_begin or date_end:
+            return {}
+        begin = datetime.strptime(date_begin, DEFAULT_SERVER_DATETIME_FORMAT)
+        end = begin + timedelta(hours=24)
+        end_str = end.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        return {'value': {'date_end': end_str}}

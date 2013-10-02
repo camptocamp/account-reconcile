@@ -40,7 +40,7 @@
         </record>
 
         <record id="view_qoqa_deal_kanban" model="ir.ui.view">
-            <field name="name">Planning Kanban</field>
+            <field name="name">Deals Kanban</field>
             <field name="model">qoqa.deal</field>
             <field name="inherit_id" ref="qoqa_deal.view_qoqa_deal_kanban"/>
             <field name="arch" type="xml">

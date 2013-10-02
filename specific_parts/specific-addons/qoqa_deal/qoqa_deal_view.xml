@@ -69,7 +69,7 @@
         <!-- Deal Kanban View  -->
 
         <record model="ir.ui.view" id="view_qoqa_deal_kanban">
-            <field name="name">Planning Kanban</field>
+            <field name="name">Deals Kanban</field>
             <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
                 <kanban>
@@ -148,7 +148,7 @@
             <field name="name">qoqa.deal.form</field>
             <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
-                <form string="Planning" version="7.0">
+                <form string="Deal" version="7.0">
                     <header>
                         <button name="action_plan" string="Confirm"
                             type="object" class="oe_highlight"
@@ -241,14 +241,14 @@
             <field name="name">qoqa.deal.calendar</field>
             <field name="model">qoqa.deal</field>
             <field name="arch" type="xml">
-                <calendar color="name" date_start="date_begin" date_stop="date_end" string="Planning Deal">
+                <calendar color="name" date_start="date_begin" date_stop="date_end" string="Deals">
                     <field name="name"/>
                 </calendar>
             </field>
         </record>
 
         <record id="action_deal" model="ir.actions.act_window">
-            <field name="name">Planning</field>
+            <field name="name">Deals</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">qoqa.deal</field>
             <field name="view_type">form</field>
@@ -264,7 +264,7 @@
 
         <menuitem
             id="menu_qoqa_deal"
-            name="Planning"
+            name="Deals"
             parent="base.menu_sales"
             sequence="10" action="action_deal"/>
     </data>

@@ -18,16 +18,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'QoQa Deal Planning',
+{'name' : 'QoQa Deals and Offers',
  'version' : '1.0',
  'category': '',
  'description': """
-QoQa Deal Planning
-==================
+QoQa Deal
+=========
 
-Adds a *Deal Planning* model.
-That's a special offer for a product (eventually with variants) for a
-duration (usually 1 day, but may be a few days).
+Adds *Deal* and *Offer* models.
+
+Roughly, an offer has a price and a quantity for a product and variants
+and a deal has a stard and end date and sell one to many offers.
 
 """,
  'author' : 'Camptocamp',

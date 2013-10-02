@@ -26,79 +26,6 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
 
-class qoqa_deal_variant(orm.Model):
-    _name = 'qoqa.deal.variant'
-    _description = 'QoQa Deal Variant'
-
-    def _get_stock(self, cr, uid, ids, fields, args, context=None):
-        """Get number of products sold, remaining and the progress.
-
-        :returns: fields value
-        :rtype: dict
-        """
-        res = {}
-        sale_line_obj = self.pool.get('sale.order.line')
-        for variant in self.browse(cr, uid, ids, context=context):
-            # XXX base search on deal_id
-            product_ids = sale_line_obj.search(
-                cr, uid,
-                [('product_id', '=', variant.product_id.id)],
-                context=context)
-            sold_products = sale_line_obj.browse(cr, uid, product_ids,
-                                                 context=context)
-            num_sold = sum([line.product_uom_qty for line
-                            in sold_products
-                            if line.order_id.state not in ['draft', 'cancel']])
-            residual = (variant.stock_available -
-                        variant.stock_reserved -
-                        num_sold)
-
-            progress = 0.0
-            if variant.stock_available > 0:
-                progress = ((variant.stock_available - residual) /
-                            variant.stock_available) * 100
-
-            res[variant.id] = {
-                'stock_sold': num_sold,
-                'stock_residual': residual,
-                'stock_progress': progress,
-            }
-
-        return res
-
-    _columns = {
-        'deal_id': fields.many2one(
-            'qoqa.deal',
-            string='Deal',
-            required=True,
-            ondelete='cascade'),
-        'product_id': fields.many2one(
-            'product.product',
-            string='Product',
-            required=True,
-            domain="[('product_tmpl_id', '=', product_tmpl_id)]",
-            ondelete='cascade'),
-        'sequence': fields.integer('Sequence'),
-        'stock_available': fields.integer('Quantity on Hand'),
-        'stock_reserved': fields.integer('Reserved'),
-
-        'stock_sold': fields.function(
-            _get_stock,
-            string='Sold',
-            type='integer',
-            multi='stock'),
-        'stock_residual': fields.function(
-            _get_stock,
-            string='Remaining',
-            type='integer',
-            multi='stock'),
-        'stock_progress': fields.function(
-            _get_stock,
-            string='Progress',
-            type='float',
-            multi='stock'),
-    }
-
 
 class qoqa_deal(orm.Model):
     _name = 'qoqa.deal'
@@ -107,31 +34,12 @@ class qoqa_deal(orm.Model):
 
     _order = 'date_begin'
 
-    def _get_stock(self, cr, uid, ids, fields, args, context=None):
-        """Get stock numbers
-
-        :returns: computed values
-        :rtype: dict
-        """
-        res = {}
-
-        for deal in self.browse(cr, uid, ids, context=context):
-            available = 0
-            residual = 0
-            for variant in deal.variant_ids:
-                available += variant.stock_available
-                residual += variant.stock_residual
-
-            progress = 0.0
-            if available > 0:
-                progress = ((available - residual) / available) * 100
-
-            res[deal.id] = {
-                'sum_stock_available': available,
-                'sum_stock_sold': available - residual,
-                'stock_progress': progress,
-            }
-        return res
+    DEAL_STATES = [('draft', 'Proposal'),
+                   ('open', 'Negociation'),
+                   ('planned', 'Planned'),
+                   ('done', 'Done'),
+                   ('cancel', 'Canceled'),
+                   ]
 
     def _day_compute(self, cr, uid, ids, fieldnames, args, context=None):
         res = dict.fromkeys(ids, '')
@@ -150,23 +58,22 @@ class qoqa_deal(orm.Model):
 
     _columns = {
         'name': fields.char('Deal Reference', required=True),
-        'description': fields.text('Description', translate=True),
-        'product_tmpl_id': fields.many2one(
-            'product.template',
-            string='Product',
-            required=True,
+        'title': fields.char('Title', translate=True, required=True),
+        'description': fields.html('Description', translate=True),
+        'note': fields.html('Internal Notes', translate=True),
+        'state': fields.selection(
+            DEAL_STATES,
+            'Status',
             readonly=True,
-            states={'draft': [('readonly', False)]},
-            ondelete='set null',
-            select=True),
-        'variant_ids': fields.one2many(
-            'qoqa.deal.variant',
-            'deal_id',
-            'Variants'),
-        'offer_ids': fields.one2many(
+            required=True,
+            track_visibility='onchange'),
+        'position_ids': fields.one2many(
             'qoqa.offer',
             'deal_id',
-            'Offers'),
+            'Positions'),
+        # TODO: add link to main_position_id
+        # TODO: add related to main_position_id.image
+
         'date_begin': fields.datetime(
             'Start Date',
             required=True,
@@ -192,75 +99,22 @@ class qoqa_deal(orm.Model):
             store=True,
             select=1,
             size=32),
-        'price_sale': fields.float(
-            'Sale Price',
+        'shipper_service_id': fields.many2one(
+            'delivery.service',
+            string='Delivery Service'),
+        'carrier_id': fields.many2one(
+            'delivery.carrier',
+            string='Shipping Method'),
+        'pricelist_id': fields.many2one(
+            'product.pricelist',
+            string='Pricelist',
             required=True,
-            digits_compute=dp.get_precision('Product Price')),
-        'price_recommended': fields.float(
-            'Recommended Price',
-            required=True,
-            digits_compute=dp.get_precision('Product Price')),
-        'price_observed': fields.float(
-            'Observed Price',
-            required=True,
-            digits_compute=dp.get_precision('Product Price')),
-        'shipping_type': fields.selection(
-            [('postmail', 'PostMail CH: SmallSmall'),
-             ('postlogistic', 'PostLogistics CH: Basic')],
-            string='Shipping Type',
-            required=True),
-        'shipping_costs': fields.float(
-            'Shipping Fees',
-            required=True,
-            digits_compute=dp.get_precision('Product Price')),
-        'currency_id': fields.many2one(
-            'res.currency',
-            'Currency',
-            required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]},
-            track_visibility='always'),
-        #'sum_stock_available': fields.integer('Stock disponible', help='Stock reservé chez le fournisseur'),
-        'sum_stock_available': fields.function(
-            _get_stock,
-            string='Available',
-            type='integer',
-            multi='stock'),
-        'sum_stock_sold': fields.function(
-            _get_stock,
-            string='Sold and reserved',
-            type='integer',
-            multi='stock'),
-        # XXX sum of stock of variants
-        #'sum_stock_local': fields.integer('Stock local', help='Stock disponible'),
-        'stock_progress': fields.function(
-            _get_stock,
-            string='Progress',
-            type='float',
-            multi='stock'),
-        # XXX take product image ?
-        'image': fields.binary(
-            "Image",
-            help="This field holds the image used as image for the product, "
-                 "limited to 1024x1024px."),
-        #'image_small': fields.function(_get_image, fnct_inv=_set_image,
-            #string="Small-sized image", type="binary", multi="_get_image",
-            #store={
-                #'product.product': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
-            #},
-            #help="Small-sized image of the product. It is automatically "\
-                 #"resized as a 64x64px image, with aspect ratio preserved. "\
-                 #"Use this field anywhere a small image is required."),
-        'state': fields.selection(
-            [('draft', 'Proposal'),
-             ('open', 'Negociation'),
-             ('planned', 'Planned'),
-             ('done', 'Done'),
-             ('cancel', 'Canceled')],
-            'Status',
-            readonly=True,
-            required=True,
-            track_visibility='onchange'),
+            domain="[('type', '=', 'sale')]",
+            states={'draft': [('readonly', False)]}),
+        'lang_id': fields.many2one(
+            'res.lang',
+            string='Language',
+            states={'draft': [('readonly', False)]}),
         'company_id': fields.many2one(
             'res.company',
             string='Company',
@@ -268,19 +122,11 @@ class qoqa_deal(orm.Model):
             change_default=True,
             readonly=False,
             states={'done': [('readonly', True)]}),
-
+        'qoqa_active': fields.boolean('Active on QoQa'),
         'date_warranty': fields.date(
             'Warranty Expiration',
             readonly=True,
             states={'draft': [('readonly', False)]}),
-
-        # Indicators
-        'shipping_max_delay': fields.integer(
-            'Ship before (in days)',
-            readonly=True,
-            states={'draft': [('readonly', False)]},
-            help="Maximum number of days before the delivery.\n"
-                 "It can't be more than 10 days."),
     }
 
     def _default_company(self, cr, uid, context=None):
@@ -324,34 +170,12 @@ class qoqa_deal(orm.Model):
         self.write(cr, uid, ids, {'state': 'planned'}, context=context)
         return True
 
-    def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
-                                 context=None):
-        """
-        Define the content of variant_ids depending on product_tmpl_id
-
-        We will set automatically the variant if only one exists.
-
-        If we replace a product by another, and if the new one has no variant,
-        we try to keep the data of the stock data of first variant.
-
-        Actually we erase everything if the template has many variants
-        """
-        res = {'value': {}}
-        product_obj = self.pool.get('product.product')
-        tmpl_variant_ids = product_obj.search(
-            cr, uid,
-            [('product_tmpl_id', '=', product_tmpl_id)],
-            context=context)
-        lines = [{'product_id': variant_id} for variant_id in tmpl_variant_ids]
-        res['value']['variant_ids'] = lines
-        return res
-
     def name_get(self, cr, uid, ids, context=None):
         if isinstance(ids, (int, long)):
             ids = [ids]
         res = []
         for deal in self.browse(cr, uid, ids, context=context):
-            name = deal.name + ' - ' + deal.product_tmpl_id.name
+            name = "[%s] %s" % (deal.name, deal.title)
             res.append((deal.id, name))
         return res
 
@@ -359,8 +183,8 @@ class qoqa_deal(orm.Model):
         if not args:
             args = []
         if name:
-            domain = ['|', ('name', operator, name),
-                           ('product_tmpl_id.name', operator, name)]
+            domain = ['|', ('name', '=', name),
+                           ('title', operator, name)]
             ids = self.search(cr, uid,
                               domain + args,
                               limit=limit, context=context)

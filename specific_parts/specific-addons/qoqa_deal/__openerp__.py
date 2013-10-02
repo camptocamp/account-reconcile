@@ -36,6 +36,7 @@ and a deal has a stard and end date and sell one to many offers.
  'website': 'http://www.camptocamp.com/',
  'depends' : ['sale',
               'sale_stock',
+              'delivery',
               'product_variant_simple',  # specific-addons
               'picking_dispatch',  # stock-logistic-flows
               ],

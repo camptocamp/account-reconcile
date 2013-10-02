@@ -18,5 +18,77 @@
             <field name="company_id" eval="False"/>
         </record>
 
+        <record model="delivery.service" id="delivery_service_manualundefined">
+            <field name="name">(manual/undefined)</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_postpac_prisi_std">
+            <field name="name">PostPac PRI+SI Std</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_postpac_prisi_man">
+            <field name="name">PostPac PRI+SI MAN</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_postpac_prisi_sp">
+            <field name="name">PostPac PRI+SI SP</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_amail_b5_0100g_02cm">
+            <field name="name">A-Mail B5 0-100g 0-2cm</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_amail_b5_0100g_25cm">
+            <field name="name">A-Mail B5 0-100g 2-5cm</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_amail_b5_100250g_02cm">
+            <field name="name">A-Mail B5 100-250g 0-2cm</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_amail_b5_100250g_25cm">
+            <field name="name">A-Mail B5 100-250g 2-5cm</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_legacy_fr">
+            <field name="name">Legacy FR</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_wine_transport">
+            <field name="name">Wine Transport</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_vinolog">
+            <field name="name">VinoLog</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_manual_wphone">
+            <field name="name">Manual w/phone</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_standard">
+            <field name="name">Standard</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_standard_wphone">
+            <field name="name">Standard w/phone</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_legacy_qwfr">
+            <field name="name">Legacy QWFR</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_postpac_pri">
+            <field name="name">PostPac PRI</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_so_colissimo">
+            <field name="name">So Colissimo</field>
+        </record>
+
+        <record model="delivery.service" id="delivery_service_client_appointments">
+            <field name="name">Client appointments</field>
+        </record>
+
     </data>
 </openerp>

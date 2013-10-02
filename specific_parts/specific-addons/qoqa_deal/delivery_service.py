@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
+#    Author: Guewen Baconnier
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,21 @@
 #
 ##############################################################################
 
-from . import account_invoice
-from . import stock
-from . import delivery_service
-from . import qoqa_deal
-from . import qoqa_offer
-from . import sale_order
+from openerp.osv import orm, fields
+
+
+class delivery_service(orm.Model):
+    """ A delivery service is sort of type of delivery.
+
+    Examples:
+
+        * A-Mail B5 0-100g 0-2cm
+        * Standard w/phone
+        * So Colissimo
+    """
+    _name = 'delivery.service'
+    _description = 'Delivery Service'
+    _order_by = 'name asc'
+    _columns = {
+        'name': fields.char('Name'),
+    }

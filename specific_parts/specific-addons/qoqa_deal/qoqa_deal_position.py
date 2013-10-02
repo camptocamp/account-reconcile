@@ -72,7 +72,7 @@ class qoqa_deal_position_variant(orm.Model):
             required=True,
             domain="",
             ondelete='restrict'),
-        'quantity': fields.integer('Quantity'),
+        'quantity': fields.integer('Quantity', required=True),
         'stock_sold': fields.function(
             _get_stock,
             string='Sold',

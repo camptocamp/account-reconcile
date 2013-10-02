@@ -132,11 +132,16 @@
                                         <header>
                                             <field name="state" widget="statusbar" invisible="1"/>
                                         </header>
-                                        <group>
-                                            <field name="currency_id" invisible="1"/>
+                                        <div>
+                                            <label for="product_tmpl_id"/>
+                                        </div>
+                                        <h1>
                                             <field name="product_tmpl_id"
                                                 on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
+                                        </h1>
+                                        <group>
                                             <group name="price" string="Prices">
+                                                <field name="currency_id" invisible="1"/>
                                                 <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                 <field name="is_net_price"/>
                                                 <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
@@ -147,33 +152,30 @@
                                                 <field name="vat_id"/>
                                                 <field name="ecotax"/>
                                             </group>
-                                            <group name="stock" string="Stock">
-                                                <field name="lot_size"/>
-                                                <field name="max_sellable"/>
-                                                <field name="stock_bias"/>
+                                            <group>
+                                                <group name="stock" string="Stock" colspan="4">
+                                                    <field name="lot_size"/>
+                                                    <field name="max_sellable"/>
+                                                    <field name="stock_bias"/>
+                                                </group>
+                                                <group name="various" string="Various" colspan="4">
+                                                    <field name="date_delivery"/>
+                                                    <field name="booking_delivery"/>
+                                                    <field name="order_url"/>
+                                                </group>
                                             </group>
-                                            <group name="various" string="Various">
-                                                <field name="date_delivery"/>
-                                                <field name="booking_delivery"/>
-                                                <field name="order_url"/>
-                                            </group>
-                                            <group name="stats" string="Statistics">
-                                                <field name="sum_quantity"/>
-                                                <field name="sum_stock_sold"/>
-                                                <field name="stock_progress"/>
-                                            </group>
-                                            <group colspan="4" name="variant" string="Variants">
-                                                <field name="variant_ids" nolabel="1">
-                                                    <tree string="Variants" editable="bottom">
-                                                        <field name="product_id"
-                                                            domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
-                                                        <field name="quantity"/>
-                                                        <field name="stock_sold"/>
-                                                        <field name="stock_residual"/>
-                                                        <field name="stock_progress"/>
-                                                    </tree>
-                                                </field>
-                                            </group>
+                                        </group>
+                                        <group colspan="4" name="variant" string="Variants">
+                                            <field name="variant_ids" nolabel="1">
+                                                <tree string="Variants" editable="bottom">
+                                                    <field name="product_id"
+                                                        domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
+                                                    <field name="quantity"/>
+                                                    <field name="stock_sold"/>
+                                                    <field name="stock_residual"/>
+                                                    <field name="stock_progress"/>
+                                                </tree>
+                                            </field>
                                         </group>
                                     </form>
                                 </field>

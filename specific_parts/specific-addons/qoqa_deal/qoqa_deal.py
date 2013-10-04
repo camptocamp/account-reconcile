@@ -75,8 +75,8 @@ class qoqa_deal(orm.Model):
         return res
 
     _columns = {
-        'name': fields.char('Deal Reference', required=True),
-        'title': fields.char('Title', translate=True, required=True),
+        'ref': fields.char('Deal Reference', required=True),
+        'name': fields.char('Title', translate=True, required=True),
         'description': fields.html('Description', translate=True),
         'note': fields.html('Internal Notes', translate=True),
         'state': fields.selection(
@@ -179,7 +179,7 @@ class qoqa_deal(orm.Model):
         return timestamp_str
 
     _defaults = {
-        'name': '/',
+        'ref': '/',
         'state': 'draft',
         'company_id': _default_company,
         'date_begin': _default_date_begin,
@@ -191,8 +191,8 @@ class qoqa_deal(orm.Model):
         return seq_obj.next_by_code(cr, uid, 'qoqa.deal')
 
     def create(self, cr, uid, vals, context=None):
-        if (vals.get('name', '/') or '/') == '/':
-            vals['name'] = self._get_reference(cr, uid, context=context)
+        if (vals.get('ref', '/') or '/') == '/':
+            vals['ref'] = self._get_reference(cr, uid, context=context)
         return super(qoqa_deal, self).create(cr, uid, vals, context=context)
 
     def copy_data(self, cr, uid, id, default=None, context=None):
@@ -200,7 +200,7 @@ class qoqa_deal(orm.Model):
             default = {}
         else:
             default = default.copy()
-        default['name'] = '/'
+        default['ref'] = '/'
         return super(qoqa_deal, self).copy_data(
             cr, uid, id, default=default, context=context)
 
@@ -221,7 +221,7 @@ class qoqa_deal(orm.Model):
             ids = [ids]
         res = []
         for deal in self.browse(cr, uid, ids, context=context):
-            name = "[%s] %s" % (deal.name, deal.title)
+            name = "[%s] %s" % (deal.ref, deal.name)
             res.append((deal.id, name))
         return res
 
@@ -229,8 +229,8 @@ class qoqa_deal(orm.Model):
         if not args:
             args = []
         if name:
-            domain = ['|', ('name', '=', name),
-                           ('title', operator, name)]
+            domain = ['|', ('ref', '=', name),
+                           ('name', operator, name)]
             ids = self.search(cr, uid,
                               domain + args,
                               limit=limit, context=context)

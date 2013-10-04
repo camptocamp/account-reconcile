@@ -37,14 +37,8 @@ class qoqa_backend_oauth(orm.TransientModel):
         'backend_id': fields.many2one('qoqa.backend',
                                       'QoQa Backend',
                                       required=True),
-        'client_key': fields.related(
-            'backend_id', 'client_key',
-            type='char',
-            string='Client Key'),
-        'client_secret': fields.related(
-            'backend_id', 'client_secret',
-            type='char',
-            string='Client Secret'),
+        'client_key': fields.char('Client Key'),
+        'client_secret': fields.char('Client Secret'),
         'pin': fields.char('PIN'),  # OAuth verifier
         'authorize_url': fields.char('Authorize URL', readonly=True),
         'request_key': fields.char('Request Key', readonly=True),
@@ -65,8 +59,10 @@ class qoqa_backend_oauth(orm.TransientModel):
         backend = backend_obj.browse(cr, uid, backend_id, context=context)
         res.update({
             'backend_id': backend_id,
-            'client_key': backend.client_key,
-            'client_secret': backend.client_secret,
+            'client_key': (context.get('oauth_client_key') or
+                           backend.client_key),
+            'client_secret': (context.get('oauth_client_secret') or
+                              backend.client_secret),
             'authorize_url': context.get('oauth_auth_url'),
             'request_key': context.get('oauth_request_key'),
             'request_secret': context.get('oauth_request_secret'),
@@ -94,7 +90,6 @@ class qoqa_backend_oauth(orm.TransientModel):
         request_key = fetch_response.get('oauth_token')
         request_secret = fetch_response.get('oauth_token_secret')
         auth_url = oauth.authorization_url(authorize_url)
-
         # the wizards reopens itself with tokens and url in the context
         # for the second step: request access tokens
         data_obj = self.pool.get('ir.model.data')
@@ -102,7 +97,9 @@ class qoqa_backend_oauth(orm.TransientModel):
         action_xmlid = ('connector_qoqa', 'action_qoqa_backend_oauth')
         __, action_id = data_obj.get_object_reference(cr, uid, *action_xmlid)
         action = act_obj.read(cr, uid, [action_id], context=context)[0]
-        action['context'] = {'oauth_request_key': request_key,
+        action['context'] = {'oauth_client_key': form.client_key,
+                             'oauth_client_secret': form.client_secret,
+                             'oauth_request_key': request_key,
                              'oauth_request_secret': request_secret,
                              'oauth_auth_url': auth_url,
                              'active_id': form.backend_id.id,
@@ -130,6 +127,8 @@ class qoqa_backend_oauth(orm.TransientModel):
         access_token = oauth_tokens.get('oauth_token')
         access_token_secret = oauth_tokens.get('oauth_token_secret')
         form.backend_id.write({
+            'client_key': form.client_key,
+            'client_secret': form.client_secret,
             'access_token': access_token,
             'access_token_secret': access_token_secret,
         })

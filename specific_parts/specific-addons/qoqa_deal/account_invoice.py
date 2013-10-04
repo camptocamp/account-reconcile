@@ -29,5 +29,6 @@ class account_invoice(orm.Model):
         'deal_id': fields.many2one(
             'qoqa.deal',
             string='Deal',
-            readonly=True),
+            readonly=True,
+            ondelete='restrict'),
     }

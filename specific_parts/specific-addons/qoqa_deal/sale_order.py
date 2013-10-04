@@ -29,7 +29,8 @@ class sale_order(orm.Model):
         'deal_id': fields.many2one(
             'qoqa.deal',
             string='Deal',
-            readonly=True)
+            readonly=True,
+            ondelete='restrict')
     }
 
     def _prepare_invoice(self, cr, uid, order, lines, context=None):

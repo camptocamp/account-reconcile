@@ -29,7 +29,8 @@ class stock_picking(orm.Model):
         'deal_id': fields.many2one(
             'qoqa.deal',
             string='Deal',
-            readonly=True),
+            readonly=True,
+            ondelete='restrict'),
     }
 
     def _prepare_invoice(self, cr, uid, picking, partner, inv_type,

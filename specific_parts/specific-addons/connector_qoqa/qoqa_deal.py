@@ -26,10 +26,6 @@ class qoqa_deal(orm.Model):
     _inherit = 'qoqa.deal'
 
     _columns = {
-        'qoqa_shop_id': fields.many2one(
-            'qoqa.shop',
-            string='Sell on',
-            required=True),
         'backend_id': fields.related(
             'qoqa_shop_id', 'backend_id',
             type='many2one',

@@ -45,7 +45,6 @@ Synchronize OpenERP with the different QoQa Stores
           'qoqa_menu.xml',
           'res_company_view.xml',
           'product_view.xml',
-          'qoqa_deal_view.xml',
           'security/ir.model.access.csv',
           ],
  'installable': True,

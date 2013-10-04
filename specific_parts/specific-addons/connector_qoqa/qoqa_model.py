@@ -122,19 +122,27 @@ class qoqa_backend(orm.Model):
 
 
 class qoqa_shop(orm.Model):
-    _name = 'qoqa.shop'
-    _description = 'QoQa Shop'
-    _inherit = 'qoqa.binding'
-    _inherits = {'sale.shop': 'openerp_id'}
+    # model created in 'qoqa_deal'
+    # we can't add an _inherit from qoqa.binding
+    # so we add manually the _columns
+    _inherit = 'qoqa.shop'
 
     _columns = {
-        'openerp_id': fields.many2one(
-            'sale.shop',
-            string='Sale Shop',
+        'backend_id': fields.many2one(
+            'qoqa.backend',
+            'QoQa Backend',
             required=True,
             readonly=True,
-            ondelete='cascade'),
-        'domain': fields.char('Domain', readonly=True),
+            ondelete='restrict'),
+        'qoqa_id': fields.char('ID on QoQa'),
+        'sync_date': fields.datetime('Last synchronization date'),
+        'lang_id': fields.many2one(
+            'res.lang',
+            'Default Language',
+            required=True,
+            help="If a default language is selected, the records "
+                 "will be imported in the translation of this language.\n"
+                 "Note that a similar configuration exists for each shop."),
     }
 
 
@@ -146,13 +154,6 @@ class sale_shop(orm.Model):
             'qoqa.shop', 'openerp_id',
             string='QoQa Bindings',
             readonly=True),
-        'lang_id': fields.many2one(
-            'res.lang',
-            'Default Language',
-            required=True,
-            help="If a default language is selected, the records "
-                 "will be imported in the translation of this language.\n"
-                 "Note that a similar configuration exists for each shop."),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

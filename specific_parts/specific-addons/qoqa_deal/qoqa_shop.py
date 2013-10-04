@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
+#    Author: Guewen Baconnier
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,20 @@
 #
 ##############################################################################
 
-from . import qoqa_shop
-from . import account_invoice
-from . import stock
-from . import delivery_service
-from . import qoqa_deal
-from . import qoqa_deal_position
-from . import sale_order
+from openerp.osv import orm, fields
+
+
+class qoqa_shop(orm.Model):
+    _name = 'qoqa.shop'
+    _description = 'QoQa Shop'
+    # called 'openerp_id' to ease integration with connector
+    _inherits = {'sale.shop': 'openerp_id'}
+
+    _columns = {
+        'openerp_id': fields.many2one(
+            'sale.shop',
+            string='Sale Shop',
+            required=True,
+            readonly=True,
+            ondelete='cascade'),
+    }

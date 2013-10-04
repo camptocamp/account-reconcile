@@ -10,6 +10,7 @@
                     <field name="name" string="Sales Deal"
                         filter_domain="['|', ('name', '=', self),
                                              ('title', 'ilike', self)]"/>
+                    <field name="qoqa_shop_id"/>
                     <filter icon="terp-mail-message-new"
                         string="Unread Messages" name="message_unread"
                         domain="[('message_unread', '=', True)]"/>
@@ -41,6 +42,9 @@
                             name="groupby_day"
                             domain="[]"
                             context="{'group_by': 'day'}"/>
+                        <filter string="QoQa Shop" domain="[]"
+                            name="groupby_qoqa_shop_id"
+                            context="{'group_by': 'qoqa_shop_id'}"/>
                     </group>
                 </search>
             </field>
@@ -54,6 +58,7 @@
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
+                    <field name="qoqa_shop_id"/>
                     <field name="day" invisible="1"/>
                     <field name="name"/>
                     <field name="title"/>
@@ -75,7 +80,7 @@
                     <field name="description"/>
                     <field name="position_ids"/>
                     <field name="pricelist_id"/>
-                    <!-- <field name="qoqa_shop_id"/> -->
+                    <field name="qoqa_shop_id"/>
                     <field name="lang_id"/>
                     <templates>
                         <t t-name="kanban-box">
@@ -93,6 +98,7 @@
                                     </div>
                                     <div>
                                         <ul>
+                                            <li><field name="qoqa_shop_id"/></li>
                                             <li><field name="lang_id"/></li>
                                         </ul>
                                     </div>
@@ -144,6 +150,7 @@
                                 <field name="description" nolabel="1"/>
                             </group>
                             <group name="configuration" string="Configuration">
+                                <field name="qoqa_shop_id"/>
                                 <label for="date_begin" string="Dates"/>
                                 <div>
                                     <field name="date_begin" class="oe_inline"
@@ -243,6 +250,7 @@
             <field name="arch" type="xml">
                 <calendar color="name" date_start="date_begin" date_stop="date_end" string="Deals">
                     <field name="name"/>
+                    <field name="qoqa_shop_id"/>
                 </calendar>
             </field>
         </record>

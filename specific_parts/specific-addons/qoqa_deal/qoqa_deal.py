@@ -85,6 +85,10 @@ class qoqa_deal(orm.Model):
             readonly=True,
             required=True,
             track_visibility='onchange'),
+        'qoqa_shop_id': fields.many2one(
+            'qoqa.shop',
+            string='Sell on',
+            required=True),
         'position_ids': fields.one2many(
             'qoqa.deal.position',
             'deal_id',

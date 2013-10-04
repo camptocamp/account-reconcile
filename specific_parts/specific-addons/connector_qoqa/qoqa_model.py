@@ -139,7 +139,6 @@ class qoqa_shop(orm.Model):
         'lang_id': fields.many2one(
             'res.lang',
             'Default Language',
-            required=True,
             help="If a default language is selected, the records "
                  "will be imported in the translation of this language.\n"
                  "Note that a similar configuration exists for each shop."),

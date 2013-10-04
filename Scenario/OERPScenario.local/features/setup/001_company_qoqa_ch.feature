@@ -108,3 +108,5 @@ Feature: Configure QoQa.ch
     | name                | value                             |
     | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
+
+    # TODO: set price_type to CHF

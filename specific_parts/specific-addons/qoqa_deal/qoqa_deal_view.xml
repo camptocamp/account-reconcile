@@ -66,8 +66,71 @@
         </record>
 
         <!-- Deal Kanban View  -->
-
-        
+        <record model="ir.ui.view" id="view_qoqa_deal_kanban">
+            <field name="name">Deals Kanban</field>
+            <field name="model">qoqa.deal</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="date_begin"/>
+                    <field name="date_end"/>
+                    <field name="name"/>
+                    <field name="title"/>
+                    <field name="description"/>
+                    <field name="position_ids"/>
+                    <field name="pricelist_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_deal oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <h1>
+                                        <!--<a type="open">-->
+                                            [<field name="name"/>]
+                                            <field name="title"/>
+                                        <!--</a>-->
+                                    </h1>
+                                    <h4>
+                                        <!--<a type="open">-->
+                                            <span>
+                                                <div class="qoqa_date_left">
+                                                    <b>Start</b><br />
+                                                    <field name="date_begin"/>
+                                                </div>
+                                                <div class="qoqa_date_right">
+                                                    <b>End</b><br />
+                                                    <field name="date_end"/>
+                                                </div>
+                                            </span>
+                                        <!--</a>-->
+                                    </h4>
+                                    <hr/>
+                                    <div>
+                                        <!--<a type="open">-->
+                                            <!-- <img t-att-src="kanban_image('qoqa.deal', 'image', record.id.value)" class="oe_kanban_image qoqa_deal_image"/> -->
+                                            <!-- <ul> -->
+                                            <!--     <li><b><field name="product_tmpl_id"/></b></li> -->
+                                            <!--     <li><field name="currency_id"/> <field name="price_sale"/> ( <field name="currency_id"/> <field name="price_recommended"/> )</li> -->
+                                            <!-- </ul> -->
+                                        <!--</a>-->
+                                    </div>
+                                    <div>
+                                        <!-- <progress t-att-value="record.stock_progress.raw_value" max="100"/> -->
+                                        <!-- <div name="tags"/> -->
+                                        <!-- <ul> -->
+                                        <!--     <t t-if="record.variant_ids.raw_value.length gt 1"> -->
+                                        <!--         <li t-foreach="record.variant_ids.raw_value" t-as="variant"> -->
+                                        <!--             Variants <b t-esc="variant_index"/>: Stock (Sold / Available) -->
+                                        <!--         </li> -->
+                                        <!--     </t> -->
+                                        <!--     <li>Stock: <field name="sum_stock_sold"/> / <field name="sum_stock_available"/></li> -->
+                                        <!-- </ul> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
 
         <record id="view_qoqa_deal_form" model="ir.ui.view">
             <field name="name">qoqa.deal.form</field>
@@ -212,8 +275,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">qoqa.deal</field>
             <field name="view_type">form</field>
-            <!-- <field name="view_mode">kanban,tree,form,calendar</field> -->
-            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_mode">kanban,tree,form,calendar</field>
             <field name="context">{}</field>
             <field name="domain">[('state', '!=', 'cancel')]</field>
             <field name="help" type="html">

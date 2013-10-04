@@ -29,7 +29,6 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
 
-
 class qoqa_deal(orm.Model):
     _name = 'qoqa.deal'
     _description = 'QoQa Deal'
@@ -59,6 +58,22 @@ class qoqa_deal(orm.Model):
             res[obj.id] = time.strftime('%Y-%m', time.strptime(obj.date_begin, '%Y-%m-%d %H:%M:%S'))
         return res
 
+    def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
+        position_obj = self.pool.get('qoqa.deal.position')
+        res = {}
+        for deal_id in ids:
+            position_ids = position_obj.search(
+                cr, uid,
+                [('deal_id', '=', deal_id)],
+                order='sequence asc',
+                limit=1,
+                context=context)
+            try:
+                res[deal_id] = position_ids[0]
+            except IndexError:
+                res[deal_id] = False
+        return res
+
     _columns = {
         'name': fields.char('Deal Reference', required=True),
         'title': fields.char('Title', translate=True, required=True),
@@ -74,9 +89,21 @@ class qoqa_deal(orm.Model):
             'qoqa.deal.position',
             'deal_id',
             'Positions'),
-        # TODO: add link to main_position_id
-        # TODO: add related to main_position_id.image
-
+        'main_position_id': fields.function(
+            _main_position_id,
+            string='Main Position',
+            type='many2one',
+            relation='qoqa.deal.position'),
+        'image_small': fields.related(
+            'main_position_id', 'image_small',
+            string='Thumbnail',
+            type='binary',
+            readonly=True),
+        'image_medium': fields.related(
+            'main_position_id', 'image_medium',
+            string='Medium-sized Image',
+            type='binary',
+            readonly=True),
         'date_begin': fields.datetime(
             'Start Date',
             required=True,

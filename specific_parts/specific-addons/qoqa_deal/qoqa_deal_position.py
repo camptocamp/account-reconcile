@@ -95,6 +95,7 @@ class qoqa_deal_position_variant(orm.Model):
 class qoqa_deal_position(orm.Model):
     _name = 'qoqa.deal.position'
     _description = 'QoQa Deal Position'
+    _order_by = 'sequence asc'
 
     REGULAR_PRICE_TYPE = [('normal', 'Normal Price'),
                           ('no_price', 'No Price'),
@@ -127,6 +128,21 @@ class qoqa_deal_position(orm.Model):
             }
         return res
 
+    def _get_image(self, cr, uid, ids, fieldnames, args, context=None):
+        res = {}
+        for position in self.browse(cr, uid, ids, context=context):
+            res[position.id] = {}
+            for variant in position.variant_ids:
+                product = variant.product_id
+                small = product.image_small
+                # if we have the small image, we have the medium too
+                # as they are all build from the same image
+                if small:
+                    res[position.id]['image_small'] = small
+                    res[position.id]['image_medium'] = product.image_medium
+                break
+        return res
+
     _columns = {
         'deal_id': fields.many2one(
             'qoqa.deal',
@@ -137,6 +153,18 @@ class qoqa_deal_position(orm.Model):
             'qoqa.deal.position.variant',
             'position_id',
             string='Variants'),
+        'image_small': fields.function(
+            _get_image,
+            string='Thumbnail',
+            type='binary',
+            readonly=True,
+            multi='_get_image'),
+        'image_medium': fields.function(
+            _get_image,
+            string='Medium-sized Image',
+            type='binary',
+            readonly=True,
+            multi='_get_image'),
         'state': fields.related(
             'deal_id', 'state',
             string='State',

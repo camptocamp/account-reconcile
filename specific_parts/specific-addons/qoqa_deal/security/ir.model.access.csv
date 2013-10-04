@@ -1,3 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 access_qoqa_deal,qoqa.deal,model_qoqa_deal,base.group_sale_salesman,1,1,1,1
-access_qoqa_deal_variant,qoqa.deal.variant,model_qoqa_deal_variant,base.group_sale_salesman,1,1,1,1
+access_qoqa_deal_position,qoqa.deal.position,model_qoqa_deal_position,base.group_sale_salesman,1,1,1,1
+access_qoqa_deal_position_variant,qoqa.deal.position.variant,model_qoqa_deal_position_variant,base.group_sale_salesman,1,1,1,1
+access_qoqa_shop_salesman,"qoqa_shop salesman","model_qoqa_shop",base.group_sale_salesman,1,1,1,1

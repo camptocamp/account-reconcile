@@ -19,36 +19,20 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Connector',
- 'version': '0.0.1',
- 'category': 'Connector',
- 'depends': ['connector',
-             'sale',
-             'qoqa_deal',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Connector
-==============
+from openerp.osv import orm, fields
 
-Synchronize OpenERP with the different QoQa Stores
-(qoqa.ch, qwine.ch, qsport.ch, qooking.ch).
 
-""",
- 'images': [],
- 'demo': [],
- 'data': ['data.xml',
-          'wizard/qoqa_backend_oauth_view.xml',
-          'qoqa_model_view.xml',
-          'qoqa_menu.xml',
-          'res_company_view.xml',
-          'product_view.xml',
-          'account_tax_view.xml',
-          'qoqa_buyphrase_view.xml',
-          'security/ir.model.access.csv',
-          ],
- 'installable': True,
- 'application': True,
-}
+class qoqa_buyphrase(orm.Model):
+    _name = 'qoqa.buyphrase'
+    _description = 'QoQa Buyphrase'
+
+    _columns = {
+        'name': fields.char('Phrase',
+                            required=True,
+                            translate=True),
+        'active': fields.boolean('Active'),
+    }
+
+    _defaults = {
+        'active': True,
+    }

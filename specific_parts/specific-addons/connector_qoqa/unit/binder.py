@@ -209,6 +209,10 @@ class ByAnyFieldBinder(QoQaBinder):
     There is no synchro, so no ``sync()`` method.
 
     The ``_matching_field`` should be implemented in sub-classes.
+
+    It assumes that there is only 1 QoQa Backend and therefore it
+    searches for the first record whose field match with the external
+    id.
     """
     _model_name = None
     _matching_field = None

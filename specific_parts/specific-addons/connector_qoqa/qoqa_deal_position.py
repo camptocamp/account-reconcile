@@ -93,16 +93,6 @@ class DealPositionExportMapper(ExportMapper):
               ('stock_bias', 'stock_bias'),
               ('max_sellable', 'max_sellable'),
               ('lot_size', 'lot_size'),
+              ('buyphrase_id', 'buyphrase_id'),
+              ('tax_id', 'tax_id'),
               ]
-
-    @mapping
-    def tax_id(self, record):
-        binder = self.get_binder_for_model('account.tax')
-        qoqa_tax_id = binder.to_backend(record.tax_id.id, wrap=True)
-        assert qoqa_tax_id is not None, (
-            ("Tax %s should have a qoqa_id defined" % record.tax_id.code)
-        )
-        return {'tax_id': qoqa_tax_id}
-
-        # TODO: many2one with phrases
-        #'buyphrase_id': 

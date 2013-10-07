@@ -46,6 +46,7 @@ when a product has variants, a position may sell several of them.
           'account_invoice_view.xml',
           'stock_view.xml',
           'qoqa_deal_view.xml',
+          'qoqa_buyphrase_view.xml',
           'security/ir.model.access.csv',
           ],
  'test': [],

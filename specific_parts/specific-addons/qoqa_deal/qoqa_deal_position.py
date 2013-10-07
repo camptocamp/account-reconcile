@@ -184,7 +184,10 @@ class qoqa_deal_position(orm.Model):
             relation='res.currency',
             string='Currency',
             readonly=True),
-        # TODO: remove? use vat of product
+        # only 1 tax is used on the QoQa backend, so we
+        # have to choose only 1 for the position, the field
+        # will also keep the reference to the historical tax
+        # if the product's taxes change
         'tax_id': fields.many2one(
             'account.tax',
             string='Tax',
@@ -217,8 +220,8 @@ class qoqa_deal_position(orm.Model):
         'ecotax': fields.integer('Ecotax'),
         'date_delivery': fields.date('Delivery Date'),
         'booking_delivery': fields.boolean('Booking Delivery'),
-        # TODO: many2one with phrases
-        #'buyphrase_id': 
+        'buyphrase_id': fields.many2one('qoqa.buyphrase',
+                                        string='Buyphrase'),
         'order_url': fields.char('Order URL'),
         'is_net_price': fields.related(
             'tax_id', 'price_include',

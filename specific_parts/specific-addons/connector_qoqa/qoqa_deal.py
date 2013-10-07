@@ -81,7 +81,7 @@ class DealExportMapper(ExportMapper):
     _model_name = 'qoqa.deal'
 
     direct = [('name', 'title'),
-              ('content', 'content'),
+              ('description', 'content'),
               ('date_begin', 'start_at'),
               ('date_end', 'end_at'),
               ]

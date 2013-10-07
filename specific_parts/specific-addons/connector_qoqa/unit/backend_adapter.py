@@ -109,6 +109,8 @@ class QoQaAdapter(CRUDAdapter):
     def _handle_response(self, response):
         _logger.debug("%s %s returned %s %s", response.request.method,
                       response.url, response.status_code, response.reason)
+        if response.request.method == 'POST':
+            _logger.debug("The POST body was: %s", response.request.body)
         response.raise_for_status()
         try:
             parsed = json.loads(response.content)
@@ -117,9 +119,10 @@ class QoQaAdapter(CRUDAdapter):
         return parsed
 
     def create(self, vals):
-        # TODO: check
         url = self.url()
-        response = self.client.post(url, data=vals)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.post(url, data=json.dumps(vals),
+                                    headers=headers)
         result = self._handle_response(response)
         return result['data']
 

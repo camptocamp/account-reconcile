@@ -60,6 +60,7 @@ class QoQaDirectBinder(QoQaBinder):
     """
     _model_name = ['qoqa.deal',
                    'qoqa.deal.position',
+                   'qoqa.deal.position.variant',
                    ]
     _sync_date_field = 'qoqa_sync_date'
 

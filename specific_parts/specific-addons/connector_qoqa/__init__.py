@@ -13,5 +13,6 @@ from . import res_country
 from . import res_currency
 from . import qoqa_deal
 from . import qoqa_deal_position
+from . import qoqa_deal_position_variant
 from . import qoqa_buyphrase
 from . import wizard

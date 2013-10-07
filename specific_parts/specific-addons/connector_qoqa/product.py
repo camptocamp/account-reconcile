@@ -105,20 +105,8 @@ class ProductExporter(QoQaExporter):
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
         assert self.binding_record
-        binding = self.binding_record
-        template = binding.product_tmpl_id
-        if not template.qoqa_bind_ids:
-            with self.session.change_context({'connector_no_export': True}):
-                self.session.create('qoqa.product.template',
-                                    {'backend_id': binding.backend_id.id,
-                                     'openerp_id': template.id})
-        template.refresh()
-        for tmpl_bind in template.qoqa_bind_ids:
-            if tmpl_bind.qoqa_id:
-                continue
-            exporter = self.get_connector_unit_for_model(
-                    QoQaExporter, 'qoqa.product.template')
-            exporter.run(tmpl_bind.id)
+        self._export_dependency(self.binding_record.product_tmpl_id,
+                                'qoqa.product.template')
 
 
 @qoqa

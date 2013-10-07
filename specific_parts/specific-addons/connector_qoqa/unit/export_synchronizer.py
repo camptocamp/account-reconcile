@@ -136,6 +136,49 @@ class QoQaExporter(QoQaBaseExporter):
         """ Return True if the export can be skipped """
         return False
 
+    def _export_dependency(self, relation, binding_model,
+                           exporter_class=None):
+        """
+        Export a dependency. The exporter class is a subclass of
+        ``QoQaExporter``. If a more precise class need to be defined
+
+        :param relation: record to export if not already exported
+        :type relation: :py:class:`openerp.osv.orm.browse_record`
+        :param binding_model: name of the binding model for the relation
+        :type binding_model: str | unicode
+        :param exporter_cls: :py:class:`openerp.addons.connector.connector.ConnectorUnit`
+                             class or parent class to use for the export.
+                             By default: QoQaExporter
+        :type exporter_cls: :py:class:`openerp.addons.connector.connector.MetaConnectorUnit`
+        """
+        if not relation:
+            return
+        if exporter_class is None:
+            exporter_class = QoQaExporter
+        rel_binder = self.get_binder_for_model(binding_model)
+        # wrap is typically True if the relation is a 'product.product'
+        # record but the binding model is 'qoqa.product.product'
+        wrap = relation._model._name != binding_model
+        # if qoqa_bind_ids does not exist we are typically in a
+        # "direct" binding (the binding record is the same record)
+        if (wrap and hasattr(relation, 'qoqa_bind_ids') and
+                not relation.qoqa_bind_ids):
+            # we are working with a unwrapped record (e.g.
+            # product.template) and the binding does not exist yet.
+            # Example: I created a product.product and its binding
+            # qoqa.product.product, it is exported, but we need to
+            # create the binding for the template.
+            with self.session.change_context({'connector_no_export': True}):
+                self.session.create(binding_model,
+                                    {'backend_id': self.backend_record.id,
+                                     'openerp_id': relation.id})
+
+        relation_qoqa_id = rel_binder.to_backend(relation.id, wrap=wrap)
+        if relation_qoqa_id is None:
+            exporter = self.get_connector_unit_for_model(exporter_class,
+                                                         binding_model)
+            exporter.run(relation.id)
+
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
         return

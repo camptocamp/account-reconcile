@@ -44,6 +44,8 @@ class qoqa_deal(orm.Model):
             relation='qoqa.backend',
             string='QoQa Backend',
             readonly=True),
+        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_sync_date': fields.datetime('Last synchronization date'),
     }
 
 
@@ -69,13 +71,13 @@ class DealExporter(QoQaExporter):
 
 
 @qoqa
-class QoQaDealAdapter(QoQaAdapter):
+class DealAdapter(QoQaAdapter):
     _model_name = 'qoqa.deal'
     _endpoint = 'deal'
 
 
 @qoqa
-class ProductExportMapper(ExportMapper):
+class DealExportMapper(ExportMapper):
     _model_name = 'qoqa.deal'
 
     direct = [('name', 'title'),

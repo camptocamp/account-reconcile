@@ -22,7 +22,6 @@
 import logging
 from datetime import datetime
 from openerp.tools.translate import _
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
@@ -73,12 +72,9 @@ class QoQaImportSynchronizer(ImportSynchronizer):
             return  # no update date on QoQa, always import it.
         if not binding_id:
             return  # it does not exist so it shoud not be skipped
-        binding = self.session.browse(self.model._name, binding_id)
-        sync = binding.sync_date
-        if not sync:
+        sync_date = self.binder.sync_date(binding_id)
+        if not sync_date:
             return
-        fmt = DEFAULT_SERVER_DATETIME_FORMAT
-        sync_date = datetime.strptime(sync, fmt)
         # FIXME: check name of the field
         qoqa_date = datetime.strptime(self.qoqa_record['updated_at'], fmt)
         # if the last synchronization date is greater than the last

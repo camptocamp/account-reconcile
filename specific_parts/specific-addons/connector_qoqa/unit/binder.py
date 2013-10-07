@@ -20,6 +20,7 @@
 ##############################################################################
 
 from datetime import datetime
+from openerp.osv import orm
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import Binder
 from ..backend import qoqa
@@ -28,7 +29,24 @@ from ..backend import qoqa
 class QoQaBinder(Binder):
     """ Generic Binder for QoQa """
 
+    _sync_date_field = None
 
+    def sync_date(self, binding_id):
+        assert self._sync_date_field
+        if isinstance(orm.browse_record):
+            binding = binding_id
+        else:
+            binding = self.session.read(self.model._name,
+                                        binding_id
+                                        [self._sync_date_field])
+        sync_date = binding[self._sync_date_field]
+        if not sync_date:
+            return
+        fmt = DEFAULT_SERVER_DATETIME_FORMAT
+        return datetime.strptime(sync, fmt)
+
+
+@qoqa
 class QoQaDirectBinder(QoQaBinder):
     """
     Bindings are done directly on the model, the ``qoqa_id`` field in
@@ -39,7 +57,9 @@ class QoQaDirectBinder(QoQaBinder):
     is no import of export of the companies, but we need its ID to link
     the ``qoqa.shop`` to the correct company.
     """
-    _model_name = []
+    _model_name = ['qoqa.deal',
+                   ]
+    _sync_date_field = 'qoqa_sync_date'
 
     def to_openerp(self, external_id, unwrap=False):
         """ Give the OpenERP ID for an external ID
@@ -89,13 +109,11 @@ class QoQaDirectBinder(QoQaBinder):
         now_fmt = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         # avoid to trigger the export when we modify the `qoqa_id`
         with self.session.change_context({'connector_no_export': True}):
-            self.environment.model.write(
-                self.session.cr,
-                self.session.uid,
-                binding_id,
-                {'qoqa_id': str(external_id),
-                 'qoqa_sync_date': now_fmt},
-                context=context)
+            self.session.write(
+                    self.model._name,
+                    binding_id,
+                    {'qoqa_id': str(external_id),
+                     self._sync_date_field: now_fmt})
 
 
 @qoqa
@@ -113,6 +131,7 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.product.template',
                    'qoqa.product.product',
                    ]
+    _sync_date_field = 'sync_date'
 
     def to_openerp(self, external_id, unwrap=False):
         """ Give the OpenERP ID for an external ID
@@ -177,7 +196,7 @@ class QoQaInheritsBinder(QoQaBinder):
         # avoid to trigger the export when we modify the `qoqa_id`
         with self.session.change_context({'connector_no_export': True}):
             values = {'qoqa_id': str(external_id),
-                      'sync_date': now_fmt}
+                      self._sync_date_field: now_fmt}
             self.session.write(self.model._name, binding_id, values)
 
 
@@ -243,4 +262,4 @@ class ByAnyFieldBinder(QoQaBinder):
         :param binding_id: OpenERP ID to bind
         :type binding_id: int
         """
-        raise NotImplementedError
+        raise TypeError('This type of binding is not synchronized')

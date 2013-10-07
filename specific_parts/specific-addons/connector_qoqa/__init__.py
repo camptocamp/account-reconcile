@@ -9,5 +9,6 @@ from . import product
 from . import product_template
 from . import product_attribute
 from . import res_country
+from . import res_currency
 from . import qoqa_deal
 from . import wizard

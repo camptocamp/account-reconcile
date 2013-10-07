@@ -52,7 +52,9 @@ class qoqa_deal_position(orm.Model):
 @on_record_create(model_names='qoqa.deal.position')
 @on_record_write(model_names='qoqa.deal.position')
 def delay_export(session, model_name, record_id, fields=None):
-    consumer.delay_export(session, model_name, record_id, fields=fields)
+    # reduce the priority so the deals should be exported before
+    consumer.delay_export(session, model_name, record_id,
+                          fields=fields, priority=15)
 
 @on_record_unlink(model_names='qoqa.deal.position')
 def delay_unlink(session, model_name, record_id):
@@ -68,6 +70,18 @@ class DealPositionDeleteSynchronizer(QoQaDeleteSynchronizer):
 @qoqa
 class DealPositionExporter(QoQaExporter):
     _model_name = ['qoqa.deal.position']
+
+    def _export_dependencies(self):
+        """ Export the dependencies for the record"""
+        assert self.binding_record
+        binding = self.binding_record
+        deal_binder = self.get_binder_for_model('qoqa.deal')
+        deal_id = binding.deal_id.id
+        deal_qoqa_id = deal_binder.to_backend(deal_id)
+        if deal_qoqa_id is None:
+            exporter = self.get_connector_unit_for_model(
+                    QoQaExporter, 'qoqa.deal')
+            exporter.run(deal_id)
 
 
 @qoqa

@@ -29,22 +29,30 @@ from .unit.delete_synchronizer import export_delete_record
 from .connector import get_environment
 
 
-def delay_export(session, model_name, record_id, fields=None):
+def delay_export(session, model_name, record_id, fields=None, **kwargs):
     """ Delay a job which export a binding record.
 
     (A binding record being a ``qoqa.res.partner``,
     ``qoqa.product.product``, ...)
+
+    The additional kwargs are passed to ``delay()``, they can be:
+        ``priority``, ``eta``, ``max_retries``.
     """
     if session.context.get('connector_no_export'):
         return
-    export_record.delay(session, model_name, record_id, fields=fields)
+    export_record.delay(session, model_name, record_id,
+                        fields=fields, **kwargs)
 
 
-def delay_export_all_bindings(session, model_name, record_id, fields=None):
+def delay_export_all_bindings(session, model_name, record_id, fields=None,
+                              **kwargs):
     """ Delay a job which export all the bindings of a record.
 
     In this case, it is called on records of normal models and will delay
     the export for all the bindings.
+
+    The additional kwargs are passed to ``delay()``, they can be:
+        ``priority``, ``eta``, ``max_retries``.
     """
     if session.context.get('connector_no_export'):
         return
@@ -53,13 +61,17 @@ def delay_export_all_bindings(session, model_name, record_id, fields=None):
                           record_id, context=session.context)
     for binding in record.qoqa_bind_ids:
         export_record.delay(session, binding._model._name, binding.id,
-                            fields=fields)
+                            fields=fields, **kwargs)
 
 
-def delay_unlink(session, model_name, record_id):
+def delay_unlink(session, model_name, record_id, **kwargs):
     """ Delay a job which delete a record on QoQa.
 
-    Called on binding records."""
+    Called on binding records.
+
+    The additional kwargs are passed to ``delay()``, they can be:
+        ``priority``, ``eta``, ``max_retries``.
+    """
     model = session.pool.get(model_name)
     record = model.browse(session.cr, session.uid,
                           record_id, context=session.context)
@@ -68,4 +80,4 @@ def delay_unlink(session, model_name, record_id):
     qoqa_id = binder.to_backend(record_id)
     if qoqa_id:
         export_delete_record.delay(session, model_name,
-                                   record.backend_id.id, qoqa_id)
+                                   record.backend_id.id, qoqa_id, **kwargs)

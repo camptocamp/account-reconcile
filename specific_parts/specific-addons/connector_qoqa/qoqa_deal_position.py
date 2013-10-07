@@ -1,0 +1,108 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    Author: Guewen Baconnier
+#    Copyright 2013 Camptocamp SA
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+from openerp.osv import orm, fields
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  changed_by,
+                                                  ExportMapper)
+from openerp.addons.connector.event import (on_record_create,
+                                            on_record_write,
+                                            on_record_unlink,
+                                            )
+from .backend import qoqa
+from . import consumer
+from .unit.export_synchronizer import QoQaExporter
+from .unit.delete_synchronizer import QoQaDeleteSynchronizer
+from .unit.backend_adapter import QoQaAdapter
+
+
+class qoqa_deal_position(orm.Model):
+    _inherit = 'qoqa.deal.position'
+
+    _columns = {
+        'backend_id': fields.related(
+            'deal_id', 'qoqa_shop_id', 'backend_id',
+            type='many2one',
+            relation='qoqa.backend',
+            string='QoQa Backend',
+            readonly=True),
+        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_sync_date': fields.datetime('Last synchronization date'),
+    }
+
+
+@on_record_create(model_names='qoqa.deal.position')
+@on_record_write(model_names='qoqa.deal.position')
+def delay_export(session, model_name, record_id, fields=None):
+    consumer.delay_export(session, model_name, record_id, fields=fields)
+
+@on_record_unlink(model_names='qoqa.deal.position')
+def delay_unlink(session, model_name, record_id):
+    consumer.delay_unlink(session, model_name, record_id)
+
+
+@qoqa
+class DealPositionDeleteSynchronizer(QoQaDeleteSynchronizer):
+    """ Deal deleter for QoQa """
+    _model_name = ['qoqa.deal.position']
+
+
+@qoqa
+class DealPositionExporter(QoQaExporter):
+    _model_name = ['qoqa.deal.position']
+
+
+@qoqa
+class DealPositionAdapter(QoQaAdapter):
+    _model_name = 'qoqa.deal.position'
+    _endpoint = 'offer'
+
+
+@qoqa
+class DealPositionExportMapper(ExportMapper):
+    _model_name = 'qoqa.deal.position'
+
+    direct = [('unit_price', 'unit_price'),
+              ('installment_price', 'installment_price'),
+              ('regular_price', 'regular_price'),
+              ('regular_price_type', 'regular_price_type'),
+              ('buy_price', 'buy_price'),
+              ('top_price', 'top_price'),
+              ('ecotax', 'ecotax'),
+              ('date_delivery', 'date_delivery'),
+              ('booking_delivery', 'booking_delivery'),
+              ('order_url', 'order_url'),
+              ('stock_bias', 'stock_bias'),
+              ('max_sellable', 'max_sellable'),
+              ('lot_size', 'lot_size'),
+              ]
+
+    @mapping
+    def tax_id(self, record):
+        binder = self.get_binder_for_model('account.tax')
+        qoqa_tax_id = binder.to_backend(record.tax_id.id, wrap=True)
+        assert qoqa_tax_id is not None, (
+            ("Tax %s should have a qoqa_id defined" % record.tax_id.code)
+        )
+        return {'tax_id': qoqa_tax_id}
+
+        # TODO: many2one with phrases
+        #'buyphrase_id': 

@@ -46,6 +46,7 @@ class QoQaBinder(Binder):
         return datetime.strptime(sync, fmt)
 
 
+# TODO: seems to be a ByAnyFieldBinder with 'qoqa_id' as matcher
 @qoqa
 class QoQaDirectBinder(QoQaBinder):
     """
@@ -58,6 +59,7 @@ class QoQaDirectBinder(QoQaBinder):
     the ``qoqa.shop`` to the correct company.
     """
     _model_name = ['qoqa.deal',
+                   'qoqa.deal.position',
                    ]
     _sync_date_field = 'qoqa_sync_date'
 

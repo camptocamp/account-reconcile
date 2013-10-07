@@ -245,6 +245,8 @@ class qoqa_deal_position(orm.Model):
     _defaults = {
         'regular_price_type': 'normal',
         'stock_bias': 100,
+        'max_sellable': 3,
+        'lot_size': 1,
     }
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,

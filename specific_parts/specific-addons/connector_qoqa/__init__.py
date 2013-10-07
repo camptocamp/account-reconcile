@@ -8,7 +8,9 @@ from . import res_company
 from . import product
 from . import product_template
 from . import product_attribute
+from . import account_tax
 from . import res_country
 from . import res_currency
 from . import qoqa_deal
+from . import qoqa_deal_position
 from . import wizard

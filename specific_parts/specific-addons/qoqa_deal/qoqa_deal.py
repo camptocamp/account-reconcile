@@ -43,21 +43,6 @@ class qoqa_deal(orm.Model):
                    ('cancel', 'Canceled'),
                    ]
 
-    def _day_compute(self, cr, uid, ids, fieldnames, args, context=None):
-        res = dict.fromkeys(ids, '')
-        for obj in self.browse(cr, uid, ids, context=context):
-            # FIXME use proper methods for dates
-            res[obj.id] = time.strftime('%Y-%m-%d', time.strptime(obj.date_begin, '%Y-%m-%d %H:%M:%S'))
-        return res
-
-    # XXX delete ?
-    def _month_compute(self, cr, uid, ids, fieldnames, args, context=None):
-        res = dict.fromkeys(ids, '')
-        for obj in self.browse(cr, uid, ids, context=context):
-            # FIXME use proper methods for dates
-            res[obj.id] = time.strftime('%Y-%m', time.strptime(obj.date_begin, '%Y-%m-%d %H:%M:%S'))
-        return res
-
     def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
         position_obj = self.pool.get('qoqa.deal.position')
         res = {}
@@ -72,6 +57,34 @@ class qoqa_deal(orm.Model):
                 res[deal_id] = position_ids[0]
             except IndexError:
                 res[deal_id] = False
+        return res
+
+    def _full_dates(self, cr, uid, ids, fieldnames, args, context=None):
+        date_fmt = DEFAULT_SERVER_DATE_FORMAT
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        lang_obj = self.pool['res.lang']
+        lang_ids = lang_obj.search(cr, uid,
+                                   [('code', '=', user.lang)],
+                                   context=context)
+        dfmt = '%Y-%m-%d'
+        tfmt = '%H:%M:%S'
+        if lang_ids:
+            lang = lang_obj.browse(cr, uid, lang_ids[0], context=context)
+            if lang.date_format:
+                dfmt = lang.date_format
+            if lang.time_format:
+                tfmt = lang.time_format
+        fmt = dfmt + ' ' + tfmt
+        res = {}
+        for deal in self.browse(cr, uid, ids, context=context):
+            begin = datetime.strptime(deal.date_begin, date_fmt)
+            begin += timedelta(hours=deal.time_begin)
+            end = datetime.strptime(deal.date_end, date_fmt)
+            end += timedelta(hours=deal.time_end)
+            res[deal.id] = {
+                'datetime_begin': begin.strftime(fmt),
+                'datetime_end': end.strftime(fmt),
+            }
         return res
 
     _columns = {
@@ -108,31 +121,50 @@ class qoqa_deal(orm.Model):
             string='Medium-sized Image',
             type='binary',
             readonly=True),
-        'date_begin': fields.datetime(
+        # date & time are split in 2 fields
+        # because they should not be based on the UTC
+        # if one says that a deal start on 2013-10-07 at 00:00
+        # the QoQa backend expect to receive this date and time
+        # without consideration of the UTC time
+        'date_begin': fields.date(
             'Start Date',
             required=True,
             readonly=True,
             states={'draft': [('readonly', False)]}),
-        'date_end': fields.datetime(
+        'time_begin': fields.float(
+            'Start Time',
+            required=True,
+            readonly=True,
+            states={'draft': [('readonly', False)]}),
+        'date_end': fields.date(
             'End Date',
             required=True,
             readonly=True,
             states={'draft': [('readonly', False)]}),
-
-        'day': fields.function(
-            _day_compute,
+        'time_end': fields.float(
+            'End Time',
+            required=True,
+            readonly=True,
+            states={'draft': [('readonly', False)]}),
+        # for the display on the tree and kanban views
+        'datetime_begin': fields.function(
+            _full_dates,
+            string='Begins at',
+            type='char',
+            multi='_full_dates',
+            readonly=True),
+        'datetime_end': fields.function(
+            _full_dates,
+            string='Ends at',
+            type='char',
+            multi='_full_dates',
+            readonly=True),
+        # for the group by day (group on date_begin gives a month group)
+        'day': fields.related(
+            'date_begin',
             type='char',
             string='Day',
-            store=True,
-            select=1,
-            size=32),
-        'month': fields.function(
-            _month_compute,
-            type='char',
-            string='Month',
-            store=True,
-            select=1,
-            size=32),
+            store=True),
         'shipper_service_id': fields.many2one(
             'delivery.service',
             string='Delivery Service'),
@@ -167,23 +199,31 @@ class qoqa_deal(orm.Model):
         company_obj = self.pool.get('res.company')
         return company_obj._company_default_get(cr, uid, 'qoqa.deal', context=context)
 
-    def _default_date_begin(self, cr, uid, context=None):
-        """ Generate a default begin date for the user.
-
-        Ideally we should be able to configure a timezone on the QoQa shop
-        and to setup the fields to display the timestamps using this TZ.
-        """
-        today_str = fields.date.context_today(self, cr, uid, context=context)
-        today = datetime.strptime(today_str, DEFAULT_SERVER_DATE_FORMAT)
-        timestamp_str = today.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        return timestamp_str
-
     _defaults = {
         'ref': '/',
         'state': 'draft',
         'company_id': _default_company,
-        'date_begin': _default_date_begin,
+        'date_begin': fields.date.context_today,
+        'date_end': fields.date.context_today,
+        'time_begin': 0,  # 00:00
+        'time_end': 23.983,  # 23:59
     }
+
+    def _check_date(self, cr, uid, ids, context=None):
+        date_fmt = DEFAULT_SERVER_DATE_FORMAT
+        for deal in self.browse(cr, uid, ids, context=context):
+            begin = datetime.strptime(deal.date_begin, date_fmt)
+            begin += timedelta(hours=deal.time_begin)
+            end = datetime.strptime(deal.date_end, date_fmt)
+            end += timedelta(hours=deal.time_end)
+            if begin > end:
+                return False
+        return True
+
+    _constraints = [
+        (_check_date, 'The beginning date must be anterior to the ending date',
+         ['date_begin', 'date_end', 'time_begin', 'time_end']),
+    ]
 
     def _get_reference(self, cr, uid, context=None):
         """ Generate the reference based on a sequence """
@@ -239,14 +279,10 @@ class qoqa_deal(orm.Model):
         result = self.name_get(cr, uid, ids, context=context)
         return result
 
-    def onchange_date_begin(self, cr, uid, ids, date_begin, date_end,
-                            context=None):
+    def onchange_date_begin(self, cr, uid, ids, date_begin, context=None):
         """ When changing the beginning date, automatically set the
         end date 24 hours later
         """
-        if not date_begin or date_end:
+        if not date_begin:
             return {}
-        begin = datetime.strptime(date_begin, DEFAULT_SERVER_DATETIME_FORMAT)
-        end = begin + timedelta(hours=24)
-        end_str = end.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        return {'value': {'date_end': end_str}}
+        return {'value': {'date_end': date_begin}}

@@ -10,10 +10,36 @@
                     <field name="name" string="Sales Deal"
                         filter_domain="['|', ('ref', '=', self),
                                              ('name', 'ilike', self)]"/>
-                    <field name="qoqa_shop_id"/>
+                    <field name="qoqa_shop_id" widget="selection"/>
+                    <field name="date_begin"/>
+                    <field name="date_end"/>
                     <filter icon="terp-mail-message-new"
                         string="Unread Messages" name="message_unread"
                         domain="[('message_unread', '=', True)]"/>
+                    <separator/>
+
+                    <filter
+                        string="Within 10 days"
+                        name="in10days"
+                        domain="['|',
+                                 ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                 '|',
+                                 ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                 ]"
+                        help="Deals within 10 days"/>
+                    <filter
+                        string="Within 30 days"
+                        name="in30days"
+                        domain="['|',
+                                 ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
+                                 '|',
+                                 ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
+                                 ]"
+                        help="Deals within 30 days"/>
                     <separator/>
                     <filter icon="terp-document-new"
                         string="Proposal"
@@ -38,6 +64,10 @@
                             icon="terp-stock_effects-object-colorize"
                             domain="[]"
                             context="{'group_by': 'state'}"/>
+                        <filter string="Month" icon="terp-go-today"
+                            name="groupby_date_begin"
+                            domain="[]"
+                            context="{'group_by': 'date_begin'}"/>
                         <filter string="Day" icon="terp-go-today"
                             name="groupby_day"
                             domain="[]"
@@ -56,10 +86,15 @@
             <field name="arch" type="xml">
                 <tree string="QoQa Deal" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
-                    <field name="date_begin"/>
-                    <field name="date_end"/>
-                    <field name="qoqa_shop_id"/>
+                    <field name="date_begin" invisible="1"/>
+                    <field name="time_begin" invisible="1"/>
+                    <field name="date_end" invisible="1"/>
+                    <field name="time_end" invisible="1"/>
                     <field name="day" invisible="1"/>
+                    <field name="datetime_begin"/>
+                    <field name="datetime_end"/>
+                    <field name="qoqa_shop_id"/>
+                    <field name="date_begin" invisible="1"/>
                     <field name="ref"/>
                     <field name="name"/>
                     <field name="state"/>
@@ -75,6 +110,9 @@
                 <kanban default_group_by="state" version="7.0">
                     <field name="date_begin"/>
                     <field name="date_end"/>
+                    <field name="datetime_begin"/>
+                    <field name="datetime_end"/>
+                    <field name="day"/>
                     <field name="ref"/>
                     <field name="name"/>
                     <field name="description"/>
@@ -93,8 +131,8 @@
                                         <b><field name="name"/></b>
                                     </div>
                                     <div class="dates">
-                                        <field name="date_begin"/> →
-                                        <field name="date_end"/>
+                                        <field name="datetime_begin"/>  →
+                                        <field name="datetime_end"/>
                                     </div>
                                     <div>
                                         <ul>
@@ -150,16 +188,14 @@
                                 <field name="description" nolabel="1"/>
                             </group>
                             <group name="configuration" string="Configuration">
-                                <field name="qoqa_shop_id"/>
+                                <field name="qoqa_shop_id" widget="selection"/>
                                 <label for="date_begin" string="Dates"/>
                                 <div>
                                     <field name="date_begin" class="oe_inline"
-                                        on_change="onchange_date_begin(date_begin, date_end)"
-                                        /> - 
-                                    <field name="date_end" class="oe_inline"/>
+                                        on_change="onchange_date_begin(date_begin)"
+                                        /><field name="time_begin" widget="float_time" class="oe_inline"/> - 
+                                    <field name="date_end" class="oe_inline"/><field name="time_end" widget="float_time" class="oe_inline"/>
                                 </div>
-                                <label colspan="4"
-                                    string="Warning: dates are stored in UTC"/>
                                 <field name="shipper_service_id"/>
                                 <field name="carrier_id"/>
                                 <field name="pricelist_id"/>

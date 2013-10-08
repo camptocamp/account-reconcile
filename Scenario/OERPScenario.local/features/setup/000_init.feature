@@ -38,6 +38,8 @@ Feature: Parameter the new database
         | sale_order_webkit              |
         | connector_ecommerce            |
         | connector_qoqa                 |
+        | purchase_landed_costs          |
+        | crm_claim_rma                  |
         | specific_fct                   |
     Then my modules should have been installed and models reloaded
 

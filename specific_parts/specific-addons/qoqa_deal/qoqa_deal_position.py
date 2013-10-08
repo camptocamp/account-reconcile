@@ -131,7 +131,8 @@ class qoqa_deal_position(orm.Model):
     def _get_image(self, cr, uid, ids, fieldnames, args, context=None):
         res = {}
         for position in self.browse(cr, uid, ids, context=context):
-            res[position.id] = {}
+            res[position.id] = {'image_small': False,
+                                'image_medium': False}
             for variant in position.variant_ids:
                 product = variant.product_id
                 small = product.image_small

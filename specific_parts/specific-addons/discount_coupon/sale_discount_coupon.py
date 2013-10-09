@@ -26,6 +26,7 @@ from openerp.osv import orm, fields
 class SaleDiscountCoupon(orm.Model):
 
     _name = 'sale.discount.coupon'
+    _description = "Discount Coupon"
     _inherit = ['mail.thread']
 
     def _get_residual(self, cr, uid, ids, fields, args, context=None):
@@ -38,12 +39,12 @@ class SaleDiscountCoupon(orm.Model):
 
     _columns = {
         'name': fields.char('Code', required=True, readonly=True),
-        'product_id': fields.many2one('product.product', 'Type de bon', required=True, ondelete='cascade', domain=[('is_discount_coupon', '=', True)]),
-        'date_begin': fields.datetime('Date début de validité', required=True),
-        'date_end': fields.datetime('Date de fin de validité', required=True),
-        'amount': fields.float('Montant du bon', required=True, digits_compute= dp.get_precision('Product Price')),
-        'order_line_ids': fields.one2many('sale.order.line', 'coupon_id', 'Historique', readonly=True),
-        'residual': fields.function(_get_residual, string='Solde', type='float'),
+        'product_id': fields.many2one('product.product', 'Coupon type', required=True, ondelete='cascade', domain=[('is_discount_coupon', '=', True)]),
+        'date_begin': fields.datetime('Start of validity date', required=True),
+        'date_end': fields.datetime('End of validity date', required=True),
+        'amount': fields.float('Coupon amount', required=True, digits_compute= dp.get_precision('Product Price')),
+        'order_line_ids': fields.one2many('sale.order.line', 'coupon_id', 'History', readonly=True),
+        'residual': fields.function(_get_residual, string='Residual', type='float'),
         }
 
     _defaults = {

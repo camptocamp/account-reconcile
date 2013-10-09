@@ -122,7 +122,7 @@ class qoqa_backend(orm.Model):
 
 
 class qoqa_shop(orm.Model):
-    # model created in 'qoqa_deal'
+    # model created in 'qoqa_offer'
     # we can't add an _inherit from qoqa.binding
     # so we add manually the _columns
     _inherit = 'qoqa.shop'

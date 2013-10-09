@@ -42,7 +42,7 @@
         <menuitem
             id="menu_qoqa_buyphrase"
             name="Buyphrases"
-            parent="menu_qoqa_deal_config"
+            parent="menu_qoqa_offer_config"
             sequence="10" action="action_qoqa_buyphrase"/>
     </data>
 </openerp>

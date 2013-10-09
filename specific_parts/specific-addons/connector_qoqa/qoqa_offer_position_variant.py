@@ -34,12 +34,12 @@ from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
 
 
-class qoqa_deal(orm.Model):
-    _inherit = 'qoqa.deal'
+class qoqa_offer_position_variant(orm.Model):
+    _inherit = 'qoqa.offer.position.variant'
 
     _columns = {
         'backend_id': fields.related(
-            'qoqa_shop_id', 'backend_id',
+            'position_id', 'offer_id', 'qoqa_shop_id', 'backend_id',
             type='many2one',
             relation='qoqa.backend',
             string='QoQa Backend',
@@ -49,46 +49,48 @@ class qoqa_deal(orm.Model):
     }
 
 
-@on_record_create(model_names='qoqa.deal')
-@on_record_write(model_names='qoqa.deal')
+@on_record_create(model_names='qoqa.offer.position.variant')
+@on_record_write(model_names='qoqa.offer.position.variant')
 def delay_export(session, model_name, record_id, fields=None):
-    consumer.delay_export(session, model_name, record_id, fields=fields)
+    # reduce the priority so the offers and positions should be exported before
+    consumer.delay_export(session, model_name, record_id,
+                          fields=fields, priority=20)
 
-@on_record_unlink(model_names='qoqa.deal')
+
+@on_record_unlink(model_names='qoqa.offer.position.variant')
 def delay_unlink(session, model_name, record_id):
     consumer.delay_unlink(session, model_name, record_id)
 
 
 @qoqa
-class DealDeleteSynchronizer(QoQaDeleteSynchronizer):
-    """ Deal deleter for QoQa """
-    _model_name = ['qoqa.deal']
+class OfferPositionVariantDeleteSynchronizer(QoQaDeleteSynchronizer):
+    """ Offer deleter for QoQa """
+    _model_name = ['qoqa.offer.position.variant']
 
 
 @qoqa
-class DealExporter(QoQaExporter):
-    _model_name = ['qoqa.deal']
+class OfferPositionVariantExporter(QoQaExporter):
+    _model_name = ['qoqa.offer.position.variant']
+
+    def _export_dependencies(self):
+        """ Export the dependencies for the record"""
+        assert self.binding_record
+        binding = self.binding_record
+        self._export_dependency(binding.position_id, 'qoqa.offer.position')
+        self._export_dependency(binding.product_id, 'qoqa.product.product')
 
 
 @qoqa
-class DealAdapter(QoQaAdapter):
-    _model_name = 'qoqa.deal'
-    _endpoint = 'deal'
+class OfferPositionVariantAdapter(QoQaAdapter):
+    _model_name = 'qoqa.offer.position.variant'
+    _endpoint = 'variations'
 
 
 @qoqa
-class DealExportMapper(ExportMapper):
-    _model_name = 'qoqa.deal'
+class OfferPositionVariantExportMapper(ExportMapper):
+    _model_name = 'qoqa.offer.position.variant'
 
-    direct = [('name', 'title'),
-              ('description', 'content'),
-              ('date_begin', 'start_at'),
-              ('date_end', 'end_at'),
+    direct = [('product_id', 'product_id'),
+              ('quantity', 'quantity'),
+              ('position_id', 'position_id'),
               ]
-
-    @mapping
-    def currency(self, record):
-        currency = record.pricelist_id.currency_id
-        binder = self.get_binder_for_model('res.currency')
-        qoqa_ccy_id = binder.to_backend(currency.id, wrap=True)
-        return {'currency': qoqa_ccy_id}

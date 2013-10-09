@@ -2,12 +2,12 @@
 <openerp>
     <data>
 
-        <record id="view_sales_deal_filter" model="ir.ui.view">
-            <field name="name">qoqa.deal.list.select</field>
-            <field name="model">qoqa.deal</field>
+        <record id="view_sales_offer_filter" model="ir.ui.view">
+            <field name="name">qoqa.offer.list.select</field>
+            <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <search string="Search Sales Deal">
-                    <field name="name" string="Sales Deal"
+                <search string="Search Sales Offer">
+                    <field name="name" string="Sales Offer"
                         filter_domain="['|', ('ref', '=', self),
                                              ('name', 'ilike', self)]"/>
                     <field name="qoqa_shop_id" widget="selection"/>
@@ -28,7 +28,7 @@
                                  ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
                                  ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
                                  ]"
-                        help="Deals within 10 days"/>
+                        help="Offers within 10 days"/>
                     <filter
                         string="Within 30 days"
                         name="in30days"
@@ -39,13 +39,13 @@
                                  ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
                                  ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
                                  ]"
-                        help="Deals within 30 days"/>
+                        help="Offers within 30 days"/>
                     <separator/>
                     <filter icon="terp-document-new"
                         string="Proposal"
                         name="draft"
                         domain="[('state', '=', 'draft')]"
-                        help="Sales Deal that haven't yet been confirmed"/>
+                        help="Sales Offer that haven't yet been confirmed"/>
                     <filter icon="terp-check"
                         string="Negociation"
                         name="open"
@@ -53,11 +53,11 @@
                     <filter icon="terp-dolar_ok!"
                         string="Planned"
                         domain="[('state', '=', 'planned')]"
-                        help="Sales Deals Ready"/>
+                        help="Sales Offers Ready"/>
                     <filter icon="terp-dolar_ok!"
                         string="Done"
                         domain="[('state', '=', 'done')]"
-                        help="Sales Deals done"/>
+                        help="Sales Offers done"/>
                     <separator/>
                     <group expand="0" string="Group By...">
                         <filter string="Status"
@@ -80,11 +80,11 @@
             </field>
         </record>
 
-        <record id="view_qoqa_deal_tree" model="ir.ui.view">
-            <field name="name">qoqa.deal.tree</field>
-            <field name="model">qoqa.deal</field>
+        <record id="view_qoqa_offer_tree" model="ir.ui.view">
+            <field name="name">qoqa.offer.tree</field>
+            <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <tree string="QoQa Deal" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
+                <tree string="QoQa Offer" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin" invisible="1"/>
                     <field name="time_begin" invisible="1"/>
@@ -102,10 +102,10 @@
             </field>
         </record>
 
-        <!-- Deal Kanban View  -->
-        <record model="ir.ui.view" id="view_qoqa_deal_kanban">
-            <field name="name">Deals Kanban</field>
-            <field name="model">qoqa.deal</field>
+        <!-- Offer Kanban View  -->
+        <record model="ir.ui.view" id="view_qoqa_offer_kanban">
+            <field name="name">Offers Kanban</field>
+            <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
                 <kanban default_group_by="state" version="7.0">
                     <field name="date_begin"/>
@@ -122,9 +122,9 @@
                     <field name="lang_id"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_deal oe_kanban_global_click">
+                            <div t-attf-class="oe_kanban_card oe_kanban_offer oe_kanban_global_click">
                                 <div class="oe_kanban_content">
-                                    <img t-att-src="kanban_image('qoqa.deal', 'image_small', record.id.value)"
+                                    <img t-att-src="kanban_image('qoqa.offer', 'image_small', record.id.value)"
                                             class="oe_kanban_image"/>
                                     <div class="header">
                                         [<field name="ref"/>]
@@ -149,11 +149,11 @@
             </field>
         </record>
 
-        <record id="view_qoqa_deal_form" model="ir.ui.view">
-            <field name="name">qoqa.deal.form</field>
-            <field name="model">qoqa.deal</field>
+        <record id="view_qoqa_offer_form" model="ir.ui.view">
+            <field name="name">qoqa.offer.form</field>
+            <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <form string="Deal" version="7.0">
+                <form string="Offer" version="7.0">
                     <header>
                         <button name="action_plan" string="Confirm"
                             type="object" class="oe_highlight"
@@ -283,43 +283,43 @@
             </field>
         </record>
 
-        <!-- QoQa Deal  Calendar  View -->
+        <!-- QoQa Offer  Calendar  View -->
 
-        <record id="view_qoqa_deal_calendar" model="ir.ui.view">
-            <field name="name">qoqa.deal.calendar</field>
-            <field name="model">qoqa.deal</field>
+        <record id="view_qoqa_offer_calendar" model="ir.ui.view">
+            <field name="name">qoqa.offer.calendar</field>
+            <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <calendar color="name" date_start="date_begin" date_stop="date_end" string="Deals">
+                <calendar color="name" date_start="date_begin" date_stop="date_end" string="Offers">
                     <field name="name"/>
                     <field name="qoqa_shop_id"/>
                 </calendar>
             </field>
         </record>
 
-        <record id="action_deal" model="ir.actions.act_window">
-            <field name="name">Deals</field>
+        <record id="action_offer" model="ir.actions.act_window">
+            <field name="name">Offers</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">qoqa.deal</field>
+            <field name="res_model">qoqa.offer</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
             <field name="context">{}</field>
             <field name="domain">[('state', '!=', 'cancel')]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
-                Click to create a new deal.
+                Click to create a new offer.
               </p>
             </field>
         </record>
 
         <menuitem
-            id="menu_qoqa_deal"
-            name="Deals"
+            id="menu_qoqa_offer"
+            name="Offers"
             parent="base.menu_sales"
-            sequence="10" action="action_deal"/>
+            sequence="10" action="action_offer"/>
 
         <menuitem
-            id="menu_qoqa_deal_config"
-            name="Deals"
+            id="menu_qoqa_offer_config"
+            name="Offers"
             parent="base.menu_base_config"
             sequence="90"/>
 

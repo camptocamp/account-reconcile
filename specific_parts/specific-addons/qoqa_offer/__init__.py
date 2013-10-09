@@ -23,7 +23,7 @@ from . import qoqa_shop
 from . import account_invoice
 from . import stock
 from . import delivery_service
-from . import qoqa_deal
-from . import qoqa_deal_position
+from . import qoqa_offer
+from . import qoqa_offer_position
 from . import sale_order
 from . import qoqa_buyphrase

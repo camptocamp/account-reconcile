@@ -58,9 +58,9 @@ class QoQaDirectBinder(QoQaBinder):
     is no import of export of the companies, but we need its ID to link
     the ``qoqa.shop`` to the correct company.
     """
-    _model_name = ['qoqa.deal',
-                   'qoqa.deal.position',
-                   'qoqa.deal.position.variant',
+    _model_name = ['qoqa.offer',
+                   'qoqa.offer.position',
+                   'qoqa.offer.position.variant',
                    ]
     _sync_date_field = 'qoqa_sync_date'
 

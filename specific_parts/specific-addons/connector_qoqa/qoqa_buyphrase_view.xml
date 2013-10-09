@@ -4,7 +4,7 @@
         <record id="view_qoqa_buyphrase_tree" model="ir.ui.view">
             <field name="name">qoqa.buyphrase.tree</field>
             <field name="model">qoqa.buyphrase</field>
-            <field name="inherit_id" ref="qoqa_deal.view_qoqa_buyphrase_tree"/>
+            <field name="inherit_id" ref="qoqa_offer.view_qoqa_buyphrase_tree"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
                     <field name="qoqa_id"/>
@@ -15,7 +15,7 @@
         <record id="view_qoqa_buyphrase_form" model="ir.ui.view">
             <field name="name">qoqa.buyphrase.form</field>
             <field name="model">qoqa.buyphrase</field>
-            <field name="inherit_id" ref="qoqa_deal.view_qoqa_buyphrase_form"/>
+            <field name="inherit_id" ref="qoqa_offer.view_qoqa_buyphrase_form"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
                     <field name="qoqa_id"/>

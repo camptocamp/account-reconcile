@@ -22,27 +22,32 @@
 from openerp.osv import orm, fields
 
 
-class sale_order(orm.Model):
-    _inherit = 'sale.order'
+class stock_picking(orm.Model):
+    _inherit = 'stock.picking'
 
     _columns = {
-        'deal_id': fields.many2one(
-            'qoqa.deal',
-            string='Deal',
+        'offer_id': fields.many2one(
+            'qoqa.offer',
+            string='Offer',
             readonly=True,
-            ondelete='restrict')
+            ondelete='restrict'),
     }
 
-    def _prepare_invoice(self, cr, uid, order, lines, context=None):
-        vals = super(sale_order, self)._prepare_invoice(
-            cr, uid, order, lines, context=context)
-        if order.deal_id:
-            vals['deal_id'] = order.deal_id.id
+    def _prepare_invoice(self, cr, uid, picking, partner, inv_type,
+                         journal_id, context=None):
+        vals = super(stock_picking, self)._prepare_invoice(
+            cr, uid, picking, partner, inv_type, journal_id, context=context)
+        if picking.offer_id:
+            vals['offer_id'] = picking.offer_id.id
         return vals
 
-    def _prepare_order_picking(self, cr, uid, order, context=None):
-        vals = super(sale_order, self)._prepare_order_picking(
-            cr, uid, order, context=context)
-        if order.deal_id:
-            vals['deal_id'] = order.deal_id.id
-        return vals
+
+class stock_picking_out(orm.Model):
+    _inherit = 'stock.picking.out'
+
+    _columns = {
+        'offer_id': fields.many2one(
+            'qoqa.offer',
+            string='Offer',
+            readonly=True),
+    }

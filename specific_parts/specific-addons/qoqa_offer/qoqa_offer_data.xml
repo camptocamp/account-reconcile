@@ -2,14 +2,14 @@
 <openerp>
     <data noupdate="1">
 
-        <record model="ir.sequence.type" id="sequence_type_deal">
-            <field name="name">QoQa Deal</field>
-            <field name="code">qoqa.deal</field>
+        <record model="ir.sequence.type" id="sequence_type_offer">
+            <field name="name">QoQa Offer</field>
+            <field name="code">qoqa.offer</field>
         </record>
 
-        <record model="ir.sequence" id="sequence_deal">
-            <field name="name">QoQa Deal Sequence</field>
-            <field name="code">qoqa.deal</field>
+        <record model="ir.sequence" id="sequence_offer">
+            <field name="name">QoQa Offer Sequence</field>
+            <field name="code">qoqa.offer</field>
             <field name="prefix"></field>
             <field name="padding">0</field>
             <field name="number_increment">1</field>

@@ -29,14 +29,14 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
 
-class qoqa_deal(orm.Model):
-    _name = 'qoqa.deal'
-    _description = 'QoQa Deal'
+class qoqa_offer(orm.Model):
+    _name = 'qoqa.offer'
+    _description = 'QoQa Offer'
     _inherit = ['mail.thread']
 
     _order = 'date_begin'
 
-    DEAL_STATES = [('draft', 'Proposal'),
+    OFFER_STATES = [('draft', 'Proposal'),
                    ('open', 'Negociation'),
                    ('planned', 'Planned'),
                    ('done', 'Done'),
@@ -44,19 +44,19 @@ class qoqa_deal(orm.Model):
                    ]
 
     def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
-        position_obj = self.pool.get('qoqa.deal.position')
+        position_obj = self.pool.get('qoqa.offer.position')
         res = {}
-        for deal_id in ids:
+        for offer_id in ids:
             position_ids = position_obj.search(
                 cr, uid,
-                [('deal_id', '=', deal_id)],
+                [('offer_id', '=', offer_id)],
                 order='sequence asc',
                 limit=1,
                 context=context)
             try:
-                res[deal_id] = position_ids[0]
+                res[offer_id] = position_ids[0]
             except IndexError:
-                res[deal_id] = False
+                res[offer_id] = False
         return res
 
     def _full_dates(self, cr, uid, ids, fieldnames, args, context=None):
@@ -76,24 +76,24 @@ class qoqa_deal(orm.Model):
                 tfmt = lang.time_format
         fmt = dfmt + ' ' + tfmt
         res = {}
-        for deal in self.browse(cr, uid, ids, context=context):
-            begin = datetime.strptime(deal.date_begin, date_fmt)
-            begin += timedelta(hours=deal.time_begin)
-            end = datetime.strptime(deal.date_end, date_fmt)
-            end += timedelta(hours=deal.time_end)
-            res[deal.id] = {
+        for offer in self.browse(cr, uid, ids, context=context):
+            begin = datetime.strptime(offer.date_begin, date_fmt)
+            begin += timedelta(hours=offer.time_begin)
+            end = datetime.strptime(offer.date_end, date_fmt)
+            end += timedelta(hours=offer.time_end)
+            res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),
                 'datetime_end': end.strftime(fmt),
             }
         return res
 
     _columns = {
-        'ref': fields.char('Deal Reference', required=True),
+        'ref': fields.char('Offer Reference', required=True),
         'name': fields.char('Title', translate=True, required=True),
         'description': fields.html('Description', translate=True),
         'note': fields.html('Internal Notes', translate=True),
         'state': fields.selection(
-            DEAL_STATES,
+            OFFER_STATES,
             'Status',
             readonly=True,
             required=True,
@@ -103,14 +103,14 @@ class qoqa_deal(orm.Model):
             string='Sell on',
             required=True),
         'position_ids': fields.one2many(
-            'qoqa.deal.position',
-            'deal_id',
+            'qoqa.offer.position',
+            'offer_id',
             'Positions'),
         'main_position_id': fields.function(
             _main_position_id,
             string='Main Position',
             type='many2one',
-            relation='qoqa.deal.position'),
+            relation='qoqa.offer.position'),
         'image_small': fields.related(
             'main_position_id', 'image_small',
             string='Thumbnail',
@@ -123,7 +123,7 @@ class qoqa_deal(orm.Model):
             readonly=True),
         # date & time are split in 2 fields
         # because they should not be based on the UTC
-        # if one says that a deal start on 2013-10-07 at 00:00
+        # if one says that a offer start on 2013-10-07 at 00:00
         # the QoQa backend expect to receive this date and time
         # without consideration of the UTC time
         'date_begin': fields.date(
@@ -197,7 +197,7 @@ class qoqa_deal(orm.Model):
 
     def _default_company(self, cr, uid, context=None):
         company_obj = self.pool.get('res.company')
-        return company_obj._company_default_get(cr, uid, 'qoqa.deal', context=context)
+        return company_obj._company_default_get(cr, uid, 'qoqa.offer', context=context)
 
     _defaults = {
         'ref': '/',
@@ -211,11 +211,11 @@ class qoqa_deal(orm.Model):
 
     def _check_date(self, cr, uid, ids, context=None):
         date_fmt = DEFAULT_SERVER_DATE_FORMAT
-        for deal in self.browse(cr, uid, ids, context=context):
-            begin = datetime.strptime(deal.date_begin, date_fmt)
-            begin += timedelta(hours=deal.time_begin)
-            end = datetime.strptime(deal.date_end, date_fmt)
-            end += timedelta(hours=deal.time_end)
+        for offer in self.browse(cr, uid, ids, context=context):
+            begin = datetime.strptime(offer.date_begin, date_fmt)
+            begin += timedelta(hours=offer.time_begin)
+            end = datetime.strptime(offer.date_end, date_fmt)
+            end += timedelta(hours=offer.time_end)
             if begin > end:
                 return False
         return True
@@ -228,12 +228,12 @@ class qoqa_deal(orm.Model):
     def _get_reference(self, cr, uid, context=None):
         """ Generate the reference based on a sequence """
         seq_obj = self.pool.get('ir.sequence')
-        return seq_obj.next_by_code(cr, uid, 'qoqa.deal')
+        return seq_obj.next_by_code(cr, uid, 'qoqa.offer')
 
     def create(self, cr, uid, vals, context=None):
         if (vals.get('ref', '/') or '/') == '/':
             vals['ref'] = self._get_reference(cr, uid, context=context)
-        return super(qoqa_deal, self).create(cr, uid, vals, context=context)
+        return super(qoqa_offer, self).create(cr, uid, vals, context=context)
 
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
@@ -241,7 +241,7 @@ class qoqa_deal(orm.Model):
         else:
             default = default.copy()
         default['ref'] = '/'
-        return super(qoqa_deal, self).copy_data(
+        return super(qoqa_offer, self).copy_data(
             cr, uid, id, default=default, context=context)
 
     def action_cancel(self, cr, uid, ids, context=None):
@@ -260,9 +260,9 @@ class qoqa_deal(orm.Model):
         if isinstance(ids, (int, long)):
             ids = [ids]
         res = []
-        for deal in self.browse(cr, uid, ids, context=context):
-            name = "[%s] %s" % (deal.ref, deal.name)
-            res.append((deal.id, name))
+        for offer in self.browse(cr, uid, ids, context=context):
+            name = "[%s] %s" % (offer.ref, offer.name)
+            res.append((offer.id, name))
         return res
 
     def name_search(self, cr, uid, name='', args=None, operator='ilike', context=None, limit=100):

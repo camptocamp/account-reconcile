@@ -18,16 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'QoQa Deals',
+{'name' : 'QoQa Offers',
  'version' : '1.0',
  'category': '',
  'description': """
-QoQa Deal
+QoQa Offer
 =========
 
-Adds *Deal* models.
+Adds *Offer* models.
 
-A Deal is a sell of one to many positions over a given time period.
+A Offer is a sell of one to many positions over a given time period.
 A position has, roughly, a price and a quantity for a product template,
 when a product has variants, a position may sell several of them.
 
@@ -41,11 +41,11 @@ when a product has variants, a position may sell several of them.
               'product_variant_simple',  # specific-addons
               'picking_dispatch',  # stock-logistic-flows
               ],
- 'data': ['qoqa_deal_data.xml',
+ 'data': ['qoqa_offer_data.xml',
           'sale_order_view.xml',
           'account_invoice_view.xml',
           'stock_view.xml',
-          'qoqa_deal_view.xml',
+          'qoqa_offer_view.xml',
           'qoqa_buyphrase_view.xml',
           'security/ir.model.access.csv',
           ],
@@ -53,5 +53,5 @@ when a product has variants, a position may sell several of them.
  'installable': True,
  'auto_install': False,
  'application': True,
- 'css': ['static/src/css/qoqa_deal.css'],
+ 'css': ['static/src/css/qoqa_offer.css'],
  }

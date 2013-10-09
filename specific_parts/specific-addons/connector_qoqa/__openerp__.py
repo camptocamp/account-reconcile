@@ -24,7 +24,7 @@
  'category': 'Connector',
  'depends': ['connector',
              'sale',
-             'qoqa_deal',
+             'qoqa_offer',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

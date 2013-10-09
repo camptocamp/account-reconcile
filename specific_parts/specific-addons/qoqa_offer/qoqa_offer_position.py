@@ -21,12 +21,12 @@
 
 from openerp.osv import orm, fields
 import openerp.addons.decimal_precision as dp
-from .qoqa_deal import qoqa_deal
+from .qoqa_offer import qoqa_offer
 
 
-class qoqa_deal_position_variant(orm.Model):
-    _name = 'qoqa.deal.position.variant'
-    _description = 'QoQa Deal Position Variant'
+class qoqa_offer_position_variant(orm.Model):
+    _name = 'qoqa.offer.position.variant'
+    _description = 'QoQa Offer Position Variant'
 
     def _get_stock(self, cr, uid, ids, fields, args, context=None):
         """Get number of products sold, remaining and the progress.
@@ -40,7 +40,7 @@ class qoqa_deal_position_variant(orm.Model):
             product_ids = sale_line_obj.search(
                 cr, uid,
                 [('product_id', '=', variant.product_id.id),
-                 ('order_id.deal_id', '=', variant.position_id.deal_id.id)],
+                 ('order_id.offer_id', '=', variant.position_id.offer_id.id)],
                 context=context)
             sales_lines = sale_line_obj.browse(cr, uid, product_ids,
                                                context=context)
@@ -61,7 +61,7 @@ class qoqa_deal_position_variant(orm.Model):
 
     _columns = {
         'position_id': fields.many2one(
-            'qoqa.deal.position',
+            'qoqa.offer.position',
             string='Position',
             readonly=True,
             required=True,
@@ -91,10 +91,10 @@ class qoqa_deal_position_variant(orm.Model):
     }
 
 
-# TODO rename to qoqa.deal.position
-class qoqa_deal_position(orm.Model):
-    _name = 'qoqa.deal.position'
-    _description = 'QoQa Deal Position'
+# TODO rename to qoqa.offer.position
+class qoqa_offer_position(orm.Model):
+    _name = 'qoqa.offer.position'
+    _description = 'QoQa Offer Position'
     _order_by = 'sequence asc'
 
     REGULAR_PRICE_TYPE = [('normal', 'Normal Price'),
@@ -110,10 +110,10 @@ class qoqa_deal_position(orm.Model):
         """
         res = {}
 
-        for deal in self.browse(cr, uid, ids, context=context):
+        for offer in self.browse(cr, uid, ids, context=context):
             quantity = 0
             residual = 0
-            for variant in deal.variant_ids:
+            for variant in offer.variant_ids:
                 quantity += variant.quantity
                 residual += variant.stock_residual
 
@@ -121,7 +121,7 @@ class qoqa_deal_position(orm.Model):
             if quantity > 0:
                 progress = ((quantity - residual) / quantity) * 100
 
-            res[deal.id] = {
+            res[offer.id] = {
                 'sum_quantity': quantity,
                 'sum_stock_sold': quantity - residual,
                 'stock_progress': progress,
@@ -145,13 +145,13 @@ class qoqa_deal_position(orm.Model):
         return res
 
     _columns = {
-        'deal_id': fields.many2one(
-            'qoqa.deal',
-            string='Deal',
+        'offer_id': fields.many2one(
+            'qoqa.offer',
+            string='Offer',
             readonly=True,
             required=True),
         'variant_ids': fields.one2many(
-            'qoqa.deal.position.variant',
+            'qoqa.offer.position.variant',
             'position_id',
             string='Variants'),
         'image_small': fields.function(
@@ -167,10 +167,10 @@ class qoqa_deal_position(orm.Model):
             readonly=True,
             multi='_get_image'),
         'state': fields.related(
-            'deal_id', 'state',
+            'offer_id', 'state',
             string='State',
             type='selection',
-            selection=qoqa_deal.DEAL_STATES,
+            selection=qoqa_offer.OFFER_STATES,
             readonly=True),
         'sequence': fields.integer('Sequence',
                                    help="The first position is the main one"),
@@ -180,7 +180,7 @@ class qoqa_deal_position(orm.Model):
             states={'draft': [('readonly', False)]},
             required=True),
         'currency_id': fields.related(
-            'deal_id', 'pricelist_id', 'currency_id',
+            'offer_id', 'pricelist_id', 'currency_id',
             type='many2one',
             relation='res.currency',
             string='Currency',

@@ -2,13 +2,13 @@
 <openerp>
     <data>
 
-        <record id="view_order_form_add_deal" model="ir.ui.view">
-            <field name="name">sale.order.form.add.deal</field>
+        <record id="view_order_form_add_offer" model="ir.ui.view">
+            <field name="name">sale.order.form.add.offer</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
-                    <field name="deal_id"/>
+                    <field name="offer_id"/>
                 </field>
             </field>
         </record>
@@ -19,7 +19,7 @@
             <field name="inherit_id" ref="sale.view_order_tree"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
-                    <field name="deal_id"/>
+                    <field name="offer_id"/>
                 </field>
             </field>
         </record>
@@ -30,7 +30,7 @@
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
                 <filter string="Customer" position="after">
-                  <filter string="Deal" icon="terp-personal" domain="[]" context="{'group_by':'deal_id'}"/>
+                  <filter string="Offer" icon="terp-personal" domain="[]" context="{'group_by':'offer_id'}"/>
                </filter>
             </field>
         </record>

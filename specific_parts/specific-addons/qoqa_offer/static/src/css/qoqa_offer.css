@@ -1,38 +1,38 @@
-.openerp .oe_kanban_deal .oe_kanban_deal {
+.openerp .oe_kanban_offer .oe_kanban_offer {
     width: 250px;
     min-height: 160px;
 }
 
-.openerp .oe_kanban_deal .qoqa_date_left {
+.openerp .oe_kanban_offer .qoqa_date_left {
     float: left;
     margin: 8px;
 }
 
-.openerp .oe_kanban_deal .qoqa_date_right {
+.openerp .oe_kanban_offer .qoqa_date_right {
     float: right;
     margin: 8px;
 }
 
-.openerp .oe_kanban_deal .oe_kanban_image {
+.openerp .oe_kanban_offer .oe_kanban_image {
     float: left;
     margin: 4px;
 }
 
-.openerp .oe_kanban_deal div.header {
+.openerp .oe_kanban_offer div.header {
     padding: 4px 4px;
     background-color: lightgrey;
 }
 
-.openerp .oe_kanban_deal div.dates {
+.openerp .oe_kanban_offer div.dates {
     font-size: 80%;
 }
 
-.oe_kanban_deal .oe_ellipsis {
+.oe_kanban_offer .oe_ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: 100px;
 }
 
-.oe_kanban_deal progress {
+.oe_kanban_offer progress {
     width: 100%;
 }

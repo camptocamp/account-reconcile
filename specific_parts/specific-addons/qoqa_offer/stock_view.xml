@@ -2,38 +2,38 @@
 <openerp>
     <data>
 
-        <record id="view_picking_out_search_add_deal" model="ir.ui.view">
-            <field name="name">stock.picking.out.search.add.deal</field>
+        <record id="view_picking_out_search_add_offer" model="ir.ui.view">
+            <field name="name">stock.picking.out.search.add.offer</field>
             <field name="model">stock.picking.out</field>
             <field name="inherit_id" ref="stock.view_picking_out_search"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
-                    <field name="deal_id"/>
+                    <field name="offer_id"/>
                 </field>
                 <filter string="Status" position="after">
-                    <filter string="Deal" domain="[]" context="{'group_by':'deal_id'}"/>
+                    <filter string="Offer" domain="[]" context="{'group_by':'offer_id'}"/>
                 </filter>
             </field>
         </record>
 
-        <record id="view_picking_out_tree_add_deal" model="ir.ui.view">
-            <field name="name">stock.picking.out.tree.add.deal</field>
+        <record id="view_picking_out_tree_add_offer" model="ir.ui.view">
+            <field name="name">stock.picking.out.tree.add.offer</field>
             <field name="model">stock.picking.out</field>
             <field name="inherit_id" ref="stock.view_picking_out_tree"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
-                    <field name="deal_id" invisible="1"/>
+                    <field name="offer_id" invisible="1"/>
                 </field>
             </field>
         </record>
 
-        <record id="view_picking_out_form_add_deal" model="ir.ui.view">
-            <field name="name">stock.picking.out.form.add.deal</field>
+        <record id="view_picking_out_form_add_offer" model="ir.ui.view">
+            <field name="name">stock.picking.out.form.add.offer</field>
             <field name="model">stock.picking.out</field>
             <field name="inherit_id" ref="stock.view_picking_out_form"/>
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
-                    <field name="deal_id"/>
+                    <field name="offer_id"/>
                 </field>
             </field>
         </record>

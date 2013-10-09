@@ -22,13 +22,27 @@
 from openerp.osv import orm, fields
 
 
-class account_invoice(orm.Model):
-    _inherit = 'account.invoice'
+class sale_order(orm.Model):
+    _inherit = 'sale.order'
 
     _columns = {
-        'deal_id': fields.many2one(
-            'qoqa.deal',
-            string='Deal',
+        'offer_id': fields.many2one(
+            'qoqa.offer',
+            string='Offer',
             readonly=True,
-            ondelete='restrict'),
+            ondelete='restrict')
     }
+
+    def _prepare_invoice(self, cr, uid, order, lines, context=None):
+        vals = super(sale_order, self)._prepare_invoice(
+            cr, uid, order, lines, context=context)
+        if order.offer_id:
+            vals['offer_id'] = order.offer_id.id
+        return vals
+
+    def _prepare_order_picking(self, cr, uid, order, context=None):
+        vals = super(sale_order, self)._prepare_order_picking(
+            cr, uid, order, context=context)
+        if order.offer_id:
+            vals['offer_id'] = order.offer_id.id
+        return vals

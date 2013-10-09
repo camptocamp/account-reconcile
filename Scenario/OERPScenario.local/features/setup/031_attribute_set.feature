@@ -97,6 +97,8 @@ Feature: Configure the attribute sets
       | 05   | 50 cl.   | 1        |
       | 0375 | 37.5 cl. | 2        |
       | 020  | 20 cl.   | 3        |
+      | 300  | 300 cl.  | 4        |
+      | 150  | 150 cl.  | 5        |
 
   @wine_class_id_options
   Scenario: Create the options for the wine_class_id attribute

@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@core_setup
+@setup
 
 Feature: Parameter the new database
   In order to have a coherent installation

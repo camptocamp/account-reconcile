@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@qoqa_ch @core_setup
+@qoqa_ch @setup
 
 Feature: Configure QoQa.ch
 

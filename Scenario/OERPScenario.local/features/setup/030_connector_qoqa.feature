@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@connector_qoqa @core_setup
+@connector_qoqa @setup
 
 Feature: Configure the connector's backend
 

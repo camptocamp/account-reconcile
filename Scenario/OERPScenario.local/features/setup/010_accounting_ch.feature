@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@accounting_ch @core_setup
+@accounting_ch @setup
 
 Feature: Configure the CH's accounting
 

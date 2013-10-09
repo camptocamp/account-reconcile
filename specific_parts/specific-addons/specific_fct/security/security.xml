@@ -15,6 +15,7 @@
 
         Warehouse:
             * Manage multiple locations and warehouses
+            * Product: packaging
 
         Accounting:
             * Allow multi currencies

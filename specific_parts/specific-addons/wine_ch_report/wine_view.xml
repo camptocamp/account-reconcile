@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record id="view_wine_class_tree" model="ir.ui.view">
+            <field name="name">wine.class.tree</field>
+            <field name="model">wine.class</field>
+            <field name="arch" type="xml">
+                <tree string="wine.classs">
+                    <field name="code"/>
+                    <field name="complete_name"/>
+                    <field name="parent_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_wine_class_form" model="ir.ui.view">
+            <field name="name">wine.class.form</field>
+            <field name="model">wine.class</field>
+            <field name="arch" type="xml">
+                <form string="Wine Classes" version="7.0">
+                    <group>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wine_class" model="ir.actions.act_window">
+            <field name="name">Wine Classes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wine.class</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new wine class.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_wine_class"
+            name="Wine Classes"
+            parent="base.menu_base_config"
+            sequence="10" action="action_wine_class"/>
+    </data>
+</openerp>

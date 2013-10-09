@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="wine_class_indigene" model="wine.class">
+            <field name="name">Indigènes</field>
+            <field name="code"></field>
+        </record>
+
+        <record id="wine_class_indigene_aoc" model="wine.class">
+            <field name="name">Classe AOC</field>
+            <field name="code">10</field>
+            <field name="parent_id" ref="wine_class_indigene"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ" model="wine.class">
+            <field name="name">Suisse occidentale</field>
+            <field name="code">110</field>
+            <field name="parent_id" ref="wine_class_indigene_aoc"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori" model="wine.class">
+            <field name="name">Suisse orientale</field>
+            <field name="code">120</field>
+            <field name="parent_id" ref="wine_class_indigene_aoc"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ti" model="wine.class">
+            <field name="name">Tessin</field>
+            <field name="code">130</field>
+            <field name="parent_id" ref="wine_class_indigene_aoc"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_vd" model="wine.class">
+            <field name="name">Vaud</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_vs" model="wine.class">
+            <field name="name">Valais</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_ne" model="wine.class">
+            <field name="name">Neuchâtel</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_ge" model="wine.class">
+            <field name="name">Genève</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_fr" model="wine.class">
+            <field name="name">Fribourg</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_bi" model="wine.class">
+            <field name="name">Lac de Bienne</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_occ_ju" model="wine.class">
+            <field name="name">Jura</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_occ"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_zh" model="wine.class">
+            <field name="name">Zurich</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_bc" model="wine.class">
+            <field name="name">Bâle-Campagne</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_sh" model="wine.class">
+            <field name="name">Schaffhouse</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_sg" model="wine.class">
+            <field name="name">St-Gall</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_gr" model="wine.class">
+            <field name="name">Grisons</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_ag" model="wine.class">
+            <field name="name">Argovie</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_th" model="wine.class">
+            <field name="name">Thurgovie</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_aoc_ch_ori_other" model="wine.class">
+            <field name="name">Autres cantons</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_aoc_ch_ori"/>
+        </record>
+
+        <record id="wine_class_indigene_vin_ch" model="wine.class">
+            <field name="name">Classe Vin de pays</field>
+            <field name="code">20</field>
+            <field name="parent_id" ref="wine_class_indigene"/>
+        </record>
+
+        <record id="wine_class_indigene_ch_occ" model="wine.class">
+            <field name="name">Suisse occidentale</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_vin_ch"/>
+        </record>
+
+        <record id="wine_class_indigene_ch_ori" model="wine.class">
+            <field name="name">Suisse orientale</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_vin_ch"/>
+        </record>
+
+        <record id="wine_class_indigene_ch_ita" model="wine.class">
+            <field name="name">Suisse italienne</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_vin_ch"/>
+        </record>
+
+        <record id="wine_class_indigene_ch_ch" model="wine.class">
+            <field name="name">Vin suisse</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_indigene_vin_ch"/>
+        </record>
+
+        <record id="wine_class_vin" model="wine.class">
+            <field name="name">Classe Vin/Vin de table</field>
+            <field name="code"></field>
+        </record>
+
+        <record id="wine_class_etranger" model="wine.class">
+            <field name="name">Etrangers</field>
+            <field name="code">40</field>
+        </record>
+
+        <record id="wine_class_etranger_argentine" model="wine.class">
+            <field name="name">Argentine</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_australie" model="wine.class">
+            <field name="name">Australie</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_chili" model="wine.class">
+            <field name="name">Chili</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_france" model="wine.class">
+            <field name="name">France</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_italie" model="wine.class">
+            <field name="name">Italie</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_portugal" model="wine.class">
+            <field name="name">Portugal</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_espagne" model="wine.class">
+            <field name="name">Espagne</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_afrique_sud" model="wine.class">
+            <field name="name">Afrique du Sud</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_usa" model="wine.class">
+            <field name="name">USA</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_etranger_other" model="wine.class">
+            <field name="name">Autres pays</field>
+            <field name="code"></field>
+            <field name="parent_id" ref="wine_class_etranger"/>
+        </record>
+
+        <record id="wine_class_jus" model="wine.class">
+            <field name="name">Jus de raisin - sans alcool</field>
+            <field name="code">50</field>
+        </record>
+
+    </data>
+</openerp>

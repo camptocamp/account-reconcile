@@ -37,11 +37,11 @@ class qoqa_offer(orm.Model):
     _order = 'date_begin'
 
     OFFER_STATES = [('draft', 'Proposal'),
-                   ('open', 'Negociation'),
-                   ('planned', 'Planned'),
-                   ('done', 'Done'),
-                   ('cancel', 'Canceled'),
-                   ]
+                    ('open', 'Negociation'),
+                    ('planned', 'Planned'),
+                    ('done', 'Done'),
+                    ('cancel', 'Canceled'),
+                    ]
 
     def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
         position_obj = self.pool.get('qoqa.offer.position')

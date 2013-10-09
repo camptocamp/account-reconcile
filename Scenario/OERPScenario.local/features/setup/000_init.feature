@@ -41,6 +41,8 @@ Feature: Parameter the new database
         | purchase_landed_costs          |
         | crm_claim_rma                  |
         | specific_fct                   |
+        | product_custom_attributes      |
+        | wine_ch_report                 |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

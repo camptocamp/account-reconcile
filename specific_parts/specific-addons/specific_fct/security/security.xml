@@ -29,6 +29,7 @@
                        (4, ref('sale.group_discount_per_so_line')),
                        (4, ref('stock.group_locations')),
                        (4, ref('base.group_multi_currency')),
+                       (4, ref('product.group_stock_packaging')),
                        ]"/>
         </record>
 

@@ -34,7 +34,7 @@ Feature: Configure the attribute sets
         | field_description | <descr>                             |
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
-        | required          | <required>                          |
+        | required_on_views | <required>                          |
 
   Examples: Template attributes
       | name       | descr      | type | translate | required |
@@ -60,7 +60,7 @@ Feature: Configure the attribute sets
         | name              | x_country_id                        |
         | field_description | Country                             |
         | attribute_type    | select                              |
-        | required          | True                                |
+        | required_on_views | True                                |
         | relation          | res.country                         |
         | relation_model_id | by oid: base.model_res_country      |
     And I generate the attribute options from the model res.country
@@ -119,7 +119,7 @@ Feature: Configure the attribute sets
         | field_description | <descr>                             |
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
-        | required          | <required>                          |
+        | required_on_views | <required>                          |
 
   Examples: Variant attributes
       | name             | descr            | type      | translate | required |

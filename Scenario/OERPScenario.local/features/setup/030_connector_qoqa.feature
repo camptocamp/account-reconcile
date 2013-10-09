@@ -18,7 +18,7 @@ Feature: Configure the connector's backend
   Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
     And having:
          | key             | value                      |
-         | url             | https://ch.test02.qoqa.com |
+         | url             | http://ch.test02.qoqa.com  |
          | default_lang_id | by code: fr_FR             |
 
   @automatic_workflows

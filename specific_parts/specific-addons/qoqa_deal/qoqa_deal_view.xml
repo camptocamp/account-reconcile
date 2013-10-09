@@ -198,8 +198,8 @@
                                 </div>
                                 <field name="shipper_service_id"/>
                                 <field name="carrier_id"/>
-                                <field name="pricelist_id"/>
-                                <field name="lang_id"/>
+                                <field name="pricelist_id" widget="selection"/>
+                                <field name="lang_id" widget="selection"/>
                             </group>
                         </group>
                         <notebook>
@@ -254,6 +254,7 @@
                                         </group>
                                         <group colspan="4" name="buyphrase" string="Buyphrase">
                                             <field name="buyphrase_id" nolabel="1"
+                                                options='{"no_open": 1}'
                                                 colspan="4"/>
                                         </group>
                                         <group colspan="4" name="variant" string="Variants">

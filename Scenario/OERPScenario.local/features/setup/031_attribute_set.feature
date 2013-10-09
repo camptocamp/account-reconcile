@@ -118,7 +118,7 @@ Feature: Configure the attribute sets
 
   Examples: Variant attributes
       | name             | descr            | type      | translate | required |
-      | warranty         | Warranty         | integer   | True      | True     |
+      | warranty         | Warranty         | integer   | False     | True     |
       | dimension_big    | Dimension big    | float     | True      | False    |
       | dimension_medium | Dimension medium | float     | False     | False    |
       | dimension_small  | Dimension small  | float     | False     | False    |

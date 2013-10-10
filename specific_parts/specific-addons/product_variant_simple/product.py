@@ -30,3 +30,50 @@ class product_template(orm.Model):
             'product_tmpl_id',
             string='Variants'),
     }
+
+
+class product_product(orm.Model):
+    _inherit = 'product.product'
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        """ When we duplicate a variant (from the variant view),
+        we except the template not to be duplicated.
+
+        So we set the ``product_tmpl_id`` field on the product, but
+        we have also to remove all the fields related to the template
+        from the ``default`` otherwise we'll empty values of the template.
+        """
+        if context is None:
+            context = {}
+        if default is None:
+            default = {}
+        is_variant = context.get('view_is_product_variant')
+        if is_variant:
+            tmpl_obj = self.pool.get('product.template')
+            product = self.browse(cr, uid, id, context=context)
+            default['product_tmpl_id'] = product.product_tmpl_id.id
+
+        data = super(product_product, self).copy_data(
+            cr, uid, id, default=default, context=context)
+
+        if is_variant:
+            # remove all the fields from product.template
+            blacklist = set(tmpl_obj._all_columns) - set(self._columns)
+            data = dict((key, value) for key, value in data.iteritems()
+                        if key not in blacklist)
+        return data
+
+    def copy_translations(self, cr, uid, old_id, new_id, context=None):
+        """ When we do not copy the template along the variant,
+        copy_translations sometimes receives 2 identical IDs.
+
+        That's because the ORM follows the o2m to copy the translations,
+        so in that case, it follows 'variant_ids' and for each variant,
+        it copy the translations. One of the variant is the 'new_id'.
+
+        Just skip it.
+        """
+        if context.get('view_is_product_variant') and old_id == new_id:
+            return
+        super(product_product, self).copy_translations(
+            cr, uid, old_id, new_id, context=context)

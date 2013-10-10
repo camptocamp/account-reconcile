@@ -43,6 +43,7 @@ Feature: Parameter the new database
         | specific_fct                   |
         | product_custom_attributes      |
         | wine_ch_report                 |
+        | discount_coupon                |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

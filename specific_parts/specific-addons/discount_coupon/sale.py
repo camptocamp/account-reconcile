@@ -26,8 +26,24 @@ class SaleOrderLine(orm.Model):
     _inherit = 'sale.order.line'
 
     _columns = {
-        'coupon_id': fields.many2one('sale.discount.coupon', 'Discount Coupon', domain=[('residual', '>', 0)]),
+        'coupon_id': fields.many2one('sale.discount.coupon', 'Discount Coupon',
+            # domain to restrict to valid coupons
+            #domain="["
+                #"('residual', '>', 0),"
+                #"('date_begin', '<=', context_today().strftime('%Y-%m-%d')),"
+                #"('date_end', '>=', context_today().strftime('%Y-%m-%d'))"
+                #"]"
+                ),
         'so_date_order': fields.related('order_id', 'date_order', type='date', string='Date'),
         'so_partner_id': fields.related('order_id', 'partner_id', type='many2one', relation='res.partner', string='Customer'),
         'so_name': fields.related('order_id', 'name', type='char', string='Command number'),
         }
+
+    # XXX def on_change_coupon_id
+    """
+    Restrict selection of coupon to valid coupon
+    Coupon are valid if residual is bigger than 0 and current date is between
+    start and end of validity
+
+    Do not restrict if coupon is being buy
+    """

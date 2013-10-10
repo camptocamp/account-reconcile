@@ -27,4 +27,5 @@ class ProductProduct(orm.Model):
 
     _columns = {
         'is_discount_coupon': fields.boolean('Is discount coupon'),
+        'coupon_time_limit': fields.integer('Coupon Time limit'),
         }

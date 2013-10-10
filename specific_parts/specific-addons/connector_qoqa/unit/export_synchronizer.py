@@ -142,6 +142,14 @@ class QoQaExporter(QoQaBaseExporter):
         Export a dependency. The exporter class is a subclass of
         ``QoQaExporter``. If a more precise class need to be defined
 
+        .. warning:: this method do a commit at end of the export of the
+                     dependency. The reason for that is that we pushed a record
+                     on the backend and we absolutely have to keep its ID.
+                     So you should call this method only in the beginning of
+                     exporter synchronization (in `~._export_dependencies`)
+                     and do not write data which should be rollbacked in case
+                     of error.
+
         :param relation: record to export if not already exported
         :type relation: :py:class:`openerp.osv.orm.browse_record`
         :param binding_model: name of the binding model for the relation
@@ -187,6 +195,7 @@ class QoQaExporter(QoQaBaseExporter):
             exporter = self.get_connector_unit_for_model(exporter_class,
                                                          binding_model)
             exporter.run(binding_id)
+        self.session.commit()
 
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
@@ -216,7 +225,12 @@ class QoQaExporter(QoQaBaseExporter):
         self.backend_adapter.write(self.qoqa_id, data)
 
     def _run(self, fields=None):
-        """ Flow of the synchronization, implemented in inherited classes"""
+        """ Flow of the synchronization, implemented in inherited classes.
+
+        `~._export_dependencies` might commit exported ids to the database,
+        so please do not do changes in the database before the export of the
+        dependencies because they won't be rollbacked.
+        """
         assert self.binding_id
         assert self.binding_record
 

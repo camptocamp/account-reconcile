@@ -17,9 +17,9 @@ Feature: Configure the connector's backend
   Scenario: Configure the QoQa backend
   Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
     And having:
-         | key             | value                      |
-         | url             | http://ch.test02.qoqa.com  |
-         | default_lang_id | by code: fr_FR             |
+         | key             | value                        |
+         | url             | http://admin.test02.qoqa.com |
+         | default_lang_id | by code: fr_FR               |
 
   @automatic_workflows
   Scenario: Configure Sales Automatic Workflows

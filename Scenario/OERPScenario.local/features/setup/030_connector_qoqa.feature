@@ -89,3 +89,14 @@ Feature: Configure the connector's backend
       | scenario.payment_method_visa_fr_old        | Visa  - plus utilisé             | by oid: scenario.journal_visa_fr_old       |
       | scenario.payment_method_mastercard_fr_old  | Mastercard  - plus utilisé       | by oid: scenario.journal_mastercard_fr_old |
       | scenario.payment_method_sogenactif_fr_old  | ? Sogenactif  - plus utilisé     | by oid: scenario.journal_sogenactif_old    |
+
+  @qoqa_id @lang
+  Scenario: Set the qoqa_ids on the languages
+    Given I find a "res.lang" with code: fr_FR
+    And having:
+         | key     | value |
+         | qoqa_id | 1     |
+    Given I find a "res.lang" with code: de_DE
+    And having:
+         | key     | value |
+         | qoqa_id | 2     |

@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import logging
 from openerp.osv import orm, fields
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,
@@ -33,6 +34,8 @@ from .unit.export_synchronizer import QoQaExporter
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
 from .product_attribute import ProductAttribute
+
+_logger = logging.getLogger(__name__)
 
 
 class qoqa_product_template(orm.Model):
@@ -106,17 +109,67 @@ class TemplateExporter(QoQaExporter):
 @qoqa
 class QoQaTemplateAdapter(QoQaAdapter):
     _model_name = 'qoqa.product.template'
-    _endpoint = 'template'
+    _endpoint = 'product'
 
 
 @qoqa
 class TemplateExportMapper(ExportMapper):
+    """ Example of expected JSON to create a template:
+
+        {"product":
+            {"product_translations":
+                [{"language_id": 1,
+                  "brand": "Brando",
+                  "name": "ZZZ",
+                  "highlights": "blabl loerm",
+                  "description": "lorefjusdhdfujhsdifgh hfduihsi"},
+                 {"language_id": 2,
+                 "brand": "Brandette",
+                 "name": "XXX",
+                 "highlights": "el blablo loerm",
+                 "description": "d hfduihsi"}
+                 ]
+            }
+        }
+    """
     _model_name = 'qoqa.product.template'
 
-    direct = [('name', 'name'),
-              ]
+    direct = []
 
     @mapping
     def attributes(self, record):
+        """ Map attributes which are not translatables """
         attrs = self.get_connector_unit_for_model(ProductAttribute)
-        return attrs.get_values(record)
+        return attrs.get_values(record, translatable=False)
+
+    @mapping
+    def product_translations(self, record):
+        """ Map all the translatable values, including the attributes
+
+        Translatable fields for QoQa are sent in a `product_translations`
+        key and are not sent in the main record.
+        """
+        # translatable but not attribute
+        fields = [('name', 'name'),
+                  ('description_sale', 'description')]
+        lang_ids = self.session.search('res.lang',
+                                       [('translatable', '=', True)])
+        lang_binder = self.get_binder_for_model('res.lang')
+        lang_values = []
+        for lang in self.session.browse('res.lang', lang_ids):
+            qoqa_lang_id = lang_binder.to_backend(lang.id)
+            if qoqa_lang_id is None:
+                _logger.debug('Language %s skipped for export because '
+                              'it has no qoqa_id', lang.code)
+                continue
+            with self.session.change_context({'lang': lang.code}):
+                lang_record = self.session.browse(self.model._name,
+                                                  record.id)
+            attrs = self.get_connector_unit_for_model(ProductAttribute)
+            values = attrs.get_values(lang_record, translatable=True)
+            for src, target in fields:
+                values[target] = lang_record[src]
+            values['language_id'] = qoqa_lang_id
+            lang_values.append(values)
+
+        return {'product_translations': lang_values}

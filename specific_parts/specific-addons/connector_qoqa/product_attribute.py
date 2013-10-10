@@ -42,7 +42,16 @@ class ProductAttribute(ConnectorUnit):
             value = option.name
         return value
 
-    def get_values(self, record):
+    def get_values(self, record, translatable=None):
+        """ Get the values of the attributes for the export.
+
+        :param record: record having the attributes and an
+                       `attribute_set_id` field
+        :type record: :py:class:`openerp.osv.orm.browse_record`
+        :param translatable: indicates if we want all attributes (None),
+                             only translatable (True) or non translatable (False)
+        :type translatable: None | boolean
+        """
         result = {}
         if not record.attribute_set_id:
             return result
@@ -52,6 +61,9 @@ class ProductAttribute(ConnectorUnit):
                       for attribute in group.attribute_ids]
         for attribute in attributes:
             if attribute.model_id.model != model_type:
+                continue
+            if (translatable is not None and
+                    attribute.translate != translatable):
                 continue
             name = attribute.name
             value = record[name]

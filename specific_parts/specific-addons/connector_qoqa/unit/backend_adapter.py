@@ -98,13 +98,15 @@ class QoQaAdapter(CRUDAdapter):
         self.version = self.backend_record.version
         self.lang = self.session.context['lang'][:2]
 
-    def url(self):
+    def url(self, with_lang=False):
         values = {'url': self.client.base_url,
                   'version': self.version,
-                  'lang': self.lang,
+                  'lang': '',
                   'endpoint': self._endpoint,
                   }
-        return "{url}api/{version}/{lang}/{endpoint}/".format(**values)
+        if with_lang:
+            values['lang'] = '/'+ self.lang
+        return "{url}api/{version}{lang}/{endpoint}/".format(**values)
 
     def _handle_response(self, response):
         _logger.debug("%s %s returned %s %s", response.request.method,
@@ -119,8 +121,24 @@ class QoQaAdapter(CRUDAdapter):
         return parsed
 
     def create(self, vals):
-        url = self.url()
+        url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        vals = {self._endpoint: vals}
+        # vals = {"product":
+        #     {"product_translations":
+        #         [{"language_id": 1,
+        #           "brand": "Brando",
+        #           "name": "ZZZ",
+        #           "highlights": "blabl loerm",
+        #           "description": "lorefjusdhdfujhsdifgh hfduihsi"},
+        #          {"language_id": 2,
+        #          "brand": "Brandette",
+        #          "name": "XXX",
+        #          "highlights": "el blablo loerm",
+        #          "description": "d hfduihsi"}
+        #          ]
+        #     }
+        # }
         response = self.client.post(url, data=json.dumps(vals),
                                     headers=headers)
         result = self._handle_response(response)

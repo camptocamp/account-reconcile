@@ -173,7 +173,7 @@ class QoQaInheritsBinder(QoQaBinder):
             binding_id = self.session.search(
                 self.model._name,
                 [('openerp_id', '=', binding_id),
-                 ('backend_id', '=', self.backend_id)])
+                 ('backend_id', '=', self.backend_record.id)])
             if binding_id:
                 binding_id = binding_id[0]
             else:

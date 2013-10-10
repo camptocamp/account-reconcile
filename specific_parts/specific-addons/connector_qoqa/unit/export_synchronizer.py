@@ -159,25 +159,34 @@ class QoQaExporter(QoQaBaseExporter):
         # wrap is typically True if the relation is a 'product.product'
         # record but the binding model is 'qoqa.product.product'
         wrap = relation._model._name != binding_model
-        # if qoqa_bind_ids does not exist we are typically in a
-        # "direct" binding (the binding record is the same record)
-        if (wrap and hasattr(relation, 'qoqa_bind_ids') and
-                not relation.qoqa_bind_ids):
+
+        if wrap and hasattr(relation, 'qoqa_bind_ids'):
+            domain = [('openerp_id', '=', relation.id),
+                      ('backend_id', '=', self.backend_record.id)]
+            binding_ids = self.session.search(binding_model, domain)
+            if binding_ids:
+                assert len(binding_ids) == 1
+                binding_id = binding_ids[0]
             # we are working with a unwrapped record (e.g.
             # product.template) and the binding does not exist yet.
             # Example: I created a product.product and its binding
             # qoqa.product.product, it is exported, but we need to
             # create the binding for the template.
-            with self.session.change_context({'connector_no_export': True}):
-                self.session.create(binding_model,
-                                    {'backend_id': self.backend_record.id,
-                                     'openerp_id': relation.id})
+            else:
+                with self.session.change_context({'connector_no_export': True}):
+                    bind_values = {'backend_id': self.backend_record.id,
+                                   'openerp_id': relation.id}
+                    binding_id = self.session.create(binding_model, bind_values)
+        else:
+            # If qoqa_bind_ids does not exist we are typically in a
+            # "direct" binding (the binding record is the same record).
+            # If wrap is True, relation is already a binding record.
+            binding_id = relation.id
 
-        relation_qoqa_id = rel_binder.to_backend(relation.id, wrap=wrap)
-        if relation_qoqa_id is None:
+        if rel_binder.to_backend(binding_id) is None:
             exporter = self.get_connector_unit_for_model(exporter_class,
                                                          binding_model)
-            exporter.run(relation.id)
+            exporter.run(binding_id)
 
     def _export_dependencies(self):
         """ Export the dependencies for the record"""

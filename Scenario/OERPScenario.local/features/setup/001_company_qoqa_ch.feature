@@ -109,4 +109,16 @@ Feature: Configure QoQa.ch
     | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
 
-    # TODO: set price_type to CHF
+  @pricetype_public
+    Scenario: Pricetype should be set to CHF
+    Given I find a "product.price.type" with oid: product.list_price
+    And having:
+    | name                | value                             |
+    | currency_id         | by oid: base.CHF                  |
+
+  @pricetype_cost
+    Scenario: Pricetype should be set to CHF
+    Given I find a "product.price.type" with oid: product.standard_price
+    And having:
+    | name                | value                             |
+    | currency_id         | by oid: base.CHF                  |

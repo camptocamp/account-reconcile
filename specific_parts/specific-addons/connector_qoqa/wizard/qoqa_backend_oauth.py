@@ -22,6 +22,7 @@
 import requests
 from requests_oauthlib import OAuth1Session
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 
 REQUEST_URL_PART = "/oauth1.0a/request_token"
 ACCESS_URL_PART = "/oauth1.0a/access_token"
@@ -85,7 +86,12 @@ class qoqa_backend_oauth(orm.TransientModel):
         oauth = OAuth1Session(form.client_key,
                               client_secret=form.client_secret)
         url = form.backend_id.url + REQUEST_URL_PART
-        fetch_response = oauth.fetch_request_token(url)
+        try:
+            fetch_response = oauth.fetch_request_token(url)
+        except ValueError as err:
+            raise orm.except_orm(
+                _('Error'),
+                _('Could not request the tokens: %s') % err)
         authorize_url = fetch_response.get('authorize_url')
         request_key = fetch_response.get('oauth_token')
         request_secret = fetch_response.get('oauth_token_secret')

@@ -32,6 +32,10 @@ Feature: Parameter the new database
         | multi_company                  |
         | base_import                    |
         | l10n_ch                        |
+        | l10n_ch_base_bank              |
+        | l10n_ch_zip                    |
+        | l10n_ch_dta                    |
+        | l10n_ch_payment_slip           |
         | l10n_fr                        |
         | stock                          |
         | sale                           |

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <record id="attribute_attribute_form_view" model="ir.ui.view">
+            <field name="name">attribute.attribute.form</field>
+            <field name="model">attribute.attribute</field>
+            <field name="inherit_id" ref="base_custom_attributes.attribute_attribute_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/field[@name='name']" position="after">
+                    <field name="qoqa_id"/>
+                </xpath>
+                <xpath expr="//form//field[@name='option_ids']/tree/field[@name='name']" position="after">
+                    <field name="qoqa_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="attribute_option_form_popup_view" model="ir.ui.view">
+            <field name="name">attribute.option.form.popup</field>
+            <field name="model">attribute.option</field>
+            <field name="inherit_id" ref="base_custom_attributes.attribute_option_form_popup_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="qoqa_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="attribute_option_form_view" model="ir.ui.view">
+            <field name="name">attribute.option.form</field>
+            <field name="model">attribute.option</field>
+            <field name="inherit_id" ref="base_custom_attributes.attribute_option_form_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="qoqa_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

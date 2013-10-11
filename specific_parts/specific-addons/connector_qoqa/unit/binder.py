@@ -46,6 +46,30 @@ class QoQaBinder(Binder):
         return datetime.strptime(sync, fmt)
 
 
+@qoqa
+class QoQaNoneBinder(QoQaBinder):
+    """ Always return None ids.
+
+    Used as instance for the models which are the options
+    of product custom attributes but should not be exported.
+
+    The export of the products will send the key but with
+    an empty value to QoQa. QoQa ignores the attributes it
+    doesn't know.
+    """
+    _model_name = ['wine.class',
+                   ]
+
+    def to_openerp(self, external_id, unwrap=False):
+        return None
+
+    def to_backend(self, binding_id, wrap=False):
+        return None
+
+    def bind(self, external_id, binding_id):
+        raise TypeError('%s cannot be synchronized' % self._model_name)
+
+
 # TODO: seems to be a ByAnyFieldBinder with 'qoqa_id' as matcher
 @qoqa
 class QoQaDirectBinder(QoQaBinder):

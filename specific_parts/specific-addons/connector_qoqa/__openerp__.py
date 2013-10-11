@@ -48,6 +48,7 @@ Synchronize OpenERP with the different QoQa Stores
           'account_tax_view.xml',
           'res_lang_view.xml',
           'qoqa_buyphrase_view.xml',
+          'product_attribute_view.xml',
           'security/ir.model.access.csv',
           ],
  'installable': True,

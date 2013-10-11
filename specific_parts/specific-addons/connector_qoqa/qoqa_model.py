@@ -93,6 +93,9 @@ class qoqa_backend(orm.Model):
                 backend.access_token or '',
                 backend.access_token_secret or '')
         client = QoQaClient(*args, debug=backend.debug)
+        # TODO: implement check connection
+        # /me does not exist in the admin API
+        # see which call can act as authentication checker
         url = client.base_url + 'api/' + backend.version + '/me'
         response = client.head(url)
         try:

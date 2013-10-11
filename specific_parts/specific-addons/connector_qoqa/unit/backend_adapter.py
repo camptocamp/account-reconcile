@@ -124,25 +124,10 @@ class QoQaAdapter(CRUDAdapter):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         vals = {self._endpoint: vals}
-        # vals = {"product":
-        #     {"product_translations":
-        #         [{"language_id": 1,
-        #           "brand": "Brando",
-        #           "name": "ZZZ",
-        #           "highlights": "blabl loerm",
-        #           "description": "lorefjusdhdfujhsdifgh hfduihsi"},
-        #          {"language_id": 2,
-        #          "brand": "Brandette",
-        #          "name": "XXX",
-        #          "highlights": "el blablo loerm",
-        #          "description": "d hfduihsi"}
-        #          ]
-        #     }
-        # }
         response = self.client.post(url, data=json.dumps(vals),
                                     headers=headers)
         result = self._handle_response(response)
-        return result['data']
+        return result['data']['id']
 
     def read(self, id):
         url = "{0}{1}".format(self.url(), id)

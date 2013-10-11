@@ -33,7 +33,7 @@ from .backend import qoqa
 from .unit.export_synchronizer import QoQaExporter
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
-from .product_attribute import ProductAttribute
+from .product_attribute import ProductAttribute, ProductTranslations
 
 _logger = logging.getLogger(__name__)
 
@@ -117,7 +117,7 @@ class TemplateExportMapper(ExportMapper):
     """ Example of expected JSON to create a template:
 
         {"product":
-            {"product_translations":
+            {"translations":
                 [{"language_id": 1,
                   "brand": "Brando",
                   "name": "ZZZ",
@@ -143,33 +143,14 @@ class TemplateExportMapper(ExportMapper):
         return attrs.get_values(record, translatable=False)
 
     @mapping
-    def product_translations(self, record):
+    def translations(self, record):
         """ Map all the translatable values, including the attributes
 
-        Translatable fields for QoQa are sent in a `product_translations`
+        Translatable fields for QoQa are sent in a `translations`
         key and are not sent in the main record.
         """
         # translatable but not attribute
         fields = [('name', 'name'),
                   ('description_sale', 'description')]
-        lang_ids = self.session.search('res.lang',
-                                       [('translatable', '=', True)])
-        lang_binder = self.get_binder_for_model('res.lang')
-        lang_values = []
-        for lang in self.session.browse('res.lang', lang_ids):
-            qoqa_lang_id = lang_binder.to_backend(lang.id)
-            if qoqa_lang_id is None:
-                _logger.debug('Language %s skipped for export because '
-                              'it has no qoqa_id', lang.code)
-                continue
-            with self.session.change_context({'lang': lang.code}):
-                lang_record = self.session.browse(self.model._name,
-                                                  record.id)
-            attrs = self.get_connector_unit_for_model(ProductAttribute)
-            values = attrs.get_values(lang_record, translatable=True)
-            for src, target in fields:
-                values[target] = lang_record[src]
-            values['language_id'] = qoqa_lang_id
-            lang_values.append(values)
-
-        return {'product_translations': lang_values}
+        trans = self.get_connector_unit_for_model(ProductTranslations)
+        return trans.get_translations(record, normal_fields=fields)

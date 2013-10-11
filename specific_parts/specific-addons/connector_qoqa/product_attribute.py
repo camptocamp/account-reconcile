@@ -19,10 +19,13 @@
 #
 ##############################################################################
 
+import logging
 from openerp.osv import orm, fields
 from openerp.addons.connector.connector import ConnectorUnit
 from .unit.binder import QoQaDirectBinder
 from .backend import qoqa
+
+_logger = logging.getLogger(__name__)
 
 
 class attribute_attribute(orm.Model):
@@ -209,3 +212,47 @@ class ProductAttribute(ConnectorUnit):
                          for val in value]
             result[qoqa_name] = value
         return result
+
+
+@qoqa
+class ProductTranslations(ConnectorUnit):
+    """ Build a dict ready to use for the Mappings
+    with the translations and the translations of the
+    attributes (for products and templates).
+    """
+    _model_name = ['qoqa.product.product',
+                   'qoqa.product.template',
+                   ]
+
+    def get_translations(self, record, normal_fields=None):
+        """ The dict will contain:
+
+        * all the translations of ``normal_fields``
+        * all the translations of the translatable attributes
+
+        :param record: browse_record of product or template
+        :param normal_fields: list of tuples with source and destination
+        """
+        if normal_fields is None:
+            normal_fields = []
+        lang_ids = self.session.search('res.lang',
+                                       [('translatable', '=', True)])
+        lang_binder = self.get_binder_for_model('res.lang')
+        lang_values = []
+        for lang in self.session.browse('res.lang', lang_ids):
+            qoqa_lang_id = lang_binder.to_backend(lang.id)
+            if qoqa_lang_id is None:
+                _logger.debug('Language %s skipped for export because '
+                              'it has no qoqa_id', lang.code)
+                continue
+            with self.session.change_context({'lang': lang.code}):
+                lang_record = self.session.browse(self.model._name,
+                                                  record.id)
+            attrs = self.get_connector_unit_for_model(ProductAttribute)
+            values = attrs.get_values(lang_record, translatable=True)
+            for src, target in normal_fields:
+                values[target] = lang_record[src]
+            values['language_id'] = qoqa_lang_id
+            lang_values.append(values)
+
+        return {'translations': lang_values}

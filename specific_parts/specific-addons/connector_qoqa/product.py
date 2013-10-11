@@ -32,7 +32,7 @@ from .backend import qoqa
 from .unit.export_synchronizer import QoQaExporter
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
-from .product_attribute import ProductAttribute
+from .product_attribute import ProductAttribute, ProductTranslations
 
 
 class qoqa_product_product(orm.Model):
@@ -112,17 +112,36 @@ class ProductExporter(QoQaExporter):
 @qoqa
 class QoQaProductAdapter(QoQaAdapter):
     _model_name = 'qoqa.product.product'
-    _endpoint = 'variant'
+    _endpoint = 'variation'
 
 
 @qoqa
 class ProductExportMapper(ExportMapper):
     _model_name = 'qoqa.product.product'
 
-    direct = [('variants', 'name'),
+    direct = [('default_code', 'sku'),
+              ('ean13', 'ean'),
               ]
+
+    @mapping
+    def product_id(self, record):
+        binder = self.get_binder_for_model('qoqa.product.template')
+        openerp_id = record.product_tmpl_id.id
+        qoqa_id = binder.to_backend(openerp_id, wrap=True)
+        return {'product_id': qoqa_id}
 
     @mapping
     def attributes(self, record):
         attrs = self.get_connector_unit_for_model(ProductAttribute)
-        return attrs.get_values(record)
+        return attrs.get_values(record, translatable=False)
+
+    @mapping
+    def translations(self, record):
+        """ Map all the translatable values, including the attributes
+
+        Translatable fields for QoQa are sent in a `translations`
+        key and are not sent in the main record.
+        """
+        fields = [('variants', 'name')]
+        trans = self.get_connector_unit_for_model(ProductTranslations)
+        return trans.get_translations(record, normal_fields=fields)

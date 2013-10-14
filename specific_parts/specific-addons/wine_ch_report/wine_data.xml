@@ -226,5 +226,72 @@
             <field name="code">50</field>
         </record>
 
+
+        <record id="wine_bottle_mignonette" model="wine.bottle">
+            <field name="name">Mignonette</field>
+            <field name="code"></field>
+            <field name="volume">0.05</field>
+        </record>
+        <record id="wine_bottle_piccolo" model="wine.bottle">
+            <field name="name">Piccolo</field>
+            <field name="code"></field>
+            <field name="volume">0.2</field>
+        </record>
+        <record id="wine_bottle_demi_bouteille" model="wine.bottle">
+            <field name="name">Demi-bouteille</field>
+            <field name="code"></field>
+            <field name="volume">0.35</field>
+        </record>
+        <record id="wine_bottle_fillette" model="wine.bottle">
+            <field name="name">Fillette</field>
+            <field name="code"></field>
+            <field name="volume">0.375</field>
+        </record>
+        <record id="wine_bottle_desiree" model="wine.bottle">
+            <field name="name">Désirée</field>
+            <field name="code"></field>
+            <field name="volume">0.5</field>
+        </record>
+        <record id="wine_bottle_clavelin" model="wine.bottle">
+            <field name="name">Clavelin</field>
+            <field name="code"></field>
+            <field name="volume">0.62</field>
+        </record>
+        <record id="wine_bottle_bouteille" model="wine.bottle">
+            <field name="name">Bouteille</field>
+            <field name="code"></field>
+            <field name="volume">0.75</field>
+        </record>
+        <record id="wine_bottle_flute" model="wine.bottle">
+            <field name="name">Flûte</field>
+            <field name="code"></field>
+            <field name="volume">0.75</field>
+        </record>
+        <record id="wine_bottle_flasque" model="wine.bottle">
+            <field name="name">Flasque</field>
+            <field name="code"></field>
+            <field name="volume">1.5</field>
+        </record>
+        <record id="wine_bottle_magnum" model="wine.bottle">
+            <field name="name">Magnum</field>
+            <field name="code"></field>
+            <field name="volume">1.5</field>
+        </record>
+        <record id="wine_bottle_jeroboam" model="wine.bottle">
+            <field name="name">Jéroboam</field>
+            <field name="code"></field>
+            <field name="volume">3</field>
+        </record>
+        <record id="wine_bottle_melchizedec" model="wine.bottle">
+            <field name="name">Melchizèdec</field>
+            <field name="code"></field>
+            <field name="volume">30</field>
+        </record>
+        <record id="wine_bottle_adelaide" model="wine.bottle">
+            <field name="name">Adélaïde</field>
+            <field name="code"></field>
+            <field name="volume">93</field>
+        </record>
+
     </data>
 </openerp>

@@ -1,212 +1,212 @@
-id,code,name,currency_id,user_type/id,type,reconcile,company_id/id,parent_id/id
-pcg_CH_0,0,Plan comptable CH,,account.data_account_type_view_X,View,FALSE,scenario.qoqa_ch,
-pcg_CH_1,1,Actifs,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_10,10,Liquidités,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_1
-pcg_CH_1000,1000,Caisse,,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1010,1010,CCP 17-713231-4 (enc. Cartes crédit),,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1011,1011,CCP 10-780685-6,,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1012,1012,CCP 91-155371-5 EUR,EUR,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1013,1013,CCP 92-630326-1 EUR,EUR,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1014,1014,CCP 91-147215-1 USD,USD,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1015,1015,CCP 12-831083-4 (Enc. fact. manuelles),,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1016,1016,CCP 12-258688-3 (AP),,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1020,1020,UBS CC N 775748.01,,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1021,1021,UBS compte d'épargne entreprise,,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_1030,1030,PayPal QoQa,,account.data_account_type_bank_X,Liquidity,FALSE,scenario.qoqa_ch,pcg_CH_10
-pcg_CH_109,109,Comptes d'attente,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_1
-pcg_CH_1090,1090,Compte d'attente débiteurs,,account.data_account_type_asset_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_109
-pcg_CH_1091,1091,Compte d'attente,,account.data_account_type_asset_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_109
-pcg_CH_11,11,Créances,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_1
-pcg_CH_110,110,Créances résultant de ventes et de prestations de services,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1100,1100,Débiteurs traités par PostFinance Debit Direct,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_1101,1101,Débiteurs traités par Telekurs VISA,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_1103,1103,Débiteurs Clients général,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_1104,1104,Débiteurs traités manuellement,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_1105,1105,Débiteur Swikey,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_1106,1106,Débiteur PayPal,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_1109,1109,Provision pour perte sur débiteurs,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_110
-pcg_CH_111,111,Créances résultant de prestations envers des sociétés du groupe,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1110,1110,C/C QoQa France,EUR,account.data_account_type_payable_X,Payable,TRUE,scenario.qoqa_ch,pcg_CH_111
-pcg_CH_114,114,Autres créances à court terme envers des tiers,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1140,1140,Avances à court terme,,account.data_account_type_asset_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_114
-pcg_CH_1150,1150,Avance sur salaire,,account.data_account_type_asset_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_114
-pcg_CH_117,117,Créances envers des instituions publiques,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1170,1170,TVA déductible /achat de matières et prestations de service,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_117
-pcg_CH_1171,1171,TVA déductible/ investissement et autres charges d'exploitation,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_117
-pcg_CH_1176,1176,Impôts anticipés à récupérer,,account.data_account_type_asset_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_117
-pcg_CH_118,118,Capital-actions non libéré,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1180,1180,Capital-actions non libéré,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_118
-pcg_CH_119,119,Autres créances à court terme,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1192,1192,Acomptes aux fournisseurs,,account.data_account_type_payable_X,Payable,FALSE,scenario.qoqa_ch,pcg_CH_119
-pcg_CH_120,120,Stocks,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1200,1200,Stock de marchandises,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_120
-pcg_CH_1208,1208,Dépôt de garantie - Acomptes versés / marchandises,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_120
-pcg_CH_130,130,Actifs de régularisation,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_11
-pcg_CH_1300,1300,Actifs transitoire,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_130
-pcg_CH_14,14,Actifs immobilisés,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_1
-pcg_CH_140,140,Immobilisations financières,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_14
-pcg_CH_1411,1411,Dépôt Loyer- UBS CC 255-775748.MKU,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_140
-pcg_CH_1412,1412,Compte garantie douane (3691-0),,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_140
-pcg_CH_1413,1413,UBS Compte consignation,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_140
-pcg_CH_1415,1415,Dépôt Loyer- UBS CC 230-165762.MKH,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_140
-pcg_CH_142,142,Participations,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_14
-pcg_CH_1420,1420,Participations,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_142
-pcg_CH_1421,1421,Participations Melazic,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_142
-pcg_CH_1422,1422,Participations Slatex,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_142
-pcg_CH_1428,1428,Provision sur participations Melazic,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_142
-pcg_CH_1429,1429,Provision sur participations QoQa France,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_142
-pcg_CH_145,145,Créances à long terme envers des sociétés du groupe,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_14
-pcg_CH_1450,1450,Prêt QoQa France,EUR,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_145
-pcg_CH_1451,1451,Prêt Melazic,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_145
-pcg_CH_1459,1459,Provisions s/créances à long terme envers sociétés groupe,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_145
-pcg_CH_150,150,Immbilisations corporelles,,account.account_type_asset_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_14
-pcg_CH_1510,1510,Mobilier et agencement,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1519,1519,Fond d'amortissement sur mobilier et agencement,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1521,1521,Matériel informatique,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1524,1524,Installation de sécurité,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1529,1529,Fond d'amortissement sur matériel informatique,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1530,1530,Véhicules,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1539,1539,Fond d'amortissement sur véhicule,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_1580,1580,Montgolfière,,account.data_account_type_asset_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_150
-pcg_CH_2,2,Passifs,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_20,20,Dettes à court terme,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_2
-pcg_CH_200,200,Dettes à court terme résultants d'achats et de prestations de services envers des tiers,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_20
-pcg_CH_2000,2000,Dettes fournisseurs,,account.data_account_type_payable_X,Payable,TRUE,scenario.qoqa_ch,pcg_CH_200
-pcg_CH_2001,2001,Dettes fournisseurs en Euro,EUR,account.data_account_type_payable_X,Payable,TRUE,scenario.qoqa_ch,pcg_CH_200
-pcg_CH_2002,2002,Dettes fournisseurs en Dollars,USD,account.data_account_type_payable_X,Payable,TRUE,scenario.qoqa_ch,pcg_CH_200
-pcg_CH_2010,2010,C/C Divers Associations - collecte de dons,,account.data_account_type_liability_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_200
-pcg_CH_2030,2030,Acompte des clients,,account.data_account_type_receivable_X,Receivable,TRUE,scenario.qoqa_ch,pcg_CH_200
-pcg_CH_204,204,Bons clients,,account.account_type_liability_view_X,View,TRUE,scenario.qoqa_ch,pcg_CH_20
-pcg_CH_2040,2040,Bons d'achat,,account.data_account_type_liability_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_204
-pcg_CH_2041,2041,Bons de Rabais,,account.data_account_type_liability_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_204
-pcg_CH_2042,2042,Bons Remboursement,,account.data_account_type_liability_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_204
-pcg_CH_2043,2043,Bons Marketing,,account.data_account_type_liability_X,Regular,TRUE,scenario.qoqa_ch,pcg_CH_204
-pcg_CH_205,205,Dettes résultants d'achats et de prestations de services envers des sociétés du groupe,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_20
-pcg_CH_2050,2050,Dettes envers la filiale Slatex,,account.data_account_type_payable_X,Payable,FALSE,scenario.qoqa_ch,pcg_CH_205
-pcg_CH_216,216,Dettes financières à court terme envers des actionnaires,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_20
-pcg_CH_2160,2160,Meyer P. CC,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_216
-pcg_CH_22,22,Atures dettes à court terme,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_2
-pcg_CH_220,220,Dettes envers des insitutions publiques,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_22
-pcg_CH_2200,2200,TVA due,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_220
-pcg_CH_2201,2201,TVA à payer,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_220
-pcg_CH_223,223,Dividendes non encaissés ,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_22
-pcg_CH_2231,2231,Dividendes non encaissés des exercices précédents,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_223
-pcg_CH_227,227,Autres dettes à court terme envers des assurances sociales,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_22
-pcg_CH_2270,2270,C/C Caisse AVS,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_227
-pcg_CH_2271,2271,C/C LAA,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_227
-pcg_CH_2273,2273,C/C APG Maladie,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_227
-pcg_CH_2274,2274,C/C LPP,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_227
-pcg_CH_2290,2290,Salaires à payer,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_227
-pcg_CH_230,230,Passifs de régularisation et provisions,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_22
-pcg_CH_2300,2300,Passifs transitoires,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_230
-pcg_CH_2310,2310,Impôt à la source,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_230
-pcg_CH_2330,2330,Provision pour Garantie,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_230
-pcg_CH_28,28,Capitaux propres,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_2
-pcg_CH_280,280,Capital,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_28
-pcg_CH_2801,2801,Capital actions,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_280
-pcg_CH_290,290,Réserves,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_28
-pcg_CH_2900,2900,Réserves,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_290
-pcg_CH_2902,2902,Agio,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_290
-pcg_CH_299,299,Bénéfices/Pertes résultants du bilan,,account.account_type_liability_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_28
-pcg_CH_2990,2990,Bénéfices/Pertes reportées,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_299
-pcg_CH_2991,2991,Bénéfice/Perte de l'exercice,,account.data_account_type_liability_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_299
-pcg_CH_3,3,Comptes de produits,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_320,320,Chiffre d'affaires résultant des ventes de marchandises,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_3
-pcg_CH_3200,3200,Vente de marchandise,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_320
-pcg_CH_3201,3201,Ventes de marchandises - Exportation - QoQa France,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_320
-pcg_CH_3202,3202,Commissions dues par tiers,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_320
-pcg_CH_3210,3210,Frais d'envoi intinial,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_320
-pcg_CH_3211,3211,Refacturation Frais de renvoi,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_320
-pcg_CH_329,329,Déduction sur les ventes de marchandise,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_3
-pcg_CH_3291,3291,Rabais et réduction de prix,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_329
-pcg_CH_3293,3293,Commissions cartes de crédit et débit,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_329
-pcg_CH_3295,3295,Pertes sur débiteurs,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_329
-pcg_CH_3298,3298,Frais Service clientèle (bon Rabais),,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_329
-pcg_CH_3299,3299,Dotation provision pertes sur débiteurs,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_329
-pcg_CH_340,340,Chiffre d'affaires résultant des ventes de services,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_3
-pcg_CH_3400,3400,Ventes de services Publicitaire,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_340
-pcg_CH_4,4,Charges de marchandises et de services,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_42,42,Charges de marchandises,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_4
-pcg_CH_4200,4200,Achat de marchandises,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_42
-pcg_CH_4201,4201,Achat de marchandises - QoQa France,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_42
-pcg_CH_4280,4280,Variation du stock de marchandises,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_42
-pcg_CH_4281,4281,Dotation provision pour garantie,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_42
-pcg_CH_4286,4286,Remboursement Perte de marchandise,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_42
-pcg_CH_4290,4290,Escomptes,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_42
-pcg_CH_47,47,Charges directes d'achat,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_4
-pcg_CH_4700,4700,Frais d'achat,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_47
-pcg_CH_4701,4701,Frais d'emballage,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_47
-pcg_CH_4702,4702,Frais de port,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_47
-pcg_CH_4703,4703,Frais de manutention,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_47
-pcg_CH_5,5,Charges de personnel,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_5100,5100,Vacances,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_5200,5200,Salaires,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_5250,5250,Indemnités reçues non soumis à l'AVS,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_5251,5251,Indemnités reçues soumis à l'AVS,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_5605,5605,Prestations des assurances sociales,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_57,57,Charges sociales,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_5700,5700,"AVS, AI , APG, AC",,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_57
-pcg_CH_5710,5710,Contributions ALFA,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_57
-pcg_CH_5720,5720,LPP,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_57
-pcg_CH_5730,5730,LAA,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_57
-pcg_CH_5740,5740,APG Maladie,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_57
-pcg_CH_582,582,Autres charges du personnel,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_5
-pcg_CH_5820,5820,Autres charges du personnel,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_582
-pcg_CH_5821,5821,Formation,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_582
-pcg_CH_5822,5822,Frais professionnels,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_582
-pcg_CH_5823,5823,Taxe CO2,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_582
-pcg_CH_6,6,Autres charges d'exploitation,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_60,60,Loyers,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6000,6000,Loyer,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_60
-pcg_CH_6006,6006,Loyer du parking,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_60
-pcg_CH_6030,6030,Charges de chauffage,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_60
-pcg_CH_6040,6040,Frais de nettoyage des locaux,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_60
-pcg_CH_6070,6070,Frais de déménagement,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_60
-pcg_CH_62,62,Charges de véhicules,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6200,6200,Frais d'entretien véhicule,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_62
-pcg_CH_6220,6220,Assurances et taxes véhicule,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_62
-pcg_CH_6240,6240,Leasing véhicule,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_62
-pcg_CH_6271,6271,Part privée véhicule,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_62
-pcg_CH_63,63,Assurances,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6300,6300,Assurances entreprise,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_63
-pcg_CH_64,64,Charges d'énergie,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6400,6400,Electricité,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_64
-pcg_CH_65,65,Charges d'administration et d'informatique,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6500,6500,Frais admnistratifs,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6510,6510,Téléphone,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6530,6530,Honoraires Fixes,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6531,6531,Honoraires Graphisme et Marketing,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6532,6532,Honoraires divers,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6570,6570,Licences IT,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6571,6571,Frais entretien IT,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6572,6572,Frais informatique ERP,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_6573,6573,Abonnement et cotisationns,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_65
-pcg_CH_66,66,Publicité et frais marketing,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6600,6600,Publicité,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_6601,6601,"Evènements publicitaires (BBQ, etc)",,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_6602,6602,Sponsoring - Don,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_6603,6603,Frais Marketing Bons Marketing,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_6640,6640,Frais de déplacement,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_6641,6641,Frais forfaitaires,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_6642,6642,Frais de réception,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_66
-pcg_CH_68,68,Résultat financier,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_681,681,Dotation pour provisions sur participations ,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_68
-pcg_CH_6812,6812,Dotation provision sur participations,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_681
-pcg_CH_684,684,Charges financières ,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_68
-pcg_CH_6840,6840,Frais bancaires et CCP,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_684
-pcg_CH_6841,6841,Frais Financiers,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_68
-pcg_CH_6842,6842,Perte de change,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_68
-pcg_CH_685,685,Produits financiers,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_68
-pcg_CH_6850,6850,Produits financiers,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_685
-pcg_CH_6892,6892,Gain de change,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_685
-pcg_CH_69,69,Amortissements,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_6
-pcg_CH_6900,6900,Dépréciations sur immobilisations financières,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_69
-pcg_CH_6920,6920,Amortissements sur immobilisations corporelles,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_69
-pcg_CH_74,74,Dotation provision créances l.t. envers stés groupe,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_7410,7410,Dotation provision créances l.t. envers stés groupe,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_74
-pcg_CH_80,80,Charges et produits extraordinaires,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_8000,8000,Produits extraordinaires,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_80
-pcg_CH_8010,8010,Charges extraordinaires,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_80
-pcg_CH_89,89,Charges d'impôt,,account.account_type_income_view_X,View,FALSE,scenario.qoqa_ch,pcg_CH_0
-pcg_CH_8900,8900,Impôts,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_89
-pcg_CH_8901,8901,Impôt sur le capital,,account.data_account_type_income_X,Regular,FALSE,scenario.qoqa_ch,pcg_CH_89
+id;code;name;currency_id;user_type/id;type;reconcile;company_id/id;parent_id/id
+scenario.pcg_CH_0;0;Plan comptable CH;;account.data_account_type_view_X;View;FALSE;scenario.qoqa_ch;
+scenario.pcg_CH_1;1;Actifs;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_10;10;Liquidités;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_1
+scenario.pcg_CH_1000;1000;Caisse;;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1010;1010;CCP 17-713231-4 (enc. Cartes crédit);;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1011;1011;CCP 10-780685-6;;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1012;1012;CCP 91-155371-5 EUR;EUR;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1013;1013;CCP 92-630326-1 EUR;EUR;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1014;1014;CCP 91-147215-1 USD;USD;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1015;1015;CCP 12-831083-4 (Enc. fact. manuelles);;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1016;1016;CCP 12-258688-3 (AP);;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1020;1020;UBS CC N 775748.01;;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1021;1021;UBS compte d'épargne entreprise;;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_1030;1030;PayPal QoQa;;account.data_account_type_bank_X;Liquidity;FALSE;scenario.qoqa_ch;scenario.pcg_CH_10
+scenario.pcg_CH_109;109;Comptes d'attente;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_1
+scenario.pcg_CH_1090;1090;Compte d'attente débiteurs;;account.data_account_type_asset_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_109
+scenario.pcg_CH_1091;1091;Compte d'attente;;account.data_account_type_asset_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_109
+scenario.pcg_CH_11;11;Créances;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_1
+scenario.pcg_CH_110;110;Créances résultant de ventes et de prestations de services;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1100;1100;Débiteurs traités par PostFinance Debit Direct;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_1101;1101;Débiteurs traités par Telekurs VISA;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_1103;1103;Débiteurs Clients général;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_1104;1104;Débiteurs traités manuellement;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_1105;1105;Débiteur Swikey;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_1106;1106;Débiteur PayPal;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_1109;1109;Provision pour perte sur débiteurs;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_110
+scenario.pcg_CH_111;111;Créances résultant de prestations envers des sociétés du groupe;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1110;1110;C/C QoQa France;EUR;account.data_account_type_payable_X;Payable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_111
+scenario.pcg_CH_114;114;Autres créances à court terme envers des tiers;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1140;1140;Avances à court terme;;account.data_account_type_asset_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_114
+scenario.pcg_CH_1150;1150;Avance sur salaire;;account.data_account_type_asset_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_114
+scenario.pcg_CH_117;117;Créances envers des instituions publiques;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1170;1170;TVA déductible /achat de matières et prestations de service;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_117
+scenario.pcg_CH_1171;1171;TVA déductible/ investissement et autres charges d'exploitation;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_117
+scenario.pcg_CH_1176;1176;Impôts anticipés à récupérer;;account.data_account_type_asset_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_117
+scenario.pcg_CH_118;118;Capital-actions non libéré;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1180;1180;Capital-actions non libéré;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_118
+scenario.pcg_CH_119;119;Autres créances à court terme;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1192;1192;Acomptes aux fournisseurs;;account.data_account_type_payable_X;Payable;FALSE;scenario.qoqa_ch;scenario.pcg_CH_119
+scenario.pcg_CH_120;120;Stocks;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1200;1200;Stock de marchandises;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_120
+scenario.pcg_CH_1208;1208;Dépôt de garantie - Acomptes versés / marchandises;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_120
+scenario.pcg_CH_130;130;Actifs de régularisation;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_11
+scenario.pcg_CH_1300;1300;Actifs transitoire;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_130
+scenario.pcg_CH_14;14;Actifs immobilisés;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_1
+scenario.pcg_CH_140;140;Immobilisations financières;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_14
+scenario.pcg_CH_1411;1411;Dépôt Loyer- UBS CC 255-775748.MKU;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_140
+scenario.pcg_CH_1412;1412;Compte garantie douane (3691-0);;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_140
+scenario.pcg_CH_1413;1413;UBS Compte consignation;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_140
+scenario.pcg_CH_1415;1415;Dépôt Loyer- UBS CC 230-165762.MKH;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_140
+scenario.pcg_CH_142;142;Participations;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_14
+scenario.pcg_CH_1420;1420;Participations;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_142
+scenario.pcg_CH_1421;1421;Participations Melazic;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_142
+scenario.pcg_CH_1422;1422;Participations Slatex;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_142
+scenario.pcg_CH_1428;1428;Provision sur participations Melazic;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_142
+scenario.pcg_CH_1429;1429;Provision sur participations QoQa France;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_142
+scenario.pcg_CH_145;145;Créances à long terme envers des sociétés du groupe;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_14
+scenario.pcg_CH_1450;1450;Prêt QoQa France;EUR;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_145
+scenario.pcg_CH_1451;1451;Prêt Melazic;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_145
+scenario.pcg_CH_1459;1459;Provisions s/créances à long terme envers sociétés groupe;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_145
+scenario.pcg_CH_150;150;Immbilisations corporelles;;account.account_type_asset_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_14
+scenario.pcg_CH_1510;1510;Mobilier et agencement;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1519;1519;Fond d'amortissement sur mobilier et agencement;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1521;1521;Matériel informatique;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1524;1524;Installation de sécurité;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1529;1529;Fond d'amortissement sur matériel informatique;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1530;1530;Véhicules;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1539;1539;Fond d'amortissement sur véhicule;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_1580;1580;Montgolfière;;account.data_account_type_asset_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_150
+scenario.pcg_CH_2;2;Passifs;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_20;20;Dettes à court terme;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_2
+scenario.pcg_CH_200;200;Dettes à court terme résultants d'achats et de prestations de services envers des tiers;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_20
+scenario.pcg_CH_2000;2000;Dettes fournisseurs;;account.data_account_type_payable_X;Payable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_200
+scenario.pcg_CH_2001;2001;Dettes fournisseurs en Euro;EUR;account.data_account_type_payable_X;Payable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_200
+scenario.pcg_CH_2002;2002;Dettes fournisseurs en Dollars;USD;account.data_account_type_payable_X;Payable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_200
+scenario.pcg_CH_2010;2010;C/C Divers Associations - collecte de dons;;account.data_account_type_liability_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_200
+scenario.pcg_CH_2030;2030;Acompte des clients;;account.data_account_type_receivable_X;Receivable;TRUE;scenario.qoqa_ch;scenario.pcg_CH_200
+scenario.pcg_CH_204;204;Bons clients;;account.account_type_liability_view_X;View;TRUE;scenario.qoqa_ch;scenario.pcg_CH_20
+scenario.pcg_CH_2040;2040;Bons d'achat;;account.data_account_type_liability_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_204
+scenario.pcg_CH_2041;2041;Bons de Rabais;;account.data_account_type_liability_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_204
+scenario.pcg_CH_2042;2042;Bons Remboursement;;account.data_account_type_liability_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_204
+scenario.pcg_CH_2043;2043;Bons Marketing;;account.data_account_type_liability_X;Regular;TRUE;scenario.qoqa_ch;scenario.pcg_CH_204
+scenario.pcg_CH_205;205;Dettes résultants d'achats et de prestations de services envers des sociétés du groupe;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_20
+scenario.pcg_CH_2050;2050;Dettes envers la filiale Slatex;;account.data_account_type_payable_X;Payable;FALSE;scenario.qoqa_ch;scenario.pcg_CH_205
+scenario.pcg_CH_216;216;Dettes financières à court terme envers des actionnaires;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_20
+scenario.pcg_CH_2160;2160;Meyer P. CC;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_216
+scenario.pcg_CH_22;22;Atures dettes à court terme;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_2
+scenario.pcg_CH_220;220;Dettes envers des insitutions publiques;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_22
+scenario.pcg_CH_2200;2200;TVA due;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_220
+scenario.pcg_CH_2201;2201;TVA à payer;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_220
+scenario.pcg_CH_223;223;Dividendes non encaissés ;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_22
+scenario.pcg_CH_2231;2231;Dividendes non encaissés des exercices précédents;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_223
+scenario.pcg_CH_227;227;Autres dettes à court terme envers des assurances sociales;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_22
+scenario.pcg_CH_2270;2270;C/C Caisse AVS;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_227
+scenario.pcg_CH_2271;2271;C/C LAA;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_227
+scenario.pcg_CH_2273;2273;C/C APG Maladie;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_227
+scenario.pcg_CH_2274;2274;C/C LPP;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_227
+scenario.pcg_CH_2290;2290;Salaires à payer;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_227
+scenario.pcg_CH_230;230;Passifs de régularisation et provisions;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_22
+scenario.pcg_CH_2300;2300;Passifs transitoires;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_230
+scenario.pcg_CH_2310;2310;Impôt à la source;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_230
+scenario.pcg_CH_2330;2330;Provision pour Garantie;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_230
+scenario.pcg_CH_28;28;Capitaux propres;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_2
+scenario.pcg_CH_280;280;Capital;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_28
+scenario.pcg_CH_2801;2801;Capital actions;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_280
+scenario.pcg_CH_290;290;Réserves;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_28
+scenario.pcg_CH_2900;2900;Réserves;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_290
+scenario.pcg_CH_2902;2902;Agio;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_290
+scenario.pcg_CH_299;299;Bénéfices/Pertes résultants du bilan;;account.account_type_liability_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_28
+scenario.pcg_CH_2990;2990;Bénéfices/Pertes reportées;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_299
+scenario.pcg_CH_2991;2991;Bénéfice/Perte de l'exercice;;account.data_account_type_liability_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_299
+scenario.pcg_CH_3;3;Comptes de produits;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_320;320;Chiffre d'affaires résultant des ventes de marchandises;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_3
+scenario.pcg_CH_3200;3200;Vente de marchandise;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_320
+scenario.pcg_CH_3201;3201;Ventes de marchandises - Exportation - QoQa France;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_320
+scenario.pcg_CH_3202;3202;Commissions dues par tiers;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_320
+scenario.pcg_CH_3210;3210;Frais d'envoi intinial;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_320
+scenario.pcg_CH_3211;3211;Refacturation Frais de renvoi;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_320
+scenario.pcg_CH_329;329;Déduction sur les ventes de marchandise;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_3
+scenario.pcg_CH_3291;3291;Rabais et réduction de prix;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_329
+scenario.pcg_CH_3293;3293;Commissions cartes de crédit et débit;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_329
+scenario.pcg_CH_3295;3295;Pertes sur débiteurs;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_329
+scenario.pcg_CH_3298;3298;Frais Service clientèle (bon Rabais);;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_329
+scenario.pcg_CH_3299;3299;Dotation provision pertes sur débiteurs;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_329
+scenario.pcg_CH_340;340;Chiffre d'affaires résultant des ventes de services;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_3
+scenario.pcg_CH_3400;3400;Ventes de services Publicitaire;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_340
+scenario.pcg_CH_4;4;Charges de marchandises et de services;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_42;42;Charges de marchandises;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_4
+scenario.pcg_CH_4200;4200;Achat de marchandises;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_42
+scenario.pcg_CH_4201;4201;Achat de marchandises - QoQa France;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_42
+scenario.pcg_CH_4280;4280;Variation du stock de marchandises;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_42
+scenario.pcg_CH_4281;4281;Dotation provision pour garantie;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_42
+scenario.pcg_CH_4286;4286;Remboursement Perte de marchandise;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_42
+scenario.pcg_CH_4290;4290;Escomptes;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_42
+scenario.pcg_CH_47;47;Charges directes d'achat;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_4
+scenario.pcg_CH_4700;4700;Frais d'achat;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_47
+scenario.pcg_CH_4701;4701;Frais d'emballage;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_47
+scenario.pcg_CH_4702;4702;Frais de port;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_47
+scenario.pcg_CH_4703;4703;Frais de manutention;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_47
+scenario.pcg_CH_5;5;Charges de personnel;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_5100;5100;Vacances;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_5200;5200;Salaires;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_5250;5250;Indemnités reçues non soumis à l'AVS;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_5251;5251;Indemnités reçues soumis à l'AVS;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_5605;5605;Prestations des assurances sociales;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_57;57;Charges sociales;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_5700;5700;AVS, AI , APG, AC;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_57
+scenario.pcg_CH_5710;5710;Contributions ALFA;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_57
+scenario.pcg_CH_5720;5720;LPP;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_57
+scenario.pcg_CH_5730;5730;LAA;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_57
+scenario.pcg_CH_5740;5740;APG Maladie;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_57
+scenario.pcg_CH_582;582;Autres charges du personnel;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_5
+scenario.pcg_CH_5820;5820;Autres charges du personnel;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_582
+scenario.pcg_CH_5821;5821;Formation;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_582
+scenario.pcg_CH_5822;5822;Frais professionnels;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_582
+scenario.pcg_CH_5823;5823;Taxe CO2;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_582
+scenario.pcg_CH_6;6;Autres charges d'exploitation;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_60;60;Loyers;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6000;6000;Loyer;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_60
+scenario.pcg_CH_6006;6006;Loyer du parking;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_60
+scenario.pcg_CH_6030;6030;Charges de chauffage;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_60
+scenario.pcg_CH_6040;6040;Frais de nettoyage des locaux;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_60
+scenario.pcg_CH_6070;6070;Frais de déménagement;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_60
+scenario.pcg_CH_62;62;Charges de véhicules;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6200;6200;Frais d'entretien véhicule;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_62
+scenario.pcg_CH_6220;6220;Assurances et taxes véhicule;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_62
+scenario.pcg_CH_6240;6240;Leasing véhicule;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_62
+scenario.pcg_CH_6271;6271;Part privée véhicule;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_62
+scenario.pcg_CH_63;63;Assurances;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6300;6300;Assurances entreprise;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_63
+scenario.pcg_CH_64;64;Charges d'énergie;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6400;6400;Electricité;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_64
+scenario.pcg_CH_65;65;Charges d'administration et d'informatique;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6500;6500;Frais admnistratifs;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6510;6510;Téléphone;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6530;6530;Honoraires Fixes;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6531;6531;Honoraires Graphisme et Marketing;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6532;6532;Honoraires divers;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6570;6570;Licences IT;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6571;6571;Frais entretien IT;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6572;6572;Frais informatique ERP;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_6573;6573;Abonnement et cotisationns;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_65
+scenario.pcg_CH_66;66;Publicité et frais marketing;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6600;6600;Publicité;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_6601;6601;Evènements publicitaires (BBQ, etc);;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_6602;6602;Sponsoring - Don;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_6603;6603;Frais Marketing Bons Marketing;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_6640;6640;Frais de déplacement;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_6641;6641;Frais forfaitaires;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_6642;6642;Frais de réception;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_66
+scenario.pcg_CH_68;68;Résultat financier;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_681;681;Dotation pour provisions sur participations ;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_68
+scenario.pcg_CH_6812;6812;Dotation provision sur participations;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_681
+scenario.pcg_CH_684;684;Charges financières ;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_68
+scenario.pcg_CH_6840;6840;Frais bancaires et CCP;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_684
+scenario.pcg_CH_6841;6841;Frais Financiers;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_68
+scenario.pcg_CH_6842;6842;Perte de change;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_68
+scenario.pcg_CH_685;685;Produits financiers;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_68
+scenario.pcg_CH_6850;6850;Produits financiers;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_685
+scenario.pcg_CH_6892;6892;Gain de change;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_685
+scenario.pcg_CH_69;69;Amortissements;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_6
+scenario.pcg_CH_6900;6900;Dépréciations sur immobilisations financières;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_69
+scenario.pcg_CH_6920;6920;Amortissements sur immobilisations corporelles;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_69
+scenario.pcg_CH_74;74;Dotation provision créances l.t. envers stés groupe;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_7410;7410;Dotation provision créances l.t. envers stés groupe;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_74
+scenario.pcg_CH_80;80;Charges et produits extraordinaires;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_8000;8000;Produits extraordinaires;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_80
+scenario.pcg_CH_8010;8010;Charges extraordinaires;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_80
+scenario.pcg_CH_89;89;Charges d'impôt;;account.account_type_income_view_X;View;FALSE;scenario.qoqa_ch;scenario.pcg_CH_0
+scenario.pcg_CH_8900;8900;Impôts;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_89
+scenario.pcg_CH_8901;8901;Impôt sur le capital;;account.data_account_type_income_X;Regular;FALSE;scenario.qoqa_ch;scenario.pcg_CH_89

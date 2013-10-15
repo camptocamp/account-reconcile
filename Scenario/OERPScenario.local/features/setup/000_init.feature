@@ -51,14 +51,17 @@ Feature: Parameter the new database
         | statement_voucher_killer          |
         # Swiss localization
         | l10n_ch                           |
+        | l10n_ch_bank                      |
         | l10n_ch_base_bank                 |
-        | l10n_ch_zip                       |
         | l10n_ch_dta                       |
         | l10n_ch_payment_slip              |
+        | l10n_ch_zip                       |
         | l10n_multilang                    |
         # French localization
         | l10n_fr                           |
         | l10n_fr_rib                       |
+        # Financial optional
+        | account_credit_control            |
         # Other
         | sale_order_webkit                 |
         | connector_ecommerce               |

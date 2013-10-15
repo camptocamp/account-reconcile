@@ -62,3 +62,4 @@ Feature: Configure the CH's accounting
       | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |
       | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |
       | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |
+

@@ -97,3 +97,9 @@ Feature: Parameter the new database
     | login |
     | admin |
   Then we assign all groups to the users
+
+
+  @account_type
+  Scenario: importing Chart of account from CSV
+    Given "account.account.type" is imported from CSV "setup/type_de_compte.csv" using delimiter ","
+

@@ -62,3 +62,7 @@ Feature: Configure the CH's accounting
       | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |
       | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |
       | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |
+
+  @chart_of_account_ch
+  Scenario: importing Chart of account from CSV
+    Given "account.account" is imported from CSV "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv" using delimiter ","

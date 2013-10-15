@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@connector_qoqa @core_setup
+@connector_qoqa @setup
 
 Feature: Configure the connector's backend
 
@@ -17,9 +17,9 @@ Feature: Configure the connector's backend
   Scenario: Configure the QoQa backend
   Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
     And having:
-         | key             | value                      |
-         | url             | https://ch.test02.qoqa.com |
-         | default_lang_id | by code: fr_FR             |
+         | key             | value                        |
+         | url             | http://admin.test02.qoqa.com |
+         | default_lang_id | by code: fr_FR               |
 
   @automatic_workflows
   Scenario: Configure Sales Automatic Workflows
@@ -89,3 +89,14 @@ Feature: Configure the connector's backend
       | scenario.payment_method_visa_fr_old        | Visa  - plus utilisé             | by oid: scenario.journal_visa_fr_old       |
       | scenario.payment_method_mastercard_fr_old  | Mastercard  - plus utilisé       | by oid: scenario.journal_mastercard_fr_old |
       | scenario.payment_method_sogenactif_fr_old  | ? Sogenactif  - plus utilisé     | by oid: scenario.journal_sogenactif_old    |
+
+  @qoqa_id @lang
+  Scenario: Set the qoqa_ids on the languages
+    Given I find a "res.lang" with code: fr_FR
+    And having:
+         | key     | value |
+         | qoqa_id | 1     |
+    Given I find a "res.lang" with code: de_DE
+    And having:
+         | key     | value |
+         | qoqa_id | 2     |

@@ -9,20 +9,9 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@attribute_set @core_setup
+@attribute_set @setup
 
 Feature: Configure the attribute sets
-
-  @modules
-  Scenario: install modules
-    Given I install the required modules with dependencies:
-        | name                           |
-        | product_custom_attributes      |
-    Then we select users below:
-    | login |
-    | admin |
-    And we assign to users the groups below
-        | base.group_advanced_attribute |
 
   @template_attributes
   Scenario Outline: Create attributes for product templates
@@ -34,53 +23,40 @@ Feature: Configure the attribute sets
         | field_description | <descr>                             |
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
-        | required          | <required>                          |
+        | required_on_views | <required>                          |
 
   Examples: Template attributes
       | name       | descr      | type | translate | required |
       | brand      | Brand      | char | True      | False    |
       | highlights | Highlights | text | True      | False    |
 
-  Examples: Template attributes for the wine
+  Examples: Template attributes for the wine (or liquor)
       | name         | descr       | type   | translate | required |
-      | winemaker    | Winemaker   | char   | False     | True     |
+      | winemaker    | Winemaker   | select | False     | True     |
       | appellation  | Appellation | char   | False     | True     |
-      | wine_name    | Wine Name   | char   | False     | False    |
       | millesime    | Millesime   | char   | False     | False    |
-      | AOC          | AOC         | boolean| False     | False    |
       | wine_region  | Region      | char   | False     | False    |
-      | capacity     | Capacity    | float  | False     | False    |
-      | wine_color   | Color       | select | False     | True     |
+      | capacity     | Capacity    | select | False     | True     |
       | wine_type    | Type        | select | False     | True     |
+
+  Examples: Template attributes for the liquor (or liquor)
+      | name   | descr             | type  | translate | required |
+      | ageing | Ageing            | float | False     | False    |
+      | abv    | Alcohol by volume | float | False     | False    |
 
   @country_options
   Scenario: Create the options for the country attribute
-  Given I need a "attribute.attribute" with oid: scenario.attr_country
+  Given I need a "attribute.attribute" with oid: scenario.attr_country_id
     And I set the attribute model to oid: procurement.model_product_template
     And having:
         | key               | value                               |
-        | name              | x_country                           |
+        | name              | x_country_id                        |
         | field_description | Country                             |
         | attribute_type    | select                              |
-        | required          | True                                |
+        | required_on_views | True                                |
         | relation          | res.country                         |
         | relation_model_id | by oid: base.model_res_country      |
     And I generate the attribute options from the model res.country
-
-  @wine_color_options
-  Scenario Outline: Create the options for the wine_color attribute
-  Given I need a "attribute.option" with oid: scenario.attr_option_wine_color_<oid>
-    And having:
-        | key          | value                            |
-        | name         | <name>                           |
-        | attribute_id | by oid: scenario.attr_wine_color |
-        | sequence     | <sequence>                       |
-
-  Examples: Options
-      | oid   | name  | sequence |
-      | red   | Rouge | 0        |
-      | white | Blanc | 1        |
-      | rose  | Rosé  | 2        |
 
   @wine_type_options
   Scenario Outline: Create the options for the wine_type attribute
@@ -93,9 +69,40 @@ Feature: Configure the attribute sets
 
   Examples: Options
       | oid      | name     | sequence |
-      | sec      | Sec      | 0        |
-      | mousseux | Mousseux | 1        |
-      | other    | Autre    | 2        |
+      | red      | Rouge    | 0        |
+      | white    | Blanc    | 1        |
+      | rose     | Rosé     | 2        |
+      | mousseux | Mousseux | 3        |
+      | other    | Autre    | 4        |
+
+  @wine_capacity_options
+  Scenario Outline: Create the options for the wine_capacity attribute
+  Given I need a "attribute.option" with oid: scenario.attr_option_capacity_<oid>
+    And having:
+        | key          | value                               |
+        | name         | <name>                              |
+        | attribute_id | by oid: scenario.attr_capacity      |
+        | sequence     | <sequence>                          |
+
+  Examples: Options
+      | oid  | name     | sequence |
+      | 075  | 75 cl.   | 0        |
+      | 05   | 50 cl.   | 1        |
+      | 0375 | 37.5 cl. | 2        |
+      | 020  | 20 cl.   | 3        |
+      | 300  | 300 cl.  | 4        |
+      | 150  | 150 cl.  | 5        |
+
+  @wine_class_id_options
+  Scenario: Create the options for the wine_class_id attribute
+  Given I need a "attribute.attribute" with oid: scenario.attr_wine_class_id
+    And having:
+        | key               | value                                                       |
+        | field_id          | by oid: wine_ch_report.field_product_template_wine_class_id |
+        | attribute_type    | select                                                      |
+        | relation_model_id | by oid: wine_ch_report.model_wine_class                     |
+    And I generate the attribute options from the model wine.class
+
 
   @variant_attributes
   Scenario Outline: Create attributes for product products
@@ -107,11 +114,11 @@ Feature: Configure the attribute sets
         | field_description | <descr>                             |
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
-        | required          | <required>                          |
+        | required_on_views | <required>                          |
 
   Examples: Variant attributes
       | name             | descr            | type      | translate | required |
-      | warranty         | Warranty         | char      | True      | True     |
+      | warranty         | Warranty         | integer   | False     | True     |
       | dimension_big    | Dimension big    | float     | True      | False    |
       | dimension_medium | Dimension medium | float     | False     | False    |
       | dimension_small  | Dimension small  | float     | False     | False    |
@@ -132,7 +139,7 @@ Feature: Configure the attribute sets
         | name             | Caractéristiques principales |
         | attribute_set_id | by oid: scenario.set_general |
 
-  @general_groups
+  @general_groups @general
   Scenario Outline: Create attribute locations (set + group + attribute)
   Given I need a "attribute.location" with oid: scenario.attr_location_main_<attribute_name>
     And having:
@@ -172,7 +179,7 @@ Feature: Configure the attribute sets
         | name             | Caractéristiques du vin      |
         | attribute_set_id | by oid: scenario.set_wine    |
 
-  @wine_group_general
+  @wine_group_general @wine
   Scenario Outline: Create attribute locations (set + group + attribute)
   Given I need a "attribute.location" with oid: scenario.attr_location_wine_<attribute_name>
     And having:
@@ -191,7 +198,7 @@ Feature: Configure the attribute sets
       | dimension_small  | 5        |
       | variant_weight   | 6        |
 
-  @wine_group_wine
+  @wine_group_wine @wine
   Scenario Outline: Create attribute locations (set + group + attribute)
   Given I need a "attribute.location" with oid: scenario.attr_location_wine_<attribute_name>
     And having:
@@ -204,11 +211,67 @@ Feature: Configure the attribute sets
        | attribute_name | sequence |
        | winemaker      | 10       |
        | appellation    | 11       |
-       | wine_name      | 12       |
        | millesime      | 13       |
-       | AOC            | 14       |
-       | country        | 15       |
+       | country_id     | 15       |
        | wine_region    | 16       |
        | capacity       | 17       |
-       | wine_color     | 18       |
        | wine_type      | 18       |
+       | wine_class_id  | 19       |
+
+  @liquor
+  Scenario: Create an attribute set for liquor
+  Given I need a "attribute.set" with oid: scenario.set_liquor
+    And I set the attribute model to oid: procurement.model_product_product
+    And having:
+        | key  | value          |
+        | name | Spiritueux     |
+  Given I need a "attribute.group" with oid: scenario.group_liquor_main
+    And I set the attribute model to oid: procurement.model_product_product
+    And having:
+        | key              | value                          |
+        | name             | Caractéristiques principales   |
+        | attribute_set_id | by oid: scenario.set_liquor    |
+  Given I need a "attribute.group" with oid: scenario.group_liquor_liquor
+    And I set the attribute model to oid: procurement.model_product_product
+    And having:
+        | key              | value                          |
+        | name             | Caractéristiques du spiritueux |
+        | attribute_set_id | by oid: scenario.set_liquor    |
+
+  @liquor_group_general @liquor
+  Scenario Outline: Create attribute locations (set + group + attribute)
+  Given I need a "attribute.location" with oid: scenario.attr_location_liquor_<attribute_name>
+    And having:
+        | key                | value                                  |
+        | attribute_group_id | by oid: scenario.group_liquor_main     |
+        | attribute_id       | by oid: scenario.attr_<attribute_name> |
+        | sequence           | <sequence>                             |
+
+  Examples: liquor Main Group
+      | attribute_name   | sequence |
+      | brand            | 0        |
+      | highlights       | 1        |
+      | warranty         | 2        |
+      | dimension_big    | 3        |
+      | dimension_medium | 4        |
+      | dimension_small  | 5        |
+      | variant_weight   | 6        |
+
+  @liquor_group_liquor @liquor
+  Scenario Outline: Create attribute locations (set + group + attribute)
+  Given I need a "attribute.location" with oid: scenario.attr_location_liquor_<attribute_name>
+    And having:
+        | key                | value                                  |
+        | attribute_group_id | by oid: scenario.group_liquor_liquor   |
+        | attribute_id       | by oid: scenario.attr_<attribute_name> |
+        | sequence           | <sequence>                             |
+
+  Examples: liquor Group
+       | attribute_name | sequence |
+       | winemaker      | 10       |
+       | appellation    | 11       |
+       | millesime      | 12       |
+       | ageing         | 13       |
+       | country_id     | 14       |
+       | capacity       | 15       |
+       | abv            | 16       |

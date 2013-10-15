@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@accounting_fr @core_setup
+@accounting_fr @setup
 
 Feature: Configure the FR's accounting
 

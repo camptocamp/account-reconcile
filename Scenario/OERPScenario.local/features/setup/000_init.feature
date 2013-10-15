@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@core_setup
+@setup
 
 Feature: Parameter the new database
   In order to have a coherent installation
@@ -32,6 +32,10 @@ Feature: Parameter the new database
         | multi_company                  |
         | base_import                    |
         | l10n_ch                        |
+        | l10n_ch_base_bank              |
+        | l10n_ch_zip                    |
+        | l10n_ch_dta                    |
+        | l10n_ch_payment_slip           |
         | l10n_fr                        |
         | stock                          |
         | sale                           |
@@ -42,6 +46,9 @@ Feature: Parameter the new database
         | product_multi_company          |
         | crm_claim_rma                  |
         | specific_fct                   |
+        | product_custom_attributes      |
+        | wine_ch_report                 |
+        | discount_coupon                |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

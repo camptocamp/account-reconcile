@@ -39,6 +39,7 @@ Feature: Parameter the new database
         | connector_ecommerce            |
         | connector_qoqa                 |
         | purchase_landed_costs          |
+        | product_multi_company          |
         | crm_claim_rma                  |
         | specific_fct                   |
     Then my modules should have been installed and models reloaded

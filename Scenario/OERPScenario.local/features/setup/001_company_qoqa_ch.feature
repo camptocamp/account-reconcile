@@ -87,6 +87,9 @@ Feature: Configure QoQa.ch
     And I want to generate account chart from chart template named "Plan comptable STERCHI" with "4" digits for company "QoQa Services SA"
     When I generate the chart
     Then accounts should be available for company "QoQa Services SA"
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    And Create external ids for accounts from "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv"
+    And "account.account" is imported from CSV "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv" using delimiter ";"
 
   @fiscalyear_ch
     Scenario: create fiscal years

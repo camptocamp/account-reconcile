@@ -18,15 +18,15 @@ Feature: Configure the CH's accounting
     Given I am configuring the company with ref "scenario.qoqa_ch"
     Given I need a "account.journal" with oid: <journal_oid>
     And having:
-      | key                       | value                                     |
-      | name                      | <journal_name>                            |
-      | code                      | <journal_code>                            |
-      | type                      | bank                                      |
-      | company_id                | by oid: scenario.qoqa_ch                  |
-      | currency                  | <currency> |
-      | default_debit_account_id  | by code: <acc_code>                       |
-      | default_credit_account_id | by code: <acc_code>                       |
-      | allow_date                | false                                     |
+      | key                       | value                       |
+      | name                      | <journal_name>              |
+      | code                      | <journal_code>              |
+      | type                      | bank                        |
+      | company_id                | by oid: scenario.qoqa_ch    |
+      | currency                  | <currency>                  |
+      | default_debit_account_id  | by code: <acc_code>         |
+      | default_credit_account_id | by code: <acc_code>         |
+      | allow_date                | false                       |
     Given I need a "res.partner.bank" with oid: <bank_oid>
     And having:
       | key        | value                     |

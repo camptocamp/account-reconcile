@@ -11,6 +11,8 @@ import erppeek
 logger = logging.getLogger('openerp.behave')
 
 DATADIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', 'data'))
+
+
 class csv_dialect_chart:
     delimiter = ';'
     quotechar = '"'
@@ -19,6 +21,7 @@ class csv_dialect_chart:
     skipinitialspace = False
     lineterminator = '\r\n'
     quoting = csv.QUOTE_MINIMAL
+
 
 @step('Create external ids for accounts from "{filename}"')
 def impl(ctx, filename):
@@ -37,7 +40,7 @@ def impl(ctx, filename):
                 module = ''
                 external_id = row['id']
             account_list = AccountAccount.browse([('company_id', '=', company_id),
-                                             ('code', '=', code)])
+                                                  ('code', '=', code)])
             # if an account with this code exists
             if account_list:
                 account = account_list[0]
@@ -54,12 +57,28 @@ def impl(ctx, filename):
                     IrModelData.create(data)
 
 
+@step('Delete accounts not listed by code in "{filename}"')
+def delete_account_impl(ctx, filename):
+    AccountAccount = model('account.account')
+    company_id = getattr(ctx, 'company_id', False)
+
+    filename = osp.join(DATADIR, filename)
+    codes = []
+    with open(filename) as fobj:
+        reader = csv.DictReader(fobj, dialect=csv_dialect_chart)
+        for row in reader:
+            codes.append(row['code'])
+    accounts = AccountAccount.browse([('code', 'not in', codes),
+                                      ('company_id', '=', company_id)])
+    accounts.unlink()
+
+
 @step('I fill the chart using "{filename}"')
 def impl(ctx, filename):
     AccountAccount = model('account.account')
     company_id = getattr(ctx, 'company_id', False)
     account_ids = dict((account.code.encode('cp1252'), (account.id, account.user_type))
-                         for account in AccountAccount.browse([('company_id', '=', company_id),
+                       for account in AccountAccount.browse([('company_id', '=', company_id),
                                                                ('type', '=', 'view')]))
 
     account_codes = sorted(account_ids)
@@ -120,6 +139,7 @@ def impl(ctx, filename):
         logger.info('create account %s', values)
         AccountAccount.create(values, context={'defer_parent_store_computation': True})
     recompute_parents_impl(ctx)
+
 
 @step('I recompute parents of account.account')
 def recompute_parents_impl(ctx):

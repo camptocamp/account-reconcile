@@ -28,6 +28,7 @@ Feature: Configure QoQa.ch
          | fax        | +41 21 633 20 81           |
          | email      | contact@qoqa.ch            |
          | website    | http://www.qoqa.ch         |
+         | vat        |                            |
          | parent_id  | by oid: base.main_company  |
          # temporary way of filling rml_header to change to position of header separator
          | rml_header | <header> <pageTemplate> <frame id="first" x1="1.3cm" y1="2.5cm" height="23.0cm" width="19.0cm"/> <pageGraphics> <!-- You Logo - Change X,Y,Width and Height --> <image x="1.3cm" y="27.6cm" height="40.0" >[[ company.logo or removeParentNode('image') ]]</image> <setFont name="DejaVu Sans" size="8"/> <fill color="black"/> <stroke color="black"/> <lines>1.3cm 27.5cm 20cm 27.5cm</lines> <drawRightString x="20cm" y="27.8cm">[[ company.rml_header1 ]]</drawRightString> <drawString x="1.3cm" y="27.2cm">[[ company.partner_id.name ]]</drawString> <drawString x="1.3cm" y="26.8cm">[[ company.partner_id.address and company.partner_id.address[0].street or  '' ]]</drawString> <drawString x="1.3cm" y="26.4cm">[[ company.partner_id.address and company.partner_id.address[0].zip or '' ]] [[ company.partner_id.address and company.partner_id.address[0].city or '' ]] - [[ company.partner_id.address and company.partner_id.address[0].country_id and company.partner_id.address[0].country_id.name  or '']]</drawString> <drawString x="1.3cm" y="26.0cm">Phone:</drawString> <drawRightString x="7cm" y="26.0cm">[[ company.partner_id.address and company.partner_id.address[0].phone or '' ]]</drawRightString> <drawString x="1.3cm" y="25.6cm">Mail:</drawString> <drawRightString x="7cm" y="25.6cm">[[ company.partner_id.address and company.partner_id.address[0].email or '' ]]</drawRightString> <lines>1.3cm 25.5cm 7cm 25.5cm</lines> <!--page bottom--> <lines>1.2cm 2.15cm 19.9cm 2.15cm</lines> <drawCentredString x="10.5cm" y="1.7cm">[[ company.rml_footer1 ]]</drawCentredString> <drawCentredString x="10.5cm" y="1.25cm">[[ company.rml_footer2 ]]</drawCentredString> <drawCentredString x="10.5cm" y="0.8cm">Contact : [[ user.name ]] - Page: <pageNumber/></drawCentredString> </pageGraphics> </pageTemplate> </header>   |
@@ -86,10 +87,11 @@ Feature: Configure QoQa.ch
     Given I have the module account installed
     And I want to generate account chart from chart template named "Plan comptable STERCHI" with "4" digits for company "QoQa Services SA"
     When I generate the chart
-    Then accounts should be available for company "QoQa Services SA"
     Given I am configuring the company with ref "scenario.qoqa_ch"
     And Create external ids for accounts from "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv"
     And "account.account" is imported from CSV "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv" using delimiter ";"
+    And Delete accounts not listed by code in "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv"
+    Then accounts should be available for company "QoQa Services SA"
 
   @fiscalyear_ch
     Scenario: create fiscal years

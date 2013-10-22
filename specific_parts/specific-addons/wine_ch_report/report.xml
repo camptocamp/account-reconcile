@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="0">
+    <report
+      id="wine_ch_inventory_webkit"
+      name="wine.ch.inventory.webkit"
+      auto="False"
+      model="product.product"
+      file="wine_ch_report/report/templates/wine_ch_inventory.mako.html"
+      string="Wine CH Report"
+      webkit_header="base_headers_webkit.base_reports_portrait_header"
+      attachment=""
+      attachment_use="0"
+      report_type="webkit"/>
+
+    <record id="action_wine_ch_inventory_webkit" model="ir.actions.act_window">
+      <field name="name">Wine CH Inventory</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">wine.ch.inventory.wizard</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="wine_ch_inventory_wizard_view"/>
+      <field name="target">new</field>
+    </record>
+
+    <menuitem name="Wine CH Inventory" id="menu_wine_ch_inventory"
+        parent="account.final_accounting_reports" action="action_wine_ch_inventory_webkit"
+        />
+        <!--groups="account.group_account_manager,account.group_account_user"  id="account.menu_general_ledger"/>-->
+
+  </data>
+</openerp>

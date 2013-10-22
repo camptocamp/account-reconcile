@@ -49,7 +49,7 @@ class wine_class(orm.Model):
 
     _parent_name = "parent_id"
     _parent_store = True
-    _parent_order = 'name'
+    _parent_order = 'code'
     _order = 'parent_left'
 
     def name_get(self, cr, uid, ids, context=None):

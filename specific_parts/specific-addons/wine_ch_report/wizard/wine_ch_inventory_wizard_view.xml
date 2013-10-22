@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="wine_ch_inventory_wizard_view" model="ir.ui.view">
+      <field name="name">Wine CH Inventory</field>
+      <field name="model">wine.ch.inventory.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Wine CH Report" version="7.0">
+          <group>
+            <field name="location_ids"/>
+            <field name="attribute_set_id"/>
+          </group>
+          <footer>
+            <button name="print_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+            or
+            <button string="Cancel" class="oe_link" special="cancel" />
+          </footer>
+        </form>
+      </field>
+    </record>
+
+
+  </data>
+</openerp>

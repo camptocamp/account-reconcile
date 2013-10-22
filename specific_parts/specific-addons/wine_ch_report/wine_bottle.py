@@ -21,13 +21,14 @@
 
 from openerp.osv import orm, fields
 
+
 def volume_to_string(value, unit='l'):
     prefix = ''
     if value < 1:
         value *= 100
         prefix = 'c'
     value = ('%.2f' % value).rstrip('0').rstrip('.')
-    return  value + ' ' + prefix + unit
+    return value + ' ' + prefix + unit
 
 
 class wine_bottle(orm.Model):
@@ -66,4 +67,3 @@ class wine_bottle(orm.Model):
         'code': fields.char('Code'),
         'volume': fields.float('Volume', required=True),
         }
-

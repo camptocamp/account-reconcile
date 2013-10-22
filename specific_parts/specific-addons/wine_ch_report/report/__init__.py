@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+#    Author: Yannick Vaucher
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,22 +19,4 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
-
-
-class product_template(orm.Model):
-    """ Fields added here are used on the custom product attributes.
-    """
-    _inherit = 'product.template'
-
-    _columns = {
-        'wine_class_id': fields.many2one(
-            'wine.class',
-            string='Wine Class',
-            domain="[('child_ids', '=', False)]",
-            ondelete="restrict"),
-        'wine_bottle_id': fields.many2one(
-            'wine.bottle',
-            string='Wine Volume',
-            ondelete="restrict"),
-        }
+from . import wine_ch_inventory

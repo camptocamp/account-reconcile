@@ -22,3 +22,5 @@
 from . import wine
 from . import wine_bottle
 from . import product
+from . import report
+from . import wizard

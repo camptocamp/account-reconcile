@@ -36,7 +36,6 @@ Feature: Configure the attribute sets
       | appellation  | Appellation | char   | False     | True     |
       | millesime    | Millesime   | char   | False     | False    |
       | wine_region  | Region      | char   | False     | False    |
-      | capacity     | Capacity    | select | False     | True     |
       | wine_type    | Type        | select | False     | True     |
 
   Examples: Template attributes for the liquor (or liquor)
@@ -69,29 +68,11 @@ Feature: Configure the attribute sets
 
   Examples: Options
       | oid      | name     | sequence |
-      | red      | Rouge    | 0        |
-      | white    | Blanc    | 1        |
+      | white    | Blanc    | 0        |
+      | red      | Rouge    | 1        |
       | rose     | Rosé     | 2        |
       | mousseux | Mousseux | 3        |
       | other    | Autre    | 4        |
-
-  @wine_capacity_options
-  Scenario Outline: Create the options for the wine_capacity attribute
-  Given I need a "attribute.option" with oid: scenario.attr_option_capacity_<oid>
-    And having:
-        | key          | value                               |
-        | name         | <name>                              |
-        | attribute_id | by oid: scenario.attr_capacity      |
-        | sequence     | <sequence>                          |
-
-  Examples: Options
-      | oid  | name     | sequence |
-      | 075  | 75 cl.   | 0        |
-      | 05   | 50 cl.   | 1        |
-      | 0375 | 37.5 cl. | 2        |
-      | 020  | 20 cl.   | 3        |
-      | 300  | 300 cl.  | 4        |
-      | 150  | 150 cl.  | 5        |
 
   @wine_class_id_options
   Scenario: Create the options for the wine_class_id attribute
@@ -103,6 +84,15 @@ Feature: Configure the attribute sets
         | relation_model_id | by oid: wine_ch_report.model_wine_class                     |
     And I generate the attribute options from the model wine.class
 
+  @wine_bottle_id_options
+  Scenario: Create the options for the wine_bottle_id attribute
+  Given I need a "attribute.attribute" with oid: scenario.attr_wine_bottle_id
+    And having:
+        | key               | value                                                        |
+        | field_id          | by oid: wine_ch_report.field_product_template_wine_bottle_id |
+        | attribute_type    | select                                                       |
+        | relation_model_id | by oid: wine_ch_report.model_wine_bottle                     |
+    And I generate the attribute options from the model wine.bottle
 
   @variant_attributes
   Scenario Outline: Create attributes for product products
@@ -214,7 +204,7 @@ Feature: Configure the attribute sets
        | millesime      | 13       |
        | country_id     | 15       |
        | wine_region    | 16       |
-       | capacity       | 17       |
+       | wine_bottle_id | 17       |
        | wine_type      | 18       |
        | wine_class_id  | 19       |
 
@@ -273,5 +263,4 @@ Feature: Configure the attribute sets
        | millesime      | 12       |
        | ageing         | 13       |
        | country_id     | 14       |
-       | capacity       | 15       |
-       | abv            | 16       |
+       | abv            | 15       |

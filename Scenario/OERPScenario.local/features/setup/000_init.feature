@@ -27,52 +27,56 @@ Feature: Parameter the new database
   @modules
   Scenario: install modules
     Given I install the required modules with dependencies:
-        | name                              |
+        | name                                       |
         # Base
-        | account                           |
-        | multi_company                     |
-        | base_import                       |
-        | stock                             |
-        | sale                              |
+        | account                                    |
+        | multi_company                              |
+        | base_import                                |
+        | stock                                      |
+        | sale                                       |
         # Base financial modules
-        | account_constraints               |
-        | account_default_draft_move        |
-        | account_financial_report_webkit   |
-        | account_export_csv                |
-        | account_reversal                  |
-        | currency_rate_update              |
-        | invoice_webkit                    |
+        | account_constraints                        |
+        | account_default_draft_move                 |
+        | account_financial_report_webkit            |
+        | account_export_csv                         |
+        | account_reversal                           |
+        | currency_rate_update                       |
+        | invoice_webkit                             |
         # Banking framework
-        | account_statement_base_completion |
-        | account_statement_base_import     |
-        | account_statement_ext             |
-        | account_advanced_reconcile        |
-        | invoicing_voucher_killer          |
-        | statement_voucher_killer          |
+        | account_statement_base_completion          |
+        | account_statement_base_import              |
+        | account_statement_ext                      |
+        | account_advanced_reconcile                 |
+        | invoicing_voucher_killer                   |
+        | statement_voucher_killer                   |
+        # Banking reconcile with Transaction id
+        | base_transaction_id                        |
+        | account_statement_transactionid_completion |
+        | account_statement_transactionid_import     |
         # Swiss localization
-        | l10n_ch                           |
-        | l10n_ch_bank                      |
-        | l10n_ch_base_bank                 |
-        | l10n_ch_dta                       |
-        | l10n_ch_payment_slip              |
-        | l10n_ch_zip                       |
-        | l10n_multilang                    |
+        | l10n_ch                                    |
+        | l10n_ch_bank                               |
+        | l10n_ch_base_bank                          |
+        | l10n_ch_dta                                |
+        | l10n_ch_payment_slip                       |
+        | l10n_ch_zip                                |
+        | l10n_multilang                             |
         # French localization
-        | l10n_fr                           |
-        | l10n_fr_rib                       |
+        | l10n_fr                                    |
+        | l10n_fr_rib                                |
         # Financial optional
-        | account_credit_control            |
+        | account_credit_control                     |
         # Other
-        | sale_order_webkit                 |
-        | connector_ecommerce               |
-        | connector_qoqa                    |
-        | purchase_landed_costs             |
-        | product_multi_company             |
-        | crm_claim_rma                     |
-        | specific_fct                      |
-        | product_custom_attributes         |
-        | wine_ch_report                    |
-        | discount_coupon                   |
+        | sale_order_webkit                          |
+        | connector_ecommerce                        |
+        | connector_qoqa                             |
+        | purchase_landed_costs                      |
+        | product_multi_company                      |
+        | crm_claim_rma                              |
+        | specific_fct                               |
+        | product_custom_attributes                  |
+        | wine_ch_report                             |
+        | discount_coupon                            |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

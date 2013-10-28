@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+from . import company
 from . import wine
 from . import wine_bottle
 from . import product

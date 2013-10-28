@@ -32,6 +32,7 @@ class WineCHInventoryWizard(orm.TransientModel):
 
 
     _columns = {
+        'inventory_date': fields.date('Inventory date'),
         'location_ids': fields.many2many('stock.location', string='Filter on locations'),
         'attribute_set_id': fields.many2one('attribute.set', 'Wine attribute set'),
         }
@@ -52,8 +53,15 @@ class WineCHInventoryWizard(orm.TransientModel):
          }
 
 
-    def print_report(self, cr, uid, ids, data, context=None):
+    def print_inventory_report(self, cr, uid, ids, data, context=None):
         data['form'] = self.read(cr, uid, ids, ['location_ids',  'attribute_set_id'], context=context)[0]
         return {'type': 'ir.actions.report.xml',
                 'report_name': 'wine.ch.inventory.webkit',
+                'datas': data}
+
+
+    def print_cscv_form_report(self, cr, uid, ids, data, context=None):
+        data['form'] = self.read(cr, uid, ids, ['location_ids',  'attribute_set_id'], context=context)[0]
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'wine.ch.cscv_form.webkit',
                 'datas': data}

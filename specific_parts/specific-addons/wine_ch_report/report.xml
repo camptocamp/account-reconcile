@@ -5,9 +5,21 @@
       id="wine_ch_inventory_webkit"
       name="wine.ch.inventory.webkit"
       auto="False"
-      model="product.product"
+      model="wine.ch.inventory.wizard"
       file="wine_ch_report/report/templates/wine_ch_inventory.mako.html"
-      string="Wine CH Report"
+      string="Wine CH Inventory Report"
+      webkit_header="base_headers_webkit.base_reports_portrait_header"
+      attachment=""
+      attachment_use="0"
+      report_type="webkit"/>
+
+    <report
+      id="wine_ch_cscv_form_webkit"
+      name="wine.ch.cscv_form.webkit"
+      auto="False"
+      model="wine.ch.inventory.wizard"
+      file="wine_ch_report/report/templates/wine_ch_cscv_form.mako.html"
+      string="Wine CH CSCV Form Report"
       webkit_header="base_headers_webkit.base_reports_portrait_header"
       attachment=""
       attachment_use="0"

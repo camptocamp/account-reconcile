@@ -85,12 +85,12 @@ Feature: Configure QoQa.ch
   @account_chart_ch
   Scenario: Generate account chart for QoQa Services SA
     Given I have the module account installed
-    And I want to generate account chart from chart template named "Plan comptable STERCHI" with "4" digits for company "QoQa Services SA"
+    And I want to generate account chart from chart template named "Plan comptable STERCHI" with "5" digits for company "QoQa Services SA"
     When I generate the chart
     Given I am configuring the company with ref "scenario.qoqa_ch"
-    And Create external ids for accounts from "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv"
-    And "account.account" is imported from CSV "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv" using delimiter ";"
-    And Delete accounts not listed by code in "setup/QoQa_ERP_Plan_comptable_v2_c2c.csv"
+    And Create external ids for accounts from "setup/QoQa_ERP_Plan_comptable_v2_20131024_format_QoQa.csv"
+    And "account.account" is imported from CSV "setup/QoQa_ERP_Plan_comptable_v2_20131024_format_QoQa.csv" using delimiter ";"
+    And Delete accounts not listed by code in "setup/QoQa_ERP_Plan_comptable_v2_20131024_format_QoQa.csv"
     Then accounts should be available for company "QoQa Services SA"
 
   @fiscalyear_ch

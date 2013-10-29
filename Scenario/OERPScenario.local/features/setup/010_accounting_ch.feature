@@ -91,7 +91,7 @@ Feature: Configure the CH's accounting
     Given I set global property named "<name>" for model "<model>" and field "<name>" for company with ref "scenario.qoqa_ch"
     And the property is related to model "account.account" using column "code" and value "<account_code>"
 
-    Exemples:
+    Examples: Defaults accouts for QoQa CH
       | name                           | model            | account_code |
       | property_account_receivable    | res.partner      |         1103 |
       | property_account_payable       | res.partner      |        20000 |

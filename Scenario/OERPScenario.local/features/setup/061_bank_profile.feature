@@ -53,5 +53,6 @@ Feature: BANK PROFILES
      | oid                                           | name   | account | recevable_acc |
      | scenario.profile_import_cb_postfinance        | POSTF  |   10900 |         11000 |
      | scenario.profile_import_visa_mastercard_ch    | VISA   |   32930 |         11010 |
+     | scenario.profile_paypal_ch                    | PAYPA  |   32930 |               |
      | scenario.profile_reglement_cb_postfinance     | RPOSTF |   10900 |         11030 |
      | scenario.profile_reglement_visa_mastercard_ch | RVISA  |   10900 |         11030 |

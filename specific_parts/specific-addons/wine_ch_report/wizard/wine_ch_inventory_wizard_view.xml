@@ -8,6 +8,7 @@
       <field name="arch" type="xml">
         <form string="Wine CH Report" version="7.0">
           <group>
+            <field name="inventory_date"/>
             <field name="location_ids"/>
             <field name="attribute_set_id"/>
           </group>

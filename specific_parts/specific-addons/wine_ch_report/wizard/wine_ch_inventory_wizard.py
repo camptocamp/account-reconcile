@@ -32,6 +32,7 @@ class WineCHInventoryWizard(orm.TransientModel):
 
 
     _columns = {
+        'company_id': fields.many2one('res.company', 'Company', required=True),
         'inventory_date': fields.date('Inventory date'),
         'location_ids': fields.many2many('stock.location', string='Filter on locations'),
         'attribute_set_id': fields.many2one('attribute.set', 'Wine attribute set'),
@@ -50,18 +51,19 @@ class WineCHInventoryWizard(orm.TransientModel):
 
     _defaults = {
         'attribute_set_id': _get_attribute_set_id,
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'account.invoice', context=c),
          }
 
 
     def print_inventory_report(self, cr, uid, ids, data, context=None):
-        data['form'] = self.read(cr, uid, ids, ['location_ids',  'attribute_set_id'], context=context)[0]
+        data['form'] = self.read(cr, uid, ids, ['inventory_date', 'location_ids',  'attribute_set_id'], context=context)[0]
         return {'type': 'ir.actions.report.xml',
                 'report_name': 'wine.ch.inventory.webkit',
                 'datas': data}
 
 
     def print_cscv_form_report(self, cr, uid, ids, data, context=None):
-        data['form'] = self.read(cr, uid, ids, ['location_ids',  'attribute_set_id'], context=context)[0]
+        data['form'] = self.read(cr, uid, ids, ['inventory_date', 'location_ids',  'attribute_set_id'], context=context)[0]
         return {'type': 'ir.actions.report.xml',
                 'report_name': 'wine.ch.cscv_form.webkit',
                 'datas': data}

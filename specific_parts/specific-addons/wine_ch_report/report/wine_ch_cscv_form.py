@@ -44,7 +44,7 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
             'report_name': _('Wine CH Inventory'),
             })
 
-    def _get_wine_stocks(self, loc_ids, set_id):
+    def _get_wine_stocks(self, loc_ids, set_id, inventory_date):
         """
         Returns a dict of stock per wine class and per type of wine
         - A dict:
@@ -64,9 +64,10 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
                    "      FROM stock_move m "
                    "      INNER JOIN product_product p "
                    "        ON (m.product_id=p.id) "
-                   "      WHERE m.state IN %s "
+                   "      WHERE m.state = %s "
                    "        AND m.location_id NOT IN %s "
                    "        AND m.location_dest_id IN %s "
+                   "        AND m.date <= %s "
                    "      GROUP BY p.id) AS q1 "
                    "    ON q1.id = p.id "
                    "  LEFT OUTER JOIN "
@@ -74,19 +75,22 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
                    "      FROM stock_move m "
                    "      INNER JOIN product_product p "
                    "        ON (m.product_id=p.id) "
-                   "      WHERE m.state IN %s "
+                   "      WHERE m.state = %s "
                    "        AND m.location_id IN %s "
                    "        AND m.location_dest_id NOT IN %s "
+                   "        AND m.date <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
                    "  WHERE t.attribute_set_id = %s"
                    "  GROUP BY c.code, t.x_wine_type",
-                   (('confirmed', 'assigned', 'waiting', 'done'),
+                   ('done',
                     tuple(loc_ids),
                     tuple(loc_ids),
-                    ('confirmed', 'assigned', 'waiting', 'done'),
+                    inventory_date,
+                    'done',
                     tuple(loc_ids),
                     tuple(loc_ids),
+                    inventory_date,
                     set_id,
                     ))
         rows = cr.fetchall()
@@ -99,10 +103,10 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         # Reading form
 
         inventory_date = self._get_inventory_date(data)
-
+        company_id = self._get_company_id(data)
         location_ids = self._get_location_ids(data)
         attribute_set_id = self._get_attribute_set_id(data)
-        wine_stocks = self._get_wine_stocks(location_ids, attribute_set_id)
+        wine_stocks = self._get_wine_stocks(location_ids, attribute_set_id, inventory_date)
 
         if not wine_stocks:
             raise orm.except_orm('Error', 'No stock for given location')
@@ -110,8 +114,11 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         wine_classes = self._get_wine_classes()
         wine_types = self._get_wine_types()
 
+        exploitation_number = self._get_exploitation_number(company_id)
+
         self.localcontext.update({
             'inventory_date': inventory_date,
+            'exploitation_number': exploitation_number,
             'wine_classes': wine_classes,
             'wine_types': wine_types,
             'wine_stocks': wine_stocks,
@@ -129,6 +136,14 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         if not inventory_date:
             return str(datetime.today())
         return inventory_date
+
+    def _get_company_id(self, data):
+        return self._get_info(data, 'company_id')
+
+    def _get_exploitation_number(self, company_id):
+        company_obj = self.pool.get('res.company')
+        company = company_obj.browse(self.cr, self.uid, company_id)
+        return company.wine_exploitation_number
 
     def _get_location_ids(self, data):
         location_ids = self._get_info(data, 'location_ids')
@@ -172,6 +187,6 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
 
 
 report_sxw.report_sxw('report.wine.ch.cscv_form.webkit',
-                      'product.product',
+                      'wine.ch.inventory.wizard',
                       'addons/wine_ch_report/report/templates/wine_ch_cscv_form.mako.html',
                       parser=WineCHCSCVFormWebkit)

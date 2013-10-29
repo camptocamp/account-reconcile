@@ -91,14 +91,14 @@ ${css}
 
 #doc_title {
     float: left;
-    width: 19cm;
+    width: 12cm;
 }
 #exploitation_num {
     float: left;
 }
 #text1 {
     float: left;
-    width: 19cm;
+    width: 12cm;
     clear: both;
     white-space: pre-line;
 }
@@ -130,7 +130,7 @@ ${css}
       </div>
       <div id="exploitation_num">
         <span class="underlined">
-          N° d'exploitation: .............
+          N° d'exploitation: ${exploitation_number}
         </span>
       </div>
 
@@ -165,10 +165,26 @@ ${css}
         </div>
       </div>
       <div class="act_as_tbody">
+        <%doc>
+            Print a wine class line filling by empty cells the table
+        </%doc>
         %for wine_class in wine_classes:
             <%doc>
-                Print a wine class line filling by empty cells the table
+                Hack to ensure table head are repeated on second page
             </%doc>
+            %if wine_class.code == '40':
+                </div>
+                <div class="act_as_thead labels">
+                  <div class="act_as_row">
+                    <div class="act_as_cell invisible_cell col_code"></div>
+                    <div class="act_as_cell invisible_cell"></div>
+                    %for color in wine_types:
+                        <div class="act_as_cell amount col_color">${color.name}</div>
+                    %endfor
+                  </div>
+                </div>
+                <div class="act_as_tbody">
+            %endif
             <div class="act_as_row">
               <%
               if wine_class.child_ids:

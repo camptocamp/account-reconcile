@@ -43,7 +43,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
             'report_name': _('Wine CH Inventory'),
             })
 
-    def _get_sum_volume_by_wine(self, loc_ids, set_id):
+    def _get_sum_volume_by_wine(self, loc_ids, set_id, inventory_date):
         """
         Returns a tuple of
         - A list of volumes ordered by size DESC
@@ -66,9 +66,10 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "      FROM stock_move m "
                    "      INNER JOIN product_product p "
                    "        ON (m.product_id=p.id) "
-                   "      WHERE m.state IN %s "
+                   "      WHERE m.state = %s "
                    "        AND m.location_id NOT IN %s "
                    "        AND m.location_dest_id IN %s "
+                   "        AND m.date <= %s "
                    "      GROUP BY p.id) AS q1 "
                    "    ON q1.id = p.id "
                    "  LEFT OUTER JOIN "
@@ -76,18 +77,21 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "      FROM stock_move m "
                    "      INNER JOIN product_product p "
                    "        ON (m.product_id=p.id) "
-                   "      WHERE m.state IN %s "
+                   "      WHERE m.state = %s "
                    "        AND m.location_id IN %s "
                    "        AND m.location_dest_id NOT IN %s "
+                   "        AND m.date <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
                    "  WHERE t.attribute_set_id = %s",
-                   (('confirmed', 'assigned', 'waiting', 'done'),
+                   ('done',
                     tuple(loc_ids),
                     tuple(loc_ids),
-                    ('confirmed', 'assigned', 'waiting', 'done'),
+                    inventory_date,
+                    'done',
                     tuple(loc_ids),
                     tuple(loc_ids),
+                    inventory_date,
                     set_id,
                     ))
         rows = cr.fetchall()
@@ -96,7 +100,6 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         wine_lines = dict((pid, (pname, {vol: '%i' % qty}, sum_vol))
                           for pid, pname, vol, qty, sum_vol in rows if qty > 0)
         return volumes, wine_lines
-
 
     def _get_wine_ids(self, class_id, color):
         """
@@ -122,7 +125,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         inventory_date = self._get_inventory_date(data)
         location_ids = self._get_location_ids(data)
         attribute_set_id = self._get_attribute_set_id(data)
-        wine_bottles, wine_lines = self._get_sum_volume_by_wine(location_ids, attribute_set_id)
+        wine_bottles, wine_lines = self._get_sum_volume_by_wine(location_ids, attribute_set_id, inventory_date)
         wine_classes = self._get_wine_classes(wine_lines.keys())
         wine_types = self._get_wine_types()
 
@@ -206,6 +209,6 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
 
 
 report_sxw.report_sxw('report.wine.ch.inventory.webkit',
-                      'product.product',
+                      'wine.ch.inventory.wizard',
                       'addons/wine_ch_report/report/templates/wine_ch_inventory.mako.html',
                       parser=WineCHInventoryWebkit)

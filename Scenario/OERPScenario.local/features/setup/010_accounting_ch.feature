@@ -66,22 +66,36 @@ Feature: Configure the CH's accounting
       | code                      | <code>                   |
       | type                      | bank                     |
       | company_id                | by oid: scenario.qoqa_ch |
-      | default_debit_account_id  | by code: 102.02          |
-      | default_credit_account_id | by code: 102.02          |
+      | default_debit_account_id  | by code: <account>       |
+      | default_credit_account_id | by code: <account>       |
       | allow_date                | false                    |
 
     Examples: Bank Journals
-      | oid                            | name         | code  |
-      | scenario.journal_postfinance   | Postfinance  | POSTF |
-      | scenario.journal_visa_ch       | Visa         | VISA  |
-      | scenario.journal_mastercard_ch | Mastercard   | MASTR |
-      | scenario.journal_paypal_ch     | Paypal       | PAYPA |
-      | scenario.journal_swissbilling  | Swissbilling | SWISS |
+      | oid                                           | name                      | code   | account |
+      | scenario.journal_import_cb_postfinance        | Import CB Postfinance     | POSTF  |   11001 |
+      | scenario.journal_import_visa_mastercard_ch    | Import Visa / Mastercard  | VISA   |   11011 |
+      | scenario.journal_paypal_ch                    | Paypal                    | PAYPA  |    1030 |
+      | scenario.journal_reglement_postfinance        | Reglement Postfinance     | RPOSTF |    1100 |
+      | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |    1101 |
+      | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
     Examples: Bank Journals (unused - for historic)
-      | oid                                | name                       | code  |
-      | scenario.journal_swikey_old        | Swikey - plus utilisé      | OLDSW |
-      | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |
-      | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |
-      | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |
+      | oid                                | name                       | code  | account |
+      | scenario.journal_swikey_old        | Swikey - plus utilisé      | OLDSW |   10900 |
+      | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |   10900 |
+      | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |   10900 |
+      | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |   10900 |
 
+  @default_accounts
+  Scenario Outline: AFTER IMPORT OF CUSTOM CoA, COMPLETE DEFAULT ACCOUNTS ON MAIN PARTNERS
+    Given I set global property named "<name>" for model "<model>" and field "<name>" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "account.account" using column "code" and value "<account_code>"
+
+    Exemples:
+      | name                           | model            | account_code |
+      | property_account_receivable    | res.partner      |         1103 |
+      | property_account_payable       | res.partner      |        20000 |
+      | property_account_expense_categ | product.category |        42000 |
+      | property_account_income_categ  | product.category |        32000 |
+      | property_stock_account_input   | product.template |        10900 |
+      | property_stock_account_output  | product.template |        10900 |

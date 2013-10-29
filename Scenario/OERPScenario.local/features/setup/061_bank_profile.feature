@@ -9,7 +9,7 @@ Feature: BANK PROFILES
     | name                  | value                    |
     | name                  | <name>                   |
     | journal_id            | by code: <name>          |
-    | commission_account_id | by code: 5200            |
+    | commission_account_id | by code: 10900           |
     | balance_check         | 1                        |
     | import_type           | generic_csvxls_so        |
     | company_id            | by oid: scenario.qoqa_ch |
@@ -32,3 +32,26 @@ Feature: BANK PROFILES
      #| scenario.profile_ch_bnk21 | BN21  |
      | scenario.profile_ch_bnk20 | BNK20 |
      | scenario.profile_ch_gar11 | GAR11 |
+
+  Scenario Outline: BANK PROFILE FOR PAYMENT IMPORT
+    Given I need a "account.statement.profile" with oid: <oid>
+    And having:
+    | name                  | value                    |
+    | name                  | <name>                   |
+    | journal_id            | by code: <name>          |
+    | commission_account_id | by code: <account>       |
+    | receivable_account_id | by code: <recevable_acc> |
+    | balance_check         | 0                        |
+    | import_type           | generic_csvxls_so        |
+    | company_id            | by oid: scenario.qoqa_ch |
+   And with following rules
+    | name                                                |
+    | Match from line reference (based on transaction ID) |
+    | Match from line reference (based on SO number)      |
+
+   Examples: Bank import for QoQa CH
+     | oid                                           | name   | account | recevable_acc |
+     | scenario.profile_import_cb_postfinance        | POSTF  |   10900 |         11000 |
+     | scenario.profile_import_visa_mastercard_ch    | VISA   |   32930 |         11010 |
+     | scenario.profile_reglement_cb_postfinance     | RPOSTF |   10900 |         11030 |
+     | scenario.profile_reglement_visa_mastercard_ch | RVISA  |   10900 |         11030 |

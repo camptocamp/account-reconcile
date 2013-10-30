@@ -106,6 +106,8 @@ Feature: Configure QoQa.fr
     Given I have the module account installed
     And I want to generate account chart from chart template named "Plan Comptable Général (France)" with "6" digits for company "QoQa Services France"
     When I generate the chart
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    And I fill the chart using "setup/PCG_QOQA_FRANCE.csv"
     Then accounts should be available for company "QoQa Services France"
 
   @fiscalyear_fr

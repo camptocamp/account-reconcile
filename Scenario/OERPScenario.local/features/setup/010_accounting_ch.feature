@@ -93,7 +93,7 @@ Feature: Configure the CH's accounting
 
     Examples: Defaults accouts for QoQa CH
       | name                           | model            | account_code |
-      | property_account_receivable    | res.partner      |         1103 |
+      | property_account_receivable    | res.partner      |        11030 |
       | property_account_payable       | res.partner      |        20000 |
       | property_account_expense_categ | product.category |        42000 |
       | property_account_income_categ  | product.category |        32000 |

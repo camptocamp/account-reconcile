@@ -74,6 +74,7 @@ Feature: Parameter the new database
         | product_multi_company                      |
         | crm_claim_rma                              |
         | specific_fct                               |
+        | specific_report                            |
         | product_custom_attributes                  |
         | wine_ch_report                             |
         | discount_coupon                            |

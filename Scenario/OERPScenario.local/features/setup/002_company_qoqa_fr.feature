@@ -40,6 +40,11 @@ Feature: Configure QoQa.fr
     Given the company has the "images/logo_qoqa_fr.png" logo
     And the company currency is "EUR" with a rate of "0.811035"
 
+  @webkit_logo_fr
+  Scenario: configure logo
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    And I have a header image "company_logo" from file "images/Logo-QoQa-fr.png"
+
   @qoqa_fr_logistics
   Scenario: configure logistics
     Given I need a "stock.location" with oid: scenario.stock_location_company_fr

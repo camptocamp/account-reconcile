@@ -45,16 +45,16 @@ Feature: Configure the CH's accounting
 
     Examples: Bank Accounts
       | journal_oid                              | journal_code | journal_name                       | currency                           | acc_code | bank_oid                               | bank_name              | street               | zip  | city  | iban                       | bic         |
-      | scenario.journal_ch_service_client       | BNK11        | Compte Service-client Qgroup       | false                              | 1011     | scenario.bank_ch_service_client        | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH68 0900 0000 1078 0685 6 | POFICHBEXXX |
-      | scenario.journal_ch_fournisseur_chf      | BNK16        | Compte Fournisseurs Qgroup         | false                              | 1016     | scenario.bank_ch_fournisseur_chf       | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH55 0900 0000 1225 8688 3 | POFICHBEXXX |
-      | scenario.journal_ch_client_manuel        | BNK15        | Compte Client manuel Qgroup        | false                              | 1015     | scenario.bank_ch_client_manuel         | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH83 0900 0000 1283 1083 4 | POFICHBEXXX |
-      | scenario.journal_ch_enc_debiteur         | BNK10        | Compte Encaissement débiteur Qgroup| false                              | 1010     | scenario.bank_ch_enc_debiteur          | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH71 0900 0000 1771 3231 4 | POFICHBEXXX |
-      | scenario.journal_ch_fournisseur_eur      | BNK12        | Compte Fournisseur Qgroup en EUR   | by name: EUR and company_id: False | 1012     | scenario.bank_ch_fournisseur_eur       | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH19 0900 0000 9115 5371 5 | POFICHBEXXX |
-      | scenario.journal_ch_fournisseur_usd      | BNK14        | Compte Fournisseur Qgroup en USD   | by name: USD and company_id: False | 1014     | scenario.bank_ch_fournisseur_usd       | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH56 0900 0000 9114 7215 1 | POFICHBEXXX |
+      | scenario.journal_ch_service_client       | BNK11        | Compte Service-client Qgroup       | false                              | 10110    | scenario.bank_ch_service_client        | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH68 0900 0000 1078 0685 6 | POFICHBEXXX |
+      | scenario.journal_ch_fournisseur_chf      | BNK16        | Compte Fournisseurs Qgroup         | false                              | 10160    | scenario.bank_ch_fournisseur_chf       | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH55 0900 0000 1225 8688 3 | POFICHBEXXX |
+      | scenario.journal_ch_client_manuel        | BNK15        | Compte Client manuel Qgroup        | false                              | 10150    | scenario.bank_ch_client_manuel         | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH83 0900 0000 1283 1083 4 | POFICHBEXXX |
+      | scenario.journal_ch_enc_debiteur         | BNK10        | Compte Encaissement débiteur Qgroup| false                              | 10100    | scenario.bank_ch_enc_debiteur          | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH71 0900 0000 1771 3231 4 | POFICHBEXXX |
+      | scenario.journal_ch_fournisseur_eur      | BNK12        | Compte Fournisseur Qgroup en EUR   | by name: EUR and company_id: False | 10120    | scenario.bank_ch_fournisseur_eur       | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH19 0900 0000 9115 5371 5 | POFICHBEXXX |
+      | scenario.journal_ch_fournisseur_usd      | BNK14        | Compte Fournisseur Qgroup en USD   | by name: USD and company_id: False | 10140    | scenario.bank_ch_fournisseur_usd       | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH56 0900 0000 9114 7215 1 | POFICHBEXXX |
       #| scenario.journal_ch_projet_geelee_ch     | BNK          | Compte Projet Geelee.ch            | false                              |          | scenario.bank_ch_projet_geelee_ch      | Swiss Post-Postfinance | Nordring 8, Postfach | 3030 | Berne | CH29 0900 0000 1223 3631 5 | POFICHBEXXX |
-      | scenario.journal_ch_salaires             | BNK20        | Compte Paiement Salaires           | false                              | 1020     | scenario.bank_ch_salaires              | UBS SA                 |                      | 1800 | Vevey | CH51 0025 5255 7757 4801 V | UBSWCHZH80A |
-      | scenario.journal_ch_epargne              | BNK21        | Compte épargne                     | false                              | 1021     | scenario.bank_ch_epargne               | UBS SA                 |                      | 1800 | Vevey | CH10 0025 5255 7757 48C3 Z | UBSWCHZH80A |
-      | scenario.journal_ch_garantie_loyer       | GAR11        | Compte garantie loyer              | false                              | 1411     | scenario.bank_ch_garantie_loyer        | UBS SA                 |                      | 1800 | Vevey | CH06 0025 5255 7757 48MK U | UBSWCHZH80A |
+      | scenario.journal_ch_salaires             | BNK20        | Compte Paiement Salaires           | false                              | 10200    | scenario.bank_ch_salaires              | UBS SA                 |                      | 1800 | Vevey | CH51 0025 5255 7757 4801 V | UBSWCHZH80A |
+      | scenario.journal_ch_epargne              | BNK21        | Compte épargne                     | false                              | 10210    | scenario.bank_ch_epargne               | UBS SA                 |                      | 1800 | Vevey | CH10 0025 5255 7757 48C3 Z | UBSWCHZH80A |
+      | scenario.journal_ch_garantie_loyer       | GAR11        | Compte garantie loyer              | false                              | 14110    | scenario.bank_ch_garantie_loyer        | UBS SA                 |                      | 1800 | Vevey | CH06 0025 5255 7757 48MK U | UBSWCHZH80A |
 
 
   @journals
@@ -74,9 +74,9 @@ Feature: Configure the CH's accounting
       | oid                                           | name                      | code   | account |
       | scenario.journal_import_cb_postfinance        | Import CB Postfinance     | POSTF  |   11001 |
       | scenario.journal_import_visa_mastercard_ch    | Import Visa / Mastercard  | VISA   |   11011 |
-      | scenario.journal_paypal_ch                    | Paypal                    | PAYPA  |    1030 |
-      | scenario.journal_reglement_postfinance        | Reglement Postfinance     | RPOSTF |    1100 |
-      | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |    1101 |
+      | scenario.journal_paypal_ch                    | Paypal                    | PAYPA  |   10300 |
+      | scenario.journal_reglement_postfinance        | Reglement Postfinance     | RPOSTF |   11000 |
+      | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |   11010 |
       | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
     Examples: Bank Journals (unused - for historic)

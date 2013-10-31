@@ -19,60 +19,19 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
                                                   ExportMapper)
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
                                             on_record_unlink,
                                             )
-from . import consumer
-from .backend import qoqa
-from .unit.export_synchronizer import QoQaExporter, Translations
-from .unit.delete_synchronizer import QoQaDeleteSynchronizer
-from .unit.backend_adapter import QoQaAdapter
-from .product_attribute import ProductAttribute
 
+from ..unit.export_synchronizer import QoQaExporter, Translations
+from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 
-class qoqa_product_product(orm.Model):
-    _name = 'qoqa.product.product'
-    _inherit = 'qoqa.binding'
-    _inherits = {'product.product': 'openerp_id'}
-    _description = 'QoQa Product'
-
-    _columns = {
-        'openerp_id': fields.many2one('product.product',
-                                      string='Product',
-                                      required=True,
-                                      ondelete='restrict'),
-        'created_at': fields.date('Created At (on QoQa)'),
-        'updated_at': fields.date('Updated At (on QoQa)'),
-    }
-
-    _sql_constraints = [
-        ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A product with the same ID on QoQa already exists")
-    ]
-
-
-class product_product(orm.Model):
-    _inherit = 'product.product'
-
-    _columns = {
-        'qoqa_bind_ids': fields.one2many(
-            'qoqa.product.product',
-            'openerp_id',
-            string='QoQa Bindings'),
-    }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default['qoqa_bind_ids'] = False
-        return super(product_product, self).copy_data(cr, uid, id,
-                                                      default=default,
-                                                      context=context)
+from .. import consumer
+from ..backend import qoqa
+from ..product_attribute import ProductAttribute
 
 
 @on_record_create(model_names='qoqa.product.product')
@@ -107,12 +66,6 @@ class ProductExporter(QoQaExporter):
         assert self.binding_record
         self._export_dependency(self.binding_record.product_tmpl_id,
                                 'qoqa.product.template')
-
-
-@qoqa
-class QoQaProductAdapter(QoQaAdapter):
-    _model_name = 'qoqa.product.product'
-    _endpoint = 'variation'
 
 
 @qoqa

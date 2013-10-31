@@ -100,3 +100,19 @@ Feature: Configure the connector's backend
     And having:
          | key     | value |
          | qoqa_id | 2     |
+
+  @qoqa_id @currency
+  Scenario Outline: Set the qoqa_ids on the currencies
+    Given I find a "res.currency" with oid: <oid>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | oid      | qoqa_id |
+         | base.CHF | 1       |
+         | base.EUR | 2       |
+         | base.USD | 3       |
+         | base.GBP | 4       |
+         | base.CNY | 5       |
+         | base.JPY | 6       |

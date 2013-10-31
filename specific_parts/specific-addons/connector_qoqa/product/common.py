@@ -36,8 +36,8 @@ class qoqa_product_product(orm.Model):
                                       string='Product',
                                       required=True,
                                       ondelete='restrict'),
-        'created_at': fields.date('Created At (on QoQa)'),
-        'updated_at': fields.date('Updated At (on QoQa)'),
+        'created_at': fields.datetime('Created At (on QoQa)'),
+        'updated_at': fields.datetime('Updated At (on QoQa)'),
     }
 
     _sql_constraints = [

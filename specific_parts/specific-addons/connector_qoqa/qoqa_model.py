@@ -20,8 +20,11 @@
 ##############################################################################
 
 import requests
+
+from datetime import datetime
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   only_create,
@@ -80,6 +83,9 @@ class qoqa_backend(orm.Model):
         'access_token': fields.char('OAuth Token'),
         'access_token_secret': fields.char('OAuth Token Secret'),
         'debug': fields.boolean('Debug'),
+
+        'import_product_templates_from_date': fields.datetime(
+            'Import product templates from date'),
     }
 
     def check_connection(self, cr, uid, ids, context=None):
@@ -122,6 +128,30 @@ class qoqa_backend(orm.Model):
                 _('Error'),
                 _('Only 1 QoQa configuration is allowed.'))
         return super(qoqa_backend, self).create(cr, uid, vals, context=context)
+
+    def _import_from_date(self, cr, uid, ids, model,
+                          from_date_field, context=None):
+        if not hasattr(ids, '__iter__'):
+            ids = [ids]
+        DT_FMT = DEFAULT_SERVER_DATETIME_FORMAT
+        session = ConnectorSession(cr, uid, context=context)
+        import_start_time = datetime.now().strftime(DT_FMT)
+        for backend in self.browse(cr, uid, ids, context=context):
+            from_date = getattr(backend, from_date_field)
+            if from_date:
+                from_date = datetime.strptime(from_date, DT_FMT)
+            else:
+                from_date = None
+            import_batch.delay(session, model,
+                               backend.id, from_date=from_date)
+        self.write(cr, uid, ids,
+                   {from_date_field: import_start_time})
+
+    def import_product_template(self, cr, uid, ids, context=None):
+        self._import_from_date(cr, uid, ids, 'qoqa.product.template',
+                               'import_product_templates_from_date',
+                               context=context)
+        return True
 
 
 class qoqa_shop(orm.Model):

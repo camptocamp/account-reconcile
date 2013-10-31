@@ -38,6 +38,40 @@
                         <group name="main_configuration" string="Main Configuration">
                             <field name="default_lang_id"/>
                         </group>
+                        <group name="import" string="Imports">
+                                <p class="oe_grey oe_inline">
+                                    By clicking on the buttons,
+                                    you will initiate the synchronizations
+                                    with QoQa.
+                                    Note that the import or exports
+                                    won't be done directly,
+                                    they will create 'Jobs'
+                                    executed as soon as possible.
+                                </p>
+                                <p class="oe_grey oe_inline">
+                                    Once imported,
+                                    some types of records,
+                                    like the products or categories,
+                                    need a manual review.
+                                    You will find the list
+                                    of the new records to review
+                                    in the menu 'Connectors > Checkpoint'.
+                                </p>
+                                <group>
+                                    <div>
+                                        <label string="Import products since"
+                                            class="oe_inline"/>
+                                        <field name="import_product_templates_from_date"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_product_template"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import in background"/>
+                                </group>
+
+                            </group>
                     </sheet>
                 </form>
             </field>

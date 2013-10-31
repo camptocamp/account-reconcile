@@ -150,12 +150,13 @@ class QoQaAdapter(CRUDAdapter):
         url = "{0}{1}".format(self.url(), id)
         response = self.client.get(url)
         result = self._handle_response(response)
-        return result['data'][0]
+        return result['data']
 
-    def search(self, id, only_ids=True):
+    def search(self, from_date=None):
         url = self.url()
-        response = self.client.get(url)
+        payload = {}
+        if from_date is not None:
+            payload['timestamp_from'] = from_date
+        response = self.client.get(url, params=payload)
         records = self._handle_response(response)
-        if only_ids:
-            return [r['id'] for r in records['data']]
-        return records['data']
+        return [r['id'] for r in records['data']]

@@ -67,7 +67,6 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """Return True if the import should be skipped because
         it is already up-to-date in OpenERP"""
         assert self.qoqa_record
-        # FIXME: check name of the field
         if not self.qoqa_record.get('updated_at'):
             return  # no update date on QoQa, always import it.
         if not binding_id:
@@ -75,12 +74,11 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         sync_date = self.binder.sync_date(binding_id)
         if not sync_date:
             return
-        # FIXME: check name of the field
         qoqa_date = datetime.strptime(self.qoqa_record['updated_at'], fmt)
         # if the last synchronization date is greater than the last
         # update in qoqa, we skip the import.
         # Important: at the beginning of the exporters flows, we have to
-        # check if the qoqa_date is more recent than the sync_date
+        # check if the qoqa date is more recent than the sync_date
         # and if so, schedule a new import. If we don't do that, we'll
         # miss changes done in QoQa
         return qoqa_date < sync_date
@@ -171,9 +169,9 @@ class BatchImportSynchronizer(ImportSynchronizer):
     the import of each item separately.
     """
 
-    def run(self, filters=None):
+    def run(self, from_date=None):
         """ Run the synchronization """
-        record_ids = self.backend_adapter.search(filters)
+        record_ids = self.backend_adapter.search(from_date)
         for record_id in record_ids:
             self._import_record(record_id)
 
@@ -230,6 +228,8 @@ class AddCheckpoint(ConnectorUnit):
     (not the qoqa.* but the _inherits'ed model) """
 
     _model_name = ['qoqa.shop',
+                   'qoqa.product.template',
+                   'qoqa.product.product',
                    ]
 
     def run(self, openerp_binding_id):
@@ -243,11 +243,11 @@ class AddCheckpoint(ConnectorUnit):
 
 
 @job
-def import_batch(session, model_name, backend_id, filters=None):
+def import_batch(session, model_name, backend_id, from_date=None):
     """ Prepare a batch import of records from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(BatchImportSynchronizer)
-    importer.run(filters=filters)
+    importer.run(from_date=from_date)
 
 
 @job
@@ -255,3 +255,4 @@ def import_record(session, model_name, backend_id, qoqa_id, force=False):
     """ Import a record from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(QoQaImportSynchronizer)
+    importer.run(qoqa_id, force=force)

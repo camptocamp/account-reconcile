@@ -33,7 +33,7 @@ class QoQaBinder(Binder):
 
     def sync_date(self, binding_id):
         assert self._sync_date_field
-        if isinstance(orm.browse_record):
+        if isinstance(binding_id, orm.browse_record):
             binding = binding_id
         else:
             binding = self.session.read(self.model._name,

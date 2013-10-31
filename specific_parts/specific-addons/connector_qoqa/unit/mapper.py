@@ -19,28 +19,25 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
-from .unit.binder import QoQaDirectBinder
-from .backend import qoqa
+from openerp.addons.connector.unit import mapper
 
 
-class account_tax(orm.Model):
-    _inherit = 'account.tax'
+def m2o_to_backend(field, binding=False):
+    """ A modifier intended to be used on the ``direct`` mappings.
 
-    _columns = {
-        'qoqa_id': fields.char('ID on QoQa')
-    }
+    For a many2one, get the ID on the backend and returns it.
 
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({
-            'qoqa_id': False,
-        })
-        return super(account_tax, self).copy_data(
-            cr, uid, id, default=default, context=context)
+    When the field's relation is not a binding (i.e. it does not point to
+    something like ``magento.*``), the ``binding`` argument should be False.
 
+    QoQa always expects None for NULL relations, so we replace the False
+    values with None.
 
-@qoqa
-class AccountTaxBinder(QoQaDirectBinder):
-    _model_name = 'account.tax'
+    Example::
+
+        direct = [(m2o_to_backend('country_id', binding=False), 'country')]
+
+    :param field: name of the source field in the record
+    :param binding: True if the source field's relation is a binding record
+    """
+    return mapper.none(mapper.m2o_to_backend(field, binding=binding))

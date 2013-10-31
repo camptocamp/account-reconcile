@@ -29,10 +29,10 @@ from openerp.addons.connector.event import (on_record_create,
                                             )
 from . import consumer
 from .backend import qoqa
-from .unit.export_synchronizer import QoQaExporter
+from .unit.export_synchronizer import QoQaExporter, Translations
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
-from .product_attribute import ProductAttribute, ProductTranslations
+from .product_attribute import ProductAttribute
 
 
 class qoqa_product_product(orm.Model):
@@ -139,9 +139,10 @@ class ProductExportMapper(ExportMapper):
     def translations(self, record):
         """ Map all the translatable values, including the attributes
 
-        Translatable fields for QoQa are sent in a `translations`
+        Translatable fields for QoQa are sent in a ``translations``
         key and are not sent in the main record.
         """
         fields = [('variants', 'name')]
-        trans = self.get_connector_unit_for_model(ProductTranslations)
-        return trans.get_translations(record, normal_fields=fields)
+        trans = self.get_connector_unit_for_model(Translations)
+        return trans.get_translations(record, normal_fields=fields,
+                                      attributes_unit=ProductAttribute)

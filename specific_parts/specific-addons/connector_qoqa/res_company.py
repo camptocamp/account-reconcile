@@ -31,6 +31,15 @@ class res_company(orm.Model):
         'qoqa_id': fields.char('ID on QoQa'),
     }
 
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default.update({
+            'qoqa_id': False,
+        })
+        return super(res_company, self).copy_data(
+            cr, uid, id, default=default, context=context)
+
 
 @qoqa
 class CompanyBinder(QoQaDirectBinder):

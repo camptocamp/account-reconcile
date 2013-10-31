@@ -19,7 +19,10 @@
 #
 ##############################################################################
 
+from datetime import datetime, timedelta
+import pytz
 from openerp.osv import orm, fields
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,
                                                   ExportMapper)
@@ -29,9 +32,11 @@ from openerp.addons.connector.event import (on_record_create,
                                             )
 from .backend import qoqa
 from . import consumer
-from .unit.export_synchronizer import QoQaExporter
+from .connector import QOQA_TZ
+from .unit.export_synchronizer import QoQaExporter, Translations
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
+from .unit.mapper import m2o_to_backend
 
 
 class qoqa_offer(orm.Model):
@@ -47,6 +52,17 @@ class qoqa_offer(orm.Model):
         'qoqa_id': fields.char('ID on QoQa'),
         'qoqa_sync_date': fields.datetime('Last synchronization date'),
     }
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default.update({
+            'qoqa_id': False,
+            'qoqa_sync_date': False,
+        })
+        return super(qoqa_offer, self).copy_data(cr, uid, id,
+                                                 default=default,
+                                                 context=context)
 
 
 @on_record_create(model_names='qoqa.offer')
@@ -80,15 +96,63 @@ class OfferAdapter(QoQaAdapter):
 class OfferExportMapper(ExportMapper):
     _model_name = 'qoqa.offer'
 
-    direct = [('name', 'title'),
-              ('description', 'content'),
-              ('date_begin', 'start_at'),
-              ('date_end', 'end_at'),
-              ]
+    translatable_fields = [
+        ('name', 'title'),
+        ('description', 'content'),
+    ]
+
+    direct = [
+        ('note', 'notes'),
+        (m2o_to_backend('qoqa_shop_id', binding=True), 'shop_id'),
+        (m2o_to_backend('lang_id'), 'language_id'),
+    ]
+
+    @staticmethod
+    def _qoqa_datetime(date, hours):
+        dt = datetime.strptime(date, DEFAULT_SERVER_DATE_FORMAT)
+        dt += timedelta(hours=hours)
+        utc = pytz.timezone('UTC')
+        utc_dt = utc.localize(dt, is_dst=False)  # UTC = no DST
+        # local_dt = utc_dt.astimezone(QOQA_TZ)
+        return utc_dt.isoformat()
+
+    @mapping
+    def start_at(self, record):
+        start = self._qoqa_datetime(record.date_begin, record.time_begin)
+        return {'start_at': start}
+
+    @mapping
+    def stop_at(self, record):
+        stop = self._qoqa_datetime(record.date_end, record.time_end)
+        return {'stop_at': stop}
 
     @mapping
     def currency(self, record):
         currency = record.pricelist_id.currency_id
         binder = self.get_binder_for_model('res.currency')
         qoqa_ccy_id = binder.to_backend(currency.id, wrap=True)
-        return {'currency': qoqa_ccy_id}
+        return {'currency_id': qoqa_ccy_id}
+
+    @mapping
+    def todo(self, record):
+        values = {
+            'slots_available': 0,  # notnull
+            # 'is_queue_enabled': 0,
+            'shipper_service_id': 2,
+            'shipper_rate_id': 1,
+            'lot_per_package': 2,  # notnull
+            'is_active': 1,
+            'logistic_status_id': 1,
+        }
+        return values
+
+    @mapping
+    def translations(self, record):
+        """ Map all the translatable values
+
+        Translatable fields for QoQa are sent in a `translations`
+        key and are not sent in the main record.
+        """
+        fields = self.translatable_fields
+        trans = self.get_connector_unit_for_model(Translations)
+        return trans.get_translations(record, normal_fields=fields)

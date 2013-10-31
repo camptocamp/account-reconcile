@@ -19,11 +19,28 @@
 #
 ##############################################################################
 
-from .unit.binder import ByAnyFieldBinder
+from openerp.osv import orm, fields
+from .unit.binder import QoQaDirectBinder
 from .backend import qoqa
 
 
+class res_currency(orm.Model):
+    _inherit = 'res.currency'
+
+    _columns = {
+        'qoqa_id': fields.char('ID on QoQa')
+    }
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default.update({
+            'qoqa_id': False,
+        })
+        return super(res_currency, self).copy_data(
+            cr, uid, id, default=default, context=context)
+
+
 @qoqa
-class CurrencyBinder(ByAnyFieldBinder):
+class CurrencyBinder(QoQaDirectBinder):
     _model_name = 'res.currency'
-    _matching_field = 'name'

@@ -48,6 +48,16 @@ class qoqa_offer_position(orm.Model):
         'qoqa_sync_date': fields.datetime('Last synchronization date'),
     }
 
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default.update({
+            'qoqa_id': False,
+            'qoqa_sync_date': False,
+        })
+        return super(qoqa_offer_position, self).copy_data(
+            cr, uid, id, default=default, context=context)
+
 
 @on_record_create(model_names='qoqa.offer.position')
 @on_record_write(model_names='qoqa.offer.position')

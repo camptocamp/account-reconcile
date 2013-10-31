@@ -23,11 +23,13 @@ import logging
 from datetime import datetime
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
 from openerp.addons.connector.exception import IDMissingInBackend
 from .import_synchronizer import import_record
 from ..connector import get_environment
+from ..backend import qoqa
 
 _logger = logging.getLogger(__name__)
 
@@ -260,6 +262,59 @@ class QoQaExporter(QoQaBaseExporter):
             self._validate_data(record)
             self.qoqa_id = self._create(record)
         return _('Record exported with ID %s on QoQa.') % self.qoqa_id
+
+@qoqa
+class Translations(ConnectorUnit):
+    """ Build a dict ready to use for the Mappings
+    with the translations for a model (including the translations
+    of the custom attributes if any).
+    """
+    _model_name = ['qoqa.offer',
+                   'qoqa.product.product',
+                   'qoqa.product.template',
+                   ]
+
+    def get_translations(self, record, normal_fields=None,
+                         attributes_unit=None):
+        """ The dict will contain:
+
+        * all the translations of ``normal_fields``
+        * all the translations of the translatable attributes
+
+        :param record: browse_record of product or template
+        :param normal_fields: list of tuples with source and destination
+        :param attributes_unit: ConnectorUnit class which respond to
+                                ``get_values()`` and return the values
+                                of the custom attributes.
+        """
+        if normal_fields is None:
+            normal_fields = []
+        lang_ids = self.session.search('res.lang',
+                                       [('translatable', '=', True)])
+        lang_binder = self.get_binder_for_model('res.lang')
+        lang_values = []
+        for lang in self.session.browse('res.lang', lang_ids):
+            qoqa_lang_id = lang_binder.to_backend(lang.id)
+            if qoqa_lang_id is None:
+                _logger.debug('Language %s skipped for export because '
+                              'it has no qoqa_id', lang.code)
+                continue
+            with self.session.change_context({'lang': lang.code}):
+                lang_record = self.session.browse(self.model._name,
+                                                  record.id)
+            values = {}
+
+            if attributes_unit is not None:
+                attrs = self.get_connector_unit_for_model(attributes_unit)
+                values.update(attrs.get_values(lang_record, translatable=True))
+
+            for src, target in normal_fields:
+                values[target] = lang_record[src]
+
+            values['language_id'] = qoqa_lang_id
+            lang_values.append(values)
+
+        return {'translations': lang_values}
 
 
 @job

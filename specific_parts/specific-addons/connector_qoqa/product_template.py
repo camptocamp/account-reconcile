@@ -30,10 +30,10 @@ from openerp.addons.connector.event import (on_record_create,
                                             )
 from . import consumer
 from .backend import qoqa
-from .unit.export_synchronizer import QoQaExporter
+from .unit.export_synchronizer import QoQaExporter, Translations
 from .unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .unit.backend_adapter import QoQaAdapter
-from .product_attribute import ProductAttribute, ProductTranslations
+from .product_attribute import ProductAttribute
 
 _logger = logging.getLogger(__name__)
 
@@ -73,9 +73,9 @@ class product_template(orm.Model):
         if default is None:
             default = {}
         default['qoqa_bind_ids'] = False
-        return super(product_product, self).copy_data(cr, uid, id,
-                                                      default=default,
-                                                      context=context)
+        return super(product_template, self).copy_data(cr, uid, id,
+                                                       default=default,
+                                                       context=context)
 
 
 @on_record_create(model_names='qoqa.product.template')
@@ -136,6 +136,11 @@ class TemplateExportMapper(ExportMapper):
 
     direct = []
 
+    translatable_fields = [
+        ('name', 'name'),
+        ('description_sale', 'description')
+    ]
+
     @mapping
     def attributes(self, record):
         """ Map attributes which are not translatables """
@@ -146,11 +151,11 @@ class TemplateExportMapper(ExportMapper):
     def translations(self, record):
         """ Map all the translatable values, including the attributes
 
-        Translatable fields for QoQa are sent in a `translations`
+        Translatable fields for QoQa are sent in a ``translations``
         key and are not sent in the main record.
         """
         # translatable but not attribute
-        fields = [('name', 'name'),
-                  ('description_sale', 'description')]
-        trans = self.get_connector_unit_for_model(ProductTranslations)
-        return trans.get_translations(record, normal_fields=fields)
+        fields = self.translatable_fields
+        trans = self.get_connector_unit_for_model(Translations)
+        return trans.get_translations(record, normal_fields=fields,
+                                      attributes_unit=ProductAttribute)

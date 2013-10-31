@@ -26,7 +26,7 @@ from openerp.addons.connector.event import (on_record_create,
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 
-from ..product_attribute import ProductAttribute
+from ..product_attribute.exporter import ProductAttribute
 from ..unit.export_synchronizer import QoQaExporter, Translations
 from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .. import consumer

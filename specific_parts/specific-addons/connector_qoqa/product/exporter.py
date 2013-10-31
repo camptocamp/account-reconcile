@@ -29,9 +29,9 @@ from openerp.addons.connector.event import (on_record_create,
 from ..unit.export_synchronizer import QoQaExporter, Translations
 from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 
+from ..product_attribute.exporter import ProductAttribute
 from .. import consumer
 from ..backend import qoqa
-from ..product_attribute import ProductAttribute
 
 
 @on_record_create(model_names='qoqa.product.product')

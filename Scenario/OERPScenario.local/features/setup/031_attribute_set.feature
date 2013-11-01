@@ -105,14 +105,15 @@ Feature: Configure the attribute sets
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
         | required_on_views | <required>                          |
+        | qoqa_id           | <qoqa_id>                           |
 
   Examples: Variant attributes
-      | name             | descr            | type      | translate | required |
-      | warranty         | Warranty         | integer   | False     | True     |
-      | dimension_big    | Dimension big    | float     | True      | False    |
-      | dimension_medium | Dimension medium | float     | False     | False    |
-      | dimension_small  | Dimension small  | float     | False     | False    |
-      | variant_weight   | Variant Weight   | float     | False     | False    |
+      | name             | descr            | type    | translate | required | qoqa_id     |
+      | warranty         | Warranty         | integer | False     | True     | warranty_id |
+      | dimension_big    | Dimension big    | float   | True      | False    |             |
+      | dimension_medium | Dimension medium | float   | False     | False    |             |
+      | dimension_small  | Dimension small  | float   | False     | False    |             |
+      | variant_weight   | Variant Weight   | float   | False     | False    | weight      |
       # warranty will probably change for the RMA
 
   @general

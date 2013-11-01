@@ -110,7 +110,7 @@ Feature: Configure the attribute sets
   Examples: Variant attributes
       | name             | descr            | type    | translate | required | qoqa_id     |
       | warranty         | Warranty         | integer | False     | True     | warranty_id |
-      | dimension_big    | Dimension big    | float   | True      | False    |             |
+      | dimension_big    | Dimension big    | float   | False     | False    |             |
       | dimension_medium | Dimension medium | float   | False     | False    |             |
       | dimension_small  | Dimension small  | float   | False     | False    |             |
       | variant_weight   | Variant Weight   | float   | False     | False    | weight      |

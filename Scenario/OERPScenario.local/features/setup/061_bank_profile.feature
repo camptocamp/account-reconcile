@@ -9,7 +9,7 @@ Feature: BANK PROFILES
     And having:
     | name                  | value                    |
     | name                  | <name>                   |
-    | journal_id            | by code: <name>          |
+    | journal_id            | by name: <name>          |
     | commission_account_id | by code: 10900           |
     | balance_check         | 1                        |
     | import_type           | generic_csvxls_so        |
@@ -23,16 +23,17 @@ Feature: BANK PROFILES
     | Match from line label (based on partner name)                         |
 
    Examples: Bank profiles for QoQa CH
-     | oid                       | name  |
-     | scenario.profile_ch_bnk11 | BNK11 |
-     | scenario.profile_ch_bnk16 | BNK16 |
-     | scenario.profile_ch_bnk15 | BNK15 |
-     | scenario.profile_ch_bnk10 | BNK10 |
-     | scenario.profile_ch_bnk12 | BNK12 |
-     | scenario.profile_ch_bnk14 | BNK14 |
-     #| scenario.profile_ch_bnk21 | BN21  |
-     | scenario.profile_ch_bnk20 | BNK20 |
-     | scenario.profile_ch_gar11 | GAR11 |
+     | oid                       | name                                |
+     | scenario.profile_ch_service_client   | Compte Service-client Qgroup        |
+     | scenario.profile_ch_fournisseur_chf  | Compte Fournisseurs Qgroup          |
+     | scenario.profile_ch_client_manuel    | Compte Client manuel Qgroup         |
+     | scenario.profile_ch_enc_debiteur     | Compte Encaissement débiteur Qgroup |
+     | scenario.profile_ch_fournisseur_eur  | Compte Fournisseur Qgroup en EUR    |
+     | scenario.profile_ch_fournisseur_usd  | Compte Fournisseur Qgroup en USD    |
+     #| scenario.profile_ch_projet_geelee_ch | Compte Projet Geelee.ch             |
+     | scenario.profile_ch_salaires         | Compte Paiement Salaires            |
+     | scenario.profile_ch_epargne          | Compte épargne                      |
+     | scenario.profile_ch_garantie_loyer   | Compte garantie loyer               |
 
   Scenario Outline: BANK PROFILE FOR PAYMENT IMPORT
     Given I am configuring the company with ref "scenario.qoqa_ch"
@@ -40,7 +41,7 @@ Feature: BANK PROFILES
     And having:
     | name                  | value                      |
     | name                  | <name>                     |
-    | journal_id            | by code: <name>            |
+    | journal_id            | by name: <name>            |
     | commission_account_id | by code: <account>         |
     | receivable_account_id | by code: <receivable_acc>  |
     | balance_check         | 0                          |
@@ -52,9 +53,9 @@ Feature: BANK PROFILES
     | Match from line reference (based on SO number)      |
 
    Examples: Bank import for QoQa CH
-     | oid                                           | name   | account | receivable_acc |
-     | scenario.profile_import_cb_postfinance        | POSTF  |   10900 |          11000 |
-     | scenario.profile_import_visa_mastercard_ch    | VISA   |   32930 |          11010 |
-     | scenario.profile_paypal_ch                    | PAYPA  |   32930 |                |
-     | scenario.profile_reglement_cb_postfinance     | RPOSTF |   10900 |          11030 |
-     | scenario.profile_reglement_visa_mastercard_ch | RVISA  |   10900 |          11030 |
+     | oid                                           | name                      | account | receivable_acc |
+     | scenario.profile_import_cb_postfinance        | Import CB Postfinance     |   10900 |          11000 |
+     | scenario.profile_import_visa_mastercard_ch    | Import Visa / Mastercard  |   32930 |          11010 |
+     | scenario.profile_paypal_ch                    | Paypal                    |   32930 |                |
+     | scenario.profile_reglement_cb_postfinance     | Reglement Postfinance     |   10900 |          11030 |
+     | scenario.profile_reglement_visa_mastercard_ch | Reglement Visa Mastercard |   10900 |          11030 |

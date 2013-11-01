@@ -38,14 +38,14 @@ Feature: BANK PROFILES
     Given I am configuring the company with ref "scenario.qoqa_ch"
     Given I need a "account.statement.profile" with oid: <oid>
     And having:
-    | name                  | value                     |
-    | name                  | <name>                    |
-    | journal_id            | by code: <name>           |
-    | commission_account_id | by code: <account>        |
-    | receivable_account_id | by code: <receivable_acc> |
-    | balance_check         | 0                         |
-    | import_type           | generic_csvxls_so         |
-    | company_id            | by oid: scenario.qoqa_ch  |
+    | name                  | value                      |
+    | name                  | <name>                     |
+    | journal_id            | by code: <name>            |
+    | commission_account_id | by code: <account>         |
+    | receivable_account_id | by code: <receivable_acc>  |
+    | balance_check         | 0                          |
+    | import_type           | generic_csvxls_transaction |
+    | company_id            | by oid: scenario.qoqa_ch   |
    And with following rules
     | name                                                |
     | Match from line reference (based on transaction ID) |

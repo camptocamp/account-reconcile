@@ -132,3 +132,10 @@ Feature: Parameter the new database
   Scenario: importing Chart of account from CSV
     Given "account.account.type" is imported from CSV "setup/type_de_compte.csv" using delimiter ","
 
+
+  @l10n_ch_payment_slip_voucher_disable
+  Scenario: DISABLE VOUCHER FOR L10N_CH_PAYMENT_SLIP
+    Given I need a "ir.config_parameter" with oid: l10n_ch.payment_slip_voucher_disable
+    And having:
+    | name  | value |
+    | value | 1     |

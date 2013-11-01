@@ -117,17 +117,13 @@ Feature: Configure the attribute sets
 
   @general
   Scenario: Create a general attribute set
-  Given I need a "attribute.set" with oid: scenario.set_general
-    And I set the attribute model to oid: procurement.model_product_product
-    And having:
-        | key  | value       |
-        | name | Général     |
+  Given I find a "attribute.set" with oid: qoqa_base_data.set_general
   Given I need a "attribute.group" with oid: scenario.group_general_main
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                        |
-        | name             | Caractéristiques principales |
-        | attribute_set_id | by oid: scenario.set_general |
+        | key              | value                              |
+        | name             | Caractéristiques principales       |
+        | attribute_set_id | by oid: qoqa_base_data.set_general |
 
   @general_groups @general
   Scenario Outline: Create attribute locations (set + group + attribute)
@@ -151,23 +147,19 @@ Feature: Configure the attribute sets
 
   @wine
   Scenario: Create an attribute set for wine
-  Given I need a "attribute.set" with oid: scenario.set_wine
-    And I set the attribute model to oid: procurement.model_product_product
-    And having:
-        | key  | value       |
-        | name | Du vin!     |
+  Given I find a "attribute.set" with oid: qoqa_base_data.set_wine
   Given I need a "attribute.group" with oid: scenario.group_wine_main
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                        |
-        | name             | Caractéristiques principales |
-        | attribute_set_id | by oid: scenario.set_wine    |
+        | key              | value                           |
+        | name             | Caractéristiques principales    |
+        | attribute_set_id | by oid: qoqa_base_data.set_wine |
   Given I need a "attribute.group" with oid: scenario.group_wine_wine
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                        |
-        | name             | Caractéristiques du vin      |
-        | attribute_set_id | by oid: scenario.set_wine    |
+        | key              | value                           |
+        | name             | Caractéristiques du vin         |
+        | attribute_set_id | by oid: qoqa_base_data.set_wine |
 
   @wine_group_general @wine
   Scenario Outline: Create attribute locations (set + group + attribute)
@@ -210,23 +202,19 @@ Feature: Configure the attribute sets
 
   @liquor
   Scenario: Create an attribute set for liquor
-  Given I need a "attribute.set" with oid: scenario.set_liquor
-    And I set the attribute model to oid: procurement.model_product_product
-    And having:
-        | key  | value          |
-        | name | Spiritueux     |
+  Given I find a "attribute.set" with oid: qoqa_base_data.set_liquor
   Given I need a "attribute.group" with oid: scenario.group_liquor_main
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                          |
-        | name             | Caractéristiques principales   |
-        | attribute_set_id | by oid: scenario.set_liquor    |
+        | key              | value                             |
+        | name             | Caractéristiques principales      |
+        | attribute_set_id | by oid: qoqa_base_data.set_liquor |
   Given I need a "attribute.group" with oid: scenario.group_liquor_liquor
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                          |
-        | name             | Caractéristiques du spiritueux |
-        | attribute_set_id | by oid: scenario.set_liquor    |
+        | key              | value                             |
+        | name             | Caractéristiques du spiritueux    |
+        | attribute_set_id | by oid: qoqa_base_data.set_liquor |
 
   @liquor_group_general @liquor
   Scenario Outline: Create attribute locations (set + group + attribute)

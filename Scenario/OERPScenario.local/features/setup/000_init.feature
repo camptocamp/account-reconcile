@@ -78,6 +78,7 @@ Feature: Parameter the new database
         | product_custom_attributes                  |
         | wine_ch_report                             |
         | discount_coupon                            |
+        | qoqa_base_data                             |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

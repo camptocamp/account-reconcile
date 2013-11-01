@@ -64,8 +64,6 @@ Feature: Parameter the new database
         # French localization
         | l10n_fr                                    |
         | l10n_fr_rib                                |
-        # Financial optional
-        | account_credit_control                     |
         # Other
         | sale_order_webkit                          |
         | connector_ecommerce                        |

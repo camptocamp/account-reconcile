@@ -91,6 +91,11 @@ class TemplateExportMapper(ExportMapper):
     ]
 
     @mapping
+    def metas(self, record):
+        """ QoQa tries to loop on this field """
+        return {'product_metas': []}
+
+    @mapping
     def attributes(self, record):
         """ Map attributes which are not translatables """
         attrs = self.get_connector_unit_for_model(ProductAttribute)

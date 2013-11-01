@@ -37,18 +37,40 @@ class ProductAttribute(ConnectorUnit):
               'qoqa.product.template': 'product.template',
               }
 
-    def _get_select_option(self, values, attribute):
-        if not values:
+    def _get_select_option(self, value, attribute):
+        if not value:
             return False
         if attribute.relation_model_id:
-            binder = self.get_binder_for_model(option._model._name)
-            return binder.to_openerp(option.id, unwrap=True)
+            model_name = attribute.relation_model_id.model
+            model = self.session.pool.get(model_name)
+            binder = self.get_binder_for_model(model._name)
+            return binder.to_openerp(value, unwrap=True)
 
         binder = self.get_binder_for_model('attribute.option')
-        return binder.to_backend(option.id)
+        return binder.to_openerp(value.id, unwrap=True)
 
     def _attribute_set_id(self, record):
-        return 1
+        """ Try to find the appropriate attribute set for the template.
+
+        In QoQa, there is no attribute set idea. We try to infer it
+        from the record.
+
+        """
+        data_obj = self.session.pool.get('ir.model.data')
+        mod = 'qoqa_base_data'
+        # metas are only used for the wine products
+        if record['product_metas']:
+            xmlid = 'set_wine'
+        else:
+            xmlid = 'set_general'
+        cr, uid = self.session.cr, self.session.uid
+        try:
+            __, res_id = data_obj.get_object_reference(cr, uid, mod, xmlid)
+        except ValueError:
+            raise MappingError('Attribute set %s is missing.' %
+                               ('.'.join((mod, xmlid))))
+
+        return res_id
 
     def get_values(self, record, language, translatable=None):
         """ Extract the attribute values from the backend's record.
@@ -61,6 +83,7 @@ class ProductAttribute(ConnectorUnit):
         :param translatable: if True, get only values of the translatable
                              attributes. If False, get only not translatable ones.
                              if None, get them all.
+
         """
         result = {}
         attr_set_id = self._attribute_set_id(record)

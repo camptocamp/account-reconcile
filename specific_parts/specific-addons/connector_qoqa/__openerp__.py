@@ -25,6 +25,7 @@
  'depends': ['connector',
              'sale',
              'qoqa_offer',
+             'qoqa_base_data',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

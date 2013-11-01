@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Authors: Guewen Baconnier, Yannick Vaucher
+#    Author: Guewen Baconnier
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,38 +18,27 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Swiss Wine Reports',
- 'version' : '0.1',
- 'category': '',
+
+{'name': 'QoQa Base Data',
+ 'version': '0.0.1',
+ 'category': 'Others',
+ 'depends': ['product_custom_attributes',
+             ],
+ 'author': 'Camptocamp',
+ 'license': 'AGPL-3',
+ 'website': 'http://www.camptocamp.com',
  'description': """
-Swiss Wine Reports
-==================
+QoQa Base Data
+==============
 
-Add the reports for the "commission fédérale du commerce des vins (CFCV)".
-
-It uses the custom attributes on the products to add the fields used in
-the report only on products using a 'Wine' attribute set.
+Create data used by other modules (connector_qoqa, wine_ch_report, ...),
+as the attribute sets, ...
 
 """,
- 'author' : 'Camptocamp',
- 'maintainer': 'Camptocamp',
- 'website': 'http://www.camptocamp.com/',
- 'depends' : [
-     'base',
-     'report_webkit',
-     'product_custom_attributes',
-     'qoqa_base_data',
-     'stock',
-     ],
- 'data': [
-     'wizard/wine_ch_inventory_wizard_view.xml',
-     'report.xml',
-     'wine_view.xml',
-     'wine_data.xml',
-     ],
- 'test': [],
+ 'images': [],
+ 'demo': [],
+ 'data': ['attribute_set.xml',
+          ],
  'installable': True,
- 'auto_install': False,
  'application': True,
- 'css': [],
- }
+}

@@ -30,8 +30,9 @@ from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         TranslationImporter,
-                                        AddCheckpoint,
                                         )
+from ..product_attribute.importer import ProductAttribute
+from ..unit.mapper import ifmissing
 
 _logger = logging.getLogger(__name__)
 
@@ -68,20 +69,11 @@ class TemplateImport(QoQaImportSynchronizer):
         #             model='magento.product.category')
         #         importer.run(mag_category_id)
 
-    def _create(self, data):
-        openerp_binding_id = super(TemplateImport, self)._create(data)
-        checkpoint = self.get_connector_unit_for_model(AddCheckpoint)
-        checkpoint.run(openerp_binding_id)
-        return openerp_binding_id
-
     def _after_import(self, binding_id):
         """ Hook called at the end of the import """
-        # translation_importer = self.get_connector_unit_for_model(
-        #     TranslationImporter, self.model._name)
-        # translation_importer.run(self.magento_id, binding_id)
-        # image_importer = self.get_connector_unit_for_model(
-        #     CatalogImageImporter, self.model._name)
-        # image_importer.run(self.magento_id, binding_id)
+        translation_importer = self.get_connector_unit_for_model(
+            TranslationImporter)
+        translation_importer.run(self.qoqa_record, binding_id)
 
 
 @qoqa
@@ -89,7 +81,7 @@ class TemplateImportMapper(ImportMapper):
     _model_name = 'qoqa.product.template'
 
     translatable_fields = [
-        ('name', 'name'),
+        (ifmissing('name', 'Unknown'), 'name'),
         ('description', 'description_sale'),
     ]
 
@@ -97,10 +89,27 @@ class TemplateImportMapper(ImportMapper):
               ('updated_at', 'updated_at'),
               ]
 
+    def __init__(self, environment):
+        """
+        :param environment: current environment (backend, session, ...)
+        :type environment: :py:class:`connector.connector.Environment`
+        """
+        super(TemplateImportMapper, self).__init__(environment)
+        self.lang = self.backend_record.default_lang_id
+
     @only_create
     @mapping
     def type(self, record):
         return {'type': 'product'}
+
+    @mapping
+    def attributes(self, record):
+        """ Extract the attributes from the record.
+
+        It takes all the attributes. For the translatable ones,
+        """
+        attr = self.get_connector_unit_for_model(ProductAttribute)
+        return attr.get_values(record, self.lang)
 
     @mapping
     def from_translations(self, record):
@@ -108,16 +117,17 @@ class TemplateImportMapper(ImportMapper):
         a 'translations' dict, we take the translation
         for the main record in OpenERP.
         """
-        lang = self.backend_record.default_lang_id
         binder = self.get_binder_for_model('res.lang')
-        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
+        qoqa_lang_id = binder.to_backend(self.lang.id, wrap=True)
         main = next((tr for tr in record['translations']
                      if str(tr['language_id']) == str(qoqa_lang_id)), None)
         if main is None:
             raise MappingError('Could not find the translation for language '
-                               '%s in the record %s' % (lang.code, record))
-        values = dict((target, main[source])
-                      for source, target in self.translatable_fields)
+                               '%s in the record %s' %
+                               (self.lang.code, record))
+        values = {}
+        for source, target in self.translatable_fields:
+            values[target] = self._map_direct(main, source, target)
         return values
 
     # TODO: product_metas (only for the import -> for the wine reports)

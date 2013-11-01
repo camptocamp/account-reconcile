@@ -25,6 +25,7 @@ from openerp.tools.translate import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
+from openerp.addons.connector.unit.mapper import ImportMapper
 from openerp.addons.connector.exception import IDMissingInBackend
 from ..backend import qoqa
 from ..connector import get_environment, add_checkpoint
@@ -216,10 +217,56 @@ class TranslationImporter(ImportSynchronizer):
     For instance from the products and products' categories importers.
     """
 
-    _model_name = []
+    _model_name = ['qoqa.product.template',
+                   'qoqa.product.product',
+                   ]
 
-    def run(self, qoqa_id, binding_id):
-        raise NotImplementedError
+    def __init__(self, environment):
+        """
+        :param environment: current environment (backend, session, ...)
+        :type environment: :py:class:`connector.connector.Environment`
+        """
+        super(TranslationImporter, self).__init__(environment)
+        self.record = self.binding_id = None
+        self.mapper_class = ImportMapper
+
+    def _translate(self, lang):
+        assert self.record
+        assert self.binding_id
+        session = self.session
+        fields = self.model.fields_get(session.cr, session.uid,
+                                       context=session.context)
+        # find the translatable fields of the model
+        translatable_fields = [field for field, attrs in fields.iteritems()
+                               if attrs.get('translate')]
+        mapper = self.get_connector_unit_for_model(self.mapper_class)
+        mapper.lang = lang
+        mapper.convert(self.record)
+        record = mapper.data
+        data = dict((field, value) for field, value in record.iteritems()
+                    if field in translatable_fields)
+
+        ctx = {'connector_no_export': True, 'lang': lang.code}
+        with session.change_context(ctx):
+            session.write(self.model._name, self.binding_id, data)
+
+    def run(self, record, binding_id, mapper=None):
+        self.record = record
+        self.binding_id = binding_id
+        if mapper is not None:
+            self.mapper_class = mapper
+        session = self.session
+
+        if not record.get('translations'):
+            return
+        for tr_record in record['translations']:
+            lang_binder = self.get_binder_for_model('res.lang')
+            lang_id = lang_binder.to_openerp(tr_record['language_id'],
+                                             unwrap=True)
+            if lang_id == self.backend_record.default_lang_id.id:
+                continue
+            lang = session.browse('res.lang', lang_id)
+            self._translate(lang)
 
 
 @qoqa

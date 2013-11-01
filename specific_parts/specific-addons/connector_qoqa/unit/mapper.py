@@ -41,3 +41,25 @@ def m2o_to_backend(field, binding=False):
     :param binding: True if the source field's relation is a binding record
     """
     return mapper.none(mapper.m2o_to_backend(field, binding=binding))
+
+
+def ifmissing(field, value):
+    """ A modifier intended to be used on the ``direct`` mappings.
+
+    When the input value is False-ish (False, None, ''), it set the
+    ``value`` instead. It can be used for instance to replace a
+    missing name by 'Unknown'.
+
+    Example::
+
+        direct = [(ifmissing('name', value='Unknown'), 'name')]
+
+    :param field: name of the source field in the record
+    :param value: default value to put when the source value is False-ish
+    """
+    def modifier(self, record, to_attr):
+        value = record[field]
+        if not value:
+            return value
+        return value
+    return modifier

@@ -18,3 +18,84 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
+from openerp.addons.connector.exception import MappingError
+from openerp.addons.connector.connector import ConnectorUnit
+from ..backend import qoqa
+
+
+@qoqa
+class ProductAttribute(ConnectorUnit):
+    """ For a product's template or variant, search all the
+    attributes and returns a dict ready to be used by the Mapper.
+    """
+    _model_name = ['qoqa.product.product',
+                   'qoqa.product.template',
+                   ]
+
+    unwrap = {'qoqa.product.product': 'product.product',
+              'qoqa.product.template': 'product.template',
+              }
+
+    def _get_select_option(self, values, attribute):
+        if not values:
+            return False
+        if attribute.relation_model_id:
+            binder = self.get_binder_for_model(option._model._name)
+            return binder.to_openerp(option.id, unwrap=True)
+
+        binder = self.get_binder_for_model('attribute.option')
+        return binder.to_backend(option.id)
+
+    def _attribute_set_id(self, record):
+        return 1
+
+    def get_values(self, record, language, translatable=None):
+        """ Extract the attribute values from the backend's record.
+
+        :param record: backend's record
+        :type record: dict
+        :param language: browse_record of the language for which we extract
+                            the values
+        :type language: browse_record
+        :param translatable: if True, get only values of the translatable
+                             attributes. If False, get only not translatable ones.
+                             if None, get them all.
+        """
+        result = {}
+        attr_set_id = self._attribute_set_id(record)
+        attr_set = self.session.browse('attribute.set', attr_set_id)
+        groups = attr_set.attribute_group_ids
+        locations = [attribute for group in groups
+                     for attribute in group.attribute_ids]
+
+        unwrap_model = self.unwrap[self.model._name]
+        attr_binder = self.get_binder_for_model('attribute.attribute')
+
+        lang_binder = self.get_binder_for_model('res.lang')
+        qoqa_lang_id = lang_binder.to_backend(language.id, wrap=True)
+        for location in locations:
+            attribute = location.attribute_id
+            if attribute.model_id.model != unwrap_model:
+                continue
+            if (translatable is not None and
+                    attribute.translate != translatable):
+                continue
+            qoqa_name = attr_binder.to_backend(attribute.id)
+            rec_tr = next((tr for tr in record['translations']
+                           if str(tr['language_id']) == str(qoqa_lang_id)),
+                          {})
+            value = rec_tr.get(qoqa_name)
+            if value is None:
+                value = record.get(qoqa_name)
+
+            if attribute.attribute_type == 'select':
+                value = self._get_select_option(value, attribute)
+            elif attribute.attribute_type == 'multiselect':
+                value = [self._get_select_option(val, attribute)
+                         for val in value]
+
+            result[attribute.name] = value
+
+        result['attribute_set_id'] = attr_set_id
+        return result

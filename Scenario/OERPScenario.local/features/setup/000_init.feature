@@ -53,6 +53,11 @@ Feature: Parameter the new database
         | base_transaction_id                        |
         | account_statement_transactionid_completion |
         | account_statement_transactionid_import     |
+        # Margin
+        | product_get_cost_field                     |
+        | product_cost_incl_bom                      |
+        | product_standard_margin                    |
+        | product_historical_margin                  |
         # Swiss localization
         | l10n_ch                                    |
         | l10n_ch_bank                               |

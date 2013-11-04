@@ -90,6 +90,8 @@ class qoqa_backend(orm.Model):
             'Import product variants from date'),
         'import_res_partner_from_date': fields.datetime(
             'Import Customers from date'),
+        'import_sale_order_from_date': fields.datetime(
+            'Import Sales Orders from date'),
     }
 
     def check_connection(self, cr, uid, ids, context=None):
@@ -166,6 +168,12 @@ class qoqa_backend(orm.Model):
     def import_res_partner(self, cr, uid, ids, context=None):
         self._import_from_date(cr, uid, ids, 'qoqa.res.partner',
                                'import_res_partner_from_date',
+                               context=context)
+        return True
+
+    def import_sale_order(self, cr, uid, ids, context=None):
+        self._import_from_date(cr, uid, ids, 'qoqa.sale.order',
+                               'import_sale_order_from_date',
                                context=context)
         return True
 

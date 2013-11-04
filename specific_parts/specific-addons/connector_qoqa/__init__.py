@@ -9,6 +9,7 @@ from . import product
 from . import product_template
 from . import product_attribute
 from . import partner
+from . import sale
 from . import account_tax
 from . import res_country
 from . import res_currency

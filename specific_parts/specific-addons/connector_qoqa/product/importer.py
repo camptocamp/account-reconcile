@@ -55,15 +55,7 @@ class VariantImport(QoQaImportSynchronizer):
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
-        record = self.qoqa_record
-        # import related template if missing
-        tmpl_binder = self.get_binder_for_model('qoqa.product.template')
-        qoqa_product_id = record['product_id']
-        if tmpl_binder.to_openerp(qoqa_product_id) is None:
-            importer = self.get_connector_unit_for_model(
-                QoQaImportSynchronizer,
-                model='qoqa.product.template')
-            importer.run(qoqa_product_id)
+        self._import_dependency('product_id', 'qoqa.product.template')
 
     def _after_import(self, binding_id):
         """ Hook called at the end of the import """

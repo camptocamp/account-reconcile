@@ -25,35 +25,43 @@ from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
 
-class qoqa_res_partner(orm.Model):
-    _name = 'qoqa.res.partner'
+class qoqa_sale_order(orm.Model):
+    _name = 'qoqa.sale.order'
     _inherit = 'qoqa.binding'
-    _inherits = {'res.partner': 'openerp_id'}
+    _inherits = {'sale.order': 'sale.order'}
     _description = 'QoQa User'
 
     _columns = {
-        'openerp_id': fields.many2one('res.partner',
-                                      string='Customer',
+        'openerp_id': fields.many2one('sale.order',
+                                      string='Sales Order',
                                       required=True,
                                       ondelete='restrict'),
-        'qoqa_active': fields.boolean('QoQa Active'),
-        'suspicious': fields.boolean('Suspicious'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
+        'qoqa_shop_id': fields.many2one(
+            'qoqa.shop',
+            string='QoQa Shop',
+            required=True,
+            readonly=True),
+        # TODO
+        # 'type_id'
+        # 'status_id'
+        # 'shipper_service_id'
+        # 'shipper_relay_id'
     }
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A user with the same ID on QoQa already exists")
+         "A sales order with the same ID on QoQa already exists")
     ]
 
 
-class res_partner(orm.Model):
-    _inherit = 'res.partner'
+class sale_order(orm.Model):
+    _inherit = 'sale.order'
 
     _columns = {
         'qoqa_bind_ids': fields.one2many(
-            'qoqa.res.partner',
+            'qoqa.sale.order',
             'openerp_id',
             string='QBindings'),
     }
@@ -62,12 +70,12 @@ class res_partner(orm.Model):
         if default is None:
             default = {}
         default['qoqa_bind_ids'] = False
-        return super(res_partner, self).copy_data(cr, uid, id,
-                                                  default=default,
-                                                  context=context)
+        return super(sale_order, self).copy_data(cr, uid, id,
+                                                 default=default,
+                                                 context=context)
 
 
 @qoqa
-class QoQResPartner(QoQaAdapter):
-    _model_name = 'qoqa.res.partner'
-    _endpoint = 'user'
+class QoQaSaleOrder(QoQaAdapter):
+    _model_name = 'qoqa.sale.order'
+    _endpoint = 'order'

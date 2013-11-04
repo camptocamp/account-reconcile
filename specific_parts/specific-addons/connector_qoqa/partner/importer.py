@@ -37,7 +37,7 @@ _logger = logging.getLogger(__name__)
 class ResPartnerBatchImport(FromDateDelayBatchImport):
     """ Import the QoQa Users.
 
-    For every product in the list, a delayed job is created.
+    For every id in in the list of users, a delayed job is created.
     Import from a date
     """
     _model_name = 'qoqa.res.partner'

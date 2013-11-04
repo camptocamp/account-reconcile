@@ -25,33 +25,35 @@ from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
 
-class qoqa_product_product(orm.Model):
-    _name = 'qoqa.product.product'
+class qoqa_res_partner(orm.Model):
+    _name = 'qoqa.res.partner'
     _inherit = 'qoqa.binding'
-    _inherits = {'product.product': 'openerp_id'}
-    _description = 'QoQa Product'
+    _inherits = {'res.partner': 'openerp_id'}
+    _description = 'QoQa User'
 
     _columns = {
-        'openerp_id': fields.many2one('product.product',
-                                      string='Product',
+        'openerp_id': fields.many2one('res.partner',
+                                      string='Customer',
                                       required=True,
                                       ondelete='restrict'),
+        'qoqa_active': fields.boolean('QoQa Active'),
+        'suspicious': fields.boolean('Suspicious'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
     }
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A product with the same ID on QoQa already exists")
+         "A user with the same ID on QoQa already exists")
     ]
 
 
-class product_product(orm.Model):
-    _inherit = 'product.product'
+class res_partner(orm.Model):
+    _inherit = 'res.partner'
 
     _columns = {
         'qoqa_bind_ids': fields.one2many(
-            'qoqa.product.product',
+            'qoqa.res.partner',
             'openerp_id',
             string='QoQa Bindings'),
     }
@@ -60,11 +62,12 @@ class product_product(orm.Model):
         if default is None:
             default = {}
         default['qoqa_bind_ids'] = False
-        return super(product_product, self).copy_data(cr, uid, id,
-                                                      default=default,
-                                                      context=context)
+        return super(res_partner, self).copy_data(cr, uid, id,
+                                                  default=default,
+                                                  context=context)
+
 
 @qoqa
-class QoQaProductAdapter(QoQaAdapter):
-    _model_name = 'qoqa.product.product'
-    _endpoint = 'variation'
+class QoQResPartner(QoQaAdapter):
+    _model_name = 'qoqa.res.partner'
+    _endpoint = 'user'

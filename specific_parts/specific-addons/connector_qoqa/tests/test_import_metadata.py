@@ -57,7 +57,7 @@ class test_import_metadata(common.TransactionCase):
         cr, uid = self.cr, self.uid
         with mock_api_responses(qoqa_shops):
             import_batch(self.session, 'qoqa.shop', self.backend_id)
-        domain = [('qoqa_id', '=', '1')]
+        domain = [('qoqa_id', '=', '100')]
         shop_ids = self.qoqa_shop_obj.search(cr, uid, domain)
         self.assertEquals(len(shop_ids), 1)
         shop = self.qoqa_shop_obj.browse(cr, uid, shop_ids[0])

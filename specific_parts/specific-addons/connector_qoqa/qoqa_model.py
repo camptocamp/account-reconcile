@@ -84,8 +84,10 @@ class qoqa_backend(orm.Model):
         'access_token_secret': fields.char('OAuth Token Secret'),
         'debug': fields.boolean('Debug'),
 
-        'import_product_templates_from_date': fields.datetime(
+        'import_product_template_from_date': fields.datetime(
             'Import product templates from date'),
+        'import_product_product_from_date': fields.datetime(
+            'Import product variants from date'),
     }
 
     def check_connection(self, cr, uid, ids, context=None):
@@ -149,7 +151,13 @@ class qoqa_backend(orm.Model):
 
     def import_product_template(self, cr, uid, ids, context=None):
         self._import_from_date(cr, uid, ids, 'qoqa.product.template',
-                               'import_product_templates_from_date',
+                               'import_product_template_from_date',
+                               context=context)
+        return True
+
+    def import_product_product(self, cr, uid, ids, context=None):
+        self._import_from_date(cr, uid, ids, 'qoqa.product.product',
+                               'import_product_product_from_date',
                                context=context)
         return True
 

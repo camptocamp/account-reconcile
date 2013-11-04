@@ -209,6 +209,16 @@ class DelayedBatchImport(BatchImportSynchronizer):
                             **kwargs)
 
 
+class FromDateDelayBatchImport(DelayedBatchImport):
+    """ Delay import of the records from a date """
+
+    def run(self, from_date=None):
+        """ Run the synchronization """
+        record_ids = self.backend_adapter.search(from_date=from_date)
+        for record_id in record_ids:
+            self._import_record(record_id)
+
+
 @qoqa
 class TranslationImporter(ImportSynchronizer):
     """ Import translations for a record.

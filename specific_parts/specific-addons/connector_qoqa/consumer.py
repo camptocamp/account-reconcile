@@ -40,6 +40,7 @@ def delay_export(session, model_name, record_id, fields=None, **kwargs):
     """
     if session.context.get('connector_no_export'):
         return
+    import pdb; pdb.set_trace()
     export_record.delay(session, model_name, record_id,
                         fields=fields, **kwargs)
 
@@ -56,6 +57,7 @@ def delay_export_all_bindings(session, model_name, record_id, fields=None,
     """
     if session.context.get('connector_no_export'):
         return
+    import pdb; pdb.set_trace()
     model = session.pool.get(model_name)
     record = model.browse(session.cr, session.uid,
                           record_id, context=session.context)

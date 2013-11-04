@@ -131,7 +131,6 @@ class QoQaAdapter(CRUDAdapter):
         response = self.client.post(url, data=json.dumps(vals),
                                     headers=headers)
         result = self._handle_response(response)
-        import pdb; pdb.set_trace()
         assert result['data']['id']
         return result['data']['id']
 
@@ -143,7 +142,6 @@ class QoQaAdapter(CRUDAdapter):
                                    data=json.dumps(vals),
                                    headers=headers)
         result = self._handle_response(response)
-        import pdb; pdb.set_trace()
         return True
 
     def read(self, id):

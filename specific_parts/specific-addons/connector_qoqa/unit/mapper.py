@@ -22,23 +22,26 @@
 from openerp.addons.connector.unit import mapper
 
 
-def m2o_to_backend(field, binding=False):
+def m2o_to_backend(field, binding=None):
     """ A modifier intended to be used on the ``direct`` mappings.
 
     For a many2one, get the ID on the backend and returns it.
 
     When the field's relation is not a binding (i.e. it does not point to
-    something like ``magento.*``), the ``binding`` argument should be False.
+    something like ``magento.*``), the binding model needs to be provided
+    in the ``binding`` keyword argument.
 
     QoQa always expects None for NULL relations, so we replace the False
     values with None.
 
     Example::
 
-        direct = [(m2o_to_backend('country_id', binding=False), 'country')]
+        direct = [(m2o_to_backend('country_id', binding='magento.res.country'),
+                   'country'),
+                  (m2o_to_backend('magento_country_id'), 'country')]
 
     :param field: name of the source field in the record
-    :param binding: True if the source field's relation is a binding record
+    :param binding: name of the binding model is the relation is not a binding
     """
     return mapper.none(mapper.m2o_to_backend(field, binding=binding))
 
@@ -58,7 +61,7 @@ def ifmissing(field, value):
     :param value: default value to put when the source value is False-ish
     """
     def modifier(self, record, to_attr):
-        value = record[field]
+        value = record.get(field)
         if not value:
             return value
         return value

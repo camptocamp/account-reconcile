@@ -24,18 +24,21 @@ from openerp.addons.connector.connector import ConnectorUnit
 from ..backend import qoqa
 
 
-@qoqa
 class ProductAttribute(ConnectorUnit):
     """ For a product's template or variant, search all the
     attributes and returns a dict ready to be used by the Mapper.
     """
-    _model_name = ['qoqa.product.product',
-                   'qoqa.product.template',
-                   ]
+    _model_name = None
 
-    unwrap = {'qoqa.product.product': 'product.product',
-              'qoqa.product.template': 'product.template',
-              }
+    attr_model = None  # used to filter the attributes
+
+    def __init__(self, environment):
+        """
+        :param environment: current environment (backend, session, ...)
+        :type environment: :py:class:`connector.connector.Environment`
+        """
+        super(ProductAttribute, self).__init__(environment)
+        assert self.attr_model, "attr_model must be set"
 
     def _get_select_option(self, value, attribute):
         if not value:
@@ -80,9 +83,6 @@ class ProductAttribute(ConnectorUnit):
         :param language: browse_record of the language for which we extract
                             the values
         :type language: browse_record
-        :param translatable: if True, get only values of the translatable
-                             attributes. If False, get only not translatable ones.
-                             if None, get them all.
 
         """
         result = {}
@@ -92,14 +92,13 @@ class ProductAttribute(ConnectorUnit):
         locations = [attribute for group in groups
                      for attribute in group.attribute_ids]
 
-        unwrap_model = self.unwrap[self.model._name]
         attr_binder = self.get_binder_for_model('attribute.attribute')
 
         lang_binder = self.get_binder_for_model('res.lang')
         qoqa_lang_id = lang_binder.to_backend(language.id, wrap=True)
         for location in locations:
             attribute = location.attribute_id
-            if attribute.model_id.model != unwrap_model:
+            if attribute.model_id.model != self.attr_model:
                 continue
             if (translatable is not None and
                     attribute.translate != translatable):
@@ -122,3 +121,63 @@ class ProductAttribute(ConnectorUnit):
 
         result['attribute_set_id'] = attr_set_id
         return result
+
+
+@qoqa
+class VariantProductAttribute(ProductAttribute):
+    """ For a product's variant, search all the
+    attributes and returns a dict ready to be used by the Mapper.
+    """
+    _model_name = 'qoqa.product.product'
+
+    attr_model = 'product.product'  # used to filter the attributes
+
+    def _attribute_set_id(self, record):
+        """ Try to find the appropriate attribute set for the template.
+
+        In QoQa, there is no attribute set idea. We try to infer it
+        from the record.
+
+        """
+        qoqa_tmpl_id = record['product_id']
+        tmpl_binder = self.get_binder_for_model('qoqa.product.template')
+        qoqa_product_id = record['product_id']
+        tmpl_id = tmpl_binder.to_openerp(qoqa_product_id, unwrap=True)
+        assert tmpl_id is not None, \
+               ("product_id %s should have been imported in "
+                "VariantImport._import_dependencies" % record['product_id'])
+        tmpl = self.session.browse('product.template', tmpl_id)
+        return tmpl.attribute_set_id.id
+
+
+@qoqa
+class TemplateProductAttribute(ProductAttribute):
+    """ For a product's template, search all the
+    attributes and returns a dict ready to be used by the Mapper.
+    """
+    _model_name = 'qoqa.product.template'
+
+    attr_model = 'product.template'  # used to filter the attributes
+
+    def _attribute_set_id(self, record):
+        """ Try to find the appropriate attribute set for the template.
+
+        In QoQa, there is no attribute set idea. We try to infer it
+        from the record.
+
+        """
+        data_obj = self.session.pool.get('ir.model.data')
+        mod = 'qoqa_base_data'
+        # metas are only used for the wine products
+        if record['product_metas']:
+            xmlid = 'set_wine'
+        else:
+            xmlid = 'set_general'
+        cr, uid = self.session.cr, self.session.uid
+        try:
+            __, res_id = data_obj.get_object_reference(cr, uid, mod, xmlid)
+        except ValueError:
+            raise MappingError('Attribute set %s is missing.' %
+                               ('.'.join((mod, xmlid))))
+
+        return res_id

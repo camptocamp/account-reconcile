@@ -36,7 +36,7 @@
     </record>
 
     <menuitem name="Wine CH Inventory" id="menu_wine_ch_inventory"
-        parent="account.final_accounting_reports" action="action_wine_ch_inventory_webkit"
+        parent="account.menu_finance_legal_statement" action="action_wine_ch_inventory_webkit"
         />
         <!--groups="account.group_account_manager,account.group_account_user"  id="account.menu_general_ledger"/>-->
 

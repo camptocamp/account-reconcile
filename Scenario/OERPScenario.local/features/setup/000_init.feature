@@ -58,6 +58,7 @@ Feature: Parameter the new database
         | product_cost_incl_bom                      |
         | product_standard_margin                    |
         | product_historical_margin                  |
+        | qoqa_offer_historical_margin               |
         # Swiss localization
         | l10n_ch                                    |
         | l10n_ch_bank                               |

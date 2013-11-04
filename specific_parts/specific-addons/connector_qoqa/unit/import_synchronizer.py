@@ -324,7 +324,15 @@ class AddCheckpoint(ConnectorUnit):
 
 
 @job
-def import_batch(session, model_name, backend_id, from_date=None):
+def import_batch(session, model_name, backend_id):
+    """ Prepare a batch import of records from QoQa """
+    env = get_environment(session, model_name, backend_id)
+    importer = env.get_connector_unit(BatchImportSynchronizer)
+    importer.run()
+
+
+@job
+def import_batch_from_date(session, model_name, backend_id, from_date=None):
     """ Prepare a batch import of records from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(BatchImportSynchronizer)

@@ -41,7 +41,7 @@ class test_import_metadata(common.TransactionCase):
         # ensure we use the tested version, otherwise the response
         # of the test data would not be found
         vals = {'version': 'v1',
-                'url': 'http://test02.qoqa.com',
+                'url': 'http://admin.test02.qoqa.com',
                 'default_lang_id': self.ref('base.lang_en'),
                 }
         backend_model.write(cr, uid, self.backend_id, vals)

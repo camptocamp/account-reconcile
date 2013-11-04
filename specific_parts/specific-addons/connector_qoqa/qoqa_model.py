@@ -32,7 +32,8 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   )
 from .backend import qoqa
 from .unit.import_synchronizer import (import_batch,
-                                       BatchImportSynchronizer,
+                                       import_batch_from_date,
+                                       DirectBatchImport,
                                        QoQaImportSynchronizer,
                                        AddCheckpoint,
                                        )
@@ -148,8 +149,8 @@ class qoqa_backend(orm.Model):
                 from_date = datetime.strptime(from_date, DT_FMT)
             else:
                 from_date = None
-            import_batch.delay(session, model,
-                               backend.id, from_date=from_date)
+            import_batch_from_date.delay(session, model,
+                                         backend.id, from_date=from_date)
         self.write(cr, uid, ids,
                    {from_date_field: import_start_time})
 
@@ -226,9 +227,16 @@ class QoQaShopAdapter(QoQaAdapter):
     _model_name = 'qoqa.shop'
     _endpoint = 'shops'
 
+    def search(self, filters=None):
+        url = self.url()
+        payload = {}
+        response = self.client.get(url, params=payload)
+        records = self._handle_response(response)
+        return records['data']
+
 
 @qoqa
-class ShopBatchImport(BatchImportSynchronizer):
+class ShopBatchImport(DirectBatchImport):
     """ Import the records directly, without delaying the jobs.
 
     Import the QoQa Shops
@@ -240,18 +248,17 @@ class ShopBatchImport(BatchImportSynchronizer):
 
     def run(self, filters=None):
         """ Run the synchronization """
-        records = self.backend_adapter.search(filters, only_ids=False)
+        records = self.backend_adapter.search(filters)
         for record in records:
-            self._import_record(record)
+            self._import_record(record['id'], record)
 
-    def _import_record(self, record):
+    def _import_record(self, record_id, record):
         """ Import the record directly.
 
         For the shops, the import does only 1 call to the
         API, it returns the data from all the shops.
         """
         importer = self.get_connector_unit_for_model(ShopImport)
-        record_id = record['id']
         importer.run(record_id, record=record)
 
 

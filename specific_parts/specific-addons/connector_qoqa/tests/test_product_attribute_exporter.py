@@ -24,7 +24,7 @@ import mock
 import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
 from ..connector import get_environment
-from ..product_attribute import ProductAttribute
+from ..product_attribute.exporter import ProductAttribute
 
 
 class test_product_attributes(common.TransactionCase):

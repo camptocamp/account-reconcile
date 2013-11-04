@@ -25,12 +25,14 @@ Feature: Configure the connector's backend
   Scenario: Configure Sales Automatic Workflows
     Given I find a "sale.workflow.process" with oid: sale_automatic_workflow.automatic_validation
     And having:
-      | key              | value       |
-      | picking_policy   | one         |
-      | invoice_quantity | procurement |
-      | order_policy     | picking     |
-      | validate_order   | True        |
-      | validate_invoice | True        |
+      | key                        | value           |
+      | picking_policy             | one             |
+      | invoice_quantity           | procurement     |
+      | order_policy               | manual          |
+      | validate_order             | True            |
+      | validate_invoice           | True            |
+      | create_invoice_on          | on_picking_done |
+      | invoice_date_is_order_date | True            |
     Given I find a "sale.workflow.process" with oid: sale_automatic_workflow.manual_validation
     And having:
       | key              | value       |

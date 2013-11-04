@@ -36,6 +36,7 @@ class qoqa_res_partner(orm.Model):
                                       string='Customer',
                                       required=True,
                                       ondelete='restrict'),
+        'qoqa_name': fields.char('QoQa Name'),
         'qoqa_active': fields.boolean('QoQa Active'),
         'suspicious': fields.boolean('Suspicious'),
         'created_at': fields.datetime('Created At (on QoQa)'),
@@ -68,6 +69,6 @@ class res_partner(orm.Model):
 
 
 @qoqa
-class QoQResPartner(QoQaAdapter):
+class ResPartnerAdapter(QoQaAdapter):
     _model_name = 'qoqa.res.partner'
     _endpoint = 'user'

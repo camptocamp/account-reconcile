@@ -27,6 +27,7 @@
                     <group>
                         <field name="backend_id"/>
                         <field name="qoqa_id"/>
+                        <field name="qoqa_name"/>
                         <field name="qoqa_active"/>
                         <field name="suspicious"/>
                         <field name="created_at"/>

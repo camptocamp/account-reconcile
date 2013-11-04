@@ -57,6 +57,7 @@ class ResPartnerImportMapper(ImportMapper):
               ('suspicious', 'suspicious'),
               ('is_active', 'qoqa_active'),
               ('email', 'email'),
+              ('name', 'qoqa_name'),
               ]
 
     @only_create

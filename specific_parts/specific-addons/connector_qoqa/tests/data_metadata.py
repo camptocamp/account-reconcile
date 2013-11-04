@@ -2,10 +2,6 @@
 
 """
 Responses returned by the QoQa Web-Services
-
-Use 'en' for the language instead of 'fr'
-to be sure that the tests are working even if the
-'fr' lang is not installed.
 """
 
 qoqa_shops = {

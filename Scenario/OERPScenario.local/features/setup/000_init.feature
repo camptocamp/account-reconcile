@@ -138,7 +138,7 @@ Feature: Parameter the new database
 
   @l10n_ch_payment_slip_voucher_disable
   Scenario: DISABLE VOUCHER FOR L10N_CH_PAYMENT_SLIP
-    Given I need a "ir.config_parameter" with oid: l10n_ch.payment_slip_voucher_disable
+    Given I need a "ir.config_parameter" with oid: l10n_ch_payment_slip.payment_slip_voucher_disable
     And having:
-    | name  | value |
-    | value | 1     |
+    | name  | value                                |
+    | value | 1                                    |

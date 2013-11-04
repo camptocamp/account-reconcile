@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_account_invoice_line_tree" model="ir.ui.view">
+      <field name="name">account.invoice.line.tree.add.qoqa.offer</field>
+      <field name="model">account.invoice.line</field>
+      <field name="inherit_id" ref="product_historical_margin.view_invoice_line_tree_from_product"/>
+      <field name="arch" type="xml">
+        <field name="product_id" position="after">
+          <field name="offer_id" invisible="1"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_account_invoice_line_filter" model="ir.ui.view">
+      <field name="name">account.invoice.line.select.add.qoqa.offer</field>
+      <field name="model">account.invoice.line</field>
+      <field name="inherit_id" ref="product_historical_margin.view_account_invoice_line_filter"/>
+      <field name="arch" type="xml">
+        <filter name="product" position="after">
+          <filter name="offer" string="QoQa Offer" icon="terp-accessories-archiver" context="{'group_by':'offer_id'}"/>
+        </filter>
+      </field>
+    </record>
+
+  </data>
+</openerp>

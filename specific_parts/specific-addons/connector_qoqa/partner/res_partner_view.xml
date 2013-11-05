@@ -14,6 +14,9 @@
                     <group string="QBindings">
                         <field name="qoqa_bind_ids" nolabel="1"/>
                     </group>
+                    <group string="QBindings for Adresses">
+                        <field name="qoqa_address_bind_ids" nolabel="1"/>
+                    </group>
                 </page>
             </field>
         </record>

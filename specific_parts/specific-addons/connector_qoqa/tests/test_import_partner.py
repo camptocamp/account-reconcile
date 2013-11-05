@@ -24,7 +24,7 @@ import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
 from ..connector import get_environment
 from .common import mock_api_responses
-from .data_partner import qoqa_user
+from .data_partner import qoqa_user, qoqa_address
 from ..unit.import_synchronizer import import_record
 
 
@@ -46,6 +46,8 @@ class test_import_partner(common.TransactionCase):
                 }
         backend_model.write(cr, uid, self.backend_id, vals)
         self.QPartner = self.registry('qoqa.res.partner')
+        self.Partner = self.registry('res.partner')
+        self.QAddress = self.registry('qoqa.address')
 
     def test_import_partner(self):
         """ Import a partner (QoQa user) """
@@ -60,3 +62,44 @@ class test_import_partner(common.TransactionCase):
         self.assertEquals(qpartner.name, 'Christos Kornaros')
         self.assertEquals(qpartner.qoqa_name, 'Mykonos')
         self.assertEquals(qpartner.email, 'christos.k@bluewin.ch')
+        self.assertTrue(qpartner.is_company)
+
+    def test_import_address(self):
+        """ Import an address (with dependencies) """
+        cr, uid = self.cr, self.uid
+        with mock_api_responses(qoqa_address):
+            import_record(self.session, 'qoqa.address',
+                          self.backend_id, 4646464646)
+        domain = [('qoqa_id', '=', '4646464646')]
+        qaddr_ids = self.QAddress.search(cr, uid, domain)
+        self.assertEquals(len(qaddr_ids), 1)
+        qaddr = self.QAddress.browse(cr, uid, qaddr_ids[0])
+        self.assertEquals(qaddr.name, 'Guewen Baconnier')
+        self.assertEquals(qaddr.street, 'Grand Rue 3')
+        self.assertEquals(qaddr.street2, '--')
+        self.assertEquals(qaddr.city, 'Orbe')
+        self.assertEquals(qaddr.zip, '1350')
+        self.assertEquals(qaddr.country_id.id, self.ref('base.ch'))
+        partner = qaddr.parent_id
+        self.assertTrue(partner.is_company)
+
+    def test_import_on_existing(self):
+        """ Import a partner, should bind on an existing with same email """
+        cr, uid = self.cr, self.uid
+        p_id = self.Partner.create(cr, uid,
+                                   {'name': 'Guewen',
+                                    'email': 'guewen@gmail.com',
+                                    'is_company': True})
+        a_id = self.Partner.create(cr, uid,
+                                   {'name': 'Guewen address 1',
+                                    'parent_id': p_id})
+        with mock_api_responses(qoqa_address):
+            import_record(self.session, 'qoqa.address',
+                          self.backend_id, 4646464646)
+        domain = [('qoqa_id', '=', '4646464646')]
+        qaddr_ids = self.QAddress.search(cr, uid, domain)
+        self.assertEquals(len(qaddr_ids), 1)
+        qaddr = self.QAddress.browse(cr, uid, qaddr_ids[0])
+        partner = qaddr.parent_id
+        self.assertEquals(partner.id, p_id)
+        self.assertEquals(len(partner.child_ids), 2)

@@ -65,3 +65,42 @@ class ResPartnerImportMapper(ImportMapper):
     def name(self, record):
         name = ' '.join((record['firstname'], record['lastname']))
         return {'name': name}
+
+    @mapping
+    def use_parent_address(self, record):
+        return {'use_parent_address': False}
+
+    @only_create
+    @mapping
+    def type(self, record):
+        return {'type': 'default'}
+
+    @only_create
+    @mapping
+    def customer(self, record):
+        return {'customer': True}
+
+    @only_create
+    @mapping
+    def language(self, record):
+        """ french by default """
+        return {'lang': 'fr_FR'}
+
+    @only_create
+    @mapping
+    def is_company(self, record):
+        """ partners are companies so we can bind addresses on them """
+        return {'is_company': True}
+
+    @only_create
+    @mapping
+    def openerp_id(self, record):
+        """ Will bind the customer on a existing partner
+        with the same email """
+        sess = self.session
+        partner_ids = sess.search('res.partner',
+                                  [('email', '=', record['email']),
+                                   ('customer', '=', True),
+                                   ('is_company', '=', True)])
+        if partner_ids:
+            return {'openerp_id': partner_ids[0]}

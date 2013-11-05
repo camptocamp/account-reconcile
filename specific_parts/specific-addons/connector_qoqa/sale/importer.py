@@ -56,11 +56,11 @@ class SaleOrderImport(QoQaImportSynchronizer):
         self._import_dependency(rec['deal_id'], 'qoqa.deal')
         self._import_dependency(rec['user_id'], 'qoqa.res.partner')
         self._import_dependency(rec['billing_address_id'],
-                                'qoqa.res.partner.address')
+                                'qoqa.address')
         self._import_dependency(rec['shipping_address_id'],
-                                'qoqa.res.partner.address')
+                                'qoqa.address')
         self._import_dependency(rec['shipping_address_id'],
-                                'qoqa.res.partner.address')
+                                'qoqa.address')
         for item in rec['items']:
             self._import_dependency(item['variation_id'],
                                     'qoqa.product.product')
@@ -82,10 +82,10 @@ class SaleOrderImportMapper(ImportMapper):
               (backend_to_m2o('deal_id'), 'offer_id'),
               (backend_to_m2o('user_id', binding='qoqa.res.partner'), 'partner_id'),
               (backend_to_m2o('shipping_address_id',
-                              binding='qoqa.res.partner.address'),
+                              binding='qoqa.address'),
                'partner_shipping_id'),
               (backend_to_m2o('billing_address_id',
-                              binding='qoqa.res.partner.address'),
+                              binding='qoqa.address'),
                'partner_invoice_id'),
               ]
 

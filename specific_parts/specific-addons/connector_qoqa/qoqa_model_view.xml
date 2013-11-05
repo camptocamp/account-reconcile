@@ -73,6 +73,19 @@
                                 </group>
                                 <group>
                                     <div>
+                                        <label string="Import addresses since"
+                                            class="oe_inline"/>
+                                        <field name="import_address_from_date"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_address"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import in background"/>
+                                </group>
+                                <group>
+                                    <div>
                                         <label string="Import sales orders since"
                                             class="oe_inline"/>
                                         <field name="import_sale_order_from_date"

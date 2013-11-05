@@ -19,34 +19,17 @@
 #
 ##############################################################################
 
-import mock
-
-import openerp.tests.common as common
-from openerp.addons.connector.session import ConnectorSession
-from .common import mock_api_responses
+from .common import mock_api_responses, QoQaTransactionCase
 from .data_offer import qoqa_offer
 from .data_metadata import qoqa_shops
 from ..unit.import_synchronizer import import_record
 
 
-class test_import_offer(common.TransactionCase):
+class test_import_offer(QoQaTransactionCase):
     """ Test the import of offers from QoQa """
     def setUp(self):
         super(test_import_offer, self).setUp()
         cr, uid = self.cr, self.uid
-        backend_model = self.registry('qoqa.backend')
-        self.session = ConnectorSession(cr, uid)
-        self.backend_id = self.ref('connector_qoqa.qoqa_backend_config')
-        fr_ids = self.registry('res.lang').search(
-            cr, uid, [('code', '=', 'fr_FR')])
-        fr_id = fr_ids[0]
-        # ensure we use the tested version, otherwise the response
-        # of the test data would not be found
-        vals = {'version': 'v1',
-                'url': 'http://admin.test02.qoqa.com',
-                'default_lang_id': fr_id,
-                }
-        backend_model.write(cr, uid, self.backend_id, vals)
         self.Offer = self.registry('qoqa.offer')
         company_obj = self.registry('res.company')
         # create a new company so we'll check if it shop is linked

@@ -18,32 +18,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import mock
-
-import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
-from .common import mock_api_responses
+from .common import mock_api_responses, QoQaTransactionCase
 from .data_partner import qoqa_user, qoqa_address
 from ..unit.import_synchronizer import import_record
 
 
-class test_import_partner(common.TransactionCase):
+class test_import_partner(QoQaTransactionCase):
     """ Test the import of partner from QoQa (actually
     QoQa Shops).
     """
     def setUp(self):
         super(test_import_partner, self).setUp()
-        cr, uid = self.cr, self.uid
-        backend_model = self.registry('qoqa.backend')
-        self.session = ConnectorSession(cr, uid)
-        self.backend_id = self.ref('connector_qoqa.qoqa_backend_config')
-        # ensure we use the tested version, otherwise the response
-        # of the test data would not be found
-        vals = {'version': 'v1',
-                'url': 'http://admin.test02.qoqa.com',
-                'default_lang_id': self.ref('base.lang_en'),
-                }
-        backend_model.write(cr, uid, self.backend_id, vals)
         self.QPartner = self.registry('qoqa.res.partner')
         self.Partner = self.registry('res.partner')
         self.QAddress = self.registry('qoqa.address')

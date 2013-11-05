@@ -118,3 +118,29 @@ Feature: Configure the connector's backend
          | base.GBP | 4       |
          | base.CNY | 5       |
          | base.JPY | 6       |
+
+  @qoqa_id @country
+  Scenario Outline: Set the qoqa_ids on the Countries
+    Given I find a "res.country" with oid: <oid>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | oid     | qoqa_id |
+         | base.ch | 1       |
+         | base.fr | 2       |
+         | base.de | 3       |
+         | base.it | 4       |
+         | base.us | 5       |
+         | base.uk | 6       |
+         | base.dk | 7       |
+         | base.nl | 8       |
+         | base.be | 9       |
+         | base.es | 10      |
+         | base.pt | 11      |
+         | base.cn | 12      |
+         | base.jp | 14      |
+         | base.li | 15      |
+         | base.lu | 16      |
+         | base.cy | 17      |

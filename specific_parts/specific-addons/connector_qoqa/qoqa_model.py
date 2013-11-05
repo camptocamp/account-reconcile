@@ -242,6 +242,12 @@ class QoQaShopAdapter(QoQaAdapter):
         records = self._handle_response(response)
         return records['data']
 
+    def read(self, id):
+        result = super(QoQaShopAdapter, self).read(id)
+        # read on shops returns all the shops
+        return next((shop for shop in result if str(shop['id']) == str(id)),
+                    None)
+
 
 @qoqa
 class ShopBatchImport(DirectBatchImport):

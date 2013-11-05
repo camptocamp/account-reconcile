@@ -21,7 +21,6 @@
 
 from datetime import datetime, timedelta
 import pytz
-from openerp.osv import orm, fields
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,
@@ -30,45 +29,18 @@ from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
                                             on_record_unlink,
                                             )
-from .backend import qoqa
-from . import consumer
-from .connector import QOQA_TZ
-from .unit.export_synchronizer import QoQaExporter, Translations
-from .unit.delete_synchronizer import QoQaDeleteSynchronizer
-from .unit.backend_adapter import QoQaAdapter
-from .unit.mapper import m2o_to_backend
-
-
-class qoqa_offer(orm.Model):
-    _inherit = 'qoqa.offer'
-
-    _columns = {
-        'backend_id': fields.related(
-            'qoqa_shop_id', 'backend_id',
-            type='many2one',
-            relation='qoqa.backend',
-            string='QoQa Backend',
-            readonly=True),
-        'qoqa_id': fields.char('ID on QoQa'),
-        'qoqa_sync_date': fields.datetime('Last synchronization date'),
-    }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({
-            'qoqa_id': False,
-            'qoqa_sync_date': False,
-        })
-        return super(qoqa_offer, self).copy_data(cr, uid, id,
-                                                 default=default,
-                                                 context=context)
+from ..backend import qoqa
+from .. import consumer
+from ..unit.export_synchronizer import QoQaExporter, Translations
+from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
+from ..unit.mapper import m2o_to_backend
 
 
 @on_record_create(model_names='qoqa.offer')
 @on_record_write(model_names='qoqa.offer')
 def delay_export(session, model_name, record_id, fields=None):
     consumer.delay_export(session, model_name, record_id, fields=fields)
+
 
 @on_record_unlink(model_names='qoqa.offer')
 def delay_unlink(session, model_name, record_id):
@@ -84,12 +56,6 @@ class OfferDeleteSynchronizer(QoQaDeleteSynchronizer):
 @qoqa
 class OfferExporter(QoQaExporter):
     _model_name = ['qoqa.offer']
-
-
-@qoqa
-class OfferAdapter(QoQaAdapter):
-    _model_name = 'qoqa.offer'
-    _endpoint = 'deal'
 
 
 @qoqa

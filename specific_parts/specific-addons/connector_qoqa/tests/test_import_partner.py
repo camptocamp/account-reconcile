@@ -22,7 +22,6 @@ import mock
 
 import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
-from ..connector import get_environment
 from .common import mock_api_responses
 from .data_partner import qoqa_user, qoqa_address
 from ..unit.import_synchronizer import import_record

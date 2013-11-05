@@ -253,6 +253,7 @@ class TranslationImporter(ImportSynchronizer):
 
     _model_name = ['qoqa.product.template',
                    'qoqa.product.product',
+                   'qoqa.offer',
                    ]
 
     def __init__(self, environment):

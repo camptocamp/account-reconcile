@@ -19,31 +19,6 @@
 #
 ##############################################################################
 
-import mock
-from contextlib import contextmanager
-from functools import partial
-
-
-def get_qoqa_response(responses, url, *args, **kwargs):
-    if not url in responses:
-        raise Exception('Unhandled request: %s %s' % ('GET', url))
-    response = mock.Mock()
-    response.content = responses[url]
-    response.status_code = 200
-    response.reason = 'OK'
-    response.url = url
-    response.request.method = 'GET'
-    return response
-
-
-@contextmanager
-def mock_api_responses(*responses):
-    """
-    :param responses: responses returned by QoQa
-    :type responses: dict
-    """
-    all_responses = dict((k, v) for response in responses
-                         for k, v in response.iteritems())
-    with mock.patch('requests.get') as mock_get:
-        mock_get.side_effect = partial(get_qoqa_response, all_responses)
-        yield
+from . import common
+from . import exporter
+from . import importer

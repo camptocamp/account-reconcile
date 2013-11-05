@@ -74,7 +74,7 @@ Feature: Parameter the new database
         | connector_ecommerce                        |
         | connector_qoqa                             |
         | purchase_landed_costs                      |
-        | product_multi_company                      |
+        | product_price_history                      |
         | crm_claim_rma                              |
         | specific_fct                               |
         | specific_report                            |

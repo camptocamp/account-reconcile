@@ -6,7 +6,7 @@ Responses returned by the QoQa Web-Services
 
 qoqa_shops = {
     'http://admin.test02.qoqa.com/api/v1/shops/':
-u'''{
+r'''{
   "data": [
     {
       "id": 100,
@@ -202,7 +202,7 @@ u'''{
 }''',
 
     'http://admin.test02.qoqa.com/api/v1/shops/100':
-u'''{
+r'''{
   "data": [
     {
       "id": 100,
@@ -390,7 +390,7 @@ u'''{
     "errors": null
   },
   "locale": "fr",
-  "language": "qoqacore\\\\models\\\\Language",
+  "language": "qoqacore\\models\\Language",
   "langs": [
     "fr",
     "de"

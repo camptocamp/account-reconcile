@@ -22,6 +22,7 @@
 from .common import mock_api_responses, QoQaTransactionCase
 from .data_offer import qoqa_offer
 from .data_metadata import qoqa_shops
+from .data_product import qoqa_product
 from ..unit.import_synchronizer import import_record
 
 
@@ -31,6 +32,7 @@ class test_import_offer(QoQaTransactionCase):
         super(test_import_offer, self).setUp()
         cr, uid = self.cr, self.uid
         self.Offer = self.registry('qoqa.offer')
+        self.OfferPos = self.registry('qoqa.offer.position')
         company_obj = self.registry('res.company')
         # create a new company so we'll check if it shop is linked
         # with the correct one when it is not the default one
@@ -56,3 +58,22 @@ class test_import_offer(QoQaTransactionCase):
         self.assertEquals(offer.time_begin, 12)
         self.assertEquals(offer.date_end, '2013-10-16')
         self.assertEquals(offer.time_end, 12)
+
+    def test_import_offer_position(self):
+        """ Import an offer position """
+        cr, uid = self.cr, self.uid
+        with mock_api_responses(qoqa_offer, qoqa_shops, qoqa_product):
+            import_record(self.session, 'qoqa.offer.position',
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
+        pos_ids = self.OfferPos.search(cr, uid, domain)
+        self.assertEquals(len(pos_ids), 1)
+        pos = self.OfferPos.browse(cr, uid, pos_ids[0])
+        self.assertEquals(pos.offer_id.qoqa_id, '99999999')
+        self.assertEquals(pos.regular_price_type, 'normal')
+        self.assertEquals(pos.product_tmpl_id.qoqa_bind_ids[0].qoqa_id, '99999999')
+
+        self.assertEquals(len(pos.variant_ids), 1)
+        pos_var = pos.variant_ids[0]
+        self.assertEquals(pos_var.product_id.qoqa_bind_ids[0].qoqa_id, '99999999')
+        self.assertEquals(pos_var.quantity, 100)

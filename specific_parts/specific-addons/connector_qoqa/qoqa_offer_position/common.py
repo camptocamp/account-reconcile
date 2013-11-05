@@ -22,6 +22,7 @@
 from openerp.osv import orm, fields
 from ..backend import qoqa
 from ..unit.backend_adapter import QoQaAdapter
+from ..unit.binder import QoQaBinder
 
 
 class qoqa_offer_position(orm.Model):
@@ -53,3 +54,30 @@ class qoqa_offer_position(orm.Model):
 class OfferPositionAdapter(QoQaAdapter):
     _model_name = 'qoqa.offer.position'
     _endpoint = 'offer'
+
+
+@qoqa
+class RegularPriceTypeBinder(QoQaBinder):
+    """ 'Fake' binder: hard code bindings
+
+    ``regular_price_type`` is a selection field on
+    `qoqa.offer.position``.
+
+    The binding is a mapping between the name of the
+    selection on OpenERP and the id on QoQa.
+
+    """
+    _model_name = 'qoqa.regular.price.type'
+
+    qoqa_bindings = {1: 'normal', 2: 'no_price', 3: 'direct'}
+    # inverse mapping
+    openerp_bindings = dict((k, v) for k, v in qoqa_bindings.iteritems())
+
+    def to_openerp(self, external_id, unwrap=False):
+        return self.qoqa_bindings[external_id]
+
+    def to_backend(self, binding_id, wrap=False):
+        return self.openerp_bindings[binding_id]
+
+    def bind(self, external_id, binding_id):
+        raise TypeError('%s cannot be synchronized' % self._model_name)

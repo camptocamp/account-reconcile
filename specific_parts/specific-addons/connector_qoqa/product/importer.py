@@ -55,7 +55,9 @@ class VariantImport(QoQaImportSynchronizer):
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
-        self._import_dependency('product_id', 'qoqa.product.template')
+        assert self.qoqa_record
+        rec = self.qoqa_record
+        self._import_dependency(rec['product_id'], 'qoqa.product.template')
 
     def _after_import(self, binding_id):
         """ Hook called at the end of the import """

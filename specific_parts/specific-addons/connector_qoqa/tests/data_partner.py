@@ -6,7 +6,7 @@ Responses returned by the QoQa Web-Services
 
 qoqa_user = {
     'http://admin.test02.qoqa.com/api/v1/user/':
-u'''
+r'''
 {
   "data": [{"id": 9999999},],
   "user": {"errors": null},
@@ -14,14 +14,14 @@ u'''
   "uid": null,
   "user_id": 16764,
   "locale": "fr",
-  "model": "qoqacore\\\\models\\\\Order",
+  "model": "qoqacore\\models\\Order",
   "languages": ["fr", "de"],
-  "language": "qoqacore\\\\models\\\\Language",
+  "language": "qoqacore\\models\\Language",
   "langs": ["fr", "de"]
 }
     ''',
     'http://admin.test02.qoqa.com/api/v1/user/9999999':
-u'''{
+r'''{
   "data": {
     "id": 9999999,
     "suspicious": 0,
@@ -58,12 +58,12 @@ u'''{
     "errors": null
   },
   "locale": "fr",
-  "model": "qoqacore\\\\models\\\\User",
+  "model": "qoqacore\\models\\User",
   "languages": [
     "fr",
     "de"
   ],
-  "language": "qoqacore\\\\models\\\\Language",
+  "language": "qoqacore\\models\\Language",
   "langs": [
     "fr",
     "de"
@@ -74,7 +74,7 @@ u'''{
 
 qoqa_address = {
     'http://admin.test02.qoqa.com/api/v1/address/4646464646':
-u'''{
+r'''{
   "data": {
     "id": 4646464646,
     "user_id": 4545454545,
@@ -102,19 +102,19 @@ u'''{
   "uid": null,
   "user_id": 4545,
   "locale": "fr",
-  "model": "qoqacore\\\\models\\\\Address",
+  "model": "qoqacore\\models\\Address",
   "languages": [
     "fr",
     "de"
   ],
-  "language": "qoqacore\\\\models\\\\Language",
+  "language": "qoqacore\\models\\Language",
   "langs": [
     "fr",
     "de"
   ]
 }''',
     'http://admin.test02.qoqa.com/api/v1/user/4545454545':
-u'''{
+r'''{
   "data": {
     "id": 4545454545,
     "suspicious": 0,
@@ -148,12 +148,12 @@ u'''{
   "uid": null,
   "user_id": 4545,
   "locale": "fr",
-  "model": "qoqacore\\\\models\\\\User",
+  "model": "qoqacore\\models\\User",
   "languages": [
     "fr",
     "de"
   ],
-  "language": "qoqacore\\\\models\\\\Language",
+  "language": "qoqacore\\models\\Language",
   "langs": [
     "fr",
     "de"

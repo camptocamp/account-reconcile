@@ -99,3 +99,60 @@ Feature: Configure the CH's accounting
       | property_account_income_categ  | product.category |        32000 |
       | property_stock_account_input   | product.template |        10900 |
       | property_stock_account_output  | product.template |        10900 |
+
+  @historic_account_tax
+  Scenario: I create the historic account taxes for CH (7.6%,3.6%,2.4%) in order to import the previous years
+    Given I need a "account.tax" with oid: scenario.vat_76
+    And having
+         | key                  | value                                                           |
+         | name                 | TVA due a 7.6% (TN)                                             |
+         | description          | 7.6%                                                            |
+         | amount               | 0.076                                                           |
+         | type                 | percent                                                         |
+         | python_compute       | result = round((price_unit * 0.076) / 0.05) * 0.05              |
+         | python_compute_inv   | result = round((price_unit * ( 1 - (1 / 1.076))) / 0.05) * 0.05 |
+         | base_sign            | 1.0                                                             |
+         | tax_sign             | 1.0                                                             |
+         | ref_base_sign        | -1.0                                                            |
+         | ref_tax_sign         | -1.0                                                            |
+         | account_collected_id | by code: 1170                                                   |
+         | account_paid_id      | by code: 1170                                                   |
+         | company_id           | by oid: scenario.qoqa_ch                                        |
+         | type_tax_use         | sale                                                            |
+         | active               | False                                                           |
+    Given I need a "account.tax" with oid: scenario.vat_36
+    And having
+         | key                  | value                                                           |
+         | name                 | TVA due a 3.6% (TN)                                             |
+         | description          | 3.6%                                                            |
+         | amount               | 0.036                                                           |
+         | type                 | percent                                                         |
+         | python_compute       | result = round((price_unit * 0.036) / 0.05) * 0.05              |
+         | python_compute_inv   | result = round((price_unit * ( 1 - (1 / 1.036))) / 0.05) * 0.05 |
+         | base_sign            | 1.0                                                             |
+         | tax_sign             | 1.0                                                             |
+         | ref_base_sign        | -1.0                                                            |
+         | ref_tax_sign         | -1.0                                                            |
+         | account_collected_id | by code: 1170                                                   |
+         | account_paid_id      | by code: 1170                                                   |
+         | company_id           | by oid: scenario.qoqa_ch                                        |
+         | type_tax_use         | sale                                                            |
+         | active               | False                                                           |
+    Given I need a "account.tax" with oid: scenario.vat_24
+    And having
+         | key                  | value                                                           |
+         | name                 | TVA due a 2.4% (TN)                                             |
+         | description          | 2.4%                                                            |
+         | amount               | 0.024                                                           |
+         | type                 | percent                                                         |
+         | python_compute       | result = round((price_unit * 0.024) / 0.05) * 0.05              |
+         | python_compute_inv   | result = round((price_unit * ( 1 - (1 / 1.024))) / 0.05) * 0.05 |
+         | base_sign            | 1.0                                                             |
+         | tax_sign             | 1.0                                                             |
+         | ref_base_sign        | -1.0                                                            |
+         | ref_tax_sign         | -1.0                                                            |
+         | account_collected_id | by code: 1170                                                   |
+         | account_paid_id      | by code: 1170                                                   |
+         | company_id           | by oid: scenario.qoqa_ch                                        |
+         | type_tax_use         | sale                                                            |
+         | active               | False                                                           |

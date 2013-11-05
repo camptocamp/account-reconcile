@@ -144,3 +144,46 @@ Feature: Configure the connector's backend
          | base.li | 15      |
          | base.lu | 16      |
          | base.cy | 17      |
+
+  @qoqa_id @tax
+  Scenario Outline: Set the qoqa_ids on the taxes
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | tax_code | qoqa_id |
+         | 2.5%     | 4       |
+         | 3.8%     | 5       |
+         | 8.0%     | 6       |
+         | 0% excl. | 10      |
+
+  @qoqa_id @tax
+  Scenario Outline: Set the qoqa_ids on the taxes
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    Given I find a "account.tax" with description: <tax_code> and active: False
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | tax_code | qoqa_id |
+         | 2.4%     | 1       |
+         | 3.6%     | 2       |
+         | 7.6%     | 3       |
+
+  @qoqa_id @tax
+  Scenario Outline: Set the qoqa_ids on the taxes
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | tax_code | qoqa_id |
+         | 2.1      | 7       |
+         | 5.5      | 8       |
+         | 19.6     | 9       |

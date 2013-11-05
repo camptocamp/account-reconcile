@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,
                                                   ExportMapper)
@@ -27,36 +26,11 @@ from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
                                             on_record_unlink,
                                             )
-from .backend import qoqa
-from . import consumer
-from .unit.export_synchronizer import QoQaExporter
-from .unit.delete_synchronizer import QoQaDeleteSynchronizer
-from .unit.backend_adapter import QoQaAdapter
-
-
-class qoqa_offer_position(orm.Model):
-    _inherit = 'qoqa.offer.position'
-
-    _columns = {
-        'backend_id': fields.related(
-            'offer_id', 'qoqa_shop_id', 'backend_id',
-            type='many2one',
-            relation='qoqa.backend',
-            string='QoQa Backend',
-            readonly=True),
-        'qoqa_id': fields.char('ID on QoQa'),
-        'qoqa_sync_date': fields.datetime('Last synchronization date'),
-    }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({
-            'qoqa_id': False,
-            'qoqa_sync_date': False,
-        })
-        return super(qoqa_offer_position, self).copy_data(
-            cr, uid, id, default=default, context=context)
+from ..backend import qoqa
+from .. import consumer
+from ..unit.export_synchronizer import QoQaExporter
+from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
+from ..unit.mapper import m2o_to_backend
 
 
 @on_record_create(model_names='qoqa.offer.position')
@@ -90,13 +64,6 @@ class OfferPositionExporter(QoQaExporter):
         self._export_dependency(binding.product_tmpl_id,
                                 'qoqa.product.template')
 
-
-@qoqa
-class OfferPositionAdapter(QoQaAdapter):
-    _model_name = 'qoqa.offer.position'
-    _endpoint = 'offer'
-
-
 @qoqa
 class OfferPositionExportMapper(ExportMapper):
     _model_name = 'qoqa.offer.position'
@@ -115,6 +82,6 @@ class OfferPositionExportMapper(ExportMapper):
               ('max_sellable', 'max_sellable'),
               ('lot_size', 'lot_size'),
               ('buyphrase_id', 'buyphrase_id'),
-              ('tax_id', 'tax_id'),
-              ('offer_id', 'offer_id'),
+              (m2o_to_backend('tax_id'), 'tax_id'),
+              (m2o_to_backend('offer_id'), 'offer_id'),
               ]

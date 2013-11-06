@@ -90,13 +90,3 @@ class QoQaOfferPositionImportMapper(ImportMapper):
         binder = self.get_binder_for_model('qoqa.regular.price.type')
         binding_id = binder.to_openerp(record['regular_price_type'])
         return {'regular_price_type': binding_id}
-
-
-@qoqa
-class QoQaOfferPositionVariantImportMapper(ImportMapper):
-    _model_name = 'qoqa.offer.position.variant'
-
-    direct = [('quantity', 'quantity'),
-              (backend_to_m2o('variation_id', binding='qoqa.product.product'),
-               'product_id'),
-              ]

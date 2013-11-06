@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,
                                                   ExportMapper)
@@ -27,36 +26,9 @@ from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
                                             on_record_unlink,
                                             )
-from .backend import qoqa
-from . import consumer
-from .unit.export_synchronizer import QoQaExporter
-from .unit.delete_synchronizer import QoQaDeleteSynchronizer
-from .unit.backend_adapter import QoQaAdapter
-
-
-class qoqa_offer_position_variant(orm.Model):
-    _inherit = 'qoqa.offer.position.variant'
-
-    _columns = {
-        'backend_id': fields.related(
-            'position_id', 'offer_id', 'qoqa_shop_id', 'backend_id',
-            type='many2one',
-            relation='qoqa.backend',
-            string='QoQa Backend',
-            readonly=True),
-        'qoqa_id': fields.char('ID on QoQa'),
-        'qoqa_sync_date': fields.datetime('Last synchronization date'),
-    }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({
-            'qoqa_id': False,
-            'qoqa_sync_date': False,
-        })
-        return super(qoqa_offer_position_variant, self).copy_data(
-            cr, uid, id, default=default, context=context)
+from ..backend import qoqa
+from .. import consumer
+from ..unit.mapper import m2o_to_backend
 
 
 @on_record_create(model_names='qoqa.offer.position.variant')
@@ -73,34 +45,12 @@ def delay_unlink(session, model_name, record_id):
 
 
 @qoqa
-class OfferPositionVariantDeleteSynchronizer(QoQaDeleteSynchronizer):
-    """ Offer deleter for QoQa """
-    _model_name = ['qoqa.offer.position.variant']
-
-
-@qoqa
-class OfferPositionVariantExporter(QoQaExporter):
-    _model_name = ['qoqa.offer.position.variant']
-
-    def _export_dependencies(self):
-        """ Export the dependencies for the record"""
-        assert self.binding_record
-        binding = self.binding_record
-        self._export_dependency(binding.position_id, 'qoqa.offer.position')
-        self._export_dependency(binding.product_id, 'qoqa.product.product')
-
-
-@qoqa
-class OfferPositionVariantAdapter(QoQaAdapter):
-    _model_name = 'qoqa.offer.position.variant'
-    _endpoint = 'variations'
-
-
-@qoqa
 class OfferPositionVariantExportMapper(ExportMapper):
+    """ Called from the qoqa.offer.position's mapper """
     _model_name = 'qoqa.offer.position.variant'
 
-    direct = [('product_id', 'product_id'),
+    direct = [(m2o_to_backend('product_id',
+                              binding_model='qoqa.product.template'),
+               'product_id'),
               ('quantity', 'quantity'),
-              ('position_id', 'position_id'),
               ]

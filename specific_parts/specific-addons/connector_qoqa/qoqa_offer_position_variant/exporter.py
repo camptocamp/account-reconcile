@@ -22,26 +22,8 @@
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,
                                                   ExportMapper)
-from openerp.addons.connector.event import (on_record_create,
-                                            on_record_write,
-                                            on_record_unlink,
-                                            )
 from ..backend import qoqa
-from .. import consumer
 from ..unit.mapper import m2o_to_backend
-
-
-@on_record_create(model_names='qoqa.offer.position.variant')
-@on_record_write(model_names='qoqa.offer.position.variant')
-def delay_export(session, model_name, record_id, fields=None):
-    # reduce the priority so the offers and positions should be exported before
-    consumer.delay_export(session, model_name, record_id,
-                          fields=fields, priority=20)
-
-
-@on_record_unlink(model_names='qoqa.offer.position.variant')
-def delay_unlink(session, model_name, record_id):
-    consumer.delay_unlink(session, model_name, record_id)
 
 
 @qoqa
@@ -49,8 +31,7 @@ class OfferPositionVariantExportMapper(ExportMapper):
     """ Called from the qoqa.offer.position's mapper """
     _model_name = 'qoqa.offer.position.variant'
 
-    direct = [(m2o_to_backend('product_id',
-                              binding_model='qoqa.product.template'),
+    direct = [(m2o_to_backend('product_id', binding='qoqa.product.template'),
                'product_id'),
               ('quantity', 'quantity'),
               ]

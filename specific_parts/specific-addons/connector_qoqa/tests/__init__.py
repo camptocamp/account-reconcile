@@ -24,6 +24,7 @@ import test_import_metadata
 import test_product_attribute_exporter
 import test_import_partner
 import test_import_offer
+import test_import_product
 
 fast_suite = [
 ]
@@ -34,5 +35,6 @@ checks = [
     test_product_attribute_exporter,
     test_import_partner,
     test_import_offer,
+    test_import_product,
 ]
 

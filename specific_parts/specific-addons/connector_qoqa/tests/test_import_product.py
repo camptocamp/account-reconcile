@@ -45,7 +45,6 @@ class test_import_product(QoQaTransactionCase):
         qtemplate = self.QTemplate.browse(cr, uid, qtemplate_ids[0])
         self.assertEquals(qtemplate.name, 'All Star Mid')
 
-
     def test_import_variant(self):
         """ Import a variant """
         cr, uid = self.cr, self.uid

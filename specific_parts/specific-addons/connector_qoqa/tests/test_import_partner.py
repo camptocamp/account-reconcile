@@ -39,8 +39,8 @@ class test_import_partner(QoQaTransactionCase):
         cr, uid = self.cr, self.uid
         with mock_api_responses(qoqa_user):
             import_record(self.session, 'qoqa.res.partner',
-                          self.backend_id, 9999999)
-        domain = [('qoqa_id', '=', '9999999')]
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
         qpartner_ids = self.QPartner.search(cr, uid, domain)
         self.assertEquals(len(qpartner_ids), 1)
         qpartner = self.QPartner.browse(cr, uid, qpartner_ids[0])
@@ -54,8 +54,8 @@ class test_import_partner(QoQaTransactionCase):
         cr, uid = self.cr, self.uid
         with mock_api_responses(qoqa_address):
             import_record(self.session, 'qoqa.address',
-                          self.backend_id, 4646464646)
-        domain = [('qoqa_id', '=', '4646464646')]
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
         qaddr_ids = self.QAddress.search(cr, uid, domain)
         self.assertEquals(len(qaddr_ids), 1)
         qaddr = self.QAddress.browse(cr, uid, qaddr_ids[0])
@@ -80,8 +80,8 @@ class test_import_partner(QoQaTransactionCase):
                                     'parent_id': p_id})
         with mock_api_responses(qoqa_address):
             import_record(self.session, 'qoqa.address',
-                          self.backend_id, 4646464646)
-        domain = [('qoqa_id', '=', '4646464646')]
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
         qaddr_ids = self.QAddress.search(cr, uid, domain)
         self.assertEquals(len(qaddr_ids), 1)
         qaddr = self.QAddress.browse(cr, uid, qaddr_ids[0])

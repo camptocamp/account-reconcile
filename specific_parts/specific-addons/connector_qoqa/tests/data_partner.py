@@ -8,7 +8,7 @@ qoqa_user = {
     'http://admin.test02.qoqa.com/api/v1/user/':
 r'''
 {
-  "data": [{"id": 9999999},],
+  "data": [{"id": 99999999},],
   "user": {"errors": null},
   "shop": null,
   "uid": null,
@@ -20,10 +20,10 @@ r'''
   "langs": ["fr", "de"]
 }
     ''',
-    'http://admin.test02.qoqa.com/api/v1/user/9999999':
+    'http://admin.test02.qoqa.com/api/v1/user/99999999':
 r'''{
   "data": {
-    "id": 9999999,
+    "id": 99999999,
     "suspicious": 0,
     "name": "Mykonos",
     "email": "christos.k@bluewin.ch",
@@ -73,11 +73,11 @@ r'''{
 
 
 qoqa_address = {
-    'http://admin.test02.qoqa.com/api/v1/address/4646464646':
+    'http://admin.test02.qoqa.com/api/v1/address/99999999':
 r'''{
   "data": {
-    "id": 4646464646,
-    "user_id": 4545454545,
+    "id": 99999999,
+    "user_id": 99999999,
     "firstname": "Guewen",
     "lastname": "Baconnier",
     "company": "",
@@ -113,10 +113,10 @@ r'''{
     "de"
   ]
 }''',
-    'http://admin.test02.qoqa.com/api/v1/user/4545454545':
+    'http://admin.test02.qoqa.com/api/v1/user/99999999':
 r'''{
   "data": {
-    "id": 4545454545,
+    "id": 99999999,
     "suspicious": 0,
     "name": "guewen",
     "email": "guewen@gmail.com",

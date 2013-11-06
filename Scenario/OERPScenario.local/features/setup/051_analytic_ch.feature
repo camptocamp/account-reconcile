@@ -11,22 +11,24 @@
 # Branch      # Module       # Processes     # System
 @analytic @setup
 
-Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
+Feature: ANALYTIC SETTING FOR QOQA CH
    As an administrator, I do the following installation steps.
 
-  @analytic_account_ch
+  @analytic_account_shop_ch
   Scenario Outline: Create an analytic account
-     Given I need a "account.analytic.account" with name: <name>
-       And having:
+    Given I need a "account.analytic.account" with oid: <oid>
+      And having:
         | name       | value                    |
+        | name       | <name>                   |
         | type       | normal                   |
         | company_id | by oid: scenario.qoqa_ch |
 
-  Examples: Create the following analytic accounts
-        | name   |
-        | Ventes |
-        | Achats |
-        | Autres |
+  Examples: Create an analytic accounts per shop
+        | oid                                      | name      |
+        | scenario.analytic_account_shop_qoqa_ch   | QoQa.ch   |
+        | scenario.analytic_account_shop_qwine_ch  | Qwine.ch  |
+        | scenario.analytic_account_shop_qsport_ch | Qsport.ch |
+        | scenario.analytic_account_shop_qstyle_ch | Qstyle.ch |
 
 ##### ANALYTIC JOURNALS CREATION ####
   @analytic_journal
@@ -49,7 +51,7 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
   Scenario Outline: FINANCIAL JOURNALS CREATION
     Given there is a journal with name "<journal_name>" and company "QoQa Services SA"
       And having:
-        | name                      | value                       |
+        | name                      | value                      |
         | analytic_journal_id       | by oid: <analytic_journal> |
 
    Examples:

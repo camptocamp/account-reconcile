@@ -68,6 +68,10 @@ class OfferPositionExporter(QoQaExporter):
 class OfferPositionExportMapper(ExportMapper):
     _model_name = 'qoqa.offer.position'
 
+    children = [('variant_ids', 'offer_variations',
+                 'qoqa.offer.position.variant'),
+                ]
+
     direct = [('unit_price', 'unit_price'),
               ('installment_price', 'installment_price'),
               ('regular_price', 'regular_price'),

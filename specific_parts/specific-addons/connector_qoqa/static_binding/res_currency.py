@@ -20,13 +20,12 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from openerp.addons.connector.session import ConnectorSession
-from .unit.binder import QoQaDirectBinder
-from .backend import qoqa
+from ..unit.binder import QoQaDirectBinder
+from ..backend import qoqa
 
 
-class res_lang(orm.Model):
-    _inherit = 'res.lang'
+class res_currency(orm.Model):
+    _inherit = 'res.currency'
 
     _columns = {
         'qoqa_id': fields.char('ID on QoQa')
@@ -38,10 +37,10 @@ class res_lang(orm.Model):
         default.update({
             'qoqa_id': False,
         })
-        return super(res_lang, self).copy_data(
+        return super(res_currency, self).copy_data(
             cr, uid, id, default=default, context=context)
 
 
 @qoqa
-class ResLangBinder(QoQaDirectBinder):
-    _model_name = 'res.lang'
+class CurrencyBinder(QoQaDirectBinder):
+    _model_name = 'res.currency'

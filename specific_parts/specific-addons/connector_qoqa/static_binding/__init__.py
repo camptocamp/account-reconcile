@@ -19,28 +19,16 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
-from .unit.binder import QoQaDirectBinder
-from .backend import qoqa
+""" Static Bindings
 
+Static bindings are bindings for models which are not synchronized.
+Basically, we just add a qoqa_id on the model, we defined a Binder
+and we set manually the qoqa_id.
 
-class res_currency(orm.Model):
-    _inherit = 'res.currency'
+"""
 
-    _columns = {
-        'qoqa_id': fields.char('ID on QoQa')
-    }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({
-            'qoqa_id': False,
-        })
-        return super(res_currency, self).copy_data(
-            cr, uid, id, default=default, context=context)
-
-
-@qoqa
-class CurrencyBinder(QoQaDirectBinder):
-    _model_name = 'res.currency'
+from . import res_country
+from . import res_currency
+from . import res_lang
+from . import res_company
+from . import account_tax

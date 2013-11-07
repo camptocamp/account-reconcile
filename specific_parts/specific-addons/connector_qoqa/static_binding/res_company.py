@@ -20,9 +20,9 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from .unit.binder import QoQaDirectBinder
-from .backend import qoqa
-from .exception import QoQaError
+from ..unit.binder import QoQaDirectBinder
+from ..backend import qoqa
+from ..exception import QoQaError
 
 
 class res_company(orm.Model):

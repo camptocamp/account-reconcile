@@ -20,15 +20,15 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from .unit.binder import QoQaDirectBinder
-from .backend import qoqa
+from ..unit.binder import QoQaDirectBinder
+from ..backend import qoqa
 
 
-class account_tax(orm.Model):
-    _inherit = 'account.tax'
+class res_country(orm.Model):
+    _inherit = 'res.country'
 
     _columns = {
-        'qoqa_id': fields.char('ID on QoQa')
+        'qoqa_id': fields.char('ID on QoQa'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):
@@ -37,10 +37,10 @@ class account_tax(orm.Model):
         default.update({
             'qoqa_id': False,
         })
-        return super(account_tax, self).copy_data(
+        return super(res_country, self).copy_data(
             cr, uid, id, default=default, context=context)
 
 
 @qoqa
-class AccountTaxBinder(QoQaDirectBinder):
-    _model_name = 'account.tax'
+class CountryBinder(QoQaDirectBinder):
+    _model_name = 'res.country'

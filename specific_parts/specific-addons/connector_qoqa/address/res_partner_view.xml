@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <record id="view_qoqa_address_form" model="ir.ui.view">
+            <field name="name">qoqa.address.form</field>
+            <field name="model">qoqa.address</field>
+            <field name="arch" type="xml">
+                <form string="QoQa Address" create="false"
+                       delete="false" version="7.0">
+                    <group>
+                        <field name="backend_id"/>
+                        <field name="qoqa_id"/>
+                        <field name="created_at"/>
+                        <field name="updated_at"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_qoqa_address_tree" model="ir.ui.view">
+            <field name="name">qoqa.address.tree</field>
+            <field name="model">qoqa.address</field>
+            <field name="arch" type="xml">
+                <tree string="QoQa Address" create="false"
+                       delete="false" version="7.0">
+                    <field name="backend_id"/>
+                    <field name="qoqa_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</openerp>

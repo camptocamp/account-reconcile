@@ -24,7 +24,7 @@ import mock
 import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
 from ..connector import get_environment
-from ..res_company import CompanyBinder
+from ..static_binding.res_company import CompanyBinder
 from ..exception import QoQaError
 
 

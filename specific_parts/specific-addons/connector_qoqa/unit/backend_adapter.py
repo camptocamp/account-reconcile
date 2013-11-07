@@ -117,6 +117,10 @@ class QoQaAdapter(CRUDAdapter):
         try:
             parsed = json.loads(response.content)
         except ValueError as err:
+            def rec():
+                with open('/tmp/err.html', 'w') as f:
+                    f.write(response.content)
+            # import pdb; pdb.set_trace()
             raise QoQaResponseNotParsable(err)
         return parsed
 
@@ -127,19 +131,32 @@ class QoQaAdapter(CRUDAdapter):
         response = self.client.post(url, data=json.dumps(vals),
                                     headers=headers)
         result = self._handle_response(response)
+        assert result['data']['id']
         return result['data']['id']
+
+    def write(self, id, vals):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        vals = {self._endpoint: vals}
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(vals),
+                                   headers=headers)
+        result = self._handle_response(response)
+        return True
 
     def read(self, id):
         url = "{0}{1}".format(self.url(), id)
         response = self.client.get(url)
         result = self._handle_response(response)
-        assert result['data']
-        return result['data'][0]
+        return result['data']
 
-    def search(self, id, only_ids=True):
+    def search(self, filters=None, from_date=None):
         url = self.url()
-        response = self.client.get(url)
+        payload = {}
+        if from_date is not None:
+            payload['timestamp_from'] = from_date
+        if filters is not None:
+            payload.update(filters)
+        response = self.client.get(url, params=payload)
         records = self._handle_response(response)
-        if only_ids:
-            return [r['id'] for r in records['data']]
-        return records['data']
+        return [r['id'] for r in records['data']]

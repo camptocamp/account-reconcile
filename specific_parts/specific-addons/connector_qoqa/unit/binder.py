@@ -33,17 +33,17 @@ class QoQaBinder(Binder):
 
     def sync_date(self, binding_id):
         assert self._sync_date_field
-        if isinstance(orm.browse_record):
+        if isinstance(binding_id, orm.browse_record):
             binding = binding_id
         else:
             binding = self.session.read(self.model._name,
-                                        binding_id
+                                        binding_id,
                                         [self._sync_date_field])
         sync_date = binding[self._sync_date_field]
         if not sync_date:
             return
         fmt = DEFAULT_SERVER_DATETIME_FORMAT
-        return datetime.strptime(sync, fmt)
+        return datetime.strptime(sync_date, fmt)
 
 
 @qoqa
@@ -157,6 +157,9 @@ class QoQaInheritsBinder(QoQaBinder):
     _model_name = ['qoqa.shop',
                    'qoqa.product.template',
                    'qoqa.product.product',
+                   'qoqa.res.partner',
+                   'qoqa.address',
+                   'qoqa.sale.order',
                    ]
     _sync_date_field = 'sync_date'
 

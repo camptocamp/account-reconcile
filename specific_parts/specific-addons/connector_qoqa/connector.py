@@ -19,12 +19,16 @@
 #
 ##############################################################################
 
+import pytz
+
 from openerp.osv import orm, fields
 from openerp.addons.connector.connector import (install_in_connector,
                                                 Environment)
 from openerp.addons.connector.checkpoint import checkpoint
 
 install_in_connector()
+
+QOQA_TZ = pytz.timezone('Europe/Zurich')
 
 
 def get_environment(session, model_name, backend_id):

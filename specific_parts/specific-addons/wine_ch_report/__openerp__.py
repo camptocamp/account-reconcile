@@ -38,6 +38,7 @@ the report only on products using a 'Wine' attribute set.
      'base',
      'report_webkit',
      'product_custom_attributes',
+     'qoqa_base_data',
      'stock',
      ],
  'data': [

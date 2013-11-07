@@ -37,7 +37,7 @@ class QoQaBinder(Binder):
             binding = binding_id
         else:
             binding = self.session.read(self.model._name,
-                                        binding_id
+                                        binding_id,
                                         [self._sync_date_field])
         sync_date = binding[self._sync_date_field]
         if not sync_date:
@@ -159,6 +159,7 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.product.product',
                    'qoqa.res.partner',
                    'qoqa.address',
+                   'qoqa.sale.order',
                    ]
     _sync_date_field = 'sync_date'
 

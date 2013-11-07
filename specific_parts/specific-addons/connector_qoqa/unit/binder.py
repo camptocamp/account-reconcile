@@ -43,7 +43,7 @@ class QoQaBinder(Binder):
         if not sync_date:
             return
         fmt = DEFAULT_SERVER_DATETIME_FORMAT
-        return datetime.strptime(sync, fmt)
+        return datetime.strptime(sync_date, fmt)
 
 
 @qoqa

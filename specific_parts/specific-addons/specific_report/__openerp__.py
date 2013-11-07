@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+#    Author: Yannick Vaucher
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,30 +19,22 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Specific',
- 'version': '0.0.2',
- 'category': 'Others',
- 'depends': ['sale',
-             'product',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
+{'name': 'Customer small specific report',
+ 'version': '1.0.0',
+ 'category': 'other',
  'description': """
-QoQa Specific
-=============
+ Customer specific report
 
-Local customizations for QoQa.
-
-Product:
-
-set cost_method default to average
-
-""",
- 'images': [],
- 'demo': [],
- 'data': ['security/security.xml',
+ Contains:
+ - specific report headers
+ """,
+ 'author': 'Camptocamp',
+ 'website': 'http://www.camptocamp.com',
+ 'depends': ['base_headers_webkit',
+             ],
+ 'data': ['base_headers_data.xml',
           ],
+ 'test': [],
  'installable': True,
- 'application': True,
-}
+ 'active': False,
+ }

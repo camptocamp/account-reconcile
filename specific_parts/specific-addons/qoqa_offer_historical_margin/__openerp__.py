@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+#    Author: Yannick Vaucher
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,31 +18,27 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-{'name': 'QoQa Specific',
- 'version': '0.0.2',
- 'category': 'Others',
- 'depends': ['sale',
-             'product',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
+{'name' : 'QoQa Offers with Historical Margin',
+ 'version' : '1.0',
+ 'category': '',
  'description': """
-QoQa Specific
-=============
+QoQa Offer
+=========
 
-Local customizations for QoQa.
-
-Product:
-
-set cost_method default to average
-
+Adds historical margin to *Offer* models.
 """,
- 'images': [],
- 'demo': [],
- 'data': ['security/security.xml',
+ 'author' : 'Camptocamp',
+ 'maintainer': 'Camptocamp',
+ 'website': 'http://www.camptocamp.com/',
+ 'depends' : ['qoqa_offer',
+              'product_historical_margin',
+              ],
+ 'data': ['qoqa_offer_view.xml',
+          'account_invoice_view.xml',
           ],
+ 'test': [],
  'installable': True,
- 'application': True,
-}
+ 'auto_install': False,
+ 'application': False,
+ 'css': [],
+ }

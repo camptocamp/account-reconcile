@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+#    Author: Yannick Vaucher
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,30 +19,19 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Specific',
- 'version': '0.0.2',
- 'category': 'Others',
- 'depends': ['sale',
-             'product',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Specific
-=============
+from openerp.osv import orm, fields
 
-Local customizations for QoQa.
 
-Product:
+class account_invoice_line(orm.Model):
+    _inherit = 'account.invoice.line'
 
-set cost_method default to average
-
-""",
- 'images': [],
- 'demo': [],
- 'data': ['security/security.xml',
-          ],
- 'installable': True,
- 'application': True,
-}
+    _columns = {
+        'offer_id': fields.related(
+            'invoice_id',
+            'offer_id',
+            type='many2one',
+            relation='qoqa.offer',
+            string='QoQa Offer',
+            store=True,
+            readonly=True),
+        }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <act_window
+       id="act_qoqa_offer_act_open_invoice_lines"
+       name="Margin Details"
+       domain="[('offer_id','in',active_ids),('invoice_state','in',['open', 'paid']),('invoice_type','in',['out_refund','out_invoice'])]"
+       res_model="account.invoice.line"
+       src_model="qoqa.offer"
+       view_mode="tree,form"
+       view_id="product_historical_margin.view_invoice_line_tree_from_product"
+       context="{'search_default_product':1,'search_default_year':1}"
+       />
+
+  </data>
+</openerp>

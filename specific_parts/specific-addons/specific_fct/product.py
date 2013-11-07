@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+#    Author: Yannick Vaucher
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,31 +18,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp.osv import orm
 
-{'name': 'QoQa Specific',
- 'version': '0.0.2',
- 'category': 'Others',
- 'depends': ['sale',
-             'product',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Specific
-=============
 
-Local customizations for QoQa.
+class product_template(orm.Model):
+    """
+    Change default value to average on cost_method
+    """
+    _inherit = 'product.template'
 
-Product:
-
-set cost_method default to average
-
-""",
- 'images': [],
- 'demo': [],
- 'data': ['security/security.xml',
-          ],
- 'installable': True,
- 'application': True,
-}
+    _defaults = {
+            'cost_method': 'average',
+            }

@@ -25,7 +25,7 @@ from openerp.addons.connector.unit.mapper import (backend_to_m2o,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
-from ..unit.import_synchronizer import (FromDateDelayBatchImport,
+from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 
@@ -33,7 +33,7 @@ _logger = logging.getLogger(__name__)
 
 
 @qoqa
-class SaleOrderBatchImport(FromDateDelayBatchImport):
+class SaleOrderBatchImport(DelayedBatchImport):
     """ Import the QoQa Sales Order.
 
     For every sales order's id in the list, a delayed job is created.

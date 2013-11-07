@@ -27,7 +27,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   )
 from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
-from ..unit.import_synchronizer import (FromDateDelayBatchImport,
+from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         TranslationImporter,
                                         )
@@ -38,7 +38,7 @@ _logger = logging.getLogger(__name__)
 
 
 @qoqa
-class TemplateBatchImport(FromDateDelayBatchImport):
+class TemplateBatchImport(DelayedBatchImport):
     """ Import the QoQa Product Templates.
 
     For every product in the list, a delayed job is created.

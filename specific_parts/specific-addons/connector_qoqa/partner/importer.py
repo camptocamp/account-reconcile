@@ -26,7 +26,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
-from ..unit.import_synchronizer import (FromDateDelayBatchImport,
+from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 
@@ -34,7 +34,7 @@ _logger = logging.getLogger(__name__)
 
 
 @qoqa
-class ResPartnerBatchImport(FromDateDelayBatchImport):
+class ResPartnerBatchImport(DelayedBatchImport):
     """ Import the QoQa Users.
 
     For every id in in the list of users, a delayed job is created.

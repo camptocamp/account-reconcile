@@ -26,7 +26,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
-from ..unit.import_synchronizer import (FromDateDelayBatchImport,
+from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         TranslationImporter,
                                         )
@@ -37,7 +37,7 @@ _logger = logging.getLogger(__name__)
 
 
 @qoqa
-class VariantBatchImport(FromDateDelayBatchImport):
+class VariantBatchImport(DelayedBatchImport):
     """ Import the QoQa Product Variants.
 
     For every product in the list, a delayed job is created.

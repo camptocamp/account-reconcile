@@ -18,27 +18,27 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import unittest2
 
-import test_company_binder
-import test_import_metadata
-import test_product_attribute_exporter
-import test_import_partner
-import test_import_offer
-import test_import_product
-import test_import_order
-import test_import_voucher
+from .common import mock_api_responses, QoQaTransactionCase
+from .data_voucher import qoqa_voucher
+from ..unit.import_synchronizer import import_record
 
-fast_suite = [
-]
 
-checks = [
-    test_company_binder,
-    test_import_metadata,
-    test_product_attribute_exporter,
-    test_import_partner,
-    test_import_offer,
-    test_import_product,
-    test_import_order,
-    test_import_voucher,
-]
+@unittest2.skip("Not implemented yet")
+class test_import_voucher(QoQaTransactionCase):
+    """ Test the import of order from QoQa  """
 
+    def setUp(self):
+        super(test_import_voucher, self).setUp()
+
+    def test_import_voucher(self):
+        """ Import a voucher """
+        cr, uid = self.cr, self.uid
+        with mock_api_responses(qoqa_voucher):
+            import_record(self.session, '',
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
+        qvoucher_ids = self.QVoucher.search(cr, uid, domain)
+        self.assertEquals(len(qvoucher_ids), 1)
+        qvoucher = self.QVoucher.browse(cr, uid, qvoucher_ids[0])

@@ -33,7 +33,7 @@ class test_import_order(QoQaTransactionCase):
     """ Test the import of order from QoQa  """
 
     def setUp(self):
-        super(test_import_product, self).setUp()
+        super(test_import_order, self).setUp()
         self.QSale = self.registry('qoqa.sale.order')
 
     def test_import_order(self):

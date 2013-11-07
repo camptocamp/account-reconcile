@@ -100,9 +100,9 @@ class QoQaOfferImportMapper(ImportMapper):
     def _qoqa_datetime(timestamp):
         """ The start and end dates of an offer are special:
 
-        We want them to be displayed to the user whatever their TZ is.
-        The date / time should be display in the QoQa TZ, that is:
-        Europe/Zurich.
+        We want them to be displayed at the same time to the user
+        whatever their timezone is.  The date / time should be displayed
+        in the QoQa TZ, that is: Europe/Zurich.
         So we do not store it as a normal timestamp, but as separate
         date and time thus they are not stored in UTC. We also keep
         them at the QoQa's local time.

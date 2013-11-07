@@ -22,14 +22,16 @@
 import logging
 from datetime import datetime
 from openerp.tools.translate import _
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
 from openerp.addons.connector.unit.mapper import ImportMapper
 from openerp.addons.connector.exception import IDMissingInBackend
 from ..backend import qoqa
-from ..connector import get_environment, add_checkpoint
+from ..connector import (get_environment,
+                         add_checkpoint,
+                         iso8601_to_utc_datetime
+                         )
 
 _logger = logging.getLogger(__name__)
 
@@ -70,15 +72,15 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """Return True if the import should be skipped because
         it is already up-to-date in OpenERP"""
         assert self.qoqa_record
-        if not self.qoqa_record.get('updated_at'):
+        qoqa_updated_at = self.qoqa_record.get('updated_at')
+        if not qoqa_updated_at:
             return  # no update date on QoQa, always import it.
+        qoqa_date = iso8601_to_utc_datetime(qoqa_updated_at)
         if not binding_id:
             return  # it does not exist so it shoud not be skipped
         sync_date = self.binder.sync_date(binding_id)
         if not sync_date:
             return
-        fmt = DEFAULT_SERVER_DATETIME_FORMAT
-        qoqa_date = datetime.strptime(self.qoqa_record['updated_at'], fmt)
         # if the last synchronization date is greater than the last
         # update in qoqa, we skip the import.
         # Important: at the beginning of the exporters flows, we have to

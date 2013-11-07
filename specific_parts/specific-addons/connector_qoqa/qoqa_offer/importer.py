@@ -98,10 +98,18 @@ class QoQaOfferImportMapper(ImportMapper):
 
     @staticmethod
     def _qoqa_datetime(timestamp):
-        # QoQa does not use the TZ part even if existing...
+        """ The start and end dates of an offer are special:
+
+        We want them to be displayed to the user whatever their TZ is.
+        The date / time should be display in the QoQa TZ, that is:
+        Europe/Zurich.
+        So we do not store it as a normal timestamp, but as separate
+        date and time thus they are not stored in UTC. We also keep
+        them at the QoQa's local time.
+
+        """
         dt_str = timestamp[0:10]
         time_str = timestamp[11:19]
-        # time is stored in float
         time = datetime.strptime(time_str, '%H:%M:%S')
         time_f = time.hour + (time.minute / 60) + (time.second / 3600)
         return dt_str, time_f

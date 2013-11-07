@@ -31,7 +31,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         TranslationImporter,
                                         )
 from ..product_attribute.importer import ProductAttribute
-from ..unit.mapper import ifmissing
+from ..unit.mapper import ifmissing, iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -72,8 +72,8 @@ class VariantImportMapper(ImportMapper):
     ]
 
     direct = [
-        ('created_at', 'created_at'),
-        ('updated_at', 'updated_at'),
+        (iso8601_to_utc('created_at'), 'created_at'),
+        (iso8601_to_utc('updated_at'), 'updated_at'),
         ('sku', 'default_code'),
         ('ean', 'ean13'),
         (backend_to_m2o('product_id', binding='qoqa.product.template'),

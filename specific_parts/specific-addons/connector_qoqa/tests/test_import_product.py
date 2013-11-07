@@ -44,6 +44,8 @@ class test_import_product(QoQaTransactionCase):
         self.assertEquals(len(qtemplate_ids), 1)
         qtemplate = self.QTemplate.browse(cr, uid, qtemplate_ids[0])
         self.assertEquals(qtemplate.name, 'All Star Mid')
+        self.assertEquals(qtemplate.created_at, '2013-09-17 15:47:17')
+        self.assertEquals(qtemplate.updated_at, '2013-09-24 11:19:19')
 
     def test_import_variant(self):
         """ Import a variant """
@@ -56,3 +58,5 @@ class test_import_product(QoQaTransactionCase):
         self.assertEquals(len(qvariant_ids), 1)
         qvariant = self.QVariant.browse(cr, uid, qvariant_ids[0])
         self.assertEquals(qvariant.default_code, '5259.22')
+        self.assertEquals(qvariant.created_at, '2013-09-23 08:49:30')
+        self.assertEquals(qvariant.updated_at, '2013-09-24 11:19:20')

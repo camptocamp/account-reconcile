@@ -27,8 +27,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
 from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import QoQaImportSynchronizer
-from ..unit.mapper import ifmissing
-
+from ..unit.mapper import ifmissing, iso8601_to_utc
 
 @qoqa
 class QoQaOfferPositionImport(QoQaImportSynchronizer):
@@ -72,7 +71,7 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               ('buy_price', 'buy_price'),
               ('top_price', 'top_price'),
               ('ecotax', 'ecotax'),
-              ('delivery_at', 'date_delivery'),
+              (iso8601_to_utc('delivery_at'), 'date_delivery'),
               ('booking_delivery', 'booking_delivery'),
               ('order_url', 'order_url'),
               ]

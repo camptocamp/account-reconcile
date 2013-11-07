@@ -19,7 +19,9 @@
 #
 ##############################################################################
 
+from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.unit import mapper
+from ..connector import iso8601_to_utc_datetime
 
 
 def m2o_to_backend(field, binding=None):
@@ -65,4 +67,29 @@ def ifmissing(field, value):
         if not record_val:
             return value
         return record_val
+    return modifier
+
+
+def iso8601_to_utc(field):
+    """ A modifier intended to be used on the ``direct`` mappings.
+
+    A QoQa date is formatted using the ISO 8601 format.
+    Convert an ISO 8601 timestamp to an UTC datetime as string
+    as expected by OpenERP.
+
+    Example: 2013-11-04T13:52:01+0100 -> 2013-11-04 12:52:01
+
+    Usage::
+
+        direct = [(iso8601_to_utc('name', value='Unknown'), 'name')]
+
+    :param field: name of the source field in the record
+
+    """
+    def modifier(self, record, to_attr):
+        value = record.get(field)
+        if not value:
+            return False
+        utc_date = iso8601_to_utc_datetime(value)
+        return utc_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
     return modifier

@@ -48,6 +48,26 @@ class test_import_partner(QoQaTransactionCase):
         self.assertEquals(qpartner.qoqa_name, 'Mykonos')
         self.assertEquals(qpartner.email, 'christos.k@bluewin.ch')
         self.assertTrue(qpartner.is_company)
+        self.assertEquals(qpartner.created_at, '2008-06-02 15:40:17')
+        self.assertEquals(qpartner.updated_at, '2013-11-04 12:52:01')
+
+    def test_import_twice(self):
+        """ Import a partner twice, the second import is skipped"""
+        cr, uid = self.cr, self.uid
+        with mock_api_responses(qoqa_user):
+            import_record(self.session, 'qoqa.res.partner',
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
+        qpartner_ids = self.QPartner.search(cr, uid, domain)
+        self.assertEquals(len(qpartner_ids), 1)
+        qpartner = self.QPartner.browse(cr, uid, qpartner_ids[0])
+        with mock_api_responses(qoqa_user):
+            import_record(self.session, 'qoqa.res.partner',
+                          self.backend_id, 99999999)
+        qpartner2_ids = self.QPartner.search(cr, uid, domain)
+        qpartner2 = self.QPartner.browse(cr, uid, qpartner2_ids[0])
+        self.assertEquals(qpartner_ids, qpartner2_ids)
+        self.assertEquals(qpartner.sync_date, qpartner2.sync_date)
 
     def test_import_address(self):
         """ Import an address (with dependencies) """
@@ -65,6 +85,8 @@ class test_import_partner(QoQaTransactionCase):
         self.assertEquals(qaddr.city, 'Orbe')
         self.assertEquals(qaddr.zip, '1350')
         self.assertEquals(qaddr.country_id.id, self.ref('base.ch'))
+        self.assertEquals(qaddr.created_at, '2013-06-10 07:54:15')
+        self.assertEquals(qaddr.updated_at, '2013-06-10 07:54:15')
         partner = qaddr.parent_id
         self.assertTrue(partner.is_company)
 

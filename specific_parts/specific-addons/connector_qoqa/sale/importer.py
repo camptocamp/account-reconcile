@@ -28,6 +28,7 @@ from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -78,8 +79,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
 class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
 
-    direct = [('created_at', 'created_at'),
-              ('updated_at', 'updated_at'),
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop_id'), 'shop_id'),
               (backend_to_m2o('deal_id'), 'offer_id'),

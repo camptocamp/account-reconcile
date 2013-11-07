@@ -21,25 +21,25 @@
 import unittest2
 
 from .common import mock_api_responses, QoQaTransactionCase
-from .data_voucher import qoqa_voucher
+from .data_promo import qoqa_promo
 from ..unit.import_synchronizer import import_record
 
 
 @unittest2.skip("Not implemented yet")
-class test_import_voucher(QoQaTransactionCase):
-    """ Test the import of order from QoQa  """
+class test_import_promo(QoQaTransactionCase):
+    """ Test the import of promo from QoQa  """
 
     def setUp(self):
-        super(test_import_voucher, self).setUp()
-        self.QVoucher = self.registry('')
+        super(test_import_promo, self).setUp()
+        self.QPromo = self.registry('')
 
-    def test_import_voucher(self):
-        """ Import a voucher """
+    def test_import_promo(self):
+        """ Import a promo """
         cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_voucher):
+        with mock_api_responses(qoqa_promo):
             import_record(self.session, '',
                           self.backend_id, 99999999)
         domain = [('qoqa_id', '=', '99999999')]
-        qvoucher_ids = self.QVoucher.search(cr, uid, domain)
-        self.assertEquals(len(qvoucher_ids), 1)
-        qvoucher = self.QVoucher.browse(cr, uid, qvoucher_ids[0])
+        qpromo_ids = self.QPromo.search(cr, uid, domain)
+        self.assertEquals(len(qpromo_ids), 1)
+        qpromo = self.QPromo.browse(cr, uid, qpromo_ids[0])

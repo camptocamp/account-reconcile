@@ -27,6 +27,11 @@
              'qoqa_offer',
              'qoqa_base_data',
              ],
+ 'external_dependencies': {
+     'python': ['requests',
+                'dateutil',
+                ],
+ },
  'author': 'Camptocamp',
  'license': 'AGPL-3',
  'website': 'http://www.camptocamp.com',

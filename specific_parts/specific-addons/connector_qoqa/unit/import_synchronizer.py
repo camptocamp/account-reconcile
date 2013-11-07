@@ -22,6 +22,7 @@
 import logging
 from datetime import datetime
 from openerp.tools.translate import _
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
@@ -43,6 +44,7 @@ They should call the ``bind`` method if the binder even if the records
 are already bound, to update the last sync date.
 
 """
+
 
 class QoQaImportSynchronizer(ImportSynchronizer):
     """ Base importer for QoQa """
@@ -75,6 +77,7 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         sync_date = self.binder.sync_date(binding_id)
         if not sync_date:
             return
+        fmt = DEFAULT_SERVER_DATETIME_FORMAT
         qoqa_date = datetime.strptime(self.qoqa_record['updated_at'], fmt)
         # if the last synchronization date is greater than the last
         # update in qoqa, we skip the import.

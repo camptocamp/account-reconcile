@@ -20,8 +20,8 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from .unit.binder import QoQaDirectBinder
-from .backend import qoqa
+from ..unit.binder import QoQaDirectBinder
+from ..backend import qoqa
 
 
 class qoqa_buyphrase(orm.Model):

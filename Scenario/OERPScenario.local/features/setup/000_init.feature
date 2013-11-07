@@ -53,6 +53,12 @@ Feature: Parameter the new database
         | base_transaction_id                        |
         | account_statement_transactionid_completion |
         | account_statement_transactionid_import     |
+        # Margin
+        | product_get_cost_field                     |
+        | product_cost_incl_bom                      |
+        | product_standard_margin                    |
+        | product_historical_margin                  |
+        | qoqa_offer_historical_margin               |
         # Swiss localization
         | l10n_ch                                    |
         | l10n_ch_bank                               |
@@ -64,14 +70,12 @@ Feature: Parameter the new database
         # French localization
         | l10n_fr                                    |
         | l10n_fr_rib                                |
-        # Financial optional
-        | account_credit_control                     |
         # Other
         | sale_order_webkit                          |
         | connector_ecommerce                        |
         | connector_qoqa                             |
         | purchase_landed_costs                      |
-        | product_multi_company                      |
+        | product_price_history                      |
         | crm_claim_rma                              |
         | specific_fct                               |
         | specific_report                            |
@@ -133,3 +137,10 @@ Feature: Parameter the new database
   Scenario: importing Chart of account from CSV
     Given "account.account.type" is imported from CSV "setup/type_de_compte.csv" using delimiter ","
 
+
+  @l10n_ch_payment_slip_voucher_disable
+  Scenario: DISABLE VOUCHER FOR L10N_CH_PAYMENT_SLIP
+    Given I need a "ir.config_parameter" with oid: l10n_ch_payment_slip.payment_slip_voucher_disable
+    And having:
+    | name  | value                                |
+    | value | 1                                    |

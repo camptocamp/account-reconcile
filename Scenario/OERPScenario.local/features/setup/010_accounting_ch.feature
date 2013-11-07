@@ -92,13 +92,14 @@ Feature: Configure the CH's accounting
     And the property is related to model "account.account" using column "code" and value "<account_code>"
 
     Examples: Defaults accouts for QoQa CH
-      | name                           | model            | account_code |
-      | property_account_receivable    | res.partner      |        11030 |
-      | property_account_payable       | res.partner      |        20000 |
-      | property_account_expense_categ | product.category |        42000 |
-      | property_account_income_categ  | product.category |        32000 |
-      | property_stock_account_input   | product.template |        10900 |
-      | property_stock_account_output  | product.template |        10900 |
+      | name                                 | model            | account_code |
+      | property_account_receivable          | res.partner      |        11030 |
+      | property_account_payable             | res.partner      |        20000 |
+      | property_account_expense_categ       | product.category |        42000 |
+      | property_account_income_categ        | product.category |        32000 |
+      | property_stock_valuation_account_id  | product.category |        10900 |
+      | property_stock_account_input         | product.template |        10900 |
+      | property_stock_account_output        | product.template |        10900 |
 
   @historic_account_tax
   Scenario: I create the historic account taxes for CH (7.6%,3.6%,2.4%) in order to import the previous years

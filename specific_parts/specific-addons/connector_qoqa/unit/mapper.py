@@ -61,8 +61,8 @@ def ifmissing(field, value):
     :param value: default value to put when the source value is False-ish
     """
     def modifier(self, record, to_attr):
-        value = record.get(field)
-        if not value:
+        record_val = record.get(field)
+        if not record_val:
             return value
-        return value
+        return record_val
     return modifier

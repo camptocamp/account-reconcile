@@ -22,11 +22,9 @@
 import logging
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  only_create,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
-from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import (FromDateDelayBatchImport,
                                         QoQaImportSynchronizer,
@@ -46,7 +44,6 @@ class VariantBatchImport(FromDateDelayBatchImport):
     Import from a date
     """
     _model_name = ['qoqa.product.product']
-
 
 
 @qoqa
@@ -80,7 +77,7 @@ class VariantImportMapper(ImportMapper):
         ('sku', 'default_code'),
         ('ean', 'ean13'),
         (backend_to_m2o('product_id', binding='qoqa.product.template'),
-        'product_tmpl_id'),
+         'product_tmpl_id'),
     ]
 
     # TODO: warranty_id

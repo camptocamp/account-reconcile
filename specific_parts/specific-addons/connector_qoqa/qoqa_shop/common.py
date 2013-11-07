@@ -21,7 +21,8 @@
 
 from openerp.osv import orm, fields
 from ..backend import qoqa
-from ..unit.backend_adapter import QoQaAdapter, QoQaClient
+from ..unit.backend_adapter import QoQaAdapter
+
 
 class qoqa_shop(orm.Model):
     # model created in 'qoqa_offer'

@@ -21,9 +21,7 @@
 
 import logging
 
-from openerp.addons.connector.unit.mapper import (mapping,
-                                                  only_create,
-                                                  backend_to_m2o,
+from openerp.addons.connector.unit.mapper import (backend_to_m2o,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
@@ -74,8 +72,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # TODO
             # self._import_dependency(item['voucher_id'],
             #                         'qoqa.voucher')
-
-
 
 
 @qoqa

@@ -64,6 +64,7 @@ class product_product(orm.Model):
                                                       default=default,
                                                       context=context)
 
+
 @qoqa
 class QoQaProductAdapter(QoQaAdapter):
     _model_name = 'qoqa.product.product'

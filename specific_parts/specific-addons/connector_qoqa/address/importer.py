@@ -30,6 +30,7 @@ from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -59,8 +60,8 @@ class AddressImport(QoQaImportSynchronizer):
 class AddressImportMapper(ImportMapper):
     _model_name = 'qoqa.address'
 
-    direct = [('created_at', 'created_at'),
-              ('updated_at', 'updated_at'),
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('user_id', binding='qoqa.res.partner'), 'parent_id'),
               ('street', 'street'),
               ('street2', 'street2'),

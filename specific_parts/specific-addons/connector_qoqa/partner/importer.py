@@ -29,6 +29,7 @@ from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -52,8 +53,8 @@ class ResPartnerImport(QoQaImportSynchronizer):
 class ResPartnerImportMapper(ImportMapper):
     _model_name = 'qoqa.res.partner'
 
-    direct = [('created_at', 'created_at'),
-              ('updated_at', 'updated_at'),
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
               ('suspicious', 'suspicious'),
               ('is_active', 'qoqa_active'),
               ('email', 'email'),

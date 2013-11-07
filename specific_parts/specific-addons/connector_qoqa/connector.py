@@ -20,6 +20,7 @@
 ##############################################################################
 
 import pytz
+from dateutil import parser
 
 from openerp.osv import orm, fields
 from openerp.addons.connector.connector import (install_in_connector,
@@ -29,6 +30,20 @@ from openerp.addons.connector.checkpoint import checkpoint
 install_in_connector()
 
 QOQA_TZ = pytz.timezone('Europe/Zurich')
+
+
+def iso8601_to_utc_datetime(isodate):
+    """ Returns the UTC date from an iso8601 date
+
+    A QoQa date is formatted using the ISO 8601 format.
+    Example: 2013-11-04T13:52:01+0100
+    """
+    parsed = parser.parse(isodate)
+    if not parsed.tzinfo:
+        return parsed
+    utc = pytz.timezone('UTC')
+    # set as UTC and then remove the tzinfo so the date becomes naive
+    return parsed.astimezone(utc).replace(tzinfo=None)
 
 
 def get_environment(session, model_name, backend_id):

@@ -163,3 +163,4 @@ Feature: Parameter the new database
     And having:
     | name       | value                                |
     | name       | openerp_smtp_server                  |
+    | sequence   | 1                                    |

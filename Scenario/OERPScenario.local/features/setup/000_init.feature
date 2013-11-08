@@ -70,6 +70,8 @@ Feature: Parameter the new database
         # French localization
         | l10n_fr                                    |
         | l10n_fr_rib                                |
+        # ServerEnv and Mail, it pulls server_env and _files modules
+        | mail_environment                           |
         # Other
         | sale_order_webkit                          |
         | connector_ecommerce                        |
@@ -82,6 +84,7 @@ Feature: Parameter the new database
         | product_custom_attributes                  |
         | wine_ch_report                             |
         | discount_coupon                            |
+        | qoqa_claim                                 |
     Then my modules should have been installed and models reloaded
 
   @ged_setting
@@ -143,3 +146,19 @@ Feature: Parameter the new database
     And having:
     | name  | value                                |
     | value | 1                                    |
+
+  @mail_setup_incoming
+  Scenario: CREATE THE INCOMING MAIL SERVER
+    Given I need a "fetchmail.server" with oid: scenario.openerp_incomming_claim
+    And having:
+    | name       | value                                |
+    | name       | openerp_incomming_claim              |
+    | object_id  | by name: Claim                       |
+    And I test and confirm the incomming mail server
+
+  @mail_setup_outgoing
+  Scenario: CREATE THE OUTGOING MAIL SERVER
+    Given I need a "ir.mail_server" with oid: scenario.openerp_smtp_server
+    And having:
+    | name       | value                                |
+    | name       | openerp_smtp_server                  |

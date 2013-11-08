@@ -154,7 +154,6 @@ Feature: Parameter the new database
     And having:
     | name       | value                                |
     | name       | openerp_incomming_claim              |
-    | object_id  | by name: Claim                       |
     And I test and confirm the incomming mail server
 
   @mail_setup_outgoing

@@ -25,12 +25,14 @@ Feature: Configure the connector's backend
   Scenario: Configure Sales Automatic Workflows
     Given I find a "sale.workflow.process" with oid: sale_automatic_workflow.automatic_validation
     And having:
-      | key              | value       |
-      | picking_policy   | one         |
-      | invoice_quantity | procurement |
-      | order_policy     | picking     |
-      | validate_order   | True        |
-      | validate_invoice | True        |
+      | key                        | value           |
+      | picking_policy             | one             |
+      | invoice_quantity           | procurement     |
+      | order_policy               | manual          |
+      | validate_order             | True            |
+      | validate_invoice           | True            |
+      | create_invoice_on          | on_picking_done |
+      | invoice_date_is_order_date | True            |
     Given I find a "sale.workflow.process" with oid: sale_automatic_workflow.manual_validation
     And having:
       | key              | value       |
@@ -100,3 +102,88 @@ Feature: Configure the connector's backend
     And having:
          | key     | value |
          | qoqa_id | 2     |
+
+  @qoqa_id @currency
+  Scenario Outline: Set the qoqa_ids on the currencies
+    Given I find a "res.currency" with oid: <oid>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | oid      | qoqa_id |
+         | base.CHF | 1       |
+         | base.EUR | 2       |
+         | base.USD | 3       |
+         | base.GBP | 4       |
+         | base.CNY | 5       |
+         | base.JPY | 6       |
+
+  @qoqa_id @country
+  Scenario Outline: Set the qoqa_ids on the Countries
+    Given I find a "res.country" with oid: <oid>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | oid     | qoqa_id |
+         | base.ch | 1       |
+         | base.fr | 2       |
+         | base.de | 3       |
+         | base.it | 4       |
+         | base.us | 5       |
+         | base.uk | 6       |
+         | base.dk | 7       |
+         | base.nl | 8       |
+         | base.be | 9       |
+         | base.es | 10      |
+         | base.pt | 11      |
+         | base.cn | 12      |
+         | base.jp | 14      |
+         | base.li | 15      |
+         | base.lu | 16      |
+         | base.cy | 17      |
+
+  @qoqa_id @tax
+  Scenario Outline: Set the qoqa_ids on the taxes
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | tax_code | qoqa_id |
+         | 2.5%     | 4       |
+         | 3.8%     | 5       |
+         | 8.0%     | 6       |
+         | 0% excl. | 10      |
+
+  @qoqa_id @tax
+  Scenario Outline: Set the qoqa_ids on the taxes
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    Given I find a "account.tax" with description: <tax_code> and active: False
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | tax_code | qoqa_id |
+         | 2.4%     | 1       |
+         | 3.6%     | 2       |
+         | 7.6%     | 3       |
+
+  @qoqa_id @tax
+  Scenario Outline: Set the qoqa_ids on the taxes
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: currencies
+         | tax_code | qoqa_id |
+         | 2.1      | 7       |
+         | 5.5      | 8       |
+         | 19.6     | 9       |

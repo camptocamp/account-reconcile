@@ -105,29 +105,26 @@ Feature: Configure the attribute sets
         | attribute_type    | <type>                              |
         | translate         | <translate>                         |
         | required_on_views | <required>                          |
+        | qoqa_id           | <qoqa_id>                           |
 
   Examples: Variant attributes
-      | name             | descr            | type      | translate | required |
-      | warranty         | Warranty         | integer   | False     | True     |
-      | dimension_big    | Dimension big    | float     | True      | False    |
-      | dimension_medium | Dimension medium | float     | False     | False    |
-      | dimension_small  | Dimension small  | float     | False     | False    |
-      | variant_weight   | Variant Weight   | float     | False     | False    |
+      | name             | descr            | type    | translate | required | qoqa_id     |
+      | warranty         | Warranty         | integer | False     | True     | warranty_id |
+      | dimension_big    | Dimension big    | float   | False     | False    |             |
+      | dimension_medium | Dimension medium | float   | False     | False    |             |
+      | dimension_small  | Dimension small  | float   | False     | False    |             |
+      | variant_weight   | Variant Weight   | float   | False     | False    | weight      |
       # warranty will probably change for the RMA
 
   @general
   Scenario: Create a general attribute set
-  Given I need a "attribute.set" with oid: scenario.set_general
-    And I set the attribute model to oid: procurement.model_product_product
-    And having:
-        | key  | value       |
-        | name | Général     |
+  Given I find a "attribute.set" with oid: qoqa_base_data.set_general
   Given I need a "attribute.group" with oid: scenario.group_general_main
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                        |
-        | name             | Caractéristiques principales |
-        | attribute_set_id | by oid: scenario.set_general |
+        | key              | value                              |
+        | name             | Caractéristiques principales       |
+        | attribute_set_id | by oid: qoqa_base_data.set_general |
 
   @general_groups @general
   Scenario Outline: Create attribute locations (set + group + attribute)
@@ -151,23 +148,19 @@ Feature: Configure the attribute sets
 
   @wine
   Scenario: Create an attribute set for wine
-  Given I need a "attribute.set" with oid: scenario.set_wine
-    And I set the attribute model to oid: procurement.model_product_product
-    And having:
-        | key  | value       |
-        | name | Du vin!     |
+  Given I find a "attribute.set" with oid: qoqa_base_data.set_wine
   Given I need a "attribute.group" with oid: scenario.group_wine_main
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                        |
-        | name             | Caractéristiques principales |
-        | attribute_set_id | by oid: scenario.set_wine    |
+        | key              | value                           |
+        | name             | Caractéristiques principales    |
+        | attribute_set_id | by oid: qoqa_base_data.set_wine |
   Given I need a "attribute.group" with oid: scenario.group_wine_wine
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                        |
-        | name             | Caractéristiques du vin      |
-        | attribute_set_id | by oid: scenario.set_wine    |
+        | key              | value                           |
+        | name             | Caractéristiques du vin         |
+        | attribute_set_id | by oid: qoqa_base_data.set_wine |
 
   @wine_group_general @wine
   Scenario Outline: Create attribute locations (set + group + attribute)
@@ -210,23 +203,19 @@ Feature: Configure the attribute sets
 
   @liquor
   Scenario: Create an attribute set for liquor
-  Given I need a "attribute.set" with oid: scenario.set_liquor
-    And I set the attribute model to oid: procurement.model_product_product
-    And having:
-        | key  | value          |
-        | name | Spiritueux     |
+  Given I find a "attribute.set" with oid: qoqa_base_data.set_liquor
   Given I need a "attribute.group" with oid: scenario.group_liquor_main
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                          |
-        | name             | Caractéristiques principales   |
-        | attribute_set_id | by oid: scenario.set_liquor    |
+        | key              | value                             |
+        | name             | Caractéristiques principales      |
+        | attribute_set_id | by oid: qoqa_base_data.set_liquor |
   Given I need a "attribute.group" with oid: scenario.group_liquor_liquor
     And I set the attribute model to oid: procurement.model_product_product
     And having:
-        | key              | value                          |
-        | name             | Caractéristiques du spiritueux |
-        | attribute_set_id | by oid: scenario.set_liquor    |
+        | key              | value                             |
+        | name             | Caractéristiques du spiritueux    |
+        | attribute_set_id | by oid: qoqa_base_data.set_liquor |
 
   @liquor_group_general @liquor
   Scenario Outline: Create attribute locations (set + group + attribute)

@@ -25,9 +25,13 @@ from openerp.tools.translate import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
+from openerp.addons.connector.unit.mapper import ImportMapper
 from openerp.addons.connector.exception import IDMissingInBackend
 from ..backend import qoqa
-from ..connector import get_environment, add_checkpoint
+from ..connector import (get_environment,
+                         add_checkpoint,
+                         iso8601_to_utc_datetime
+                         )
 
 _logger = logging.getLogger(__name__)
 
@@ -42,6 +46,7 @@ They should call the ``bind`` method if the binder even if the records
 are already bound, to update the last sync date.
 
 """
+
 
 class QoQaImportSynchronizer(ImportSynchronizer):
     """ Base importer for QoQa """
@@ -67,23 +72,46 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """Return True if the import should be skipped because
         it is already up-to-date in OpenERP"""
         assert self.qoqa_record
-        # FIXME: check name of the field
-        if not self.qoqa_record.get('updated_at'):
+        qoqa_updated_at = self.qoqa_record.get('updated_at')
+        if not qoqa_updated_at:
             return  # no update date on QoQa, always import it.
+        qoqa_date = iso8601_to_utc_datetime(qoqa_updated_at)
         if not binding_id:
             return  # it does not exist so it shoud not be skipped
         sync_date = self.binder.sync_date(binding_id)
         if not sync_date:
             return
-        # FIXME: check name of the field
-        qoqa_date = datetime.strptime(self.qoqa_record['updated_at'], fmt)
         # if the last synchronization date is greater than the last
         # update in qoqa, we skip the import.
         # Important: at the beginning of the exporters flows, we have to
-        # check if the qoqa_date is more recent than the sync_date
+        # check if the qoqa date is more recent than the sync_date
         # and if so, schedule a new import. If we don't do that, we'll
         # miss changes done in QoQa
         return qoqa_date < sync_date
+
+    def _import_dependency(self, qoqa_id, binding_model,
+                           importer_class=None):
+        """
+        Import a dependency. The importer class is a subclass of
+        ``QoQaImportSynchronizer``. A specific class can be defined.
+
+        :param qoqa_id: id of the related binding to import
+        :param binding_model: name of the binding model for the relation
+        :type binding_model: str | unicode
+        :param importer_cls: :py:class:`openerp.addons.connector.connector.ConnectorUnit`
+                             class or parent class to use for the export.
+                             By default: QoQaImportSynchronizer
+        :type importer_cls: :py:class:`openerp.addons.connector.connector.MetaConnectorUnit`
+        """
+        if not qoqa_id:
+            return
+        if importer_class is None:
+            importer_class = QoQaImportSynchronizer
+        binder = self.get_binder_for_model(binding_model)
+        if binder.to_openerp(qoqa_id) is None:
+            importer = self.get_connector_unit_for_model(
+                importer_class, model=binding_model)
+            importer.run(qoqa_id)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
@@ -171,9 +199,9 @@ class BatchImportSynchronizer(ImportSynchronizer):
     the import of each item separately.
     """
 
-    def run(self, filters=None):
+    def run(self, from_date=None):
         """ Run the synchronization """
-        record_ids = self.backend_adapter.search(filters)
+        record_ids = self.backend_adapter.search(from_date=from_date)
         for record_id in record_ids:
             self._import_record(record_id)
 
@@ -218,10 +246,57 @@ class TranslationImporter(ImportSynchronizer):
     For instance from the products and products' categories importers.
     """
 
-    _model_name = []
+    _model_name = ['qoqa.product.template',
+                   'qoqa.product.product',
+                   'qoqa.offer',
+                   ]
 
-    def run(self, qoqa_id, binding_id):
-        raise NotImplementedError
+    def __init__(self, environment):
+        """
+        :param environment: current environment (backend, session, ...)
+        :type environment: :py:class:`connector.connector.Environment`
+        """
+        super(TranslationImporter, self).__init__(environment)
+        self.record = self.binding_id = None
+        self.mapper_class = ImportMapper
+
+    def _translate(self, lang):
+        assert self.record
+        assert self.binding_id
+        session = self.session
+        fields = self.model.fields_get(session.cr, session.uid,
+                                       context=session.context)
+        # find the translatable fields of the model
+        translatable_fields = [field for field, attrs in fields.iteritems()
+                               if attrs.get('translate')]
+        mapper = self.get_connector_unit_for_model(self.mapper_class)
+        mapper.lang = lang
+        mapper.convert(self.record)
+        record = mapper.data
+        data = dict((field, value) for field, value in record.iteritems()
+                    if field in translatable_fields)
+
+        ctx = {'connector_no_export': True, 'lang': lang.code}
+        with session.change_context(ctx):
+            session.write(self.model._name, self.binding_id, data)
+
+    def run(self, record, binding_id, mapper=None):
+        self.record = record
+        self.binding_id = binding_id
+        if mapper is not None:
+            self.mapper_class = mapper
+        session = self.session
+
+        if not record.get('translations'):
+            return
+        for tr_record in record['translations']:
+            lang_binder = self.get_binder_for_model('res.lang')
+            lang_id = lang_binder.to_openerp(tr_record['language_id'],
+                                             unwrap=True)
+            if lang_id == self.backend_record.default_lang_id.id:
+                continue
+            lang = session.browse('res.lang', lang_id)
+            self._translate(lang)
 
 
 @qoqa
@@ -230,6 +305,8 @@ class AddCheckpoint(ConnectorUnit):
     (not the qoqa.* but the _inherits'ed model) """
 
     _model_name = ['qoqa.shop',
+                   'qoqa.product.template',
+                   'qoqa.product.product',
                    ]
 
     def run(self, openerp_binding_id):
@@ -243,11 +320,19 @@ class AddCheckpoint(ConnectorUnit):
 
 
 @job
-def import_batch(session, model_name, backend_id, filters=None):
+def import_batch(session, model_name, backend_id):
     """ Prepare a batch import of records from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(BatchImportSynchronizer)
-    importer.run(filters=filters)
+    importer.run()
+
+
+@job
+def import_batch_from_date(session, model_name, backend_id, from_date=None):
+    """ Prepare a batch import of records from QoQa """
+    env = get_environment(session, model_name, backend_id)
+    importer = env.get_connector_unit(BatchImportSynchronizer)
+    importer.run(from_date=from_date)
 
 
 @job
@@ -255,3 +340,4 @@ def import_record(session, model_name, backend_id, qoqa_id, force=False):
     """ Import a record from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(QoQaImportSynchronizer)
+    importer.run(qoqa_id, force=force)

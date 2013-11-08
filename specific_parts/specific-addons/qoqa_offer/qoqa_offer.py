@@ -91,7 +91,9 @@ class qoqa_offer(orm.Model):
         'ref': fields.char('Offer Reference', required=True),
         'name': fields.char('Title', translate=True, required=True),
         'description': fields.html('Description', translate=True),
-        'note': fields.html('Internal Notes', translate=True),
+        'note': fields.html('Internal Notes',
+                            translate=True,
+                            required=True),
         'state': fields.selection(
             OFFER_STATES,
             'Status',

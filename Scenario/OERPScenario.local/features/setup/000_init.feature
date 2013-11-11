@@ -79,6 +79,7 @@ Feature: Parameter the new database
         | purchase_landed_costs                      |
         | product_price_history                      |
         | crm_claim_rma                              |
+        | crm_rma_by_shop                            |
         | specific_fct                               |
         | specific_report                            |
         | product_custom_attributes                  |

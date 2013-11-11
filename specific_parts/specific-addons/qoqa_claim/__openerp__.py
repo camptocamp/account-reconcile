@@ -32,7 +32,6 @@ QoQa Claim Specific
 ===================
 
 Local claim customizations for QoQa.
- * Add shop on claim
  * Add method to use a server action to attribute the shop
 
 """,

@@ -97,6 +97,8 @@
                                         class="oe_highlight"
                                         string="Import in background"/>
                                 </group>
+                            </page>
+                            <page name="import_one" string="Single Imports" groups="base.group_no_one">
                                 <group>
                                     <div>
                                         <label string="Import 1 sales order"
@@ -111,7 +113,7 @@
                                         string="Import"/>
                                 </group>
                             </page>
-                            <page name="import" string="Initial Imports">
+                            <page name="initial_import" string="Initial Imports">
                                 <p class="oe_grey oe_inline">
                                     By clicking on the buttons,
                                     you will initiate the synchronizations

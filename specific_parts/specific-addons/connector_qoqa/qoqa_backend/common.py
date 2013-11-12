@@ -27,7 +27,7 @@ from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.session import ConnectorSession
 from ..unit.import_synchronizer import (import_batch,
-                                        import_batch_from_date,
+                                        import_batch_divider,
                                         import_record,
                                         )
 
@@ -139,8 +139,8 @@ class qoqa_backend(orm.Model):
                 from_date = datetime.strptime(from_date, DT_FMT)
             else:
                 from_date = None
-            import_batch_from_date.delay(session, model,
-                                         backend.id, from_date=from_date)
+            import_batch_divider(session, model, backend.id,
+                                 from_date=from_date)
         self.write(cr, uid, ids,
                    {from_date_field: import_start_time})
 

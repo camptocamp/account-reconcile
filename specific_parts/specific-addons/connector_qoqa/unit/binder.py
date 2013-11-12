@@ -194,7 +194,7 @@ class QoQaInheritsBinder(QoQaBinder):
 
         :param binding_id: OpenERP ID for which we want the external id
         :param wrap: if True, the value passed in binding_id is the ID of the
-                     binded record, not the binding record.
+                     bound record, not the binding record.
         :return: backend identifier of the record
         """
         if wrap:

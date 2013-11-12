@@ -21,6 +21,8 @@
 
 import logging
 from datetime import datetime
+from dateutil import rrule
+from itertools import chain
 from openerp.tools.translate import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
@@ -30,7 +32,8 @@ from openerp.addons.connector.exception import IDMissingInBackend
 from ..backend import qoqa
 from ..connector import (get_environment,
                          add_checkpoint,
-                         iso8601_to_utc_datetime
+                         iso8601_to_utc_datetime,
+                         pairwise,
                          )
 
 _logger = logging.getLogger(__name__)
@@ -212,9 +215,10 @@ class BatchImportSynchronizer(ImportSynchronizer):
     the import of each item separately.
     """
 
-    def run(self, from_date=None):
+    def run(self, from_date=None, to_date=None):
         """ Run the synchronization """
-        record_ids = self.backend_adapter.search(from_date=from_date)
+        record_ids = self.backend_adapter.search(from_date=from_date,
+                                                 to_date=to_date)
         for record_id in record_ids:
             self._import_record(record_id)
 
@@ -332,19 +336,31 @@ class AddCheckpoint(ConnectorUnit):
 
 
 @job
-def import_batch(session, model_name, backend_id):
+def import_batch(session, model_name, backend_id, from_date=None, to_date=None):
     """ Prepare a batch import of records from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(BatchImportSynchronizer)
-    importer.run()
+    importer.run(from_date=from_date, to_date=to_date)
 
 
 @job
-def import_batch_from_date(session, model_name, backend_id, from_date=None):
-    """ Prepare a batch import of records from QoQa """
-    env = get_environment(session, model_name, backend_id)
-    importer = env.get_connector_unit(BatchImportSynchronizer)
-    importer.run(from_date=from_date)
+def import_batch_divider(session, model_name, backend_id, from_date=None):
+    """ Delay an import batch job per week from the date.
+
+    We need to split the batch imports (ranges on weeks), otherwise
+    the QoQa backend has memory issues.
+    """
+    if from_date is None:
+        import_batch.delay(session, model_name, backend_id)
+
+    dates = rrule.rrule(rrule.WEEKLY, dtstart=from_date,
+                        until=datetime.now())
+    # rrule only returns the full weeks, so we append None
+    # at the end to include the last records between the
+    # last full week
+    for startd, stopd in pairwise(chain(dates, (None,))):
+        import_batch.delay(session, model_name, backend_id,
+                           from_date=startd, to_date=stopd)
 
 
 @job

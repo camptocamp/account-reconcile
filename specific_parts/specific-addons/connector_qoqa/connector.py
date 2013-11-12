@@ -21,6 +21,7 @@
 
 import pytz
 from dateutil import parser
+from itertools import tee, izip
 
 from openerp.osv import orm, fields
 from openerp.addons.connector.connector import (install_in_connector,
@@ -109,3 +110,12 @@ def add_checkpoint(session, model_name, record_id, backend_id):
     """
     return checkpoint.add_checkpoint(session, model_name, record_id,
                                      'qoqa.backend', backend_id)
+
+
+# sliding window from:
+# http://docs.python.org/2/library/itertools.html#recipes
+def pairwise(iterable):
+    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    a, b = tee(iterable)
+    next(b, None)
+    return izip(a, b)

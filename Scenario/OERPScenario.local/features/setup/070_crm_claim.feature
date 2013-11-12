@@ -28,7 +28,9 @@ Feature: CRM CLAIM SETTING FOR QOQA
         | scenario.crm_alias_test_qsport        | test.qsport    |
         | scenario.crm_alias_test_qsyle         | test.qstyle    |
         | scenario.crm_alias_test_qwine         | test.qwine     |
+        | scenario.crm_alias_test_qwine-fr      | test.qwine-fr     |
         | scenario.crm_alias_test_qooqa         | test.qoqa      |
+        | scenario.crm_alias_test_qooqa-fr      | test.qoqa-fr      |
   Examples: Create all basic alias compared to mail per environnement
   # TODO : Update the qa and prod aliases !
         | oid                              | name              |
@@ -49,6 +51,10 @@ Feature: CRM CLAIM SETTING FOR QOQA
     And I setup the shop to "Qwine.ch"
     Given I need a "mail.alias" with oid: scenario.crm_alias_test_qooqa
     And I setup the shop to "QoQa.ch"
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qwine-fr
+    And I setup the shop to "Qwine.fr"
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qooqa-fr
+    And I setup the shop to "QoQa.fr"
 
 
   @crm_case_section_sale_team

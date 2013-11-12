@@ -34,4 +34,5 @@ class QoQaOfferPositionVariantImportMapper(ImportMapper):
     direct = [('quantity', 'quantity'),
               (backend_to_m2o('variation_id', binding='qoqa.product.product'),
                'product_id'),
+              ('id', 'qoqa_id'),
               ]

@@ -27,7 +27,8 @@ from openerp.addons.connector.unit.mapper import (mapping,
 from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import QoQaImportSynchronizer
-from ..unit.mapper import ifmissing, iso8601_to_utc
+from ..unit.mapper import ifmissing, iso8601_to_utc, qoqafloat
+
 
 @qoqa
 class QoQaOfferPositionImport(QoQaImportSynchronizer):
@@ -65,11 +66,11 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               ('lot_size', 'lot_size'),
               ('max_sellable', 'max_sellable'),
               ('stock_bias', 'stock_bias'),
-              ('unit_price', 'unit_price'),
-              ('installment_price', 'installment_price'),
-              ('regular_price', 'regular_price'),
-              ('buy_price', 'buy_price'),
-              ('top_price', 'top_price'),
+              (qoqafloat('unit_price'), 'unit_price'),
+              (qoqafloat('installment_price'), 'installment_price'),
+              (qoqafloat('regular_price'), 'regular_price'),
+              (qoqafloat('buy_price'), 'buy_price'),
+              (qoqafloat('top_price'), 'top_price'),
               ('ecotax', 'ecotax'),
               (iso8601_to_utc('delivery_at'), 'date_delivery'),
               ('booking_delivery', 'booking_delivery'),

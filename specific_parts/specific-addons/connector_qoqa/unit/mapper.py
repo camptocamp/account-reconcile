@@ -93,3 +93,20 @@ def iso8601_to_utc(field):
         utc_date = iso8601_to_utc_datetime(value)
         return utc_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
     return modifier
+
+
+def qoqafloat(field):
+    """ A modifier intended to be used on the ``direct`` mappings.
+
+    QoQa provides the float values multiplied by 100.
+    Example: 33.00 is represented as 3300 on the API.
+
+    Usage::
+
+        direct = [(qoqafloat('unit_price'), 'unit_price')]
+
+    :param field: name of the source field in the record
+    """
+    def modifier(self, record, to_attr):
+        return record.get(field, 0) / 100
+    return modifier

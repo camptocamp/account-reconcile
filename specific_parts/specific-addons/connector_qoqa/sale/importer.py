@@ -21,7 +21,8 @@
 
 import logging
 
-from openerp.addons.connector.unit.mapper import (backend_to_m2o,
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  backend_to_m2o,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
@@ -52,14 +53,12 @@ class SaleOrderImport(QoQaImportSynchronizer):
         assert self.qoqa_record
         rec = self.qoqa_record
         self._import_dependency(rec['shop_id'], 'qoqa.shop')
-        self._import_dependency(rec['deal_id'], 'qoqa.deal')
-        self._import_dependency(rec['user_id'], 'qoqa.res.partner')
+        self._import_dependency(rec['deal_id'], 'qoqa.offer')
+        self._import_dependency(rec['user_id'], 'qoqa.res.partner', always=True)
         self._import_dependency(rec['billing_address_id'],
-                                'qoqa.address')
+                                'qoqa.address', always=True)
         self._import_dependency(rec['shipping_address_id'],
-                                'qoqa.address')
-        self._import_dependency(rec['shipping_address_id'],
-                                'qoqa.address')
+                                'qoqa.address', always=True)
         for item in rec['items']:
             self._import_dependency(item['variation_id'],
                                     'qoqa.product.product')
@@ -74,6 +73,9 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # self._import_dependency(item['voucher_id'],
             #                         'qoqa.voucher')
 
+    def _after_import(self, binding_id):
+        """ Import lines of sales order """
+
 
 @qoqa
 class SaleOrderImportMapper(ImportMapper):
@@ -82,8 +84,7 @@ class SaleOrderImportMapper(ImportMapper):
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
-              (backend_to_m2o('shop_id', binding='qoqa.shop_id'), 'shop_id'),
-              (backend_to_m2o('deal_id'), 'offer_id'),
+              (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),
               (backend_to_m2o('user_id', binding='qoqa.res.partner'), 'partner_id'),
               (backend_to_m2o('shipping_address_id',
                               binding='qoqa.address'),
@@ -92,3 +93,11 @@ class SaleOrderImportMapper(ImportMapper):
                               binding='qoqa.address'),
                'partner_invoice_id'),
               ]
+
+    @mapping
+    def from_offer(self, record):
+        """ Get the linked offer and takes some values from there """
+        binder = self.get_binder_for_model('qoqa.offer')
+        offer_id = binder.to_openerp(record['deal_id'], unwrap=True)
+        offer = self.session.browse('qoqa.offer', offer_id)
+        return {'offer_id': offer.id, 'pricelist_id': offer.pricelist_id.id}

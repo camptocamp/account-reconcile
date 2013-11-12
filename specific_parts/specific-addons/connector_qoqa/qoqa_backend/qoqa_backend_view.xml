@@ -97,6 +97,19 @@
                                         class="oe_highlight"
                                         string="Import in background"/>
                                 </group>
+                                <group>
+                                    <div>
+                                        <label string="Import 1 sales order"
+                                            class="oe_inline"/>
+                                        <field name="import_sale_id"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_one_sale_order"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import"/>
+                                </group>
                             </page>
                             <page name="import" string="Initial Imports">
                                 <p class="oe_grey oe_inline">

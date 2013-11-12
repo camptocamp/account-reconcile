@@ -90,7 +90,7 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         return qoqa_date < sync_date
 
     def _import_dependency(self, qoqa_id, binding_model,
-                           importer_class=None):
+                           importer_class=None, always=False):
         """
         Import a dependency. The importer class is a subclass of
         ``QoQaImportSynchronizer``. A specific class can be defined.
@@ -102,13 +102,15 @@ class QoQaImportSynchronizer(ImportSynchronizer):
                              class or parent class to use for the export.
                              By default: QoQaImportSynchronizer
         :type importer_cls: :py:class:`openerp.addons.connector.connector.MetaConnectorUnit`
+        :param always: if True, the record is updated even if it already exists
+        :type always: boolean
         """
         if not qoqa_id:
             return
         if importer_class is None:
             importer_class = QoQaImportSynchronizer
         binder = self.get_binder_for_model(binding_model)
-        if binder.to_openerp(qoqa_id) is None:
+        if always or binder.to_openerp(qoqa_id) is None:
             importer = self.get_connector_unit_for_model(
                 importer_class, model=binding_model)
             importer.run(qoqa_id)

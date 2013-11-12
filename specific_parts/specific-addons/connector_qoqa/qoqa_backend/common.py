@@ -28,6 +28,7 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.session import ConnectorSession
 from ..unit.import_synchronizer import (import_batch,
                                         import_batch_from_date,
+                                        import_record,
                                         )
 
 """
@@ -81,6 +82,7 @@ class qoqa_backend(orm.Model):
             'Import Addresses from date'),
         'import_sale_order_from_date': fields.datetime(
             'Import Sales Orders from date'),
+        'import_sale_id': fields.char('Sales Order ID'),
     }
 
     def check_connection(self, cr, uid, ids, context=None):
@@ -170,4 +172,14 @@ class qoqa_backend(orm.Model):
         self._import_from_date(cr, uid, ids, 'qoqa.sale.order',
                                'import_sale_order_from_date',
                                context=context)
+        return True
+
+    def import_one_sale_order(self, cr, uid, ids, context=None):
+        session = ConnectorSession(cr, uid, context=context)
+        for backend in self.browse(cr, uid, ids, context=context):
+            sale_id = backend.import_sale_id
+            if not sale_id:
+                continue
+            import_record(session, 'qoqa.sale.order', backend.id,
+                          sale_id, force=True)
         return True

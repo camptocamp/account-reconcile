@@ -64,8 +64,9 @@ class ResPartnerImportMapper(ImportMapper):
     @only_create
     @mapping
     def name(self, record):
-        name = ' '.join((record['firstname'], record['lastname']))
-        return {'name': name}
+        parts = [part for part in (record['firstname'], record['lastname'])
+                 if part]
+        return {'name': ' '.join(parts)}
 
     @mapping
     def use_parent_address(self, record):

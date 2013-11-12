@@ -79,7 +79,8 @@ class AddressImportMapper(ImportMapper):
     @only_create
     @mapping
     def name(self, record):
-        parts = record['firstname'], record['lastname']
+        parts = [part for part in (record['firstname'], record['lastname'])
+                 if part]
         name = ' '.join(parts)
         if record.get('company'):
             name = "%s (%s)" % (record['company'], name)

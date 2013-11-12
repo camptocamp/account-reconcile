@@ -26,7 +26,7 @@ from requests_oauthlib import OAuth1
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import (NetworkRetryableError,
                                                 RetryableJobError)
-from ..exception import QoQaResponseNotParsable
+from ..exception import QoQaResponseNotParsable, QoQaAPISecurityError
 
 _logger = logging.getLogger(__name__)
 
@@ -113,6 +113,16 @@ class QoQaAdapter(CRUDAdapter):
                       response.url, response.status_code, response.reason)
         if response.request.method == 'POST':
             _logger.debug("The POST body was: %s", response.request.body)
+        if response.status_code == 403:
+            msg = ("The call '%(method)s %(url)s' could not be completed "
+                   "due to: %(reason)s. Check the OAuth tokens and "
+                   "the permissions on %(base_url)spermission/")
+            vals = {'method': response.request.method,
+                    'url': response.url,
+                    'reason': response.reason,
+                    'base_url': self.client.base_url,
+                    }
+            raise QoQaAPISecurityError(msg % vals)
         response.raise_for_status()
         try:
             parsed = json.loads(response.content)

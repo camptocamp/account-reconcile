@@ -83,7 +83,6 @@ class QoQaOfferImportMapper(ImportMapper):
         :type environment: :py:class:`connector.connector.Environment`
         """
         super(QoQaOfferImportMapper, self).__init__(environment)
-        self.lang = self.backend_record.default_lang_id
 
     @mapping
     def pricelist(self, record):
@@ -131,7 +130,8 @@ class QoQaOfferImportMapper(ImportMapper):
         for the main record in OpenERP.
         """
         binder = self.get_binder_for_model('res.lang')
-        qoqa_lang_id = binder.to_backend(self.lang.id, wrap=True)
+        lang = self.options.lang or self.backend_record.default_lang_id
+        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
         main = next((tr for tr in record['translations']
                      if str(tr['language_id']) == str(qoqa_lang_id)), {})
         values = {}

@@ -83,14 +83,6 @@ class TemplateImportMapper(ImportMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ]
 
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(TemplateImportMapper, self).__init__(environment)
-        self.lang = self.backend_record.default_lang_id
-
     @only_create
     @mapping
     def type(self, record):
@@ -104,9 +96,10 @@ class TemplateImportMapper(ImportMapper):
         """
         attr = self.get_connector_unit_for_model(ProductAttribute)
         translatable = None
-        if self.lang != self.backend_record.default_lang_id:
+        lang = self.options.lang or self.backend_record.default_lang_id
+        if lang != self.backend_record.default_lang_id:
             translatable = True  # filter only translatable attributes
-        return attr.get_values(record, self.lang, translatable=translatable)
+        return attr.get_values(record, lang, translatable=translatable)
 
     @mapping
     def from_translations(self, record):
@@ -115,7 +108,8 @@ class TemplateImportMapper(ImportMapper):
         for the main record in OpenERP.
         """
         binder = self.get_binder_for_model('res.lang')
-        qoqa_lang_id = binder.to_backend(self.lang.id, wrap=True)
+        lang = self.options.lang or self.backend_record.default_lang_id
+        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
         main = next((tr for tr in record['translations']
                      if str(tr['language_id']) == str(qoqa_lang_id)), {})
         values = {}

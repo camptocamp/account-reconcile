@@ -120,9 +120,11 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         return
 
     def _map_data(self):
-        """ Call the convert on the Mapper so the converted record can
-        be obtained using mapper.data or mapper.data_for_create"""
-        self.mapper.convert(self.qoqa_record)
+        """ Returns an instance of
+        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+
+        """
+        return self.mapper.map_record(self.qoqa_record)
 
     def _validate_data(self, data):
         """ Check if the values to import are correct
@@ -138,15 +140,27 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """Return the binding id from the qoqa id"""
         return self.binder.to_openerp(self.qoqa_id)
 
+    def _create_data(self, map_record, **kwargs):
+        """ Get the data to pass to :py:meth:`_create` """
+        return map_record.values(for_create=True, **kwargs)
+
     def _create(self, data):
         """ Create the OpenERP record """
+        # special check on data before import
+        self._validate_data(data)
         with self.session.change_context({'connector_no_export': True}):
             binding_id = self.session.create(self.model._name, data)
         _logger.debug('%s %d created from QoQa %s',
                       self.model._name, binding_id, self.qoqa_id)
         return binding_id
 
+    def _update_data(self, map_record, **kwargs):
+        """ Get the data to pass to :py:meth:`_update` """
+        return map_record.values(**kwargs)
+
     def _update(self, binding_id, data):
+        # special check on data before import
+        self._validate_data(data)
         """ Update an OpenERP record """
         with self.session.change_context({'connector_no_export': True}):
             self.session.write(self.model._name, binding_id, data)
@@ -177,17 +191,13 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         # import the missing linked resources
         self._import_dependencies()
 
-        self._map_data()
+        map_record = self._map_data()
 
         if binding_id:
-            record = self.mapper.data
-            # special check on data before import
-            self._validate_data(record)
+            record = self._update_data(map_record)
             self._update(binding_id, record)
         else:
-            record = self.mapper.data_for_create
-            # special check on data before import
-            self._validate_data(record)
+            record = self._create_data(map_record)
             binding_id = self._create(record)
 
         self.binder.bind(self.qoqa_id, binding_id)
@@ -272,9 +282,8 @@ class TranslationImporter(ImportSynchronizer):
         translatable_fields = [field for field, attrs in fields.iteritems()
                                if attrs.get('translate')]
         mapper = self.get_connector_unit_for_model(self.mapper_class)
-        mapper.lang = lang
-        mapper.convert(self.record)
-        record = mapper.data
+        map_record = mapper.map_record(self.record)
+        record = map_record.values(lang=lang)
         data = dict((field, value) for field, value in record.iteritems()
                     if field in translatable_fields)
 

@@ -83,7 +83,6 @@ class QoQaOfferPositionImportMapper(ImportMapper):
         :type environment: :py:class:`connector.connector.Environment`
         """
         super(QoQaOfferPositionImportMapper, self).__init__(environment)
-        self.lang = self.backend_record.default_lang_id
 
     @mapping
     def regular_price_type(self, record):

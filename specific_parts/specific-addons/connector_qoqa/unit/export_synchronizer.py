@@ -204,8 +204,11 @@ class QoQaExporter(QoQaBaseExporter):
         return
 
     def _map_data(self, fields=None):
-        """ Convert the external record to OpenERP """
-        self.mapper.convert(self.binding_record, fields=fields)
+        """ Returns an instance of
+        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+
+        """
+        return self.mapper.map_record(self.binding_record)
 
     def _validate_data(self, data):
         """ Check if the values to import are correct
@@ -217,13 +220,23 @@ class QoQaExporter(QoQaBaseExporter):
         """
         return
 
+    def _create_data(self, map_record, fields=None, **kwargs):
+        """ Get the data to pass to :py:meth:`_create` """
+        return map_record.values(for_create=True, fields=fields, **kwargs)
+
     def _create(self, data):
         """ Create the QoQa record """
+        self._validate_data(data)
         return self.backend_adapter.create(data)
+
+    def _update_data(self, map_record, fields=None, **kwargs):
+        """ Get the data to pass to :py:meth:`_update` """
+        return map_record.values(fields=fields, **kwargs)
 
     def _update(self, data):
         """ Update an QoQa record """
         assert self.qoqa_id
+        self._validate_data(data)
         self.backend_adapter.write(self.qoqa_id, data)
 
     def _run(self, fields=None):
@@ -245,21 +258,17 @@ class QoQaExporter(QoQaBaseExporter):
         # export the missing linked resources
         self._export_dependencies()
 
-        self._map_data(fields=fields)
+        map_record = self._map_data(fields=fields)
 
         if self.qoqa_id:
-            record = self.mapper.data
+            record = self._update_data(map_record, fields=fields)
             if not record:
                 return _('Nothing to export.')
-            # special check on data before export
-            self._validate_data(record)
             self._update(record)
         else:
-            record = self.mapper.data_for_create
+            record = self._create_data(map_record, fields=fields)
             if not record:
                 return _('Nothing to export.')
-            # special check on data before export
-            self._validate_data(record)
             self.qoqa_id = self._create(record)
         return _('Record exported with ID %s on QoQa.') % self.qoqa_id
 

@@ -22,13 +22,31 @@ Feature: CRM CLAIM SETTING FOR QOQA
         | name             | value                    |
         | alias_name       | <name>                   |
         | alias_model_id   | by name: Claim           |
-  Examples: Create all basic sales team
+  Examples: Create all basic suggested sales team
+        | oid                              | name      |
+        | scenario.crm_alias_qooking       | test.qooking   |
+        | scenario.crm_alias_qsport        | test.qsport    |
+        | scenario.crm_alias_qsyle         | test.qstyle    |
+        | scenario.crm_alias_qwine         | test.qwine     |
+        | scenario.crm_alias_qooqa         | test.qoqa      |
+# erp.test@coca.ch
+# erp.test@koka.ch
+# erp.test@qooking.ch
+# erp.test@qoqa.ch
+# erp.test@qoqa.com.test-google-a.com (e-mail temporaire)
+# erp.test@qoqa.fr
+# erp.test@qsport.ch
+# erp.test@qstyle.ch
+# erp.test@qwine.ch
+# erp.test@qwine.fr
+
+  Examples: Create all basic alias compared to mail per environnement
+  # TODO : Update the qa and prod aliases !
         | oid                              | name              |
-        | scenario.crm_alias_qooking       | qooking@qoqa.ch   |
-        | scenario.crm_alias_qsport        | qsport@qoqa.ch    |
-        | scenario.crm_alias_qsyle         | qstyle@qoqa.ch    |
-        | scenario.crm_alias_qwine         | qwine@qoqa.ch     |
-        | scenario.crm_alias_qooqa         | qoqa@qoqa.ch      |
+        | scenario.crm_alias_dev           | c2copenerp        |
+        | scenario.crm_alias_test          | erp.test          |
+        | scenario.crm_alias_qa            | erp.qa            |
+        | scenario.crm_alias_prod          | erp.prod          |
 
   @crm_case_section_sale_team
   Scenario Outline: Create sales team

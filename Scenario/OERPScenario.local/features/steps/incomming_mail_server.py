@@ -22,4 +22,4 @@ def impl(ctx, shopname):
     shop = SaleShop.browse([('name','=',shopname)])
     assert shop
     build_def_values = "{'shop_id':" + str(shop[0].id) + "}"
-    Alias.write(ctx.found_item, build_def_values)
+    Alias.write(ctx.found_item, {'alias_defaults':build_def_values})

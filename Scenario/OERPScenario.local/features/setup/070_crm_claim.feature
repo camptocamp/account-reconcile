@@ -15,31 +15,20 @@ Feature: CRM CLAIM SETTING FOR QOQA
    As an administrator, I do the following installation steps.
 
 # Create an alias per alias in gmail to affect the right team
-  @crm_alias_sale_team
-  Scenario Outline: Create alias for sales team
+  @crm_alias_mail_create
+  Scenario Outline: Create alias
     Given I need a "mail.alias" with oid: <oid>
       And having:
         | name             | value                    |
         | alias_name       | <name>                   |
         | alias_model_id   | by name: Claim           |
-  Examples: Create all basic suggested sales team
-        | oid                              | name      |
-        | scenario.crm_alias_qooking       | test.qooking   |
-        | scenario.crm_alias_qsport        | test.qsport    |
-        | scenario.crm_alias_qsyle         | test.qstyle    |
-        | scenario.crm_alias_qwine         | test.qwine     |
-        | scenario.crm_alias_qooqa         | test.qoqa      |
-# erp.test@coca.ch
-# erp.test@koka.ch
-# erp.test@qooking.ch
-# erp.test@qoqa.ch
-# erp.test@qoqa.com.test-google-a.com (e-mail temporaire)
-# erp.test@qoqa.fr
-# erp.test@qsport.ch
-# erp.test@qstyle.ch
-# erp.test@qwine.ch
-# erp.test@qwine.fr
-
+  Examples: Create all basic test suggested sales team
+        | oid                                   | name      |
+        | scenario.crm_alias_test_qooking       | test.qooking   |
+        | scenario.crm_alias_test_qsport        | test.qsport    |
+        | scenario.crm_alias_test_qsyle         | test.qstyle    |
+        | scenario.crm_alias_test_qwine         | test.qwine     |
+        | scenario.crm_alias_test_qooqa         | test.qoqa      |
   Examples: Create all basic alias compared to mail per environnement
   # TODO : Update the qa and prod aliases !
         | oid                              | name              |
@@ -47,6 +36,20 @@ Feature: CRM CLAIM SETTING FOR QOQA
         | scenario.crm_alias_test          | erp.test          |
         | scenario.crm_alias_qa            | erp.qa            |
         | scenario.crm_alias_prod          | erp.prod          |
+
+  @crm_alias_mail_configure
+  Scenario: Configure aliases
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qooking
+    And I setup the shop to "Qooking.ch"
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qsport
+    And I setup the shop to "Qsport.ch"
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qsyle
+    And I setup the shop to "Qstyle.ch"
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qwine
+    And I setup the shop to "Qwine.ch"
+    Given I need a "mail.alias" with oid: scenario.crm_alias_test_qooqa
+    And I setup the shop to "QoQa.ch"
+
 
   @crm_case_section_sale_team
   Scenario Outline: Create sales team

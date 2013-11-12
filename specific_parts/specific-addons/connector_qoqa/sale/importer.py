@@ -25,6 +25,8 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
+from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
+    SaleOrderOnChange)
 from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
@@ -101,3 +103,39 @@ class SaleOrderImportMapper(ImportMapper):
         offer_id = binder.to_openerp(record['deal_id'], unwrap=True)
         offer = self.session.browse('qoqa.offer', offer_id)
         return {'offer_id': offer.id, 'pricelist_id': offer.pricelist_id.id}
+
+    def finalize(self, map_record, values):
+        sess = self.session
+        values['qoqa_order_line_ids'] = self.lines(map_record)
+        onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
+        return onchange.play(values, values['qoqa_order_line_ids'])
+
+    def lines(self, map_record):
+        """ Lines are composed of 2 list of dicts
+
+        1 list is 'order_items', the other is 'items'.
+        We keep the id of the 'item' and discard the one of the
+        'order_items'.
+
+        """
+        lines = []
+        for item in map_record.source['items']:
+            nitem = item.copy()
+            item_id = nitem['id']
+            for order_item in map_record.source['order_items']:
+                if order_item['item_id'] != item_id:
+                    continue
+                nitem.update(order_item)
+            nitem.pop('id')  # remove id just to avoid confusion
+            lines.append(nitem)
+
+        map_child = self.get_connector_unit_for_model(
+            self._map_child_class, 'qoqa.sale.order.line')
+        items = map_child.get_items(lines, map_record, 'qoqa_order_line_ids',
+                                    options=self.options)
+        return items
+
+
+@qoqa
+class QoQaSaleOrderOnChange(SaleOrderOnChange):
+    _model_name = 'qoqa.sale.order'

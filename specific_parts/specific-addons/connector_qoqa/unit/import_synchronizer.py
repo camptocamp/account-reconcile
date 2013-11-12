@@ -102,7 +102,8 @@ class QoQaImportSynchronizer(ImportSynchronizer):
                              class or parent class to use for the export.
                              By default: QoQaImportSynchronizer
         :type importer_cls: :py:class:`openerp.addons.connector.connector.MetaConnectorUnit`
-        :param always: if True, the record is updated even if it already exists
+        :param always: if True, the record is updated even if it already exists,
+                       it is still skipped if it has not been modified on QoQa
         :type always: boolean
         """
         if not qoqa_id:

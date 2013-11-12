@@ -160,6 +160,7 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.res.partner',
                    'qoqa.address',
                    'qoqa.sale.order',
+                   'qoqa.sale.order.line',
                    ]
     _sync_date_field = 'sync_date'
 

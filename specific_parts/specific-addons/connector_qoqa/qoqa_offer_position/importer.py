@@ -77,13 +77,6 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               ('order_url', 'order_url'),
               ]
 
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(QoQaOfferPositionImportMapper, self).__init__(environment)
-
     @mapping
     def regular_price_type(self, record):
         binder = self.get_binder_for_model('qoqa.regular.price.type')

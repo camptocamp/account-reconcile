@@ -21,50 +21,52 @@
 
 from openerp.osv import orm, fields
 
-from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
 
-class qoqa_sale_order(orm.Model):
-    _name = 'qoqa.sale.order'
+class qoqa_sale_order_line(orm.Model):
+    _name = 'qoqa.sale.order.line'
     _inherit = 'qoqa.binding'
-    _inherits = {'sale.order': 'openerp_id'}
-    _description = 'QoQa User'
+    _inherits = {'sale.order.line': 'openerp_id'}
+    _description = 'QoQa Sales Order Line'
 
     _columns = {
-        'openerp_id': fields.many2one('sale.order',
-                                      string='Sales Order',
+        'openerp_id': fields.many2one('sale.order.line',
+                                      string='Sales Order Line',
                                       required=True,
                                       ondelete='restrict'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
-        'qoqa_shop_id': fields.many2one(
-            'qoqa.shop',
-            string='QoQa Shop',
-            required=True,
-            readonly=True),
-        'qoqa_order_line_ids': fields.one2many('qoqa.sale.order.line',
-                                               'qoqa_order_id',
-                                               'QoQa Order Lines'),
-        # TODO
-        # 'type_id'
-        # 'status_id'
-        # 'shipper_service_id'
-        # 'shipper_relay_id'
+        'qoqa_order_id': fields.many2one('qoqa.sale.order',
+                                         'QoQa Sale Order',
+                                         required=True,
+                                         readonly=True,
+                                         ondelete='cascade',
+                                         select=True),
     }
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A sales order with the same ID on QoQa already exists")
+         "A sales order line with the same ID on QoQa already exists")
     ]
 
+    def create(self, cr, uid, vals, context=None):
+        qoqa_order_id = vals['qoqa_order_id']
+        qsale_obj = self.pool['qoqa.sale.order']
+        qsale = qsale_obj.read(cr, uid, qoqa_order_id,
+                               ['openerp_id'], context=context)
+        order_id = qsale['openerp_id']
+        vals['order_id'] = order_id[0]
+        res = super(qoqa_sale_order_line, self).create(
+            cr, uid, vals, context=context)
+        return res
 
-class sale_order(orm.Model):
-    _inherit = 'sale.order'
+class sale_order_line(orm.Model):
+    _inherit = 'sale.order.line'
 
     _columns = {
         'qoqa_bind_ids': fields.one2many(
-            'qoqa.sale.order',
+            'qoqa.sale.order.line',
             'openerp_id',
             string='QBindings'),
     }
@@ -73,12 +75,5 @@ class sale_order(orm.Model):
         if default is None:
             default = {}
         default['qoqa_bind_ids'] = False
-        return super(sale_order, self).copy_data(cr, uid, id,
-                                                 default=default,
-                                                 context=context)
-
-
-@qoqa
-class QoQaSaleOrder(QoQaAdapter):
-    _model_name = 'qoqa.sale.order'
-    _endpoint = 'order'
+        return super(sale_order_line, self).copy_data(
+            cr, uid, id, default=default, context=context)

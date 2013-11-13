@@ -30,6 +30,7 @@ class QoQaError(ConnectorException):
 class QoQaAPIError(QoQaError):
     """ Error with the QoQa API. """
 
+
 class QoQaAPISecurityError(QoQaError):
     """ Security error with the QoQa API. """
 

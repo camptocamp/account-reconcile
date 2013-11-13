@@ -26,10 +26,13 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.session import ConnectorSession
+from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (import_batch,
                                         import_batch_divider,
                                         import_record,
                                         )
+from ..connector import get_environment
+from ..exception import QoQaAPISecurityError
 from ..unit.backend_adapter import QoQaClient
 
 """
@@ -90,22 +93,15 @@ class qoqa_backend(orm.Model):
         if isinstance(ids, (list, tuple)):
             assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
             ids = ids[0]
-        backend = self.browse(cr, uid, ids, context=context)
-        args = (backend.url,
-                backend.client_key or '',
-                backend.client_secret or '',
-                backend.access_token or '',
-                backend.access_token_secret or '')
-        client = QoQaClient(*args, debug=backend.debug)
-        # TODO: implement check connection
-        # /me does not exist in the admin API
-        # see which call can act as authentication checker
-        url = client.base_url + 'api/' + backend.version + '/me'
-        response = client.head(url)
+        session = ConnectorSession(cr, uid, context=context)
+        env = get_environment(session, 'qoqa.shop', ids)
+        adapter = env.get_connector_unit(QoQaAdapter)
         try:
-            response.raise_for_status()
+            adapter.search()
+        except QoQaAPISecurityError as err:
+            raise orm.except_orm( _('Security Error'), err)
         except requests.exceptions.HTTPError as err:
-            raise orm.except_orm('Error', err)
+            raise orm.except_orm(_('Error'), err)
         raise orm.except_orm('Ok', 'Connection is successful.')
 
     def synchronize_metadata(self, cr, uid, ids, context=None):

@@ -41,20 +41,14 @@ class ShopBatchImport(DirectBatchImport):
     """
     _model_name = 'qoqa.shop'
 
-    def run(self, filters=None):
-        """ Run the synchronization """
-        records = self.backend_adapter.search(filters)
-        for record in records:
-            self._import_record(record['id'], record)
-
-    def _import_record(self, record_id, record):
+    def _import_record(self, record_id):
         """ Import the record directly.
 
         For the shops, the import does only 1 call to the
         API, it returns the data from all the shops.
         """
         importer = self.get_connector_unit_for_model(ShopImport)
-        importer.run(record_id, record=record)
+        importer.run(record_id['id'], record=record_id)
 
 
 @qoqa
@@ -92,6 +86,16 @@ class ShopImportMapper(ImportMapper):
     direct = []
     # XXX maybe should we map: languages
 
+    _name_to_xmlid = {
+        'QoQa.ch': 'shop_qoqa_ch',
+        'Qwine.ch': 'shop_qwine_ch',
+        'Qsport.ch': 'shop_qsport_ch',
+        'Qstyle.ch': 'shop_qstyle_ch',
+        'QoQa.fr': 'shop_qoqa_fr',
+        'Qwine.fr': 'shop_qwine_fr',
+        'Qooking.ch': 'shop_qooking_ch',
+    }
+
     @mapping
     @only_create
     def company(self, record):
@@ -104,6 +108,26 @@ class ShopImportMapper(ImportMapper):
     def name(self, record):
         name = record['name']
         return {'name': name}
+
+    @only_create
+    @mapping
+    def openerp_id(self, record):
+        """ Default sale shops are created in `qoqa_base_date`.
+
+        Link with the existing sale shops.
+
+        """
+        name = record['name']
+        # if no corresponding xml id is found (shops added after golive),
+        # a new shop will be created
+        if name in self._name_to_xmlid:
+            sess = self.session
+            data_obj = sess.pool['ir.model.data']
+            module = 'qoqa_base_data'
+            xmlid = self._name_to_xmlid[name]
+            cr, uid = sess.cr, sess.uid
+            __, res_id = data_obj.get_object_reference(cr, uid, module, xmlid)
+            return {'openerp_id': res_id}
 
     @mapping
     def backend_id(self, record):

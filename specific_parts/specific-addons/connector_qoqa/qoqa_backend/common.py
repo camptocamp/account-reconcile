@@ -30,6 +30,7 @@ from ..unit.import_synchronizer import (import_batch,
                                         import_batch_divider,
                                         import_record,
                                         )
+from ..unit.backend_adapter import QoQaClient
 
 """
 We'll have 1 ``qoqa.backend`` sharing the connection informations probably,

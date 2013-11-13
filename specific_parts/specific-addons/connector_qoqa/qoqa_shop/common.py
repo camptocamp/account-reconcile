@@ -72,7 +72,7 @@ class QoQaShopAdapter(QoQaAdapter):
     _model_name = 'qoqa.shop'
     _endpoint = 'shops'
 
-    def search(self, filters=None):
+    def search(self, filters=None, from_date=None, to_date=None):
         url = self.url()
         payload = {}
         response = self.client.get(url, params=payload)

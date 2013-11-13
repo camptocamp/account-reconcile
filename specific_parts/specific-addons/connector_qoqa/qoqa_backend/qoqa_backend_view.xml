@@ -16,9 +16,9 @@
                       <button name="%(action_qoqa_backend_oauth)d"
                         type="action"
                         string="Get Authentication Tokens"/>
-                      <!-- <button name="check_connection" -->
-                      <!--   type="object" -->
-                      <!--   string="Check Connection"/> -->
+                      <button name="check_connection"
+                        type="object"
+                        string="Check Connection"/>
                     </header>
                     <sheet>
                         <label for="name" class="oe_edit_only"/>

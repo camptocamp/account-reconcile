@@ -22,6 +22,7 @@ Feature: CRM CLAIM SETTING FOR QOQA
         | name             | value                    |
         | alias_name       | <name>                   |
         | alias_model_id   | by name: Claim           |
+        | alias_user_id   | False                    |
   Examples: Create all basic test suggested sales team
         | oid                                   | name      |
         | scenario.crm_alias_test_qooking       | test.qooking   |

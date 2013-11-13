@@ -19,7 +19,8 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.exception import ConnectorException
+from openerp.addons.connector.exception import (ConnectorException,
+                                                RetryableJobError)
 
 
 class QoQaError(ConnectorException):
@@ -35,3 +36,7 @@ class QoQaAPISecurityError(QoQaError):
 
 class QoQaResponseNotParsable(QoQaAPIError):
     """ Happens when a response from the QoQa API is not parsable. """
+
+
+class OrderImportRuleRetry(RetryableJobError):
+    """ The sale order import will be retried later. """

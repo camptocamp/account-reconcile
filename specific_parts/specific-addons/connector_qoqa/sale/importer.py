@@ -18,13 +18,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from __future__ import division
 
 import logging
+from datetime import datetime, timedelta
+from operator import attrgetter
 
+from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
+from openerp.addons.connector.exception import (NothingToDoJob,
+                                                FailedJobError,
+                                                )
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
@@ -32,8 +39,25 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import iso8601_to_utc
+from ..connector import iso8601_to_utc_datetime
+from ..exception import OrderImportRuleRetry
 
 _logger = logging.getLogger(__name__)
+
+QOQA_STATUS_REQUESTED = 1  # order is created
+QOQA_STATUS_PAID = 2  # order is paid, not captured by Datatrans
+QOQA_STATUS_CONFIRMED = 3  # order is paid, payment confirmed
+QOQA_STATUS_CANCELLED = 4  # order is canceled
+QOQA_STATUS_PROCESSED = 5  # order is closed, delivered
+QOQA_PAY_STATUS_CONFIRMED = 5
+QOQA_PAY_STATUS_SUCCESS = 2
+QOQA_PAY_STATUS_ACCOUNTED = 7
+QOQA_PAY_STATUS_ABORT = 4
+QOQA_PAY_STATUS_FAILED = 3
+QOQA_PAY_STATUS_CANCELLED = 6
+QOQA_PAY_STATUS_PENDING = 1
+DAYS_BEFORE_CANCEL = 30
+
 
 
 @qoqa
@@ -75,8 +99,56 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # self._import_dependency(item['voucher_id'],
             #                         'qoqa.voucher')
 
+    def _before_import(self):
+        # TODO: reactivate: commented out for tests
+        # if self.binder.to_openerp(self.qoqa_id) is not None:
+        #     raise NothingToDoJob('Import of the order %s canceled '
+        #                          'because it has already been imported ' %
+        #                          order_id)
+        rules = self.get_connector_unit_for_model(SaleImportRule)
+        rules.check(self.qoqa_record)
+
+    def _create_payments(self, binding_id):
+        sess = self.session
+        sale_obj = sess.pool['sale.order']
+        qsale = sess.browse(self.model._name, binding_id)
+        sale = qsale.openerp_id
+        for payment in self.qoqa_record['payments']:
+            valid_states = (QOQA_PAY_STATUS_CONFIRMED,
+                            QOQA_PAY_STATUS_SUCCESS,
+                            QOQA_PAY_STATUS_ACCOUNTED)
+            if payment['status_id'] not in valid_states:
+                continue
+            method = _get_payment_method(self, payment, sale.company_id.id)
+            journal = method.journal_id
+            if not journal:
+                continue
+            amount = payment['amount'] / 100
+            date = iso8601_to_utc_datetime(payment['trx_date'])
+            cr, uid, context = sess.cr, sess.uid, sess.context
+            sale_obj._add_payment(cr, uid, sale, journal,
+                                  amount, date, context=context)
+
     def _after_import(self, binding_id):
-        """ Import lines of sales order """
+        self._create_payments(binding_id)
+        # TODO: cancel cancelled orders
+        # TODO: short-circuit workflow of processed orders
+
+
+def _get_payment_method(connector_unit, payment, company_id):
+    session = connector_unit.session
+    qmethod_id = payment['method_id']
+    binder = connector_unit.get_binder_for_model('payment.method')
+    method_id = binder.to_openerp(qmethod_id, company_id=company_id)
+    if not method_id:
+        raise FailedJobError(
+            "The configuration is missing for the Payment Method with ID '%s'.\n\n"
+            "Resolution:\n"
+            "- Go to 'Sales > Configuration > Sales > Customer Payment Method\n"
+            "- Create a new Payment Method with qoqa_id '%s'\n"
+            "-Eventually  link the Payment Method to an existing Workflow "
+            "Process or create a new one." % (qmethod_id, qmethod_id))
+    return session.browse('payment.method', method_id)
 
 
 @qoqa
@@ -97,6 +169,18 @@ class SaleOrderImportMapper(ImportMapper):
               ]
 
     @mapping
+    def payment_method(self, record):
+        qshop_binder = self.get_binder_for_model('qoqa.shop')
+        qshop_id = qshop_binder.to_openerp(record['shop_id'])
+        qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
+        company_id = qshop['company_id'][0]
+        binder = self.get_binder_for_model('payment.method')
+        payments = [_get_payment_method(self, payment, company_id)
+                    for payment in record['payments']]
+        payments = sorted(payments, key=attrgetter('sequence'))
+        return {'payment_method_id': payments[0].id}
+
+    @mapping
     def from_offer(self, record):
         """ Get the linked offer and takes some values from there """
         binder = self.get_binder_for_model('qoqa.offer')
@@ -108,6 +192,11 @@ class SaleOrderImportMapper(ImportMapper):
         sess = self.session
         values['qoqa_order_line_ids'] = self.lines(map_record)
         onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
+
+        # TODO: create a gift card line when a payment has a method_id
+        # which is a gift_card method
+        # TODO: create a shipping line
+        # TODO: create voucher / promo
         return onchange.play(values, values['qoqa_order_line_ids'])
 
     def lines(self, map_record):
@@ -139,3 +228,74 @@ class SaleOrderImportMapper(ImportMapper):
 @qoqa
 class QoQaSaleOrderOnChange(SaleOrderOnChange):
     _model_name = 'qoqa.sale.order'
+
+
+@qoqa
+class SaleImportRule(ConnectorUnit):
+    _model_name = ['qoqa.sale.order']
+
+    def _check_max_days(self, record):
+        """ Cancel the import of waiting for a payment for too long. """
+        max_days = DAYS_BEFORE_CANCEL
+        if max_days:
+            order_id = record['id']
+            order_date = iso8601_to_utc_datetime(record['created_at'])
+            if order_date + timedelta(days=max_days) < datetime.now():
+                raise NothingToDoJob('Import of the order %s canceled '
+                                     'because it has not been paid since %d '
+                                     'days' % (order_id, max_days))
+
+    def check(self, record):
+        """ Check whether the current sale order should be imported
+        or not.
+
+        States or QoQa are:
+
+        * requested: an order has been created
+        * paid: authorized on datatrans, not captured
+        * confirmed: payment has been confirmed / captured by datatrans
+        * processed: final state, when is order is delivered
+        * cancelled: final state for cancellations
+
+        How we will handle them:
+
+        requested and paid
+            We do not import them but delay the import for later until
+            they are confirmed.
+
+        confirmed
+            They will be confirmed as soon as they are imported.
+
+        processed
+            We will short-circuit the workflow and set them directly to
+            'done'. They are imported for the history.
+
+        cancelled
+            They are imported but directly cancelled, for the history.
+
+        The automatic workflows do need to have the 'Confirm Sales Orders'
+        field deactivated. The confirmation of sales orders is handled
+        by the importer. This allows to keep the "paid" sales orders in draft
+        while the importer confirms the "confirmed" ones.
+
+        When an order has a status requested, we delay the import
+        to later.
+
+        This method only checks if we the sales orders should be imported
+        and eventually raise a :py:class:`NothingToDoJob` or
+        :py:class:`OrderImportRuleRetry`.
+
+        It does not cancels sales orders or create payments, theses actions
+        are done in the :py:meth:`SaleOrderImport._after_import` method.
+        """
+        import_states = (QOQA_STATUS_CONFIRMED, QOQA_STATUS_PROCESSED,
+                         QOQA_STATUS_CANCELLED)
+        if record['status_id'] in import_states:
+            return
+        self._check_max_days(record)
+
+        states = (QOQA_STATUS_REQUESTED, QOQA_STATUS_PAID)
+        if record['status_id'] in states:
+            raise OrderImportRuleRetry('The payment of the order has not '
+                                       'been confirmed.\nThe import will be '
+                                       'retried later.')

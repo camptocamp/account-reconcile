@@ -164,3 +164,11 @@ Feature: Parameter the new database
     | name       | value                                |
     | name       | openerp_smtp_server                  |
     | sequence   | 1                                    |
+
+  @setup_domain
+  Scenario: CREATE THE DOMAIN
+    Given I need a "base.config.settings" with oid: scenario.openerp_domain
+    And having:
+    | name               | value                 |
+    | alias_domain       | qoqa.com              |
+

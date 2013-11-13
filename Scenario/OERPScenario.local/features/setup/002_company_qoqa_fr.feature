@@ -152,3 +152,15 @@ Feature: Configure QoQa.fr
     | price_version_id | by oid: scenario.pricelist_version_qoqa_fr |
     | company_id       | by oid: scenario.qoqa_fr                   |
      And I set selection field "base" with 1
+
+  @sale_shop
+    Scenario Outline: Configure sale shops
+    Given I find a "sale.shop" with oid: <oid>
+    And having:
+    | name         | value                         |
+    | warehouse_id | by oid: scenario.warehouse_fr |
+
+    Examples: Shops
+      | oid                            |
+      | qoqa_base_data.shop_qoqa_fr    |
+      | qoqa_base_data.shop_qwine_fr   |

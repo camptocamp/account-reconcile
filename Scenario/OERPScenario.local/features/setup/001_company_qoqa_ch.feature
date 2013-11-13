@@ -132,3 +132,18 @@ Feature: Configure QoQa.ch
     And having:
     | name                | value                             |
     | currency_id         | by oid: base.CHF                  |
+
+  @sale_shop
+    Scenario Outline: Configure sale shops
+    Given I find a "sale.shop" with oid: <oid>
+    And having:
+    | name         | value                    |
+    | warehouse_id | by oid: stock.warehouse0 |
+
+    Examples: Shops
+      | oid                            |
+      | qoqa_base_data.shop_qoqa_ch    |
+      | qoqa_base_data.shop_qwine_ch   |
+      | qoqa_base_data.shop_qstyle_ch  |
+      | qoqa_base_data.shop_qsport_ch  |
+      | qoqa_base_data.shop_qooking_ch |

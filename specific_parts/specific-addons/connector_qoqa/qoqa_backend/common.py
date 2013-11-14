@@ -32,7 +32,7 @@ from ..unit.import_synchronizer import (import_batch,
                                         import_record,
                                         )
 from ..connector import get_environment
-from ..exception import QoQaAPISecurityError
+from ..exception import QoQaAPISecurityError, QoQaResponseNotParsable
 from ..unit.backend_adapter import QoQaClient
 
 """
@@ -99,7 +99,14 @@ class qoqa_backend(orm.Model):
         try:
             adapter.search()
         except QoQaAPISecurityError as err:
-            raise orm.except_orm( _('Security Error'), err)
+            raise orm.except_orm(_('Security Error'), err)
+        except QoQaResponseNotParsable:
+            # when the OAuth is not valid, QoQa redirect to the login
+            # page, thus, we get an unparseable HTML login page
+            raise orm.except_orm(
+                _('Authentification Error'),
+                _('The authentification failed. Use the '
+                  '"Get Authentication Tokens" button to request access'))
         except requests.exceptions.HTTPError as err:
             raise orm.except_orm(_('Error'), err)
         raise orm.except_orm('Ok', 'Connection is successful.')

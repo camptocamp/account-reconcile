@@ -22,7 +22,7 @@ Feature: Configure the FR's accounting
       | name                      | <journal_name>              |
       | code                      | <journal_code>              |
       | type                      | bank                        |
-      | company_id                | by oid: scenario.qoqa_ch    |
+      | company_id                | by oid: scenario.qoqa_fr    |
       | currency                  | <currency>                  |
       | default_debit_account_id  | by code: <acc_code>         |
       | default_credit_account_id | by code: <acc_code>         |
@@ -33,11 +33,11 @@ Feature: Configure the FR's accounting
       | journal_id     | by oid: <journal_oid>         |
       | partner_id     | by name: QoQa Services France |
       | bank_name      | <bank_name>                   |
-      | company_id     | by oid: scenario.qoqa_ch      |
+      | company_id     | by oid: scenario.qoqa_fr      |
       | street         | <street>                      |
       | zip            | <zip>                         |
       | city           | <city>                        |
-      | country_id     | by code: CH                   |
+      | country_id     | by code: FR                   |
       | state          | rib                           |
       | bank_code      | <bank_code>                   |
       | office         | <office>                      |

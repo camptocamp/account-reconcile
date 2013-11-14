@@ -79,13 +79,6 @@ Feature: Configure the CH's accounting
       | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |   11010 |
       | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
-    Examples: Bank Journals (unused - for historic)
-      | oid                                | name                       | code  | account |
-      | scenario.journal_swikey_old        | Swikey - plus utilisé      | OLDSW |   10900 |
-      | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |   10900 |
-      | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |   10900 |
-      | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |   10900 |
-
   @default_accounts
   Scenario Outline: AFTER IMPORT OF CUSTOM CoA, COMPLETE DEFAULT ACCOUNTS ON MAIN PARTNERS
     Given I set global property named "<name>" for model "<model>" and field "<name>" for company with ref "scenario.qoqa_ch"

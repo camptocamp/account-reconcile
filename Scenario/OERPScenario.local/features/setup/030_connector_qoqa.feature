@@ -86,12 +86,12 @@ Feature: Configure the connector's backend
       | active              | <active> |
 
     Examples: Payment Methods
-      | oid                                   | name                                | journal_id                             | qoqa_id | active |
-      | scenario.payment_method_postfinance   | Postfinance                         | by oid: scenario.journal_postfinance   | 3       | 1      |
-      | scenario.payment_method_visa_ch       | Visa                                | by oid: scenario.journal_visa_ch       | 1       | 1      |
-      | scenario.payment_method_mastercard_ch | Mastercard                          | by oid: scenario.journal_mastercard_ch | 2       | 1      |
-      | scenario.payment_method_paypal_ch     | Paypal                              | by oid: scenario.journal_paypal_ch     | 12      | 1      |
-      | scenario.payment_method_swissbilling  | Swissbilling (paiement par facture) | by oid: scenario.journal_swissbilling  |         | 1      |
+      | oid                                   | name                                | journal_id                                             | qoqa_id | active |
+      | scenario.payment_method_postfinance   | Postfinance                         | by oid: scenario.journal_reglement_postfinance         | 3       | 1      |
+      | scenario.payment_method_visa_ch       | Visa                                | by oid: scenario.journal_reglement_visa_master_card_ch | 1       | 1      |
+      | scenario.payment_method_mastercard_ch | Mastercard                          | by oid: scenario.journal_reglement_visa_master_card_ch | 2       | 1      |
+      | scenario.payment_method_paypal_ch     | Paypal                              | by oid: scenario.journal_paypal_ch                     | 12      | 1      |
+      | scenario.payment_method_swissbilling  | Swissbilling (paiement par facture) | by oid: scenario.journal_swissbilling                  |         | 1      |
 
     Examples: Payment Methods (unused now but kept for the history)
       | oid                                   | name                  | journal_id                          | qoqa_id | active |

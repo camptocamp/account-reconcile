@@ -72,10 +72,3 @@ Feature: Configure the FR's accounting
       | scenario.journal_mastercard_fr | Mastercard       | MASTR |
       | scenario.journal_paiement_3x   | Paiement 3x      | PAY3X |
       | scenario.journal_paypal_fr     | Paypal           | PAYPA |
-
-    Examples: Bank Journals (unused - for historic)
-      | oid                                | name                            | code  |
-      | scenario.journal_carte_bleue_old   | Carte Bleue Visa - plus utilisé | OLDCB |
-      | scenario.journal_visa_fr_old       | Visa - plus utilisé             | OLDVI |
-      | scenario.journal_mastercard_fr_old | Mastercard - plus utilisé       | OLDMS |
-      | scenario.journal_sogenactif_old    | ? Sogenactif - plus utilisé     | OLDSO |

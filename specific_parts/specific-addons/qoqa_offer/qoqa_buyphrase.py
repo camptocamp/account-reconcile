@@ -30,9 +30,16 @@ class qoqa_buyphrase(orm.Model):
         'name': fields.char('Phrase',
                             required=True,
                             translate=True),
+        'description': fields.html('Description', translate=True),
         'active': fields.boolean('Active'),
+        'qoqa_shop_id': fields.many2one(
+            'qoqa.shop',
+            string='Shop',
+            required=True),
+        'action': fields.integer('Action'),
     }
 
     _defaults = {
         'active': True,
+        'action': 1,
     }

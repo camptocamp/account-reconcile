@@ -40,6 +40,7 @@ class QoQaOfferPositionImport(QoQaImportSynchronizer):
         rec = self.qoqa_record
         self._import_dependency(rec['deal_id'], 'qoqa.offer')
         self._import_dependency(rec['product_id'], 'qoqa.product.template')
+        self._import_dependency(rec['buyphrase_id'], 'qoqa.buyphrase')
         for var in rec['offer_variations']:
             self._import_dependency(var['variation_id'],
                                     'qoqa.product.product')

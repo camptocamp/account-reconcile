@@ -32,6 +32,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
 from openerp.addons.connector.exception import (NothingToDoJob,
                                                 FailedJobError,
                                                 )
+from openerp.addons.connector_ecommerce.sale import ShippingLineBuilder
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
@@ -170,6 +171,7 @@ class SaleOrderImportMapper(ImportMapper):
               (backend_to_m2o('billing_address_id',
                               binding='qoqa.address'),
                'partner_invoice_id'),
+              (backend_to_m2o('shipper_service_id'), 'carrier_id'),
               ]
 
     @mapping
@@ -199,14 +201,29 @@ class SaleOrderImportMapper(ImportMapper):
         offer = self.session.browse('qoqa.offer', offer_id)
         return {'offer_id': offer.id, 'pricelist_id': offer.pricelist_id.id}
 
+    def _add_shipping_line(self, map_record, values):
+        builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
+        # TODO: put the correct amount (not in the API yet)
+        builder.price_unit = 10
+
+        if values.get('carrier_id'):
+            carrier = self.session.browse('delivery.carrier',
+                                          values['carrier_id'])
+            builder.carrier = carrier
+
+        line = (0, 0, builder.get_line())
+        values['order_line'].append(line)
+        return values
+
     def finalize(self, map_record, values):
         sess = self.session
+        values.setdefault('order_line', [])
+        values = self._add_shipping_line(map_record, values)
         values['qoqa_order_line_ids'] = self.lines(map_record)
         onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
 
         # TODO: create a gift card line when a payment has a method_id
         # which is a gift_card method
-        # TODO: create a shipping line
         # TODO: create voucher / promo
         return onchange.play(values, values['qoqa_order_line_ids'])
 
@@ -310,3 +327,19 @@ class SaleImportRule(ConnectorUnit):
             raise OrderImportRuleRetry('The payment of the order has not '
                                        'been confirmed.\nThe import will be '
                                        'retried later.')
+
+
+@qoqa
+class QoQaShippingLineBuilder(ShippingLineBuilder):
+    _model_name = 'qoqa.sale.order'
+
+    def __init__(self, environment):
+        super(QoQaShippingLineBuilder, self).__init__(environment)
+        self.carrier = None
+
+    def get_line(self):
+        line = super(QoQaShippingLineBuilder, self).get_line()
+        if self.carrier:
+            line['product_id'] = self.carrier.product_id.id
+            line['name'] = self.carrier.name
+        return line

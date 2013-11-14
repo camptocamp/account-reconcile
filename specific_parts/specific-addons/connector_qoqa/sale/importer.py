@@ -135,6 +135,7 @@ class SaleOrderImport(QoQaImportSynchronizer):
         # TODO: short-circuit workflow of processed orders
 
 
+
 def _get_payment_method(connector_unit, payment, company_id):
     session = connector_unit.session
     qmethod_id = payment['method_id']
@@ -167,6 +168,13 @@ class SaleOrderImportMapper(ImportMapper):
                               binding='qoqa.address'),
                'partner_invoice_id'),
               ]
+
+    @mapping
+    def canceled(self, record):
+        if record['status_id'] == QOQA_STATUS_CANCELLED:
+            # facility provided by connector_ecommerce,
+            # the sales order will be automatically canceled
+            return {'canceled_in_backend': True}
 
     @mapping
     def payment_method(self, record):

@@ -77,16 +77,26 @@ class qoqa_backend(orm.Model):
         'debug': fields.boolean('Debug'),
 
         'import_product_template_from_date': fields.datetime(
-            'Import product templates from date'),
+            'Import product templates from date', required=True),
         'import_product_product_from_date': fields.datetime(
-            'Import product variants from date'),
+            'Import product variants from date', required=True),
         'import_res_partner_from_date': fields.datetime(
-            'Import Customers from date'),
+            'Import Customers from date', required=True),
         'import_address_from_date': fields.datetime(
-            'Import Addresses from date'),
+            'Import Addresses from date', required=True),
         'import_sale_order_from_date': fields.datetime(
-            'Import Sales Orders from date'),
+            'Import Sales Orders from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
+    }
+
+    _defaults = {
+        # earlier dates for the imports, nothing existed before
+        # we need a start date in order to import them by week
+        'import_product_template_from_date': '2005-12-12 00:00:00',
+        'import_product_product_from_date': '2005-12-12 00:00:00',
+        'import_res_partner_from_date': '2005-12-12 00:00:00',
+        'import_address_from_date': '2005-12-12 00:00:00',
+        'import_sale_order_from_date': '2005-12-12 00:00:00',
     }
 
     def check_connection(self, cr, uid, ids, context=None):

@@ -172,6 +172,7 @@ class SaleOrderImportMapper(ImportMapper):
                               binding='qoqa.address'),
                'partner_invoice_id'),
               (backend_to_m2o('shipper_service_id'), 'carrier_id'),
+              ('id', 'name'),
               ]
 
     @mapping

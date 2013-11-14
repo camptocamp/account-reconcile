@@ -24,6 +24,7 @@ import logging
 from datetime import datetime, timedelta
 from operator import attrgetter
 
+from openerp.tools.translate import _
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
@@ -97,6 +98,16 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # TODO
             # self._import_dependency(item['voucher_id'],
             #                         'qoqa.voucher')
+
+    def must_skip(self):
+        """ Returns a reason if the import should be skipped.
+
+        Returns None to continue with the import
+
+        """
+        if self.qoqa_record['status_id'] == QOQA_STATUS_CANCELLED:
+            return _('Sales order %s is not imported because it '
+                     'has been canceled.') % self.qoqa_record['id']
 
     def _is_uptodate(self, binding_id):
         # already imported, skip it (unless if `force` is used)
@@ -174,13 +185,6 @@ class SaleOrderImportMapper(ImportMapper):
               (backend_to_m2o('shipper_service_id'), 'carrier_id'),
               ('id', 'name'),
               ]
-
-    @mapping
-    def canceled(self, record):
-        if record['status_id'] == QOQA_STATUS_CANCELLED:
-            # facility provided by connector_ecommerce,
-            # the sales order will be automatically canceled
-            return {'canceled_in_backend': True}
 
     @mapping
     def payment_method(self, record):

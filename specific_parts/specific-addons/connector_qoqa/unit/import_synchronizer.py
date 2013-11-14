@@ -67,6 +67,15 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """ Return the raw QoQa data for ``self.qoqa_id`` """
         return self.backend_adapter.read(self.qoqa_id)
 
+    def must_skip(self):
+        """ Returns a reason if the import should be skipped.
+
+        Returns None to continue with the import
+
+        """
+        assert self.qoqa_record
+        return
+
     def _before_import(self):
         """ Hook called before the import, when we have the QoQa
         data"""
@@ -187,6 +196,10 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         except IDMissingInBackend:
             return _('Record does no longer exist in QoQa')
         binding_id = self._get_binding_id()
+
+        reason = self.must_skip()
+        if reason:
+            return reason
 
         if not force and self._is_uptodate(binding_id):
             return _('Already up-to-date.')

@@ -71,6 +71,7 @@ class OfferExportMapper(ExportMapper):
         ('note', 'notes'),
         (m2o_to_backend('qoqa_shop_id', binding=True), 'shop_id'),
         (m2o_to_backend('lang_id'), 'language_id'),
+        (m2o_to_backend('shipper_service_id'), 'language_id'),
     ]
 
     @staticmethod
@@ -104,7 +105,6 @@ class OfferExportMapper(ExportMapper):
         values = {
             'slots_available': 0,  # notnull
             # 'is_queue_enabled': 0,
-            'shipper_service_id': 2,
             'shipper_rate_id': 1,
             'lot_per_package': 2,  # notnull
             'is_active': 1,

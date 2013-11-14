@@ -281,6 +281,7 @@ class Translations(ConnectorUnit):
     _model_name = ['qoqa.offer',
                    'qoqa.product.product',
                    'qoqa.product.template',
+                   'qoqa.buyphrase',
                    ]
 
     def get_translations(self, record, normal_fields=None,

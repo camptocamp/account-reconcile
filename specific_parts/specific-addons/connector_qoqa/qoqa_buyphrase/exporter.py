@@ -19,3 +19,50 @@
 #
 ##############################################################################
 
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  ExportMapper)
+from openerp.addons.connector.event import (on_record_create,
+                                            on_record_write,
+                                            )
+from ..backend import qoqa
+from .. import consumer
+from ..unit.export_synchronizer import QoQaExporter, Translations
+from ..unit.mapper import m2o_to_backend
+
+
+@on_record_create(model_names='qoqa.buyphrase')
+@on_record_write(model_names='qoqa.buyphrase')
+def delay_export(session, model_name, record_id, fields=None):
+    consumer.delay_export(session, model_name, record_id,
+                          fields=fields)
+
+
+@qoqa
+class BuyphraseExporter(QoQaExporter):
+    _model_name = ['qoqa.buyphrase']
+
+
+@qoqa
+class BuyphraseExportMapper(ExportMapper):
+    _model_name = 'qoqa.buyphrase'
+
+    direct = [('active', 'is_active'),
+              ('action', 'action'),
+              (m2o_to_backend('qoqa_shop_id'), 'shop_id'),
+              ]
+
+    translatable_fields = [
+        ('name', 'buy_text'),
+        ('description', 'definition'),
+    ]
+
+    @mapping
+    def translations(self, record):
+        """ Map all the translatable values
+
+        Translatable fields for QoQa are sent in a `translations`
+        key and are not sent in the main record.
+        """
+        fields = self.translatable_fields
+        trans = self.get_connector_unit_for_model(Translations)
+        return trans.get_translations(record, normal_fields=fields)

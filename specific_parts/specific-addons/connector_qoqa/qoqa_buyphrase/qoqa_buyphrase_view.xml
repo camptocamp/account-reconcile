@@ -6,7 +6,7 @@
             <field name="model">qoqa.buyphrase</field>
             <field name="inherit_id" ref="qoqa_offer.view_qoqa_buyphrase_tree"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <field name="active" position="after">
                     <field name="qoqa_id"/>
                 </field>
             </field>
@@ -17,7 +17,7 @@
             <field name="model">qoqa.buyphrase</field>
             <field name="inherit_id" ref="qoqa_offer.view_qoqa_buyphrase_form"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <field name="active" position="after">
                     <field name="qoqa_id"/>
                 </field>
             </field>

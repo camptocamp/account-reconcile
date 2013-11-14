@@ -59,6 +59,7 @@ Synchronize OpenERP with the different QoQa Stores
           'static_binding/res_country_view.xml',
           'static_binding/res_currency_view.xml',
           'static_binding/payment_method_view.xml',
+          'static_binding/delivery_carrier_view.xml',
           'qoqa_buyphrase/qoqa_buyphrase_view.xml',
           'product_attribute/product_attribute_view.xml',
           'security/ir.model.access.csv',

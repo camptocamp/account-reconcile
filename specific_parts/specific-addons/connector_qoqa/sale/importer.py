@@ -93,18 +93,16 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # TODO promo_id
             # self._import_dependency(item['promo_id'],
             #                         'qoqa.promo')
-        for payment in rec['payments']:
-            pass
             # TODO
             # self._import_dependency(item['voucher_id'],
             #                         'qoqa.voucher')
 
+    def _is_uptodate(self, binding_id):
+        # already imported, skip it (unless if `force` is used)
+        if self.binder.to_openerp(self.qoqa_id) is not None:
+            return True
+
     def _before_import(self):
-        # TODO: reactivate: commented out for tests
-        # if self.binder.to_openerp(self.qoqa_id) is not None:
-        #     raise NothingToDoJob('Import of the order %s canceled '
-        #                          'because it has already been imported ' %
-        #                          order_id)
         rules = self.get_connector_unit_for_model(SaleImportRule)
         rules.check(self.qoqa_record)
 
@@ -130,10 +128,15 @@ class SaleOrderImport(QoQaImportSynchronizer):
                                   amount, date, context=context)
 
     def _after_import(self, binding_id):
-        self._create_payments(binding_id)
-        # TODO: cancel cancelled orders
-        # TODO: short-circuit workflow of processed orders
-
+        if self.qoqa_record['status_id'] == QOQA_STATUS_PROCESSED:
+            # no invoice, no packing, no payment
+            sess = self.session
+            sale = sess.browse('qoqa.sale.order', binding_id).openerp_id
+            sale.action_done()
+            _logger.debug('QoQa Sales order %s is processed, workflow '
+                          'short-circuited in OpenERP', self.qoqa_record['id'])
+        else:
+            self._create_payments(binding_id)
 
 
 def _get_payment_method(connector_unit, payment, company_id):

@@ -172,7 +172,8 @@ class qoqa_offer(orm.Model):
             string='Delivery Service'),
         'carrier_id': fields.many2one(
             'delivery.carrier',
-            string='Shipping Method'),
+            string='Shipping Method',
+            required=True),
         'pricelist_id': fields.many2one(
             'product.pricelist',
             string='Pricelist',

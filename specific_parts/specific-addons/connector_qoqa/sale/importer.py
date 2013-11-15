@@ -182,7 +182,6 @@ class SaleOrderImportMapper(ImportMapper):
               (backend_to_m2o('billing_address_id',
                               binding='qoqa.address'),
                'partner_invoice_id'),
-              (backend_to_m2o('shipper_service_id'), 'carrier_id'),
               ('id', 'name'),
               ]
 
@@ -204,7 +203,14 @@ class SaleOrderImportMapper(ImportMapper):
         binder = self.get_binder_for_model('qoqa.offer')
         offer_id = binder.to_openerp(record['deal_id'], unwrap=True)
         offer = self.session.browse('qoqa.offer', offer_id)
-        return {'offer_id': offer.id, 'pricelist_id': offer.pricelist_id.id}
+        # the delivery method comes from the deal
+        # (the 'shipper_service_id' in the record is not the carrier)
+        values = {
+            'offer_id': offer.id,
+            'pricelist_id': offer.pricelist_id.id,
+            'carrier_id': offer.carrier_id.id,
+        }
+        return values
 
     def _add_shipping_line(self, map_record, values):
         builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)

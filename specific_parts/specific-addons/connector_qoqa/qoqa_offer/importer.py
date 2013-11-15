@@ -61,7 +61,6 @@ class QoQaOfferImportMapper(ImportMapper):
     # shipper_service_id
     # slots_available
     # is_queue_enabled
-    # shipper_rate_id
     # lot_per_package
     # is_active
     # logistic_status_id
@@ -69,20 +68,13 @@ class QoQaOfferImportMapper(ImportMapper):
     direct = [('notes', 'note'),
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
-
+              (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
               ]
 
     translatable_fields = [
         (ifmissing('title', 'Undefined'), 'name'),
         (ifmissing('content', ''), 'description'),
     ]
-
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(QoQaOfferImportMapper, self).__init__(environment)
 
     @mapping
     def pricelist(self, record):

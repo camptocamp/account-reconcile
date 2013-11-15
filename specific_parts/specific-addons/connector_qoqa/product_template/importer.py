@@ -73,7 +73,7 @@ class TemplateImportMapper(ImportMapper):
 
     @only_create
     @mapping
-    def type(self, record):
+    def product_type(self, record):
         return {'type': 'product'}
 
     @mapping

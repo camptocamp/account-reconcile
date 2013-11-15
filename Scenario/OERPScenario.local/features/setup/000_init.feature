@@ -129,10 +129,10 @@ Feature: Parameter the new database
     And the company currency is "CHF" with a rate of "1.00"
 
   @user_admin
-  Scenario: Assign groups concerning the accounting to some users
-    Given we select users below:
-    | login |
-    | admin |
+  Scenario: Assign groups to some users
+    Given we select users below, even the deactivated ones:
+    | login        |
+    | admin        |
   Then we assign all groups to the users
 
 

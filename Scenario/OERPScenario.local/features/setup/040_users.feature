@@ -49,7 +49,6 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | lang                     | fr_FR                              |
      | company_id               | by oid: scenario.qoqa_ch           |
      | company_ids              | all by oid: scenario.qoqa_ch       |
-
     And we assign to user the groups below:
      | group_name                       |
 #Sales
@@ -87,3 +86,68 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
 #Other
      | Contact Creation                 |
 
+  @users @connector
+  Scenario: Connector Users Settings
+  Given I need a "res.users" with oid: scenario.user_ch
+     And having:
+     | name                     | value                              |
+     | name                     | admin_ch                           |
+     | login                    | admin_ch                           |
+     | password                 | admin_ch                           |
+     | lang                     | fr_FR                              |
+     | company_id               | by oid: scenario.qoqa_ch           |
+     | company_ids              | all by oid: scenario.qoqa_ch       |
+   And we select users below, even the deactivated ones:
+     | login                            |
+     | connector_ch                     |
+     | connector_fr                     |
+    And we assign to users the groups below:
+     | group_name                       |
+#Sales
+     | Sales / Manager                  |
+#Project
+     | Project / Manager                |
+#Warehouse
+     | Warehouse / Manager              |
+#Human_Resources
+     | Employee                         |
+#Administration
+     | Access Rights                    |
+#Connector
+     | Connector / Connector Manager    |
+#Technical_settings
+     | Multi Currencies                 |
+     | Advanced Attribute Option        |
+     | Analytic Accounting              |
+     | Sales Pricelists                 |
+     | Purchase Pricelists              |
+     | Costing Method                   |
+     | Manage Multiple Units of Measure |
+     | Manage Secondary Unit of Measure |
+     | Manage Product Packaging         |
+     | Manage Properties of Product     |
+#Accounting_and_Finance
+     | Accountant                       |
+     | Invoicing & Payments             |
+     | Financial Manager                |
+#Usability
+     | Multi Companies                  |
+     | Technical Features               |
+#Other
+     | Contact Creation                 |
+
+  @companylinks
+  Scenario: Links users to companies
+    Given I find a "res.users" with oid: connector_qoqa.user_connector_ch
+     And having:
+        | name        | value                        |
+        | company_id  | by oid: scenario.qoqa_ch     |
+        | company_ids | all by oid: scenario.qoqa_ch |
+        | lang        | fr_FR                        |
+
+    Given I find a "res.users" with oid: connector_qoqa.user_connector_fr
+     And having:
+        | name        | value                        |
+        | company_id  | by oid: scenario.qoqa_fr     |
+        | company_ids | all by oid: scenario.qoqa_fr |
+        | lang        | fr_FR                        |

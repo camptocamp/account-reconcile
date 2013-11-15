@@ -42,6 +42,7 @@ as the attribute sets, ...
  'data': ['attribute_set.xml',
           'sale_shop.xml',
           'product.xml',
+          'product_category.xml',
           ],
  'installable': True,
  'application': True,

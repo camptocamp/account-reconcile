@@ -87,6 +87,7 @@ class qoqa_backend(orm.Model):
         'import_sale_order_from_date': fields.datetime(
             'Import Sales Orders from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
+        'import_variant_id': fields.char('Variant ID'),
     }
 
     _defaults = {
@@ -196,4 +197,14 @@ class qoqa_backend(orm.Model):
                 continue
             import_record(session, 'qoqa.sale.order', backend.id,
                           sale_id, force=True)
+        return True
+
+    def import_one_variant(self, cr, uid, ids, context=None):
+        session = ConnectorSession(cr, uid, context=context)
+        for backend in self.browse(cr, uid, ids, context=context):
+            variant_id = backend.import_variant_id
+            if not variant_id:
+                continue
+            import_record(session, 'qoqa.product.product', backend.id,
+                          variant_id, force=True)
         return True

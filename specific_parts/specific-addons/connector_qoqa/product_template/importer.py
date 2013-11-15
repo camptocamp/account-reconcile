@@ -51,18 +51,6 @@ class TemplateBatchImport(DelayedBatchImport):
 class TemplateImport(QoQaImportSynchronizer):
     _model_name = ['qoqa.product.template']
 
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
-        record = self.qoqa_record
-        # import related categories
-        # binder = self.get_binder_for_model('magento.product.category')
-        # for mag_category_id in record['categories']:
-        #     if binder.to_openerp(mag_category_id) is None:
-        #         importer = self.get_connector_unit_for_model(
-        #             MagentoImportSynchronizer,
-        #             model='magento.product.category')
-        #         importer.run(mag_category_id)
-
     def _after_import(self, binding_id):
         """ Hook called at the end of the import """
         translation_importer = self.get_connector_unit_for_model(
@@ -116,5 +104,15 @@ class TemplateImportMapper(ImportMapper):
         for source, target in self.translatable_fields:
             values[target] = self._map_direct(main, source, target)
         return values
+
+    @only_create
+    @mapping
+    def category(self, record):
+        sess = self.session
+        data_obj = sess.pool['ir.model.data']
+        cr, uid = sess.cr, sess.uid
+        xmlid = 'qoqa_base_data', 'product_categ_historical'
+        __, category_id = data_obj.get_object_reference(cr, uid, *xmlid)
+        return {'categ_id': category_id}
 
     # TODO: product_metas (only for the import -> for the wine reports)

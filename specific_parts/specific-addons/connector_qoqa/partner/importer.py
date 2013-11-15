@@ -61,6 +61,11 @@ class ResPartnerImportMapper(ImportMapper):
               ('name', 'qoqa_name'),
               ]
 
+    @mapping
+    @only_create
+    def company(self, record):
+        return {'company_id': False}
+
     @only_create
     @mapping
     def name(self, record):
@@ -86,6 +91,7 @@ class ResPartnerImportMapper(ImportMapper):
     @mapping
     def language(self, record):
         """ french by default """
+        # TODO: comes from "customer"
         return {'lang': 'fr_FR'}
 
     @only_create

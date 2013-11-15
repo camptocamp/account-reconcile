@@ -29,6 +29,8 @@ class res_company(orm.Model):
     _inherit = 'res.company'
     _columns = {
         'qoqa_id': fields.char('ID on QoQa'),
+        'connector_user_id': fields.many2one('res.users',
+                                             string='Connector User'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):
@@ -36,6 +38,7 @@ class res_company(orm.Model):
             default = {}
         default.update({
             'qoqa_id': False,
+            'connector_user_id': False,
         })
         return super(res_company, self).copy_data(
             cr, uid, id, default=default, context=context)

@@ -42,7 +42,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         )
 from ..unit.mapper import iso8601_to_utc
 from ..connector import iso8601_to_utc_datetime
-from ..exception import OrderImportRuleRetry
+from ..exception import QoQaError, OrderImportRuleRetry
 
 _logger = logging.getLogger(__name__)
 
@@ -117,6 +117,17 @@ class SaleOrderImport(QoQaImportSynchronizer):
     def _before_import(self):
         rules = self.get_connector_unit_for_model(SaleImportRule)
         rules.check(self.qoqa_record)
+
+    def _import(self, binding_id):
+        qshop_binder = self.get_binder_for_model('qoqa.shop')
+        qshop_id = qshop_binder.to_openerp(self.qoqa_record['shop_id'])
+        qshop = self.session.browse('qoqa.shop', qshop_id)
+        user = qshop.company_id.connector_user_id
+        if not user:
+            raise QoQaError('No connector user configured for company %s' %
+                            qshop.company_id.name)
+        with self.session.change_user(user.id):
+            super(SaleOrderImport, self)._import(binding_id)
 
     def _create_payments(self, binding_id):
         sess = self.session

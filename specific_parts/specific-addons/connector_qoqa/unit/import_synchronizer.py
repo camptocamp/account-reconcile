@@ -203,10 +203,21 @@ class QoQaImportSynchronizer(ImportSynchronizer):
 
         if not force and self._is_uptodate(binding_id):
             return _('Already up-to-date.')
+
         self._before_import()
 
         # import the missing linked resources
         self._import_dependencies()
+
+        self._import(binding_id)
+
+    def _import(self, binding_id):
+        """ Import the external record.
+
+        Can be inherited to modify for instance the session
+        (change current user, values in context, ...)
+
+        """
 
         map_record = self._map_data()
 

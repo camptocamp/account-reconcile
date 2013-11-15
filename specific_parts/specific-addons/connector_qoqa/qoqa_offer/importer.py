@@ -22,6 +22,7 @@
 from __future__ import division
 
 from datetime import datetime
+from contextlib import contextmanager
 
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   changed_by,

@@ -76,6 +76,11 @@ class AddressImportMapper(ImportMapper):
               ('digicode', 'digicode'),
               ]
 
+    @mapping
+    @only_create
+    def company(self, record):
+        return {'company_id': False}
+
     @only_create
     @mapping
     def name(self, record):

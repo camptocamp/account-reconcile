@@ -19,19 +19,28 @@
 #
 ##############################################################################
 
-""" Static Bindings
+from openerp.osv import orm, fields
+from ..unit.binder import QoQaDirectBinder
+from ..backend import qoqa
 
-Static bindings are bindings for models which are not synchronized.
-Basically, we just add a qoqa_id on the model, we defined a Binder
-and we set manually the qoqa_id.
 
-"""
+class delivery_service(orm.Model):
+    _inherit = 'delivery.service'
 
-from . import res_country
-from . import res_currency
-from . import res_lang
-from . import res_company
-from . import account_tax
-from . import payment_method
-from . import delivery_carrier
-from . import delivery_service
+    _columns = {
+        'qoqa_id': fields.char('ID on QoQa'),
+    }
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default.update({
+            'qoqa_id': False,
+        })
+        return super(delivery_service, self).copy_data(
+            cr, uid, id, default=default, context=context)
+
+
+@qoqa
+class DeliveryServiceBinder(QoQaDirectBinder):
+    _model_name = 'delivery.service'

@@ -71,7 +71,8 @@ class OfferExportMapper(ExportMapper):
         ('note', 'notes'),
         (m2o_to_backend('qoqa_shop_id', binding=True), 'shop_id'),
         (m2o_to_backend('lang_id'), 'language_id'),
-        (m2o_to_backend('shipper_service_id'), 'language_id'),
+        (m2o_to_backend('shipper_service_id'), 'shipper_service_id'),
+        (m2o_to_backend('carrier_id'), 'shipper_rate_id'),
     ]
 
     @staticmethod
@@ -102,10 +103,10 @@ class OfferExportMapper(ExportMapper):
 
     @mapping
     def todo(self, record):
+        # TODO
         values = {
             'slots_available': 0,  # notnull
             # 'is_queue_enabled': 0,
-            'shipper_rate_id': 1,
             'lot_per_package': 2,  # notnull
             'is_active': 1,
             'logistic_status_id': 1,

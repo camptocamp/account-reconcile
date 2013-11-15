@@ -59,7 +59,6 @@ class QoQaOfferImportMapper(ImportMapper):
     _model_name = 'qoqa.offer'
 
     # TODO
-    # shipper_service_id
     # slots_available
     # is_queue_enabled
     # lot_per_package
@@ -70,6 +69,7 @@ class QoQaOfferImportMapper(ImportMapper):
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
+              (backend_to_m2o('shipper_service_id'), 'shipper_service_id'),
               ]
 
     translatable_fields = [

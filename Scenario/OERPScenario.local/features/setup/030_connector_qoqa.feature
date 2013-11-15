@@ -217,3 +217,31 @@ Feature: Configure the connector's backend
          | 2.1      | 7       |
          | 5.5      | 8       |
          | 19.6     | 9       |
+
+  @qoqa_id @delivery_service
+  Scenario Outline: Set the qoqa_ids on the Delivery Services
+    Given I find a "delivery.service" with oid: <oid>
+    And having:
+         | key     | value         |
+         | qoqa_id | <qoqa_id>     |
+
+    Examples: delivery services
+         | oid                                               | qoqa_id |
+         | qoqa_offer.delivery_service_manualundefined       | 1       |
+         | qoqa_offer.delivery_service_postpac_prisi_std     | 2       |
+         | qoqa_offer.delivery_service_postpac_prisi_man     | 3       |
+         | qoqa_offer.delivery_service_postpac_prisi_sp      | 4       |
+         | qoqa_offer.delivery_service_amail_b5_0100g_02cm   | 5       |
+         | qoqa_offer.delivery_service_amail_b5_0100g_25cm   | 6       |
+         | qoqa_offer.delivery_service_amail_b5_100250g_02cm | 7       |
+         | qoqa_offer.delivery_service_amail_b5_100250g_25cm | 8       |
+         | qoqa_offer.delivery_service_legacy_fr             | 9       |
+         | qoqa_offer.delivery_service_wine_transport        | 10      |
+         | qoqa_offer.delivery_service_vinolog               | 11      |
+         | qoqa_offer.delivery_service_manual_wphone         | 12      |
+         | qoqa_offer.delivery_service_standard              | 13      |
+         | qoqa_offer.delivery_service_standard_wphone       | 14      |
+         | qoqa_offer.delivery_service_legacy_qwfr           | 15      |
+         | qoqa_offer.delivery_service_postpac_pri           | 16      |
+         | qoqa_offer.delivery_service_so_colissimo          | 17      |
+         | qoqa_offer.delivery_service_client_appointments   | 18      |

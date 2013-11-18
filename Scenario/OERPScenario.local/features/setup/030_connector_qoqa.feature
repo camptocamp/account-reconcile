@@ -53,6 +53,7 @@ Feature: Configure the connector's backend
       | qoqa_id             | 9                                                    |
       | sequence            | 99                                                   |
       | gift_card           | 1                                                    |
+      | company_id          | False                                                |
 
   @sale_payment_methods @old
   Scenario Outline: Create the automatic payment methods not assigned to a company
@@ -64,6 +65,7 @@ Feature: Configure the connector's backend
       | import_rule         | paid                                                 |
       | qoqa_id             | <qoqa_id>                                            |
       | active              | 0                                                    |
+      | company_id          | False                                                |
 
     Examples: Payment Methods
       | oid                                   | name                                | qoqa_id |

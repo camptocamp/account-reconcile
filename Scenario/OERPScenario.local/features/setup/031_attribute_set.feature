@@ -27,7 +27,6 @@ Feature: Configure the attribute sets
 
   Examples: Template attributes
       | name       | descr      | type | translate | required |
-      | brand      | Brand      | char | True      | False    |
       | highlights | Highlights | text | True      | False    |
 
   Examples: Template attributes for the wine (or liquor)
@@ -74,6 +73,14 @@ Feature: Configure the attribute sets
       | rose     | Rosé     | 2        |
       | mousseux | Mousseux | 3        |
       | other    | Autre    | 4        |
+
+  @brand
+  Scenario: Link the brand attribute with the pre-existing field
+  Given I need a "attribute.attribute" with oid: scenario.attr_brand
+    And having:
+        | key            | value                                           |
+        | field_id       | by oid: qoqa_offer.field_product_template_brand |
+        | attribute_type | char                                            |
 
   @wine_class_id_options
   Scenario: Create the options for the wine_class_id attribute

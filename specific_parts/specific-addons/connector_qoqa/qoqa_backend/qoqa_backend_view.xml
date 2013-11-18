@@ -146,6 +146,9 @@
                                     in the menu 'Connectors > Checkpoint'.
                                 </p>
                                 <group>
+                                  <field name="date_really_import"/>
+                                </group>
+                                <group>
                                     <div>
                                         <label string="Import product templates since"
                                             class="oe_inline"/>

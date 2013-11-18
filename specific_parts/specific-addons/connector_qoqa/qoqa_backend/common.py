@@ -88,6 +88,11 @@ class qoqa_backend(orm.Model):
             'Import Sales Orders from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
         'import_variant_id': fields.char('Variant ID'),
+
+        'date_really_import': fields.datetime(
+            'Import historic only until', required=True,
+            help="Before this date, the sales order will be imported "
+                 "without accounting entries."),
     }
 
     _defaults = {
@@ -98,6 +103,7 @@ class qoqa_backend(orm.Model):
         'import_res_partner_from_date': '2005-12-12 00:00:00',
         'import_address_from_date': '2005-12-12 00:00:00',
         'import_sale_order_from_date': '2005-12-12 00:00:00',
+        'date_really_import': '2014-01-01 00:00:00',
     }
 
     def check_connection(self, cr, uid, ids, context=None):

@@ -25,6 +25,7 @@ from datetime import datetime, timedelta
 from operator import attrgetter
 
 from openerp.tools.translate import _
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
@@ -151,13 +152,23 @@ class SaleOrderImport(QoQaImportSynchronizer):
                                   amount, date, context=context)
 
     def _after_import(self, binding_id):
-        if self.qoqa_record['status_id'] == QOQA_STATUS_PROCESSED:
+        # before 'date_really_import', we import only for the historic
+        # so we do not want to generate payments, invoice, stock moves
+        record = self.qoqa_record
+        order_date = iso8601_to_utc_datetime(record['created_at'])
+        until_str = self.backend_record.date_really_import
+        historic_until = datetime.strptime(until_str,
+                                           DEFAULT_SERVER_DATETIME_FORMAT)
+        if order_date < historic_until:
             # no invoice, no packing, no payment
             sess = self.session
             sale = sess.browse('qoqa.sale.order', binding_id).openerp_id
             sale.action_done()
             _logger.debug('QoQa Sales order %s is processed, workflow '
                           'short-circuited in OpenERP', self.qoqa_record['id'])
+        # TODO: how to handle the sales orders after
+        # 'date_really_import' but 'processed'
+        # elif self.qoqa_record['status_id'] == QOQA_STATUS_PROCESSED:
         else:
             self._create_payments(binding_id)
 

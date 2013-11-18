@@ -22,6 +22,7 @@
 import logging
 
 from openerp.addons.connector.unit.mapper import (mapping,
+                                                  only_create,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
@@ -110,3 +111,9 @@ class VariantImportMapper(ImportMapper):
         for source, target in self.translatable_fields:
             values[target] = self._map_direct(main, source, target)
         return values
+
+    @mapping
+    @only_create
+    def company(self, record):
+        """ products are shared between companies """
+        return {'company_id': False}

@@ -209,13 +209,16 @@ class SaleOrderImportMapper(ImportMapper):
 
     @mapping
     def payment_method(self, record):
+        qpayments = record['payments']
+        if not qpayments:
+            return
         qshop_binder = self.get_binder_for_model('qoqa.shop')
         qshop_id = qshop_binder.to_openerp(record['shop_id'])
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
         binder = self.get_binder_for_model('payment.method')
         payments = [_get_payment_method(self, payment, company_id)
-                    for payment in record['payments']]
+                    for payment in qpayments]
         payments = sorted(payments, key=attrgetter('sequence'))
         return {'payment_method_id': payments[0].id}
 

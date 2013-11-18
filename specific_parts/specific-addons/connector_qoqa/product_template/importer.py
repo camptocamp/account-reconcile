@@ -19,6 +19,8 @@
 #
 ##############################################################################
 
+from __future__ import division
+
 import logging
 
 from openerp.addons.connector.unit.mapper import (mapping,
@@ -115,4 +117,92 @@ class TemplateImportMapper(ImportMapper):
         __, category_id = data_obj.get_object_reference(cr, uid, *xmlid)
         return {'categ_id': category_id}
 
-    # TODO: product_metas (only for the import -> for the wine reports)
+    metas_ids = {1: 'x_winemaker',
+                 2: 'x_appellation',
+                 3: 'x_wine_short_name',
+                 4: 'aoc',
+                 5: 'x_millesime',
+                 6: 'x_country_id',
+                 7: 'canton',
+                 8: 'wine_bottle_id',
+                 9: 'color',
+                 10: 'type',
+                 }
+
+    @only_create
+    @mapping
+    def metas(self, record):
+        """ Import metas, which are informations for the wine
+
+        This is hardcoded because only used for the import of the
+        history before the golive. Later, these informations will only
+        be available on OpenERP and used to print the wine reports.
+        """
+        sess = self.session
+        metas = record.get('product_metas')
+        if not metas:
+            return
+        values = {}
+        for meta in metas:
+            field = self.metas_ids.get(meta['meta_id'])
+            value = meta['value']
+            if field == 'x_winemaker':
+                attr_ids = sess.search('attribute.attribute',
+                                       [('name', '=', field)])
+                option_ids = sess.search('attribute.option',
+                                         [('attribute_id', 'in', attr_ids),
+                                          ('name', '=', value)])
+                if option_ids:
+                    values[field] = option_ids[0]
+                else:
+                    option_id = sess.create('attribute.option',
+                                            {'attribute_id': attr_ids[0],
+                                             'name': value})
+                    values[field] = option_id
+            elif field == 'x_country_id':
+                if value in ('Nouvelle Zelande', 'NZ'):
+                    value = u'Nouvelle-Zélande'
+                elif value == 'USA':
+                    value = 'États Unis'
+                country_ids = sess.search('res.country',
+                                          [('name', '=ilike', value)])
+                if country_ids:
+                    values[field] = country_ids[0]
+            elif field == 'wine_bottle_id':
+                if value == '75cl':
+                    value = 75.
+                bottle_ids = sess.search('wine.bottle',
+                                         [('volume', '=', float(value) / 100)])
+                if bottle_ids:
+                    values[field] = bottle_ids[0]
+            elif field == 'color':
+                # search the type
+                if value == 'Ros':
+                    value = u'Rosé'
+                wtype = next((m['value'] for m in metas if m['meta_id'] == 9),
+                             None)
+                if wtype == 'Effervescant':
+                    value = 'Mousseux'
+
+                attr_ids = sess.search('attribute.attribute',
+                                       [('name', '=', 'x_wine_type')])
+                option_ids = sess.search('attribute.option',
+                                         [('attribute_id', 'in', attr_ids),
+                                          ('name', '=', value)])
+                if not option_ids:
+                    raise ValueError('wine type %s not found' % value)
+                values['x_wine_type'] = option_ids[0]
+            elif field == 'type':
+                # already done in 'color'
+                pass
+            elif field == 'canton':
+                # no longer used
+                pass
+            elif field == 'aoc':
+                # no longer used
+                pass
+            elif field in ('x_appellation', 'x_millesime', 'x_wine_short_name'):
+                values[field] = value
+            else:
+                raise ValueError('meta %s not handled' % meta['meta_id'])
+        return values

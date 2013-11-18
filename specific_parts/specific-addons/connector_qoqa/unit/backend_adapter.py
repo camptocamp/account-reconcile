@@ -30,6 +30,13 @@ from ..exception import QoQaResponseNotParsable, QoQaAPISecurityError
 
 _logger = logging.getLogger(__name__)
 
+# Add detailed logs
+# import httplib
+# httplib.HTTPConnection.debuglevel = 1
+# requests_log = logging.getLogger("requests.packages.urllib3")
+# requests_log.setLevel(logging.DEBUG)
+# requests_log.propagate = True
+
 
 class QoQaClient(object):
 
@@ -130,7 +137,7 @@ class QoQaAdapter(CRUDAdapter):
             def rec():
                 with open('/tmp/err.html', 'w') as f:
                     f.write(response.content)
-            import pdb; pdb.set_trace()
+            # import pdb; pdb.set_trace()
             raise QoQaResponseNotParsable(err)
         return parsed
 

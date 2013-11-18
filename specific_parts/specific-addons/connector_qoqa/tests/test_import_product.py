@@ -20,7 +20,7 @@
 ##############################################################################
 from openerp.addons.connector.session import ConnectorSession
 from .common import mock_api_responses, QoQaTransactionCase
-from .data_product import qoqa_product
+from .data_product import qoqa_product, qoqa_product_meta
 from ..unit.import_synchronizer import import_record
 
 
@@ -46,6 +46,24 @@ class test_import_product(QoQaTransactionCase):
         self.assertEquals(qtemplate.name, 'All Star Mid')
         self.assertEquals(qtemplate.created_at, '2013-09-17 15:47:17')
         self.assertEquals(qtemplate.updated_at, '2013-09-24 11:19:19')
+
+    def test_import_template_metas(self):
+        """ Import a template with metas """
+        cr, uid = self.cr, self.uid
+        with mock_api_responses(qoqa_product_meta):
+            import_record(self.session, 'qoqa.product.template',
+                          self.backend_id, 99999999)
+        domain = [('qoqa_id', '=', '99999999')]
+        qtemplate_ids = self.QTemplate.search(cr, uid, domain)
+        self.assertEquals(len(qtemplate_ids), 1)
+        qtemplate = self.QTemplate.browse(cr, uid, qtemplate_ids[0])
+        self.assertEquals(qtemplate.x_winemaker.name, 'Marchese Antinori ')
+        self.assertEquals(qtemplate.x_appellation, 'Toscana IGT')
+        self.assertEquals(qtemplate.x_millesime, '2010')
+        self.assertEquals(qtemplate.x_country_id.code, 'IT')
+        self.assertEquals(qtemplate.wine_bottle_id.volume, 0.75)
+        self.assertEquals(qtemplate.x_wine_type.name, 'Rouge')
+        self.assertEquals(qtemplate.x_wine_short_name, 'Solaia')
 
     def test_import_variant(self):
         """ Import a variant """

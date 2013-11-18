@@ -91,7 +91,6 @@ class qoqa_offer_position_variant(orm.Model):
     }
 
 
-# TODO rename to qoqa.offer.position
 class qoqa_offer_position(orm.Model):
     _name = 'qoqa.offer.position'
     _description = 'QoQa Offer Position'

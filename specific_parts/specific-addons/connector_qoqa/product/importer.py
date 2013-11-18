@@ -110,5 +110,3 @@ class VariantImportMapper(ImportMapper):
         for source, target in self.translatable_fields:
             values[target] = self._map_direct(main, source, target)
         return values
-
-    # TODO: product_metas (only for the import -> for the wine reports)

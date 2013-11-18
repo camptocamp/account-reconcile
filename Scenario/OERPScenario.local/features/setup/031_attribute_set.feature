@@ -34,7 +34,7 @@ Feature: Configure the attribute sets
       | name            | descr       | type   | translate | required |
       | winemaker       | Winemaker   | select | False     | True     |
       | appellation     | Appellation | char   | False     | True     |
-      | wine_short_name | Wine Name   | char   | False     | True     |
+      | wine_short_name | Wine Name   | char   | False     | False    |
       | millesime       | Millesime   | char   | False     | False    |
       | wine_region     | Region      | char   | False     | False    |
       | wine_type       | Type        | select | False     | True     |

@@ -7,9 +7,9 @@
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
                 <search string="Search Sales Offer">
-                    <field name="name" string="Sales Offer"
-                        filter_domain="['|', ('ref', '=', self),
-                                             ('name', 'ilike', self)]"/>
+                    <field name="name" string="Offer"/>
+                    <field name="ref" string="Ref"/>
+                    <field name="title" string="Title"/>
                     <field name="qoqa_shop_id" widget="selection"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
@@ -95,8 +95,8 @@
                     <field name="datetime_end"/>
                     <field name="qoqa_shop_id"/>
                     <field name="date_begin" invisible="1"/>
-                    <field name="ref"/>
                     <field name="name"/>
+                    <field name="title"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -117,7 +117,7 @@
                     <field name="name"/>
                     <field name="description"/>
                     <field name="position_ids"/>
-                    <field name="pricelist_id"/>
+                    <field name="pricelist_id" domain="[('type', '=', 'sale')]"/>
                     <field name="qoqa_shop_id"/>
                     <field name="lang_id"/>
                     <templates>
@@ -127,7 +127,6 @@
                                     <img t-att-src="kanban_image('qoqa.offer', 'image_small', record.id.value)"
                                             class="oe_kanban_image"/>
                                     <div class="header">
-                                        [<field name="ref"/>]
                                         <b><field name="name"/></b>
                                     </div>
                                     <div class="dates">
@@ -177,7 +176,6 @@
                                 <label for="name"/>
                             </div>
                             <h1>
-                                [<field name="ref" readonly="1" class="oe_inline" nolabel="1"/>]
                                 <field name="name" class="oe_inline"/>
                             </h1>
                         </div>
@@ -185,7 +183,8 @@
                         </div>
                         <group>
                             <group name="content" string="Content">
-                                <field name="description" nolabel="1"/>
+                                <field name="title"/>
+                                <field name="description" colspan="2" nolabel="1"/>
                             </group>
                             <group name="configuration" string="Configuration">
                                 <field name="qoqa_shop_id" widget="selection"/>

@@ -65,15 +65,16 @@ class QoQaOfferImportMapper(ImportMapper):
     # is_active
     # logistic_status_id
 
-    direct = [('notes', 'note'),
+    direct = [(ifmissing('notes', '<p></p>'), 'note'),
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
               (backend_to_m2o('shipper_service_id'), 'shipper_service_id'),
+              ('id', 'ref'),
               ]
 
     translatable_fields = [
-        (ifmissing('title', 'Undefined'), 'name'),
+        ('title', 'title'),
         (ifmissing('content', ''), 'description'),
     ]
 

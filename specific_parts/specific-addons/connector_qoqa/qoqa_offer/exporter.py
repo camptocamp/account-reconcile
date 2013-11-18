@@ -69,7 +69,7 @@ class OfferExportMapper(ExportMapper):
 
     direct = [
         ('note', 'notes'),
-        (m2o_to_backend('qoqa_shop_id', binding=True), 'shop_id'),
+        (m2o_to_backend('qoqa_shop_id'), 'shop_id'),
         (m2o_to_backend('lang_id'), 'language_id'),
         (m2o_to_backend('shipper_service_id'), 'shipper_service_id'),
         (m2o_to_backend('carrier_id'), 'shipper_rate_id'),

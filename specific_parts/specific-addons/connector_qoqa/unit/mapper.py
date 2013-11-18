@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+from __future__ import division
 from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.unit import mapper
 from ..connector import iso8601_to_utc_datetime
@@ -108,5 +109,6 @@ def qoqafloat(field):
     :param field: name of the source field in the record
     """
     def modifier(self, record, to_attr):
-        return record.get(field, 0) / 100
+        value = record.get(field) or 0
+        return float(value) / 100
     return modifier

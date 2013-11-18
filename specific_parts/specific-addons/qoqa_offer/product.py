@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
+#    Author: Guewen Baconnier
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,12 @@
 #
 ##############################################################################
 
-from . import qoqa_shop
-from . import account_invoice
-from . import stock
-from . import delivery_service
-from . import qoqa_offer
-from . import qoqa_offer_position
-from . import sale_order
-from . import qoqa_buyphrase
-from . import product
+from openerp.osv import orm, fields
+
+
+class product_template(orm.Model):
+    _inherit = 'product.template'
+
+    _columns = {
+        'brand': fields.char('Brand'),  # used in custom attributes
+    }

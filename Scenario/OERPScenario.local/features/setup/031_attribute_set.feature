@@ -31,12 +31,13 @@ Feature: Configure the attribute sets
       | highlights | Highlights | text | True      | False    |
 
   Examples: Template attributes for the wine (or liquor)
-      | name         | descr       | type   | translate | required |
-      | winemaker    | Winemaker   | select | False     | True     |
-      | appellation  | Appellation | char   | False     | True     |
-      | millesime    | Millesime   | char   | False     | False    |
-      | wine_region  | Region      | char   | False     | False    |
-      | wine_type    | Type        | select | False     | True     |
+      | name            | descr       | type   | translate | required |
+      | winemaker       | Winemaker   | select | False     | True     |
+      | appellation     | Appellation | char   | False     | True     |
+      | wine_short_name | Wine Name   | char   | False     | True     |
+      | millesime       | Millesime   | char   | False     | False    |
+      | wine_region     | Region      | char   | False     | False    |
+      | wine_type       | Type        | select | False     | True     |
 
   Examples: Template attributes for the liquor (or liquor)
       | name   | descr             | type  | translate | required |
@@ -191,15 +192,16 @@ Feature: Configure the attribute sets
         | sequence           | <sequence>                             |
 
   Examples: Wine Group
-       | attribute_name | sequence |
-       | winemaker      | 10       |
-       | appellation    | 11       |
-       | millesime      | 13       |
-       | country_id     | 15       |
-       | wine_region    | 16       |
-       | wine_bottle_id | 17       |
-       | wine_type      | 18       |
-       | wine_class_id  | 19       |
+       | attribute_name  | sequence |
+       | winemaker       | 10       |
+       | appellation     | 11       |
+       | wine_short_name | 12       |
+       | millesime       | 13       |
+       | country_id      | 15       |
+       | wine_region     | 16       |
+       | wine_bottle_id  | 17       |
+       | wine_type       | 18       |
+       | wine_class_id   | 19       |
 
   @liquor
   Scenario: Create an attribute set for liquor

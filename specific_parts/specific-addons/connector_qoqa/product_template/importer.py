@@ -73,6 +73,12 @@ class TemplateImportMapper(ImportMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ]
 
+    @mapping
+    @only_create
+    def company(self, record):
+        """ products are shared between companies """
+        return {'company_id': False}
+
     @only_create
     @mapping
     def product_type(self, record):

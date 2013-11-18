@@ -64,6 +64,7 @@ class ResPartnerImportMapper(ImportMapper):
     @mapping
     @only_create
     def company(self, record):
+        """ partners are shared between companies """
         return {'company_id': False}
 
     @only_create

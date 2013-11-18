@@ -32,6 +32,15 @@ from ..unit.mapper import iso8601_to_utc
 _logger = logging.getLogger(__name__)
 
 
+QOQA_STATUS_PENDING = 1
+QOQA_STATUS_DONE = 2
+QOQA_STATUS_CANCELLED = 3
+
+QOQA_TYPE_SOLD = 1
+QOQA_TYPE_PURCHASED = 2
+QOQA_TYPE_RETURNED = 3
+
+
 @qoqa
 class SaleOrderLineImportMapper(ImportMapper):
     """ Convert 'order_items' and 'items' into sales order lines.
@@ -44,8 +53,6 @@ class SaleOrderLineImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order.line'
 
     # TODO
-    # type_id
-    # status_id?
     # promo_id
     # stock_id
     # lot_size
@@ -73,6 +80,13 @@ class SaleOrderLineImportMapper(ImportMapper):
 @qoqa
 class LineMapChild(ImportMapChild):
     _model_name = 'qoqa.sale.order.line'
+
+    def skip_item(self, map_record):
+        record = map_record.source
+        if record['status_id'] == QOQA_STATUS_CANCELLED:
+            return True
+        if record['type_id'] != QOQA_TYPE_SOLD:
+            return True
 
     def get_item_values(self, map_record, to_attr, options):
         values = map_record.values(**options)

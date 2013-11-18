@@ -69,9 +69,16 @@ class ResPartnerImportMapper(ImportMapper):
     @only_create
     @mapping
     def name(self, record):
-        parts = [part for part in (record['firstname'], record['lastname'])
-                 if part]
-        return {'name': ' '.join(parts)}
+        # the 'firstname' and 'lastname' fields are wrong in QoQa
+        # and should not be used, instead, we take the login if existing
+        # and email
+        login = record.get('name')
+        email = record['email']
+        if login:
+            name = "%s (%s)" % (login, email)
+        else:
+            name = email
+        return {'name': name}
 
     @mapping
     def use_parent_address(self, record):

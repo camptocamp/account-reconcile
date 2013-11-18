@@ -69,7 +69,7 @@ class VariantImportMapper(ImportMapper):
     _model_name = 'qoqa.product.product'
 
     translatable_fields = [
-        (ifmissing('name', 'Unknown'), 'variants'),
+        ('name', 'variants'),
     ]
 
     direct = [

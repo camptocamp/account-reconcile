@@ -194,6 +194,7 @@ class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('created_at'), 'date_order'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),

@@ -61,6 +61,7 @@ class qoqa_sale_order_line(orm.Model):
             cr, uid, vals, context=context)
         return res
 
+
 class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
 

@@ -74,7 +74,8 @@ class SaleOrderLineImportMapper(ImportMapper):
         binder = self.get_binder_for_model('qoqa.offer.position')
         position_id = binder.to_openerp(q_position_id)
         position = self.session.browse('qoqa.offer.position', position_id)
-        return {'price_unit': position.unit_price}
+        return {'price_unit': position.unit_price,
+                'offer_position_id': position_id}
 
 
 @qoqa

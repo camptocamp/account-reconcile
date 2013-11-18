@@ -68,7 +68,6 @@ class AddressImportMapper(ImportMapper):
               ('code', 'zip'),
               ('city', 'city'),
               (backend_to_m2o('country_id'), 'country_id'),
-              # TODO state
               ('phone', 'phone'),
               ('mobile', 'mobile'),
               ('fax', 'fax'),

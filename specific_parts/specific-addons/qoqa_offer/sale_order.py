@@ -46,3 +46,19 @@ class sale_order(orm.Model):
         if order.offer_id:
             vals['offer_id'] = order.offer_id.id
         return vals
+
+
+class sale_order_line(orm.Model):
+    _inherit = 'sale.order.line'
+
+    _columns = {
+        'qoqa_bind_ids': fields.one2many(
+            'qoqa.sale.order.line',
+            'openerp_id',
+            string='QBindings'),
+        'offer_position_id': fields.many2one(
+            'qoqa.offer.position',
+            string='Offer Position',
+            readonly=True,
+            ondelete='restrict'),
+    }

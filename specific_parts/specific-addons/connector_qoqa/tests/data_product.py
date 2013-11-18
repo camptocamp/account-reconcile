@@ -160,6 +160,12 @@ r'''{
         "value": "Italie"
       },
       {
+        "id": 157791,
+        "product_id": 5332,
+        "meta_id": 7,
+        "value": "Toscana"
+      },
+      {
         "id": 157792,
         "product_id": 5333,
         "meta_id": 8,

@@ -123,7 +123,7 @@ class TemplateImportMapper(ImportMapper):
                  4: 'aoc',
                  5: 'x_millesime',
                  6: 'x_country_id',
-                 7: 'canton',
+                 7: 'x_wine_region',
                  8: 'wine_bottle_id',
                  9: 'color',
                  10: 'type',
@@ -195,13 +195,11 @@ class TemplateImportMapper(ImportMapper):
             elif field == 'type':
                 # already done in 'color'
                 pass
-            elif field == 'canton':
-                # no longer used
-                pass
             elif field == 'aoc':
                 # no longer used
                 pass
-            elif field in ('x_appellation', 'x_millesime', 'x_wine_short_name'):
+            elif field in ('x_appellation', 'x_millesime',
+                           'x_wine_short_name', 'x_wine_region'):
                 values[field] = value
             else:
                 raise ValueError('meta %s not handled' % meta['meta_id'])

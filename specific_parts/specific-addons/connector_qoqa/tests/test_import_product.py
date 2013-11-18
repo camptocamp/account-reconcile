@@ -64,6 +64,7 @@ class test_import_product(QoQaTransactionCase):
         self.assertEquals(qtemplate.wine_bottle_id.volume, 0.75)
         self.assertEquals(qtemplate.x_wine_type.name, 'Rouge')
         self.assertEquals(qtemplate.x_wine_short_name, 'Solaia')
+        self.assertEquals(qtemplate.x_wine_region, 'Toscana')
 
     def test_import_variant(self):
         """ Import a variant """

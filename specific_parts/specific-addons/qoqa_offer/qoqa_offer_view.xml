@@ -288,7 +288,7 @@
             <field name="name">qoqa.offer.calendar</field>
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <calendar color="name" date_start="date_begin" date_stop="date_end" string="Offers">
+                <calendar color="qoqa_shop_id" date_start="date_begin" date_stop="date_end" string="Offers">
                     <field name="name"/>
                     <field name="qoqa_shop_id"/>
                 </calendar>

@@ -25,7 +25,6 @@ from datetime import datetime, timedelta
 from operator import attrgetter
 
 from openerp.tools.translate import _
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
@@ -42,7 +41,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import iso8601_to_utc
-from ..connector import iso8601_to_utc_datetime
+from ..connector import iso8601_to_utc_datetime, is_historic_import
 from ..exception import QoQaError, OrderImportRuleRetry
 
 _logger = logging.getLogger(__name__)
@@ -154,12 +153,7 @@ class SaleOrderImport(QoQaImportSynchronizer):
     def _after_import(self, binding_id):
         # before 'date_really_import', we import only for the historic
         # so we do not want to generate payments, invoice, stock moves
-        record = self.qoqa_record
-        order_date = iso8601_to_utc_datetime(record['created_at'])
-        until_str = self.backend_record.date_really_import
-        historic_until = datetime.strptime(until_str,
-                                           DEFAULT_SERVER_DATETIME_FORMAT)
-        if order_date < historic_until:
+        if is_historic_import(self, self.qoqa_record):
             # no invoice, no packing, no payment
             sess = self.session
             sale = sess.browse('qoqa.sale.order', binding_id).openerp_id

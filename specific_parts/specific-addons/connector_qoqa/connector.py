@@ -20,10 +20,12 @@
 ##############################################################################
 
 import pytz
+from datetime import datetime
 from dateutil import parser
 from itertools import tee, izip
 
 from openerp.osv import orm, fields
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import (install_in_connector,
                                                 Environment)
 from openerp.addons.connector.checkpoint import checkpoint
@@ -55,6 +57,14 @@ def get_environment(session, model_name, backend_id):
     lang_code = lang.code if lang else 'en_US'
     env.set_lang(code=lang_code)
     return env
+
+
+def is_historic_import(connector_unit, record):
+    order_date = iso8601_to_utc_datetime(record['created_at'])
+    until_str = connector_unit.backend_record.date_really_import
+    historic_until = datetime.strptime(until_str,
+                                       DEFAULT_SERVER_DATETIME_FORMAT)
+    return order_date < historic_until
 
 
 class qoqa_binding(orm.AbstractModel):

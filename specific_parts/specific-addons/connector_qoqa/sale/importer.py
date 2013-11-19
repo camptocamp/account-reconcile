@@ -197,15 +197,28 @@ class SaleOrderImportMapper(ImportMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),
-              (backend_to_m2o('user_id', binding='qoqa.res.partner'), 'partner_id'),
-              (backend_to_m2o('shipping_address_id',
-                              binding='qoqa.address'),
-               'partner_shipping_id'),
-              (backend_to_m2o('billing_address_id',
-                              binding='qoqa.address'),
-               'partner_invoice_id'),
               ('id', 'name'),
               ]
+
+    @mapping
+    def addresses(self, record):
+        quser_id = record['user_id']
+        binder = self.get_binder_for_model('qoqa.res.partner')
+        partner_id = binder.to_openerp(quser_id, unwrap=True)
+
+        binder = self.get_binder_for_model('qoqa.address')
+        # in the old sales orders, addresses may be missing, in such
+        # case we set the partner_id
+        qship_id = record['shipping_address_id']
+        shipping_id = (binder.to_openerp(qship_id, unwrap=True) if qship_id
+                       else partner_id)
+        qbill_id = record['billing_address_id']
+        billing_id = (binder.to_openerp(qbill_id, unwrap=True) if qbill_id
+                      else partner_id)
+        values = {'partner_id': partner_id,
+                  'partner_shipping_id': shipping_id,
+                  'partner_invoice_id': billing_id}
+        return values
 
     @mapping
     def payment_method(self, record):

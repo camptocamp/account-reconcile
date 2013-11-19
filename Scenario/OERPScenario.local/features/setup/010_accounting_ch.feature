@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@accounting_ch @setup
+@accounting @ch @setup
 
 Feature: Configure the CH's accounting
 
@@ -150,3 +150,12 @@ Feature: Configure the CH's accounting
          | company_id           | by oid: scenario.qoqa_ch                                        |
          | type_tax_use         | sale                                                            |
          | active               | False                                                           |
+
+  @currency_rate
+  Scenario: I create the historic currency rates so we can import sales orders from 2005
+    Given I need a "res.currency.rate" with oid: scenario.rate_chf_2005
+    And having:
+         | key         | value            |
+         | name        | 2005-01-01       |
+         | rate        | 1.0              |
+         | currency_id | by oid: base.CHF |

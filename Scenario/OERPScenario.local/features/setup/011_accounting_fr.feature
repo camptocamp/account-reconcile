@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@accounting_fr @setup
+@accounting @fr @setup
 
 Feature: Configure the FR's accounting
 
@@ -72,3 +72,23 @@ Feature: Configure the FR's accounting
       | scenario.journal_mastercard_fr | Mastercard       | MASTR |
       | scenario.journal_paiement_3x   | Paiement 3x      | PAY3X |
       | scenario.journal_paypal_fr     | Paypal           | PAYPA |
+
+  @currency_rate
+  Scenario Outline: I create the historic currency rates so we can import sales orders from 2005
+    Given I need a "res.currency.rate" with oid: scenario.rate_euro_<year>
+    And having:
+         | key         | value            |
+         | name        | <year>-01-01     |
+         | rate        | <rate>           |
+         | currency_id | by oid: base.EUR |
+
+   Examples: rates
+      | year | rate   |
+      | 2005 | 0.6469 |
+      | 2006 | 0.6431 |
+      | 2007 | 0.6244 |
+      | 2008 | 0.6043 |
+      | 2009 | 0.6684 |
+      | 2010 | 0.6739 |
+      | 2011 | 0.8017 |
+      | 2012 | 0.8221 |

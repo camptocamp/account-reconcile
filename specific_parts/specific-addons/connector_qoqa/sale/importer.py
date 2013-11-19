@@ -111,7 +111,12 @@ class SaleOrderImport(QoQaImportSynchronizer):
 
     def _is_uptodate(self, binding_id):
         # already imported, skip it (unless if `force` is used)
+        assert self.qoqa_record
         if self.binder.to_openerp(self.qoqa_id) is not None:
+            return True
+        # when the deal is empty, the this is a B2B / manual invoice
+        # we don't want to import them
+        if not self.qoqa_record['deal_id']:
             return True
 
     def _before_import(self):

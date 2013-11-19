@@ -36,7 +36,6 @@ class qoqa_address(orm.Model):
                                       string='Address',
                                       required=True,
                                       ondelete='restrict'),
-        'qoqa_active': fields.boolean('QoQa Active'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
     }
@@ -56,6 +55,7 @@ class res_partner(orm.Model):
             'openerp_id',
             string='QBindings for Addresses'),
         'digicode': fields.char('Digicode'),
+        'qoqa_address': fields.boolean('Address from QoQa'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

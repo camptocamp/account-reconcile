@@ -71,9 +71,13 @@ class AddressImportMapper(ImportMapper):
               ('phone', 'phone'),
               ('mobile', 'mobile'),
               ('fax', 'fax'),
-              ('is_active', 'qoqa_active'),
+              ('is_active', 'active'),
               ('digicode', 'digicode'),
               ]
+
+    @mapping
+    def qoqa_address(self, record):
+        return {'qoqa_address': True}
 
     @mapping
     @only_create

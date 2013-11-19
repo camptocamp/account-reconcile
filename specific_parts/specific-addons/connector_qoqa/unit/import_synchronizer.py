@@ -23,12 +23,15 @@ import logging
 from datetime import datetime
 from dateutil import rrule
 from itertools import chain
+from psycopg2 import IntegrityError, errorcodes
 from openerp.tools.translate import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
 from openerp.addons.connector.unit.mapper import ImportMapper
-from openerp.addons.connector.exception import IDMissingInBackend
+from openerp.addons.connector.exception import (IDMissingInBackend,
+                                                NetworkRetryableError,
+                                                RetryableJobError)
 from ..backend import qoqa
 from ..connector import (get_environment,
                          add_checkpoint,
@@ -162,7 +165,26 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         # special check on data before import
         self._validate_data(data)
         with self.session.change_context({'connector_no_export': True}):
-            binding_id = self.session.create(self.model._name, data)
+            try:
+                binding_id = self.session.create(self.model._name, data)
+            except IntegrityError as err:
+                # When we execute several jobs workers concurrently,
+                # it happens that 2 jobs are creating the same record
+                # at the same time (especially product templates as they
+                # are shared by a lot of sales orders), resulting in:
+                # IntegrityError: duplicate key value violates unique
+                # constraint "qoqa_product_template_qoqa_uniq"
+                # DETAIL:  Key (backend_id, qoqa_id)=(1, 4851) already exists.
+                if err.pgcode == errorcodes.UNIQUE_VIOLATION:
+                    # in that case, we'll retry the import just later
+                    raise RetryableJobError(
+                        'A database error caused the failure of the job:\n'
+                        '%s\n\n'
+                        'Likely due to 2 concurrent jobs wanting to create '
+                        'the same record. The job will be retried later.' % err)
+                else:
+                    raise
+
         _logger.debug('%s %d created from QoQa %s',
                       self.model._name, binding_id, self.qoqa_id)
         return binding_id

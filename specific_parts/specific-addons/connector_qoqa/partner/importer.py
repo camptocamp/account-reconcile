@@ -52,6 +52,14 @@ class ResPartnerImport(QoQaImportSynchronizer):
         super(ResPartnerImport, self).__init__(environment)
         self.should_create_addresses = None
 
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        assert self.qoqa_record
+        rec = self.qoqa_record
+        if rec['customer'] and rec['customer']['origin_shop_id']:
+            self._import_dependency(rec['customer']['origin_shop_id'],
+                                    'qoqa.shop')
+
     def _get_binding_id(self):
         """Return the binding id from the qoqa id"""
         binding_id = super(ResPartnerImport, self)._get_binding_id()
@@ -121,9 +129,34 @@ class ResPartnerImportMapper(ImportMapper):
     @only_create
     @mapping
     def language(self, record):
-        """ french by default """
-        # TODO: comes from "customer"
-        return {'lang': 'fr_FR'}
+        if not record['customer']:
+            return {'lang': 'fr_FR'}
+        else:
+            qlang_id = record['customer']['language_id']
+            binder = self.get_binder_for_model('res.lang')
+            lang_id = binder.to_openerp(qlang_id)
+            lang = self.session.browse('res.lang', lang_id)
+            return {'lang': lang.code}
+
+    @mapping
+    def customer_status(self, record):
+        if not record['customer']:
+            return
+        qstatus_id = record['customer']['status_id']
+        binder = self.get_binder_for_model('qoqa.customer.status')
+        status = binder.to_openerp(qstatus_id)
+        return {'qoqa_status': status}
+
+    @mapping
+    def origin_shop(self, record):
+        if not record['customer']:
+            return
+        qshop_id = record['customer']['origin_shop_id']
+        if not qshop_id:
+            return
+        binder = self.get_binder_for_model('qoqa.shop')
+        shop_id = binder.to_openerp(qshop_id)
+        return {'origin_shop_id': shop_id}
 
     @only_create
     @mapping

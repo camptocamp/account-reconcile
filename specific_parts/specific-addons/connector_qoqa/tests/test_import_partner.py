@@ -20,6 +20,7 @@
 ##############################################################################
 from openerp.addons.connector.session import ConnectorSession
 from .common import mock_api_responses, QoQaTransactionCase
+from .data_metadata import qoqa_shops
 from .data_partner import qoqa_user, qoqa_address
 from ..unit.import_synchronizer import import_record
 
@@ -33,11 +34,14 @@ class test_import_partner(QoQaTransactionCase):
         self.QPartner = self.registry('qoqa.res.partner')
         self.Partner = self.registry('res.partner')
         self.QAddress = self.registry('qoqa.address')
+        company_obj = self.registry('res.company')
+        vals = {'name': 'Qtest', 'qoqa_id': 42}
+        self.company_id = company_obj.create(self.cr, self.uid, vals)
 
     def test_import_partner(self):
         """ Import a partner (QoQa user) """
         cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_user):
+        with mock_api_responses(qoqa_user, qoqa_shops):
             import_record(self.session, 'qoqa.res.partner',
                           self.backend_id, 99999999)
         domain = [('qoqa_id', '=', '99999999')]
@@ -50,6 +54,9 @@ class test_import_partner(QoQaTransactionCase):
         self.assertTrue(qpartner.is_company)
         self.assertEquals(qpartner.created_at, '2008-06-02 15:40:17')
         self.assertEquals(qpartner.updated_at, '2013-11-19 09:39:52')
+        self.assertEquals(qpartner.origin_shop_id.name, 'Qtest.ch')
+        self.assertEquals(qpartner.lang, 'fr_FR')
+        self.assertEquals(qpartner.qoqa_status, 'active')
         # addresses are imported at the same time for the first import
         # of the customer
         addresses = qpartner.child_ids
@@ -59,14 +66,14 @@ class test_import_partner(QoQaTransactionCase):
     def test_import_twice(self):
         """ Import a partner twice, the second import is skipped"""
         cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_user):
+        with mock_api_responses(qoqa_user, qoqa_shops):
             import_record(self.session, 'qoqa.res.partner',
                           self.backend_id, 99999999)
         domain = [('qoqa_id', '=', '99999999')]
         qpartner_ids = self.QPartner.search(cr, uid, domain)
         self.assertEquals(len(qpartner_ids), 1)
         qpartner = self.QPartner.browse(cr, uid, qpartner_ids[0])
-        with mock_api_responses(qoqa_user):
+        with mock_api_responses(qoqa_user, qoqa_shops):
             import_record(self.session, 'qoqa.res.partner',
                           self.backend_id, 99999999)
         qpartner2_ids = self.QPartner.search(cr, uid, domain)
@@ -77,7 +84,7 @@ class test_import_partner(QoQaTransactionCase):
     def test_import_address(self):
         """ Import an address (with dependencies) """
         cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_address):
+        with mock_api_responses(qoqa_address, qoqa_shops):
             import_record(self.session, 'qoqa.address',
                           self.backend_id, 999999991)
         domain = [('qoqa_id', '=', '999999991')]
@@ -105,7 +112,7 @@ class test_import_partner(QoQaTransactionCase):
         a_id = self.Partner.create(cr, uid,
                                    {'name': 'Guewen address 1',
                                     'parent_id': p_id})
-        with mock_api_responses(qoqa_address):
+        with mock_api_responses(qoqa_address, qoqa_shops):
             import_record(self.session, 'qoqa.address',
                           self.backend_id, 999999991)
         domain = [('qoqa_id', '=', '999999991')]

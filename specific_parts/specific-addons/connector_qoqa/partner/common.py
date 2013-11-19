@@ -22,6 +22,7 @@
 from openerp.osv import orm, fields
 
 from ..unit.backend_adapter import QoQaAdapter
+from ..unit.binder import QoQaBinder
 from ..backend import qoqa
 
 
@@ -41,6 +42,13 @@ class qoqa_res_partner(orm.Model):
         'suspicious': fields.boolean('Suspicious'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
+        'origin_shop_id': fields.many2one('qoqa.shop',
+                                          'Origin Shop'),
+        'qoqa_status': fields.selection(
+            [('prospect', 'Prospect'),
+             ('active', 'Active')],
+            string='Status on QoQa',
+            readonly=True),
     }
 
     _sql_constraints = [
@@ -72,3 +80,30 @@ class res_partner(orm.Model):
 class ResPartnerAdapter(QoQaAdapter):
     _model_name = 'qoqa.res.partner'
     _endpoint = 'user'
+
+
+@qoqa
+class CustomerStatusBinder(QoQaBinder):
+    """ 'Fake' binder: hard code bindings
+
+    ``qoqa_status`` is a selection field on
+    `qoqa.res.partner``.
+
+    The binding is a mapping between the name of the
+    selection on OpenERP and the id on QoQa.
+
+    """
+    _model_name = 'qoqa.customer.status'
+
+    qoqa_bindings = {1: 'prospect', 2: 'active'}
+    # inverse mapping
+    openerp_bindings = dict((k, v) for k, v in qoqa_bindings.iteritems())
+
+    def to_openerp(self, external_id, unwrap=False):
+        return self.qoqa_bindings[external_id]
+
+    def to_backend(self, binding_id, wrap=False):
+        return self.openerp_bindings[binding_id]
+
+    def bind(self, external_id, binding_id):
+        raise TypeError('%s cannot be synchronized' % self._model_name)

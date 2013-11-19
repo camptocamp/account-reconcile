@@ -40,6 +40,10 @@ _logger = logging.getLogger(__name__)
 
 class QoQaClient(object):
 
+    retryable = (requests.exceptions.Timeout,
+                 requests.exceptions.ConnectionError,
+                 )
+
     def __init__(self, base_url, client_key, client_secret,
                  access_token, access_token_secret, debug=False):
         if not base_url.endswith('/'):
@@ -72,7 +76,12 @@ class QoQaClient(object):
         dispatch = getattr(requests, attr)
         def with_auth(*args, **kwargs):
             kwargs['auth'] = self._auth
-            return dispatch(*args, **kwargs)
+            try:
+                return dispatch(*args, **kwargs)
+            except self.retryable as err:
+                raise NetworkRetryableError(
+                    'A network error caused the failure of the job: '
+                    '%s' % err)
         if self.debug:
             def with_debug(*args, **kwargs):
                 kwargs['verify'] = False

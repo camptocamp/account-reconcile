@@ -246,7 +246,6 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         (change current user, values in context, ...)
 
         """
-
         map_record = self._map_data()
 
         if binding_id:

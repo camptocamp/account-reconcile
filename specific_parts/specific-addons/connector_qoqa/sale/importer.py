@@ -230,8 +230,16 @@ class SaleOrderImportMapper(ImportMapper):
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
         binder = self.get_binder_for_model('payment.method')
-        payments = [_get_payment_method(self, payment, company_id)
-                    for payment in qpayments]
+        try:
+            payments = [_get_payment_method(self, payment, company_id)
+                        for payment in qpayments]
+        except FailedJobError:
+            if is_historic_import(self, record):
+                # Sometimes, an offer is on the FR website
+                # but paid with postfinance. Forgive them for the
+                # historical sales orders.
+                return
+            raise
         payments = sorted(payments, key=attrgetter('sequence'))
         return {'payment_method_id': payments[0].id}
 

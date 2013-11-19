@@ -91,7 +91,7 @@ class QoQaClient(object):
 
 
 class QoQaAdapter(CRUDAdapter):
-    """ External Records Adapter for Trello """
+    """ External Records Adapter for QoQa """
 
     _endpoint = None  # to define in subclasses
 

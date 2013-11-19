@@ -57,7 +57,50 @@ class TemplateImport(QoQaImportSynchronizer):
         """ Hook called at the end of the import """
         translation_importer = self.get_connector_unit_for_model(
             TranslationImporter)
-        translation_importer.run(self.qoqa_record, binding_id)
+        translation_importer.run(self.qoqa_record, binding_id,
+                                 mapper=TemplateImportMapper)
+
+    @property
+    def mapper(self):
+        if self._mapper is None:
+            env = self.environment
+            self._mapper = env.get_connector_unit(TemplateImportMapper)
+        return self._mapper
+
+
+@qoqa
+class TemplateVariantImportMapper(ImportMapper):
+    """ Some mappings are duplicated on templates and variants.
+
+    Otherwise, OpenERP reset the template values when a variant
+    is imported.
+
+    """
+    _model_name = ['qoqa.product.template',
+                   'qoqa.product.product',
+                   ]
+
+    @mapping
+    @only_create
+    def company(self, record):
+        """ products are shared between companies """
+        return {'company_id': False}
+
+    @only_create
+    @mapping
+    def category(self, record):
+        sess = self.session
+        data_obj = sess.pool['ir.model.data']
+        cr, uid = sess.cr, sess.uid
+        xmlid = 'qoqa_base_data', 'product_categ_historical'
+        __, category_id = data_obj.get_object_reference(cr, uid, *xmlid)
+        return {'categ_id': category_id}
+
+    @only_create
+    @mapping
+    def product_type(self, record):
+        return {'type': 'product'}
+
 
 
 @qoqa
@@ -72,17 +115,6 @@ class TemplateImportMapper(ImportMapper):
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ]
-
-    @mapping
-    @only_create
-    def company(self, record):
-        """ products are shared between companies """
-        return {'company_id': False}
-
-    @only_create
-    @mapping
-    def product_type(self, record):
-        return {'type': 'product'}
 
     @mapping
     def attributes(self, record):
@@ -113,15 +145,13 @@ class TemplateImportMapper(ImportMapper):
             values[target] = self._map_direct(main, source, target)
         return values
 
-    @only_create
     @mapping
-    def category(self, record):
-        sess = self.session
-        data_obj = sess.pool['ir.model.data']
-        cr, uid = sess.cr, sess.uid
-        xmlid = 'qoqa_base_data', 'product_categ_historical'
-        __, category_id = data_obj.get_object_reference(cr, uid, *xmlid)
-        return {'categ_id': category_id}
+    def common_with_variant(self, record):
+        """ Share some mappings with the variants """
+        mapper = self.get_connector_unit_for_model(
+            TemplateVariantImportMapper)
+        map_record = mapper.map_record(record)
+        return map_record.values(**self.options)
 
     metas_ids = {1: 'x_winemaker',
                  2: 'x_appellation',

@@ -32,6 +32,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         TranslationImporter,
                                         )
 from ..product_attribute.importer import ProductAttribute
+from ..product_template.importer import TemplateVariantImportMapper
 from ..unit.mapper import ifmissing, iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
@@ -61,7 +62,15 @@ class VariantImport(QoQaImportSynchronizer):
         """ Hook called at the end of the import """
         translation_importer = self.get_connector_unit_for_model(
             TranslationImporter)
-        translation_importer.run(self.qoqa_record, binding_id)
+        translation_importer.run(self.qoqa_record, binding_id,
+                                 mapper=VariantImportMapper)
+
+    @property
+    def mapper(self):
+        if self._mapper is None:
+            env = self.environment
+            self._mapper = env.get_connector_unit(VariantImportMapper)
+        return self._mapper
 
 
 @qoqa
@@ -113,7 +122,9 @@ class VariantImportMapper(ImportMapper):
         return values
 
     @mapping
-    @only_create
-    def company(self, record):
-        """ products are shared between companies """
-        return {'company_id': False}
+    def common_with_template(self, record):
+        """ Share some mappings with the template """
+        mapper = self.get_connector_unit_for_model(
+            TemplateVariantImportMapper)
+        map_record = mapper.map_record(record)
+        return map_record.values(**self.options)

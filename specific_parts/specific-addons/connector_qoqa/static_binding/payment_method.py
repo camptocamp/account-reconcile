@@ -65,11 +65,12 @@ class PaymentMethodBinder(QoQaDirectBinder):
 
     def to_openerp(self, external_id, unwrap=False, company_id=None):
         assert company_id
-        binding_ids = self.session.search(
-            self.model._name,
-            [('qoqa_id', '=', str(external_id)),
-             '|', ('company_id', '=', company_id),
-                  ('company_id', '=', False)])
+        with self.session.change_context(dict(active_test=False)):
+            binding_ids = self.session.search(
+                self.model._name,
+                [('qoqa_id', '=', str(external_id)),
+                 '|', ('company_id', '=', company_id),
+                      ('company_id', '=', False)])
         if not binding_ids:
             return None
         assert len(binding_ids) == 1, "Several records found: %s" % binding_ids

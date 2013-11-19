@@ -48,6 +48,29 @@ class ResPartnerBatchImport(DelayedBatchImport):
 class ResPartnerImport(QoQaImportSynchronizer):
     _model_name = 'qoqa.res.partner'
 
+    def __init__(self, environment):
+        super(ResPartnerImport, self).__init__(environment)
+        self.should_create_addresses = None
+
+    def _get_binding_id(self):
+        """Return the binding id from the qoqa id"""
+        binding_id = super(ResPartnerImport, self)._get_binding_id()
+        if binding_id is None:
+            # Create the addresses from the record only on creation
+            # of the customer. Especially useful when importing
+            # historical sales orders so we can avoid calls for
+            # the addresses, by cons, less useful later as we'll
+            # need to import separately the modified addresses anyway.
+            self.should_create_addresses = True
+        return binding_id
+
+    def _after_import(self, binding_id):
+        if self.should_create_addresses:
+            for address in self.qoqa_record['addresses']:
+                importer = self.get_connector_unit_for_model(
+                    QoQaImportSynchronizer, 'qoqa.address')
+                importer.run(address['id'], record=address)
+
 
 @qoqa
 class ResPartnerImportMapper(ImportMapper):

@@ -60,23 +60,11 @@ class ShopImport(QoQaImportSynchronizer):
     """
     _model_name = 'qoqa.shop'
 
-    def run(self, qoqa_id, force=False, record=None):
-        if record is not None:
-            self.qoqa_record = record
-        return super(ShopImport, self).run(qoqa_id, force=force)
-
     def _create(self, data):
         openerp_binding_id = super(ShopImport, self)._create(data)
         checkpoint = self.get_connector_unit_for_model(AddCheckpoint)
         checkpoint.run(openerp_binding_id)
         return openerp_binding_id
-
-    def _get_qoqa_data(self):
-        """ Return the raw QoQa data for ``self.qoqa_id`` """
-        if self.qoqa_record:
-            return self.qoqa_record
-        else:
-            return super(ShopImport, self)._get_qoqa_data()
 
 
 @qoqa

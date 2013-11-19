@@ -55,6 +55,18 @@ class AddressImport(QoQaImportSynchronizer):
         rec = self.qoqa_record
         self._import_dependency(rec['user_id'], 'qoqa.res.partner')
 
+    def _import(self, binding_id):
+        if binding_id is None:
+            # this is to handle a particular scenario:
+            # `_get_binding_id` is called at the beginning of the
+            # importer. When we import the dependencies, if the partner
+            # was not present, it is imported. The import of the partner
+            # will import itself all the addresses, including this one.
+            # so we get its binding ID in order to not create a new
+            # address and ends up with a "unique constraint error".
+            binding_id = self._get_binding_id()
+        return super(AddressImport, self)._import(binding_id)
+
 
 @qoqa
 class AddressImportMapper(ImportMapper):

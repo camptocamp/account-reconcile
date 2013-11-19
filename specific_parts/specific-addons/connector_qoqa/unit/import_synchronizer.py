@@ -207,16 +207,22 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """ Hook called at the end of the import """
         return
 
-    def run(self, qoqa_id, force=False):
+    def run(self, qoqa_id, force=False, record=None):
         """ Run the synchronization
+
+        A record can be given, reducing number of calls when
+        a call already returns data (example: user returns addresses)
 
         :param qoqa_id: identifier of the record on QoQa
         """
         self.qoqa_id = qoqa_id
-        try:
-            self.qoqa_record = self._get_qoqa_data()
-        except IDMissingInBackend:
-            return _('Record does no longer exist in QoQa')
+        if record is not None:
+            self.qoqa_record = record
+        else:
+            try:
+                self.qoqa_record = self._get_qoqa_data()
+            except IDMissingInBackend:
+                return _('Record does no longer exist in QoQa')
         binding_id = self._get_binding_id()
 
         reason = self.must_skip()

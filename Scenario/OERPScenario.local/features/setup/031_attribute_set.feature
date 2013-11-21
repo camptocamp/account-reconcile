@@ -262,3 +262,4 @@ Feature: Configure the attribute sets
        | ageing         | 13       |
        | country_id     | 14       |
        | abv            | 15       |
+       | wine_bottle_id | 17       |

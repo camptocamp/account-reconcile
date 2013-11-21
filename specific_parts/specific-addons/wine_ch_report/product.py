@@ -35,6 +35,6 @@ class product_template(orm.Model):
             ondelete="restrict"),
         'wine_bottle_id': fields.many2one(
             'wine.bottle',
-            string='Wine Volume',
+            string='Volume',
             ondelete="restrict"),
         }

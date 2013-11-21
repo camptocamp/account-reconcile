@@ -44,7 +44,7 @@ class test_import_order(QoQaTransactionCase):
         """ Import a sales order """
         cr, uid = self.cr, self.uid
         data = (qoqa_order, qoqa_product, qoqa_offer,
-                qoqa_user, qoqa_address, qoqa_shops)
+                qoqa_address, qoqa_shops)
         with mock_api_responses(*data):
             import_record(self.session, 'qoqa.sale.order',
                           self.backend_id, 99999999)

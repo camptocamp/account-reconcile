@@ -169,7 +169,7 @@ class TemplateImportMapper(ImportMapper):
         """ Import metas, which are informations for the wine
 
         This is hardcoded because only used for the import of the
-        history before the golive. Later, these informations will only
+        history before the go-live. Later, these informations will only
         be available on OpenERP and used to print the wine reports.
         """
         sess = self.session

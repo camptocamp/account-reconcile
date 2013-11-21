@@ -106,7 +106,7 @@ class ShopImportMapper(ImportMapper):
 
         """
         name = record['name']
-        # if no corresponding xml id is found (shops added after golive),
+        # if no corresponding xml id is found (shops added after go-live),
         # a new shop will be created
         if name in self._name_to_xmlid:
             sess = self.session

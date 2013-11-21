@@ -97,7 +97,7 @@ class CustomerStatusBinder(QoQaBinder):
 
     qoqa_bindings = {1: 'prospect', 2: 'active'}
     # inverse mapping
-    openerp_bindings = dict((k, v) for k, v in qoqa_bindings.iteritems())
+    openerp_bindings = dict((v, k) for k, v in qoqa_bindings.iteritems())
 
     def to_openerp(self, external_id, unwrap=False):
         return self.qoqa_bindings[external_id]

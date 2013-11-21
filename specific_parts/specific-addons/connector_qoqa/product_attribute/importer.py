@@ -139,13 +139,12 @@ class VariantProductAttribute(ProductAttribute):
         from the record.
 
         """
-        qoqa_tmpl_id = record['product_id']
         tmpl_binder = self.get_binder_for_model('qoqa.product.template')
-        qoqa_product_id = record['product_id']
-        tmpl_id = tmpl_binder.to_openerp(qoqa_product_id, unwrap=True)
-        assert tmpl_id is not None, \
-               ("product_id %s should have been imported in "
-                "VariantImport._import_dependencies" % record['product_id'])
+        qoqa_tmpl_id = record['product_id']
+        tmpl_id = tmpl_binder.to_openerp(qoqa_tmpl_id, unwrap=True)
+        assert tmpl_id is not None, (
+            "product_id (template) %s should have been imported in "
+            "VariantImport._import_dependencies" % qoqa_tmpl_id)
         tmpl = self.session.browse('product.template', tmpl_id)
         return tmpl.attribute_set_id.id
 

@@ -21,8 +21,6 @@
 
 from openerp.osv import orm, fields
 
-from ..backend import qoqa
-
 
 class qoqa_sale_order_line(orm.Model):
     _name = 'qoqa.sale.order.line'

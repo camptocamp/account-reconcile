@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-import requests
 from requests_oauthlib import OAuth1Session
 from openerp.osv import orm, fields
 from openerp.tools.translate import _

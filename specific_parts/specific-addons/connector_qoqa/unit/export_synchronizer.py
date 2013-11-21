@@ -26,7 +26,6 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
-from openerp.addons.connector.exception import IDMissingInBackend
 from .import_synchronizer import import_record
 from ..connector import get_environment
 from ..backend import qoqa

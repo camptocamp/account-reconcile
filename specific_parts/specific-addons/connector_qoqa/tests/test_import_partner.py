@@ -18,7 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.addons.connector.session import ConnectorSession
 from .common import mock_api_responses, QoQaTransactionCase
 from .data_metadata import qoqa_shops
 from .data_partner import qoqa_user, qoqa_address
@@ -109,9 +108,9 @@ class test_import_partner(QoQaTransactionCase):
                                    {'name': 'Guewen',
                                     'email': 'guewen@gmail.com-test',
                                     'is_company': True})
-        a_id = self.Partner.create(cr, uid,
-                                   {'name': 'Guewen address 1',
-                                    'parent_id': p_id})
+        self.Partner.create(cr, uid,
+                            {'name': 'Guewen address 1',
+                             'parent_id': p_id})
         with mock_api_responses(qoqa_address, qoqa_shops):
             import_record(self.session, 'qoqa.address',
                           self.backend_id, 999999991)

@@ -27,7 +27,6 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   only_create,
                                                   ImportMapper,
                                                   )
-from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
@@ -100,7 +99,6 @@ class TemplateVariantImportMapper(ImportMapper):
     @mapping
     def product_type(self, record):
         return {'type': 'product'}
-
 
 
 @qoqa

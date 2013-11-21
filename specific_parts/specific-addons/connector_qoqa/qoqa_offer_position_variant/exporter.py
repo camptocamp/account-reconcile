@@ -19,9 +19,7 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
-                                                  ExportMapper)
+from openerp.addons.connector.unit.mapper import ExportMapper
 from ..backend import qoqa
 from ..unit.mapper import m2o_to_backend
 

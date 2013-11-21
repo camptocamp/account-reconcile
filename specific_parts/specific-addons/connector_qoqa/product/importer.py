@@ -22,7 +22,6 @@
 import logging
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  only_create,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
@@ -33,7 +32,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         )
 from ..product_attribute.importer import ProductAttribute
 from ..product_template.importer import TemplateVariantImportMapper
-from ..unit.mapper import ifmissing, iso8601_to_utc
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 

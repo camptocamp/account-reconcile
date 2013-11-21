@@ -18,7 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.addons.connector.session import ConnectorSession
 from .common import mock_api_responses, QoQaTransactionCase
 from .data_product import qoqa_product, qoqa_product_meta
 from ..unit.import_synchronizer import import_record

@@ -18,9 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import unittest2
 
-from openerp.addons.connector.session import ConnectorSession
 from .common import mock_api_responses, QoQaTransactionCase
 from .data_metadata import qoqa_shops
 from .data_order import qoqa_order

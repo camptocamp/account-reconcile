@@ -61,7 +61,6 @@ QOQA_PAY_STATUS_PENDING = 1
 DAYS_BEFORE_CANCEL = 30
 
 
-
 @qoqa
 class SaleOrderBatchImport(DelayedBatchImport):
     """ Import the QoQa Sales Order.
@@ -229,7 +228,6 @@ class SaleOrderImportMapper(ImportMapper):
         qshop_id = qshop_binder.to_openerp(record['shop_id'])
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
-        binder = self.get_binder_for_model('payment.method')
         try:
             payments = [_get_payment_method(self, payment, company_id)
                         for payment in qpayments]
@@ -273,7 +271,6 @@ class SaleOrderImportMapper(ImportMapper):
         return values
 
     def finalize(self, map_record, values):
-        sess = self.session
         values.setdefault('order_line', [])
         values = self._add_shipping_line(map_record, values)
         values['qoqa_order_line_ids'] = self.lines(map_record)

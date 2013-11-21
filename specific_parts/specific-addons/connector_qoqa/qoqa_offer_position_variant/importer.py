@@ -19,10 +19,7 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
-                                                  only_create,
-                                                  backend_to_m2o,
+from openerp.addons.connector.unit.mapper import (backend_to_m2o,
                                                   ImportMapper)
 from ..backend import qoqa
 

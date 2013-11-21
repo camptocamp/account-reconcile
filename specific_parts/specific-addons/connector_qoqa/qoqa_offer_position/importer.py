@@ -20,14 +20,11 @@
 ##############################################################################
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
-                                                  only_create,
                                                   backend_to_m2o,
                                                   ImportMapper)
-from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import QoQaImportSynchronizer
-from ..unit.mapper import ifmissing, iso8601_to_utc, qoqafloat
+from ..unit.mapper import iso8601_to_utc, qoqafloat
 
 
 @qoqa

@@ -19,8 +19,6 @@
 #
 ##############################################################################
 
-import mock
-
 import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
 from ..connector import get_environment

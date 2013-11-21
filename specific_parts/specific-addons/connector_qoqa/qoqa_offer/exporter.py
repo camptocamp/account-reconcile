@@ -23,7 +23,6 @@ from datetime import datetime, timedelta
 import pytz
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
                                                   ExportMapper)
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,

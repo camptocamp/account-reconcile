@@ -20,7 +20,6 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from openerp.addons.connector.session import ConnectorSession
 from ..unit.binder import QoQaDirectBinder
 from ..backend import qoqa
 

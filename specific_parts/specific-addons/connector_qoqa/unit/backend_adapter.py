@@ -24,8 +24,7 @@ import logging
 import requests
 from requests_oauthlib import OAuth1
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
-from openerp.addons.connector.exception import (NetworkRetryableError,
-                                                RetryableJobError)
+from openerp.addons.connector.exception import NetworkRetryableError
 from ..exception import QoQaResponseNotParsable, QoQaAPISecurityError
 
 _logger = logging.getLogger(__name__)
@@ -167,7 +166,7 @@ class QoQaAdapter(CRUDAdapter):
         response = self.client.put(url + str(id),
                                    data=json.dumps(vals),
                                    headers=headers)
-        result = self._handle_response(response)
+        self._handle_response(response)
         return True
 
     def read(self, id):

@@ -33,7 +33,6 @@ from ..unit.import_synchronizer import (import_batch,
                                         )
 from ..connector import get_environment
 from ..exception import QoQaAPISecurityError, QoQaResponseNotParsable
-from ..unit.backend_adapter import QoQaClient
 
 """
 We'll have 1 ``qoqa.backend`` sharing the connection informations probably,

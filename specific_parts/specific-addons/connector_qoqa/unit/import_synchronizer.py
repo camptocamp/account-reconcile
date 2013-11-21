@@ -30,7 +30,6 @@ from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
 from openerp.addons.connector.unit.mapper import ImportMapper
 from openerp.addons.connector.exception import (IDMissingInBackend,
-                                                NetworkRetryableError,
                                                 RetryableJobError)
 from ..backend import qoqa
 from ..connector import (get_environment,

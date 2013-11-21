@@ -19,8 +19,6 @@
 #
 ##############################################################################
 
-import mock
-
 import openerp.tests.common as common
 from openerp.addons.connector.session import ConnectorSession
 from ..connector import get_environment
@@ -38,7 +36,6 @@ class test_company_binder(common.TransactionCase):
     def setUp(self):
         super(test_company_binder, self).setUp()
         cr, uid = self.cr, self.uid
-        backend_model = self.registry('qoqa.backend')
         self.session = ConnectorSession(cr, uid)
         backend_id = self.ref('connector_qoqa.qoqa_backend_config')
         company_obj = self.registry('res.company')

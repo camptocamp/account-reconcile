@@ -19,9 +19,7 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
-                                                  ExportMapper)
+from openerp.addons.connector.unit.mapper import ExportMapper
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
                                             on_record_unlink,
@@ -63,6 +61,7 @@ class OfferPositionExporter(QoQaExporter):
         self._export_dependency(binding.offer_id, 'qoqa.offer')
         self._export_dependency(binding.product_tmpl_id,
                                 'qoqa.product.template')
+
 
 @qoqa
 class OfferPositionExportMapper(ExportMapper):

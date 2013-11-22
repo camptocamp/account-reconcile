@@ -86,6 +86,22 @@ Feature: Configure QoQa.ch
     | name         | QoQa Services SA         |
     | company_id   | by oid: scenario.qoqa_ch |
     | warehouse_id | by oid: stock.warehouse0 |
+    Given I need a "stock.warehouse" with oid: scenario.warehouse_poste
+    And having:
+    | name          | value                                     |
+    | name          | Poste Daillens                            |
+    | lot_input_id  | by oid: stock.stock_location_stock  |
+    | lot_output_id | by oid: stock.stock_location_output |
+    | lot_stock_id  | by oid: stock.stock_location_stock  |
+    | company_id    | by oid: scenario.qoqa_ch            |
+    Given I need a "stock.warehouse" with oid: scenario.warehouse_gefco
+    And having:
+    | name          | value                                     |
+    | name          | Gefco                                     |
+    | lot_input_id  | by oid: stock.stock_location_stock  |
+    | lot_output_id | by oid: stock.stock_location_output |
+    | lot_stock_id  | by oid: stock.stock_location_stock  |
+    | company_id    | by oid: scenario.qoqa_ch            |
 
   @account_chart_ch
   Scenario: Generate account chart for QoQa Services SA

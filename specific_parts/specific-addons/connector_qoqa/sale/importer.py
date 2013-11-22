@@ -309,6 +309,7 @@ class SaleOrderImportMapper(ImportMapper):
     def _promo_line(self, promo_values, values):
         builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
         builder.price_unit = float(promo_values['amount']) / 100
+        # TODO: the promos can offer the shipping fees...
         return (0, 0, builder.get_line())
 
     def finalize(self, map_record, values):
@@ -375,6 +376,7 @@ class SaleOrderImportMapper(ImportMapper):
         # remaining items in invoice: shipping and discount
         shippings = []
         for item_id, invoice_item in inv_items.copy().iteritems():
+            # TODO: actually the API always says "1"...
             if invoice_item['type_id'] == 1:
                 raise MappingError('Invoice item %s does not exist in '
                                    'the sales order.' % inv_items['id'])

@@ -25,6 +25,7 @@ from .data_order import qoqa_order
 from .data_partner import qoqa_user, qoqa_address
 from .data_offer import qoqa_offer
 from .data_product import qoqa_product
+from .data_promo import qoqa_promo
 from ..unit.import_synchronizer import import_record
 
 
@@ -41,12 +42,13 @@ class test_import_order(QoQaTransactionCase):
                 'connector_user_id': connector_user_id}
         self.company_id = company_obj.create(cr, uid, vals)
         self.ship_product_id = self.ref('connector_ecommerce.product_product_shipping')
+        self.discount_product_id = self.ref('connector_ecommerce.product_product_discount')
 
     def test_import_order(self):
         """ Import a sales order """
         cr, uid = self.cr, self.uid
         data = (qoqa_order, qoqa_product, qoqa_offer,
-                qoqa_address, qoqa_shops)
+                qoqa_address, qoqa_shops, qoqa_promo)
         with mock_api_responses(*data):
             import_record(self.session, 'qoqa.sale.order',
                           self.backend_id, 99999999)
@@ -57,12 +59,15 @@ class test_import_order(QoQaTransactionCase):
         self.assertEquals(qsale.invoice_ref, 'XRIHJQ')
         lines = qsale.order_line
         self.assertEquals(len(lines), 3)
-        ship_line = prod_line = None
+        ship_line = prod_line = promo_line = None
         for line in lines:
             if line.product_id.id == self.ship_product_id:
                 ship_line = line
+            elif line.product_id.id == self.discount_product_id:
+                promo_line = line
             else:
                 prod_line = line
+        self.assertTrue(ship_line and promo_line and prod_line)
         # shipping line
         self.assertEquals(ship_line.price_unit, 6)
         self.assertEquals(ship_line.product_uom_qty, 1)
@@ -71,3 +76,6 @@ class test_import_order(QoQaTransactionCase):
         self.assertEquals(prod_line.price_unit, position.unit_price)
         self.assertEquals(prod_line.product_uom_qty, 12)
         self.assertEquals(prod_line.custom_text, 'custom text')
+        # promo line
+        self.assertEquals(promo_line.price_unit, -9.5)
+        self.assertEquals(promo_line.product_uom_qty, 1)

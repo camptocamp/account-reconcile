@@ -40,7 +40,7 @@ r'''{
         "type_id": 1,
         "offer_id": 5447,
         "variation_id": 10183,
-        "promo_id": 17422,
+        "promo_id": 99999999,
         "stock_id": null,
         "lot_size": 6,
         "custom_text": "custom text",

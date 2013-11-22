@@ -35,10 +35,13 @@ from openerp.addons.connector.unit.mapper import (mapping,
 from openerp.addons.connector.exception import (NothingToDoJob,
                                                 FailedJobError,
                                                 )
-from openerp.addons.connector_ecommerce.sale import ShippingLineBuilder
+from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
+                                                     SpecialOrderLineBuilder,
+                                                     )
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
+from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
@@ -303,12 +306,20 @@ class SaleOrderImportMapper(ImportMapper):
             builder.carrier = carrier
         return (0, 0, builder.get_line())
 
+    def _promo_line(self, promo_values, values):
+        builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
+        builder.price_unit = float(promo_values['amount']) / 100
+        return (0, 0, builder.get_line())
+
     def finalize(self, map_record, values):
         values.setdefault('order_line', [])
         lines = self.extract_lines(map_record)
 
         for shipping in lines.shipping:
             values['order_line'].append(self._shipping_line(shipping, values))
+
+        for discount in lines.discount:
+            values['order_line'].append(self._promo_line(discount, values))
 
         map_child = self.get_connector_unit_for_model(
             self._map_child_class, 'qoqa.sale.order.line')
@@ -319,7 +330,6 @@ class SaleOrderImportMapper(ImportMapper):
 
         # TODO: create a gift card line when a payment has a method_id
         # which is a gift_card method
-        # TODO: create voucher / promo
         onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
         return onchange.play(values, values['qoqa_order_line_ids'])
 
@@ -345,7 +355,10 @@ class SaleOrderImportMapper(ImportMapper):
         order_items = dict((line['item_id'], line) for line
                            in map_record.source['order_items'])
 
+        promo_ids = []
         for item in map_record.source['items']:
+            if item.get('promo_id'):
+                promo_ids.append(item['promo_id'])
             nitem = item.copy()
             item_id = nitem['id']
             nitem.update(order_items[item_id])
@@ -353,9 +366,14 @@ class SaleOrderImportMapper(ImportMapper):
             nitem.pop('id')  # remove id just to avoid confusion
             lines.append(nitem)
 
+        discounts = []
+        for promo_id in promo_ids:
+            adapter = self.get_connector_unit_for_model(QoQaAdapter,
+                                                        'qoqa.promo')
+            discounts.append(adapter.read(promo_id))
+
         # remaining items in invoice: shipping and discount
         shippings = []
-        discounts = []
         for item_id, invoice_item in inv_items.copy().iteritems():
             if invoice_item['type_id'] == 1:
                 raise MappingError('Invoice item %s does not exist in '
@@ -363,7 +381,7 @@ class SaleOrderImportMapper(ImportMapper):
             if invoice_item['type_id'] == 2:  # TODO constants
                 shippings.append(inv_items.pop(item_id))
             elif invoice_item['type_id'] == 3:
-                discounts.append(inv_items.pop(item_id))
+                del inv_items[item_id]  # already found in 'items'
             elif invoice_item['type_id'] == 4:
                 # TODO service?
                 pass
@@ -460,7 +478,23 @@ class QoQaShippingLineBuilder(ShippingLineBuilder):
 
     def get_line(self):
         line = super(QoQaShippingLineBuilder, self).get_line()
+        line['sequence'] = 99  # display at the bottom
         if self.carrier:
             line['product_id'] = self.carrier.product_id.id
             line['name'] = self.carrier.name
+        return line
+
+
+@qoqa
+class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
+    _model_name = 'qoqa.sale.order'
+
+    def __init__(self, environment):
+        super(QoQaPromoLineBuilder, self).__init__(environment)
+        self.product_ref = ('connector_ecommerce', 'product_product_discount')
+        self.sign = -1
+
+    def get_line(self):
+        line = super(QoQaPromoLineBuilder, self).get_line()
+        line['sequence'] = 98  # display at the bottom
         return line

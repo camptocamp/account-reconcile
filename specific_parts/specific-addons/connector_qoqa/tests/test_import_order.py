@@ -36,7 +36,9 @@ class test_import_order(QoQaTransactionCase):
         cr, uid = self.cr, self.uid
         self.QSale = self.registry('qoqa.sale.order')
         company_obj = self.registry('res.company')
-        vals = {'name': 'Qtest', 'qoqa_id': 42}
+        connector_user_id = self.ref('base.user_root')
+        vals = {'name': 'Qtest', 'qoqa_id': 42,
+                'connector_user_id': connector_user_id}
         self.company_id = company_obj.create(cr, uid, vals)
         self.ship_product_id = self.ref('connector_ecommerce.product_product_shipping')
 
@@ -52,15 +54,20 @@ class test_import_order(QoQaTransactionCase):
         qsale_ids = self.QSale.search(cr, uid, domain)
         self.assertEquals(len(qsale_ids), 1)
         qsale = self.QSale.browse(cr, uid, qsale_ids[0])
+        self.assertEquals(qsale.invoice_ref, 'XRIHJQ')
         lines = qsale.order_line
-        self.assertEquals(len(lines), 2)
+        self.assertEquals(len(lines), 3)
         ship_line = prod_line = None
         for line in lines:
             if line.product_id.id == self.ship_product_id:
                 ship_line = line
             else:
                 prod_line = line
-        self.assertEquals(ship_line.price_unit, 10)  # TODO adapt to real amount
+        # shipping line
+        self.assertEquals(ship_line.price_unit, 6)
+        self.assertEquals(ship_line.product_uom_qty, 1)
+        # product line
         position = prod_line.offer_position_id
         self.assertEquals(prod_line.price_unit, position.unit_price)
-        self.assertEquals(prod_line.product_uom_qty, 2)
+        self.assertEquals(prod_line.product_uom_qty, 12)
+        self.assertEquals(prod_line.custom_text, 'custom text')

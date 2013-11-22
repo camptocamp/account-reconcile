@@ -21,11 +21,13 @@
 from __future__ import division
 
 import logging
+from collections import namedtuple
 from datetime import datetime, timedelta
 from operator import attrgetter
 
 from openerp.tools.translate import _
 from openerp.addons.connector.connector import ConnectorUnit
+from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper,
@@ -59,6 +61,10 @@ QOQA_PAY_STATUS_FAILED = 3
 QOQA_PAY_STATUS_CANCELLED = 6
 QOQA_PAY_STATUS_PENDING = 1
 DAYS_BEFORE_CANCEL = 30
+QOQA_INVOICE_TYPE_ISSUED = 1
+QOQA_INVOICE_TYPE_RECEIVED = 2
+QOQA_INVOICE_TYPE_ISSUED_CN = 3
+QOQA_INVOICE_TYPE_RECEIVED_CN = 4
 
 
 @qoqa
@@ -187,6 +193,30 @@ def _get_payment_method(connector_unit, payment, company_id):
     return session.browse('payment.method', method_id)
 
 
+def extract_invoice_from_sale(sale_record):
+    """ Invoices are contained in the sales order envelope.
+
+    Several invoices can be there, but only 1 is the invoice that
+    interest us. (others are refund, ...)
+
+    """
+    invoices = sale_record['invoices']
+    normal_invoice = [inv for inv in invoices
+                        if inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED]
+    if len(normal_invoice) != 1:
+        raise MappingError('1 invoice expected for sales order %s, '
+                            'got: %d' %
+                            (sale_record['id'], len(normal_invoice)))
+    return normal_invoice[0]
+
+
+# represent the lines of a sales order:
+# lines is a list of normal lines
+# discount is a list of discount lines
+# shipping is a list of shipping lines
+QoQaLines = namedtuple('QoQaLines', ['normal', 'discount', 'shipping'])
+
+
 @qoqa
 class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
@@ -242,6 +272,14 @@ class SaleOrderImportMapper(ImportMapper):
         return {'payment_method_id': payments[0].id}
 
     @mapping
+    def from_invoice(self, record):
+        """ Get the invoice node and extract some data """
+        invoice = extract_invoice_from_sale(record)
+        total = float(invoice['total']) / 100
+        ref = invoice['reference']
+        return {'total_amount': total, 'invoice_ref': ref}
+
+    @mapping
     def from_offer(self, record):
         """ Get the linked offer and takes some values from there """
         binder = self.get_binder_for_model('qoqa.offer')
@@ -256,54 +294,83 @@ class SaleOrderImportMapper(ImportMapper):
         }
         return values
 
-    def _add_shipping_line(self, map_record, values):
+    def _shipping_line(self, source_line, values):
         builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
-        # TODO: put the correct amount (not in the API yet)
-        builder.price_unit = 10
-
+        builder.price_unit = float(source_line['unit_price']) / 100
         if values.get('carrier_id'):
             carrier = self.session.browse('delivery.carrier',
                                           values['carrier_id'])
             builder.carrier = carrier
-
-        line = (0, 0, builder.get_line())
-        values['order_line'].append(line)
-        return values
+        return (0, 0, builder.get_line())
 
     def finalize(self, map_record, values):
         values.setdefault('order_line', [])
-        values = self._add_shipping_line(map_record, values)
-        values['qoqa_order_line_ids'] = self.lines(map_record)
-        onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
+        lines = self.extract_lines(map_record)
+
+        for shipping in lines.shipping:
+            values['order_line'].append(self._shipping_line(shipping, values))
+
+        map_child = self.get_connector_unit_for_model(
+            self._map_child_class, 'qoqa.sale.order.line')
+        items = map_child.get_items(lines.normal, map_record,
+                                    'qoqa_order_line_ids',
+                                    options=self.options)
+        values['qoqa_order_line_ids'] = items
 
         # TODO: create a gift card line when a payment has a method_id
         # which is a gift_card method
         # TODO: create voucher / promo
+        onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
         return onchange.play(values, values['qoqa_order_line_ids'])
 
-    def lines(self, map_record):
-        """ Lines are composed of 2 list of dicts
+    def extract_lines(self, map_record):
+        """ Lines are composed of 3 list of dicts. Extract lines.
 
-        1 list is 'order_items', the other is 'items'.
-        We keep the id of the 'item' and discard the one of the
-        'order_items'.
+        1 list is 'order_items', the other is 'items'. The third
+        is in 'invoices'.
+        We merge the 2 first dict, and we keep the invoice item
+        in an 'invoice_item' key for the lines of the sales order.
+
+        The invoice items are used to: get the amounts: add special lines
+        like the shipping fees or discounts.
+
+        The special lines are returned separately because they only have
+        the invoice items, not the order items.
 
         """
         lines = []
+        invoice = extract_invoice_from_sale(map_record.source)
+        inv_items = dict((line['item_id'], line) for line
+                         in invoice['items'])
+        order_items = dict((line['item_id'], line) for line
+                           in map_record.source['order_items'])
+
         for item in map_record.source['items']:
             nitem = item.copy()
             item_id = nitem['id']
-            for order_item in map_record.source['order_items']:
-                if order_item['item_id'] != item_id:
-                    continue
-                nitem.update(order_item)
+            nitem.update(order_items[item_id])
+            nitem['invoice_item'] = inv_items.pop(item_id)
             nitem.pop('id')  # remove id just to avoid confusion
             lines.append(nitem)
 
-        map_child = self.get_connector_unit_for_model(
-            self._map_child_class, 'qoqa.sale.order.line')
-        items = map_child.get_items(lines, map_record, 'qoqa_order_line_ids',
-                                    options=self.options)
+        # remaining items in invoice: shipping and discount
+        shippings = []
+        discounts = []
+        for item_id, invoice_item in inv_items.copy().iteritems():
+            if invoice_item['type_id'] == 1:
+                raise MappingError('Invoice item %s does not exist in '
+                                   'the sales order.' % inv_items['id'])
+            if invoice_item['type_id'] == 2:  # TODO constants
+                shippings.append(inv_items.pop(item_id))
+            elif invoice_item['type_id'] == 3:
+                discounts.append(inv_items.pop(item_id))
+            elif invoice_item['type_id'] == 4:
+                # TODO service?
+                pass
+        if inv_items:
+            # an item has not been extracted
+            raise MappingError('Remaining items in invoice: %s' % inv_items)
+        items = QoQaLines(normal=lines, discount=discounts, shipping=shippings)
         return items
 
 

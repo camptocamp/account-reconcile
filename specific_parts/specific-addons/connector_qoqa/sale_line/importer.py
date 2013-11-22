@@ -54,15 +54,14 @@ class SaleOrderLineImportMapper(ImportMapper):
 
     # TODO
     # promo_id
-    # stock_id
     # lot_size
     # custom_text
-    # delivery_at
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
-              ('quantity', 'product_uom_qty'),
-              ('quantity', 'product_uos_qty'),
+              ('quantity', 'qoqa_quantity'),
+              ('custom_text', 'custom_text'),
+              ('lot_size', 'qoqa_lot_size'),
               ('item_id', 'qoqa_id'),
               (backend_to_m2o('variation_id', binding='qoqa.product.product'),
                'product_id'),
@@ -76,6 +75,18 @@ class SaleOrderLineImportMapper(ImportMapper):
         position = self.session.browse('qoqa.offer.position', position_id)
         return {'price_unit': position.unit_price,
                 'offer_position_id': position_id}
+
+    @mapping
+    def quantity(self, record):
+        """ Quantity is multiplied by the lot size:
+
+        Example: a customer buy 2 x 6 bottles of wine: 12 units
+
+        """
+        quantity = record['quantity']
+        lot_size = record['lot_size']
+        total = quantity * lot_size
+        return {'product_uos_qty': total, 'product_uom_qty': total}
 
 
 @qoqa

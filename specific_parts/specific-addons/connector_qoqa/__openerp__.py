@@ -53,6 +53,7 @@ Synchronize OpenERP with the different QoQa Stores
           'product/product_view.xml',
           'partner/res_partner_view.xml',
           'address/res_partner_view.xml',
+          'sale/sale_view.xml',
           'static_binding/res_company_view.xml',
           'static_binding/account_tax_view.xml',
           'static_binding/res_lang_view.xml',

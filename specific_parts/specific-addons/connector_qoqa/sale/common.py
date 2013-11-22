@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
+import openerp.addons.decimal_precision as dp
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
@@ -46,11 +47,10 @@ class qoqa_sale_order(orm.Model):
         'qoqa_order_line_ids': fields.one2many('qoqa.sale.order.line',
                                                'qoqa_order_id',
                                                'QoQa Order Lines'),
-        # TODO
-        # 'type_id'
-        # 'status_id'
-        # 'shipper_service_id'
-        # 'shipper_relay_id'
+        'total_amount': fields.float(
+            'Total amount',
+            digits_compute=dp.get_precision('Account')),
+        'invoice_ref': fields.char('Invoice Ref. on QoQa'),
     }
 
     _sql_constraints = [

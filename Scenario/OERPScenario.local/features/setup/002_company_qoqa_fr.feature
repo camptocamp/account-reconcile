@@ -152,3 +152,26 @@ Feature: Configure QoQa.fr
     | price_version_id | by oid: scenario.pricelist_version_qoqa_fr |
     | company_id       | by oid: scenario.qoqa_fr                   |
      And I set selection field "base" with 1
+
+    Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_fr_buy
+    And having:
+    | name                | value                             |
+    | name                | Liste de prix achat               |
+    | type                | purchase                          |
+    | company_id          | by oid: scenario.qoqa_fr          |
+    | currency_id         | by oid: base.EUR                  |
+
+    Given I need a "product.pricelist.version" with oid: scenario.pricelist_version_qoqa_fr_buy
+    And having:
+    | name         | value                                           |
+    | name         | Version de la liste de Prix Achat par défaut    |
+    | pricelist_id | by oid: scenario.pricelist_qoqa_fr_buy          |
+    | company_id   | by oid: scenario.qoqa_fr                        |
+
+    Given I need a "product.pricelist.item" with oid: scenario.pricelist_item_qoqa_fr_buy
+    And having:
+    | name             | value                                      |
+    | name             | Ligne de list de prix achat par défaut  |
+    | price_version_id | by oid: scenario.pricelist_version_qoqa_fr_buy |
+    | company_id       | by oid: scenario.qoqa_fr                   |
+    And I set selection field "base" with -2

@@ -23,6 +23,7 @@
  'version': '0.0.1',
  'category': 'Connector',
  'depends': ['connector',
+             'connector_ecommerce',
              'sale',
              'qoqa_offer',
              'qoqa_base_data',

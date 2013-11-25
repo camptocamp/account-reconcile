@@ -147,12 +147,24 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
 #Other
      | Contact Creation                 |
 
-  @desactivate_rules
+  @setup_rules
   Scenario: DESACTIVATE SOME IR.RULE
   # this may break on second launch cause the rule isn't found any more
     Given I find a "ir.rule" with name: 'res.partner company'
      And having:
         | name        | value                         |
         | active      | False                         |
+    Given I find a "ir.rule" with name: 'product pricelist company rule'
+     And having:
+        | name             | value                         |
+        | domain_force     | ['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]  |
+    Given I find a "ir.rule" with name: 'product pricelist item company rule'
+     And having:
+        | name             | value                         |
+        | domain_force     | ['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]  |
+    Given I find a "ir.rule" with name: 'product pricelist version company rule'
+     And having:
+        | name             | value                         |
+        | domain_force     | ['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]  |
 
  

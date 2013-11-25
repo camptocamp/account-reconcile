@@ -52,11 +52,6 @@ class SaleOrderLineImportMapper(ImportMapper):
     """
     _model_name = 'qoqa.sale.order.line'
 
-    # TODO
-    # promo_id
-    # lot_size
-    # custom_text
-
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ('quantity', 'qoqa_quantity'),

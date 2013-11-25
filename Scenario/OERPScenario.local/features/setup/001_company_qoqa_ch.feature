@@ -188,3 +188,12 @@ Feature: Configure QoQa.ch
     | price_version_id | by oid: scenario.pricelist_version_qoqa_ch_buy |
     | company_id       | by oid: scenario.qoqa_ch                   |
     And I set selection field "base" with name: Cost Price CHF
+
+  @pricelist_property_ch @pricelist
+  Scenario: Pricelist property for Holding
+    Given I set global property named "property_product_pricelist_ch" for model "res.partner" and field "property_product_pricelist" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "product.pricelist" using column "name" and value "Liste de prix publique CH"
+    
+    Given I set global property named "property_product_pricelist_purchase_ch" for model "res.partner" and field "property_product_pricelist_purchase" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "product.pricelist" using column "name" and value "Liste de prix achat CH"
+

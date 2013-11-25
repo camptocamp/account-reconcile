@@ -49,4 +49,15 @@ Feature: Configure the Holding company
     | name                | Liste de prix publique Holding       |
     And I set selection field "base" with name: Public Price CHF Holding
 
-
+  @pricelist_property_holding @pricelist
+  Scenario: Pricelist property for Holding
+    Given I find a "ir.property" with oid: product.property_product_pricelist
+    And having:
+    | name                | value                             |
+    | name                | property_product_pricelist_holding|
+    | company_id          | by oid: base.main_company         |
+    Given I find a "ir.property" with oid: purchase.property_product_pricelist_purchase
+    And having:
+    | name                | value                             |
+    | name                | property_product_pricelist_purchase_holding|
+    | company_id          | by oid: base.main_company         |

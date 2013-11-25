@@ -19,6 +19,8 @@
 #
 ##############################################################################
 
+from __future__ import division
+
 from openerp.osv import orm, fields
 import openerp.addons.decimal_precision as dp
 from .qoqa_offer import qoqa_offer
@@ -47,6 +49,11 @@ class qoqa_offer_position_variant(orm.Model):
             num_sold = sum([line.product_uom_qty for line
                             in sales_lines
                             if line.order_id.state not in ['draft', 'cancel']])
+            # Example: we sell 500 lot of 6 bottles of wine. 1 bottle =
+            # 1 unit. In the sales orders, 1 lot will be expanded to 6 units.
+            # So we compare lots, not units.
+            lot_size = variant.position_id.lot_size
+            num_sold /= lot_size
             quantity = variant.quantity
             residual = quantity - num_sold
             progress = 0.0
@@ -70,7 +77,6 @@ class qoqa_offer_position_variant(orm.Model):
             'product.product',
             string='Product',
             required=True,
-            domain="",
             ondelete='restrict'),
         'quantity': fields.integer('Quantity', required=True),
         'stock_sold': fields.function(
@@ -251,6 +257,11 @@ class qoqa_offer_position(orm.Model):
         'max_sellable': 3,
         'lot_size': 1,
     }
+
+    _sql_constraints = [
+        ('lot_size', 'CHECK (lot_size>0)',
+         'Lot size must be a value greater than 0.'),
+    ]
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
                                  context=None):

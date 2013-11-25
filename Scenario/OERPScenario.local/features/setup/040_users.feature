@@ -146,3 +146,13 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | Technical Features               |
 #Other
      | Contact Creation                 |
+
+  @desactivate_rules
+  Scenario: DESACTIVATE SOME IR.RULE
+  # this may break on second launch cause the rule isn't found any more
+    Given I find a "ir.rule" with name: 'res.partner company'
+     And having:
+        | name        | value                         |
+        | active      | False                         |
+
+ 

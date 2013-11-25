@@ -54,6 +54,8 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | group_name                       |
 #Sales
      | Sales / Manager                  |
+#Purchase
+     | Purchases / Manager               |
 #Project
      | Project / Manager                |
 #Warehouse
@@ -77,10 +79,13 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | Manage Secondary Unit of Measure |
      | Manage Product Packaging         |
      | Manage Properties of Product     |
+     | Analytic Accounting for Purchases|
+     | Analytic Accounting for Sales    |
 #Accounting_and_Finance
      | Accountant                       |
      | Invoicing & Payments             |
      | Financial Manager                |
+     | Analytic Accounting              |
 #Usability
      | Multi Companies                  |
      | Technical Features               |
@@ -104,6 +109,8 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | group_name                       |
 #Sales
      | Sales / Manager                  |
+#Purchase
+     | Purchases / Manager               |
 #Project
      | Project / Manager                |
 #Warehouse
@@ -127,10 +134,13 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | Manage Secondary Unit of Measure |
      | Manage Product Packaging         |
      | Manage Properties of Product     |
+     | Analytic Accounting for Purchases|
+     | Analytic Accounting for Sales    |
 #Accounting_and_Finance
      | Accountant                       |
      | Invoicing & Payments             |
      | Financial Manager                |
+     | Analytic Accounting              |
 #Usability
      | Multi Companies                  |
      | Technical Features               |

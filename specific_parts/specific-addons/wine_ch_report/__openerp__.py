@@ -46,6 +46,7 @@ the report only on products using a 'Wine' attribute set.
      'report.xml',
      'wine_view.xml',
      'wine_data.xml',
+     'security/ir.model.access.csv',
      ],
  'test': [],
  'installable': True,

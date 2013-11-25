@@ -13,20 +13,7 @@
 
 Feature: Configure the Holding company
 
-  @pricelist_holding
-  Scenario: Pricelist for Holding
-    Given I find a "product.pricelist" with oid: product.list0
-    And having:
-    | name                | value                             |
-    | company_id          | by oid: base.main_company         |
-    | currency_id         | by oid: base.CHF                  |
-
-   @pricelist_items_holding @pricelist_holding
-    Given I find a "product.pricelist.item" with oid: purchase.item0
-    And I set selection field "base" with -2
-
-
-@price_type_holding @price_type
+@price_type_holding @price_type @pricelist
   Scenario Outline: CREATE PRICETYPE PER COMPANY
      Given I need a "product.price.type" with oid: <oid>
      And having:
@@ -40,3 +27,26 @@ Feature: Configure the Holding company
       |oid                     | name                        | currency         | field          |
       | product.list_price     | Public Price CHF Holding    | CHF              | standard_price |
       | product.standard_price | Cost Price CHF Holding      | CHF              | list_price     |
+
+  @pricelist_holding @pricelist
+  Scenario: Pricelist for Holding
+    Given I find a "product.pricelist" with oid: product.list0
+    And having:
+    | name                | value                             |
+    | name                | Liste de prix publique Holding    |
+    | company_id          | by oid: base.main_company         |
+    | currency_id         | by oid: base.CHF                  |
+
+    Given I find a "product.pricelist.item" with oid: purchase.item0
+    And having:
+    | name                | value                             |
+    | name                | Liste de prix achat Holding       |
+    And I set selection field "base" with name: Cost Price CHF Holding
+
+    Given I find a "product.pricelist.item" with oid: product.item0
+    And having:
+    | name                | value                             |
+    | name                | Liste de prix publique Holding       |
+    And I set selection field "base" with name: Public Price CHF Holding
+
+

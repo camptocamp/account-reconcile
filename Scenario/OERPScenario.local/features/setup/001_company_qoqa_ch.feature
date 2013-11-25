@@ -127,12 +127,26 @@ Feature: Configure QoQa.ch
     And I create monthly periods on the fiscal year with reference "scenario.fy2013_ch"
     Then I find a "account.fiscalyear" with oid: scenario.fy2013_ch
 
-  @pricelist_ch
+ @price_type_ch @price_type @pricelist
+  Scenario Outline: CREATE PRICETYPE PER COMPANY
+     Given I need a "product.price.type" with oid: <oid>
+     And having:
+      | key                       | value                    |
+      | name                      | <name>                   |
+      | currency_id               | by name: <currency>      |
+      | company_id                | by oid: scenario.qoqa_ch |
+
+    Examples: Defaults price type for QoQa CH
+      |oid                      | name                        | currency         | 
+      | scenario.price_type_list_ch      | Public Price CHF            | CHF              |
+      | scenario.prince_type_standard_ch | Cost Price CHF              | CHF              |
+
+  @pricelist_ch @pricelist
   Scenario: Pricelist for QoQa.ch
     Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_ch
     And having:
     | name                | value                             |
-    | name                | Liste de prix publique            |
+    | name                | Liste de prix publique CH         |
     | type                | sale                              |
     | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
@@ -150,12 +164,12 @@ Feature: Configure QoQa.ch
     | name             | Ligne de list de prix publique par défaut  |
     | price_version_id | by oid: scenario.pricelist_version_qoqa_ch |
     | company_id       | by oid: scenario.qoqa_ch                   |
-     And I set selection field "base" with 1
+     And I set selection field "base" with name: Public Price CHF
 
     Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_ch_buy
     And having:
     | name                | value                             |
-    | name                | Liste de prix achat               |
+    | name                | Liste de prix achat CH            |
     | type                | purchase                          |
     | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
@@ -173,19 +187,4 @@ Feature: Configure QoQa.ch
     | name             | Ligne de list de prix achat par défaut  |
     | price_version_id | by oid: scenario.pricelist_version_qoqa_ch_buy |
     | company_id       | by oid: scenario.qoqa_ch                   |
-    And I set selection field "base" with -2
-
-
- @price_type_ch @price_type
-  Scenario Outline: CREATE PRICETYPE PER COMPANY
-     Given I need a "product.price.type" with oid: <oid>
-     And having:
-      | key                       | value                    |
-      | name                      | <name>                   |
-      | currency_id               | by name: <currency>      |
-      | company_id                | by oid: scenario.qoqa_ch |
-
-    Examples: Defaults price type for QoQa CH
-      |oid                      | name                        | currency         | 
-      | scenario.price_type_list_ch      | Public Price CHF            | CHF              |
-      | scenario.prince_type_standard_ch | Cost Price CHF              | CHF              |
+    And I set selection field "base" with name: Cost Price CHF

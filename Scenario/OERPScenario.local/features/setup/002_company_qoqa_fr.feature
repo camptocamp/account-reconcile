@@ -128,12 +128,27 @@ Feature: Configure QoQa.fr
     And I create monthly periods on the fiscal year with reference "scenario.fy2013_fr"
     Then I find a "account.fiscalyear" with oid: scenario.fy2013_fr
 
-  @pricelist_fr
+@price_type_fr @price_type @pricelist
+  Scenario Outline: CREATE PRICETYPE PER COMPANY
+     Given I need a "product.price.type" with oid: <oid>
+     And having:
+      | key                       | value                    |
+      | name                      | <name>                   |
+      | currency_id               | by name: <currency>      |
+      | company_id                | by oid: scenario.qoqa_fr |
+      | field                     | <field>                  |
+
+    Examples: Defaults price type for QoQa CH
+      |oid                      | name                        | currency         | field          |
+      | scenario.price_type_list_fr      | Public Price EUR            | EUR              | standard_price |
+      | scenario.prince_type_standard_fr | Cost Price EUR              | EUR              | list_price     |
+
+  @pricelist_fr @pricelist
     Scenario: Pricelist for QoQa.fr
     Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_fr
     And having:
     | name                | value                             |
-    | name                | Liste de prix publique            |
+    | name                | Liste de prix publique FR         |
     | type                | sale                              |
     | company_id          | by oid: scenario.qoqa_fr          |
     | currency_id         | by oid: base.EUR                  |
@@ -151,12 +166,12 @@ Feature: Configure QoQa.fr
     | name             | Ligne de list de prix publique par défaut  |
     | price_version_id | by oid: scenario.pricelist_version_qoqa_fr |
     | company_id       | by oid: scenario.qoqa_fr                   |
-     And I set selection field "base" with 1
+     And I set selection field "base" with name: Public Price EUR
 
     Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_fr_buy
     And having:
     | name                | value                             |
-    | name                | Liste de prix achat               |
+    | name                | Liste de prix achat FR            |
     | type                | purchase                          |
     | company_id          | by oid: scenario.qoqa_fr          |
     | currency_id         | by oid: base.EUR                  |
@@ -174,19 +189,5 @@ Feature: Configure QoQa.fr
     | name             | Ligne de list de prix achat par défaut  |
     | price_version_id | by oid: scenario.pricelist_version_qoqa_fr_buy |
     | company_id       | by oid: scenario.qoqa_fr                   |
-    And I set selection field "base" with -2
+    And I set selection field "base" with name: Cost Price EUR
 
-@price_type_fr @price_type
-  Scenario Outline: CREATE PRICETYPE PER COMPANY
-     Given I need a "product.price.type" with oid: <oid>
-     And having:
-      | key                       | value                    |
-      | name                      | <name>                   |
-      | currency_id               | by name: <currency>      |
-      | company_id                | by oid: scenario.qoqa_fr |
-      | field                     | <field>                  |
-
-    Examples: Defaults price type for QoQa CH
-      |oid                      | name                        | currency         | field          |
-      | scenario.price_type_list_fr      | Public Price EUR            | EUR              | standard_price |
-      | scenario.prince_type_standard_fr | Cost Price EUR              | EUR              | list_price     |

@@ -38,7 +38,7 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
         | Automatic Reconciliation |
         | Multi-Currencies         |
 
-  @user_financial_manager_ch
+  @user_erp_manager_ch
   Scenario: USERS SETTINGS
   Given I need a "res.users" with oid: scenario.user_ch
      And having:
@@ -87,3 +87,52 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
 #Other
      | Contact Creation                 |
 
+
+  @user_erp_manager_fr
+  Scenario: USERS SETTINGS
+  Given I need a "res.users" with oid: scenario.user_fr
+     And having:
+     | name                     | value                              |
+     | name                     | admin_fr                           |
+     | login                    | admin_fr                           |
+     | password                 | admin_fr                           |
+     | lang                     | fr_FR                              |
+     | company_id               | by oid: scenario.qoqa_fr           |
+     | company_ids              | all by oid: scenario.qoqa_fr       |
+
+    And we assign to user the groups below:
+     | group_name                       |
+#Sales
+     | Sales / Manager                  |
+#Project
+     | Project / Manager                |
+#Warehouse
+     | Warehouse / Manager              |
+#Human_Resources
+     | Employee                         |
+#Sharing
+     | Sharing / User                   |
+#Administration
+     | Access Rights                    |
+#Connector
+     | Connector / Connector Manager    |
+#Technical_settings
+     | Multi Currencies                 |
+     | Advanced Attribute Option        |
+     | Analytic Accounting              |
+     | Sales Pricelists                 |
+     | Purchase Pricelists              |
+     | Costing Method                   |
+     | Manage Multiple Units of Measure |
+     | Manage Secondary Unit of Measure |
+     | Manage Product Packaging         |
+     | Manage Properties of Product     |
+#Accounting_and_Finance
+     | Accountant                       |
+     | Invoicing & Payments             |
+     | Financial Manager                |
+#Usability
+     | Multi Companies                  |
+     | Technical Features               |
+#Other
+     | Contact Creation                 |

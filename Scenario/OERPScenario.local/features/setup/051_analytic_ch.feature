@@ -15,12 +15,21 @@ Feature: ANALYTIC SETTING FOR QOQA CH
    As an administrator, I do the following installation steps.
 
   @analytic_account_shop_ch
+   Scenario: Create the ch root analytic account
+    Given I need a "account.analytic.account" with oid: scenario.qoqa_ch_root_aa
+      And having:
+        | name       | value                    |
+        | name       | QoQa Suisse              |
+        | type       | view                     |
+        | company_id | by oid: scenario.qoqa_ch |
+
   Scenario Outline: Create an analytic account
     Given I need a "account.analytic.account" with oid: <oid>
       And having:
         | name       | value                    |
         | name       | <name>                   |
         | type       | normal                   |
+        | parent_id  | by oid: scenario.qoqa_ch_root_aa |
         | company_id | by oid: scenario.qoqa_ch |
 
   Examples: Create an analytic accounts per shop
@@ -31,12 +40,12 @@ Feature: ANALYTIC SETTING FOR QOQA CH
         | scenario.analytic_account_shop_qstyle_ch | Qstyle.ch |
 
 ##### ANALYTIC JOURNALS CREATION ####
-  @analytic_journal
+  @analytic_journal_ch
   Scenario Outline: ANALYTIC JOURNALS
     Given I need a "account.analytic.journal" with oid: <oid>
       And having:
         | name       | value                     |
-        | company_id | by oid: base.main_company |
+        | company_id | by oid: scenario.qoqa_ch |
         | name       | <name>                    |
         | type       | <type>                    |
         | code       | <code>                    |

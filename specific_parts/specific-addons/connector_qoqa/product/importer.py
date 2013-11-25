@@ -21,6 +21,7 @@
 
 import logging
 
+from openerp.addons.product.product import check_ean
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper,
@@ -84,12 +85,20 @@ class VariantImportMapper(ImportMapper):
         (iso8601_to_utc('created_at'), 'created_at'),
         (iso8601_to_utc('updated_at'), 'updated_at'),
         ('sku', 'default_code'),
-        ('ean', 'ean13'),
         (backend_to_m2o('product_id', binding='qoqa.product.template'),
          'product_tmpl_id'),
     ]
 
     # TODO: warranty_id
+
+    @mapping
+    def ean(self, record):
+        if not record['ean']:
+            return
+        ean13 = str(record['ean'])
+        # TODO: check if we want to store invalid ean somewhere
+        if check_ean(ean13):
+            return {'ean13': ean13}
 
     @mapping
     def attributes(self, record):

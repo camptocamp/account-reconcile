@@ -128,29 +128,64 @@ Feature: Configure QoQa.ch
     Then I find a "account.fiscalyear" with oid: scenario.fy2013_ch
 
   @pricelist_ch
-    Scenario: Pricelist for QoQa.ch
-    Given I find a "product.pricelist" with oid: product.list0
+  Scenario: Pricelist for QoQa.ch
+    Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_ch
     And having:
     | name                | value                             |
+    | name                | Liste de prix publique            |
+    | type                | sale                              |
     | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
 
-   @pricelist_items_ch @pricelist_ch
-    Given I find a "product.pricelist.item" with oid: purchase.item0
+    Given I need a "product.pricelist.version" with oid: scenario.pricelist_version_qoqa_ch
+    And having:
+    | name         | value                                           |
+    | name         | Version de la liste de Prix Publique par défaut |
+    | pricelist_id | by oid: scenario.pricelist_qoqa_ch              |
+    | company_id   | by oid: scenario.qoqa_ch                        |
+
+    Given I need a "product.pricelist.item" with oid: scenario.pricelist_item_qoqa_ch
+    And having:
+    | name             | value                                      |
+    | name             | Ligne de list de prix publique par défaut  |
+    | price_version_id | by oid: scenario.pricelist_version_qoqa_ch |
+    | company_id       | by oid: scenario.qoqa_ch                   |
+     And I set selection field "base" with 1
+
+    Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_ch_buy
+    And having:
+    | name                | value                             |
+    | name                | Liste de prix achat               |
+    | type                | purchase                          |
+    | company_id          | by oid: scenario.qoqa_ch          |
+    | currency_id         | by oid: base.CHF                  |
+
+    Given I need a "product.pricelist.version" with oid: scenario.pricelist_version_qoqa_ch_buy
+    And having:
+    | name         | value                                           |
+    | name         | Version de la liste de Prix Achat par défaut    |
+    | pricelist_id | by oid: scenario.pricelist_qoqa_ch_buy          |
+    | company_id   | by oid: scenario.qoqa_ch                        |
+
+    Given I need a "product.pricelist.item" with oid: scenario.pricelist_item_qoqa_ch_buy
+    And having:
+    | name             | value                                      |
+    | name             | Ligne de list de prix achat par défaut  |
+    | price_version_id | by oid: scenario.pricelist_version_qoqa_ch_buy |
+    | company_id       | by oid: scenario.qoqa_ch                   |
     And I set selection field "base" with -2
 
 
-  @pricetype_public @pricelist_ch
-    Scenario: Pricetype should be set to CHF
-    Given I find a "product.price.type" with oid: product.list_price
-    And having:
-    | name                | value                             |
-    | currency_id         | by oid: base.CHF                  |
+ @price_type_ch @price_type
+  Scenario Outline: CREATE PRICETYPE PER COMPANY
+     Given I need a "product.price.type" with oid: <oid>
+     And having:
+      | key                       | value                    |
+      | name                      | <name>                   |
+      | currency_id               | by name: <currency>      |
+      | company_id                | by oid: scenario.qoqa_ch |
 
-  @pricetype_cost @pricelist_ch
-    Scenario: Pricetype should be set to CHF
-    Given I find a "product.price.type" with oid: product.standard_price
-    And having:
-    | name                | value                             |
-    | currency_id         | by oid: base.CHF                  |
-
+    Examples: Defaults price type for QoQa CH
+      |oid                      | name                        | currency         | 
+      | scenario.price_type_list_ch      | Public Price CHF            | CHF              |
+      | scenario.prince_type_standard_ch | Cost Price CHF              | CHF              |

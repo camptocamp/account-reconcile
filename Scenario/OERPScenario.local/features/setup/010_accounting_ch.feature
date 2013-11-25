@@ -158,7 +158,7 @@ Feature: Configure the CH's accounting
          | type_tax_use         | sale                                                            |
          | active               | False                                                           |
 
-  @price_type_ch
+  @price_type_ch @price_type
   Scenario Outline: CREATE PRICETYPE PER COMPANY
      Given I need a "product.price.type" with oid: <oid>
      And having:

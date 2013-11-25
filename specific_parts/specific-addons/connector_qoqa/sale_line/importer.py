@@ -95,6 +95,8 @@ class LineMapChild(ImportMapChild):
 
     def skip_item(self, map_record):
         record = map_record.source
+        if not record['quantity']:
+            return True
         if record['status_id'] == QOQA_STATUS_CANCELLED:
             return True
         if record['type_id'] != QOQA_TYPE_SOLD:

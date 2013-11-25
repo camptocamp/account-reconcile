@@ -364,11 +364,14 @@ class SaleOrderImportMapper(ImportMapper):
 
         promo_ids = []
         for item in map_record.source['items']:
+            item_id = item['id']
+            order_item = order_items[item_id]
+            if not order_item['quantity']:
+                continue
             if item.get('promo_id'):
                 promo_ids.append(item['promo_id'])
             nitem = item.copy()
-            item_id = nitem['id']
-            nitem.update(order_items[item_id])
+            nitem.update(order_item)
             nitem['invoice_item'] = inv_items.pop(item_id)
             nitem.pop('id')  # remove id just to avoid confusion
             lines.append(nitem)

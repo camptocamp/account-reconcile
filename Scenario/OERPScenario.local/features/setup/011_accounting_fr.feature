@@ -79,3 +79,18 @@ Feature: Configure the FR's accounting
       | scenario.journal_visa_fr_old       | Visa - plus utilisé             | OLDVI |
       | scenario.journal_mastercard_fr_old | Mastercard - plus utilisé       | OLDMS |
       | scenario.journal_sogenactif_old    | ? Sogenactif - plus utilisé     | OLDSO |
+
+ @price_type_fr
+  Scenario Outline: CREATE PRICETYPE PER COMPANY
+     Given I need a "product.price.type" with oid: <oid>
+     And having:
+      | key                       | value                    |
+      | name                      | <name>                   |
+      | currency_id               | by name: <currency>      |
+      | company_id                | by oid: scenario.qoqa_fr |
+      | field                     | <field>                  |
+
+    Examples: Defaults price type for QoQa CH
+      |oid                      | name                        | currency         | field          |
+      | scenario.price_type_list_fr      | Public Price EUR            | EUR              | standard_price |
+      | scenario.prince_type_standard_fr | Cost Price EUR              | EUR              | list_price     |

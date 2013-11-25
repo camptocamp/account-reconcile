@@ -16,6 +16,7 @@ Feature: ANALYTIC SETTING FOR QOQA CH
 
   @analytic_account_shop_ch
    Scenario: Create the ch root analytic account
+
     Given I need a "account.analytic.account" with oid: scenario.qoqa_ch_root_aa
       And having:
         | name       | value                    |

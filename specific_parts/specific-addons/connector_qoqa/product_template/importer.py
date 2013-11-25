@@ -211,6 +211,7 @@ class TemplateImportMapper(ImportMapper):
                     values[field] = bottle_ids[0]
             elif field == 'color':
                 # search the type
+                value = value.strip()
                 if value == 'Ros':
                     value = u'Rosé'
                 wtype = next((m['value'] for m in metas if m['meta_id'] == 9),

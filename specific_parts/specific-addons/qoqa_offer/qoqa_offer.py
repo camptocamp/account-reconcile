@@ -245,11 +245,11 @@ class qoqa_offer(orm.Model):
             change_default=True,
             readonly=False,
             states={'done': [('readonly', True)]}),
-        'qoqa_active': fields.boolean('Active on QoQa'),
         'date_warranty': fields.date(
             'Warranty Expiration',
             readonly=True,
             states={'draft': [('readonly', False)]}),
+        'active': fields.boolean('Active'),
     }
 
     def _default_company(self, cr, uid, context=None):
@@ -264,6 +264,7 @@ class qoqa_offer(orm.Model):
         'date_end': fields.date.context_today,
         'time_begin': 0,  # 00:00
         'time_end': 23.983,  # 23:59
+        'active': 1,
     }
 
     def _check_date(self, cr, uid, ids, context=None):

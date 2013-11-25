@@ -57,19 +57,13 @@ class QoQaOfferImport(QoQaImportSynchronizer):
 class QoQaOfferImportMapper(ImportMapper):
     _model_name = 'qoqa.offer'
 
-    # TODO
-    # slots_available
-    # is_queue_enabled
-    # lot_per_package
-    # is_active
-    # logistic_status_id
-
     direct = [(ifmissing('notes', '<p></p>'), 'note'),
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
               (backend_to_m2o('shipper_service_id'), 'shipper_service_id'),
               ('id', 'ref'),
+              ('is_active', 'active'),
               ]
 
     translatable_fields = [

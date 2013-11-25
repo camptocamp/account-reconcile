@@ -199,6 +199,7 @@
                                 <field name="carrier_id"/>
                                 <field name="pricelist_id" widget="selection"/>
                                 <field name="lang_id" widget="selection"/>
+                                <field name="active"/>
                             </group>
                         </group>
                         <notebook>
@@ -211,6 +212,7 @@
                                         <field name="sum_quantity"/>
                                         <field name="sum_stock_sold"/>
                                         <field name="stock_progress" widget="progressbar"/>
+                                        <field name="active"/>
                                     </tree>
                                     <form string="Position" version="7.0">
                                         <header>
@@ -235,7 +237,6 @@
                                                 <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                 <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                 <field name="tax_id" on_change="onchange_tax_id(tax_id)"/>
-                                                <field name="is_net_price"/>
                                                 <field name="ecotax"/>
                                             </group>
                                             <group>
@@ -248,6 +249,7 @@
                                                     <field name="date_delivery"/>
                                                     <field name="booking_delivery"/>
                                                     <field name="order_url"/>
+                                                    <field name="active"/>
                                                 </group>
                                             </group>
                                         </group>

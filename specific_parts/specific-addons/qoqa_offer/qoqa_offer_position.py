@@ -229,11 +229,6 @@ class qoqa_offer_position(orm.Model):
         'buyphrase_id': fields.many2one('qoqa.buyphrase',
                                         string='Buyphrase'),
         'order_url': fields.char('Order URL'),
-        'is_net_price': fields.related(
-            'tax_id', 'price_include',
-            type='boolean',
-            string='Tax Included in Price',
-            readonly=True),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',
@@ -249,6 +244,10 @@ class qoqa_offer_position(orm.Model):
             string='Progress',
             type='float',
             multi='stock'),
+        'active': fields.boolean('Active'),
+        # kept for import of historic deals
+        'poste_cumbersome_package': fields.boolean(
+            'Poste Cumbersome Package'),
     }
 
     _defaults = {
@@ -256,6 +255,7 @@ class qoqa_offer_position(orm.Model):
         'stock_bias': 100,
         'max_sellable': 3,
         'lot_size': 1,
+        'active': 1,
     }
 
     _sql_constraints = [
@@ -293,19 +293,4 @@ class qoqa_offer_position(orm.Model):
             'tax_id': tax_id,
         }
         res['value'] = values
-        return res
-
-    def onchange_tax_id(self, cr, uid, ids, tax_id, context=None):
-        """ Change the is_net_price boolean according to the
-        configuration of the tax.
-
-        This is just for the display as the related is update only on
-        save.
-        """
-        res = {'value': {}}
-        if not tax_id:
-            return res
-        tax_obj = self.pool.get('account.tax')
-        tax = tax_obj.browse(cr, uid, tax_id, context=context)
-        res['value']['is_net_price'] = tax.price_include
         return res

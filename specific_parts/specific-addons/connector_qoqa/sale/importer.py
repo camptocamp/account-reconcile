@@ -68,6 +68,10 @@ QOQA_INVOICE_TYPE_ISSUED = 1
 QOQA_INVOICE_TYPE_RECEIVED = 2
 QOQA_INVOICE_TYPE_ISSUED_CN = 3
 QOQA_INVOICE_TYPE_RECEIVED_CN = 4
+QOQA_INVOICE_STATUS_REQUESTED = 1
+QOQA_INVOICE_STATUS_CONFIRMED = 2
+QOQA_INVOICE_STATUS_CANCELLED = 3
+QOQA_INVOICE_STATUS_ACCOUNTED = 4
 
 
 @qoqa
@@ -205,11 +209,13 @@ def extract_invoice_from_sale(sale_record):
     """
     invoices = sale_record['invoices']
     normal_invoice = [inv for inv in invoices
-                        if inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED]
+                      if inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED and
+                      inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
+                                           QOQA_INVOICE_STATUS_ACCOUNTED)]
     if len(normal_invoice) != 1:
         raise MappingError('1 invoice expected for sales order %s, '
-                            'got: %d' %
-                            (sale_record['id'], len(normal_invoice)))
+                           'got: %d' %
+                           (sale_record['id'], len(normal_invoice)))
     return normal_invoice[0]
 
 

@@ -87,6 +87,8 @@ class qoqa_backend(orm.Model):
             'Import Sales Orders from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
         'import_variant_id': fields.char('Variant ID'),
+        'import_offer_id': fields.char('Offer ID'),
+        'import_offer_position_id': fields.char('Offer Position ID'),
 
         'date_really_import': fields.datetime(
             'Import historic only until', required=True,
@@ -194,22 +196,31 @@ class qoqa_backend(orm.Model):
                                context=context)
         return True
 
-    def import_one_sale_order(self, cr, uid, ids, context=None):
+    def _import_one(self, cr, uid, ids, model, field, context=None):
         session = ConnectorSession(cr, uid, context=context)
         for backend in self.browse(cr, uid, ids, context=context):
-            sale_id = backend.import_sale_id
-            if not sale_id:
+            record_id = backend[field]
+            if not record_id:
                 continue
-            import_record(session, 'qoqa.sale.order', backend.id,
-                          sale_id, force=True)
+            import_record(session, model, backend.id,
+                          record_id, force=True)
+
+    def import_one_sale_order(self, cr, uid, ids, context=None):
+        self._import_one(cr, uid, ids, 'qoqa.sale.order',
+                         'import_sale_id', context=context)
         return True
 
     def import_one_variant(self, cr, uid, ids, context=None):
-        session = ConnectorSession(cr, uid, context=context)
-        for backend in self.browse(cr, uid, ids, context=context):
-            variant_id = backend.import_variant_id
-            if not variant_id:
-                continue
-            import_record(session, 'qoqa.product.product', backend.id,
-                          variant_id, force=True)
+        self._import_one(cr, uid, ids, 'qoqa.product.product',
+                         'import_variant_id', context=context)
+        return True
+
+    def import_one_offer_position(self, cr, uid, ids, context=None):
+        self._import_one(cr, uid, ids, 'qoqa.offer.position',
+                         'import_offer_position_id', context=context)
+        return True
+
+    def import_one_offer(self, cr, uid, ids, context=None):
+        self._import_one(cr, uid, ids, 'qoqa.offer',
+                         'import_offer_id', context=context)
         return True

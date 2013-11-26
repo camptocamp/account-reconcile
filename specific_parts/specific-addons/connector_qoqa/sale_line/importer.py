@@ -22,12 +22,14 @@
 import logging
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  backend_to_m2o,
                                                   ImportMapper,
                                                   ImportMapChild,
                                                   )
+from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
+                                                     SpecialOrderLineBuilder,
+                                                     )
 from ..backend import qoqa
-from ..unit.mapper import iso8601_to_utc
+from ..unit.mapper import iso8601_to_utc, qoqafloat
 
 _logger = logging.getLogger(__name__)
 
@@ -39,6 +41,11 @@ QOQA_STATUS_CANCELLED = 3
 QOQA_TYPE_SOLD = 1
 QOQA_TYPE_PURCHASED = 2
 QOQA_TYPE_RETURNED = 3
+
+QOQA_ITEM_PRODUCT = 1
+QOQA_ITEM_SHIPPING = 2
+QOQA_ITEM_DISCOUNT = 3
+QOQA_ITEM_SERVICE = 4
 
 
 @qoqa
@@ -54,22 +61,65 @@ class SaleOrderLineImportMapper(ImportMapper):
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
-              ('quantity', 'qoqa_quantity'),
-              ('custom_text', 'custom_text'),
-              ('lot_size', 'qoqa_lot_size'),
+              ('quantity', 'qoqa_quantity'),  # original quantity, without lot
               ('item_id', 'qoqa_id'),
-              (backend_to_m2o('variation_id', binding='qoqa.product.product'),
-               'product_id'),
+              (qoqafloat('unit_price'), 'price_unit'),
               ]
 
-    @mapping
-    def price(self, record):
-        q_position_id = record['offer_id']
+    def finalize(self, map_record, values):
+        """ complete the values values from the 'item' sub-record """
+        item = map_record.source['item']
+        values.update({
+            'custom_text': item['custom_text'],
+            'qoqa_lot_size': item['lot_size'],
+        })
+        type_id = item['type_id']
+        if type_id == QOQA_ITEM_PRODUCT:
+            values.update(self._item_product(item))
+
+        if type_id == QOQA_ITEM_SHIPPING:
+            values.update(self._item_shipping(item, map_record.parent))
+
+        elif type_id == QOQA_ITEM_DISCOUNT:
+            values.update(self._item_discount(item))
+
+        return values
+
+    def _item_product(self, item):
+        # qoqa.offer.position
+        q_position_id = item['offer_id']
         binder = self.get_binder_for_model('qoqa.offer.position')
         position_id = binder.to_openerp(q_position_id)
-        position = self.session.browse('qoqa.offer.position', position_id)
-        return {'price_unit': position.unit_price,
-                'offer_position_id': position_id}
+        # product.product
+        binder = self.get_binder_for_model('qoqa.product.product')
+        product_id = binder.to_openerp(item['variation_id'], unwrap=True)
+        values = {'offer_position_id': position_id,
+                  'product_id': product_id,
+                  }
+        return values
+
+    def _item_shipping(self, item, parent):
+        # find carrier_id from parent record (sales order)
+        binder = self.get_binder_for_model('qoqa.offer')
+        offer_id = binder.to_openerp(parent.source['deal_id'], unwrap=True)
+        offer = self.session.browse('qoqa.offer', offer_id)
+        # line builder
+        builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
+        builder.price_unit = 0
+        if offer.carrier_id:
+            builder.carrier = offer.carrier_id
+        values = builder.get_line()
+        del values['price_unit']  # keep the price of the direct mapping
+        return values
+
+    def _item_discount(self, item):
+        # line builder
+        builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
+        builder.price_unit = 0
+        builder.code = item['promo_id']
+        values = builder.get_line()
+        del values['price_unit']  # keep the price of the direct mapping
+        return values
 
     @mapping
     def quantity(self, record):
@@ -79,7 +129,7 @@ class SaleOrderLineImportMapper(ImportMapper):
 
         """
         quantity = record['quantity']
-        lot_size = record['lot_size']
+        lot_size = record['item']['lot_size']
         total = quantity * lot_size
         return {'product_uos_qty': total, 'product_uom_qty': total}
 
@@ -91,8 +141,6 @@ class LineMapChild(ImportMapChild):
     def skip_item(self, map_record):
         record = map_record.source
         if not record['quantity']:
-            return True
-        if record['status_id'] == QOQA_STATUS_CANCELLED:
             return True
         if record['type_id'] != QOQA_TYPE_SOLD:
             return True
@@ -119,3 +167,37 @@ class LineMapChild(ImportMapChild):
                 # create the record
                 items.append((0, 0, item))
         return items
+
+
+@qoqa
+class QoQaShippingLineBuilder(ShippingLineBuilder):
+    _model_name = 'qoqa.sale.order.line'
+
+    def __init__(self, environment):
+        super(QoQaShippingLineBuilder, self).__init__(environment)
+        self.carrier = None
+
+    def get_line(self):
+        line = super(QoQaShippingLineBuilder, self).get_line()
+        if self.carrier:
+            line['product_id'] = self.carrier.product_id.id
+            line['name'] = self.carrier.name
+        return line
+
+
+@qoqa
+class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
+    _model_name = 'qoqa.sale.order.line'
+
+    def __init__(self, environment):
+        super(QoQaPromoLineBuilder, self).__init__(environment)
+        self.product_ref = ('connector_ecommerce', 'product_product_discount')
+        # the sign is 1 because the API already provides a negative
+        self.sign = 1
+        self.code = None
+
+    def get_line(self):
+        line = super(QoQaPromoLineBuilder, self).get_line()
+        if self.code:
+            line['name'] = "%s (%s)" % (line['name'], self.code)
+        return line

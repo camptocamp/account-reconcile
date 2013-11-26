@@ -80,7 +80,7 @@ r'''{
     "invoices": [
       {
         "id": 898901,
-        "shop_id": 10,
+        "shop_id": 100,
         "user_id": 34238,
         "address_id": 874724,
         "currency_id": 1,
@@ -93,29 +93,41 @@ r'''{
         "footer": null,
         "created_at": "2013-10-11T17:35:03+0200",
         "updated_at": "2013-10-11T17:35:03+0200",
-        "items": [
+        "item_details": [
           {
             "id": 2118866,
             "invoice_id": 898901,
-            "item_id": 99999999,
+            "item_id": 3568541,
             "vat_id": 6,
             "type_id": 1,
             "credit_acct": null,
             "debit_acct": null,
-            "quantity": 2,
+            "quantity": 1,
             "unit_price": 3300,
             "ignore_credit": 0,
             "is_net_price": 1,
             "book_line_id": null,
             "created_at": "2013-10-11T17:35:03+0200",
-            "updated_at": "2013-10-11T17:35:03+0200"
+            "updated_at": "2013-10-11T17:35:03+0200",
+            "item": {
+              "id": 3568541,
+              "type_id": 1,
+              "offer_id": 5447,
+              "variation_id": 10183,
+              "promo_id": 99999999,
+              "stock_id": null,
+              "lot_size": 1,
+              "custom_text": "custom text",
+              "created_at": "2013-10-11T17:34:42+0200",
+              "updated_at": "2013-10-11T17:34:42+0200"
+            }
           },
           {
             "id": 2118867,
             "invoice_id": 898901,
             "item_id": 3568542,
             "vat_id": 6,
-            "type_id": 3,
+            "type_id": 1,
             "credit_acct": null,
             "debit_acct": null,
             "quantity": 1,
@@ -124,14 +136,26 @@ r'''{
             "is_net_price": 1,
             "book_line_id": null,
             "created_at": "2013-10-11T17:35:03+0200",
-            "updated_at": "2013-10-11T17:35:03+0200"
+            "updated_at": "2013-10-11T17:35:03+0200",
+            "item": {
+              "id": 3568542,
+              "type_id": 3,
+              "offer_id": null,
+              "variation_id": null,
+              "promo_id": 99999999,
+              "stock_id": null,
+              "lot_size": 1,
+              "custom_text": null,
+              "created_at": "2013-10-11T17:35:03+0200",
+              "updated_at": "2013-10-11T17:35:03+0200"
+            }
           },
           {
             "id": 2118868,
             "invoice_id": 898901,
             "item_id": 3568543,
             "vat_id": 6,
-            "type_id": 2,
+            "type_id": 1,
             "credit_acct": null,
             "debit_acct": null,
             "quantity": 1,
@@ -140,7 +164,19 @@ r'''{
             "is_net_price": 1,
             "book_line_id": null,
             "created_at": "2013-10-11T17:35:03+0200",
-            "updated_at": "2013-10-11T17:35:03+0200"
+            "updated_at": "2013-10-11T17:35:03+0200",
+            "item": {
+              "id": 3568543,
+              "type_id": 2,
+              "offer_id": null,
+              "variation_id": null,
+              "promo_id": null,
+              "stock_id": null,
+              "lot_size": 1,
+              "custom_text": null,
+              "created_at": "2013-10-11T17:35:03+0200",
+              "updated_at": "2013-10-11T17:35:03+0200"
+            }
           }
         ]
       }

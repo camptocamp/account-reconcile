@@ -21,7 +21,6 @@
 from __future__ import division
 
 import logging
-from collections import namedtuple
 from datetime import datetime, timedelta
 from operator import attrgetter
 
@@ -35,19 +34,18 @@ from openerp.addons.connector.unit.mapper import (mapping,
 from openerp.addons.connector.exception import (NothingToDoJob,
                                                 FailedJobError,
                                                 )
-from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
-                                                     SpecialOrderLineBuilder,
-                                                     )
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
-from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import iso8601_to_utc
 from ..connector import iso8601_to_utc_datetime, is_historic_import
 from ..exception import QoQaError, OrderImportRuleRetry
+from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
+                                  QOQA_ITEM_DISCOUNT, QOQA_ITEM_SERVICE,
+                                  )
 
 _logger = logging.getLogger(__name__)
 
@@ -219,13 +217,6 @@ def extract_invoice_from_sale(sale_record):
     return normal_invoice[0]
 
 
-# represent the lines of a sales order:
-# lines is a list of normal lines
-# discount is a list of discount lines
-# shipping is a list of shipping lines
-QoQaLines = namedtuple('QoQaLines', ['normal', 'discount', 'shipping'])
-
-
 @qoqa
 class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
@@ -303,34 +294,13 @@ class SaleOrderImportMapper(ImportMapper):
         }
         return values
 
-    def _shipping_line(self, source_line, values):
-        builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
-        builder.price_unit = float(source_line['unit_price']) / 100
-        if values.get('carrier_id'):
-            carrier = self.session.browse('delivery.carrier',
-                                          values['carrier_id'])
-            builder.carrier = carrier
-        return (0, 0, builder.get_line())
-
-    def _promo_line(self, promo_values, values):
-        builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
-        builder.price_unit = float(promo_values['amount']) / 100
-        # TODO: the promos can offer the shipping fees...
-        return (0, 0, builder.get_line())
-
     def finalize(self, map_record, values):
-        values.setdefault('order_line', [])
+        # values.setdefault('order_line', [])
         lines = self.extract_lines(map_record)
-
-        for shipping in lines.shipping:
-            values['order_line'].append(self._shipping_line(shipping, values))
-
-        for discount in lines.discount:
-            values['order_line'].append(self._promo_line(discount, values))
 
         map_child = self.get_connector_unit_for_model(
             self._map_child_class, 'qoqa.sale.order.line')
-        items = map_child.get_items(lines.normal, map_record,
+        items = map_child.get_items(lines, map_record,
                                     'qoqa_order_line_ids',
                                     options=self.options)
         values['qoqa_order_line_ids'] = items
@@ -357,50 +327,41 @@ class SaleOrderImportMapper(ImportMapper):
         """
         lines = []
         invoice = extract_invoice_from_sale(map_record.source)
-        inv_items = dict((line['item_id'], line) for line
-                         in invoice['items'])
-        order_items = dict((line['item_id'], line) for line
-                           in map_record.source['order_items'])
+        invoice_details = invoice['item_details']
+        # used to check if lines have not been consumed
+        details_by_id = dict((line['id'], line) for line
+                             in invoice_details)
+        lines = []
+        for invoice_detail in invoice_details:
+            detail_id = invoice_detail['id']
+            item = invoice_detail['item']
+            type_id = item['type_id']
 
-        promo_ids = []
-        for item in map_record.source['items']:
-            item_id = item['id']
-            order_item = order_items[item_id]
-            if not order_item['quantity']:
-                continue
-            if item.get('promo_id'):
-                promo_ids.append(item['promo_id'])
-            nitem = item.copy()
-            nitem.update(order_item)
-            nitem['invoice_item'] = inv_items.pop(item_id)
-            nitem.pop('id')  # remove id just to avoid confusion
-            lines.append(nitem)
+            if type_id == QOQA_ITEM_PRODUCT:
+                lines.append(details_by_id.pop(detail_id))
 
-        discounts = []
-        for promo_id in promo_ids:
-            adapter = self.get_connector_unit_for_model(QoQaAdapter,
-                                                        'qoqa.promo')
-            discounts.append(adapter.read(promo_id))
+            if type_id == QOQA_ITEM_SHIPPING:
+                lines.append(details_by_id.pop(detail_id))
 
-        # remaining items in invoice: shipping and discount
-        shippings = []
-        for item_id, invoice_item in inv_items.copy().iteritems():
-            # TODO: actually the API always says "1"...
-            if invoice_item['type_id'] == 1:
-                raise MappingError('Invoice item %s does not exist in '
-                                   'the sales order.' % inv_items['id'])
-            if invoice_item['type_id'] == 2:  # TODO constants
-                shippings.append(inv_items.pop(item_id))
-            elif invoice_item['type_id'] == 3:
-                del inv_items[item_id]  # already found in 'items'
-            elif invoice_item['type_id'] == 4:
-                # TODO service?
-                pass
-        if inv_items:
-            # an item has not been extracted
-            raise MappingError('Remaining items in invoice: %s' % inv_items)
-        items = QoQaLines(normal=lines, discount=discounts, shipping=shippings)
-        return items
+            elif type_id == QOQA_ITEM_DISCOUNT:
+                # TODO: check if we need to get data from the promo
+                # if yes, activate the code below, and use the 'promo'
+                # content in the mapper.
+                # adapter = self.get_connector_unit_for_model(QoQaAdapter,
+                #                                             'qoqa.promo')
+                # promo_values = adapter.read(promo_id)
+                line = details_by_id.pop(detail_id)
+                # line['promo'] = promo_values
+                lines.append(line)
+
+            elif type_id == QOQA_ITEM_SERVICE:
+                raise MappingError("Items of type 'Service' are not supported.")
+
+        if details_by_id:
+            # an or several item(s) have not been handled
+            raise MappingError('Remaining, unhandled, items in invoice: %s' %
+                               details_by_id.values())
+        return lines
 
 
 @qoqa
@@ -477,35 +438,3 @@ class SaleImportRule(ConnectorUnit):
             raise OrderImportRuleRetry('The payment of the order has not '
                                        'been confirmed.\nThe import will be '
                                        'retried later.')
-
-
-@qoqa
-class QoQaShippingLineBuilder(ShippingLineBuilder):
-    _model_name = 'qoqa.sale.order'
-
-    def __init__(self, environment):
-        super(QoQaShippingLineBuilder, self).__init__(environment)
-        self.carrier = None
-
-    def get_line(self):
-        line = super(QoQaShippingLineBuilder, self).get_line()
-        line['sequence'] = 99  # display at the bottom
-        if self.carrier:
-            line['product_id'] = self.carrier.product_id.id
-            line['name'] = self.carrier.name
-        return line
-
-
-@qoqa
-class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
-    _model_name = 'qoqa.sale.order'
-
-    def __init__(self, environment):
-        super(QoQaPromoLineBuilder, self).__init__(environment)
-        self.product_ref = ('connector_ecommerce', 'product_product_discount')
-        self.sign = -1
-
-    def get_line(self):
-        line = super(QoQaPromoLineBuilder, self).get_line()
-        line['sequence'] = 98  # display at the bottom
-        return line

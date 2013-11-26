@@ -21,19 +21,15 @@
 from __future__ import division
 
 import logging
-from datetime import datetime, timedelta
 from operator import attrgetter
 
 from openerp.tools.translate import _
-from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
-from openerp.addons.connector.exception import (NothingToDoJob,
-                                                FailedJobError,
-                                                )
+from openerp.addons.connector.exception import FailedJobError
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
@@ -43,7 +39,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         )
 from ..unit.mapper import iso8601_to_utc
 from ..connector import iso8601_to_utc_datetime, is_historic_import
-from ..exception import QoQaError, OrderImportRuleRetry
+from ..exception import QoQaError
 from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
                                   QOQA_ITEM_DISCOUNT, QOQA_ITEM_SERVICE,
                                   )
@@ -119,10 +115,56 @@ class SaleOrderImport(QoQaImportSynchronizer):
 
         """
         if self.qoqa_record['status_id'] == QOQA_STATUS_CANCELLED:
-            return _('Sales order %s is not imported because it '
-                     'has been canceled.') % self.qoqa_record['id']
+            sale_id = self.binder.to_openerp(self.qoqa_id, unwrap=True)
+            if sale_id is None:
+                # do not import the canceled sales orders if they
+                # have not been already imported
+                return _('Sales order %s is not imported because it '
+                         'has been canceled.') % self.qoqa_record['id']
+            else:
+                # Already imported orders, but canceled afterwards,
+                # triggers the automatic cancellation
+                sale = self.session.browse('sale.order', sale_id)
+                if sale.state != 'cancel':
+                    self.session.write('sale.order', [sale_id],
+                                       {'canceled_in_backend': True})
+                return _('Sales order %s has been has been marked '
+                         'as "to cancel".') % self.qoqa_record['id']
 
     def _is_uptodate(self, binding_id):
+        """ Check whether the current sale order should be imported or not.
+
+        States or QoQa are:
+
+        * requested: an order has been created
+        * paid: authorized on datatrans, not captured
+        * confirmed: payment has been confirmed / captured by datatrans
+        * processed: final state, when is order is delivered
+        * cancelled: final state for cancellations
+
+        The API only gives us the "confirmed" and "processed" sales orders.
+
+        How we will handle them:
+
+        requested, paid
+            Not given by the API
+
+        confirmed
+            They will be confirmed as soon as they are imported (excepted
+            if they have 'sales exceptions').
+
+        processed
+            We will short-circuit the workflow and set them directly to
+            'done'. They are imported for the history.
+
+        cancelled
+            If the sales order has never been imported before, we skip it.
+            If it has been cancelled after being confirmed and imported,
+            it will try to cancel it in OpenERP, or if it can't, it will
+            active the 'need_cancel' fields and log a message (featured
+            by `connector_ecommerce`.
+
+        """
         # already imported, skip it (unless if `force` is used)
         assert self.qoqa_record
         if self.binder.to_openerp(self.qoqa_id) is not None:
@@ -131,10 +173,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
         # we don't want to import them
         if not self.qoqa_record['deal_id']:
             return True
-
-    def _before_import(self):
-        rules = self.get_connector_unit_for_model(SaleImportRule)
-        rules.check(self.qoqa_record)
 
     def _import(self, binding_id):
         qshop_binder = self.get_binder_for_model('qoqa.shop')
@@ -173,6 +211,7 @@ class SaleOrderImport(QoQaImportSynchronizer):
         # so we do not want to generate payments, invoice, stock moves
         if is_historic_import(self, self.qoqa_record):
             # no invoice, no packing, no payment
+            # TODO: check amounts
             sess = self.session
             sale = sess.browse('qoqa.sale.order', binding_id).openerp_id
             sale.action_done()
@@ -367,74 +406,3 @@ class SaleOrderImportMapper(ImportMapper):
 @qoqa
 class QoQaSaleOrderOnChange(SaleOrderOnChange):
     _model_name = 'qoqa.sale.order'
-
-
-@qoqa
-class SaleImportRule(ConnectorUnit):
-    _model_name = ['qoqa.sale.order']
-
-    def _check_max_days(self, record):
-        """ Cancel the import of waiting for a payment for too long. """
-        max_days = DAYS_BEFORE_CANCEL
-        if max_days:
-            order_id = record['id']
-            order_date = iso8601_to_utc_datetime(record['created_at'])
-            if order_date + timedelta(days=max_days) < datetime.now():
-                raise NothingToDoJob('Import of the order %s canceled '
-                                     'because it has not been paid since %d '
-                                     'days' % (order_id, max_days))
-
-    def check(self, record):
-        """ Check whether the current sale order should be imported
-        or not.
-
-        States or QoQa are:
-
-        * requested: an order has been created
-        * paid: authorized on datatrans, not captured
-        * confirmed: payment has been confirmed / captured by datatrans
-        * processed: final state, when is order is delivered
-        * cancelled: final state for cancellations
-
-        How we will handle them:
-
-        requested and paid
-            We do not import them but delay the import for later until
-            they are confirmed.
-
-        confirmed
-            They will be confirmed as soon as they are imported.
-
-        processed
-            We will short-circuit the workflow and set them directly to
-            'done'. They are imported for the history.
-
-        cancelled
-            They are imported but directly cancelled, for the history.
-
-        The automatic workflows do need to have the 'Confirm Sales Orders'
-        field deactivated. The confirmation of sales orders is handled
-        by the importer. This allows to keep the "paid" sales orders in draft
-        while the importer confirms the "confirmed" ones.
-
-        When an order has a status requested, we delay the import
-        to later.
-
-        This method only checks if we the sales orders should be imported
-        and eventually raise a :py:class:`NothingToDoJob` or
-        :py:class:`OrderImportRuleRetry`.
-
-        It does not cancels sales orders or create payments, theses actions
-        are done in the :py:meth:`SaleOrderImport._after_import` method.
-        """
-        import_states = (QOQA_STATUS_CONFIRMED, QOQA_STATUS_PROCESSED,
-                         QOQA_STATUS_CANCELLED)
-        if record['status_id'] in import_states:
-            return
-        self._check_max_days(record)
-
-        states = (QOQA_STATUS_REQUESTED, QOQA_STATUS_PAID)
-        if record['status_id'] in states:
-            raise OrderImportRuleRetry('The payment of the order has not '
-                                       'been confirmed.\nThe import will be '
-                                       'retried later.')

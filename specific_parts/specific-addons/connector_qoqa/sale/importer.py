@@ -102,9 +102,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
                                     'qoqa.product.product')
             self._import_dependency(item['offer_id'],
                                     'qoqa.offer.position')
-            # TODO promo_id
-            # self._import_dependency(item['promo_id'],
-            #                         'qoqa.promo')
             # TODO
             # self._import_dependency(item['voucher_id'],
             #                         'qoqa.voucher')

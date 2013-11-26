@@ -73,6 +73,9 @@ class SaleOrderLineImportMapper(ImportMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ('quantity', 'qoqa_quantity'),  # original quantity, without lot
               ('item_id', 'qoqa_id'),
+              # TODO unit_price is for a LOT not UNITS!
+              # divide by lot_size?
+              # TODO: in scenario, flag taxes as tax incl.
               (qoqafloat('unit_price'), 'price_unit'),
               ]
 

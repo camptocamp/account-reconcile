@@ -21,6 +21,7 @@
 
 import logging
 
+from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   ImportMapChild,
@@ -33,19 +34,28 @@ from ..unit.mapper import iso8601_to_utc, qoqafloat
 
 _logger = logging.getLogger(__name__)
 
-
+# http://admin.test02.qoqa.com/orderItemStatus
 QOQA_STATUS_PENDING = 1
 QOQA_STATUS_DONE = 2
 QOQA_STATUS_CANCELLED = 3
 
+# http://admin.test02.qoqa.com/orderItemType
 QOQA_TYPE_SOLD = 1
 QOQA_TYPE_PURCHASED = 2
 QOQA_TYPE_RETURNED = 3
 
+# http://admin.test02.qoqa.com/itemType
 QOQA_ITEM_PRODUCT = 1
 QOQA_ITEM_SHIPPING = 2
 QOQA_ITEM_DISCOUNT = 3
 QOQA_ITEM_SERVICE = 4
+
+# http://admin.test02.qoqa.com/promoType
+QOQA_PROMO_CUSTOMER_SERVICE = 1  # discount
+QOQA_PROMO_MARKETING = 2  # marketing
+QOQA_PROMO_AFFILIATION = 3  # marketing
+QOQA_PROMO_STAFF = 4  # marketing
+QOQA_PROMO_MAILING = 5  # ?
 
 
 @qoqa
@@ -66,6 +76,17 @@ class SaleOrderLineImportMapper(ImportMapper):
               (qoqafloat('unit_price'), 'price_unit'),
               ]
 
+    promo_products = {
+        QOQA_PROMO_CUSTOMER_SERVICE: ('connector_ecommerce',
+                                      'product_product_discount'),
+        QOQA_PROMO_MARKETING: ('qoqa_base_data',
+                               'product_product_marketing_coupon'),
+        QOQA_PROMO_AFFILIATION: ('qoqa_base_data',
+                                 'product_product_marketing_coupon'),
+        QOQA_PROMO_STAFF: ('qoqa_base_data',
+                           'product_product_marketing_coupon'),
+    }
+
     def finalize(self, map_record, values):
         """ complete the values values from the 'item' sub-record """
         item = map_record.source['item']
@@ -81,7 +102,7 @@ class SaleOrderLineImportMapper(ImportMapper):
             values.update(self._item_shipping(item, map_record.parent))
 
         elif type_id == QOQA_ITEM_DISCOUNT:
-            values.update(self._item_discount(item))
+            values.update(self._item_discount(item, map_record.source['promo']))
 
         return values
 
@@ -90,6 +111,10 @@ class SaleOrderLineImportMapper(ImportMapper):
         q_position_id = item['offer_id']
         binder = self.get_binder_for_model('qoqa.offer.position')
         position_id = binder.to_openerp(q_position_id)
+        if position_id is None:
+            raise MappingError("Offer Position with ID '%s' on QoQa has "
+                               "not been imported, should have been imported "
+                               "in _import_dependencies()." % q_position_id)
         # product.product
         binder = self.get_binder_for_model('qoqa.product.product')
         product_id = binder.to_openerp(item['variation_id'], unwrap=True)
@@ -101,7 +126,12 @@ class SaleOrderLineImportMapper(ImportMapper):
     def _item_shipping(self, item, parent):
         # find carrier_id from parent record (sales order)
         binder = self.get_binder_for_model('qoqa.offer')
-        offer_id = binder.to_openerp(parent.source['deal_id'], unwrap=True)
+        qdeal_id = parent.source['deal_id']
+        offer_id = binder.to_openerp(qdeal_id, unwrap=True)
+        if offer_id is None:
+            raise MappingError("Offer with ID '%s' on QoQa has "
+                               "not been imported, should have been imported "
+                               "in _import_dependencies()." % qdeal_id)
         offer = self.session.browse('qoqa.offer', offer_id)
         # line builder
         builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
@@ -112,10 +142,19 @@ class SaleOrderLineImportMapper(ImportMapper):
         del values['price_unit']  # keep the price of the direct mapping
         return values
 
-    def _item_discount(self, item):
+    def _item_discount(self, item, promo):
         # line builder
         builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
+
+        # choose product according to the promo type
+        promo_type_id = promo['promo_type_id']
+        product_ref = self.promo_products.get(promo_type_id)
+        if product_ref is None:
+            raise MappingError("Type of promo '%s' is not supported" %
+                               promo_type_id)
+
         builder.price_unit = 0
+        builder.product_ref = product_ref
         builder.code = item['promo_id']
         values = builder.get_line()
         del values['price_unit']  # keep the price of the direct mapping
@@ -141,8 +180,6 @@ class LineMapChild(ImportMapChild):
     def skip_item(self, map_record):
         record = map_record.source
         if not record['quantity']:
-            return True
-        if record['type_id'] != QOQA_TYPE_SOLD:
             return True
 
     def get_item_values(self, map_record, to_attr, options):
@@ -191,7 +228,6 @@ class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
 
     def __init__(self, environment):
         super(QoQaPromoLineBuilder, self).__init__(environment)
-        self.product_ref = ('connector_ecommerce', 'product_product_discount')
         # the sign is 1 because the API already provides a negative
         self.sign = 1
         self.code = None

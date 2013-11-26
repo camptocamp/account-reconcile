@@ -37,6 +37,7 @@ from openerp.addons.connector.exception import (NothingToDoJob,
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
+from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
@@ -49,11 +50,13 @@ from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
 
 _logger = logging.getLogger(__name__)
 
+# http://admin.test02.qoqa.com/orderStatus
 QOQA_STATUS_REQUESTED = 1  # order is created
 QOQA_STATUS_PAID = 2  # order is paid, not captured by Datatrans
 QOQA_STATUS_CONFIRMED = 3  # order is paid, payment confirmed
 QOQA_STATUS_CANCELLED = 4  # order is canceled
 QOQA_STATUS_PROCESSED = 5  # order is closed, delivered
+# http://admin.test02.qoqa.com/paymentStatus
 QOQA_PAY_STATUS_CONFIRMED = 5
 QOQA_PAY_STATUS_SUCCESS = 2
 QOQA_PAY_STATUS_ACCOUNTED = 7
@@ -61,15 +64,18 @@ QOQA_PAY_STATUS_ABORT = 4
 QOQA_PAY_STATUS_FAILED = 3
 QOQA_PAY_STATUS_CANCELLED = 6
 QOQA_PAY_STATUS_PENDING = 1
-DAYS_BEFORE_CANCEL = 30
+# http://admin.test02.qoqa.com/invoiceType
 QOQA_INVOICE_TYPE_ISSUED = 1
 QOQA_INVOICE_TYPE_RECEIVED = 2
 QOQA_INVOICE_TYPE_ISSUED_CN = 3
 QOQA_INVOICE_TYPE_RECEIVED_CN = 4
+# http://admin.test02.qoqa.com/invoiceStatus
 QOQA_INVOICE_STATUS_REQUESTED = 1
 QOQA_INVOICE_STATUS_CONFIRMED = 2
 QOQA_INVOICE_STATUS_CANCELLED = 3
 QOQA_INVOICE_STATUS_ACCOUNTED = 4
+
+DAYS_BEFORE_CANCEL = 30
 
 
 @qoqa
@@ -341,14 +347,11 @@ class SaleOrderImportMapper(ImportMapper):
                 lines.append(details_by_id.pop(detail_id))
 
             elif type_id == QOQA_ITEM_DISCOUNT:
-                # TODO: check if we need to get data from the promo
-                # if yes, activate the code below, and use the 'promo'
-                # content in the mapper.
-                # adapter = self.get_connector_unit_for_model(QoQaAdapter,
-                #                                             'qoqa.promo')
-                # promo_values = adapter.read(promo_id)
+                adapter = self.get_connector_unit_for_model(QoQaAdapter,
+                                                            'qoqa.promo')
+                promo_values = adapter.read(item['promo_id'])
                 line = details_by_id.pop(detail_id)
-                # line['promo'] = promo_values
+                line['promo'] = promo_values
                 lines.append(line)
 
             elif type_id == QOQA_ITEM_SERVICE:

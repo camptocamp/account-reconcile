@@ -168,7 +168,7 @@ class SaleOrderLineImportMapper(ImportMapper):
 
         """
         quantity = record['quantity']
-        lot_size = record['item']['lot_size']
+        lot_size = record['item']['lot_size'] or 1
         total = quantity * lot_size
         return {'product_uos_qty': total, 'product_uom_qty': total}
 

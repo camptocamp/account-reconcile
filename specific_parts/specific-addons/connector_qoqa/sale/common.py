@@ -47,8 +47,8 @@ class qoqa_sale_order(orm.Model):
         'qoqa_order_line_ids': fields.one2many('qoqa.sale.order.line',
                                                'qoqa_order_id',
                                                'QoQa Order Lines'),
-        'total_amount': fields.float(
-            'Total amount',
+        'qoqa_amount_total': fields.float(
+            'Total amount on QoQa',
             digits_compute=dp.get_precision('Account')),
         'invoice_ref': fields.char('Invoice Ref. on QoQa'),
     }

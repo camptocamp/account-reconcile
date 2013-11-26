@@ -29,7 +29,7 @@
             <field name="description">The amount computed in OpenERP doesn't match with the amount in QoQa.</field>
             <field name="sequence">30</field>
             <field name="model">sale.order</field>
-            <field name="code">if order.qoqa_bind_ids and abs(order.amount_total - order.qoqa_bind_ids[0].total_amount) >= 0.01:
+            <field name="code">if order.qoqa_bind_ids and abs(order.amount_total - order.qoqa_bind_ids[0].qoqa_amount_total) >= 0.01:
     failed = True</field>
             <field name="active" eval="True"/>
         </record>

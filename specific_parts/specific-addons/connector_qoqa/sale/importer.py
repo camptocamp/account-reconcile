@@ -211,12 +211,18 @@ class SaleOrderImport(QoQaImportSynchronizer):
         # so we do not want to generate payments, invoice, stock moves
         if is_historic_import(self, self.qoqa_record):
             # no invoice, no packing, no payment
-            # TODO: check amounts
             sess = self.session
-            sale = sess.browse('qoqa.sale.order', binding_id).openerp_id
-            sale.action_done()
-            _logger.debug('QoQa Sales order %s is processed, workflow '
-                          'short-circuited in OpenERP', self.qoqa_record['id'])
+            sale = sess.browse('qoqa.sale.order', binding_id)
+            # check if the amounts do not match, only for historic
+            # imports, this check is done with sale exceptions otherwise
+            if abs(sale.amount_total - sale.qoqa_amount_total) >= 0.01:
+                raise MappingError('Amounts do not match. Expected: %d, '
+                                   'got: %d' %
+                                   (sale.qoqa_amount_total, sale.amount_total))
+
+            sale.openerp_id.action_done()
+            _logger.debug('Sales order %s is processed, workflow '
+                          'short-circuited in OpenERP', sale.name)
         # TODO: how to handle the sales orders after
         # 'date_really_import' but 'processed'
         # elif self.qoqa_record['status_id'] == QOQA_STATUS_PROCESSED:
@@ -319,7 +325,7 @@ class SaleOrderImportMapper(ImportMapper):
         invoice = extract_invoice_from_sale(record)
         total = float(invoice['total']) / 100
         ref = invoice['reference']
-        return {'total_amount': total, 'invoice_ref': ref}
+        return {'qoqa_amount_total': total, 'invoice_ref': ref}
 
     @mapping
     def from_offer(self, record):

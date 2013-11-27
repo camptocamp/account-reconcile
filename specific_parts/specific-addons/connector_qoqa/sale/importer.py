@@ -201,7 +201,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
             if not journal:
                 continue
             amount = payment['amount'] / 100
-            date = iso8601_to_utc_datetime(payment['trx_date'])
+            qoqa_date = payment['trx_date'] or payment['created_at']
+            date = iso8601_to_utc_datetime(qoqa_date)
             cr, uid, context = sess.cr, sess.uid, sess.context
             sale_obj._add_payment(cr, uid, sale, journal,
                                   amount, date, context=context)

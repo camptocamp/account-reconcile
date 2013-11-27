@@ -22,6 +22,16 @@
 from openerp.osv import orm, fields
 
 
+class sale_shop(orm.Model):
+    _inherit = 'sale.shop'
+
+    _columns = {
+        'kanban_image': fields.binary(
+            'Kanban Image',
+            help="Image displayed on the Kanban views for this shop"),
+    }
+
+
 class sale_order(orm.Model):
     _inherit = 'sale.order'
 

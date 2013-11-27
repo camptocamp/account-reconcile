@@ -19,6 +19,17 @@
                     <separator/>
 
                     <filter
+                        string="Today"
+                        name="today"
+                        domain="['|',
+                                 ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
+                                 '|',
+                                 ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
+                                 ]"
+                        help="Offers Today!"/>
+                    <filter
                         string="Within 10 days"
                         name="in10days"
                         domain="['|',
@@ -97,6 +108,7 @@
                     <field name="date_begin" invisible="1"/>
                     <field name="name"/>
                     <field name="title"/>
+                    <field name="stock_progress" widget="progressbar"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -114,30 +126,66 @@
                     <field name="datetime_end"/>
                     <field name="day"/>
                     <field name="ref"/>
-                    <field name="name"/>
+                    <field name="main_brand"/>
+                    <field name="main_product_name"/>
                     <field name="description"/>
                     <field name="position_ids"/>
                     <field name="pricelist_id" domain="[('type', '=', 'sale')]"/>
                     <field name="qoqa_shop_id"/>
                     <field name="lang_id"/>
+                    <field name="sum_quantity"/>
+                    <field name="sum_stock_sold"/>
+                    <field name="stock_progress"/>
+                    <field name="shop_kanban_image"/>
+                    <field name="main_unit_price"/>
+                    <field name="main_regular_price"/>
+                    <field name="currency_symbol"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card oe_kanban_offer oe_kanban_global_click">
                                 <div class="oe_kanban_content">
-                                    <img t-att-src="kanban_image('qoqa.offer', 'image_small', record.id.value)"
-                                            class="oe_kanban_image"/>
+                                    <img t-att-src="kanban_image('qoqa.offer', 'shop_kanban_image', record.id.value)"
+                                            class="oe_kanban_image oe_qoqa_shop"/>
                                     <div class="header">
-                                        <b><field name="name"/></b>
+                                        <div class="qoqa_ref">
+                                          <b><t t-if="record.lang_id.raw_value">[<field name="lang_id"/>]</t>
+                                             <field name="ref"/></b>
+                                        </div>
                                     </div>
-                                    <div class="dates">
-                                        <field name="datetime_begin"/>  →
-                                        <field name="datetime_end"/>
+                                    <div class="qoqa_name">
+                                        <img t-att-src="kanban_image('qoqa.offer', 'image_small', record.id.value)"
+                                                class="oe_kanban_image"/>
+                                        <span class="qoqa_main_brand"><field name="main_brand"/></span>
+                                        <field name="main_product_name"/>
                                     </div>
-                                    <div>
-                                        <ul>
-                                            <li><field name="qoqa_shop_id"/></li>
-                                            <li><field name="lang_id"/></li>
-                                        </ul>
+                                    <div class="oe_clear"></div>
+                                    <div class="qoqa_content">
+                                        <div class="qoqa_product_info">
+                                            <div class="qoqa_left_box">
+                                                <field name="main_unit_price"/> <field name="currency_symbol"/>
+                                                (<field name="main_regular_price"/> <field name="currency_symbol"/>)
+                                            </div>
+                                            <div class="qoqa_right_box">
+
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <progress t-att-value="record.stock_progress.raw_value" max="100"/>
+                                        </div>
+                                        <div class="qoqa_dates">
+                                            <div class="qoqa_left_box">
+                                                <b>Start</b><br/>
+                                                <field name="datetime_begin"/>
+                                            </div>
+                                            <div class="qoqa_right_box">
+                                                <b>End</b><br/>
+                                                <field name="datetime_end"/>
+                                            </div>
+                                        </div>
+                                        <div class="oe_clear"></div>
+                                        <div class="qoqa_buttons" groups="base.group_user">
+                                            <a name="action_view_sale_order" type="object" class="oe_kanban_button">Open Sales Orders</a>
+                                        </div>
                                     </div>
                                     <div class="oe_clear"></div>
                                 </div>
@@ -164,6 +212,9 @@
                             string="Cancel" type="object"
                             groups="base.group_user"
                             states="draft,open,planned"/>
+                        <button name="action_view_sale_order"
+                            string="View Sales Orders" type="object"
+                            groups="base.group_user"/>
                         <field name="state" widget="statusbar"
                             statusbar_visible="draft,open,planned,done"
                             statusbar_colors='{"cancel": "red"}'/>
@@ -236,7 +287,7 @@
                                                 <field name="regular_price_type"/>
                                                 <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                 <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="tax_id" on_change="onchange_tax_id(tax_id)"/>
+                                                <field name="tax_id"/>
                                                 <field name="ecotax"/>
                                             </group>
                                             <group>

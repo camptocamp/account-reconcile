@@ -95,18 +95,54 @@ class qoqa_offer(orm.Model):
 
         """
         res = {}
+        empty = _('...?')
         for offer in self.browse(cr, uid, ids, context=context):
             if (not offer.main_position_id or
                     not offer.main_position_id.product_tmpl_id):
-                res[offer.id] = _('...?')
+                res[offer.id] = {
+                    'name': empty,
+                    'main_brand': '',
+                    'main_product_name': empty,
+                }
                 continue
             product_tmpl = offer.main_position_id.product_tmpl_id
+
+            name = product_tmpl.name
             if product_tmpl.brand:
-                name = "[%s] %s: %s" % (offer.ref, product_tmpl.brand,
-                                        product_tmpl.name)
+                brand = product_tmpl.brand
+                name = "%s: %s" % (product_tmpl.brand, name)
             else:
-                name = "[%s] %s" % (offer.ref, product_tmpl.name)
-            res[offer.id] = name
+                brand = False
+            res[offer.id] = {
+                'name': "[%s] %s" % (offer.ref, name),
+                'main_brand': brand,
+                'main_product_name': name,
+            }
+        return res
+
+    def _get_stock(self, cr, uid, ids, fields, args, context=None):
+        """Get stock numbers
+
+        :returns: computed values
+        :rtype: dict
+        """
+        res = {}
+        for offer in self.browse(cr, uid, ids, context=context):
+            quantity = 0
+            residual = 0
+            for position in offer.position_ids:
+                quantity += position.sum_quantity
+                residual += position.sum_residual
+
+            progress = 0.0
+            if quantity > 0:
+                progress = 100 + ((residual - quantity) / quantity) * 100
+
+            res[offer.id] = {
+                'sum_quantity': quantity,
+                'sum_stock_sold': quantity - residual,
+                'stock_progress': progress,
+            }
         return res
 
     def _get_offer_from_templates(self, cr, uid, ids, context=None):
@@ -125,29 +161,45 @@ class qoqa_offer(orm.Model):
                                       context=context)
         return [position['offer_id'][0] for position in positions]
 
+    _name_store = {
+        _name: (lambda self, cr, uid, ids, c: ids,
+                ['ref', 'position_ids'],
+                10),
+        'qoqa.offer.position': (_get_offer_from_positions,
+                                ['product_tmpl_id'],
+                                10),
+        'product.template': (_get_offer_from_templates,
+                             ['name', 'brand'],
+                             10)
+    }
+
     _columns = {
         'ref': fields.char('Offer Reference', required=True),
         'name': fields.function(
             _get_name,
             type='char',
-            string='Name',
+            string='Ref and Name',
             readonly=True,
-            store={
-                _name: (lambda self, cr, uid, ids, c: ids,
-                        ['ref', 'position_ids'],
-                        10),
-                'qoqa.offer.position': (_get_offer_from_positions,
-                                        ['product_tmpl_id'],
-                                        10),
-                'product.template': (_get_offer_from_templates,
-                                     ['name', 'brand'],
-                                     10)
-            }),
+            multi='name',
+            store=_name_store),
+        'main_brand': fields.function(
+            _get_name,
+            type='char',
+            string='Main Brand',
+            readonly=True,
+            multi='name',
+            store=_name_store),
+        'main_product_name': fields.function(
+            _get_name,
+            type='char',
+            string='Main Product Name',
+            readonly=True,
+            multi='name',
+            store=_name_store),
         'title': fields.char('Title', translate=True, required=True),
         'description': fields.html('Description', translate=True),
         'note': fields.html('Internal Notes',
-                            translate=True,
-                            required=True),
+                            translate=True),
         'state': fields.selection(
             OFFER_STATES,
             'Status',
@@ -158,6 +210,11 @@ class qoqa_offer(orm.Model):
             'qoqa.shop',
             string='Sell on',
             required=True),
+        'shop_kanban_image': fields.related(
+            'qoqa_shop_id', 'kanban_image',
+            string='Shop Image',
+            type='binary',
+            readonly=True),
         'position_ids': fields.one2many(
             'qoqa.offer.position',
             'offer_id',
@@ -177,6 +234,26 @@ class qoqa_offer(orm.Model):
             string='Medium-sized Image',
             type='binary',
             readonly=True),
+        'stock_progress': fields.related(
+            'main_position_id', 'stock_progress',
+            string='Progress',
+            type='float',
+            readonly=True),
+        'sum_quantity': fields.function(
+            _get_stock,
+            string='Quantity',
+            type='integer',
+            multi='stock'),
+        'sum_stock_sold': fields.function(
+            _get_stock,
+            string='Sold',
+            type='integer',
+            multi='stock'),
+        'stock_progress': fields.function(
+            _get_stock,
+            string='Progress',
+            type='float',
+            multi='stock'),
         # date & time are split in 2 fields
         # because they should not be based on the UTC
         # if one says that a offer start on 2013-10-07 at 00:00
@@ -250,6 +327,20 @@ class qoqa_offer(orm.Model):
             readonly=True,
             states={'draft': [('readonly', False)]}),
         'active': fields.boolean('Active'),
+        'sale_ids': fields.one2many(
+            'sale.order', 'offer_id',
+            string='Sales Orders'),
+        # related to main position for kanban view:
+        'currency_symbol': fields.related(
+            'pricelist_id', 'currency_id', 'symbol',
+            type='char', string='Currency', readonly=True),
+        'main_unit_price': fields.related(
+            'main_position_id', 'unit_price',
+            string='Unit Price', type='float',
+            readonly=True),
+        'main_regular_price': fields.related(
+            'main_position_id', 'unit_price',
+            string='Unit Price', type='float', readonly=True),
     }
 
     def _default_company(self, cr, uid, context=None):
@@ -321,3 +412,19 @@ class qoqa_offer(orm.Model):
         if not date_begin:
             return {}
         return {'value': {'date_end': date_begin}}
+
+    def action_view_sale_order(self, cr, uid, ids, context=None):
+        mod_obj = self.pool.get('ir.model.data')
+        act_obj = self.pool.get('ir.actions.act_window')
+
+        offers = self.browse(cr, uid, ids, context=context)
+        sale_ids = [sale.id for offer in offers for sale in offer.sale_ids]
+
+        action_xmlid = ('sale', 'action_orders')
+        ref = mod_obj.get_object_reference(cr, uid, *action_xmlid)
+        action_id = False
+        if ref:
+            __, action_id = ref
+        action = act_obj.read(cr, uid, [action_id], context=context)[0]
+        action['domain'] = str([('id', 'in', sale_ids)])
+        return action

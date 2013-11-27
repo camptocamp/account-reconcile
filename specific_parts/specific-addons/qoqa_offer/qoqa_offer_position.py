@@ -56,15 +56,59 @@ class qoqa_offer_position_variant(orm.Model):
             num_sold /= lot_size
             quantity = variant.quantity
             residual = quantity - num_sold
-            progress = 0.0
+            progress = 100.
             if quantity != 0:
-                progress = ((quantity - residual) / quantity) * 100
+                # progress bar is full when nothing is sold,
+                # empty when all is sold
+                progress = 100 + ((residual - quantity) / quantity) * 100
             res[variant.id] = {
                 'stock_sold': num_sold,
                 'stock_residual': residual,
                 'stock_progress': progress,
             }
         return res
+
+    def _get_from_offer_position(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        pos_variant_ids = this.search(
+            cr, uid,
+            [('position_id', 'in', ids)],
+            context=context)
+        return pos_variant_ids
+
+    def _get_from_offer(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        pos_variant_ids = this.search(
+            cr, uid,
+            [('position_id.offer_id', 'in', ids)],
+            context=context)
+        return pos_variant_ids
+
+    def _get_from_sale_order(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        sale_obj = self.pool.get('sale.order')
+        sales = sale_obj.read(cr, uid, ids, ['offer_id'], context=context)
+        offer_ids = [sale['offer_id'][0] for sale in sales
+                     if sale['offer_id']]
+        return this._get_from_offer(cr, uid, offer_ids, context=context)
+
+    def _get_from_sale_order_line(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        line_obj = self.pool.get('sale.order.line')
+        lines = line_obj.read(cr, uid, ids, ['offer_position_id'],
+                              context=context)
+        offer_ids = [line['offer_position_id'][0] for line in lines
+                     if line['offer_position_id']]
+        return this._get_from_offer(cr, uid, offer_ids, context=context)
+
+    _progress_store = {
+        _name: (lambda self, cr, uid, ids, context=None: ids, None, 10),
+        'qoqa.offer.position': (_get_from_offer_position, ['lot_size'], 10),
+        'sale.order': (_get_from_sale_order,
+                       ['offer_id', 'order_line', 'state'], 10),
+        'sale.order.line': (_get_from_sale_order_line,
+                            ['product_id', 'product_uom_qty'], 10),
+    }
 
     _columns = {
         'position_id': fields.many2one(
@@ -83,17 +127,20 @@ class qoqa_offer_position_variant(orm.Model):
             _get_stock,
             string='Sold',
             type='integer',
-            multi='stock'),
+            multi='stock',
+            store=_progress_store),
         'stock_residual': fields.function(
             _get_stock,
             string='Remaining',
             type='integer',
-            multi='stock'),
+            multi='stock',
+            store=_progress_store),
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
             type='float',
-            multi='stock'),
+            multi='stock',
+            store=_progress_store),
     }
 
 
@@ -124,11 +171,12 @@ class qoqa_offer_position(orm.Model):
 
             progress = 0.0
             if quantity > 0:
-                progress = ((quantity - residual) / quantity) * 100
+                progress = 100 + ((residual - quantity) / quantity) * 100
 
             res[offer.id] = {
                 'sum_quantity': quantity,
                 'sum_stock_sold': quantity - residual,
+                'sum_residual': residual,
                 'stock_progress': progress,
             }
         return res
@@ -237,6 +285,11 @@ class qoqa_offer_position(orm.Model):
         'sum_stock_sold': fields.function(
             _get_stock,
             string='Sold',
+            type='integer',
+            multi='stock'),
+        'sum_residual': fields.function(
+            _get_stock,
+            string='Residual',
             type='integer',
             multi='stock'),
         'stock_progress': fields.function(

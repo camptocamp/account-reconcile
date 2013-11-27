@@ -216,8 +216,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # check if the amounts do not match, only for historic
             # imports, this check is done with sale exceptions otherwise
             if abs(sale.amount_total - sale.qoqa_amount_total) >= 0.01:
-                raise MappingError('Amounts do not match. Expected: %d, '
-                                   'got: %d' %
+                raise MappingError('Amounts do not match. Expected: %0.2f, '
+                                   'got: %0.2f' %
                                    (sale.qoqa_amount_total, sale.amount_total))
 
             sale.openerp_id.action_done()

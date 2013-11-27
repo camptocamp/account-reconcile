@@ -183,8 +183,8 @@ Feature: Configure the connector's backend
     Given I am configuring the company with ref "scenario.qoqa_ch"
     Given I find a "account.tax" with description: <tax_code>
     And having:
-         | key     | value         |
-         | qoqa_id | <qoqa_id>     |
+         | key           | value     |
+         | qoqa_id       | <qoqa_id> |
 
     Examples: currencies
          | tax_code | qoqa_id |
@@ -196,10 +196,10 @@ Feature: Configure the connector's backend
   @qoqa_id @tax
   Scenario Outline: Set the qoqa_ids on the taxes
     Given I am configuring the company with ref "scenario.qoqa_ch"
-    Given I find a "account.tax" with description: <tax_code> and active: False
+    Given I find an inactive "account.tax" with description: <tax_code>
     And having:
-         | key     | value         |
-         | qoqa_id | <qoqa_id>     |
+         | key           | value     |
+         | qoqa_id       | <qoqa_id> |
 
     Examples: currencies
          | tax_code | qoqa_id |

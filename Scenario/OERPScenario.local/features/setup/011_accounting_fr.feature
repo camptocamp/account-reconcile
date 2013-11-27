@@ -92,3 +92,17 @@ Feature: Configure the FR's accounting
       | 2010 | 0.6739 |
       | 2011 | 0.8017 |
       | 2012 | 0.8221 |
+
+  @tax
+  Scenario Outline: Configure the taxes to price include
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key           | value     |
+         | price_include | True      |
+
+    Examples: currencies
+         | tax_code |
+         | 2.1      |
+         | 5.5      |
+         | 19.6     |

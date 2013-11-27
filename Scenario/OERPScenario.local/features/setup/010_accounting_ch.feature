@@ -94,12 +94,28 @@ Feature: Configure the CH's accounting
       | property_stock_account_input         | product.template |        10900 |
       | property_stock_account_output        | product.template |        10900 |
 
+  @tax
+  Scenario Outline: Configure the taxes to price include
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key           | value     |
+         | price_include | True      |
+
+    Examples: currencies
+         | tax_code |
+         | 2.5%     |
+         | 3.8%     |
+         | 8.0%     |
+         | 0% excl. |
+
   @historic_account_tax
   Scenario: I create the historic account taxes for CH (7.6%,3.6%,2.4%) in order to import the previous years
     Given I need a "account.tax" with oid: scenario.vat_76
     And having
          | key                  | value                                                           |
          | name                 | TVA due a 7.6% (TN)                                             |
+         | price_include        | True                                                            |
          | description          | 7.6%                                                            |
          | amount               | 0.076                                                           |
          | type                 | percent                                                         |
@@ -118,6 +134,7 @@ Feature: Configure the CH's accounting
     And having
          | key                  | value                                                           |
          | name                 | TVA due a 3.6% (TN)                                             |
+         | price_include        | True                                                            |
          | description          | 3.6%                                                            |
          | amount               | 0.036                                                           |
          | type                 | percent                                                         |
@@ -136,6 +153,7 @@ Feature: Configure the CH's accounting
     And having
          | key                  | value                                                           |
          | name                 | TVA due a 2.4% (TN)                                             |
+         | price_include        | True                                                            |
          | description          | 2.4%                                                            |
          | amount               | 0.024                                                           |
          | type                 | percent                                                         |

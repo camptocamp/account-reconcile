@@ -140,6 +140,8 @@
                     <field name="sum_quantity"/>
                     <field name="sum_stock_sold"/>
                     <field name="stock_progress"/>
+                    <field name="stock_bias"/>
+                    <field name="stock_progress_with_bias"/>
                     <field name="shop_kanban_image"/>
                     <field name="main_unit_price"/>
                     <field name="main_regular_price"/>
@@ -167,7 +169,7 @@
                                         <div class="qoqa_product_info">
                                             <div class="qoqa_left_box">
                                                 <field name="main_unit_price"/> <field name="currency_symbol"/>
-                                                (<field name="main_regular_price"/> <field name="currency_symbol"/>)
+                                                <t t-esc="'('"/><field name="main_regular_price"/> <field name="currency_symbol"/><t t-esc="')'"/>
                                             </div>
                                             <div class="qoqa_right_box">
 
@@ -176,7 +178,27 @@
                                         <div>
                                             <progress t-att-value="record.stock_progress.raw_value" max="100"/>
                                         </div>
-                                        <div class="qoqa_dates">
+                                        <div class="qoqa_box">
+                                            <div class="qoqa_left_box">
+                                              Stock: <b><field name="sum_stock_sold"/>/<field name="sum_quantity"/></b>
+                                              <t t-esc="'('"/><field name="stock_progress"/>％<t t-esc="')'"/>
+                                            </div>
+                                            <div class="qoqa_right_box">
+
+                                            </div>
+                                        </div>
+                                        <hr class="qoqa_line"/>
+                                        <div class="qoqa_box">
+                                            <div class="qoqa_left_box">
+                                              Bias: <field name="stock_bias"/>％
+                                            </div>
+                                            <div class="qoqa_right_box">
+                                              With bias: <b><field name="stock_progress_with_bias"/>％</b>
+                                              <a name="decrement_stock_bias" type="object" class="oe_e qoqa_minus">Y</a>
+                                            </div>
+                                        </div>
+                                        <hr class="qoqa_line"/>
+                                        <div class="qoqa_box">
                                             <div class="qoqa_left_box">
                                                 <b>Start</b><br/>
                                                 <field name="datetime_begin"/>
@@ -259,74 +281,77 @@
                         </group>
                         <notebook>
                             <page string="Positions">
-                                <field name="position_ids">
-                                    <tree string="Positions">
-                                        <field name="sequence" widget="handle"/>
-                                        <field name="product_tmpl_id"/>
-                                        <field name="unit_price"/>
-                                        <field name="sum_quantity"/>
-                                        <field name="sum_stock_sold"/>
-                                        <field name="stock_progress" widget="progressbar"/>
-                                        <field name="active"/>
-                                    </tree>
-                                    <form string="Position" version="7.0">
-                                        <header>
-                                            <field name="state" widget="statusbar" invisible="1"/>
-                                        </header>
-                                        <field name="image_medium" widget="image"
-                                            class="oe_avatar oe_left"/>
-                                        <div>
-                                            <label for="product_tmpl_id"/>
-                                        </div>
-                                        <h1>
-                                            <field name="product_tmpl_id"
-                                                on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
-                                        </h1>
-                                        <group>
-                                            <group name="price" string="Prices">
-                                                <field name="currency_id" invisible="1"/>
-                                                <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="regular_price_type"/>
-                                                <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="tax_id"/>
-                                                <field name="ecotax"/>
-                                            </group>
+                                <group>
+                                    <field name="stock_bias"/>
+                                    <newline/>
+                                    <field name="position_ids" nolabel="1" colspan="4">
+                                        <tree string="Positions">
+                                            <field name="sequence" widget="handle"/>
+                                            <field name="product_tmpl_id"/>
+                                            <field name="unit_price"/>
+                                            <field name="sum_quantity"/>
+                                            <field name="sum_stock_sold"/>
+                                            <field name="stock_progress" widget="progressbar"/>
+                                            <field name="active"/>
+                                        </tree>
+                                        <form string="Position" version="7.0">
+                                            <header>
+                                                <field name="state" widget="statusbar" invisible="1"/>
+                                            </header>
+                                            <field name="image_medium" widget="image"
+                                                class="oe_avatar oe_left"/>
+                                            <div>
+                                                <label for="product_tmpl_id"/>
+                                            </div>
+                                            <h1>
+                                                <field name="product_tmpl_id"
+                                                    on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
+                                            </h1>
                                             <group>
-                                                <group name="stock" string="Stock" colspan="4">
-                                                    <field name="lot_size"/>
-                                                    <field name="max_sellable"/>
-                                                    <field name="stock_bias"/>
+                                                <group name="price" string="Prices">
+                                                    <field name="currency_id" invisible="1"/>
+                                                    <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="regular_price_type"/>
+                                                    <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="tax_id"/>
+                                                    <field name="ecotax"/>
                                                 </group>
-                                                <group name="various" string="Various" colspan="4">
-                                                    <field name="date_delivery"/>
-                                                    <field name="booking_delivery"/>
-                                                    <field name="order_url"/>
-                                                    <field name="active"/>
+                                                <group>
+                                                    <group name="stock" string="Stock" colspan="4">
+                                                        <field name="lot_size"/>
+                                                        <field name="max_sellable"/>
+                                                    </group>
+                                                    <group name="various" string="Various" colspan="4">
+                                                        <field name="date_delivery"/>
+                                                        <field name="booking_delivery"/>
+                                                        <field name="order_url"/>
+                                                        <field name="active"/>
+                                                    </group>
                                                 </group>
                                             </group>
-                                        </group>
-                                        <group colspan="4" name="buyphrase" string="Buyphrase">
-                                            <field name="buyphrase_id" nolabel="1"
-                                                options='{"no_open": 1}'
-                                                colspan="4"/>
-                                        </group>
-                                        <group colspan="4" name="variant" string="Variants">
-                                            <field name="variant_ids" nolabel="1">
-                                                <tree string="Variants" editable="bottom">
-                                                    <field name="product_id"
-                                                        domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
-                                                    <field name="quantity"/>
-                                                    <field name="stock_sold"/>
-                                                    <field name="stock_residual"/>
-                                                    <field name="stock_progress" widget="progressbar"/>
-                                                </tree>
-                                            </field>
-                                        </group>
-                                    </form>
-                                </field>
+                                            <group colspan="4" name="buyphrase" string="Buyphrase">
+                                                <field name="buyphrase_id" nolabel="1"
+                                                    options='{"no_open": 1}'
+                                                    colspan="4"/>
+                                            </group>
+                                            <group colspan="4" name="variant" string="Variants">
+                                                <field name="variant_ids" nolabel="1">
+                                                    <tree string="Variants" editable="bottom">
+                                                        <field name="product_id"
+                                                            domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
+                                                        <field name="quantity"/>
+                                                        <field name="stock_sold"/>
+                                                        <field name="stock_residual"/>
+                                                        <field name="stock_progress" widget="progressbar"/>
+                                                    </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
                             </page>
                             <page string="Internal Description">
                                 <group>

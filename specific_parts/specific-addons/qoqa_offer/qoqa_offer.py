@@ -20,13 +20,11 @@
 ##############################################################################
 
 from __future__ import division
-import time
+import math
 from datetime import datetime, timedelta
-from openerp.tools import (DEFAULT_SERVER_DATETIME_FORMAT,
-                           DEFAULT_SERVER_DATE_FORMAT)
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.tools.translate import _
 
-import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
 
@@ -136,12 +134,17 @@ class qoqa_offer(orm.Model):
 
             progress = 0.0
             if quantity > 0:
-                progress = 100 + ((residual - quantity) / quantity) * 100
+                progress = ((quantity - residual) / quantity) * 100
+
+            # always round up
+            progress_bias = math.ceil(progress * offer.stock_bias / 100)
 
             res[offer.id] = {
                 'sum_quantity': quantity,
+                'sum_residual': residual,
                 'sum_stock_sold': quantity - residual,
                 'stock_progress': progress,
+                'stock_progress_with_bias': progress_bias,
             }
         return res
 
@@ -244,6 +247,11 @@ class qoqa_offer(orm.Model):
             string='Quantity',
             type='integer',
             multi='stock'),
+        'sum_residual': fields.function(
+            _get_stock,
+            string='Residual',
+            type='integer',
+            multi='stock'),
         'sum_stock_sold': fields.function(
             _get_stock,
             string='Sold',
@@ -252,6 +260,11 @@ class qoqa_offer(orm.Model):
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
+            type='float',
+            multi='stock'),
+        'stock_progress_with_bias': fields.function(
+            _get_stock,
+            string='Progress with Bias',
             type='float',
             multi='stock'),
         # date & time are split in 2 fields
@@ -341,6 +354,7 @@ class qoqa_offer(orm.Model):
         'main_regular_price': fields.related(
             'main_position_id', 'unit_price',
             string='Unit Price', type='float', readonly=True),
+        'stock_bias': fields.integer('Stock Bias'),
     }
 
     def _default_company(self, cr, uid, context=None):
@@ -348,6 +362,7 @@ class qoqa_offer(orm.Model):
         return company_obj._company_default_get(cr, uid, 'qoqa.offer', context=context)
 
     _defaults = {
+        'stock_bias': 100,
         'ref': '/',
         'state': 'draft',
         'company_id': _default_company,
@@ -427,3 +442,12 @@ class qoqa_offer(orm.Model):
         action = act_obj.read(cr, uid, [action_id], context=context)[0]
         action['domain'] = str([('offer_id', 'in', ids)])
         return action
+
+    def decrement_stock_bias(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        for offer in self.browse(cr, uid, ids, context=context):
+            self.write(cr, uid, offer.id,
+                       {'stock_bias': offer.stock_bias - 1},
+                       context=context)
+        return True

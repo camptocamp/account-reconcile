@@ -56,11 +56,10 @@ class qoqa_offer_position_variant(orm.Model):
             num_sold /= lot_size
             quantity = variant.quantity
             residual = quantity - num_sold
-            progress = 100.
+            progress = 0.
             if quantity != 0:
-                # progress bar is full when nothing is sold,
-                # empty when all is sold
-                progress = 100 + ((residual - quantity) / quantity) * 100
+                # progress bar is full when all is sold
+                progress = ((quantity - residual) / quantity) * 100
             res[variant.id] = {
                 'stock_sold': num_sold,
                 'stock_residual': residual,
@@ -171,7 +170,7 @@ class qoqa_offer_position(orm.Model):
 
             progress = 0.0
             if quantity > 0:
-                progress = 100 + ((residual - quantity) / quantity) * 100
+                progress = ((quantity - residual) / quantity) * 100
 
             res[offer.id] = {
                 'sum_quantity': quantity,
@@ -249,7 +248,10 @@ class qoqa_offer_position(orm.Model):
             domain="[('type_tax_use', '=', 'sale')]"),
         'lot_size': fields.integer('Lot Size', required=True),
         'max_sellable': fields.integer('Max Sellable', required=True),
-        'stock_bias': fields.integer('Stock Bias'),
+        'stock_bias': fields.related(
+            'offer_id', 'stock_bias',
+            string='Stock Bias',
+            readonly=True),
         'unit_price': fields.float(
             'Unit Price',
             digits_compute=dp.get_precision('Product Price'),
@@ -305,7 +307,6 @@ class qoqa_offer_position(orm.Model):
 
     _defaults = {
         'regular_price_type': 'normal',
-        'stock_bias': 100,
         'max_sellable': 3,
         'lot_size': 1,
         'active': 1,

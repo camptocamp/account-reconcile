@@ -1,6 +1,7 @@
 .openerp .oe_kanban_offer {
   width: 350px;
   min-height: 160px;
+  font-size: 95%;
 }
 
 .openerp .oe_kanban_offer .header {
@@ -23,12 +24,26 @@
 }
 
 .openerp .oe_kanban_offer .qoqa_name {
-  font-size: 110%;
+  font-size: 115%;
   font-weight: bold;
 }
 
 .openerp .oe_kanban_offer .qoqa_name span.qoqa_main_brand {
-  font-size: 130%;
+  font-size: 135%;
+}
+
+.openerp .oe_kanban_offer hr.qoqa_line {
+  float: left;
+  display: block;
+  width: 100%;
+  clear: both;
+  border: 0;
+  height: 1px;
+  background: #333;
+  background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
+  background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc);
+  background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc);
+  background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);
 }
 
 .openerp .oe_kanban_offer .oe_kanban_image {
@@ -36,16 +51,26 @@
   margin: 4px;
 }
 
+.openerp .oe_kanban_offer .qoqa_box {
+  float: left;
+  width: 100%;
+  padding: 4px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .openerp .oe_kanban_offer .qoqa_left_box {
   width: 45%;
   float: left;
-  /* margin: 4px; */
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .openerp .oe_kanban_offer .qoqa_right_box {
-  float: left;
   width: 45%;
-  /* margin: 4px; */
+  float: left;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .openerp .oe_kanban_offer .oe_kanban_image.oe_qoqa_shop {
@@ -53,12 +78,6 @@
   height: 28px;
 }
 
-.openerp .oe_kanban_offer div.header {
-}
-
-.openerp .oe_kanban_offer div.dates {
-  font-size: 80%;
-}
 
 .oe_kanban_offer .oe_ellipsis {
   overflow: hidden;
@@ -109,6 +128,11 @@ progress[value]::-moz-progress-bar {
 .oe_kanban_offer progress[value] {
   width: 100%;
   height: 14px;
+}
+
+.oe_kanban_offer a.qoqa_minus {
+  color: #CA4791;
+  float: right;
 }
 
 .oe_kanban_offer .qoqa_buttons a.oe_kanban_button {

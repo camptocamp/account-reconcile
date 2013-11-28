@@ -186,8 +186,9 @@ Feature: Configure the CH's accounting
       | name                      | <name>                   |
       | currency_id               | by name: <currency>      |
       | company_id                | by oid: scenario.qoqa_ch |
+      | field                     | <field>                  |
 
     Examples: Defaults price type for QoQa CH
-      | oid                              | name             | currency |
-      | scenario.price_type_list_ch      | Public Price CHF | CHF      |
-      | scenario.prince_type_standard_ch | Cost Price CHF   | CHF      |
+      | oid                              | name             | currency | field          |
+      | scenario.price_type_list_ch      | Public Price CHF | CHF      | list_price     |
+      | scenario.prince_type_standard_ch | Cost Price CHF   | CHF      | standard_price |

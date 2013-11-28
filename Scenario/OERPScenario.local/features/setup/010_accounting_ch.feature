@@ -177,18 +177,3 @@ Feature: Configure the CH's accounting
          | name        | 2005-01-01       |
          | rate        | 1.0              |
          | currency_id | by oid: base.CHF |
-
-  @price_type_ch @price_type
-  Scenario Outline: CREATE PRICETYPE PER COMPANY
-     Given I need a "product.price.type" with oid: <oid>
-     And having:
-      | key                       | value                    |
-      | name                      | <name>                   |
-      | currency_id               | by name: <currency>      |
-      | company_id                | by oid: scenario.qoqa_ch |
-      | field                     | <field>                  |
-
-    Examples: Defaults price type for QoQa CH
-      | oid                              | name             | currency | field          |
-      | scenario.price_type_list_ch      | Public Price CHF | CHF      | list_price     |
-      | scenario.prince_type_standard_ch | Cost Price CHF   | CHF      | standard_price |

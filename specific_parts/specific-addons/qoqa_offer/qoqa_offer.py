@@ -129,14 +129,18 @@ class qoqa_offer(orm.Model):
             if quantity > 0:
                 progress = ((quantity - residual) / quantity) * 100
 
+            progress_remaining = 100 - progress
             # always round up
-            progress_bias = math.ceil(progress * offer.stock_bias / 100)
+            progress_bias = math.ceil(progress_remaining *
+                                      offer.stock_bias /
+                                      100)
 
             res[offer.id] = {
                 'sum_quantity': quantity,
                 'sum_residual': residual,
                 'sum_stock_sold': quantity - residual,
                 'stock_progress': progress,
+                'stock_progress_remaining': progress_remaining,
                 'stock_progress_with_bias': progress_bias,
             }
         return res
@@ -251,7 +255,12 @@ class qoqa_offer(orm.Model):
             multi='stock'),
         'stock_progress_with_bias': fields.function(
             _get_stock,
-            string='Progress with Bias',
+            string='Remaining with Bias (%)',
+            type='float',
+            multi='stock'),
+        'stock_progress_remaining': fields.function(
+            _get_stock,
+            string='Remaining (%)',
             type='float',
             multi='stock'),
         # date & time are split in 2 fields

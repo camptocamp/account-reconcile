@@ -64,6 +64,7 @@ class qoqa_offer_position_variant(orm.Model):
                 'stock_sold': num_sold,
                 'stock_residual': residual,
                 'stock_progress': progress,
+                'stock_progress_remaining': 100 - progress,
             }
         return res
 
@@ -140,6 +141,12 @@ class qoqa_offer_position_variant(orm.Model):
             type='float',
             multi='stock',
             store=_progress_store),
+        'stock_progress_remaining': fields.function(
+            _get_stock,
+            string='Remaining (%)',
+            type='float',
+            multi='stock',
+            store=_progress_store),
     }
 
 
@@ -177,6 +184,7 @@ class qoqa_offer_position(orm.Model):
                 'sum_stock_sold': quantity - residual,
                 'sum_residual': residual,
                 'stock_progress': progress,
+                'stock_progress_remaining': 100 - progress,
             }
         return res
 
@@ -290,6 +298,11 @@ class qoqa_offer_position(orm.Model):
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
+            type='float',
+            multi='stock'),
+        'stock_progress_remaining': fields.function(
+            _get_stock,
+            string='Remaining (%)',
             type='float',
             multi='stock'),
         'active': fields.boolean('Active'),

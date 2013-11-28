@@ -158,7 +158,7 @@
                                         <div class="qoqa_box">
                                             <div class="qoqa_left_box">
                                               Stock: <b><field name="sum_stock_sold"/>/<field name="sum_quantity"/></b>
-                                              <t t-esc="'('"/><field name="stock_progress"/>％<t t-esc="')'"/>
+                                              <t t-esc="'('"/><field name="stock_progress_remaining"/>％<t t-esc="')'"/>
                                             </div>
                                             <div class="qoqa_right_box">
 

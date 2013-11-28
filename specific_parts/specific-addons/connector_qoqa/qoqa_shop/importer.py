@@ -19,6 +19,11 @@
 #
 ##############################################################################
 
+import base64
+import contextlib
+import urllib2
+from StringIO import StringIO
+from PIL import Image
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   only_create,
                                                   ImportMapper
@@ -120,3 +125,15 @@ class ShopImportMapper(ImportMapper):
     @mapping
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
+
+    @mapping
+    def logo(self, record):
+        url = 'http://' + record['medias']['header_logo']
+        with contextlib.closing(urllib2.urlopen(url)) as logofd:
+            binary = logofd.read()
+        try:
+            Image.open(StringIO(binary))
+        except IOError:
+            # not an image
+            return
+        return {'kanban_image': base64.b64encode(binary)}

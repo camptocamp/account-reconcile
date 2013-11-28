@@ -122,7 +122,7 @@ class SaleOrderImport(QoQaImportSynchronizer):
                 # Already imported orders, but canceled afterwards,
                 # triggers the automatic cancellation
                 sale = self.session.browse('sale.order', sale_id)
-                if sale.state != 'cancel':
+                if sale.state != 'cancel' and not self.canceled_in_backend:
                     self.session.write('sale.order', [sale_id],
                                        {'canceled_in_backend': True})
                 return _('Sales order %s has been has been marked '

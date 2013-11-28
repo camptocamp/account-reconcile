@@ -118,6 +118,15 @@ Feature: Parameter the new database
          | grouping | [3, 0] |
 
 
+  @currencies
+  Scenario: Deactivate useless currencies
+    Given  I execute the SQL commands
+    """
+    UPDATE res_currency SET active = FALSE
+      WHERE name NOT IN ('EUR', 'CHF', 'USD')
+    """
+
+
   @company
   Scenario: Configure main partner and company
   Given I find a "res.company" with oid: base.main_company

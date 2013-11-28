@@ -38,7 +38,7 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
         | Automatic Reconciliation |
         | Multi-Currencies         |
 
-  @user_financial_manager_ch
+  @user_erp_manager_ch
   Scenario: USERS SETTINGS
   Given I need a "res.users" with oid: scenario.user_ch
      And having:
@@ -49,10 +49,13 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | lang                     | fr_FR                              |
      | company_id               | by oid: scenario.qoqa_ch           |
      | company_ids              | all by oid: scenario.qoqa_ch       |
+
     And we assign to user the groups below:
      | group_name                       |
 #Sales
      | Sales / Manager                  |
+#Purchase
+     | Purchases / Manager               |
 #Project
      | Project / Manager                |
 #Warehouse
@@ -76,41 +79,46 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | Manage Secondary Unit of Measure |
      | Manage Product Packaging         |
      | Manage Properties of Product     |
+     | Analytic Accounting for Purchases|
+     | Analytic Accounting for Sales    |
 #Accounting_and_Finance
      | Accountant                       |
      | Invoicing & Payments             |
      | Financial Manager                |
+     | Analytic Accounting              |
 #Usability
      | Multi Companies                  |
      | Technical Features               |
 #Other
      | Contact Creation                 |
 
-  @users @connector
-  Scenario: Connector Users Settings
-  Given I need a "res.users" with oid: scenario.user_ch
+
+  @user_erp_manager_fr
+  Scenario: USERS SETTINGS
+  Given I need a "res.users" with oid: scenario.user_fr
      And having:
      | name                     | value                              |
-     | name                     | admin_ch                           |
-     | login                    | admin_ch                           |
-     | password                 | admin_ch                           |
+     | name                     | admin_fr                           |
+     | login                    | admin_fr                           |
+     | password                 | admin_fr                           |
      | lang                     | fr_FR                              |
-     | company_id               | by oid: scenario.qoqa_ch           |
-     | company_ids              | all by oid: scenario.qoqa_ch       |
-   And we select users below, even the deactivated ones:
-     | login                            |
-     | connector_ch                     |
-     | connector_fr                     |
-    And we assign to users the groups below:
+     | company_id               | by oid: scenario.qoqa_fr           |
+     | company_ids              | all by oid: scenario.qoqa_fr       |
+
+    And we assign to user the groups below:
      | group_name                       |
 #Sales
      | Sales / Manager                  |
+#Purchase
+     | Purchases / Manager               |
 #Project
      | Project / Manager                |
 #Warehouse
      | Warehouse / Manager              |
 #Human_Resources
      | Employee                         |
+#Sharing
+     | Sharing / User                   |
 #Administration
      | Access Rights                    |
 #Connector
@@ -126,15 +134,25 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
      | Manage Secondary Unit of Measure |
      | Manage Product Packaging         |
      | Manage Properties of Product     |
+     | Analytic Accounting for Purchases|
+     | Analytic Accounting for Sales    |
 #Accounting_and_Finance
      | Accountant                       |
      | Invoicing & Payments             |
      | Financial Manager                |
+     | Analytic Accounting              |
 #Usability
      | Multi Companies                  |
      | Technical Features               |
 #Other
      | Contact Creation                 |
+
+  @setup_rules
+  Scenario: DESACTIVATE SOME IR.RULE
+    Given I find a possibly inactive "ir.rule" with name: 'res.partner company'
+     And having:
+        | name        | value                         |
+        | active      | False                         |
 
   @companylinks
   Scenario: Links users to companies

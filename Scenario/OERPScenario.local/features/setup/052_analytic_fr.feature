@@ -11,62 +11,57 @@
 # Branch      # Module       # Processes     # System
 @analytic @setup
 
-Feature: ANALYTIC SETTING FOR QOQA CH
+Feature: ANALYTIC SETTING FOR QOQA FR
    As an administrator, I do the following installation steps.
 
-  @analytic_account_shop_ch
-   Scenario: Create the ch root analytic account
-
-    Given I need a "account.analytic.account" with oid: scenario.qoqa_ch_root_aa
+  @analytic_account_shop_fr
+   Scenario: Create the fr root analytic account
+    Given I need a "account.analytic.account" with oid: scenario.qoqa_fr_root_aa
       And having:
         | name       | value                    |
-        | name       | QoQa Suisse              |
+        | name       | QoQa France              |
         | type       | view                     |
-        | company_id | by oid: scenario.qoqa_ch |
-
+        | company_id | by oid: scenario.qoqa_fr |
   Scenario Outline: Create an analytic account
     Given I need a "account.analytic.account" with oid: <oid>
       And having:
         | name       | value                    |
         | name       | <name>                   |
         | type       | normal                   |
-        | parent_id  | by oid: scenario.qoqa_ch_root_aa |
-        | company_id | by oid: scenario.qoqa_ch |
+        | parent_id  | by oid: scenario.qoqa_fr_root_aa |
+        | company_id | by oid: scenario.qoqa_fr |
 
   Examples: Create an analytic accounts per shop
         | oid                                      | name      |
-        | scenario.analytic_account_shop_qoqa_ch   | QoQa.ch   |
-        | scenario.analytic_account_shop_qwine_ch  | Qwine.ch  |
-        | scenario.analytic_account_shop_qsport_ch | Qsport.ch |
-        | scenario.analytic_account_shop_qstyle_ch | Qstyle.ch |
+        | scenario.analytic_account_shop_qoqa_fr   | QoQa.fr   |
 
 ##### ANALYTIC JOURNALS CREATION ####
-  @analytic_journal_ch
+  @analytic_journal_fr
   Scenario Outline: ANALYTIC JOURNALS
     Given I need a "account.analytic.journal" with oid: <oid>
       And having:
         | name       | value                     |
-        | company_id | by oid: scenario.qoqa_ch |
+        | company_id | by oid: scenario.qoqa_fr  |
         | name       | <name>                    |
         | type       | <type>                    |
         | code       | <code>                    |
 
   Examples: Create the following analytic journals
         | oid                                   | name      | type     | code |
-        | scenario.analytic_journal_sale_ch     | Sales     | sale     | SAL  |
-        | scenario.analytic_journal_purchase_ch | Purchases | purchase | PUR  |
+        | scenario.analytic_journal_sale_fr     | Sales     | sale     | SAL  |
+        | scenario.analytic_journal_purchase_fr | Purchases | purchase | PUR  |
 
 
-  @link_financial_journals_ch
+  @link_financial_journals_fr
   Scenario Outline: FINANCIAL JOURNALS CREATION
-    Given there is a journal with name "<journal_name>" and company "QoQa Services SA"
+    Given there is a journal with name "<journal_name>" and company "QoQa Services France"
       And having:
         | name                      | value                      |
         | analytic_journal_id       | by oid: <analytic_journal> |
 
    Examples:
          | journal_name            | analytic_journal                      |
-         | Sales Journal           | scenario.analytic_journal_sale_ch     |
-         | Sales Refund Journal    | scenario.analytic_journal_sale_ch     |
-         | Purchase Journal        | scenario.analytic_journal_purchase_ch |
-         | Purchase Refund Journal | scenario.analytic_journal_purchase_ch |
+         | Sales Journal           | scenario.analytic_journal_sale_fr     |
+         | Sales Refund Journal    | scenario.analytic_journal_sale_fr     |
+         | Purchase Journal        | scenario.analytic_journal_purchase_fr |
+         | Purchase Refund Journal | scenario.analytic_journal_purchase_fr |

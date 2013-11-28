@@ -27,65 +27,71 @@ Feature: Parameter the new database
   @modules
   Scenario: install modules
     Given I install the required modules with dependencies:
-        | name                                       |
+        | name                                            |
         # Base
-        | account                                    |
-        | multi_company                              |
-        | base_import                                |
-        | stock                                      |
-        | sale                                       |
+        | account                                         |
+        | multi_company                                   |
+        | base_import                                     |
+        | stock                                           |
+        | sale                                            |
         # Base financial modules
-        | account_constraints                        |
-        | account_default_draft_move                 |
-        | account_financial_report_webkit            |
-        | account_export_csv                         |
-        | account_reversal                           |
-        | currency_rate_update                       |
-        | invoice_webkit                             |
+        | account_constraints                             |
+        | account_default_draft_move                      |
+        | account_financial_report_webkit                 |
+        | account_export_csv                              |
+        | account_reversal                                |
+        | currency_rate_update                            |
+        | invoice_webkit                                  |
         # Banking framework
-        | account_statement_base_completion          |
-        | account_statement_base_import              |
-        | account_statement_ext                      |
-        | account_advanced_reconcile                 |
-        | invoicing_voucher_killer                   |
-        | statement_voucher_killer                   |
+        | account_statement_base_completion               |
+        | account_statement_base_import                   |
+        | account_statement_commission                    |
+        | account_statement_ext                           |
+        | account_advanced_reconcile                      |
+        | invoicing_voucher_killer                        |
+        | statement_voucher_killer                        |
         # Banking reconcile with Transaction id
-        | base_transaction_id                        |
-        | account_statement_transactionid_completion |
-        | account_statement_transactionid_import     |
+        | base_transaction_id                             |
+        | account_statement_transactionid_completion      |
+        | account_statement_transactionid_import          |
         # Margin
-        | product_get_cost_field                     |
-        | product_cost_incl_bom                      |
-        | product_standard_margin                    |
-        | product_historical_margin                  |
-        | qoqa_offer_historical_margin               |
+        | product_get_cost_field                          |
+        | product_cost_incl_bom                           |
+        | product_standard_margin                         |
+        | product_historical_margin                       |
+        | qoqa_offer_historical_margin                    |
+        # Shipping labels
+        | base_delivery_carrier_label                     |
+        | delivery_carrier_label_postlogistics            |
+        | delivery_carrier_label_postlogistics_shop_label |
         # Swiss localization
-        | l10n_ch                                    |
-        | l10n_ch_bank                               |
-        | l10n_ch_base_bank                          |
-        | l10n_ch_dta                                |
-        | l10n_ch_payment_slip                       |
-        | l10n_ch_zip                                |
-        | l10n_multilang                             |
+        | l10n_ch                                         |
+        | l10n_ch_bank                                    |
+        | l10n_ch_base_bank                               |
+        | l10n_ch_dta                                     |
+        | l10n_ch_payment_slip                            |
+        | l10n_ch_zip                                     |
+        | l10n_multilang                                  |
         # French localization
-        | l10n_fr                                    |
-        | l10n_fr_rib                                |
+        | l10n_fr                                         |
+        | l10n_fr_rib                                     |
         # ServerEnv and Mail, it pulls server_env and _files modules
-        | mail_environment                           |
+        | mail_environment                                |
         # Other
-        | sale_order_webkit                          |
-        | connector_ecommerce                        |
-        | connector_qoqa                             |
-        | purchase_landed_costs                      |
-        | product_price_history                      |
-        | crm_claim_rma                              |
-        | crm_rma_by_shop                            |
-        | specific_fct                               |
-        | specific_report                            |
-        | product_custom_attributes                  |
-        | wine_ch_report                             |
-        | qoqa_claim                                 |
-        | qoqa_base_data                             |
+        | sale_order_webkit                               |
+        | connector_ecommerce                             |
+        | connector_qoqa                                  |
+        | purchase_landed_costs                           |
+        | product_price_history                           |
+        | crm_claim_rma                                   |
+        | crm_rma_by_shop                                 |
+        | specific_fct                                    |
+        | specific_report                                 |
+        | product_custom_attributes                       |
+        | wine_ch_report                                  |
+        | discount_coupon                                 |
+        | qoqa_claim                                      |
+        | qoqa_base_data                                  |
     Then my modules should have been installed and models reloaded
 
   @ged_setting
@@ -117,6 +123,15 @@ Feature: Parameter the new database
          | key      | value   |
          | grouping | [3, 0]  |
          | name     | Deutsch |
+
+
+  @currencies
+  Scenario: Deactivate useless currencies
+    Given  I execute the SQL commands
+    """
+    UPDATE res_currency SET active = FALSE
+      WHERE name NOT IN ('EUR', 'CHF', 'USD')
+    """
 
 
   @company

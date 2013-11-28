@@ -87,6 +87,22 @@ Feature: Configure QoQa.ch
     | name         | QoQa Services SA         |
     | company_id   | by oid: scenario.qoqa_ch |
     | warehouse_id | by oid: stock.warehouse0 |
+    Given I need a "stock.warehouse" with oid: scenario.warehouse_poste
+    And having:
+    | name          | value                                     |
+    | name          | Poste Daillens                            |
+    | lot_input_id  | by oid: stock.stock_location_stock  |
+    | lot_output_id | by oid: stock.stock_location_output |
+    | lot_stock_id  | by oid: stock.stock_location_stock  |
+    | company_id    | by oid: scenario.qoqa_ch            |
+    Given I need a "stock.warehouse" with oid: scenario.warehouse_gefco
+    And having:
+    | name          | value                                     |
+    | name          | Gefco                                     |
+    | lot_input_id  | by oid: stock.stock_location_stock  |
+    | lot_output_id | by oid: stock.stock_location_output |
+    | lot_stock_id  | by oid: stock.stock_location_stock  |
+    | company_id    | by oid: scenario.qoqa_ch            |
 
   @account_chart_ch
   Scenario: Generate account chart for QoQa Services SA
@@ -112,27 +128,75 @@ Feature: Configure QoQa.ch
     And I create monthly periods on the fiscal year with reference "scenario.fy2013_ch"
     Then I find a "account.fiscalyear" with oid: scenario.fy2013_ch
 
-  @pricelist_ch
-    Scenario: Pricelist for QoQa.ch
-    Given I find a "product.pricelist" with oid: product.list0
+ @price_type_ch @price_type @pricelist
+  Scenario Outline: CREATE PRICETYPE PER COMPANY
+     Given I need a "product.price.type" with oid: <oid>
+     And having:
+      | key                       | value                    |
+      | name                      | <name>                   |
+      | currency_id               | by name: <currency>      |
+      | company_id                | by oid: scenario.qoqa_ch |
+
+    Examples: Defaults price type for QoQa CH
+      |oid                      | name                        | currency         | 
+      | scenario.price_type_list_ch      | Public Price CHF            | CHF              |
+      | scenario.prince_type_standard_ch | Cost Price CHF              | CHF              |
+
+  @pricelist_ch @pricelist
+  Scenario: Pricelist for QoQa.ch
+    Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_ch
     And having:
     | name                | value                             |
+    | name                | Liste de prix publique CH         |
+    | type                | sale                              |
     | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
 
-  @pricetype_public
-    Scenario: Pricetype should be set to CHF
-    Given I find a "product.price.type" with oid: product.list_price
+    Given I need a "product.pricelist.version" with oid: scenario.pricelist_version_qoqa_ch
+    And having:
+    | name         | value                                           |
+    | name         | Version de la liste de Prix Publique par défaut |
+    | pricelist_id | by oid: scenario.pricelist_qoqa_ch              |
+    | company_id   | by oid: scenario.qoqa_ch                        |
+
+    Given I need a "product.pricelist.item" with oid: scenario.pricelist_item_qoqa_ch
+    And having:
+    | name             | value                                      |
+    | name             | Ligne de list de prix publique par défaut  |
+    | price_version_id | by oid: scenario.pricelist_version_qoqa_ch |
+    | company_id       | by oid: scenario.qoqa_ch                   |
+     And I set selection field "base" with name: Public Price CHF
+
+    Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_ch_buy
     And having:
     | name                | value                             |
+    | name                | Liste de prix achat CH            |
+    | type                | purchase                          |
+    | company_id          | by oid: scenario.qoqa_ch          |
     | currency_id         | by oid: base.CHF                  |
 
-  @pricetype_cost
-    Scenario: Pricetype should be set to CHF
-    Given I find a "product.price.type" with oid: product.standard_price
+    Given I need a "product.pricelist.version" with oid: scenario.pricelist_version_qoqa_ch_buy
     And having:
-    | name                | value                             |
-    | currency_id         | by oid: base.CHF                  |
+    | name         | value                                           |
+    | name         | Version de la liste de Prix Achat par défaut    |
+    | pricelist_id | by oid: scenario.pricelist_qoqa_ch_buy          |
+    | company_id   | by oid: scenario.qoqa_ch                        |
+
+    Given I need a "product.pricelist.item" with oid: scenario.pricelist_item_qoqa_ch_buy
+    And having:
+    | name             | value                                      |
+    | name             | Ligne de list de prix achat par défaut  |
+    | price_version_id | by oid: scenario.pricelist_version_qoqa_ch_buy |
+    | company_id       | by oid: scenario.qoqa_ch                   |
+    And I set selection field "base" with name: Cost Price CHF
+
+  @pricelist_property_ch @pricelist
+  Scenario: Pricelist property for Holding
+    Given I set global property named "property_product_pricelist_ch" for model "res.partner" and field "property_product_pricelist" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "product.pricelist" using column "name" and value "Liste de prix publique CH"
+    
+    Given I set global property named "property_product_pricelist_purchase_ch" for model "res.partner" and field "property_product_pricelist_purchase" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "product.pricelist" using column "name" and value "Liste de prix achat CH"
 
   @sale_shop
     Scenario Outline: Configure sale shops
@@ -148,3 +212,4 @@ Feature: Configure QoQa.ch
       | qoqa_base_data.shop_qstyle_ch  |
       | qoqa_base_data.shop_qsport_ch  |
       | qoqa_base_data.shop_qooking_ch |
+

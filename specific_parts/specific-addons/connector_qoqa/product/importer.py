@@ -96,7 +96,6 @@ class VariantImportMapper(ImportMapper):
         if not record['ean']:
             return
         ean13 = str(record['ean'])
-        # TODO: check if we want to store invalid ean somewhere
         if check_ean(ean13):
             return {'ean13': ean13}
 

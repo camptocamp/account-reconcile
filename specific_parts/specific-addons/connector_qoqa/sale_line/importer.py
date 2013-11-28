@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+from __future__ import division
 import logging
 
 from openerp.addons.connector.exception import MappingError
@@ -73,10 +74,6 @@ class SaleOrderLineImportMapper(ImportMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ('quantity', 'qoqa_quantity'),  # original quantity, without lot
               ('item_id', 'qoqa_id'),
-              # TODO unit_price is for a LOT not UNITS!
-              # divide by lot_size?
-              # TODO: in scenario, flag taxes as tax incl.
-              (qoqafloat('unit_price'), 'price_unit'),
               ]
 
     promo_products = {
@@ -169,11 +166,22 @@ class SaleOrderLineImportMapper(ImportMapper):
 
         Example: a customer buy 2 x 6 bottles of wine: 12 units
 
+        The unit price on QoQa is the price for a *lot*.
+        We want the price for a *unit*. We divide the price
+        by the lot size.  The decimal precision of the products
+        should be 3 digits to ensure we do not lose precision.
+
         """
         quantity = record['quantity']
         lot_size = record['item']['lot_size'] or 1
+        price = record['unit_price'] / 100
+        if lot_size > 1:
+            price = price / lot_size
         total = quantity * lot_size
-        return {'product_uos_qty': total, 'product_uom_qty': total}
+        values = {'product_uos_qty': total,
+                  'product_uom_qty': total,
+                  'price_unit': price}
+        return values
 
 
 @qoqa

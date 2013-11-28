@@ -20,3 +20,4 @@
 ##############################################################################
 
 from . import account_invoice
+from . import qoqa_offer

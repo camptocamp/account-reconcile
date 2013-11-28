@@ -36,4 +36,9 @@ class delivery_service(orm.Model):
     _order_by = 'name asc'
     _columns = {
         'name': fields.char('Name'),
+        'active': fields.boolean('Active'),
+    }
+
+    _defaults = {
+        'active': True,
     }

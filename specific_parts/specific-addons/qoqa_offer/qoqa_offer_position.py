@@ -91,11 +91,10 @@ class qoqa_offer_position_variant(orm.Model):
     }
 
 
-# TODO rename to qoqa.offer.position
 class qoqa_offer_position(orm.Model):
     _name = 'qoqa.offer.position'
     _description = 'QoQa Offer Position'
-    _order_by = 'sequence asc'
+    _order = 'sequence asc'
 
     REGULAR_PRICE_TYPE = [('normal', 'Normal Price'),
                           ('no_price', 'No Price'),

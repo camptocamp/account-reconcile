@@ -85,6 +85,7 @@ class QoQaDirectBinder(QoQaBinder):
     _model_name = ['qoqa.offer',
                    'qoqa.offer.position',
                    'qoqa.offer.position.variant',
+                   'qoqa.buyphrase',
                    ]
     _sync_date_field = 'qoqa_sync_date'
 
@@ -97,9 +98,10 @@ class QoQaDirectBinder(QoQaBinder):
                  or None if the external_id is not mapped
         :rtype: int
         """
-        binding_ids = self.session.search(
-            self.model._name,
-            [('qoqa_id', '=', str(external_id))])
+        with self.session.change_context(dict(active_test=False)):
+            binding_ids = self.session.search(
+                self.model._name,
+                [('qoqa_id', '=', str(external_id))])
         if not binding_ids:
             return None
         assert len(binding_ids) == 1, "Several records found: %s" % binding_ids
@@ -160,6 +162,7 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.res.partner',
                    'qoqa.address',
                    'qoqa.sale.order',
+                   'qoqa.sale.order.line',
                    ]
     _sync_date_field = 'sync_date'
 
@@ -173,10 +176,11 @@ class QoQaInheritsBinder(QoQaBinder):
                  or None if the external_id is not mapped
         :rtype: int
         """
-        binding_ids = self.session.search(
-            self.model._name,
-            [('qoqa_id', '=', str(external_id)),
-             ('backend_id', '=', self.backend_record.id)])
+        with self.session.change_context(dict(active_test=False)):
+            binding_ids = self.session.search(
+                self.model._name,
+                [('qoqa_id', '=', str(external_id)),
+                 ('backend_id', '=', self.backend_record.id)])
         if not binding_ids:
             return None
         assert len(binding_ids) == 1, "Several records found: %s" % binding_ids
@@ -193,14 +197,15 @@ class QoQaInheritsBinder(QoQaBinder):
 
         :param binding_id: OpenERP ID for which we want the external id
         :param wrap: if True, the value passed in binding_id is the ID of the
-                     binded record, not the binding record.
+                     bound record, not the binding record.
         :return: backend identifier of the record
         """
         if wrap:
-            binding_id = self.session.search(
-                self.model._name,
-                [('openerp_id', '=', binding_id),
-                 ('backend_id', '=', self.backend_record.id)])
+            with self.session.change_context(dict(active_test=False)):
+                binding_id = self.session.search(
+                    self.model._name,
+                    [('openerp_id', '=', binding_id),
+                     ('backend_id', '=', self.backend_record.id)])
             if binding_id:
                 binding_id = binding_id[0]
             else:
@@ -263,9 +268,10 @@ class ByAnyFieldBinder(QoQaBinder):
                  or None if the external_id is not mapped
         :rtype: int
         """
-        binding_ids = self.session.search(
-            self.model._name,
-            [(self._matching_field, '=', str(external_id))])
+        with self.session.change_context(dict(active_test=False)):
+            binding_ids = self.session.search(
+                self.model._name,
+                [(self._matching_field, '=', str(external_id))])
         if not binding_ids:
             return None
         assert len(binding_ids) == 1, "Several records found: %s" % binding_ids

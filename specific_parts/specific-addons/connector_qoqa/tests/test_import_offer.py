@@ -51,7 +51,7 @@ class test_import_offer(QoQaTransactionCase):
         offer = self.Offer.browse(cr, uid, offer_ids[0])
         self.assertEquals(offer.qoqa_shop_id.qoqa_id, '100')
         self.assertEquals(offer.pricelist_id.id, self.ref('product.list0'))
-        self.assertEquals(offer.name, 'title')
+        self.assertEquals(offer.title, 'title')
         self.assertEquals(offer.description, '<p>content</p>')
         self.assertEquals(offer.note, '<p>Sav Schumf -Astavel</p>')
         self.assertEquals(offer.date_begin, '2013-10-14')

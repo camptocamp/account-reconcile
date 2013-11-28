@@ -24,14 +24,24 @@ import logging
 import requests
 from requests_oauthlib import OAuth1
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
-from openerp.addons.connector.exception import (NetworkRetryableError,
-                                                RetryableJobError)
-from ..exception import QoQaResponseNotParsable
+from openerp.addons.connector.exception import NetworkRetryableError
+from ..exception import QoQaResponseNotParsable, QoQaAPISecurityError
 
 _logger = logging.getLogger(__name__)
 
+# Add detailed logs
+# import httplib
+# httplib.HTTPConnection.debuglevel = 1
+# requests_log = logging.getLogger("requests.packages.urllib3")
+# requests_log.setLevel(logging.DEBUG)
+# requests_log.propagate = True
+
 
 class QoQaClient(object):
+
+    retryable = (requests.exceptions.Timeout,
+                 requests.exceptions.ConnectionError,
+                 )
 
     def __init__(self, base_url, client_key, client_secret,
                  access_token, access_token_secret, debug=False):
@@ -65,7 +75,12 @@ class QoQaClient(object):
         dispatch = getattr(requests, attr)
         def with_auth(*args, **kwargs):
             kwargs['auth'] = self._auth
-            return dispatch(*args, **kwargs)
+            try:
+                return dispatch(*args, **kwargs)
+            except self.retryable as err:
+                raise NetworkRetryableError(
+                    'A network error caused the failure of the job: '
+                    '%s' % err)
         if self.debug:
             def with_debug(*args, **kwargs):
                 kwargs['verify'] = False
@@ -75,7 +90,7 @@ class QoQaClient(object):
 
 
 class QoQaAdapter(CRUDAdapter):
-    """ External Records Adapter for Trello """
+    """ External Records Adapter for QoQa """
 
     _endpoint = None  # to define in subclasses
 
@@ -113,6 +128,16 @@ class QoQaAdapter(CRUDAdapter):
                       response.url, response.status_code, response.reason)
         if response.request.method == 'POST':
             _logger.debug("The POST body was: %s", response.request.body)
+        if response.status_code == 403:
+            msg = ("The call '%(method)s %(url)s' could not be completed "
+                   "due to: %(reason)s. Check the OAuth tokens and "
+                   "the permissions on %(base_url)spermission/")
+            vals = {'method': response.request.method,
+                    'url': response.url,
+                    'reason': response.reason,
+                    'base_url': self.client.base_url,
+                    }
+            raise QoQaAPISecurityError(msg % vals)
         response.raise_for_status()
         try:
             parsed = json.loads(response.content)
@@ -141,7 +166,7 @@ class QoQaAdapter(CRUDAdapter):
         response = self.client.put(url + str(id),
                                    data=json.dumps(vals),
                                    headers=headers)
-        result = self._handle_response(response)
+        self._handle_response(response)
         return True
 
     def read(self, id):
@@ -150,11 +175,13 @@ class QoQaAdapter(CRUDAdapter):
         result = self._handle_response(response)
         return result['data']
 
-    def search(self, filters=None, from_date=None):
+    def search(self, filters=None, from_date=None, to_date=None):
         url = self.url()
         payload = {}
         if from_date is not None:
             payload['timestamp_from'] = from_date
+        if to_date is not None:
+            payload['timestamp_to'] = to_date
         if filters is not None:
             payload.update(filters)
         response = self.client.get(url, params=payload)

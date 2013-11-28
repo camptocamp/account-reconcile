@@ -24,6 +24,7 @@ import time
 from datetime import datetime, timedelta
 from openerp.tools import (DEFAULT_SERVER_DATETIME_FORMAT,
                            DEFAULT_SERVER_DATE_FORMAT)
+from openerp.tools.translate import _
 
 import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
@@ -87,9 +88,62 @@ class qoqa_offer(orm.Model):
             }
         return res
 
+    def _get_name(self, cr, uid, ids, fieldnames, args, context=None):
+        """ Name of an offer is computed as:
+
+        [Reference] + Brand of the main product + Name of the main product
+
+        """
+        res = {}
+        for offer in self.browse(cr, uid, ids, context=context):
+            if (not offer.main_position_id or
+                    not offer.main_position_id.product_tmpl_id):
+                res[offer.id] = _('...?')
+                continue
+            product_tmpl = offer.main_position_id.product_tmpl_id
+            if product_tmpl.brand:
+                name = "[%s] %s: %s" % (offer.ref, product_tmpl.brand,
+                                        product_tmpl.name)
+            else:
+                name = "[%s] %s" % (offer.ref, product_tmpl.name)
+            res[offer.id] = name
+        return res
+
+    def _get_offer_from_templates(self, cr, uid, ids, context=None):
+        position_obj = self.pool.get('qoqa.offer.position')
+        position_ids = position_obj.search(cr, uid,
+                                           [('product_tmpl_id', 'in', ids)],
+                                           context=context)
+        offer_obj = self.pool.get('qoqa.offer')
+        return offer_obj._get_offer_from_positions(
+            cr, uid, position_ids, context=context)
+
+    def _get_offer_from_positions(self, cr, uid, ids, context=None):
+        position_obj = self.pool.get('qoqa.offer.position')
+        positions = position_obj.read(cr, uid, ids,
+                                      fields=['offer_id'],
+                                      context=context)
+        return [position['offer_id'][0] for position in positions]
+
     _columns = {
         'ref': fields.char('Offer Reference', required=True),
-        'name': fields.char('Title', translate=True, required=True),
+        'name': fields.function(
+            _get_name,
+            type='char',
+            string='Name',
+            readonly=True,
+            store={
+                _name: (lambda self, cr, uid, ids, c: ids,
+                        ['ref', 'position_ids'],
+                        10),
+                'qoqa.offer.position': (_get_offer_from_positions,
+                                        ['product_tmpl_id'],
+                                        10),
+                'product.template': (_get_offer_from_templates,
+                                     ['name', 'brand'],
+                                     10)
+            }),
+        'title': fields.char('Title', translate=True, required=True),
         'description': fields.html('Description', translate=True),
         'note': fields.html('Internal Notes',
                             translate=True,
@@ -172,7 +226,8 @@ class qoqa_offer(orm.Model):
             string='Delivery Service'),
         'carrier_id': fields.many2one(
             'delivery.carrier',
-            string='Shipping Method'),
+            string='Shipping Method',
+            required=True),
         'pricelist_id': fields.many2one(
             'product.pricelist',
             string='Pricelist',
@@ -257,29 +312,6 @@ class qoqa_offer(orm.Model):
     def action_plan(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'planned'}, context=context)
         return True
-
-    def name_get(self, cr, uid, ids, context=None):
-        if isinstance(ids, (int, long)):
-            ids = [ids]
-        res = []
-        for offer in self.browse(cr, uid, ids, context=context):
-            name = "[%s] %s" % (offer.ref, offer.name)
-            res.append((offer.id, name))
-        return res
-
-    def name_search(self, cr, uid, name='', args=None, operator='ilike', context=None, limit=100):
-        if not args:
-            args = []
-        if name:
-            domain = ['|', ('ref', '=', name),
-                           ('name', operator, name)]
-            ids = self.search(cr, uid,
-                              domain + args,
-                              limit=limit, context=context)
-        else:
-            ids = self.search(cr, uid, args, limit=limit, context=context)
-        result = self.name_get(cr, uid, ids, context=context)
-        return result
 
     def onchange_date_begin(self, cr, uid, ids, date_begin, context=None):
         """ When changing the beginning date, automatically set the

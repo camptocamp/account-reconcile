@@ -27,6 +27,8 @@ import test_import_offer
 import test_import_product
 import test_import_order
 import test_import_voucher
+import test_import_promo
+import test_import_buyphrase
 import test_iso8601
 
 fast_suite = [
@@ -41,6 +43,8 @@ checks = [
     test_import_product,
     test_import_order,
     test_import_voucher,
+    test_import_promo,
+    test_import_buyphrase,
     test_iso8601,
 ]
 

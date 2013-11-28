@@ -103,3 +103,104 @@ r'''{
   ]
 }''',
 }
+
+qoqa_product_meta = {
+    'http://admin.test02.qoqa.com/api/v1/product/99999999':
+r'''{
+  "data": {
+    "id": 5332,
+    "created_at": "2013-10-01T14:26:22+0200",
+    "updated_at": "2013-10-01T16:43:36+0200",
+    "translations": [
+      {
+        "id": 8471,
+        "product_id": 5332,
+        "language_id": 1,
+        "brand": "Marchese Antinori ",
+        "name": "Solaia 2010 Toscana IGT",
+        "highlights": "97 \/100 erobertparker.com\r\nVignoble voisin de Tignanello\r\n12 mois d'\u00e9levage barrique\r\nLivraison en caisse bis d'origine pour les commandes de 6 bouteilles",
+        "description": "<p>&bull;&nbsp;&nbsp;&nbsp; 6 bouteilles de Solaia<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Mill&eacute;sime : 2010<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Marchese Antinori<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; C&eacute;pages : 75% Cabernet Sauvignon, 20% Sangiovese, 5% Cabernet Franc<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; R&eacute;gion : Toscane<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Appellation : Toscana IGT<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Nature du sol : Calcaire.<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Culture : Traditionnelle<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Vinification : Fermentation alcoolique en cuve bois tronconnique<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Elevage : 12 mois en barrique de ch&ecirc;ne<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Accord mets \/ vin : Pappardelle au sanglier, longe de chevreuil r&ocirc;tie en cro&ucirc;te de marron<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Maturit&eacute; : A d&eacute;guster de 2015 &agrave; 2035<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Temp&eacute;rature de Service : 16\/17 &deg;C<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Contenance : 75 Cl<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Degr&eacute; alcoolique : 14 % vol<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Bouchage : Li&egrave;ge naturel<br \/>\r\n&bull;&nbsp;&nbsp;&nbsp; Conditionnement : Carton<\/p>\r\n"
+      }
+    ],
+    "product_metas": [
+      {
+        "id": 157785,
+        "product_id": 5332,
+        "meta_id": 1,
+        "value": "Marchese Antinori "
+      },
+      {
+        "id": 157786,
+        "product_id": 5332,
+        "meta_id": 2,
+        "value": "Toscana IGT"
+      },
+      {
+        "id": 157787,
+        "product_id": 5332,
+        "meta_id": 3,
+        "value": "Solaia"
+      },
+      {
+        "id": 157788,
+        "product_id": 5332,
+        "meta_id": 4,
+        "value": "1"
+      },
+      {
+        "id": 157789,
+        "product_id": 5332,
+        "meta_id": 5,
+        "value": "2010"
+      },
+      {
+        "id": 157790,
+        "product_id": 5332,
+        "meta_id": 6,
+        "value": "Italie"
+      },
+      {
+        "id": 157791,
+        "product_id": 5332,
+        "meta_id": 7,
+        "value": "Toscana"
+      },
+      {
+        "id": 157792,
+        "product_id": 5333,
+        "meta_id": 8,
+        "value": "75"
+      },
+      {
+        "id": 157793,
+        "product_id": 5332,
+        "meta_id": 9,
+        "value": "Rouge"
+      },
+      {
+        "id": 157794,
+        "product_id": 5332,
+        "meta_id": 10,
+        "value": "Sec"
+      }
+    ]
+  },
+  "user": {
+    "errors": null
+  },
+  "shop": null,
+  "uid": null,
+  "user_id": 4545,
+  "locale": "fr",
+  "model": "qoqacore\\models\\Product",
+  "languages": [
+    "fr",
+    "de"
+  ],
+  "language": "qoqacore\\models\\Language",
+  "langs": [
+    "fr",
+    "de"
+  ]
+}''',
+}

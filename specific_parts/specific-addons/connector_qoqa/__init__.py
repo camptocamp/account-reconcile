@@ -11,6 +11,7 @@ from . import product_attribute
 from . import partner
 from . import address
 from . import sale
+from . import sale_line
 from . import qoqa_offer
 from . import qoqa_offer_position
 from . import qoqa_offer_position_variant

@@ -31,7 +31,8 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         TranslationImporter,
                                         )
 from ..product_attribute.importer import ProductAttribute
-from ..unit.mapper import ifmissing, iso8601_to_utc
+from ..product_template.importer import TemplateVariantImportMapper
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -60,7 +61,15 @@ class VariantImport(QoQaImportSynchronizer):
         """ Hook called at the end of the import """
         translation_importer = self.get_connector_unit_for_model(
             TranslationImporter)
-        translation_importer.run(self.qoqa_record, binding_id)
+        translation_importer.run(self.qoqa_record, binding_id,
+                                 mapper=VariantImportMapper)
+
+    @property
+    def mapper(self):
+        if self._mapper is None:
+            env = self.environment
+            self._mapper = env.get_connector_unit(VariantImportMapper)
+        return self._mapper
 
 
 @qoqa
@@ -68,7 +77,7 @@ class VariantImportMapper(ImportMapper):
     _model_name = 'qoqa.product.product'
 
     translatable_fields = [
-        (ifmissing('name', 'Unknown'), 'variants'),
+        ('name', 'variants'),
     ]
 
     direct = [
@@ -82,14 +91,6 @@ class VariantImportMapper(ImportMapper):
 
     # TODO: warranty_id
 
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(VariantImportMapper, self).__init__(environment)
-        self.lang = self.backend_record.default_lang_id
-
     @mapping
     def attributes(self, record):
         """ Extract the attributes from the record.
@@ -98,9 +99,10 @@ class VariantImportMapper(ImportMapper):
         """
         attr = self.get_connector_unit_for_model(ProductAttribute)
         translatable = None
-        if self.lang != self.backend_record.default_lang_id:
+        lang = self.options.lang or self.backend_record.default_lang_id
+        if lang != self.backend_record.default_lang_id:
             translatable = True  # filter only translatable attributes
-        return attr.get_values(record, self.lang, translatable=translatable)
+        return attr.get_values(record, lang, translatable=translatable)
 
     @mapping
     def from_translations(self, record):
@@ -109,7 +111,8 @@ class VariantImportMapper(ImportMapper):
         for the main record in OpenERP.
         """
         binder = self.get_binder_for_model('res.lang')
-        qoqa_lang_id = binder.to_backend(self.lang.id, wrap=True)
+        lang = self.options.lang or self.backend_record.default_lang_id
+        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
         main = next((tr for tr in record['translations']
                      if str(tr['language_id']) == str(qoqa_lang_id)), {})
         values = {}
@@ -117,4 +120,10 @@ class VariantImportMapper(ImportMapper):
             values[target] = self._map_direct(main, source, target)
         return values
 
-    # TODO: product_metas (only for the import -> for the wine reports)
+    @mapping
+    def common_with_template(self, record):
+        """ Share some mappings with the template """
+        mapper = self.get_connector_unit_for_model(
+            TemplateVariantImportMapper)
+        map_record = mapper.map_record(record)
+        return map_record.values(**self.options)

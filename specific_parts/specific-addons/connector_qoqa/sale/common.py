@@ -28,7 +28,7 @@ from ..backend import qoqa
 class qoqa_sale_order(orm.Model):
     _name = 'qoqa.sale.order'
     _inherit = 'qoqa.binding'
-    _inherits = {'sale.order': 'sale.order'}
+    _inherits = {'sale.order': 'openerp_id'}
     _description = 'QoQa User'
 
     _columns = {
@@ -43,6 +43,9 @@ class qoqa_sale_order(orm.Model):
             string='QoQa Shop',
             required=True,
             readonly=True),
+        'qoqa_order_line_ids': fields.one2many('qoqa.sale.order.line',
+                                               'qoqa_order_id',
+                                               'QoQa Order Lines'),
         # TODO
         # 'type_id'
         # 'status_id'

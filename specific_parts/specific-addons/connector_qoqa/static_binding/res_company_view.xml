@@ -10,6 +10,7 @@
                     <page string="QoQa">
                         <group>
                             <field name="qoqa_id"/>
+                            <field name="connector_user_id"/>
                         </group>
                     </page>
                 </xpath>

@@ -20,7 +20,7 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from ..unit.binder import QoQaDirectBinder
+from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
 
@@ -28,7 +28,14 @@ class qoqa_buyphrase(orm.Model):
     _inherit = 'qoqa.buyphrase'
 
     _columns = {
+        'backend_id': fields.related(
+            'qoqa_shop_id', 'backend_id',
+            type='many2one',
+            relation='qoqa.backend',
+            string='QoQa Backend',
+            readonly=True),
         'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_sync_date': fields.datetime('Last synchronization date'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):
@@ -42,5 +49,6 @@ class qoqa_buyphrase(orm.Model):
 
 
 @qoqa
-class QoQaBuyphraseBinder(QoQaDirectBinder):
+class BuyphraseAdapter(QoQaAdapter):
     _model_name = 'qoqa.buyphrase'
+    _endpoint = 'buyphrase'

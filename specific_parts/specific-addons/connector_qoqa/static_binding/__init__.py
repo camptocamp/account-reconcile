@@ -32,3 +32,6 @@ from . import res_currency
 from . import res_lang
 from . import res_company
 from . import account_tax
+from . import payment_method
+from . import delivery_carrier
+from . import delivery_service

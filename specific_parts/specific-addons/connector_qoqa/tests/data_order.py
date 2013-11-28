@@ -11,9 +11,9 @@ r'''{
     "id": 1010695,
     "shop_id": 10,
     "deal_id": 99999999,
-    "user_id": 99999999
-    "billing_address_id": 99999999,
-    "shipping_address_id": 99999999,
+    "user_id": 99999999,
+    "billing_address_id": 999999991,
+    "shipping_address_id": 999999991,
     "shipper_relay_id": null,
     "type_id": 2,
     "status_id": 3,
@@ -25,10 +25,10 @@ r'''{
       {
         "id": 3087350,
         "order_id": 1010695,
-        "item_id": 3568541,
+        "item_id": 99999999,
         "type_id": 1,
         "status_id": 1,
-        "quantity": 1,
+        "quantity": 2,
         "delivery_at": "2013-10-28T00:00:00+0100",
         "created_at": "2013-10-11T17:34:42+0200",
         "updated_at": "2013-10-11T17:34:42+0200"
@@ -36,7 +36,7 @@ r'''{
     ],
     "items": [
       {
-        "id": 3568541,
+        "id": 99999999,
         "type_id": 1,
         "offer_id": 99999999,
         "variation_id": 99999999,

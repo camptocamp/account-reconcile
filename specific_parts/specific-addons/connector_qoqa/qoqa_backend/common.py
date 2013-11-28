@@ -26,9 +26,13 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.session import ConnectorSession
+from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (import_batch,
-                                        import_batch_from_date,
+                                        import_batch_divider,
+                                        import_record,
                                         )
+from ..connector import get_environment
+from ..exception import QoQaAPISecurityError, QoQaResponseNotParsable
 
 """
 We'll have 1 ``qoqa.backend`` sharing the connection informations probably,
@@ -72,37 +76,55 @@ class qoqa_backend(orm.Model):
         'debug': fields.boolean('Debug'),
 
         'import_product_template_from_date': fields.datetime(
-            'Import product templates from date'),
+            'Import product templates from date', required=True),
         'import_product_product_from_date': fields.datetime(
-            'Import product variants from date'),
+            'Import product variants from date', required=True),
         'import_res_partner_from_date': fields.datetime(
-            'Import Customers from date'),
+            'Import Customers from date', required=True),
         'import_address_from_date': fields.datetime(
-            'Import Addresses from date'),
+            'Import Addresses from date', required=True),
         'import_sale_order_from_date': fields.datetime(
-            'Import Sales Orders from date'),
+            'Import Sales Orders from date', required=True),
+        'import_sale_id': fields.char('Sales Order ID'),
+        'import_variant_id': fields.char('Variant ID'),
+
+        'date_really_import': fields.datetime(
+            'Import historic only until', required=True,
+            help="Before this date, the sales order will be imported "
+                 "without accounting entries."),
+    }
+
+    _defaults = {
+        # earlier dates for the imports, nothing existed before
+        # we need a start date in order to import them by week
+        'import_product_template_from_date': '2005-12-12 00:00:00',
+        'import_product_product_from_date': '2005-12-12 00:00:00',
+        'import_res_partner_from_date': '2005-12-12 00:00:00',
+        'import_address_from_date': '2005-12-12 00:00:00',
+        'import_sale_order_from_date': '2005-12-12 00:00:00',
+        'date_really_import': '2014-01-01 00:00:00',
     }
 
     def check_connection(self, cr, uid, ids, context=None):
         if isinstance(ids, (list, tuple)):
             assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
             ids = ids[0]
-        backend = self.browse(cr, uid, ids, context=context)
-        args = (backend.url,
-                backend.client_key or '',
-                backend.client_secret or '',
-                backend.access_token or '',
-                backend.access_token_secret or '')
-        client = QoQaClient(*args, debug=backend.debug)
-        # TODO: implement check connection
-        # /me does not exist in the admin API
-        # see which call can act as authentication checker
-        url = client.base_url + 'api/' + backend.version + '/me'
-        response = client.head(url)
+        session = ConnectorSession(cr, uid, context=context)
+        env = get_environment(session, 'qoqa.shop', ids)
+        adapter = env.get_connector_unit(QoQaAdapter)
         try:
-            response.raise_for_status()
+            adapter.search()
+        except QoQaAPISecurityError as err:
+            raise orm.except_orm(_('Security Error'), err)
+        except QoQaResponseNotParsable:
+            # when the OAuth is not valid, QoQa redirect to the login
+            # page, thus, we get an unparseable HTML login page
+            raise orm.except_orm(
+                _('Authentification Error'),
+                _('The authentification failed. Use the '
+                  '"Get Authentication Tokens" button to request access'))
         except requests.exceptions.HTTPError as err:
-            raise orm.except_orm('Error', err)
+            raise orm.except_orm(_('Error'), err)
         raise orm.except_orm('Ok', 'Connection is successful.')
 
     def synchronize_metadata(self, cr, uid, ids, context=None):
@@ -137,8 +159,8 @@ class qoqa_backend(orm.Model):
                 from_date = datetime.strptime(from_date, DT_FMT)
             else:
                 from_date = None
-            import_batch_from_date.delay(session, model,
-                                         backend.id, from_date=from_date)
+            import_batch_divider(session, model, backend.id,
+                                 from_date=from_date)
         self.write(cr, uid, ids,
                    {from_date_field: import_start_time})
 
@@ -170,4 +192,24 @@ class qoqa_backend(orm.Model):
         self._import_from_date(cr, uid, ids, 'qoqa.sale.order',
                                'import_sale_order_from_date',
                                context=context)
+        return True
+
+    def import_one_sale_order(self, cr, uid, ids, context=None):
+        session = ConnectorSession(cr, uid, context=context)
+        for backend in self.browse(cr, uid, ids, context=context):
+            sale_id = backend.import_sale_id
+            if not sale_id:
+                continue
+            import_record(session, 'qoqa.sale.order', backend.id,
+                          sale_id, force=True)
+        return True
+
+    def import_one_variant(self, cr, uid, ids, context=None):
+        session = ConnectorSession(cr, uid, context=context)
+        for backend in self.browse(cr, uid, ids, context=context):
+            variant_id = backend.import_variant_id
+            if not variant_id:
+                continue
+            import_record(session, 'qoqa.product.product', backend.id,
+                          variant_id, force=True)
         return True

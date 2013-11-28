@@ -24,8 +24,6 @@ from __future__ import division
 from datetime import datetime
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
-                                                  only_create,
                                                   backend_to_m2o,
                                                   ImportMapper)
 from openerp.addons.connector.exception import MappingError
@@ -58,32 +56,24 @@ class QoQaOfferImportMapper(ImportMapper):
     _model_name = 'qoqa.offer'
 
     # TODO
-    # shipper_service_id
     # slots_available
     # is_queue_enabled
-    # shipper_rate_id
     # lot_per_package
     # is_active
     # logistic_status_id
 
-    direct = [('notes', 'note'),
+    direct = [(ifmissing('notes', '<p></p>'), 'note'),
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
-
+              (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
+              (backend_to_m2o('shipper_service_id'), 'shipper_service_id'),
+              ('id', 'ref'),
               ]
 
     translatable_fields = [
-        (ifmissing('title', 'Undefined'), 'name'),
+        ('title', 'title'),
         (ifmissing('content', ''), 'description'),
     ]
-
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(QoQaOfferImportMapper, self).__init__(environment)
-        self.lang = self.backend_record.default_lang_id
 
     @mapping
     def pricelist(self, record):
@@ -131,7 +121,8 @@ class QoQaOfferImportMapper(ImportMapper):
         for the main record in OpenERP.
         """
         binder = self.get_binder_for_model('res.lang')
-        qoqa_lang_id = binder.to_backend(self.lang.id, wrap=True)
+        lang = self.options.lang or self.backend_record.default_lang_id
+        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
         main = next((tr for tr in record['translations']
                      if str(tr['language_id']) == str(qoqa_lang_id)), {})
         values = {}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record id="view_delivery_service_form" model="ir.ui.view">
+            <field name="name">delivery.service.form</field>
+            <field name="model">delivery.service</field>
+            <field name="inherit_id" ref="qoqa_offer.view_delivery_service_form"/>
+            <field name="arch" type="xml">
+                <field name="active" position="after">
+                    <field name="qoqa_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -20,14 +20,12 @@
 ##############################################################################
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  changed_by,
-                                                  only_create,
                                                   backend_to_m2o,
                                                   ImportMapper)
-from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import QoQaImportSynchronizer
-from ..unit.mapper import ifmissing, iso8601_to_utc
+from ..unit.mapper import iso8601_to_utc, qoqafloat
+
 
 @qoqa
 class QoQaOfferPositionImport(QoQaImportSynchronizer):
@@ -39,6 +37,7 @@ class QoQaOfferPositionImport(QoQaImportSynchronizer):
         rec = self.qoqa_record
         self._import_dependency(rec['deal_id'], 'qoqa.offer')
         self._import_dependency(rec['product_id'], 'qoqa.product.template')
+        self._import_dependency(rec['buyphrase_id'], 'qoqa.buyphrase')
         for var in rec['offer_variations']:
             self._import_dependency(var['variation_id'],
                                     'qoqa.product.product')
@@ -65,24 +64,16 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               ('lot_size', 'lot_size'),
               ('max_sellable', 'max_sellable'),
               ('stock_bias', 'stock_bias'),
-              ('unit_price', 'unit_price'),
-              ('installment_price', 'installment_price'),
-              ('regular_price', 'regular_price'),
-              ('buy_price', 'buy_price'),
-              ('top_price', 'top_price'),
+              (qoqafloat('unit_price'), 'unit_price'),
+              (qoqafloat('installment_price'), 'installment_price'),
+              (qoqafloat('regular_price'), 'regular_price'),
+              (qoqafloat('buy_price'), 'buy_price'),
+              (qoqafloat('top_price'), 'top_price'),
               ('ecotax', 'ecotax'),
               (iso8601_to_utc('delivery_at'), 'date_delivery'),
               ('booking_delivery', 'booking_delivery'),
               ('order_url', 'order_url'),
               ]
-
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(QoQaOfferPositionImportMapper, self).__init__(environment)
-        self.lang = self.backend_record.default_lang_id
 
     @mapping
     def regular_price_type(self, record):

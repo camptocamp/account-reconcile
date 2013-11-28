@@ -27,3 +27,4 @@ from . import qoqa_offer
 from . import qoqa_offer_position
 from . import sale_order
 from . import qoqa_buyphrase
+from . import product

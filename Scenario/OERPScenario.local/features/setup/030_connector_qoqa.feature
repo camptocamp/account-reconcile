@@ -45,16 +45,24 @@ Feature: Configure the connector's backend
 
   @sale_payment_methods @gift
   Scenario: Create the automatic payment methods for gift cards
-  Given I need a "payment.method" with oid: scenario.payment_method_gift_card
+  Given I need a "payment.method" with oid: scenario.payment_method_gift_card_ch
     And having:
       | key                 | value                                                |
-      | name                | Bon d'achat                                          |
+      | name                | Bon d'achat CH                                       |
       | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
       | import_rule         | paid                                                 |
       | qoqa_id             | 9                                                    |
       | sequence            | 99                                                   |
-      | gift_card           | 1                                                    |
-      | company_id          | False                                                |
+      | company_id          | by oid:  scenario.qoqa_ch                            |
+  Given I need a "payment.method" with oid: scenario.payment_method_gift_card_fr
+    And having:
+      | key                 | value                                                |
+      | name                | Bon d'achat FR                                       |
+      | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
+      | import_rule         | paid                                                 |
+      | qoqa_id             | 9                                                    |
+      | sequence            | 99                                                   |
+      | company_id          | by oid:  scenario.qoqa_fr                            |
 
   @sale_payment_methods @old
   Scenario Outline: Create the automatic payment methods not assigned to a company

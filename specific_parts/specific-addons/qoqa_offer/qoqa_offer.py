@@ -35,13 +35,6 @@ class qoqa_offer(orm.Model):
 
     _order = 'date_begin'
 
-    OFFER_STATES = [('draft', 'Proposal'),
-                    ('open', 'Negociation'),
-                    ('planned', 'Planned'),
-                    ('done', 'Done'),
-                    ('cancel', 'Canceled'),
-                    ]
-
     def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
         position_obj = self.pool.get('qoqa.offer.position')
         res = {}
@@ -203,12 +196,6 @@ class qoqa_offer(orm.Model):
         'description': fields.html('Description', translate=True),
         'note': fields.html('Internal Notes',
                             translate=True),
-        'state': fields.selection(
-            OFFER_STATES,
-            'Status',
-            readonly=True,
-            required=True,
-            track_visibility='onchange'),
         'qoqa_shop_id': fields.many2one(
             'qoqa.shop',
             string='Sell on',
@@ -275,23 +262,19 @@ class qoqa_offer(orm.Model):
         'date_begin': fields.date(
             'Start Date',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'time_begin': fields.float(
             'Start Time',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'date_end': fields.date(
             'End Date',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'time_end': fields.float(
             'End Time',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         # for the display on the tree and kanban views
         'datetime_begin': fields.function(
             _full_dates,
@@ -322,23 +305,19 @@ class qoqa_offer(orm.Model):
             'product.pricelist',
             string='Pricelist',
             required=True,
-            domain="[('type', '=', 'sale')]",
-            states={'draft': [('readonly', False)]}),
+            domain="[('type', '=', 'sale')]"),
         'lang_id': fields.many2one(
             'res.lang',
-            string='Language',
-            states={'draft': [('readonly', False)]}),
+            string='Language'),
         'company_id': fields.many2one(
             'res.company',
             string='Company',
             required=False,
             change_default=True,
-            readonly=False,
-            states={'done': [('readonly', True)]}),
+            readonly=False),
         'date_warranty': fields.date(
             'Warranty Expiration',
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'active': fields.boolean('Active'),
         'sale_ids': fields.one2many(
             'sale.order', 'offer_id',
@@ -364,7 +343,6 @@ class qoqa_offer(orm.Model):
     _defaults = {
         'stock_bias': 100,
         'ref': '/',
-        'state': 'draft',
         'company_id': _default_company,
         'date_begin': fields.date.context_today,
         'date_end': fields.date.context_today,
@@ -407,18 +385,6 @@ class qoqa_offer(orm.Model):
         default['ref'] = '/'
         return super(qoqa_offer, self).copy_data(
             cr, uid, id, default=default, context=context)
-
-    def action_cancel(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
-        return True
-
-    def action_done(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'done'}, context=context)
-        return True
-
-    def action_plan(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'planned'}, context=context)
-        return True
 
     def onchange_date_begin(self, cr, uid, ids, date_begin, context=None):
         """ When changing the beginning date, automatically set the

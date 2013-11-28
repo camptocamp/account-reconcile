@@ -218,18 +218,11 @@ class qoqa_offer_position(orm.Model):
             type='binary',
             readonly=True,
             multi='_get_image'),
-        'state': fields.related(
-            'offer_id', 'state',
-            string='State',
-            type='selection',
-            selection=qoqa_offer.OFFER_STATES,
-            readonly=True),
         'sequence': fields.integer('Sequence',
                                    help="The first position is the main one"),
         'product_tmpl_id': fields.many2one(
             'product.template',
             string='Product Template',
-            states={'draft': [('readonly', False)]},
             required=True),
         'currency_id': fields.related(
             'offer_id', 'pricelist_id', 'currency_id',

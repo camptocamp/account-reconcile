@@ -38,6 +38,10 @@ class payment_method(orm.Model):
                  "This impacts the automatic workflow applied to "
                  "the sales order."
         ),
+        # TODO: not used actually, consider removal
+        # because configured with a journal, a payment
+        # can be generated for the gift card, mimiting
+        # what is happening on the QoQa backend
         'gift_card': fields.boolean(
             'Gift Card',
             help="Generates a gift line in the sales order."

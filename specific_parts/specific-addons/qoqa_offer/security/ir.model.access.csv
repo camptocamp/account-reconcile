@@ -5,4 +5,5 @@ access_qoqa_offer_position_variant,qoqa.offer.position.variant,model_qoqa_offer_
 access_qoqa_shop_salesman,"qoqa_shop salesman","model_qoqa_shop",base.group_sale_salesman,1,1,1,1
 access_qoqa_buyphrase_user,"qoqa_buyphrase user","model_qoqa_buyphrase",base.group_user,1,0,0,0
 access_qoqa_buyphrase,"qoqa_buyphrase salesman","model_qoqa_buyphrase",base.group_sale_salesman,1,1,1,1
-access_delivery_service,access_delivery_service salesman,model_delivery_service,base.group_sale_salesman,1,1,1,1
+access_delivery_service,access_delivery_service salesman,model_delivery_service,base.group_sale_salesman,1,0,0,0
+access_delivery_service_salesman,access_delivery_service_manager,model_delivery_service,base.group_sale_manager,1,1,1,1

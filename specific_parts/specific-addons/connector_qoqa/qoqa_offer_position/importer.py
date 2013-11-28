@@ -47,11 +47,6 @@ class QoQaOfferPositionImport(QoQaImportSynchronizer):
 class QoQaOfferPositionImportMapper(ImportMapper):
     _model_name = 'qoqa.offer.position'
 
-    # TODO:
-    # poste_cumbersome_package
-    # is_net_price
-    # is_active
-
     children = [('offer_variations', 'variant_ids',
                  'qoqa.offer.position.variant'),
                 ]
@@ -73,6 +68,8 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               (iso8601_to_utc('delivery_at'), 'date_delivery'),
               ('booking_delivery', 'booking_delivery'),
               ('order_url', 'order_url'),
+              ('active', 'is_active'),
+              ('poste_cumbersome_package', 'poste_cumbersome_package'),
               ]
 
     @mapping

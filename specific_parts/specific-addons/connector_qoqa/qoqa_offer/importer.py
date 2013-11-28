@@ -21,7 +21,7 @@
 
 from __future__ import division
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
@@ -32,6 +32,8 @@ from ..unit.import_synchronizer import (QoQaImportSynchronizer,
                                         TranslationImporter,
                                         )
 from ..unit.mapper import ifmissing
+
+LAST_SECOND_OF_DAY = 23.99  # hours in floats: 23:59
 
 
 @qoqa
@@ -55,19 +57,13 @@ class QoQaOfferImport(QoQaImportSynchronizer):
 class QoQaOfferImportMapper(ImportMapper):
     _model_name = 'qoqa.offer'
 
-    # TODO
-    # slots_available
-    # is_queue_enabled
-    # lot_per_package
-    # is_active
-    # logistic_status_id
-
     direct = [(ifmissing('notes', '<p></p>'), 'note'),
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
               (backend_to_m2o('shipper_service_id'), 'shipper_service_id'),
               ('id', 'ref'),
+              ('is_active', 'active'),
               ]
 
     translatable_fields = [
@@ -112,6 +108,14 @@ class QoQaOfferImportMapper(ImportMapper):
     @mapping
     def stop_at(self, record):
         dt, time = self._qoqa_datetime(record['stop_at'])
+        # most of the deals start on day n at midnight and stop on day
+        # n+1 at midnight. This is a problem for instance for the
+        # calendar view. We change the end date to be n at 23:59
+        if time == 0:
+            date_end = datetime.strptime(dt, '%Y-%m-%d')
+            date_end = date_end - timedelta(days=1)
+            dt = date_end.strftime('%Y-%m-%d')
+            time = LAST_SECOND_OF_DAY
         return {'date_end': dt, 'time_end': time}
 
     @mapping

@@ -12,7 +12,7 @@ r'''{
     "company_id": 42,
     "promo_type_id": 4,
     "currency_id": 1,
-    "amount": 4300,
+    "amount": 950,
     "start_at": "2013-10-13T12:00:00+0200",
     "stop_at": "2014-01-13T12:01:43+0100",
     "description": "staff",

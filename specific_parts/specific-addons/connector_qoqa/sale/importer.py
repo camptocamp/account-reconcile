@@ -21,36 +21,38 @@
 from __future__ import division
 
 import logging
-from datetime import datetime, timedelta
 from operator import attrgetter
 
 from openerp.tools.translate import _
-from openerp.addons.connector.connector import ConnectorUnit
+from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper,
                                                   )
-from openerp.addons.connector.exception import (NothingToDoJob,
-                                                FailedJobError,
-                                                )
-from openerp.addons.connector_ecommerce.sale import ShippingLineBuilder
+from openerp.addons.connector.exception import FailedJobError
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
+from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
-from ..unit.mapper import iso8601_to_utc
+from ..unit.mapper import iso8601_to_utc, strformat
 from ..connector import iso8601_to_utc_datetime, is_historic_import
-from ..exception import QoQaError, OrderImportRuleRetry
+from ..exception import QoQaError
+from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
+                                  QOQA_ITEM_DISCOUNT, QOQA_ITEM_SERVICE,
+                                  )
 
 _logger = logging.getLogger(__name__)
 
+# http://admin.test02.qoqa.com/orderStatus
 QOQA_STATUS_REQUESTED = 1  # order is created
 QOQA_STATUS_PAID = 2  # order is paid, not captured by Datatrans
 QOQA_STATUS_CONFIRMED = 3  # order is paid, payment confirmed
 QOQA_STATUS_CANCELLED = 4  # order is canceled
 QOQA_STATUS_PROCESSED = 5  # order is closed, delivered
+# http://admin.test02.qoqa.com/paymentStatus
 QOQA_PAY_STATUS_CONFIRMED = 5
 QOQA_PAY_STATUS_SUCCESS = 2
 QOQA_PAY_STATUS_ACCOUNTED = 7
@@ -58,6 +60,17 @@ QOQA_PAY_STATUS_ABORT = 4
 QOQA_PAY_STATUS_FAILED = 3
 QOQA_PAY_STATUS_CANCELLED = 6
 QOQA_PAY_STATUS_PENDING = 1
+# http://admin.test02.qoqa.com/invoiceType
+QOQA_INVOICE_TYPE_ISSUED = 1
+QOQA_INVOICE_TYPE_RECEIVED = 2
+QOQA_INVOICE_TYPE_ISSUED_CN = 3
+QOQA_INVOICE_TYPE_RECEIVED_CN = 4
+# http://admin.test02.qoqa.com/invoiceStatus
+QOQA_INVOICE_STATUS_REQUESTED = 1
+QOQA_INVOICE_STATUS_CONFIRMED = 2
+QOQA_INVOICE_STATUS_CANCELLED = 3
+QOQA_INVOICE_STATUS_ACCOUNTED = 4
+
 DAYS_BEFORE_CANCEL = 30
 
 
@@ -91,12 +104,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
                                     'qoqa.product.product')
             self._import_dependency(item['offer_id'],
                                     'qoqa.offer.position')
-            # TODO promo_id
-            # self._import_dependency(item['promo_id'],
-            #                         'qoqa.promo')
-            # TODO
-            # self._import_dependency(item['voucher_id'],
-            #                         'qoqa.voucher')
 
     def must_skip(self):
         """ Returns a reason if the import should be skipped.
@@ -105,10 +112,56 @@ class SaleOrderImport(QoQaImportSynchronizer):
 
         """
         if self.qoqa_record['status_id'] == QOQA_STATUS_CANCELLED:
-            return _('Sales order %s is not imported because it '
-                     'has been canceled.') % self.qoqa_record['id']
+            sale_id = self.binder.to_openerp(self.qoqa_id, unwrap=True)
+            if sale_id is None:
+                # do not import the canceled sales orders if they
+                # have not been already imported
+                return _('Sales order %s is not imported because it '
+                         'has been canceled.') % self.qoqa_record['id']
+            else:
+                # Already imported orders, but canceled afterwards,
+                # triggers the automatic cancellation
+                sale = self.session.browse('sale.order', sale_id)
+                if sale.state != 'cancel' and not self.canceled_in_backend:
+                    self.session.write('sale.order', [sale_id],
+                                       {'canceled_in_backend': True})
+                return _('Sales order %s has been has been marked '
+                         'as "to cancel".') % self.qoqa_record['id']
 
     def _is_uptodate(self, binding_id):
+        """ Check whether the current sale order should be imported or not.
+
+        States or QoQa are:
+
+        * requested: an order has been created
+        * paid: authorized on datatrans, not captured
+        * confirmed: payment has been confirmed / captured by datatrans
+        * processed: final state, when is order is delivered
+        * cancelled: final state for cancellations
+
+        The API only gives us the "confirmed" and "processed" sales orders.
+
+        How we will handle them:
+
+        requested, paid
+            Not given by the API
+
+        confirmed
+            They will be confirmed as soon as they are imported (excepted
+            if they have 'sales exceptions').
+
+        processed
+            We will short-circuit the workflow and set them directly to
+            'done'. They are imported for the history.
+
+        cancelled
+            If the sales order has never been imported before, we skip it.
+            If it has been cancelled after being confirmed and imported,
+            it will try to cancel it in OpenERP, or if it can't, it will
+            active the 'need_cancel' fields and log a message (featured
+            by `connector_ecommerce`.
+
+        """
         # already imported, skip it (unless if `force` is used)
         assert self.qoqa_record
         if self.binder.to_openerp(self.qoqa_id) is not None:
@@ -117,10 +170,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
         # we don't want to import them
         if not self.qoqa_record['deal_id']:
             return True
-
-    def _before_import(self):
-        rules = self.get_connector_unit_for_model(SaleImportRule)
-        rules.check(self.qoqa_record)
 
     def _import(self, binding_id):
         qshop_binder = self.get_binder_for_model('qoqa.shop')
@@ -149,7 +198,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
             if not journal:
                 continue
             amount = payment['amount'] / 100
-            date = iso8601_to_utc_datetime(payment['trx_date'])
+            qoqa_date = payment['trx_date'] or payment['created_at']
+            date = iso8601_to_utc_datetime(qoqa_date)
             cr, uid, context = sess.cr, sess.uid, sess.context
             sale_obj._add_payment(cr, uid, sale, journal,
                                   amount, date, context=context)
@@ -160,16 +210,28 @@ class SaleOrderImport(QoQaImportSynchronizer):
         if is_historic_import(self, self.qoqa_record):
             # no invoice, no packing, no payment
             sess = self.session
-            sale = sess.browse('qoqa.sale.order', binding_id).openerp_id
-            sale.action_done()
-            _logger.debug('QoQa Sales order %s is processed, workflow '
-                          'short-circuited in OpenERP', self.qoqa_record['id'])
-        # TODO: how to handle the sales orders after
-        # 'date_really_import' but 'processed'
-        # elif self.qoqa_record['status_id'] == QOQA_STATUS_PROCESSED:
+            sale = sess.browse('qoqa.sale.order', binding_id)
+            # check if the amounts do not match, only for historic
+            # imports, this check is done with sale exceptions otherwise
+            if abs(sale.amount_total - sale.qoqa_amount_total) >= 0.01:
+                raise MappingError('Amounts do not match. Expected: %0.2f, '
+                                   'got: %0.2f' %
+                                   (sale.qoqa_amount_total, sale.amount_total))
+
+            # generate an invoice so we will be able to create
+            # merchandise returns based on the invoice
+            # the invoice workflow is short-circuited too, we don't
+            # want move lines
+            invoice_id = sale.openerp_id.action_invoice_create(
+                grouped=False, states=['draft'], date_invoice=sale.date_order)
+            sess.pool['account.invoice'].confirm_paid(sess.cr, sess.uid,
+                                                      [invoice_id],
+                                                      context=sess.context)
+            sale.openerp_id.action_done()
+            _logger.debug('Sales order %s is processed, workflow '
+                          'short-circuited in OpenERP', sale.name)
         else:
             self._create_payments(binding_id)
-
 
 def _get_payment_method(connector_unit, payment, company_id):
     session = connector_unit.session
@@ -187,6 +249,25 @@ def _get_payment_method(connector_unit, payment, company_id):
     return session.browse('payment.method', method_id)
 
 
+def extract_invoice_from_sale(sale_record):
+    """ Invoices are contained in the sales order envelope.
+
+    Several invoices can be there, but only 1 is the invoice that
+    interest us. (others are refund, ...)
+
+    """
+    invoices = sale_record['invoices']
+    normal_invoice = [inv for inv in invoices
+                      if inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED and
+                      inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
+                                           QOQA_INVOICE_STATUS_ACCOUNTED)]
+    if len(normal_invoice) != 1:
+        raise MappingError('1 invoice expected for sales order %s, '
+                           'got: %d' %
+                           (sale_record['id'], len(normal_invoice)))
+    return normal_invoice[0]
+
+
 @qoqa
 class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
@@ -196,7 +277,7 @@ class SaleOrderImportMapper(ImportMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),
-              ('id', 'name'),
+              (strformat('id', '{0:08d}'), 'name'),
               ]
 
     @mapping
@@ -242,6 +323,14 @@ class SaleOrderImportMapper(ImportMapper):
         return {'payment_method_id': payments[0].id}
 
     @mapping
+    def from_invoice(self, record):
+        """ Get the invoice node and extract some data """
+        invoice = extract_invoice_from_sale(record)
+        total = float(invoice['total']) / 100
+        ref = invoice['reference']
+        return {'qoqa_amount_total': total, 'invoice_ref': ref}
+
+    @mapping
     def from_offer(self, record):
         """ Get the linked offer and takes some values from there """
         binder = self.get_binder_for_model('qoqa.offer')
@@ -256,144 +345,70 @@ class SaleOrderImportMapper(ImportMapper):
         }
         return values
 
-    def _add_shipping_line(self, map_record, values):
-        builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
-        # TODO: put the correct amount (not in the API yet)
-        builder.price_unit = 10
-
-        if values.get('carrier_id'):
-            carrier = self.session.browse('delivery.carrier',
-                                          values['carrier_id'])
-            builder.carrier = carrier
-
-        line = (0, 0, builder.get_line())
-        values['order_line'].append(line)
-        return values
-
     def finalize(self, map_record, values):
-        values.setdefault('order_line', [])
-        values = self._add_shipping_line(map_record, values)
-        values['qoqa_order_line_ids'] = self.lines(map_record)
-        onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
-
-        # TODO: create a gift card line when a payment has a method_id
-        # which is a gift_card method
-        # TODO: create voucher / promo
-        return onchange.play(values, values['qoqa_order_line_ids'])
-
-    def lines(self, map_record):
-        """ Lines are composed of 2 list of dicts
-
-        1 list is 'order_items', the other is 'items'.
-        We keep the id of the 'item' and discard the one of the
-        'order_items'.
-
-        """
-        lines = []
-        for item in map_record.source['items']:
-            nitem = item.copy()
-            item_id = nitem['id']
-            for order_item in map_record.source['order_items']:
-                if order_item['item_id'] != item_id:
-                    continue
-                nitem.update(order_item)
-            nitem.pop('id')  # remove id just to avoid confusion
-            lines.append(nitem)
+        lines = self.extract_lines(map_record)
 
         map_child = self.get_connector_unit_for_model(
             self._map_child_class, 'qoqa.sale.order.line')
-        items = map_child.get_items(lines, map_record, 'qoqa_order_line_ids',
+        items = map_child.get_items(lines, map_record,
+                                    'qoqa_order_line_ids',
                                     options=self.options)
-        return items
+        values['qoqa_order_line_ids'] = items
+
+        onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
+        return onchange.play(values, values['qoqa_order_line_ids'])
+
+    def extract_lines(self, map_record):
+        """ Lines are composed of 3 list of dicts. Extract lines.
+
+        1 list is 'order_items', the other is 'items'. The third
+        is in 'invoices'.
+        We merge the 2 first dict, and we keep the invoice item
+        in an 'invoice_item' key for the lines of the sales order.
+
+        The invoice items are used to: get the amounts: add special lines
+        like the shipping fees or discounts.
+
+        The special lines are returned separately because they only have
+        the invoice items, not the order items.
+
+        """
+        lines = []
+        invoice = extract_invoice_from_sale(map_record.source)
+        invoice_details = invoice['item_details']
+        # used to check if lines have not been consumed
+        details_by_id = dict((line['id'], line) for line
+                             in invoice_details)
+        lines = []
+        for invoice_detail in invoice_details:
+            detail_id = invoice_detail['id']
+            item = invoice_detail['item']
+            type_id = item['type_id']
+
+            if type_id == QOQA_ITEM_PRODUCT:
+                lines.append(details_by_id.pop(detail_id))
+
+            if type_id == QOQA_ITEM_SHIPPING:
+                lines.append(details_by_id.pop(detail_id))
+
+            elif type_id == QOQA_ITEM_DISCOUNT:
+                adapter = self.get_connector_unit_for_model(QoQaAdapter,
+                                                            'qoqa.promo')
+                promo_values = adapter.read(item['promo_id'])
+                line = details_by_id.pop(detail_id)
+                line['promo'] = promo_values
+                lines.append(line)
+
+            elif type_id == QOQA_ITEM_SERVICE:
+                raise MappingError("Items of type 'Service' are not supported.")
+
+        if details_by_id:
+            # an or several item(s) have not been handled
+            raise MappingError('Remaining, unhandled, items in invoice: %s' %
+                               details_by_id.values())
+        return lines
 
 
 @qoqa
 class QoQaSaleOrderOnChange(SaleOrderOnChange):
     _model_name = 'qoqa.sale.order'
-
-
-@qoqa
-class SaleImportRule(ConnectorUnit):
-    _model_name = ['qoqa.sale.order']
-
-    def _check_max_days(self, record):
-        """ Cancel the import of waiting for a payment for too long. """
-        max_days = DAYS_BEFORE_CANCEL
-        if max_days:
-            order_id = record['id']
-            order_date = iso8601_to_utc_datetime(record['created_at'])
-            if order_date + timedelta(days=max_days) < datetime.now():
-                raise NothingToDoJob('Import of the order %s canceled '
-                                     'because it has not been paid since %d '
-                                     'days' % (order_id, max_days))
-
-    def check(self, record):
-        """ Check whether the current sale order should be imported
-        or not.
-
-        States or QoQa are:
-
-        * requested: an order has been created
-        * paid: authorized on datatrans, not captured
-        * confirmed: payment has been confirmed / captured by datatrans
-        * processed: final state, when is order is delivered
-        * cancelled: final state for cancellations
-
-        How we will handle them:
-
-        requested and paid
-            We do not import them but delay the import for later until
-            they are confirmed.
-
-        confirmed
-            They will be confirmed as soon as they are imported.
-
-        processed
-            We will short-circuit the workflow and set them directly to
-            'done'. They are imported for the history.
-
-        cancelled
-            They are imported but directly cancelled, for the history.
-
-        The automatic workflows do need to have the 'Confirm Sales Orders'
-        field deactivated. The confirmation of sales orders is handled
-        by the importer. This allows to keep the "paid" sales orders in draft
-        while the importer confirms the "confirmed" ones.
-
-        When an order has a status requested, we delay the import
-        to later.
-
-        This method only checks if we the sales orders should be imported
-        and eventually raise a :py:class:`NothingToDoJob` or
-        :py:class:`OrderImportRuleRetry`.
-
-        It does not cancels sales orders or create payments, theses actions
-        are done in the :py:meth:`SaleOrderImport._after_import` method.
-        """
-        import_states = (QOQA_STATUS_CONFIRMED, QOQA_STATUS_PROCESSED,
-                         QOQA_STATUS_CANCELLED)
-        if record['status_id'] in import_states:
-            return
-        self._check_max_days(record)
-
-        states = (QOQA_STATUS_REQUESTED, QOQA_STATUS_PAID)
-        if record['status_id'] in states:
-            raise OrderImportRuleRetry('The payment of the order has not '
-                                       'been confirmed.\nThe import will be '
-                                       'retried later.')
-
-
-@qoqa
-class QoQaShippingLineBuilder(ShippingLineBuilder):
-    _model_name = 'qoqa.sale.order'
-
-    def __init__(self, environment):
-        super(QoQaShippingLineBuilder, self).__init__(environment)
-        self.carrier = None
-
-    def get_line(self):
-        line = super(QoQaShippingLineBuilder, self).get_line()
-        if self.carrier:
-            line['product_id'] = self.carrier.product_id.id
-            line['name'] = self.carrier.name
-        return line

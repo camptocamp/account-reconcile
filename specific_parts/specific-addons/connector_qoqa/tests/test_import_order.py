@@ -25,6 +25,7 @@ from .data_order import qoqa_order
 from .data_partner import qoqa_user, qoqa_address
 from .data_offer import qoqa_offer
 from .data_product import qoqa_product
+from .data_promo import qoqa_promo
 from ..unit.import_synchronizer import import_record
 
 
@@ -36,31 +37,48 @@ class test_import_order(QoQaTransactionCase):
         cr, uid = self.cr, self.uid
         self.QSale = self.registry('qoqa.sale.order')
         company_obj = self.registry('res.company')
-        vals = {'name': 'Qtest', 'qoqa_id': 42}
+        connector_user_id = self.ref('base.user_root')
+        vals = {'name': 'Qtest', 'qoqa_id': 42,
+                'connector_user_id': connector_user_id}
         self.company_id = company_obj.create(cr, uid, vals)
         self.ship_product_id = self.ref('connector_ecommerce.product_product_shipping')
+        self.marketing_product_id = self.ref('qoqa_base_data.product_product_marketing_coupon')
 
     def test_import_order(self):
         """ Import a sales order """
         cr, uid = self.cr, self.uid
         data = (qoqa_order, qoqa_product, qoqa_offer,
-                qoqa_address, qoqa_shops)
+                qoqa_address, qoqa_shops, qoqa_promo)
         with mock_api_responses(*data):
             import_record(self.session, 'qoqa.sale.order',
                           self.backend_id, 99999999)
         domain = [('qoqa_id', '=', '99999999')]
+        # sales order
         qsale_ids = self.QSale.search(cr, uid, domain)
         self.assertEquals(len(qsale_ids), 1)
         qsale = self.QSale.browse(cr, uid, qsale_ids[0])
+        self.assertEquals(qsale.invoice_ref, 'XRIHJQ')
+        # lines
         lines = qsale.order_line
-        self.assertEquals(len(lines), 2)
-        ship_line = prod_line = None
+        self.assertEquals(len(lines), 3)
+        ship_line = prod_line = promo_line = None
         for line in lines:
             if line.product_id.id == self.ship_product_id:
                 ship_line = line
+            elif line.product_id.id == self.marketing_product_id:
+                promo_line = line
             else:
                 prod_line = line
-        self.assertEquals(ship_line.price_unit, 10)  # TODO adapt to real amount
+        self.assertTrue(ship_line and promo_line and prod_line)
+        # product line
         position = prod_line.offer_position_id
+        self.assertTrue(position)
         self.assertEquals(prod_line.price_unit, position.unit_price)
-        self.assertEquals(prod_line.product_uom_qty, 2)
+        self.assertEquals(prod_line.product_uom_qty, 12)
+        self.assertEquals(prod_line.custom_text, 'custom text')
+        # shipping line
+        self.assertEquals(ship_line.price_unit, 6)
+        self.assertEquals(ship_line.product_uom_qty, 1)
+        # promo line
+        self.assertEquals(promo_line.price_unit, -9.5)
+        self.assertEquals(promo_line.product_uom_qty, 1)

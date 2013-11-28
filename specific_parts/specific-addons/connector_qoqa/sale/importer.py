@@ -104,9 +104,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
                                     'qoqa.product.product')
             self._import_dependency(item['offer_id'],
                                     'qoqa.offer.position')
-            # TODO
-            # self._import_dependency(item['voucher_id'],
-            #                         'qoqa.voucher')
 
     def must_skip(self):
         """ Returns a reason if the import should be skipped.
@@ -224,9 +221,6 @@ class SaleOrderImport(QoQaImportSynchronizer):
             sale.openerp_id.action_done()
             _logger.debug('Sales order %s is processed, workflow '
                           'short-circuited in OpenERP', sale.name)
-        # TODO: how to handle the sales orders after
-        # 'date_really_import' but 'processed'
-        # elif self.qoqa_record['status_id'] == QOQA_STATUS_PROCESSED:
         else:
             self._create_payments(binding_id)
 
@@ -344,7 +338,6 @@ class SaleOrderImportMapper(ImportMapper):
         return values
 
     def finalize(self, map_record, values):
-        # values.setdefault('order_line', [])
         lines = self.extract_lines(map_record)
 
         map_child = self.get_connector_unit_for_model(
@@ -354,8 +347,6 @@ class SaleOrderImportMapper(ImportMapper):
                                     options=self.options)
         values['qoqa_order_line_ids'] = items
 
-        # TODO: create a gift card line when a payment has a method_id
-        # which is a gift_card method
         onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
         return onchange.play(values, values['qoqa_order_line_ids'])
 

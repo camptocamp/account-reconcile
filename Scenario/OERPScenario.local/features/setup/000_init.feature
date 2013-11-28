@@ -109,12 +109,14 @@ Feature: Parameter the new database
          | grouping | [3, 0] |
     Given I find a "res.lang" with code: fr_FR
     And having:
-         | key      | value  |
-         | grouping | [3, 0] |
+         | key      | value    |
+         | grouping | [3, 0]   |
+         | name     | Français |
     Given I find a "res.lang" with code: de_DE
     And having:
-         | key      | value  |
-         | grouping | [3, 0] |
+         | key      | value   |
+         | grouping | [3, 0]  |
+         | name     | Deutsch |
 
 
   @company

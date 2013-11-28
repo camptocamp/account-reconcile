@@ -63,7 +63,7 @@ Feature: Parameter the new database
         # Shipping labels
         | base_delivery_carrier_label                     |
         | delivery_carrier_label_postlogistics            |
-        | delivery_carrier_label_postlogistics_shop_label |
+        | delivery_carrier_label_postlogistics_shop_logo  |
         # Swiss localization
         | l10n_ch                                         |
         | l10n_ch_bank                                    |

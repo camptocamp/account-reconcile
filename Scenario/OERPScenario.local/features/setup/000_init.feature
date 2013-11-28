@@ -115,12 +115,14 @@ Feature: Parameter the new database
          | grouping | [3, 0] |
     Given I find a "res.lang" with code: fr_FR
     And having:
-         | key      | value  |
-         | grouping | [3, 0] |
+         | key      | value    |
+         | grouping | [3, 0]   |
+         | name     | Français |
     Given I find a "res.lang" with code: de_DE
     And having:
-         | key      | value  |
-         | grouping | [3, 0] |
+         | key      | value   |
+         | grouping | [3, 0]  |
+         | name     | Deutsch |
 
 
   @currencies
@@ -144,10 +146,10 @@ Feature: Parameter the new database
     And the company currency is "CHF" with a rate of "1.00"
 
   @user_admin
-  Scenario: Assign groups concerning the accounting to some users
-    Given we select users below:
-    | login |
-    | admin |
+  Scenario: Assign groups to some users
+    Given we select users below, even the deactivated ones:
+    | login        |
+    | admin        |
   Then we assign all groups to the users
 
 
@@ -186,3 +188,9 @@ Feature: Parameter the new database
     | name               | value                 |
     | alias_domain       | qoqa.com              |
 
+  @decimal_precision
+  Scenario: Configure the decimal precision, extend to 3 for Product Price as we have to divide the QoQa unit price by lot size
+    Given I need a "decimal.precision" with oid: product.decimal_price
+    And having:
+    | name   | value |
+    | digits | 3     |

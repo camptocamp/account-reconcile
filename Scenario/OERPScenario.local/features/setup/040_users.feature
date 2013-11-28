@@ -149,8 +149,23 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
 
   @setup_rules
   Scenario: DESACTIVATE SOME IR.RULE
-  # this may break on second launch cause the rule isn't found any more
-    Given I find a "ir.rule" with name: 'res.partner company'
+    Given I find a possibly inactive "ir.rule" with name: 'res.partner company'
      And having:
         | name        | value                         |
         | active      | False                         |
+
+  @companylinks
+  Scenario: Links users to companies
+    Given I find a "res.users" with oid: connector_qoqa.user_connector_ch
+     And having:
+        | name        | value                        |
+        | company_id  | by oid: scenario.qoqa_ch     |
+        | company_ids | all by oid: scenario.qoqa_ch |
+        | lang        | fr_FR                        |
+
+    Given I find a "res.users" with oid: connector_qoqa.user_connector_fr
+     And having:
+        | name        | value                        |
+        | company_id  | by oid: scenario.qoqa_fr     |
+        | company_ids | all by oid: scenario.qoqa_fr |
+        | lang        | fr_FR                        |

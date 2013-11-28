@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@accounting_ch @setup
+@accounting @ch @setup
 
 Feature: Configure the CH's accounting
 
@@ -79,13 +79,6 @@ Feature: Configure the CH's accounting
       | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |   11010 |
       | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
-    Examples: Bank Journals (unused - for historic)
-      | oid                                | name                       | code  | account |
-      | scenario.journal_swikey_old        | Swikey - plus utilisé      | OLDSW |   10900 |
-      | scenario.journal_postfinance_old   | Postfinance - plus utilisé | OLDPF |   10900 |
-      | scenario.journal_mastercard_ch_old | Mastercard - plus utilisé  | OLDMS |   10900 |
-      | scenario.journal_visa_ch_old       | Visa - plus utilisé        | OLDVI |   10900 |
-
   @default_accounts
   Scenario Outline: AFTER IMPORT OF CUSTOM CoA, COMPLETE DEFAULT ACCOUNTS ON MAIN PARTNERS
     Given I set global property named "<name>" for model "<model>" and field "<name>" for company with ref "scenario.qoqa_ch"
@@ -101,12 +94,28 @@ Feature: Configure the CH's accounting
       | property_stock_account_input         | product.template |        10900 |
       | property_stock_account_output        | product.template |        10900 |
 
+  @tax
+  Scenario Outline: Configure the taxes to price include
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key           | value     |
+         | price_include | True      |
+
+    Examples: currencies
+         | tax_code |
+         | 2.5%     |
+         | 3.8%     |
+         | 8.0%     |
+         | 0% excl. |
+
   @historic_account_tax
   Scenario: I create the historic account taxes for CH (7.6%,3.6%,2.4%) in order to import the previous years
     Given I need a "account.tax" with oid: scenario.vat_76
     And having
          | key                  | value                                                           |
          | name                 | TVA due a 7.6% (TN)                                             |
+         | price_include        | True                                                            |
          | description          | 7.6%                                                            |
          | amount               | 0.076                                                           |
          | type                 | percent                                                         |
@@ -125,6 +134,7 @@ Feature: Configure the CH's accounting
     And having
          | key                  | value                                                           |
          | name                 | TVA due a 3.6% (TN)                                             |
+         | price_include        | True                                                            |
          | description          | 3.6%                                                            |
          | amount               | 0.036                                                           |
          | type                 | percent                                                         |
@@ -143,6 +153,7 @@ Feature: Configure the CH's accounting
     And having
          | key                  | value                                                           |
          | name                 | TVA due a 2.4% (TN)                                             |
+         | price_include        | True                                                            |
          | description          | 2.4%                                                            |
          | amount               | 0.024                                                           |
          | type                 | percent                                                         |
@@ -158,6 +169,15 @@ Feature: Configure the CH's accounting
          | type_tax_use         | sale                                                            |
          | active               | False                                                           |
 
+  @currency_rate
+  Scenario: I create the historic currency rates so we can import sales orders from 2005
+    Given I need a "res.currency.rate" with oid: scenario.rate_chf_2005
+    And having:
+         | key         | value            |
+         | name        | 2005-01-01       |
+         | rate        | 1.0              |
+         | currency_id | by oid: base.CHF |
+
   @price_type_ch @price_type
   Scenario Outline: CREATE PRICETYPE PER COMPANY
      Given I need a "product.price.type" with oid: <oid>
@@ -168,6 +188,6 @@ Feature: Configure the CH's accounting
       | company_id                | by oid: scenario.qoqa_ch |
 
     Examples: Defaults price type for QoQa CH
-      |oid                      | name                        | currency         | 
-      | scenario.price_type_list_ch      | Public Price CHF            | CHF              |
-      | scenario.prince_type_standard_ch | Cost Price CHF              | CHF              |
+      | oid                              | name             | currency |
+      | scenario.price_type_list_ch      | Public Price CHF | CHF      |
+      | scenario.prince_type_standard_ch | Cost Price CHF   | CHF      |

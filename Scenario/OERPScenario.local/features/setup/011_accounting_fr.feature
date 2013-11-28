@@ -9,7 +9,7 @@
 # Features Generic tags (none for all)
 ##############################################################################
 # Branch      # Module       # Processes     # System
-@accounting_fr @setup
+@accounting @fr @setup
 
 Feature: Configure the FR's accounting
 
@@ -33,11 +33,11 @@ Feature: Configure the FR's accounting
       | journal_id     | by oid: <journal_oid>         |
       | partner_id     | by name: QoQa Services France |
       | bank_name      | <bank_name>                   |
-      | company_id     | by oid: by oid: scenario.qoqa_fr      |
+      | company_id     | by oid: scenario.qoqa_fr      |
       | street         | <street>                      |
       | zip            | <zip>                         |
       | city           | <city>                        |
-      | country_id     | by code: CH                   |
+      | country_id     | by code: FR                   |
       | state          | rib                           |
       | bank_code      | <bank_code>                   |
       | office         | <office>                      |
@@ -73,11 +73,36 @@ Feature: Configure the FR's accounting
       | scenario.journal_paiement_3x   | Paiement 3x      | PAY3X |
       | scenario.journal_paypal_fr     | Paypal           | PAYPA |
 
-    Examples: Bank Journals (unused - for historic)
-      | oid                                | name                            | code  |
-      | scenario.journal_carte_bleue_old   | Carte Bleue Visa - plus utilisé | OLDCB |
-      | scenario.journal_visa_fr_old       | Visa - plus utilisé             | OLDVI |
-      | scenario.journal_mastercard_fr_old | Mastercard - plus utilisé       | OLDMS |
-      | scenario.journal_sogenactif_old    | ? Sogenactif - plus utilisé     | OLDSO |
+  @currency_rate
+  Scenario Outline: I create the historic currency rates so we can import sales orders from 2005
+    Given I need a "res.currency.rate" with oid: scenario.rate_euro_<year>
+    And having:
+         | key         | value            |
+         | name        | <year>-01-01     |
+         | rate        | <rate>           |
+         | currency_id | by oid: base.EUR |
 
- 
+   Examples: rates
+      | year | rate   |
+      | 2005 | 0.6469 |
+      | 2006 | 0.6431 |
+      | 2007 | 0.6244 |
+      | 2008 | 0.6043 |
+      | 2009 | 0.6684 |
+      | 2010 | 0.6739 |
+      | 2011 | 0.8017 |
+      | 2012 | 0.8221 |
+
+  @tax
+  Scenario Outline: Configure the taxes to price include
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    Given I find a "account.tax" with description: <tax_code>
+    And having:
+         | key           | value     |
+         | price_include | True      |
+
+    Examples: currencies
+         | tax_code |
+         | 2.1      |
+         | 5.5      |
+         | 19.6     |

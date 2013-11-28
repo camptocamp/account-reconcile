@@ -17,25 +17,26 @@ Feature: Configure QoQa.fr
   Scenario: Configure main partner and company for France
   Given I need a "res.company" with oid: scenario.qoqa_fr
     And having:
-         | key              | value                     |
-         | name             | QoQa Services France      |
-         | street           | 20 rue Georges Barres     |
-         | street2          |                           |
-         | zip              | 33300                     |
-         | city             | Bordeaux                  |
-         | country_id       | by code: FR               |
-         | phone            | +33 5 56 37 57 08         |
-         | fax              | +33 5 56 37 57 08         |
-         | email            | clients@qoqa.fr           |
-         | website          | http://www.qoqa.fr        |
-         | parent_id        | by oid: base.main_company |
-         | vat              | FR80 504 886 607          |
-         | company_registry | 504 886 607               |
-         | siret            | 504 886 607 00036         |
-         | ape              | 4791 A                    |
+         | key               | value                                    |
+         | name              | QoQa Services France                     |
+         | street            | 20 rue Georges Barres                    |
+         | street2           |                                          |
+         | zip               | 33300                                    |
+         | city              | Bordeaux                                 |
+         | country_id        | by code: FR                              |
+         | phone             | +33 5 56 37 57 08                        |
+         | fax               | +33 5 56 37 57 08                        |
+         | email             | clients@qoqa.fr                          |
+         | website           | http://www.qoqa.fr                       |
+         | parent_id         | by oid: base.main_company                |
+         | vat               | FR80 504 886 607                         |
+         | company_registry  | 504 886 607                              |
+         | siret             | 504 886 607 00036                        |
+         | ape               | 4791 A                                   |
          # temporary way of filling rml_header to change to position of header separator
-         | rml_header       | <header> <pageTemplate> <frame id="first" x1="1.3cm" y1="2.5cm" height="23.0cm" width="19.0cm"/> <pageGraphics> <!-- You Logo - Change X,Y,Width and Height --> <image x="1.3cm" y="27.6cm" height="40.0" >[[ company.logo or removeParentNode('image') ]]</image> <setFont name="DejaVu Sans" size="8"/> <fill color="black"/> <stroke color="black"/> <lines>1.3cm 27.5cm 20cm 27.5cm</lines> <drawRightString x="20cm" y="27.8cm">[[ company.rml_header1 ]]</drawRightString> <drawString x="1.3cm" y="27.2cm">[[ company.partner_id.name ]]</drawString> <drawString x="1.3cm" y="26.8cm">[[ company.partner_id.address and company.partner_id.address[0].street or  '' ]]</drawString> <drawString x="1.3cm" y="26.4cm">[[ company.partner_id.address and company.partner_id.address[0].zip or '' ]] [[ company.partner_id.address and company.partner_id.address[0].city or '' ]] - [[ company.partner_id.address and company.partner_id.address[0].country_id and company.partner_id.address[0].country_id.name  or '']]</drawString> <drawString x="1.3cm" y="26.0cm">Phone:</drawString> <drawRightString x="7cm" y="26.0cm">[[ company.partner_id.address and company.partner_id.address[0].phone or '' ]]</drawRightString> <drawString x="1.3cm" y="25.6cm">Mail:</drawString> <drawRightString x="7cm" y="25.6cm">[[ company.partner_id.address and company.partner_id.address[0].email or '' ]]</drawRightString> <lines>1.3cm 25.5cm 7cm 25.5cm</lines> <!--page bottom--> <lines>1.2cm 2.15cm 19.9cm 2.15cm</lines> <drawCentredString x="10.5cm" y="1.7cm">[[ company.rml_footer1 ]]</drawCentredString> <drawCentredString x="10.5cm" y="1.25cm">[[ company.rml_footer2 ]]</drawCentredString> <drawCentredString x="10.5cm" y="0.8cm">Contact : [[ user.name ]] - Page: <pageNumber/></drawCentredString> </pageGraphics> </pageTemplate> </header>   |
-         | qoqa_id    | 2                          |
+         | rml_header        | <header> <pageTemplate> <frame id="first" x1="1.3cm" y1="2.5cm" height="23.0cm" width="19.0cm"/> <pageGraphics> <!-- You Logo - Change X,Y,Width and Height --> <image x="1.3cm" y="27.6cm" height="40.0" >[[ company.logo or removeParentNode('image') ]]</image> <setFont name="DejaVu Sans" size="8"/> <fill color="black"/> <stroke color="black"/> <lines>1.3cm 27.5cm 20cm 27.5cm</lines> <drawRightString x="20cm" y="27.8cm">[[ company.rml_header1 ]]</drawRightString> <drawString x="1.3cm" y="27.2cm">[[ company.partner_id.name ]]</drawString> <drawString x="1.3cm" y="26.8cm">[[ company.partner_id.address and company.partner_id.address[0].street or  '' ]]</drawString> <drawString x="1.3cm" y="26.4cm">[[ company.partner_id.address and company.partner_id.address[0].zip or '' ]] [[ company.partner_id.address and company.partner_id.address[0].city or '' ]] - [[ company.partner_id.address and company.partner_id.address[0].country_id and company.partner_id.address[0].country_id.name  or '']]</drawString> <drawString x="1.3cm" y="26.0cm">Phone:</drawString> <drawRightString x="7cm" y="26.0cm">[[ company.partner_id.address and company.partner_id.address[0].phone or '' ]]</drawRightString> <drawString x="1.3cm" y="25.6cm">Mail:</drawString> <drawRightString x="7cm" y="25.6cm">[[ company.partner_id.address and company.partner_id.address[0].email or '' ]]</drawRightString> <lines>1.3cm 25.5cm 7cm 25.5cm</lines> <!--page bottom--> <lines>1.2cm 2.15cm 19.9cm 2.15cm</lines> <drawCentredString x="10.5cm" y="1.7cm">[[ company.rml_footer1 ]]</drawCentredString> <drawCentredString x="10.5cm" y="1.25cm">[[ company.rml_footer2 ]]</drawCentredString> <drawCentredString x="10.5cm" y="0.8cm">Contact : [[ user.name ]] - Page: <pageNumber/></drawCentredString> </pageGraphics> </pageTemplate> </header>   |
+         | qoqa_id           | 2                                        |
+         | connector_user_id | by oid: connector_qoqa.user_connector_fr |
 
     Given the company has the "images/logo_qoqa_fr.png" logo
     And the company currency is "EUR" with a rate of "0.811035"
@@ -167,7 +168,6 @@ Feature: Configure QoQa.fr
     | price_version_id | by oid: scenario.pricelist_version_qoqa_fr |
     | company_id       | by oid: scenario.qoqa_fr                   |
      And I set selection field "base" with name: Public Price EUR
-
     Given I need a "product.pricelist" with oid: scenario.pricelist_qoqa_fr_buy
     And having:
     | name                | value                             |
@@ -199,3 +199,14 @@ Feature: Configure QoQa.fr
     Given I set global property named "property_product_pricelist_purchase_fr" for model "res.partner" and field "property_product_pricelist_purchase" for company with ref "scenario.qoqa_ch"
     And the property is related to model "product.pricelist" using column "name" and value "Liste de prix achat FR"
 
+  @sale_shop
+    Scenario Outline: Configure sale shops
+    Given I find a "sale.shop" with oid: <oid>
+    And having:
+    | name         | value                         |
+    | warehouse_id | by oid: scenario.warehouse_fr |
+
+    Examples: Shops
+      | oid                            |
+      | qoqa_base_data.shop_qoqa_fr    |
+      | qoqa_base_data.shop_qwine_fr   |

@@ -171,3 +171,9 @@ Feature: Parameter the new database
     | name               | value                 |
     | alias_domain       | qoqa.com              |
 
+  @decimal_precision
+  Scenario: Configure the decimal precision, extend to 3 for Product Price as we have to divide the QoQa unit price by lot size
+    Given I need a "decimal.precision" with oid: product.decimal_price
+    And having:
+    | name   | value |
+    | digits | 3     |

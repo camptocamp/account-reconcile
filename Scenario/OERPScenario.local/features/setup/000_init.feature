@@ -45,6 +45,7 @@ Feature: Parameter the new database
         # Banking framework
         | account_statement_base_completion          |
         | account_statement_base_import              |
+        | account_statement_commission               |
         | account_statement_ext                      |
         | account_advanced_reconcile                 |
         | invoicing_voucher_killer                   |

@@ -414,11 +414,10 @@ class qoqa_offer(orm.Model):
         return {'value': {'date_end': date_begin}}
 
     def action_view_sale_order(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         mod_obj = self.pool.get('ir.model.data')
         act_obj = self.pool.get('ir.actions.act_window')
-
-        offers = self.browse(cr, uid, ids, context=context)
-        sale_ids = [sale.id for offer in offers for sale in offer.sale_ids]
 
         action_xmlid = ('sale', 'action_orders')
         ref = mod_obj.get_object_reference(cr, uid, *action_xmlid)
@@ -426,5 +425,5 @@ class qoqa_offer(orm.Model):
         if ref:
             __, action_id = ref
         action = act_obj.read(cr, uid, [action_id], context=context)[0]
-        action['domain'] = str([('id', 'in', sale_ids)])
+        action['domain'] = str([('offer_id', 'in', ids)])
         return action

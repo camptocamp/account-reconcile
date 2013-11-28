@@ -22,15 +22,12 @@
                         string="Today"
                         name="today"
                         domain="['|',
-                                 ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
-                                 ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
-                                 '|',
-                                 ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
-                                 ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')),
+                                 ('date_begin', '=', time.strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '=', time.strftime('%%Y-%%m-%%d')),
                                  ]"
                         help="Offers Today!"/>
                     <filter
-                        string="Within 10 days"
+                        string="+- 10 days"
                         name="in10days"
                         domain="['|',
                                  ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
@@ -39,9 +36,9 @@
                                  ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
                                  ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
                                  ]"
-                        help="Offers within 10 days"/>
+                        help="Offers +- 10 days"/>
                     <filter
-                        string="Within 30 days"
+                        string="+- 30 days"
                         name="in30days"
                         domain="['|',
                                  ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
@@ -50,7 +47,7 @@
                                  ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
                                  ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
                                  ]"
-                        help="Offers within 30 days"/>
+                        help="Offers +- 30 days"/>
                     <separator/>
                     <filter icon="terp-document-new"
                         string="Proposal"
@@ -81,8 +78,15 @@
                             context="{'group_by': 'date_begin'}"/>
                         <filter string="Day" icon="terp-go-today"
                             name="groupby_day"
-                            domain="[]"
-                            context="{'group_by': 'day'}"/>
+                            domain="['|',
+                                     ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     '|',
+                                     ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     ]"
+                             context="{'group_by': 'day'}"
+                             help="Group by day in +- 10 days."/>
                         <filter string="QoQa Shop" domain="[]"
                             name="groupby_qoqa_shop_id"
                             context="{'group_by': 'qoqa_shop_id'}"/>

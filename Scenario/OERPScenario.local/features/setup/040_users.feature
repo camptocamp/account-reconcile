@@ -149,7 +149,7 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
 
   @setup_rules
   Scenario: DESACTIVATE SOME IR.RULE
-    Given I find a possibly inactive "ir.rule" with name: 'res.partner company'
+    Given I find a possibly inactive "ir.rule" with oid: base.res_partner_rule
      And having:
         | name        | value                         |
         | active      | False                         |

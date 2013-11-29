@@ -375,9 +375,20 @@ class qoqa_offer(orm.Model):
                 return False
         return True
 
+    def _check_pricelist_company(self, cr, uid, ids, context=None):
+        for offer in self.browse(cr, uid, ids, context=context):
+            if not offer.pricelist_id:
+                continue
+            if offer.qoqa_shop_id.company_id != offer.pricelist_id.company_id:
+                return False
+        return True
+
     _constraints = [
         (_check_date, 'The beginning date must be anterior to the ending date',
          ['date_begin', 'date_end', 'time_begin', 'time_end']),
+        (_check_pricelist_company,
+         'The pricelist and the shop must belong to the same company.',
+         ['pricelist_id', 'qoqa_shop_id']),
     ]
 
     def _get_reference(self, cr, uid, context=None):

@@ -70,16 +70,16 @@ class qoqa_offer(Model):
         # get information about invoice lines relative to our products
         # belonging to open or paid invoices in the considered period
         query = '''
-        SELECT offer_id, type,
+        SELECT inv.offer_id, type,
               SUM(subtotal_cost_price_company),
               SUM(subtotal_company)
         FROM account_invoice_line AS line
         INNER JOIN account_invoice AS inv ON (inv.id = line.invoice_id)
         WHERE %s inv.state IN ('open', 'paid')
           AND type NOT IN ('in_invoice', 'in_refund')
-          AND offer_id IN %%(offer_ids)s
+          AND inv.offer_id IN %%(offer_ids)s
           AND inv.company_id = %%(company_id)s
-        GROUP BY offer_id, type
+        GROUP BY inv.offer_id, type
         HAVING SUM(subtotal_cost_price_company) != 0
           AND SUM(subtotal_company) != 0
         '''

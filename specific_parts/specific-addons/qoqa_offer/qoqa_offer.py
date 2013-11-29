@@ -161,6 +161,13 @@ class qoqa_offer(orm.Model):
                                       context=context)
         return [position['offer_id'][0] for position in positions]
 
+    def _get_offer_from_sale_shop(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer')
+        offer_ids = this.search(cr, uid,
+                                [('qoqa_shop_id.openerp_id', 'in', ids)],
+                                context=context)
+        return offer_ids
+
     _name_store = {
         _name: (lambda self, cr, uid, ids, c: ids,
                 ['ref', 'position_ids'],
@@ -312,17 +319,20 @@ class qoqa_offer(orm.Model):
         'pricelist_id': fields.many2one(
             'product.pricelist',
             string='Pricelist',
-            required=True,
-            domain="[('type', '=', 'sale')]"),
+            required=True),
         'lang_id': fields.many2one(
             'res.lang',
             string='Language'),
-        'company_id': fields.many2one(
-            'res.company',
+        'company_id': fields.related(
+            'qoqa_shop_id', 'company_id',
             string='Company',
-            required=False,
-            change_default=True,
-            readonly=False),
+            type='many2one',
+            relation='res.company',
+            readonly=True,
+            store={
+                _name: (lambda self, cr, uid, ids, c: ids, ['qoqa_shop_id'], 10),
+                'sale.shop': (_get_offer_from_sale_shop, ['company_id'], 10),
+            }),
         'date_warranty': fields.date(
             'Warranty Expiration',
             readonly=True),
@@ -344,14 +354,9 @@ class qoqa_offer(orm.Model):
         'stock_bias': fields.integer('Stock Bias'),
     }
 
-    def _default_company(self, cr, uid, context=None):
-        company_obj = self.pool.get('res.company')
-        return company_obj._company_default_get(cr, uid, 'qoqa.offer', context=context)
-
     _defaults = {
         'stock_bias': 100,
         'ref': '/',
-        'company_id': _default_company,
         'date_begin': fields.date.context_today,
         'date_end': fields.date.context_today,
         'time_begin': 0,  # 00:00

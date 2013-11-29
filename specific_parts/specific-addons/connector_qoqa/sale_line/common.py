@@ -41,6 +41,12 @@ class qoqa_sale_order_line(orm.Model):
                                          readonly=True,
                                          ondelete='cascade',
                                          select=True),
+        'qoqa_lot_size': fields.integer(
+            'Lot Size',
+            help="Number of items in 1 unit of quantity. "
+                 "The Quantity in OpenERP is 'QoQa Quantity * Lot Size'. "
+                 "We keep the original value for reference."),
+        'qoqa_quantity': fields.integer('Quantity'),
     }
 
     _sql_constraints = [
@@ -68,6 +74,7 @@ class sale_order_line(orm.Model):
             'qoqa.sale.order.line',
             'openerp_id',
             string='QBindings'),
+        'custom_text': fields.char('Custom Text'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

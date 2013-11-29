@@ -112,3 +112,23 @@ def qoqafloat(field):
         value = record.get(field) or 0
         return float(value) / 100
     return modifier
+
+
+def strformat(field, format_string):
+    """ A modifier intended to be used on the ``direct`` mappings.
+
+    Format a value given a custom format as expected by ``string.format()``.
+
+    Usage::
+
+        direct = [(format('id', '{0:03d}'), 'name')]
+
+    :param field: name of the source field in the record
+    :param format_string: format as expected by string.format()
+    """
+    def modifier(self, record, to_attr):
+        value = record.get(field)
+        if not value:
+            return None
+        return format_string.format(value)
+    return modifier

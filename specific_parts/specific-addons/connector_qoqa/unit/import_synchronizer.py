@@ -20,6 +20,7 @@
 ##############################################################################
 
 import logging
+from contextlib import contextmanager
 from datetime import datetime
 from dateutil import rrule
 from itertools import chain
@@ -159,30 +160,43 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         """ Get the data to pass to :py:meth:`_create` """
         return map_record.values(for_create=True, **kwargs)
 
+    @contextmanager
+    def _retry_unique_violation(self):
+        """ Context manager: catch Unique constraint error and retry the
+        job later.
+
+        When we execute several jobs workers concurrently, it happens
+        that 2 jobs are creating the same record at the same time
+        (especially product templates as they are shared by a lot of
+        sales orders), resulting in:
+
+            IntegrityError: duplicate key value violates unique
+            constraint "qoqa_product_template_qoqa_uniq"
+            DETAIL:  Key (backend_id, qoqa_id)=(1, 4851) already exists.
+
+        In that case, we'll retry the import just later.
+
+        """
+        try:
+            yield
+        except IntegrityError as err:
+            if err.pgcode == errorcodes.UNIQUE_VIOLATION:
+                raise RetryableJobError(
+                    'A database error caused the failure of the job:\n'
+                    '%s\n\n'
+                    'Likely due to 2 concurrent jobs wanting to create '
+                    'the same record. The job will be retried later.' % err)
+            else:
+                raise
+
+
     def _create(self, data):
         """ Create the OpenERP record """
         # special check on data before import
         self._validate_data(data)
         with self.session.change_context({'connector_no_export': True}):
-            try:
+            with self._retry_unique_violation():
                 binding_id = self.session.create(self.model._name, data)
-            except IntegrityError as err:
-                # When we execute several jobs workers concurrently,
-                # it happens that 2 jobs are creating the same record
-                # at the same time (especially product templates as they
-                # are shared by a lot of sales orders), resulting in:
-                # IntegrityError: duplicate key value violates unique
-                # constraint "qoqa_product_template_qoqa_uniq"
-                # DETAIL:  Key (backend_id, qoqa_id)=(1, 4851) already exists.
-                if err.pgcode == errorcodes.UNIQUE_VIOLATION:
-                    # in that case, we'll retry the import just later
-                    raise RetryableJobError(
-                        'A database error caused the failure of the job:\n'
-                        '%s\n\n'
-                        'Likely due to 2 concurrent jobs wanting to create '
-                        'the same record. The job will be retried later.' % err)
-                else:
-                    raise
 
         _logger.debug('%s %d created from QoQa %s',
                       self.model._name, binding_id, self.qoqa_id)
@@ -254,7 +268,8 @@ class QoQaImportSynchronizer(ImportSynchronizer):
             record = self._create_data(map_record)
             binding_id = self._create(record)
 
-        self.binder.bind(self.qoqa_id, binding_id)
+        with self._retry_unique_violation():
+            self.binder.bind(self.qoqa_id, binding_id)
 
         self._after_import(binding_id)
 

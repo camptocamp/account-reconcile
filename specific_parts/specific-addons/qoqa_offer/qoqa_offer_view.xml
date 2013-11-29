@@ -19,7 +19,15 @@
                     <separator/>
 
                     <filter
-                        string="Within 10 days"
+                        string="Today"
+                        name="today"
+                        domain="['|',
+                                 ('date_begin', '=', time.strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '=', time.strftime('%%Y-%%m-%%d')),
+                                 ]"
+                        help="Offers Today!"/>
+                    <filter
+                        string="+- 10 days"
                         name="in10days"
                         domain="['|',
                                  ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
@@ -28,9 +36,9 @@
                                  ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
                                  ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
                                  ]"
-                        help="Offers within 10 days"/>
+                        help="Offers +- 10 days"/>
                     <filter
-                        string="Within 30 days"
+                        string="+- 30 days"
                         name="in30days"
                         domain="['|',
                                  ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
@@ -39,39 +47,24 @@
                                  ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
                                  ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d')),
                                  ]"
-                        help="Offers within 30 days"/>
-                    <separator/>
-                    <filter icon="terp-document-new"
-                        string="Proposal"
-                        name="draft"
-                        domain="[('state', '=', 'draft')]"
-                        help="Sales Offer that haven't yet been confirmed"/>
-                    <filter icon="terp-check"
-                        string="Negociation"
-                        name="open"
-                        domain="[('state', '=', 'open')]"/>
-                    <filter icon="terp-dolar_ok!"
-                        string="Planned"
-                        domain="[('state', '=', 'planned')]"
-                        help="Sales Offers Ready"/>
-                    <filter icon="terp-dolar_ok!"
-                        string="Done"
-                        domain="[('state', '=', 'done')]"
-                        help="Sales Offers done"/>
+                        help="Offers +- 30 days"/>
                     <separator/>
                     <group expand="0" string="Group By...">
-                        <filter string="Status"
-                            icon="terp-stock_effects-object-colorize"
-                            domain="[]"
-                            context="{'group_by': 'state'}"/>
                         <filter string="Month" icon="terp-go-today"
                             name="groupby_date_begin"
                             domain="[]"
                             context="{'group_by': 'date_begin'}"/>
                         <filter string="Day" icon="terp-go-today"
                             name="groupby_day"
-                            domain="[]"
-                            context="{'group_by': 'day'}"/>
+                            domain="['|',
+                                     ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     '|',
+                                     ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=10)).strftime('%%Y-%%m-%%d')),
+                                     ]"
+                             context="{'group_by': 'day'}"
+                             help="Group by day in +- 10 days."/>
                         <filter string="QoQa Shop" domain="[]"
                             name="groupby_qoqa_shop_id"
                             context="{'group_by': 'qoqa_shop_id'}"/>
@@ -84,7 +77,7 @@
             <field name="name">qoqa.offer.tree</field>
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <tree string="QoQa Offer" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('draft', 'open');red:date_begin &gt; current_date and date_end &lt; current_date">
+                <tree string="QoQa Offer" fonts="bold:message_unread==True" colors="not grey:active;blue:date_begin &gt; current_date and date_end &lt; current_date">
                     <field name="message_unread" invisible="1"/>
                     <field name="date_begin" invisible="1"/>
                     <field name="time_begin" invisible="1"/>
@@ -97,7 +90,7 @@
                     <field name="date_begin" invisible="1"/>
                     <field name="name"/>
                     <field name="title"/>
-                    <field name="state"/>
+                    <field name="stock_progress" widget="progressbar"/>
                 </tree>
             </field>
         </record>
@@ -107,37 +100,95 @@
             <field name="name">Offers Kanban</field>
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="state" version="7.0">
+                <kanban default_group_by="qoqa_shop_id" version="7.0">
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="datetime_begin"/>
                     <field name="datetime_end"/>
                     <field name="day"/>
                     <field name="ref"/>
-                    <field name="name"/>
+                    <field name="main_brand"/>
+                    <field name="main_product_name"/>
                     <field name="description"/>
                     <field name="position_ids"/>
                     <field name="pricelist_id" domain="[('type', '=', 'sale')]"/>
                     <field name="qoqa_shop_id"/>
                     <field name="lang_id"/>
+                    <field name="sum_quantity"/>
+                    <field name="sum_stock_sold"/>
+                    <field name="stock_progress"/>
+                    <field name="stock_bias"/>
+                    <field name="stock_progress_with_bias"/>
+                    <field name="shop_kanban_image"/>
+                    <field name="main_unit_price"/>
+                    <field name="main_regular_price"/>
+                    <field name="currency_symbol"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card oe_kanban_offer oe_kanban_global_click">
                                 <div class="oe_kanban_content">
-                                    <img t-att-src="kanban_image('qoqa.offer', 'image_small', record.id.value)"
-                                            class="oe_kanban_image"/>
+                                    <img t-att-src="kanban_image('qoqa.offer', 'shop_kanban_image', record.id.value)"
+                                            class="oe_kanban_image oe_qoqa_shop"/>
                                     <div class="header">
-                                        <b><field name="name"/></b>
+                                        <div class="qoqa_ref">
+                                          <b><t t-if="record.lang_id.raw_value">[<field name="lang_id"/>]</t>
+                                             <field name="ref"/></b>
+                                        </div>
                                     </div>
-                                    <div class="dates">
-                                        <field name="datetime_begin"/>  →
-                                        <field name="datetime_end"/>
+                                    <div class="qoqa_name">
+                                        <img t-att-src="kanban_image('qoqa.offer', 'image_small', record.id.value)"
+                                                class="oe_kanban_image"/>
+                                        <span class="qoqa_main_brand"><field name="main_brand"/></span>
+                                        <field name="main_product_name"/>
                                     </div>
-                                    <div>
-                                        <ul>
-                                            <li><field name="qoqa_shop_id"/></li>
-                                            <li><field name="lang_id"/></li>
-                                        </ul>
+                                    <div class="oe_clear"></div>
+                                    <div class="qoqa_content">
+                                        <div class="qoqa_product_info">
+                                            <div class="qoqa_left_box">
+                                                <field name="main_unit_price"/> <field name="currency_symbol"/>
+                                                <t t-esc="'('"/><field name="main_regular_price"/> <field name="currency_symbol"/><t t-esc="')'"/>
+                                            </div>
+                                            <div class="qoqa_right_box">
+
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <progress t-att-value="record.stock_progress.raw_value" max="100"/>
+                                        </div>
+                                        <div class="qoqa_box">
+                                            <div class="qoqa_left_box">
+                                              Stock: <b><field name="sum_stock_sold"/>/<field name="sum_quantity"/></b>
+                                              <t t-esc="'('"/><field name="stock_progress_remaining"/>％<t t-esc="')'"/>
+                                            </div>
+                                            <div class="qoqa_right_box">
+
+                                            </div>
+                                        </div>
+                                        <hr class="qoqa_line"/>
+                                        <div class="qoqa_box">
+                                            <div class="qoqa_left_box">
+                                              Bias: <field name="stock_bias"/>％
+                                            </div>
+                                            <div class="qoqa_right_box">
+                                              With bias: <b><field name="stock_progress_with_bias"/>％</b>
+                                              <a name="decrement_stock_bias" type="object" class="oe_e qoqa_minus">Y</a>
+                                            </div>
+                                        </div>
+                                        <hr class="qoqa_line"/>
+                                        <div class="qoqa_box">
+                                            <div class="qoqa_left_box">
+                                                <b>Start</b><br/>
+                                                <field name="datetime_begin"/>
+                                            </div>
+                                            <div class="qoqa_right_box">
+                                                <b>End</b><br/>
+                                                <field name="datetime_end"/>
+                                            </div>
+                                        </div>
+                                        <div class="oe_clear"></div>
+                                        <div class="qoqa_buttons" groups="base.group_user">
+                                            <a name="action_view_sale_order" type="object" class="oe_kanban_button">Open Sales Orders</a>
+                                        </div>
                                     </div>
                                     <div class="oe_clear"></div>
                                 </div>
@@ -154,19 +205,9 @@
             <field name="arch" type="xml">
                 <form string="Offer" version="7.0">
                     <header>
-                        <button name="action_plan" string="Confirm"
-                            type="object" class="oe_highlight"
-                            states="draft,open" groups="base.group_user"/>
-                        <button name="action_done" string="Close"
-                            type="object" class="oe_highlight"
-                            states="planned" groups="base.group_user"/>
-                        <button name="action_cancel"
-                            string="Cancel" type="object"
-                            groups="base.group_user"
-                            states="draft,open,planned"/>
-                        <field name="state" widget="statusbar"
-                            statusbar_visible="draft,open,planned,done"
-                            statusbar_colors='{"cancel": "red"}'/>
+                        <button name="action_view_sale_order"
+                            string="View Sales Orders" type="object"
+                            groups="base.group_user"/>
                     </header>
                     <sheet>
                         <field name="image_medium" widget="image"
@@ -199,77 +240,79 @@
                                 <field name="carrier_id"/>
                                 <field name="pricelist_id" widget="selection"/>
                                 <field name="lang_id" widget="selection"/>
+                                <field name="active"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Positions">
-                                <field name="position_ids">
-                                    <tree string="Positions">
-                                        <field name="sequence" widget="handle"/>
-                                        <field name="product_tmpl_id"/>
-                                        <field name="unit_price"/>
-                                        <field name="sum_quantity"/>
-                                        <field name="sum_stock_sold"/>
-                                        <field name="stock_progress" widget="progressbar"/>
-                                    </tree>
-                                    <form string="Position" version="7.0">
-                                        <header>
-                                            <field name="state" widget="statusbar" invisible="1"/>
-                                        </header>
-                                        <field name="image_medium" widget="image"
-                                            class="oe_avatar oe_left"/>
-                                        <div>
-                                            <label for="product_tmpl_id"/>
-                                        </div>
-                                        <h1>
-                                            <field name="product_tmpl_id"
-                                                on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
-                                        </h1>
-                                        <group>
-                                            <group name="price" string="Prices">
-                                                <field name="currency_id" invisible="1"/>
-                                                <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="regular_price_type"/>
-                                                <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                <field name="tax_id" on_change="onchange_tax_id(tax_id)"/>
-                                                <field name="is_net_price"/>
-                                                <field name="ecotax"/>
-                                            </group>
+                                <group>
+                                    <field name="stock_bias"/>
+                                    <newline/>
+                                    <field name="position_ids" nolabel="1" colspan="4">
+                                        <tree string="Positions">
+                                            <field name="sequence" widget="handle"/>
+                                            <field name="product_tmpl_id"/>
+                                            <field name="unit_price"/>
+                                            <field name="sum_quantity"/>
+                                            <field name="sum_stock_sold"/>
+                                            <field name="stock_progress" widget="progressbar"/>
+                                            <field name="active"/>
+                                        </tree>
+                                        <form string="Position" version="7.0">
+                                            <field name="image_medium" widget="image"
+                                                class="oe_avatar oe_left"/>
+                                            <div>
+                                                <label for="product_tmpl_id"/>
+                                            </div>
+                                            <h1>
+                                                <field name="product_tmpl_id"
+                                                    on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
+                                            </h1>
                                             <group>
-                                                <group name="stock" string="Stock" colspan="4">
-                                                    <field name="lot_size"/>
-                                                    <field name="max_sellable"/>
-                                                    <field name="stock_bias"/>
+                                                <group name="price" string="Prices">
+                                                    <field name="currency_id" invisible="1"/>
+                                                    <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="regular_price_type"/>
+                                                    <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                    <field name="tax_id"/>
+                                                    <field name="ecotax"/>
                                                 </group>
-                                                <group name="various" string="Various" colspan="4">
-                                                    <field name="date_delivery"/>
-                                                    <field name="booking_delivery"/>
-                                                    <field name="order_url"/>
+                                                <group>
+                                                    <group name="stock" string="Stock" colspan="4">
+                                                        <field name="lot_size"/>
+                                                        <field name="max_sellable"/>
+                                                    </group>
+                                                    <group name="various" string="Various" colspan="4">
+                                                        <field name="date_delivery"/>
+                                                        <field name="booking_delivery"/>
+                                                        <field name="order_url"/>
+                                                        <field name="active"/>
+                                                    </group>
                                                 </group>
                                             </group>
-                                        </group>
-                                        <group colspan="4" name="buyphrase" string="Buyphrase">
-                                            <field name="buyphrase_id" nolabel="1"
-                                                options='{"no_open": 1}'
-                                                colspan="4"/>
-                                        </group>
-                                        <group colspan="4" name="variant" string="Variants">
-                                            <field name="variant_ids" nolabel="1">
-                                                <tree string="Variants" editable="bottom">
-                                                    <field name="product_id"
-                                                        domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
-                                                    <field name="quantity"/>
-                                                    <field name="stock_sold"/>
-                                                    <field name="stock_residual"/>
-                                                    <field name="stock_progress" widget="progressbar"/>
-                                                </tree>
-                                            </field>
-                                        </group>
-                                    </form>
-                                </field>
+                                            <group colspan="4" name="buyphrase" string="Buyphrase">
+                                                <field name="buyphrase_id" nolabel="1"
+                                                    options='{"no_open": 1}'
+                                                    colspan="4"/>
+                                            </group>
+                                            <group colspan="4" name="variant" string="Variants">
+                                                <field name="variant_ids" nolabel="1">
+                                                    <tree string="Variants" editable="bottom">
+                                                        <field name="product_id"
+                                                            domain="[('product_tmpl_id', '=', parent.product_tmpl_id)]"/>
+                                                        <field name="quantity"/>
+                                                        <field name="stock_sold"/>
+                                                        <field name="stock_residual"/>
+                                                        <field name="stock_progress" widget="progressbar"/>
+                                                    </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
                             </page>
                             <page string="Internal Description">
                                 <group>
@@ -301,8 +344,9 @@
             <field name="res_model">qoqa.offer</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
-            <field name="context">{}</field>
-            <field name="domain">[('state', '!=', 'cancel')]</field>
+            <field name="context">{'search_default_groupby_days': 1,
+                                   'search_default_in10days': 1}</field>
+            <field name="domain">[]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
                 Click to create a new offer.

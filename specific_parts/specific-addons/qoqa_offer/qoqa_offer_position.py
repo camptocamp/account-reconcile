@@ -19,6 +19,8 @@
 #
 ##############################################################################
 
+from __future__ import division
+
 from openerp.osv import orm, fields
 import openerp.addons.decimal_precision as dp
 from .qoqa_offer import qoqa_offer
@@ -47,17 +49,66 @@ class qoqa_offer_position_variant(orm.Model):
             num_sold = sum([line.product_uom_qty for line
                             in sales_lines
                             if line.order_id.state not in ['draft', 'cancel']])
+            # Example: we sell 500 lot of 6 bottles of wine. 1 bottle =
+            # 1 unit. In the sales orders, 1 lot will be expanded to 6 units.
+            # So we compare lots, not units.
+            lot_size = variant.position_id.lot_size
+            num_sold /= lot_size
             quantity = variant.quantity
             residual = quantity - num_sold
-            progress = 0.0
+            progress = 0.
             if quantity != 0:
+                # progress bar is full when all is sold
                 progress = ((quantity - residual) / quantity) * 100
             res[variant.id] = {
                 'stock_sold': num_sold,
                 'stock_residual': residual,
                 'stock_progress': progress,
+                'stock_progress_remaining': 100 - progress,
             }
         return res
+
+    def _get_from_offer_position(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        pos_variant_ids = this.search(
+            cr, uid,
+            [('position_id', 'in', ids)],
+            context=context)
+        return pos_variant_ids
+
+    def _get_from_offer(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        pos_variant_ids = this.search(
+            cr, uid,
+            [('position_id.offer_id', 'in', ids)],
+            context=context)
+        return pos_variant_ids
+
+    def _get_from_sale_order(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        sale_obj = self.pool.get('sale.order')
+        sales = sale_obj.read(cr, uid, ids, ['offer_id'], context=context)
+        offer_ids = [sale['offer_id'][0] for sale in sales
+                     if sale['offer_id']]
+        return this._get_from_offer(cr, uid, offer_ids, context=context)
+
+    def _get_from_sale_order_line(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        line_obj = self.pool.get('sale.order.line')
+        lines = line_obj.read(cr, uid, ids, ['offer_position_id'],
+                              context=context)
+        offer_ids = [line['offer_position_id'][0] for line in lines
+                     if line['offer_position_id']]
+        return this._get_from_offer(cr, uid, offer_ids, context=context)
+
+    _progress_store = {
+        _name: (lambda self, cr, uid, ids, context=None: ids, None, 10),
+        'qoqa.offer.position': (_get_from_offer_position, ['lot_size'], 10),
+        'sale.order': (_get_from_sale_order,
+                       ['offer_id', 'order_line', 'state'], 10),
+        'sale.order.line': (_get_from_sale_order_line,
+                            ['product_id', 'product_uom_qty'], 10),
+    }
 
     _columns = {
         'position_id': fields.many2one(
@@ -70,24 +121,32 @@ class qoqa_offer_position_variant(orm.Model):
             'product.product',
             string='Product',
             required=True,
-            domain="",
             ondelete='restrict'),
         'quantity': fields.integer('Quantity', required=True),
         'stock_sold': fields.function(
             _get_stock,
             string='Sold',
             type='integer',
-            multi='stock'),
+            multi='stock',
+            store=_progress_store),
         'stock_residual': fields.function(
             _get_stock,
             string='Remaining',
             type='integer',
-            multi='stock'),
+            multi='stock',
+            store=_progress_store),
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
             type='float',
-            multi='stock'),
+            multi='stock',
+            store=_progress_store),
+        'stock_progress_remaining': fields.function(
+            _get_stock,
+            string='Remaining (%)',
+            type='float',
+            multi='stock',
+            store=_progress_store),
     }
 
 
@@ -123,7 +182,9 @@ class qoqa_offer_position(orm.Model):
             res[offer.id] = {
                 'sum_quantity': quantity,
                 'sum_stock_sold': quantity - residual,
+                'sum_residual': residual,
                 'stock_progress': progress,
+                'stock_progress_remaining': 100 - progress,
             }
         return res
 
@@ -165,18 +226,11 @@ class qoqa_offer_position(orm.Model):
             type='binary',
             readonly=True,
             multi='_get_image'),
-        'state': fields.related(
-            'offer_id', 'state',
-            string='State',
-            type='selection',
-            selection=qoqa_offer.OFFER_STATES,
-            readonly=True),
         'sequence': fields.integer('Sequence',
                                    help="The first position is the main one"),
         'product_tmpl_id': fields.many2one(
             'product.template',
             string='Product Template',
-            states={'draft': [('readonly', False)]},
             required=True),
         'currency_id': fields.related(
             'offer_id', 'pricelist_id', 'currency_id',
@@ -195,7 +249,10 @@ class qoqa_offer_position(orm.Model):
             domain="[('type_tax_use', '=', 'sale')]"),
         'lot_size': fields.integer('Lot Size', required=True),
         'max_sellable': fields.integer('Max Sellable', required=True),
-        'stock_bias': fields.integer('Stock Bias'),
+        'stock_bias': fields.related(
+            'offer_id', 'stock_bias',
+            string='Stock Bias',
+            readonly=True),
         'unit_price': fields.float(
             'Unit Price',
             digits_compute=dp.get_precision('Product Price'),
@@ -223,11 +280,6 @@ class qoqa_offer_position(orm.Model):
         'buyphrase_id': fields.many2one('qoqa.buyphrase',
                                         string='Buyphrase'),
         'order_url': fields.char('Order URL'),
-        'is_net_price': fields.related(
-            'tax_id', 'price_include',
-            type='boolean',
-            string='Tax Included in Price',
-            readonly=True),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',
@@ -238,19 +290,38 @@ class qoqa_offer_position(orm.Model):
             string='Sold',
             type='integer',
             multi='stock'),
+        'sum_residual': fields.function(
+            _get_stock,
+            string='Residual',
+            type='integer',
+            multi='stock'),
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
             type='float',
             multi='stock'),
+        'stock_progress_remaining': fields.function(
+            _get_stock,
+            string='Remaining (%)',
+            type='float',
+            multi='stock'),
+        'active': fields.boolean('Active'),
+        # kept for import of historic deals
+        'poste_cumbersome_package': fields.boolean(
+            'Poste Cumbersome Package'),
     }
 
     _defaults = {
         'regular_price_type': 'normal',
-        'stock_bias': 100,
         'max_sellable': 3,
         'lot_size': 1,
+        'active': 1,
     }
+
+    _sql_constraints = [
+        ('lot_size', 'CHECK (lot_size>0)',
+         'Lot size must be a value greater than 0.'),
+    ]
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
                                  context=None):
@@ -282,19 +353,4 @@ class qoqa_offer_position(orm.Model):
             'tax_id': tax_id,
         }
         res['value'] = values
-        return res
-
-    def onchange_tax_id(self, cr, uid, ids, tax_id, context=None):
-        """ Change the is_net_price boolean according to the
-        configuration of the tax.
-
-        This is just for the display as the related is update only on
-        save.
-        """
-        res = {'value': {}}
-        if not tax_id:
-            return res
-        tax_obj = self.pool.get('account.tax')
-        tax = tax_obj.browse(cr, uid, tax_id, context=context)
-        res['value']['is_net_price'] = tax.price_include
         return res

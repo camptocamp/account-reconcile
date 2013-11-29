@@ -20,13 +20,11 @@
 ##############################################################################
 
 from __future__ import division
-import time
+import math
 from datetime import datetime, timedelta
-from openerp.tools import (DEFAULT_SERVER_DATETIME_FORMAT,
-                           DEFAULT_SERVER_DATE_FORMAT)
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.tools.translate import _
 
-import openerp.addons.decimal_precision as dp
 from openerp.osv import orm, fields
 
 
@@ -36,13 +34,6 @@ class qoqa_offer(orm.Model):
     _inherit = ['mail.thread']
 
     _order = 'date_begin'
-
-    OFFER_STATES = [('draft', 'Proposal'),
-                    ('open', 'Negociation'),
-                    ('planned', 'Planned'),
-                    ('done', 'Done'),
-                    ('cancel', 'Canceled'),
-                    ]
 
     def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
         position_obj = self.pool.get('qoqa.offer.position')
@@ -95,18 +86,63 @@ class qoqa_offer(orm.Model):
 
         """
         res = {}
+        empty = _('...?')
         for offer in self.browse(cr, uid, ids, context=context):
             if (not offer.main_position_id or
                     not offer.main_position_id.product_tmpl_id):
-                res[offer.id] = _('...?')
+                res[offer.id] = {
+                    'name': empty,
+                    'main_brand': '',
+                    'main_product_name': empty,
+                }
                 continue
             product_tmpl = offer.main_position_id.product_tmpl_id
+
+            name = product_tmpl.name
             if product_tmpl.brand:
-                name = "[%s] %s: %s" % (offer.ref, product_tmpl.brand,
-                                        product_tmpl.name)
+                brand = product_tmpl.brand
+                name = "%s: %s" % (product_tmpl.brand, name)
             else:
-                name = "[%s] %s" % (offer.ref, product_tmpl.name)
-            res[offer.id] = name
+                brand = False
+            res[offer.id] = {
+                'name': "[%s] %s" % (offer.ref, name),
+                'main_brand': brand,
+                'main_product_name': name,
+            }
+        return res
+
+    def _get_stock(self, cr, uid, ids, fields, args, context=None):
+        """Get stock numbers
+
+        :returns: computed values
+        :rtype: dict
+        """
+        res = {}
+        for offer in self.browse(cr, uid, ids, context=context):
+            quantity = 0
+            residual = 0
+            for position in offer.position_ids:
+                quantity += position.sum_quantity
+                residual += position.sum_residual
+
+            progress = 0.0
+            if quantity > 0:
+                progress = ((quantity - residual) / quantity) * 100
+
+            progress_remaining = 100 - progress
+            # always round up
+            progress_bias = math.ceil(progress_remaining *
+                                      offer.stock_bias /
+                                      100)
+
+            res[offer.id] = {
+                'sum_quantity': quantity,
+                'sum_residual': residual,
+                'sum_stock_sold': quantity - residual,
+                'stock_progress': progress,
+                'stock_progress_remaining': progress_remaining,
+                'stock_progress_with_bias': progress_bias,
+            }
         return res
 
     def _get_offer_from_templates(self, cr, uid, ids, context=None):
@@ -125,39 +161,54 @@ class qoqa_offer(orm.Model):
                                       context=context)
         return [position['offer_id'][0] for position in positions]
 
+    _name_store = {
+        _name: (lambda self, cr, uid, ids, c: ids,
+                ['ref', 'position_ids'],
+                10),
+        'qoqa.offer.position': (_get_offer_from_positions,
+                                ['product_tmpl_id'],
+                                10),
+        'product.template': (_get_offer_from_templates,
+                             ['name', 'brand'],
+                             10)
+    }
+
     _columns = {
         'ref': fields.char('Offer Reference', required=True),
         'name': fields.function(
             _get_name,
             type='char',
-            string='Name',
+            string='Ref and Name',
             readonly=True,
-            store={
-                _name: (lambda self, cr, uid, ids, c: ids,
-                        ['ref', 'position_ids'],
-                        10),
-                'qoqa.offer.position': (_get_offer_from_positions,
-                                        ['product_tmpl_id'],
-                                        10),
-                'product.template': (_get_offer_from_templates,
-                                     ['name', 'brand'],
-                                     10)
-            }),
+            multi='name',
+            store=_name_store),
+        'main_brand': fields.function(
+            _get_name,
+            type='char',
+            string='Main Brand',
+            readonly=True,
+            multi='name',
+            store=_name_store),
+        'main_product_name': fields.function(
+            _get_name,
+            type='char',
+            string='Main Product Name',
+            readonly=True,
+            multi='name',
+            store=_name_store),
         'title': fields.char('Title', translate=True, required=True),
         'description': fields.html('Description', translate=True),
         'note': fields.html('Internal Notes',
-                            translate=True,
-                            required=True),
-        'state': fields.selection(
-            OFFER_STATES,
-            'Status',
-            readonly=True,
-            required=True,
-            track_visibility='onchange'),
+                            translate=True),
         'qoqa_shop_id': fields.many2one(
             'qoqa.shop',
             string='Sell on',
             required=True),
+        'shop_kanban_image': fields.related(
+            'qoqa_shop_id', 'kanban_image',
+            string='Shop Image',
+            type='binary',
+            readonly=True),
         'position_ids': fields.one2many(
             'qoqa.offer.position',
             'offer_id',
@@ -177,6 +228,41 @@ class qoqa_offer(orm.Model):
             string='Medium-sized Image',
             type='binary',
             readonly=True),
+        'stock_progress': fields.related(
+            'main_position_id', 'stock_progress',
+            string='Progress',
+            type='float',
+            readonly=True),
+        'sum_quantity': fields.function(
+            _get_stock,
+            string='Quantity',
+            type='integer',
+            multi='stock'),
+        'sum_residual': fields.function(
+            _get_stock,
+            string='Residual',
+            type='integer',
+            multi='stock'),
+        'sum_stock_sold': fields.function(
+            _get_stock,
+            string='Sold',
+            type='integer',
+            multi='stock'),
+        'stock_progress': fields.function(
+            _get_stock,
+            string='Progress',
+            type='float',
+            multi='stock'),
+        'stock_progress_with_bias': fields.function(
+            _get_stock,
+            string='Remaining with Bias (%)',
+            type='float',
+            multi='stock'),
+        'stock_progress_remaining': fields.function(
+            _get_stock,
+            string='Remaining (%)',
+            type='float',
+            multi='stock'),
         # date & time are split in 2 fields
         # because they should not be based on the UTC
         # if one says that a offer start on 2013-10-07 at 00:00
@@ -185,23 +271,19 @@ class qoqa_offer(orm.Model):
         'date_begin': fields.date(
             'Start Date',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'time_begin': fields.float(
             'Start Time',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'date_end': fields.date(
             'End Date',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         'time_end': fields.float(
             'End Time',
             required=True,
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
         # for the display on the tree and kanban views
         'datetime_begin': fields.function(
             _full_dates,
@@ -231,24 +313,35 @@ class qoqa_offer(orm.Model):
             'product.pricelist',
             string='Pricelist',
             required=True,
-            domain="[('type', '=', 'sale')]",
-            states={'draft': [('readonly', False)]}),
+            domain="[('type', '=', 'sale')]"),
         'lang_id': fields.many2one(
             'res.lang',
-            string='Language',
-            states={'draft': [('readonly', False)]}),
+            string='Language'),
         'company_id': fields.many2one(
             'res.company',
             string='Company',
             required=False,
             change_default=True,
-            readonly=False,
-            states={'done': [('readonly', True)]}),
-        'qoqa_active': fields.boolean('Active on QoQa'),
+            readonly=False),
         'date_warranty': fields.date(
             'Warranty Expiration',
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+            readonly=True),
+        'active': fields.boolean('Active'),
+        'sale_ids': fields.one2many(
+            'sale.order', 'offer_id',
+            string='Sales Orders'),
+        # related to main position for kanban view:
+        'currency_symbol': fields.related(
+            'pricelist_id', 'currency_id', 'symbol',
+            type='char', string='Currency', readonly=True),
+        'main_unit_price': fields.related(
+            'main_position_id', 'unit_price',
+            string='Unit Price', type='float',
+            readonly=True),
+        'main_regular_price': fields.related(
+            'main_position_id', 'unit_price',
+            string='Unit Price', type='float', readonly=True),
+        'stock_bias': fields.integer('Stock Bias'),
     }
 
     def _default_company(self, cr, uid, context=None):
@@ -256,13 +349,14 @@ class qoqa_offer(orm.Model):
         return company_obj._company_default_get(cr, uid, 'qoqa.offer', context=context)
 
     _defaults = {
+        'stock_bias': 100,
         'ref': '/',
-        'state': 'draft',
         'company_id': _default_company,
         'date_begin': fields.date.context_today,
         'date_end': fields.date.context_today,
         'time_begin': 0,  # 00:00
         'time_end': 23.983,  # 23:59
+        'active': 1,
     }
 
     def _check_date(self, cr, uid, ids, context=None):
@@ -300,18 +394,6 @@ class qoqa_offer(orm.Model):
         return super(qoqa_offer, self).copy_data(
             cr, uid, id, default=default, context=context)
 
-    def action_cancel(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
-        return True
-
-    def action_done(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'done'}, context=context)
-        return True
-
-    def action_plan(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'planned'}, context=context)
-        return True
-
     def onchange_date_begin(self, cr, uid, ids, date_begin, context=None):
         """ When changing the beginning date, automatically set the
         end date 24 hours later
@@ -319,3 +401,27 @@ class qoqa_offer(orm.Model):
         if not date_begin:
             return {}
         return {'value': {'date_end': date_begin}}
+
+    def action_view_sale_order(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        mod_obj = self.pool.get('ir.model.data')
+        act_obj = self.pool.get('ir.actions.act_window')
+
+        action_xmlid = ('sale', 'action_orders')
+        ref = mod_obj.get_object_reference(cr, uid, *action_xmlid)
+        action_id = False
+        if ref:
+            __, action_id = ref
+        action = act_obj.read(cr, uid, [action_id], context=context)[0]
+        action['domain'] = str([('offer_id', 'in', ids)])
+        return action
+
+    def decrement_stock_bias(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        for offer in self.browse(cr, uid, ids, context=context):
+            self.write(cr, uid, offer.id,
+                       {'stock_bias': offer.stock_bias - 1},
+                       context=context)
+        return True

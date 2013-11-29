@@ -169,3 +169,51 @@ Feature: PRE-DEFINED USERS FOR TEST INSTANCE TO REPLACE BY USER FOR GO LIVE
         | company_id  | by oid: scenario.qoqa_fr     |
         | company_ids | all by oid: scenario.qoqa_fr |
         | lang        | fr_FR                        |
+
+  @user @connector
+  Scenario: Assign groups for the connector users
+    Given we select users below, even the deactivated ones:
+    | login        |
+    | connector_ch |
+    | connector_fr |
+    And we assign to users the groups below:
+     | group_name                       |
+#Sales
+     | Sales / Manager                  |
+#Purchase
+     | Purchases / Manager               |
+#Project
+     | Project / Manager                |
+#Warehouse
+     | Warehouse / Manager              |
+#Human_Resources
+     | Employee                         |
+#Sharing
+     | Sharing / User                   |
+#Administration
+     | Access Rights                    |
+#Connector
+     | Connector / Connector Manager    |
+#Technical_settings
+     | Multi Currencies                 |
+     | Advanced Attribute Option        |
+     | Analytic Accounting              |
+     | Sales Pricelists                 |
+     | Purchase Pricelists              |
+     | Costing Method                   |
+     | Manage Multiple Units of Measure |
+     | Manage Secondary Unit of Measure |
+     | Manage Product Packaging         |
+     | Manage Properties of Product     |
+     | Analytic Accounting for Purchases|
+     | Analytic Accounting for Sales    |
+#Accounting_and_Finance
+     | Accountant                       |
+     | Invoicing & Payments             |
+     | Financial Manager                |
+     | Analytic Accounting              |
+#Usability
+     | Multi Companies                  |
+     | Technical Features               |
+#Other
+     | Contact Creation                 |

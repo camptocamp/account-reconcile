@@ -54,16 +54,26 @@
 .openerp .oe_kanban_offer .qoqa_box {
   float: left;
   width: 100%;
-  padding: 4px;
   display: inline-block;
   vertical-align: middle;
 }
+
+.openerp .oe_kanban_offer .qoqa_progress {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 
 .openerp .oe_kanban_offer .qoqa_left_box {
   width: 45%;
   float: left;
   display: inline-block;
   vertical-align: middle;
+  height: 20px;
+}
+
+.openerp .oe_kanban_offer .qoqa_box_2lines {
+  height: 30px;
 }
 
 .openerp .oe_kanban_offer .qoqa_right_box {
@@ -71,6 +81,7 @@
   float: left;
   display: inline-block;
   vertical-align: middle;
+  height: 20px;
 }
 
 .openerp .oe_kanban_offer .oe_kanban_image.oe_qoqa_shop {
@@ -133,6 +144,9 @@ progress[value]::-moz-progress-bar {
 .oe_kanban_offer a.qoqa_minus {
   color: #CA4791;
   float: right;
+  width: 20px;
+  height: 20px;
+  background: transparent url(/qoqa_offer/static/src/img/minus_icon.png) no-repeat 0px 0px;
 }
 
 .oe_kanban_offer .qoqa_buttons a.oe_kanban_button {

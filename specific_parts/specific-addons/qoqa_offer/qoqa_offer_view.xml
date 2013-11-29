@@ -100,7 +100,8 @@
             <field name="name">Offers Kanban</field>
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="qoqa_shop_id" version="7.0">
+                <kanban default_group_by="qoqa_shop_id"
+                      edit="false" quick_create="false" version="7.0">
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="datetime_begin"/>
@@ -143,7 +144,7 @@
                                     </div>
                                     <div class="oe_clear"></div>
                                     <div class="qoqa_content">
-                                        <div class="qoqa_product_info">
+                                        <div class="qoqa_box">
                                             <div class="qoqa_left_box">
                                                 <field name="main_unit_price"/> <field name="currency_symbol"/>
                                                 <t t-esc="'('"/><field name="main_regular_price"/> <field name="currency_symbol"/><t t-esc="')'"/>
@@ -152,8 +153,8 @@
 
                                             </div>
                                         </div>
-                                        <div>
-                                            <progress t-att-value="record.stock_progress.raw_value" max="100"/>
+                                        <div class="qoqa_box">
+                                            <progress t-att-value="record.stock_progress.raw_value" max="100" class="qoqa_progress"/>
                                         </div>
                                         <div class="qoqa_box">
                                             <div class="qoqa_left_box">
@@ -171,16 +172,16 @@
                                             </div>
                                             <div class="qoqa_right_box">
                                               With bias: <b><field name="stock_progress_with_bias"/>％</b>
-                                              <a name="decrement_stock_bias" type="object" class="oe_e qoqa_minus">Y</a>
+                                              <a name="decrement_stock_bias" type="object" class="qoqa_minus"></a>
                                             </div>
                                         </div>
                                         <hr class="qoqa_line"/>
                                         <div class="qoqa_box">
-                                            <div class="qoqa_left_box">
+                                            <div class="qoqa_left_box qoqa_box_2lines">
                                                 <b>Start</b><br/>
                                                 <field name="datetime_begin"/>
                                             </div>
-                                            <div class="qoqa_right_box">
+                                            <div class="qoqa_right_box qoqa_box_2lines">
                                                 <b>End</b><br/>
                                                 <field name="datetime_end"/>
                                             </div>

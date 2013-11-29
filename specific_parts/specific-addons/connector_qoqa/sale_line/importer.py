@@ -107,7 +107,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         return values
 
     def _item_product(self, item):
-        # qoqa.offer.position
+        # get id of qoqa.offer.position
         q_position_id = item['offer_id']
         binder = self.get_binder_for_model('qoqa.offer.position')
         position_id = binder.to_openerp(q_position_id)
@@ -115,7 +115,7 @@ class SaleOrderLineImportMapper(ImportMapper):
             raise MappingError("Offer Position with ID '%s' on QoQa has "
                                "not been imported, should have been imported "
                                "in _import_dependencies()." % q_position_id)
-        # product.product
+        # get id of product.product
         binder = self.get_binder_for_model('qoqa.product.product')
         product_id = binder.to_openerp(item['variation_id'], unwrap=True)
         values = {'offer_position_id': position_id,

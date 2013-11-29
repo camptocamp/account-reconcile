@@ -230,6 +230,7 @@ class SaleOrderImport(QoQaImportSynchronizer):
         else:
             self._create_payments(binding_id)
 
+
 def _get_payment_method(connector_unit, payment, company_id):
     session = connector_unit.session
     valid_states = (QOQA_PAY_STATUS_CONFIRMED,
@@ -399,10 +400,7 @@ class SaleOrderImportMapper(ImportMapper):
             item = invoice_detail['item']
             type_id = item['type_id']
 
-            if type_id == QOQA_ITEM_PRODUCT:
-                lines.append(details_by_id.pop(detail_id))
-
-            if type_id == QOQA_ITEM_SHIPPING:
+            if type_id in (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING):
                 lines.append(details_by_id.pop(detail_id))
 
             elif type_id == QOQA_ITEM_DISCOUNT:

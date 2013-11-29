@@ -58,6 +58,7 @@ Feature: Configure the connector's backend
       | import_rule         | paid                                                 |
       | qoqa_id             | 9                                                    |
       | sequence            | 99                                                   |
+      | journal_id          | scenario.journal_bon_achat_ch                        |
       | company_id          | by oid:  scenario.qoqa_ch                            |
   Given I need a "payment.method" with oid: scenario.payment_method_gift_card_fr
     And having:

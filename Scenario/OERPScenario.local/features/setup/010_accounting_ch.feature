@@ -79,6 +79,19 @@ Feature: Configure the CH's accounting
       | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |   11010 |
       | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
+  @journals
+  Scenario Outline: Create an accounting journal for a Bank Journal
+    Given I need a "account.journal" with oid: scenario.journal_bon_achat_ch
+    And having:
+      | key                       | value                    |
+      | name                      | Bon d'achat              |
+      | code                      | BONS                     |
+      | type                      | bank                     |
+      | company_id                | by oid: scenario.qoqa_ch |
+      | default_debit_account_id  | by code: 20400           |
+      | default_credit_account_id | by code: 11030           |
+      | allow_date                | false                    |
+
   @default_accounts
   Scenario Outline: AFTER IMPORT OF CUSTOM CoA, COMPLETE DEFAULT ACCOUNTS ON MAIN PARTNERS
     Given I set global property named "<name>" for model "<model>" and field "<name>" for company with ref "scenario.qoqa_ch"

@@ -18,12 +18,14 @@
             <field name="model">qoqa.offer</field>
             <field name="inherit_id" ref="qoqa_offer.view_qoqa_offer_form"/>
             <field name="arch" type="xml">
-              <page string="Internal Description">
+              <page string="Internal Description" position="after">
                 <page string="Financial informations">
-                  <field name="subtotal_company"/>
-                  <field name="subtotal_cost_price_company"/>
-                  <field name="margin_absolute"/>
-                  <field name="margin_relative"/>
+                  <group name="margin" string="Margin">
+                    <field name="subtotal_company"/>
+                    <field name="subtotal_cost_price_company"/>
+                    <field name="margin_absolute"/>
+                    <field name="margin_relative"/>
+                  </group>
                 </page>
               </page>
             </field>

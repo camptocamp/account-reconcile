@@ -122,7 +122,7 @@ class SaleOrderImport(QoQaImportSynchronizer):
                 # Already imported orders, but canceled afterwards,
                 # triggers the automatic cancellation
                 sale = self.session.browse('sale.order', sale_id)
-                if sale.state != 'cancel' and not self.canceled_in_backend:
+                if sale.state != 'cancel' and not sale.canceled_in_backend:
                     self.session.write('sale.order', [sale_id],
                                        {'canceled_in_backend': True})
                 return _('Sales order %s has been has been marked '
@@ -188,12 +188,9 @@ class SaleOrderImport(QoQaImportSynchronizer):
         qsale = sess.browse(self.model._name, binding_id)
         sale = qsale.openerp_id
         for payment in self.qoqa_record['payments']:
-            valid_states = (QOQA_PAY_STATUS_CONFIRMED,
-                            QOQA_PAY_STATUS_SUCCESS,
-                            QOQA_PAY_STATUS_ACCOUNTED)
-            if payment['status_id'] not in valid_states:
-                continue
             method = _get_payment_method(self, payment, sale.company_id.id)
+            if method is None:
+                continue
             journal = method.journal_id
             if not journal:
                 continue
@@ -235,7 +232,15 @@ class SaleOrderImport(QoQaImportSynchronizer):
 
 def _get_payment_method(connector_unit, payment, company_id):
     session = connector_unit.session
+    valid_states = (QOQA_PAY_STATUS_CONFIRMED,
+                    QOQA_PAY_STATUS_SUCCESS,
+                    QOQA_PAY_STATUS_ACCOUNTED)
+    if payment['status_id'] not in valid_states:
+        return
     qmethod_id = payment['method_id']
+    if qmethod_id is None:
+        raise MappingError("Payment method missing for payment %s" %
+                           payment['id'])
     binder = connector_unit.get_binder_for_model('payment.method')
     method_id = binder.to_openerp(qmethod_id, company_id=company_id)
     if not method_id:
@@ -310,8 +315,8 @@ class SaleOrderImportMapper(ImportMapper):
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
         try:
-            payments = [_get_payment_method(self, payment, company_id)
-                        for payment in qpayments]
+            methods = (_get_payment_method(self, payment, company_id)
+                       for payment in qpayments)
         except FailedJobError:
             if is_historic_import(self, record):
                 # Sometimes, an offer is on the FR website
@@ -319,8 +324,17 @@ class SaleOrderImportMapper(ImportMapper):
                 # historical sales orders.
                 return
             raise
-        payments = sorted(payments, key=attrgetter('sequence'))
-        return {'payment_method_id': payments[0].id}
+        methods = (method for method in methods if method)
+        methods = sorted(methods, key=attrgetter('sequence'))
+        return {'payment_method_id': methods[0].id}
+
+    @mapping
+    def from_invoice(self, record):
+        """ Get the invoice node and extract some data """
+        invoice = extract_invoice_from_sale(record)
+        total = float(invoice['total']) / 100
+        ref = invoice['reference']
+        return {'qoqa_amount_total': total, 'invoice_ref': ref}
 
     @mapping
     def from_invoice(self, record):

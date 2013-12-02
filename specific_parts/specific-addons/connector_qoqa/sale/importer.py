@@ -327,6 +327,8 @@ class SaleOrderImportMapper(ImportMapper):
             raise
         methods = (method for method in methods if method)
         methods = sorted(methods, key=attrgetter('sequence'))
+        if not methods:
+            return
         return {'payment_method_id': methods[0].id}
 
     @mapping

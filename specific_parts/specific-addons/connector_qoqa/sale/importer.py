@@ -187,6 +187,10 @@ class SaleOrderImport(QoQaImportSynchronizer):
         sale_obj = sess.pool['sale.order']
         qsale = sess.browse(self.model._name, binding_id)
         sale = qsale.openerp_id
+        if sale.payment_ids:
+            # if payments exist, we are force updating a sales
+            # and the payments have already been generated
+            return
         for payment in self.qoqa_record['payments']:
             method = _get_payment_method(self, payment, sale.company_id.id)
             if method is None:
@@ -219,11 +223,14 @@ class SaleOrderImport(QoQaImportSynchronizer):
             # merchandise returns based on the invoice
             # the invoice workflow is short-circuited too, we don't
             # want move lines
-            invoice_id = sale.openerp_id.action_invoice_create(
-                grouped=False, states=['draft'], date_invoice=sale.date_order)
-            sess.pool['account.invoice'].confirm_paid(sess.cr, sess.uid,
-                                                      [invoice_id],
-                                                      context=sess.context)
+            if not sale.invoice_ids:
+                # if we force update, do not generate again the invoice
+                invoice_id = sale.openerp_id.action_invoice_create(
+                    grouped=False, states=['draft'],
+                    date_invoice=sale.date_order)
+                sess.pool['account.invoice'].confirm_paid(sess.cr, sess.uid,
+                                                        [invoice_id],
+                                                        context=sess.context)
             sale.openerp_id.action_done()
             _logger.debug('Sales order %s is processed, workflow '
                           'short-circuited in OpenERP', sale.name)

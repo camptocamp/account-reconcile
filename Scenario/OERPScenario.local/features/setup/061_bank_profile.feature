@@ -94,13 +94,14 @@ Feature: BANK PROFILES
      | scenario.profile_reglement_fr_paypal             | Règlement Paypal          |   471000|         411001 | 
      
      
+  @match @fr
   Scenario Outline: BANK PROFILE FOR QOQA FR
     Given I am configuring the company with ref "scenario.qoqa_fr"
     Given I need a "account.statement.profile" with oid: <oid>
     And having:
     | name                  | value                    |
     | name                  | <name>                   |
-    | journal_id            | by name: <name>          |
+    | journal_id            | by oid: <journal_oid>          |
     | commission_account_id | by code: 471000          |
     | balance_check         | 1                        |
     | import_type           | generic_csvxls_so        |
@@ -113,9 +114,9 @@ Feature: BANK PROFILES
     | Match from line label (based on partner field 'Bank Statement Label') |
     | Match from line label (based on partner name)                         |
 
-   Examples: Bank profiles for QoQa CH
-     | oid                              | name              |
-     | scenario.profile_banque_fr_bnp   | BNP               |
+   Examples: Bank profiles for QoQa FR
+     | oid                            | name | journal_oid          |
+     | scenario.profile_banque_fr_bnp | BNP  | scenario.journal_fr  |
   
      
          

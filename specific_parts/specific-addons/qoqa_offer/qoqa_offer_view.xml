@@ -166,7 +166,7 @@
                                             </div>
                                         </div>
                                         <hr class="qoqa_line"/>
-                                        <div class="qoqa_box">
+                                        <div class="qoqa_box qoqa_middle">
                                             <div class="qoqa_left_box">
                                               Bias: <field name="stock_bias"/>％
                                             </div>

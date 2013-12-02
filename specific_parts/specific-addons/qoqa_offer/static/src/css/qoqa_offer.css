@@ -89,6 +89,11 @@
   height: 28px;
 }
 
+.openerp .oe_kanban_offer .qoqa_middle .qoqa_left_box,
+.openerp .oe_kanban_offer .qoqa_middle .qoqa_right_box {
+  line-height: 20px;
+}
+
 
 .oe_kanban_offer .oe_ellipsis {
   overflow: hidden;

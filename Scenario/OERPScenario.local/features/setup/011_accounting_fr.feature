@@ -49,7 +49,7 @@ Feature: Configure the FR's accounting
 
     Examples: Bank Accounts
       | journal_oid         | journal_code | journal_name           | currency | acc_code | bank_oid         | bank_name   | street               | zip   | city     | bank_code | office | rib_acc_number | key | iban                              | bic         |
-      | scenario.journal_fr | BNP4171      | Compte Bancaire France | false    | 512300   | scenario.bank_fr | BNP Paribas | 95 cours de la Marne | 33300 | Bordeaux | 30004     | 00340  | 00010116041    | 71  | FR67 3000 4003 4000 0101 1604 171 | BNPAFRPPBOR |
+      | scenario.journal_fr | BNP4171      | Compte Bancaire France | false    | 512300   | scenario.bank_fr | BNP Paribas | 95 cours de la Marne | 33300 | Bordeaux | 30004     | 00340  | 00010116041    | 71  | FR76 3000 4003 4000 0101 1604 171 | BNPAFRPPBOR |
 
 
   @journals

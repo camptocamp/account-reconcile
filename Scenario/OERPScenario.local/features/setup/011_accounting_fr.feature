@@ -61,17 +61,38 @@ Feature: Configure the FR's accounting
       | code                      | <code>                   |
       | type                      | bank                     |
       | company_id                | by oid: scenario.qoqa_fr |
-      | default_debit_account_id  | by code: 512102          |
-      | default_credit_account_id | by code: 512102          |
+      | default_debit_account_id  | by code: 411002          |
+      | default_credit_account_id | by code: 411002          |
       | allow_date                | false                    |
 
     Examples: Bank Journals
-      | oid                            | name             | code  |
-      | scenario.journal_carte_bleue   | Carte Bleue Visa | CBVIS |
-      | scenario.journal_visa_fr       | Visa             | VISA  |
-      | scenario.journal_mastercard_fr | Mastercard       | MASTR |
-      | scenario.journal_paiement_3x   | Paiement 3x      | PAY3X |
-      | scenario.journal_paypal_fr     | Paypal           | PAYPA |
+      | oid                            | name                   | code  |
+      | scenario.journal_carte_bleue   | Règlement CB           | CBVIS |
+      | scenario.journal_visa_fr       | Règlement Visa         | VISA  |
+      | scenario.journal_mastercard_fr | Règlement Mastercard   | MASTR |
+      | scenario.journal_paiement_3x   | Règlement Paiement 3x  | PAY3X |
+      | scenario.journal_paypal_fr     | Règlement Paypal       | PAYPA |
+
+  @import @journals
+  Scenario Outline: Create an accounting journal for a Bank Journal
+    Given I need a "account.journal" with oid: <oid>
+    And having:
+      | key                       | value                    |
+      | name                      | <name>                   |
+      | code                      | <code>                   |
+      | type                      | bank                     |
+      | company_id                | by oid: scenario.qoqa_fr |
+      | default_debit_account_id  | by code: 411003          |
+      | default_credit_account_id | by code: 411003          |
+      | allow_date                | false                    |
+
+    Examples: Bank Journals
+      | oid                              | name                | code   |
+      | scenario.journal_i_carte_bleue   | Import CB           | ICBVIS |
+      | scenario.journal_i_visa_fr       | Import Visa         | IVISA  |
+      | scenario.journal_i_mastercard_fr | Import Mastercard   | IMASTR |
+      | scenario.journal_i_paiement_3x   | Import Paiement 3x  | IPAY3X |
+      | scenario.journal_i_paypal_fr     | Import Paypal       | IPAYPA |
 
   @currency_rate
   Scenario Outline: I create the historic currency rates so we can import sales orders from 2005
@@ -92,6 +113,7 @@ Feature: Configure the FR's accounting
       | 2010 | 0.6739 |
       | 2011 | 0.8017 |
       | 2012 | 0.8221 |
+      | 2013 | 0.8132 |
 
   @tax
   Scenario Outline: Configure the taxes to price include
@@ -101,8 +123,13 @@ Feature: Configure the FR's accounting
          | key           | value     |
          | price_include | True      |
 
-    Examples: currencies
+    Examples: tax_codes
          | tax_code |
          | 2.1      |
          | 5.5      |
          | 19.6     |
+         | 5.0      |
+         | 7.0      |
+         | 10.0     |
+         | 20.0     |
+         | 8.5      |

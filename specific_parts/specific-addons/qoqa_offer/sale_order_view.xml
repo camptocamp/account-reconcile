@@ -29,6 +29,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="offer_id"/>
+                </field>
                 <filter string="Customer" position="after">
                   <filter string="Shop" domain="[]" context="{'group_by':'shop_id'}"/>
                   <filter string="Offer" icon="terp-personal" domain="[]" context="{'group_by':'offer_id'}"/>

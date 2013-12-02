@@ -142,7 +142,7 @@ Feature: Configure the CH's accounting
          | account_paid_id      | by code: 1170                                                   |
          | company_id           | by oid: scenario.qoqa_ch                                        |
          | type_tax_use         | sale                                                            |
-         | active               | False                                                           |
+         | active               | True                                                            |
     Given I need a "account.tax" with oid: scenario.vat_36
     And having
          | key                  | value                                                           |
@@ -161,7 +161,7 @@ Feature: Configure the CH's accounting
          | account_paid_id      | by code: 1170                                                   |
          | company_id           | by oid: scenario.qoqa_ch                                        |
          | type_tax_use         | sale                                                            |
-         | active               | False                                                           |
+         | active               | True                                                            |
     Given I need a "account.tax" with oid: scenario.vat_24
     And having
          | key                  | value                                                           |
@@ -180,7 +180,7 @@ Feature: Configure the CH's accounting
          | account_paid_id      | by code: 1170                                                   |
          | company_id           | by oid: scenario.qoqa_ch                                        |
          | type_tax_use         | sale                                                            |
-         | active               | False                                                           |
+         | active               | True                                                            |
 
   @currency_rate
   Scenario: I create the historic currency rates so we can import sales orders from 2005

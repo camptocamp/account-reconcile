@@ -38,7 +38,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import iso8601_to_utc, strformat
-from ..connector import iso8601_to_utc_datetime, is_historic_import
+from ..connector import iso8601_to_utc_datetime, historic_import
 from ..exception import QoQaError
 from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
                                   QOQA_ITEM_DISCOUNT, QOQA_ITEM_SERVICE,
@@ -208,7 +208,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
     def _after_import(self, binding_id):
         # before 'date_really_import', we import only for the historic
         # so we do not want to generate payments, invoice, stock moves
-        if is_historic_import(self, self.qoqa_record):
+        historic_info = historic_import(self, self.qoqa_record)
+        if historic_info.historic:
             # no invoice, no packing, no payment
             sess = self.session
             sale = sess.browse('qoqa.sale.order', binding_id)
@@ -229,8 +230,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
                     grouped=False, states=['draft'],
                     date_invoice=sale.date_order)
                 sess.pool['account.invoice'].confirm_paid(sess.cr, sess.uid,
-                                                        [invoice_id],
-                                                        context=sess.context)
+                                                          [invoice_id],
+                                                          context=sess.context)
             sale.openerp_id.action_done()
             _logger.debug('Sales order %s is processed, workflow '
                           'short-circuited in OpenERP', sale.name)
@@ -294,6 +295,12 @@ class SaleOrderImportMapper(ImportMapper):
               ]
 
     @mapping
+    def active(self, record):
+        historic_info = historic_import(self, record)
+        if not historic_info.active:
+            return {'active': False}
+
+    @mapping
     def addresses(self, record):
         quser_id = record['user_id']
         binder = self.get_binder_for_model('qoqa.res.partner')
@@ -326,7 +333,7 @@ class SaleOrderImportMapper(ImportMapper):
             methods = (_get_payment_method(self, payment, company_id)
                        for payment in qpayments)
         except FailedJobError:
-            if is_historic_import(self, record):
+            if historic_import(self, record).historic:
                 # Sometimes, an offer is on the FR website
                 # but paid with postfinance. Forgive them for the
                 # historical sales orders.

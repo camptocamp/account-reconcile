@@ -42,9 +42,6 @@ def delay_export(session, model_name, record_id, fields=None):
                           fields=fields, priority=4)
 
 
-# TODO: prevent to unlink a record with a qoqa_id
-
-
 @qoqa
 class OfferExporter(QoQaExporter):
     _model_name = ['qoqa.offer']

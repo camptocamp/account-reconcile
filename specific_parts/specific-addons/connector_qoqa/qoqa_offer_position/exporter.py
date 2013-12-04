@@ -45,8 +45,6 @@ def delay_export(session, model_name, record_id, fields=None):
     consumer.delay_export(session, model_name, record_id,
                           fields=fields, priority=5)
 
-# TODO prevent to delete a record with a qoqa_id
-
 
 @qoqa
 class OfferPositionExporter(QoQaExporter):

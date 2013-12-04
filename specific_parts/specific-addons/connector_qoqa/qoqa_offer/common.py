@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
@@ -48,6 +49,19 @@ class qoqa_offer(orm.Model):
         return super(qoqa_offer, self).copy_data(cr, uid, id,
                                                  default=default,
                                                  context=context)
+
+    def unlink(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        offers = self.browse(cr, uid, ids, context=context)
+        exported = [offer for offer in offers if offer.qoqa_id]
+        if exported:
+            raise orm.except_orm(
+                _('Error'),
+                _('Exported Offers can no longer be deleted (ref: %s).'
+                  'They can still be deactivated using the "active" '
+                  'box.') % ','.join(offer.ref for offer in exported))
+        return super(qoqa_offer, self).unlink(cr, uid, ids, context=context)
 
 
 @qoqa

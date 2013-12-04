@@ -24,8 +24,7 @@ from ..unit.import_synchronizer import import_record
 
 
 class test_import_product(QoQaTransactionCase):
-    """ Test the import of product from QoQa (actually
-    QoQa Shops).
+    """ Test the import of product from QoQa.
     """
     def setUp(self):
         super(test_import_product, self).setUp()

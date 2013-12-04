@@ -22,6 +22,7 @@
 import pytz
 from datetime import datetime
 from dateutil import parser
+from collections import namedtuple
 from itertools import tee, izip
 
 from openerp.osv import orm, fields
@@ -59,16 +60,27 @@ def get_environment(session, model_name, backend_id):
     return env
 
 
-def is_historic_import(connector_unit, record):
+HistoricInfo = namedtuple('HistoricInfo',
+                          ['historic',  # historic data, bypass workflows, ...
+                           'active',  # records imported inactive
+                           ])
+
+
+def historic_import(connector_unit, record):
     order_date = iso8601_to_utc_datetime(record['created_at'])
     until_str = connector_unit.backend_record.date_really_import
+    inactive_until_str = connector_unit.backend_record.date_import_inactive
     historic_until = datetime.strptime(until_str,
                                        DEFAULT_SERVER_DATETIME_FORMAT)
-    return order_date < historic_until
+    inactive_until = datetime.strptime(inactive_until_str,
+                                       DEFAULT_SERVER_DATETIME_FORMAT)
+    info = HistoricInfo(historic=order_date < historic_until,
+                        active=order_date >= inactive_until)
+    return info
 
 
 class qoqa_binding(orm.AbstractModel):
-    """ Abstract Model for the Bindigs.
+    """ Abstract Model for the Bindings.
 
     All the models used as bindings between QoQa and OpenERP
     (``qoqa.product.product``, ...) should ``_inherit`` it.

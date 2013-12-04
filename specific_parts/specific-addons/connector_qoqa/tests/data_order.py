@@ -59,7 +59,7 @@ r'''{
         "currency_id": 1,
         "status_id": 5,
         "settlement_status_id": 2,
-        "method_id": 1,
+        "method_id": 99999999,
         "provider_id": 7,
         "voucher_id": null,
         "account": "3000007003",
@@ -75,7 +75,7 @@ r'''{
       }
     ],
     "order_returns": [
-      
+
     ],
     "invoices": [
       {

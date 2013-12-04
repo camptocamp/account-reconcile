@@ -19,23 +19,20 @@
 #
 ##############################################################################
 
-from .common import mock_api_responses, QoQaTransactionCase
+import mock
+from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
 from .data_buyphrase import qoqa_buyphrase
 from .data_metadata import qoqa_shops
 from ..unit.import_synchronizer import import_record
 
 
+@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
 class test_import_buyphrase(QoQaTransactionCase):
     """ Test the import of buyphrase from QoQa """
     def setUp(self):
         super(test_import_buyphrase, self).setUp()
-        cr, uid = self.cr, self.uid
         self.Buyphrase = self.registry('qoqa.buyphrase')
-        company_obj = self.registry('res.company')
-        # create a new company so we'll check if it shop is linked
-        # with the correct one when it is not the default one
-        vals = {'name': 'Qtest', 'qoqa_id': 42}
-        self.company_id = company_obj.create(cr, uid, vals)
+        self.setUpCompany()
 
     def test_import_buyphrase(self):
         """ Import a Buyphrase """

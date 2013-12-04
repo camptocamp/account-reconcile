@@ -319,6 +319,7 @@ class qoqa_offer(orm.Model):
         'pricelist_id': fields.many2one(
             'product.pricelist',
             string='Pricelist',
+            domain="[('type', '=', 'sale')]",
             required=True),
         'lang_id': fields.many2one(
             'res.lang',

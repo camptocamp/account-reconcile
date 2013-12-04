@@ -107,6 +107,9 @@ class QoQaBaseExporter(ExportSynchronizer):
         result = self._run(*args, **kwargs)
 
         self.binder.bind(self.qoqa_id, self.binding_id)
+        # commit so we keep the external ID if several exports
+        # are called and one of them fails
+        self.session.commit()
         return result
 
     def _run(self):
@@ -135,10 +138,15 @@ class QoQaExporter(QoQaBaseExporter):
         Export a dependency. The exporter class is a subclass of
         ``QoQaExporter``. If a more precise class need to be defined
 
-        .. warning:: this method do a commit at end of the export of the
+        .. warning:: a commit is done at the end of the export of each
                      dependency. The reason for that is that we pushed a record
                      on the backend and we absolutely have to keep its ID.
-                     So you should call this method only in the beginning of
+
+                     So you *must* take care to not modify the OpenERP database
+                     excepted when writing back the external ID or eventual
+                     external data to keep on this side.
+
+                     You should call this method only in the beginning of
                      exporter synchronization (in `~._export_dependencies`)
                      and do not write data which should be rollbacked in case
                      of error.
@@ -188,7 +196,6 @@ class QoQaExporter(QoQaBaseExporter):
             exporter = self.get_connector_unit_for_model(exporter_class,
                                                          binding_model)
             exporter.run(binding_id)
-        self.session.commit()
 
     def _export_dependencies(self):
         """ Export the dependencies for the record"""

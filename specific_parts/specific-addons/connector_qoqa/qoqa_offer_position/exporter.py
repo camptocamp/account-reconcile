@@ -19,7 +19,9 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.unit.mapper import ExportMapper
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  ExportMapper,
+                                                  )
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
                                             on_record_unlink,
@@ -28,26 +30,22 @@ from ..backend import qoqa
 from .. import consumer
 from ..unit.export_synchronizer import QoQaExporter
 from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
-from ..unit.mapper import m2o_to_backend
+from ..unit.mapper import (m2o_to_backend,
+                           floatqoqa,
+                           date_to_iso8601,
+                           )
 
 
 @on_record_create(model_names='qoqa.offer.position')
 @on_record_write(model_names='qoqa.offer.position')
 def delay_export(session, model_name, record_id, fields=None):
-    # reduce the priority so the offers should be exported before
+    # High priority when we want, for instance, to update the
+    # bias in a short timeframe.  Priority still lower than
+    # offers though, so they have a change to be exported before
     consumer.delay_export(session, model_name, record_id,
-                          fields=fields, priority=15)
+                          fields=fields, priority=5)
 
-
-@on_record_unlink(model_names='qoqa.offer.position')
-def delay_unlink(session, model_name, record_id):
-    consumer.delay_unlink(session, model_name, record_id)
-
-
-@qoqa
-class OfferPositionDeleteSynchronizer(QoQaDeleteSynchronizer):
-    """ Offer deleter for QoQa """
-    _model_name = ['qoqa.offer.position']
+# TODO prevent to delete a record with a qoqa_id
 
 
 @qoqa
@@ -61,6 +59,9 @@ class OfferPositionExporter(QoQaExporter):
         self._export_dependency(binding.offer_id, 'qoqa.offer')
         self._export_dependency(binding.product_tmpl_id,
                                 'qoqa.product.template')
+        self._export_dependency(binding.buyphrase_id, 'qoqa.buyphrase')
+        for variant in binding.variant_ids:
+            self._export_dependency(variant.product_id, 'qoqa.product.product')
 
 
 @qoqa
@@ -71,22 +72,36 @@ class OfferPositionExportMapper(ExportMapper):
                  'qoqa.offer.position.variant'),
                 ]
 
-    direct = [('unit_price', 'unit_price'),
-              ('installment_price', 'installment_price'),
-              ('regular_price', 'regular_price'),
-              ('regular_price_type', 'regular_price_type'),
-              ('buy_price', 'buy_price'),
-              ('top_price', 'top_price'),
+    direct = [(floatqoqa('unit_price'), 'unit_price'),
+              (floatqoqa('installment_price'), 'installment_price'),
+              (floatqoqa('regular_price'), 'regular_price'),
+              (floatqoqa('buy_price'), 'buy_price'),
+              (floatqoqa('top_price'), 'top_price'),
               ('ecotax', 'ecotax'),
-              ('date_delivery', 'delivery_at'),
-              ('booking_delivery', 'booking_delivery'),
+              (date_to_iso8601('date_delivery'), 'delivery_at'),
+              (date_to_iso8601('booking_delivery'), 'booking_delivery'),
               ('order_url', 'order_url'),
               ('stock_bias', 'stock_bias'),
               ('max_sellable', 'max_sellable'),
               ('lot_size', 'lot_size'),
-              ('buyphrase_id', 'buyphrase_id'),
+              (m2o_to_backend('buyphrase_id'), 'buyphrase_id'),
               (m2o_to_backend('product_tmpl_id', binding='qoqa.product.template'),
                'product_id'),
               (m2o_to_backend('tax_id'), 'vat_id'),
-              (m2o_to_backend('offer_id'), 'offer_id'),
+              (m2o_to_backend('offer_id'), 'deal_id'),
+              ('active', 'is_active'),
+              ('poste_cumbersome_package', 'poste_cumbersome_package'),
               ]
+
+    @mapping
+    def regular_price_type(self, record):
+        binder = self.get_binder_for_model('qoqa.regular.price.type')
+        binding_id = binder.to_backend(record.regular_price_type)
+        return {'regular_price_type': binding_id}
+
+    @mapping
+    def currency(self, record):
+        currency = record.offer_id.pricelist_id.currency_id
+        binder = self.get_binder_for_model('res.currency')
+        qoqa_ccy_id = binder.to_backend(currency.id, wrap=True)
+        return {'currency_id': qoqa_ccy_id}

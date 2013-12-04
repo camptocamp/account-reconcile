@@ -30,6 +30,6 @@ class OfferPositionVariantExportMapper(ExportMapper):
     _model_name = 'qoqa.offer.position.variant'
 
     direct = [(m2o_to_backend('product_id', binding='qoqa.product.template'),
-               'product_id'),
+               'variation_id'),
               ('quantity', 'quantity'),
               ]

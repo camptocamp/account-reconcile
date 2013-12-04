@@ -31,13 +31,16 @@ Feature: SHIPPING LABEL SETTING FOR QOQA
   Scenario: I configure postlogistics authentification
     Given I need a "res.company" with oid: scenario.qoqa_ch
     And having:
-      | name                           | value                       |
-      | postlogistics_username         | TU_9272_06                  |
-      | postlogistics_password         | x1KsSvyY6X                  |
-      | postlogistics_license_less_1kg | 60035471                    |
-      | postlogistics_license_more_1kg | 60035471                    |
-      | postlogistics_license_vinolog  | 60035471                    |
-      | postlogistics_office           | 1030 Bussigny-près-Lausanne |
+      | name                                | value                       |
+      | postlogistics_username              | TU_9272_06                  |
+      | postlogistics_password              | x1KsSvyY6X                  |
+      | postlogistics_license_less_1kg      | 60035471                    |
+      | postlogistics_license_more_1kg      | 60035471                    |
+      | postlogistics_license_vinolog       | 60035471                    |
+      | postlogistics_office                | 1030 Bussigny-près-Lausanne |
+      | postlogistics_default_label_layout  | by code: A7                 |
+      | postlogistics_default_output_format | by code: PDF                |
+      | postlogistics_default_resolution    | by code: 300                |
 
   @postlogistics_options_update
   Scenario: I update postlogistics services (It will take 1 minute)
@@ -58,9 +61,9 @@ Feature: SHIPPING LABEL SETTING FOR QOQA
      | postlogistics_service_group_id | by name: <service_name>                              |
 
     Examples: carrier
-      | oid | name | partner | qoqa_id | active | service_name |
-      | scenario.carrier_pl_shipping_vinolog | Vinolog | by oid: delivery_carrier_label_postlogistics.postlogistics |   | 1 | Solutions |
-      | scenario.carrier_pl_shipping_pri_sp  | PRI,SP  | by oid: delivery_carrier_label_postlogistics.postlogistics |   | 1 | Parcel    |
+      | oid                                  | name    | partner                                                    | qoqa_id | active | service_name |
+      | scenario.carrier_pl_shipping_vinolog | Vinolog | by oid: delivery_carrier_label_postlogistics.postlogistics |         | 1      | Solutions    |
+      | scenario.carrier_pl_shipping_pri_sp  | PRI,SP  | by oid: delivery_carrier_label_postlogistics.postlogistics |         | 1      | Parcel       |
 
   @carrier_postlogistics_options
   Scenario Outline: I setup a postlogistic carrier options
@@ -75,18 +78,12 @@ Feature: SHIPPING LABEL SETTING FOR QOQA
       | oid                              | carrier                             | option | state     |
       | scenario.carrier_option_1_pri_sp | scenario.carrier_pl_shipping_pri_sp | PRI,SP | mandatory |
 
-      | scenario.carrier_option_1_pdf    | scenario.carrier_pl_shipping_pri_sp | PDF    | option    |
       | scenario.carrier_option_1_a5     | scenario.carrier_pl_shipping_pri_sp | A5     | option    |
       | scenario.carrier_option_1_a6     | scenario.carrier_pl_shipping_pri_sp | A6     | option    |
-      | scenario.carrier_option_1_a7     | scenario.carrier_pl_shipping_pri_sp | A7     | option    |
-      | scenario.carrier_option_1_300pp  | scenario.carrier_pl_shipping_pri_sp | 300    | option    |
 
     Examples: carrier options for Vinolog
       | oid                               | carrier                              | option | state     |
       | scenario.carrier_option_1_vinolog | scenario.carrier_pl_shipping_vinolog | VL     | mandatory |
 
-      | scenario.carrier_option_1_pdf     | scenario.carrier_pl_shipping_vinolog | PDF    | option    |
       | scenario.carrier_option_1_a5      | scenario.carrier_pl_shipping_vinolog | A5     | option    |
       | scenario.carrier_option_1_a6      | scenario.carrier_pl_shipping_vinolog | A6     | option    |
-      | scenario.carrier_option_1_a7      | scenario.carrier_pl_shipping_vinolog | A7     | option    |
-      | scenario.carrier_option_1_300pp   | scenario.carrier_pl_shipping_vinolog | 300    | option    |

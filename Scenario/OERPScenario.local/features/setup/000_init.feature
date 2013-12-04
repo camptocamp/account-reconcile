@@ -91,6 +91,8 @@ Feature: Parameter the new database
         | wine_ch_report                                  |
         | qoqa_claim                                      |
         | qoqa_base_data                                  |
+        | account_fiscal_position_rule                    |
+        | account_fiscal_position_rule_sale               |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

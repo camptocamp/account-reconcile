@@ -23,7 +23,7 @@ import mock
 from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
 from .data_metadata import qoqa_shops
 from .data_order import qoqa_order
-from .data_partner import qoqa_user, qoqa_address
+from .data_partner import qoqa_address
 from .data_offer import qoqa_offer
 from .data_product import qoqa_product
 from .data_promo import qoqa_promo

@@ -39,7 +39,7 @@ from ..qoqa_offer_position.exporter import delay_export as position_delay_export
 @on_record_create(model_names='qoqa.offer')
 @on_record_write(model_names='qoqa.offer')
 def delay_export(session, model_name, record_id, fields=None):
-    if 'stock_bias' in fields:
+    if fields is not None and 'stock_bias' in fields:
         # particular case: stock_bias is stored in the positions on
         # the QoQa backend, delay export of all positions
         for position in session.browse(model_name, record_id).position_ids:

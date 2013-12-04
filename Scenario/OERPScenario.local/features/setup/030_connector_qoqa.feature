@@ -21,10 +21,10 @@ Feature: Configure the connector's backend
          | key                 | value                                                                            |
          | url                 | http://admin.test02.qoqa.com                                                     |
          | default_lang_id     | by code: fr_FR                                                                   |
-         | access_token_secret | 2N2RLFT5HtRmyxY70Ydzsj1PJmqTzJc4t2lwBJyfmlJlkiLicW3pWQO6                         |
+         | access_token_secret | eZ6hZZeYB7VzrKjE5jGvIolkr6RxUhKrVZWLwjcVEo61N93NlzzzdDZh                         |
          | client_key          | obfRm2CNDY40DBbcvqZLmF2rUFRyjBxM                                                 |
          | client_secret       | IoDEPZcUlYH1P5DNkkrtsD4ok227yQaTlFFnMeJ3bcUYkfWDVmFwI2VTnRjcht9hjC7qX52KIPaX4G4T |
-         | access_token        | 6yuI7ELBNEZo92ZiyAgRJwrzWLVIcYgA                                                 |
+         | access_token        | nF3DqSXq0FImmPHGWth2gQTnqHpqjOeN                                                 |
 
 
   @automatic_workflows

@@ -262,23 +262,35 @@ def _get_payment_method(connector_unit, payment, company_id):
     return session.browse('payment.method', method_id)
 
 
-def extract_invoice_from_sale(sale_record):
-    """ Invoices are contained in the sales order envelope.
+def valid_invoices(sale_record):
+    """ Extract all invoices from a sales order having a valid status
+
+    Return a generator with the valid invoices
+
+    """
+    invoices = sale_record['invoices']
+    invoices = [inv for inv in invoices if
+                inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
+                                     QOQA_INVOICE_STATUS_ACCOUNTED)]
+    return invoices
+
+
+def find_sale_invoice(invoices):
+    """ Find and returns the invoice used for the sale from the
+    invoices.
 
     Several invoices can be there, but only 1 is the invoice that
     interest us. (others are refund, ...)
 
+    We use it to have the price of the products, shipping fees, discounts
+    and the grand total.
+
     """
-    invoices = sale_record['invoices']
-    normal_invoice = [inv for inv in invoices
-                      if inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED and
-                      inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
-                                           QOQA_INVOICE_STATUS_ACCOUNTED)]
-    if len(normal_invoice) != 1:
-        raise MappingError('1 invoice expected for sales order %s, '
-                           'got: %d' %
-                           (sale_record['id'], len(normal_invoice)))
-    return normal_invoice[0]
+    invoice = [inv for inv in invoices if
+               inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED]
+    if len(invoice) != 1:
+        raise MappingError('1 invoice expected, got: %d' % len(invoice))
+    return invoice[0]
 
 
 @qoqa
@@ -341,18 +353,20 @@ class SaleOrderImportMapper(ImportMapper):
     @mapping
     def from_invoice(self, record):
         """ Get the invoice node and extract some data """
-        invoice = extract_invoice_from_sale(record)
+        invoices = valid_invoices(record)
+        invoice = find_sale_invoice(invoices)
         total = float(invoice['total']) / 100
+        # We can have several invoices, some are refunds, normally
+        # we have only 1 invoice for sale.
+        # Concatenate them, keep them in customer reference
+        invoices_refs = ', '.join(inv['reference'] for inv in invoices)
+        # keep the main one for copying in the invoice once generated
         ref = invoice['reference']
-        return {'qoqa_amount_total': total, 'invoice_ref': ref}
-
-    @mapping
-    def from_invoice(self, record):
-        """ Get the invoice node and extract some data """
-        invoice = extract_invoice_from_sale(record)
-        total = float(invoice['total']) / 100
-        ref = invoice['reference']
-        return {'qoqa_amount_total': total, 'invoice_ref': ref}
+        values = {'qoqa_amount_total': total,
+                  'invoice_ref': ref,
+                  'client_order_ref': invoices_refs,
+                  }
+        return values
 
     @mapping
     def from_offer(self, record):
@@ -398,7 +412,7 @@ class SaleOrderImportMapper(ImportMapper):
 
         """
         lines = []
-        invoice = extract_invoice_from_sale(map_record.source)
+        invoice = find_sale_invoice(valid_invoices(map_record.source))
         invoice_details = invoice['item_details']
         # used to check if lines have not been consumed
         details_by_id = dict((line['id'], line) for line

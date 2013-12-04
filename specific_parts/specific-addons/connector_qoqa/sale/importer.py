@@ -354,14 +354,6 @@ class SaleOrderImportMapper(ImportMapper):
         return {'qoqa_amount_total': total, 'invoice_ref': ref}
 
     @mapping
-    def from_invoice(self, record):
-        """ Get the invoice node and extract some data """
-        invoice = extract_invoice_from_sale(record)
-        total = float(invoice['total']) / 100
-        ref = invoice['reference']
-        return {'qoqa_amount_total': total, 'invoice_ref': ref}
-
-    @mapping
     def from_offer(self, record):
         """ Get the linked offer and takes some values from there """
         binder = self.get_binder_for_model('qoqa.offer')

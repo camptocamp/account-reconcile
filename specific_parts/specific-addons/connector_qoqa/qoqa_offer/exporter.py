@@ -33,11 +33,22 @@ from .. import consumer
 from ..unit.export_synchronizer import QoQaExporter, Translations
 from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 from ..unit.mapper import m2o_to_backend
+from ..qoqa_offer_position.exporter import delay_export as position_delay_export
 
 
 @on_record_create(model_names='qoqa.offer')
 @on_record_write(model_names='qoqa.offer')
 def delay_export(session, model_name, record_id, fields=None):
+    if 'stock_bias' in fields:
+        # particular case: stock_bias is stored in the positions on
+        # the QoQa backend, delay export of all positions
+        for position in session.browse(model_name, record_id).position_ids:
+            position_delay_export(session, 'qoqa.offer.position',
+                                  position.id, fields=['stock_bias'])
+        # just skip the export of the offer if only the bias has been
+        # modified
+        if fields == ['stock_bias']:
+            return
     consumer.delay_export(session, model_name, record_id, fields=fields)
 
 

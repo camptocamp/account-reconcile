@@ -18,24 +18,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from .common import mock_api_responses, QoQaTransactionCase
+import mock
+from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
 from .data_metadata import qoqa_shops
 from .data_partner import qoqa_user, qoqa_address
 from ..unit.import_synchronizer import import_record
 
 
+@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
 class test_import_partner(QoQaTransactionCase):
-    """ Test the import of partner from QoQa (actually
-    QoQa Shops).
-    """
+    """ Test the import of partner from QoQa.  """
     def setUp(self):
         super(test_import_partner, self).setUp()
         self.QPartner = self.registry('qoqa.res.partner')
         self.Partner = self.registry('res.partner')
         self.QAddress = self.registry('qoqa.address')
-        company_obj = self.registry('res.company')
-        vals = {'name': 'Qtest', 'qoqa_id': 42}
-        self.company_id = company_obj.create(self.cr, self.uid, vals)
+        self.setUpCompany()
 
     def test_import_partner(self):
         """ Import a partner (QoQa user) """

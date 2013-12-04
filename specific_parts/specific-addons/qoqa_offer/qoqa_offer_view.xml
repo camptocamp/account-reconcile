@@ -240,7 +240,7 @@
                                 <field name="shipper_service_id"/>
                                 <field name="carrier_id"/>
                                 <field name="company_id" invisible="1"/>
-                                <field name="pricelist_id" domain="[('type', '=', 'sale'), ('company_id', '=', company_id)]"/>
+                                <field name="pricelist_id"/>
                                 <field name="lang_id" widget="selection"/>
                                 <field name="active"/>
                             </group>

@@ -94,6 +94,10 @@ class qoqa_backend(orm.Model):
             'Import historic only until', required=True,
             help="Before this date, the sales order will be imported "
                  "without accounting entries."),
+        'date_import_inactive': fields.datetime(
+            'Sales Orders Inactive before', required=True,
+            help="Before this date, the sales order will be imported "
+                 "as inactive"),
     }
 
     _defaults = {
@@ -105,6 +109,7 @@ class qoqa_backend(orm.Model):
         'import_address_from_date': '2005-12-12 00:00:00',
         'import_sale_order_from_date': '2005-12-12 00:00:00',
         'date_really_import': '2014-01-01 00:00:00',
+        'date_import_inactive': '2012-01-01 00:00:00',
     }
 
     def check_connection(self, cr, uid, ids, context=None):

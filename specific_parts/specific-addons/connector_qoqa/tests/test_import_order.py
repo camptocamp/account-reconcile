@@ -19,28 +19,25 @@
 #
 ##############################################################################
 
-from .common import mock_api_responses, QoQaTransactionCase
+import mock
+from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
 from .data_metadata import qoqa_shops
 from .data_order import qoqa_order
-from .data_partner import qoqa_user, qoqa_address
+from .data_partner import qoqa_address
 from .data_offer import qoqa_offer
 from .data_product import qoqa_product
 from .data_promo import qoqa_promo
 from ..unit.import_synchronizer import import_record
 
 
+@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
 class test_import_order(QoQaTransactionCase):
     """ Test the import of order from QoQa  """
 
     def setUp(self):
         super(test_import_order, self).setUp()
-        cr, uid = self.cr, self.uid
+        self.setUpCompany()
         self.QSale = self.registry('qoqa.sale.order')
-        company_obj = self.registry('res.company')
-        connector_user_id = self.ref('base.user_root')
-        vals = {'name': 'Qtest', 'qoqa_id': 42,
-                'connector_user_id': connector_user_id}
-        self.company_id = company_obj.create(cr, uid, vals)
         self.ship_product_id = self.ref('connector_ecommerce.product_product_shipping')
         self.marketing_product_id = self.ref('qoqa_base_data.product_product_marketing_coupon')
 
@@ -73,7 +70,7 @@ class test_import_order(QoQaTransactionCase):
         # product line
         position = prod_line.offer_position_id
         self.assertTrue(position)
-        self.assertEquals(prod_line.price_unit, position.unit_price)
+        self.assertEquals(prod_line.price_unit, 17.5)  # 105 / 6 (lot)
         self.assertEquals(prod_line.product_uom_qty, 12)
         self.assertEquals(prod_line.custom_text, 'custom text')
         # shipping line

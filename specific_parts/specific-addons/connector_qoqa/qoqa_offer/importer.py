@@ -32,6 +32,7 @@ from ..unit.import_synchronizer import (QoQaImportSynchronizer,
                                         TranslationImporter,
                                         )
 from ..unit.mapper import ifmissing
+from ..exception import QoQaError
 
 LAST_SECOND_OF_DAY = 23.99  # hours in floats: 23:59
 
@@ -45,6 +46,22 @@ class QoQaOfferImport(QoQaImportSynchronizer):
         assert self.qoqa_record
         rec = self.qoqa_record
         self._import_dependency(rec['shop_id'], 'qoqa.shop')
+
+    def _import(self, binding_id):
+        """ Use the user from the shop's company for the import
+
+        Allowing the records rules to be applied.
+
+        """
+        qshop_binder = self.get_binder_for_model('qoqa.shop')
+        qshop_id = qshop_binder.to_openerp(self.qoqa_record['shop_id'])
+        qshop = self.session.browse('qoqa.shop', qshop_id)
+        user = qshop.company_id.connector_user_id
+        if not user:
+            raise QoQaError('No connector user configured for company %s' %
+                            qshop.company_id.name)
+        with self.session.change_user(user.id):
+            super(QoQaOfferImport, self)._import(binding_id)
 
     def _after_import(self, binding_id):
         """ Hook called at the end of the import """

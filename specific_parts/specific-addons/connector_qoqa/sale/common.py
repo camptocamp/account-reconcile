@@ -67,6 +67,11 @@ class sale_order(orm.Model):
             'qoqa.sale.order',
             'openerp_id',
             string='QBindings'),
+        'active': fields.boolean('Active'),
+    }
+
+    _defaults = {
+        'active': True,
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

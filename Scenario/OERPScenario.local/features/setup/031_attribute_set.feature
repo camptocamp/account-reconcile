@@ -117,12 +117,10 @@ Feature: Configure the attribute sets
 
   Examples: Variant attributes
       | name             | descr            | type    | translate | required | qoqa_id     |
-      | warranty         | Warranty         | integer | False     | True     | warranty_id |
       | dimension_big    | Dimension big    | float   | False     | False    |             |
       | dimension_medium | Dimension medium | float   | False     | False    |             |
       | dimension_small  | Dimension small  | float   | False     | False    |             |
       | variant_weight   | Variant Weight   | float   | False     | False    | weight      |
-      # warranty will probably change for the RMA
 
   @general
   Scenario: Create a general attribute set
@@ -147,7 +145,6 @@ Feature: Configure the attribute sets
       | attribute_name   | sequence |
       | brand            | 0        |
       | highlights       | 1        |
-      | warranty         | 2        |
       | dimension_big    | 3        |
       | dimension_medium | 4        |
       | dimension_small  | 5        |
@@ -183,7 +180,6 @@ Feature: Configure the attribute sets
       | attribute_name   | sequence |
       | brand            | 0        |
       | highlights       | 1        |
-      | warranty         | 2        |
       | dimension_big    | 3        |
       | dimension_medium | 4        |
       | dimension_small  | 5        |
@@ -239,7 +235,6 @@ Feature: Configure the attribute sets
       | attribute_name   | sequence |
       | brand            | 0        |
       | highlights       | 1        |
-      | warranty         | 2        |
       | dimension_big    | 3        |
       | dimension_medium | 4        |
       | dimension_small  | 5        |

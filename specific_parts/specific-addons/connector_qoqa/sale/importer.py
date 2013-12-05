@@ -22,6 +22,7 @@ from __future__ import division
 
 import logging
 from operator import attrgetter
+from dateutil import parser
 
 from openerp.tools.translate import _
 from openerp.addons.connector.exception import MappingError
@@ -279,8 +280,7 @@ def valid_invoices(sale_record):
 
 
 def find_sale_invoice(invoices):
-    """ Find and returns the invoice used for the sale from the
-    invoices.
+    """ Find and return the invoice used for the sale from the invoices.
 
     Several invoices can be there, but only 1 is the invoice that
     interest us. (others are refund, ...)
@@ -289,9 +289,18 @@ def find_sale_invoice(invoices):
     and the grand total.
 
     """
-    if len(invoice) != 1:
-        raise MappingError('1 invoice expected, got: %d' % len(invoice))
-    return invoice[0]
+    if not invoices:
+        raise MappingError('1 invoice expected, got no invoice')
+    if len(invoices) == 1:
+        return invoices[0]
+    # when we have several invoices, find the last one, the first
+    # has probably been reverted by a refund
+    def sort_key(invoice):
+        dt_str = invoice['created_at']
+        return parser.parse(dt_str)
+
+    invoices = sorted(invoices, key=sort_key, reverse=True)
+    return invoices[0]
 
 
 @qoqa

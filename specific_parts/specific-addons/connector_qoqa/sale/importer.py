@@ -265,12 +265,14 @@ def _get_payment_method(connector_unit, payment, company_id):
 
 def valid_invoices(sale_record):
     """ Extract all invoices from a sales order having a valid status
+    and of type 'invoice' (not refunds).
 
     Return a generator with the valid invoices
 
     """
     invoices = sale_record['invoices']
     invoices = [inv for inv in invoices if
+                inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED and
                 inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
                                      QOQA_INVOICE_STATUS_ACCOUNTED)]
     return invoices
@@ -287,8 +289,6 @@ def find_sale_invoice(invoices):
     and the grand total.
 
     """
-    invoice = [inv for inv in invoices if
-               inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED]
     if len(invoice) != 1:
         raise MappingError('1 invoice expected, got: %d' % len(invoice))
     return invoice[0]

@@ -27,8 +27,8 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 
 from ..product_attribute.exporter import ProductAttribute
+from ..product.exporter import delay_export as product_delay_export
 from ..unit.export_synchronizer import QoQaExporter, Translations
-from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 from .. import consumer
 from ..backend import qoqa
 
@@ -41,19 +41,17 @@ def delay_export(session, model_name, record_id, fields=None):
 
 @on_record_write(model_names='product.template')
 def delay_export_all_bindings(session, model_name, record_id, fields=None):
+    if fields is not None and 'warranty' in fields:
+        # the warranty should be exported on the variant, not the
+        # template
+        for product in session.browse(model_name, record_id).variant_ids:
+            product_delay_export(session, 'product.product',
+                                 product.id, fields=['warranty'])
+        if fields == ['warranty']:
+            # nothing to export on the template
+            return
     consumer.delay_export_all_bindings(session, model_name,
                                        record_id, fields=fields)
-
-
-@on_record_unlink(model_names='qoqa.product.template')
-def delay_unlink(session, model_name, record_id):
-    consumer.delay_unlink(session, model_name, record_id)
-
-
-@qoqa
-class TemplateDeleteSynchronizer(QoQaDeleteSynchronizer):
-    """ Product deleter for QoQa """
-    _model_name = ['qoqa.product.template']
 
 
 @qoqa
@@ -73,10 +71,10 @@ class TemplateExportMapper(ExportMapper):
                   "highlights": "blabl loerm",
                   "description": "lorefjusdhdfujhsdifgh hfduihsi"},
                  {"language_id": 2,
-                 "brand": "Brandette",
-                 "name": "XXX",
-                 "highlights": "el blablo loerm",
-                 "description": "d hfduihsi"}
+                  "brand": "Brandette",
+                  "name": "XXX",
+                  "highlights": "el blablo loerm",
+                  "description": "d hfduihsi"}
                  ]
             }
         }
@@ -87,12 +85,17 @@ class TemplateExportMapper(ExportMapper):
 
     translatable_fields = [
         ('name', 'name'),
-        ('description_sale', 'description')
+        ('description_ecommerce', 'description')
     ]
 
     @mapping
     def metas(self, record):
-        """ QoQa tries to loop on this field """
+        """ QoQa tries to loop on this field
+
+        So it is there only to avoid errors on QoQa.
+        But we don't have any values to send.
+
+        """
         return {'product_metas': []}
 
     @mapping
@@ -108,8 +111,7 @@ class TemplateExportMapper(ExportMapper):
         Translatable fields for QoQa are sent in a ``translations``
         key and are not sent in the main record.
         """
-        # translatable but not attribute
-        fields = self.translatable_fields
+        fields = self.translatable_fields  # not including attributes
         trans = self.get_connector_unit_for_model(Translations)
         return trans.get_translations(record, normal_fields=fields,
                                       attributes_unit=ProductAttribute)

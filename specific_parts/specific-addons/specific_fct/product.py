@@ -28,5 +28,6 @@ class product_template(orm.Model):
     _inherit = 'product.template'
 
     _defaults = {
-            'cost_method': 'average',
-            }
+        'cost_method': 'average',
+        'company_id': False,
+    }

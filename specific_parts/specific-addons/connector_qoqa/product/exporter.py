@@ -78,15 +78,6 @@ class ProductExportMapper(ExportMapper):
         return {'warranty': record.product_tmpl_id.warranty}
 
     @mapping
-    def todo(self, record):
-        # TODO: code is mandatory but I don't know
-        # what it should contain
-        values = {
-            'code': 2,
-        }
-        return values
-
-    @mapping
     def product_id(self, record):
         binder = self.get_binder_for_model('qoqa.product.template')
         openerp_id = record.product_tmpl_id.id

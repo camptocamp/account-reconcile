@@ -91,6 +91,7 @@
                     <field name="name"/>
                     <field name="title"/>
                     <field name="stock_progress" widget="progressbar"/>
+                    <field name="active" invisible="1"/>
                 </tree>
             </field>
         </record>

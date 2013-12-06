@@ -54,7 +54,8 @@ class product_template(orm.Model):
             'qoqa.product.template',
             'openerp_id',
             string='QoQa Bindings'),
-        'description_ecommerce': fields.html('E-commerce Description'),
+        'description_ecommerce': fields.html('E-commerce Description',
+                                             translate=True),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

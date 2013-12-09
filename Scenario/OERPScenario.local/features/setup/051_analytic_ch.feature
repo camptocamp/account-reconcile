@@ -41,7 +41,7 @@ Feature: ANALYTIC SETTING FOR QOQA CH
         | scenario.analytic_account_shop_qstyle_ch  | Qstyle.ch  |
         | scenario.analytic_account_shop_qooking_ch | Qooking.ch |
 
-  @sale_shop_analytic_accounts_ch
+  @sale_shop_analytic_account_ch
   Scenario Outline: Configure sale shops' analytic account
     Given I find a "sale.shop" with oid: <oid>
       And having:

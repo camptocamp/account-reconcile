@@ -158,12 +158,13 @@ progress[value]::-moz-progress-bar {
   padding: 8px;
   display: block;
   cursor: pointer;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#CF659B), to(#CA4791));
-  background-image: -webkit-linear-gradient(top, #CF659B, #CA4791);
-  background-image: -moz-linear-gradient(top, #CF659B, #CA4791);
-  background-image: -ms-linear-gradient(top, #CF659B, #CA4791);
-  background-image: -o-linear-gradient(top, #CF659B, #CA4791);
-  background-image: linear-gradient(to bottom, #CF659B, #CA4791);
+
+  background-color: #ea006c;
+  background-image: -webkit-linear-gradient(top, #eb5a9d, #e82a8c);
+  background-image: -moz-linear-gradient(top, #eb5a9d, #e82a8c);
+  background-image: -ms-linear-gradient(top, #eb5a9d, #e82a8c);
+  background-image: -o-linear-gradient(top, #eb5a9d, #e82a8c);
+  background-image: linear-gradient(to bottom, #eb5a9d, #e82a8c);
   -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);

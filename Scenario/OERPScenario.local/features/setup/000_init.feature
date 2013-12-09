@@ -94,6 +94,7 @@ Feature: Parameter the new database
         | account_fiscal_position_rule                    |
         | account_fiscal_position_rule_sale               |
         | web_translate_dialog                            |
+        | web_custom                                      |
     Then my modules should have been installed and models reloaded
 
   @ged_setting

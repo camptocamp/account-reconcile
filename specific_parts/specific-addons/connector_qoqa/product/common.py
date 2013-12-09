@@ -58,7 +58,7 @@ class product_product(orm.Model):
             'Internal Reference',
             size=64,
             select=True,
-            required=True),  # add required
+            required=True),  # field overridden to add "required"
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

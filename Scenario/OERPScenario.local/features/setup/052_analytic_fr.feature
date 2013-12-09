@@ -32,8 +32,21 @@ Feature: ANALYTIC SETTING FOR QOQA FR
         | company_id | by oid: scenario.qoqa_fr |
 
   Examples: Create an analytic accounts per shop
-        | oid                                      | name      |
-        | scenario.analytic_account_shop_qoqa_fr   | QoQa.fr   |
+        | oid                                     | name     |
+        | scenario.analytic_account_shop_qoqa_fr  | QoQa.fr  |
+        | scenario.analytic_account_shop_qwine_fr | Qwine.fr |
+
+  @sale_shop_analytic_accounts_fr
+  Scenario Outline: Configure sale shops' analytic account
+    Given I find a "sale.shop" with oid: <oid>
+      And having:
+        | name       | value                      |
+        | project_id | by oid: <analytic_account> |
+
+      Examples: Shops
+        | oid                          | analytic_account                        |
+        | qoqa_base_data.shop_qoqa_fr  | scenario.analytic_account_shop_qoqa_fr  |
+        | qoqa_base_data.shop_qwine_fr | scenario.analytic_account_shop_qwine_fr |
 
 ##### ANALYTIC JOURNALS CREATION ####
   @analytic_journal_fr

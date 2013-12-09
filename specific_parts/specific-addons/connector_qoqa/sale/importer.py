@@ -232,6 +232,11 @@ class SaleOrderImport(QoQaImportSynchronizer):
                 sess.pool['account.invoice'].confirm_paid(sess.cr, sess.uid,
                                                           [invoice_id],
                                                           context=sess.context)
+                if not historic_info.active:
+                    # hide old invoices (more than 2 years)
+                    sess.write('account.invoice', [invoice_id],
+                               {'active': False})
+
             sale.openerp_id.action_done()
             _logger.debug('Sales order %s is processed, workflow '
                           'short-circuited in OpenERP', sale.name)

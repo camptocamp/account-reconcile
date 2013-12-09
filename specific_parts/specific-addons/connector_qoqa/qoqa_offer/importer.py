@@ -21,7 +21,7 @@
 
 from __future__ import division
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
@@ -33,8 +33,6 @@ from ..unit.import_synchronizer import (QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import ifmissing
 from ..exception import QoQaError
-
-LAST_SECOND_OF_DAY = 23.99  # hours in floats: 23:59
 
 
 @qoqa
@@ -125,14 +123,6 @@ class QoQaOfferImportMapper(ImportMapper):
     @mapping
     def stop_at(self, record):
         dt, time = self._qoqa_datetime(record['stop_at'])
-        # most of the deals start on day n at midnight and stop on day
-        # n+1 at midnight. This is a problem for instance for the
-        # calendar view. We change the end date to be n at 23:59
-        if time == 0:
-            date_end = datetime.strptime(dt, '%Y-%m-%d')
-            date_end = date_end - timedelta(days=1)
-            dt = date_end.strftime('%Y-%m-%d')
-            time = LAST_SECOND_OF_DAY
         return {'date_end': dt, 'time_end': time}
 
     @mapping

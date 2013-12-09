@@ -22,7 +22,8 @@
 from __future__ import division
 import math
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+                           DEFAULT_SERVER_DATETIME_FORMAT)
 from openerp.tools.translate import _
 
 from openerp.osv import orm, fields
@@ -52,6 +53,11 @@ class qoqa_offer(orm.Model):
         return res
 
     def _full_dates(self, cr, uid, ids, fieldnames, args, context=None):
+        """ Convert the dates for the display on the different views.
+
+        Do not use the normal datetime fields to avoid timezone shifts.
+
+        """
         date_fmt = DEFAULT_SERVER_DATE_FORMAT
         user = self.pool['res.users'].browse(cr, uid, uid, context=context)
         lang_obj = self.pool['res.lang']
@@ -73,9 +79,19 @@ class qoqa_offer(orm.Model):
             begin += timedelta(hours=offer.time_begin)
             end = datetime.strptime(offer.date_end, date_fmt)
             end += timedelta(hours=offer.time_end)
+
+            # Avoid to display an offer on number of calendar days + 1
+            # when the last day is at midnight. Example:
+            # Begin: 2013-12-04 00:00 End: 2013-12-05 00:00
+            # We consider the last day to be 2013-12-04
+            if offer.time_end == 0:
+                calendar_end = end - timedelta(days=1)
+
             res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),
                 'datetime_end': end.strftime(fmt),
+                'date_begin_calendar': offer.date_begin,
+                'date_end_calendar': calendar_end.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
             }
         return res
 
@@ -277,33 +293,50 @@ class qoqa_offer(orm.Model):
         # without consideration of the UTC time
         'date_begin': fields.date(
             'Start Date',
-            required=True,
-            readonly=True),
+            required=True),
         'time_begin': fields.float(
             'Start Time',
-            required=True,
-            readonly=True),
+            required=True),
         'date_end': fields.date(
             'End Date',
-            required=True,
-            readonly=True),
+            required=True),
         'time_end': fields.float(
             'End Time',
-            required=True,
-            readonly=True),
+            required=True),
         # for the display on the tree and kanban views
         'datetime_begin': fields.function(
             _full_dates,
             string='Begins at',
             type='char',
             multi='_full_dates',
+            store=True,
             readonly=True),
         'datetime_end': fields.function(
             _full_dates,
             string='Ends at',
             type='char',
             multi='_full_dates',
+            store=True,
             readonly=True),
+        # display on the calendar
+        # use a date and not a datetime to avoid timezone shifts
+        'date_begin_calendar': fields.function(
+            _full_dates,
+            string='Begins at (Calendar)',
+            type='date',
+            multi='_full_dates',
+            store=True,
+            readonly=True),
+        'date_end_calendar': fields.function(
+            _full_dates,
+            string='Ends at (Calendar)',
+            type='date',
+            multi='_full_dates',
+            readonly=True,
+            store=True,
+            help="When an ending date is date_begin + 1 day at 00:00 "
+                 "this date is set at date_begin, so the calendar won't "
+                 "display the offer on 2 days"),
         # for the group by day (group on date_begin gives a month group)
         'day': fields.related(
             'date_begin',
@@ -355,13 +388,19 @@ class qoqa_offer(orm.Model):
         'stock_bias': fields.integer('Stock Bias'),
     }
 
+    def _default_date_end(self, cr, uid, context=None):
+        date_fmt = DEFAULT_SERVER_DATE_FORMAT
+        today = fields.date.context_today(self, cr, uid, context=context)
+        today = datetime.strptime(today, date_fmt)
+        return (today + timedelta(days=1)).strftime(date_fmt)
+
     _defaults = {
         'stock_bias': 100,
         'ref': '/',
         'date_begin': fields.date.context_today,
-        'date_end': fields.date.context_today,
+        'date_end': _default_date_end,
         'time_begin': 0,  # 00:00
-        'time_end': 23.983,  # 23:59
+        'time_end': 0,
         'active': 1,
     }
 

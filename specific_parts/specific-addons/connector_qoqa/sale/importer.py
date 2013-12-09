@@ -293,12 +293,13 @@ def find_sale_invoice(invoices):
         raise MappingError('1 invoice expected, got no invoice')
     if len(invoices) == 1:
         return invoices[0]
-    # when we have several invoices, find the last one, the first
-    # has probably been reverted by a refund
+
     def sort_key(invoice):
         dt_str = invoice['created_at']
         return parser.parse(dt_str)
 
+    # when we have several invoices, find the last one, the first
+    # has probably been reverted by a refund
     invoices = sorted(invoices, key=sort_key, reverse=True)
     return invoices[0]
 

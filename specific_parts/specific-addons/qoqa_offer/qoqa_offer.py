@@ -80,10 +80,10 @@ class qoqa_offer(orm.Model):
             end = datetime.strptime(offer.date_end, date_fmt)
             end += timedelta(hours=offer.time_end)
 
-            # Avoid to display an offer on 2 calendar days when the
-            # second day is at midnight. Example:
+            # Avoid to display an offer on number of calendar days + 1
+            # when the last day is at midnight. Example:
             # Begin: 2013-12-04 00:00 End: 2013-12-05 00:00
-            # We consider it to be 2013-12-04 → 2013-12-04
+            # We consider the last day to be 2013-12-04
             if offer.time_end == 0:
                 calendar_end = end - timedelta(days=1)
 

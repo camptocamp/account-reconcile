@@ -21,7 +21,7 @@
 
 from __future__ import division
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,

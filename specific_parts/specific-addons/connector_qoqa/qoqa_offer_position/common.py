@@ -59,7 +59,7 @@ class qoqa_offer_position(orm.Model):
                 _('Error'),
                 _('Exported positions can not be deleted when '
                   'they have been exported. They can still be deactivated '
-                  'using the "active" box.'))
+                  'using the "active" checkbox.'))
         return super(qoqa_offer_position, self).unlink(cr, uid, ids, context=context)
 
 

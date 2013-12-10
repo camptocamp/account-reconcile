@@ -60,7 +60,7 @@ class qoqa_offer(orm.Model):
                 _('Error'),
                 _('Exported Offers can no longer be deleted (ref: %s).'
                   'They can still be deactivated using the "active" '
-                  'box.') % ','.join(offer.ref for offer in exported))
+                  'checkbox.') % ','.join(offer.ref for offer in exported))
         return super(qoqa_offer, self).unlink(cr, uid, ids, context=context)
 
 

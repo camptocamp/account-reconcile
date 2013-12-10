@@ -81,6 +81,7 @@ Feature: Parameter the new database
         | sale_order_webkit                               |
         | connector_ecommerce                             |
         | connector_qoqa                                  |
+        | document                                        |
         | purchase_landed_costs                           |
         | product_price_history                           |
         | crm_claim_rma                                   |

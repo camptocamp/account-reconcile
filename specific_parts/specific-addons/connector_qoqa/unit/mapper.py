@@ -20,9 +20,13 @@
 ##############################################################################
 
 from __future__ import division
-from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
+
+from datetime import datetime
+from openerp.tools.misc import (DEFAULT_SERVER_DATETIME_FORMAT,
+                                DEFAULT_SERVER_DATE_FORMAT,
+                                )
 from openerp.addons.connector.unit import mapper
-from ..connector import iso8601_to_utc_datetime
+from ..connector import iso8601_to_utc_datetime, utc_datetime_to_iso8601
 
 
 def m2o_to_backend(field, binding=None):
@@ -96,8 +100,42 @@ def iso8601_to_utc(field):
     return modifier
 
 
-def qoqafloat(field):
+def date_to_iso8601(field):
     """ A modifier intended to be used on the ``direct`` mappings.
+
+    Convert dates to the ISO 8601 format.
+
+    Example: 2013-11-04 12:52:01 → 2013-11-04T12:52:01+0000
+
+    When the input is only a date and not a datetime, it fills
+    the timestamp with 0.
+
+    Example: 2013-11-04 → 2013-11-04T00:00:00+0000
+
+    Usage::
+
+        direct = [(date_to_iso8601('date'), 'date')]
+
+    :param field: name of the source field in the record
+
+    """
+    def modifier(self, record, to_attr):
+        value = record[field]
+        if not value:
+            return False
+        if len(value) == 10:
+            fmt = DEFAULT_SERVER_DATE_FORMAT
+        else:
+            fmt = DEFAULT_SERVER_DATETIME_FORMAT
+        dt = datetime.strptime(value, fmt)
+        utc_date = utc_datetime_to_iso8601(dt)
+        return utc_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+    return modifier
+
+
+def qoqafloat(field):
+    """ A modifier intended to be used on the ``direct`` mappings for
+    importers.
 
     QoQa provides the float values multiplied by 100.
     Example: 33.00 is represented as 3300 on the API.
@@ -131,4 +169,23 @@ def strformat(field, format_string):
         if not value:
             return None
         return format_string.format(value)
+    return modifier
+
+
+def floatqoqa(field):
+    """ A modifier intended to be used on the ``direct`` mappings for
+    exporters.
+
+    QoQa provides the float values multiplied by 100.
+    Example: 33.00 is represented as 3300 on the API.
+
+    Usage::
+
+        direct = [(floatqoqa('unit_price'), 'unit_price')]
+
+    :param field: name of the source field in the record
+    """
+    def modifier(self, record, to_attr):
+        value = record[field] or 0
+        return float(value) * 100
     return modifier

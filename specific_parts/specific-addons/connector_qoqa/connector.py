@@ -50,6 +50,17 @@ def iso8601_to_utc_datetime(isodate):
     return parsed.astimezone(utc).replace(tzinfo=None)
 
 
+def utc_datetime_to_iso8601(dt):
+    """ Returns an iso8601 date from a datetime.
+
+    Example: 2013-11-04 12:52:01 → 2013-11-04T12:52:01+0000
+
+    """
+    utc = pytz.timezone('UTC')
+    utc_dt = utc.localize(dt, is_dst=False)  # UTC = no DST
+    return utc_dt.isoformat()
+
+
 def get_environment(session, model_name, backend_id):
     """ Create an environment to work with.  """
     backend_record = session.browse('qoqa.backend', backend_id)

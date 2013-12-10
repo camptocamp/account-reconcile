@@ -21,7 +21,7 @@
 
 import unittest2
 from datetime import datetime
-from ..connector import iso8601_to_utc_datetime
+from ..connector import iso8601_to_utc_datetime, utc_datetime_to_iso8601
 
 
 class test_iso8601(unittest2.TestCase):
@@ -39,3 +39,10 @@ class test_iso8601(unittest2.TestCase):
         utc_date = iso8601_to_utc_datetime(date)
         expected = datetime(2013, 11, 04, 13, 52, 01)
         self.assertEquals(utc_date, expected)
+
+    def test_date_to_iso8601(self):
+        """ convert a date to iso8601 """
+        date = datetime(2013, 11, 04, 13, 52, 01)
+        iso_date = utc_datetime_to_iso8601(date)
+        expected = '2013-11-04T13:52:01+00:00'
+        self.assertEquals(iso_date, expected)

@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 from ..backend import qoqa
 from ..unit.backend_adapter import QoQaAdapter
 from ..unit.binder import QoQaBinder
@@ -48,6 +49,18 @@ class qoqa_offer_position(orm.Model):
         })
         return super(qoqa_offer_position, self).copy_data(
             cr, uid, id, default=default, context=context)
+
+    def unlink(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        positions = self.browse(cr, uid, ids, context=context)
+        if any(pos for pos in positions if pos.qoqa_id):
+            raise orm.except_orm(
+                _('Error'),
+                _('Exported positions can not be deleted when '
+                  'they have been exported. They can still be deactivated '
+                  'using the "active" checkbox.'))
+        return super(qoqa_offer_position, self).unlink(cr, uid, ids, context=context)
 
 
 @qoqa

@@ -212,8 +212,14 @@ class QoQaExporter(QoQaBaseExporter):
         return
 
     def _create_data(self, map_record, fields=None, **kwargs):
-        """ Get the data to pass to :py:meth:`_create` """
-        return map_record.values(for_create=True, fields=fields, **kwargs)
+        """ Get the data to pass to :py:meth:`_create`.
+
+        QoQa expect that we pass always all the fields, not only
+        the modified fields. That's why the `fields` argument
+        is None.
+
+        """
+        return map_record.values(for_create=True, fields=None, **kwargs)
 
     def _create(self, data):
         """ Create the QoQa record """
@@ -221,8 +227,14 @@ class QoQaExporter(QoQaBaseExporter):
         return self.backend_adapter.create(data)
 
     def _update_data(self, map_record, fields=None, **kwargs):
-        """ Get the data to pass to :py:meth:`_update` """
-        return map_record.values(fields=fields, **kwargs)
+        """ Get the data to pass to :py:meth:`_update`.
+
+        QoQa expect that we pass always all the fields, not only
+        the modified fields. That's why the `fields` argument
+        is None.
+
+        """
+        return map_record.values(fields=None, **kwargs)
 
     def _update(self, data):
         """ Update an QoQa record """

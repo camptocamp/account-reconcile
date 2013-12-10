@@ -134,7 +134,8 @@ def date_to_iso8601(field):
 
 
 def qoqafloat(field):
-    """ A modifier intended to be used on the ``direct`` mappings.
+    """ A modifier intended to be used on the ``direct`` mappings for
+    importers.
 
     QoQa provides the float values multiplied by 100.
     Example: 33.00 is represented as 3300 on the API.
@@ -172,7 +173,8 @@ def strformat(field, format_string):
 
 
 def floatqoqa(field):
-    """ A modifier intended to be used on the ``direct`` mappings.
+    """ A modifier intended to be used on the ``direct`` mappings for
+    exporters.
 
     QoQa provides the float values multiplied by 100.
     Example: 33.00 is represented as 3300 on the API.

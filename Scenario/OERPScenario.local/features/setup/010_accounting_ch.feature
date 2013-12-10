@@ -190,3 +190,19 @@ Feature: Configure the CH's accounting
          | name        | 2005-01-01       |
          | rate        | 1.0              |
          | currency_id | by oid: base.CHF |
+
+  @payment_mode
+  Scenario Outline: I create payment modes for QoQa.ch
+    Given I need a "payment.mode" with oid: <oid>
+    And having:
+      | key        | value                    |
+      | name       | <name>                   |
+      | bank_id    | by oid: <bank>           |
+      | journal    | by oid: <journal>        |
+      | company_id | by oid: scenario.qoqa_ch |
+
+    Examples:
+     | oid                                | name         | bank                             | journal                             |
+     | scenario.payment_mode_dta_chf      | DTA CHF      | scenario.bank_ch_fournisseur_chf | scenario.journal_ch_fournisseur_chf |
+     | scenario.payment_mode_dta_eur      | DTA EUR      | scenario.bank_ch_fournisseur_eur | scenario.journal_ch_fournisseur_eur |
+     | scenario.payment_mode_dta_salaires | DTA Salaires | scenario.bank_ch_salaires        | scenario.journal_ch_salaires        |

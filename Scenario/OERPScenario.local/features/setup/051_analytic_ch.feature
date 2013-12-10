@@ -33,12 +33,28 @@ Feature: ANALYTIC SETTING FOR QOQA CH
         | parent_id  | by oid: scenario.qoqa_ch_root_aa |
         | company_id | by oid: scenario.qoqa_ch |
 
-  Examples: Create an analytic accounts per shop
-        | oid                                      | name      |
-        | scenario.analytic_account_shop_qoqa_ch   | QoQa.ch   |
-        | scenario.analytic_account_shop_qwine_ch  | Qwine.ch  |
-        | scenario.analytic_account_shop_qsport_ch | Qsport.ch |
-        | scenario.analytic_account_shop_qstyle_ch | Qstyle.ch |
+      Examples: Create an analytic accounts per shop
+        | oid                                       | name       |
+        | scenario.analytic_account_shop_qoqa_ch    | QoQa.ch    |
+        | scenario.analytic_account_shop_qwine_ch   | Qwine.ch   |
+        | scenario.analytic_account_shop_qsport_ch  | Qsport.ch  |
+        | scenario.analytic_account_shop_qstyle_ch  | Qstyle.ch  |
+        | scenario.analytic_account_shop_qooking_ch | Qooking.ch |
+
+  @sale_shop_analytic_account_ch
+  Scenario Outline: Configure sale shops' analytic account
+    Given I find a "sale.shop" with oid: <oid>
+      And having:
+        | name       | value                      |
+        | project_id | by oid: <analytic_account> |
+
+      Examples: Shops
+        | oid                            | analytic_account                          |
+        | qoqa_base_data.shop_qoqa_ch    | scenario.analytic_account_shop_qoqa_ch    |
+        | qoqa_base_data.shop_qwine_ch   | scenario.analytic_account_shop_qwine_ch   |
+        | qoqa_base_data.shop_qstyle_ch  | scenario.analytic_account_shop_qsport_ch  |
+        | qoqa_base_data.shop_qsport_ch  | scenario.analytic_account_shop_qstyle_ch  |
+        | qoqa_base_data.shop_qooking_ch | scenario.analytic_account_shop_qooking_ch |
 
 ##### ANALYTIC JOURNALS CREATION ####
   @analytic_journal_ch

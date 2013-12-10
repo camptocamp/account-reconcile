@@ -67,7 +67,7 @@ class QoQaNoneBinder(QoQaBinder):
         return None
 
     def bind(self, external_id, binding_id):
-        raise TypeError('%s cannot be synchronized' % self._model_name)
+        raise TypeError('%s cannot be synchronized' % self.model._name)
 
 
 # TODO: seems to be a ByAnyFieldBinder with 'qoqa_id' as matcher

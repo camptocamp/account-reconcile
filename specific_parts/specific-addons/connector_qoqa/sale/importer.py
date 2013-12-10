@@ -319,6 +319,8 @@ class SaleOrderImportMapper(ImportMapper):
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),
               (strformat('id', '{0:08d}'), 'name'),
+              (backend_to_m2o('shipper_service_id',
+                              binding='qoqa.shipper.service'), 'carrier_id'),
               ]
 
     @mapping
@@ -401,7 +403,6 @@ class SaleOrderImportMapper(ImportMapper):
         values = {
             'offer_id': offer.id,
             'pricelist_id': offer.pricelist_id.id,
-            'carrier_id': offer.carrier_id.id,
         }
         return values
 

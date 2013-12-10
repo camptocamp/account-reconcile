@@ -22,19 +22,22 @@ Feature: ANALYTIC SETTING FOR QOQA FR
         | name       | QoQa France              |
         | type       | view                     |
         | company_id | by oid: scenario.qoqa_fr |
+        | currency_id | by name: EUR            |
   Scenario Outline: Create an analytic account
     Given I need a "account.analytic.account" with oid: <oid>
       And having:
-        | name       | value                    |
-        | name       | <name>                   |
-        | type       | normal                   |
-        | parent_id  | by oid: scenario.qoqa_fr_root_aa |
-        | company_id | by oid: scenario.qoqa_fr |
+        | name        | value                            |
+        | name        | <name>                           |
+        | type        | normal                           |
+        | parent_id   | by oid: scenario.qoqa_fr_root_aa |
+        | company_id  | by oid: scenario.qoqa_fr         |
+        | currency_id | by name: EUR                     |
 
   Examples: Create an analytic accounts per shop
-        | oid                                     | name     |
-        | scenario.analytic_account_shop_qoqa_fr  | QoQa.fr  |
-        | scenario.analytic_account_shop_qwine_fr | Qwine.fr |
+        | oid                                       | name     |
+        | scenario.analytic_account_shop_qoqa_fr    | QoQa.fr  |
+        | scenario.analytic_account_shop_qwine_fr   | Qwine.fr |
+        | scenario.analytic_account_shop_general_fr | General  |
 
   @sale_shop_analytic_account_fr
   Scenario Outline: Configure sale shops' analytic account
@@ -44,25 +47,27 @@ Feature: ANALYTIC SETTING FOR QOQA FR
         | project_id | by oid: <analytic_account> |
 
       Examples: Shops
-        | oid                          | analytic_account                        |
-        | qoqa_base_data.shop_qoqa_fr  | scenario.analytic_account_shop_qoqa_fr  |
-        | qoqa_base_data.shop_qwine_fr | scenario.analytic_account_shop_qwine_fr |
+        | oid                            | analytic_account                          |
+        | qoqa_base_data.shop_qoqa_fr    | scenario.analytic_account_shop_qoqa_fr    |
+        | qoqa_base_data.shop_qwine_fr   | scenario.analytic_account_shop_qwine_fr   |
+        | qoqa_base_data.shop_general_fr | scenario.analytic_account_shop_general_fr |
 
 ##### ANALYTIC JOURNALS CREATION ####
   @analytic_journal_fr
   Scenario Outline: ANALYTIC JOURNALS
     Given I need a "account.analytic.journal" with oid: <oid>
       And having:
-        | name       | value                     |
-        | company_id | by oid: scenario.qoqa_fr  |
-        | name       | <name>                    |
-        | type       | <type>                    |
-        | code       | <code>                    |
+        | name       | value                    |
+        | company_id | by oid: scenario.qoqa_fr |
+        | name       | <name>                   |
+        | type       | <type>                   |
+        | code       | <code>                   |
 
   Examples: Create the following analytic journals
         | oid                                   | name      | type     | code |
         | scenario.analytic_journal_sale_fr     | Sales     | sale     | SAL  |
         | scenario.analytic_journal_purchase_fr | Purchases | purchase | PUR  |
+        | scenario.analytic_journal_general_fr  | General   | general  | GEN  |
 
 
   @link_financial_journals_fr
@@ -78,3 +83,4 @@ Feature: ANALYTIC SETTING FOR QOQA FR
          | Sales Refund Journal    | scenario.analytic_journal_sale_fr     |
          | Purchase Journal        | scenario.analytic_journal_purchase_fr |
          | Purchase Refund Journal | scenario.analytic_journal_purchase_fr |
+         | Miscellaneous Journal   | scenario.analytic_journal_general_fr  |

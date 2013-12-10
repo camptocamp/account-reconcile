@@ -23,15 +23,17 @@ Feature: ANALYTIC SETTING FOR QOQA CH
         | name       | QoQa Suisse              |
         | type       | view                     |
         | company_id | by oid: scenario.qoqa_ch |
+        | currency_id | by name: CHF            |
 
   Scenario Outline: Create an analytic account
     Given I need a "account.analytic.account" with oid: <oid>
       And having:
-        | name       | value                    |
-        | name       | <name>                   |
-        | type       | normal                   |
-        | parent_id  | by oid: scenario.qoqa_ch_root_aa |
-        | company_id | by oid: scenario.qoqa_ch |
+        | name        | value                            |
+        | name        | <name>                           |
+        | type        | normal                           |
+        | parent_id   | by oid: scenario.qoqa_ch_root_aa |
+        | company_id  | by oid: scenario.qoqa_ch         |
+        | currency_id | by name: CHF                     |
 
       Examples: Create an analytic accounts per shop
         | oid                                       | name       |
@@ -40,6 +42,7 @@ Feature: ANALYTIC SETTING FOR QOQA CH
         | scenario.analytic_account_shop_qsport_ch  | Qsport.ch  |
         | scenario.analytic_account_shop_qstyle_ch  | Qstyle.ch  |
         | scenario.analytic_account_shop_qooking_ch | Qooking.ch |
+        | scenario.analytic_account_shop_general_ch | General    |
 
   @sale_shop_analytic_account_ch
   Scenario Outline: Configure sale shops' analytic account
@@ -55,22 +58,24 @@ Feature: ANALYTIC SETTING FOR QOQA CH
         | qoqa_base_data.shop_qstyle_ch  | scenario.analytic_account_shop_qsport_ch  |
         | qoqa_base_data.shop_qsport_ch  | scenario.analytic_account_shop_qstyle_ch  |
         | qoqa_base_data.shop_qooking_ch | scenario.analytic_account_shop_qooking_ch |
+        | qoqa_base_data.shop_general_ch | scenario.analytic_account_shop_general_ch |
 
 ##### ANALYTIC JOURNALS CREATION ####
   @analytic_journal_ch
   Scenario Outline: ANALYTIC JOURNALS
     Given I need a "account.analytic.journal" with oid: <oid>
       And having:
-        | name       | value                     |
+        | name       | value                    |
         | company_id | by oid: scenario.qoqa_ch |
-        | name       | <name>                    |
-        | type       | <type>                    |
-        | code       | <code>                    |
+        | name       | <name>                   |
+        | type       | <type>                   |
+        | code       | <code>                   |
 
   Examples: Create the following analytic journals
         | oid                                   | name      | type     | code |
         | scenario.analytic_journal_sale_ch     | Sales     | sale     | SAL  |
         | scenario.analytic_journal_purchase_ch | Purchases | purchase | PUR  |
+        | scenario.analytic_journal_general_ch  | General   | general  | GEN  |
 
 
   @link_financial_journals_ch
@@ -86,3 +91,4 @@ Feature: ANALYTIC SETTING FOR QOQA CH
          | Sales Refund Journal    | scenario.analytic_journal_sale_ch     |
          | Purchase Journal        | scenario.analytic_journal_purchase_ch |
          | Purchase Refund Journal | scenario.analytic_journal_purchase_ch |
+         | Miscellaneous Journal   | scenario.analytic_journal_general_ch  |

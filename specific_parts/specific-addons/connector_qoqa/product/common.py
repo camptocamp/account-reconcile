@@ -54,6 +54,11 @@ class product_product(orm.Model):
             'qoqa.product.product',
             'openerp_id',
             string='QoQa Bindings'),
+        'default_code': fields.char(
+            'Internal Reference',
+            size=64,
+            select=True,
+            required=True),  # field overridden to add "required"
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

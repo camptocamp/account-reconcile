@@ -20,14 +20,13 @@
 ##############################################################################
 
 from openerp.addons.connector.unit.mapper import (mapping,
+                                                  none,
                                                   ExportMapper)
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
-                                            on_record_unlink,
                                             )
 
 from ..unit.export_synchronizer import QoQaExporter, Translations
-from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 
 from ..product_attribute.exporter import ProductAttribute
 from .. import consumer
@@ -42,19 +41,13 @@ def delay_export(session, model_name, record_id, fields=None):
 
 @on_record_write(model_names='product.product')
 def delay_export_all_bindings(session, model_name, record_id, fields=None):
+    if fields == ['qoqa_bind_ids']:
+        # QoQa binding edited from the product's view.
+        # When only this field has been modified, an other job has
+        # been delayed for the qoqa.product.product record.
+        return
     consumer.delay_export_all_bindings(session, model_name,
                                        record_id, fields=fields)
-
-
-@on_record_unlink(model_names='qoqa.product.product')
-def delay_unlink(session, model_name, record_id):
-    consumer.delay_unlink(session, model_name, record_id)
-
-
-@qoqa
-class ProductDeleteSynchronizer(QoQaDeleteSynchronizer):
-    """ Product deleter for Magento """
-    _model_name = ['qoqa.product.product']
 
 
 @qoqa
@@ -73,8 +66,16 @@ class ProductExportMapper(ExportMapper):
     _model_name = 'qoqa.product.product'
 
     direct = [('default_code', 'sku'),
-              ('ean13', 'ean'),
+              (none('ean13'), 'ean'),
               ]
+
+    translatable_fields = [
+        ('variants', 'name')
+    ]
+
+    @mapping
+    def warranty(self, record):
+        return {'warranty': record.product_tmpl_id.warranty}
 
     @mapping
     def product_id(self, record):
@@ -95,7 +96,7 @@ class ProductExportMapper(ExportMapper):
         Translatable fields for QoQa are sent in a ``translations``
         key and are not sent in the main record.
         """
-        fields = [('variants', 'name')]
+        fields = self.translatable_fields  # not including attributes
         trans = self.get_connector_unit_for_model(Translations)
         return trans.get_translations(record, normal_fields=fields,
                                       attributes_unit=ProductAttribute)

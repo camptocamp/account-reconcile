@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
+#    Author: Guewen Baconnier
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm
 
-
-class product_template(orm.Model):
-    """
-    Change default value to average on cost_method
-    """
-    _inherit = 'product.template'
-
-    _defaults = {
-        'cost_method': 'average',
-        'company_id': False,
-    }
+from . import common

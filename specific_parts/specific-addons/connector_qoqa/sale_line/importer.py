@@ -56,7 +56,7 @@ QOQA_PROMO_CUSTOMER_SERVICE = 1  # discount
 QOQA_PROMO_MARKETING = 2  # marketing
 QOQA_PROMO_AFFILIATION = 3  # marketing
 QOQA_PROMO_STAFF = 4  # marketing
-QOQA_PROMO_MAILING = 5  # ?
+QOQA_PROMO_MAILING = 5  # marketing
 
 
 @qoqa
@@ -85,6 +85,8 @@ class SaleOrderLineImportMapper(ImportMapper):
                                  'product_product_marketing_coupon'),
         QOQA_PROMO_STAFF: ('qoqa_base_data',
                            'product_product_marketing_coupon'),
+        QOQA_PROMO_MAILING: ('qoqa_base_data',
+                             'product_product_marketing_coupon'),
     }
 
     def finalize(self, map_record, values):

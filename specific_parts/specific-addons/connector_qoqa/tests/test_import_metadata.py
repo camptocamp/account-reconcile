@@ -19,23 +19,22 @@
 #
 ##############################################################################
 
-from .common import mock_api_responses, QoQaTransactionCase
+import mock
+from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
 from .data_metadata import qoqa_shops
 from ..unit.import_synchronizer import import_batch
 
 
+@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
 class test_import_metadata(QoQaTransactionCase):
     """ Test the import of metadata from QoQa (actually
     QoQa Shops).
     """
     def setUp(self):
         super(test_import_metadata, self).setUp()
-        cr, uid = self.cr, self.uid
-        company_obj = self.registry('res.company')
         # create a new company so we'll check if it shop is linked
         # with the correct one when it is not the default one
-        vals = {'name': 'Qtest', 'qoqa_id': 42}
-        self.company_id = company_obj.create(cr, uid, vals)
+        self.setUpCompany()
         self.qoqa_shop_obj = self.registry('qoqa.shop')
 
     def test_import_shop(self):

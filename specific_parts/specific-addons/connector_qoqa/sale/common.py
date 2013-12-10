@@ -67,6 +67,11 @@ class sale_order(orm.Model):
             'qoqa.sale.order',
             'openerp_id',
             string='QBindings'),
+        'active': fields.boolean('Active'),
+    }
+
+    _defaults = {
+        'active': True,
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):
@@ -76,6 +81,20 @@ class sale_order(orm.Model):
         return super(sale_order, self).copy_data(cr, uid, id,
                                                  default=default,
                                                  context=context)
+
+    def _prepare_invoice(self, cr, uid, order, lines, context=None):
+        values = super(sale_order, self)._prepare_invoice(
+            cr, uid, order, lines, context=context)
+        if order.qoqa_bind_ids:
+            binding = order.qoqa_bind_ids[0]
+            # keep only the issued invoice from the qoqa backend
+            values.update({
+                'name': binding.invoice_ref,
+                # restore order's name, don't want the concatenated
+                # invoices numbers
+                'reference': order.name,
+            })
+        return values
 
 
 @qoqa

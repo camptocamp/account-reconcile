@@ -19,25 +19,22 @@
 #
 ##############################################################################
 
-from .common import mock_api_responses, QoQaTransactionCase
+import mock
+from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
 from .data_offer import qoqa_offer
 from .data_metadata import qoqa_shops
 from .data_product import qoqa_product
 from ..unit.import_synchronizer import import_record
 
 
+@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
 class test_import_offer(QoQaTransactionCase):
     """ Test the import of offers from QoQa """
     def setUp(self):
         super(test_import_offer, self).setUp()
-        cr, uid = self.cr, self.uid
         self.Offer = self.registry('qoqa.offer')
         self.OfferPos = self.registry('qoqa.offer.position')
-        company_obj = self.registry('res.company')
-        # create a new company so we'll check if it shop is linked
-        # with the correct one when it is not the default one
-        vals = {'name': 'Qtest', 'qoqa_id': 42}
-        self.company_id = company_obj.create(cr, uid, vals)
+        self.setUpCompany()
 
     def test_import_offer(self):
         """ Import an Offer """
@@ -50,7 +47,7 @@ class test_import_offer(QoQaTransactionCase):
         self.assertEquals(len(offer_ids), 1)
         offer = self.Offer.browse(cr, uid, offer_ids[0])
         self.assertEquals(offer.qoqa_shop_id.qoqa_id, '100')
-        self.assertEquals(offer.pricelist_id.id, self.ref('product.list0'))
+        self.assertEquals(offer.pricelist_id.id, self.pricelist_id)
         self.assertEquals(offer.title, 'title')
         self.assertEquals(offer.description, '<p>content</p>')
         self.assertEquals(offer.note, '<p>Sav Schumf -Astavel</p>')

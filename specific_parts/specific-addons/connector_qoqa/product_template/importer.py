@@ -107,7 +107,7 @@ class TemplateImportMapper(ImportMapper):
 
     translatable_fields = [
         (ifmissing('name', 'Unknown'), 'name'),
-        (ifmissing('description', ''), 'description_sale'),
+        (ifmissing('description', ''), 'description_ecommerce'),
     ]
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),

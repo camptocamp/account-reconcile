@@ -33,7 +33,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         )
 from ..product_attribute.importer import ProductAttribute
 from ..product_template.importer import TemplateVariantImportMapper
-from ..unit.mapper import iso8601_to_utc
+from ..unit.mapper import iso8601_to_utc, qoqafloat
 
 _logger = logging.getLogger(__name__)
 
@@ -87,9 +87,8 @@ class VariantImportMapper(ImportMapper):
         ('sku', 'default_code'),
         (backend_to_m2o('product_id', binding='qoqa.product.template'),
          'product_tmpl_id'),
+        ('warranty', 'warranty'),
     ]
-
-    # TODO: warranty_id
 
     @mapping
     def ean(self, record):

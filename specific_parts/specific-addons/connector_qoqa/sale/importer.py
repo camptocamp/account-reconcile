@@ -22,6 +22,7 @@ from __future__ import division
 
 import logging
 from operator import attrgetter
+from dateutil import parser
 
 from openerp.tools.translate import _
 from openerp.addons.connector.exception import MappingError
@@ -38,7 +39,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import iso8601_to_utc, strformat
-from ..connector import iso8601_to_utc_datetime, is_historic_import
+from ..connector import iso8601_to_utc_datetime, historic_import
 from ..exception import QoQaError
 from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
                                   QOQA_ITEM_DISCOUNT, QOQA_ITEM_SERVICE,
@@ -208,7 +209,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
     def _after_import(self, binding_id):
         # before 'date_really_import', we import only for the historic
         # so we do not want to generate payments, invoice, stock moves
-        if is_historic_import(self, self.qoqa_record):
+        historic_info = historic_import(self, self.qoqa_record)
+        if historic_info.historic:
             # no invoice, no packing, no payment
             sess = self.session
             sale = sess.browse('qoqa.sale.order', binding_id)
@@ -229,8 +231,13 @@ class SaleOrderImport(QoQaImportSynchronizer):
                     grouped=False, states=['draft'],
                     date_invoice=sale.date_order)
                 sess.pool['account.invoice'].confirm_paid(sess.cr, sess.uid,
-                                                        [invoice_id],
-                                                        context=sess.context)
+                                                          [invoice_id],
+                                                          context=sess.context)
+                if not historic_info.active:
+                    # hide old invoices (more than 2 years)
+                    sess.write('account.invoice', [invoice_id],
+                               {'active': False})
+
             sale.openerp_id.action_done()
             _logger.debug('Sales order %s is processed, workflow '
                           'short-circuited in OpenERP', sale.name)
@@ -262,23 +269,44 @@ def _get_payment_method(connector_unit, payment, company_id):
     return session.browse('payment.method', method_id)
 
 
-def extract_invoice_from_sale(sale_record):
-    """ Invoices are contained in the sales order envelope.
+def valid_invoices(sale_record):
+    """ Extract all invoices from a sales order having a valid status
+    and of type 'invoice' (not refunds).
+
+    Return a generator with the valid invoices
+
+    """
+    invoices = sale_record['invoices']
+    invoices = [inv for inv in invoices if
+                inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED and
+                inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
+                                     QOQA_INVOICE_STATUS_ACCOUNTED)]
+    return invoices
+
+
+def find_sale_invoice(invoices):
+    """ Find and return the invoice used for the sale from the invoices.
 
     Several invoices can be there, but only 1 is the invoice that
     interest us. (others are refund, ...)
 
+    We use it to have the price of the products, shipping fees, discounts
+    and the grand total.
+
     """
-    invoices = sale_record['invoices']
-    normal_invoice = [inv for inv in invoices
-                      if inv['type_id'] == QOQA_INVOICE_TYPE_ISSUED and
-                      inv['status_id'] in (QOQA_INVOICE_STATUS_CONFIRMED,
-                                           QOQA_INVOICE_STATUS_ACCOUNTED)]
-    if len(normal_invoice) != 1:
-        raise MappingError('1 invoice expected for sales order %s, '
-                           'got: %d' %
-                           (sale_record['id'], len(normal_invoice)))
-    return normal_invoice[0]
+    if not invoices:
+        raise MappingError('1 invoice expected, got no invoice')
+    if len(invoices) == 1:
+        return invoices[0]
+
+    def sort_key(invoice):
+        dt_str = invoice['created_at']
+        return parser.parse(dt_str)
+
+    # when we have several invoices, find the last one, the first
+    # has probably been reverted by a refund
+    invoices = sorted(invoices, key=sort_key, reverse=True)
+    return invoices[0]
 
 
 @qoqa
@@ -292,6 +320,12 @@ class SaleOrderImportMapper(ImportMapper):
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),
               (strformat('id', '{0:08d}'), 'name'),
               ]
+
+    @mapping
+    def active(self, record):
+        historic_info = historic_import(self, record)
+        if not historic_info.active:
+            return {'active': False}
 
     @mapping
     def addresses(self, record):
@@ -326,7 +360,7 @@ class SaleOrderImportMapper(ImportMapper):
             methods = (_get_payment_method(self, payment, company_id)
                        for payment in qpayments)
         except FailedJobError:
-            if is_historic_import(self, record):
+            if historic_import(self, record).historic:
                 # Sometimes, an offer is on the FR website
                 # but paid with postfinance. Forgive them for the
                 # historical sales orders.
@@ -341,18 +375,20 @@ class SaleOrderImportMapper(ImportMapper):
     @mapping
     def from_invoice(self, record):
         """ Get the invoice node and extract some data """
-        invoice = extract_invoice_from_sale(record)
+        invoices = valid_invoices(record)
+        invoice = find_sale_invoice(invoices)
         total = float(invoice['total']) / 100
+        # We can have several invoices, some are refunds, normally
+        # we have only 1 invoice for sale.
+        # Concatenate them, keep them in customer reference
+        invoices_refs = ', '.join(inv['reference'] for inv in invoices)
+        # keep the main one for copying in the invoice once generated
         ref = invoice['reference']
-        return {'qoqa_amount_total': total, 'invoice_ref': ref}
-
-    @mapping
-    def from_invoice(self, record):
-        """ Get the invoice node and extract some data """
-        invoice = extract_invoice_from_sale(record)
-        total = float(invoice['total']) / 100
-        ref = invoice['reference']
-        return {'qoqa_amount_total': total, 'invoice_ref': ref}
+        values = {'qoqa_amount_total': total,
+                  'invoice_ref': ref,
+                  'client_order_ref': invoices_refs,
+                  }
+        return values
 
     @mapping
     def from_offer(self, record):
@@ -398,7 +434,7 @@ class SaleOrderImportMapper(ImportMapper):
 
         """
         lines = []
-        invoice = extract_invoice_from_sale(map_record.source)
+        invoice = find_sale_invoice(valid_invoices(map_record.source))
         invoice_details = invoice['item_details']
         # used to check if lines have not been consumed
         details_by_id = dict((line['id'], line) for line

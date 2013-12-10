@@ -91,6 +91,7 @@
                     <field name="name"/>
                     <field name="title"/>
                     <field name="stock_progress" widget="progressbar"/>
+                    <field name="active" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -240,7 +241,7 @@
                                 <field name="shipper_service_id"/>
                                 <field name="carrier_id"/>
                                 <field name="company_id" invisible="1"/>
-                                <field name="pricelist_id" domain="[('type', '=', 'sale'), ('company_id', '=', company_id)]"/>
+                                <field name="pricelist_id"/>
                                 <field name="lang_id" widget="selection"/>
                                 <field name="active"/>
                             </group>
@@ -333,7 +334,7 @@
             <field name="name">qoqa.offer.calendar</field>
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <calendar color="qoqa_shop_id" date_start="date_begin" date_stop="date_end" string="Offers">
+              <calendar color="qoqa_shop_id" date_start="date_begin_calendar" date_stop="date_end_calendar" string="Offers">
                     <field name="name"/>
                     <field name="qoqa_shop_id"/>
                 </calendar>

@@ -58,6 +58,7 @@ class QoQaNoneBinder(QoQaBinder):
     doesn't know.
     """
     _model_name = ['wine.class',
+                   'wine.bottle',
                    ]
 
     def to_openerp(self, external_id, unwrap=False):

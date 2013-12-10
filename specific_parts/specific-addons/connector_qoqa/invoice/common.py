@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
+#    Author: Guewen Baconnier
 #    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm
+
+"""
+Add an ``active`` field on the invoice so we can import historic
+invoice as inactive.
+
+The creation of the imported invoices is handled by
+``sale/importer.py``.
+
+"""
+
+from openerp.osv import orm, fields
 
 
-class product_template(orm.Model):
-    """
-    Change default value to average on cost_method
-    """
-    _inherit = 'product.template'
+class account_invoice(orm.Model):
+    _inherit = 'account.invoice'
+
+    _columns = {
+        'active': fields.boolean('Active'),
+    }
 
     _defaults = {
-        'cost_method': 'average',
-        'company_id': False,
+        'active': True,
     }

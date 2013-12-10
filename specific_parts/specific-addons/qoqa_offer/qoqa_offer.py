@@ -86,6 +86,8 @@ class qoqa_offer(orm.Model):
             # We consider the last day to be 2013-12-04
             if offer.time_end == 0:
                 calendar_end = end - timedelta(days=1)
+            else:
+                calendar_end = end
 
             res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),

@@ -71,8 +71,10 @@ class OfferExportMapper(ExportMapper):
         ('note', 'notes'),
         (m2o_to_backend('qoqa_shop_id'), 'shop_id'),
         (m2o_to_backend('lang_id'), 'language_id'),
-        (m2o_to_backend('shipper_service_id'), 'shipper_service_id'),
-        (m2o_to_backend('carrier_id'), 'shipper_rate_id'),
+        (m2o_to_backend('carrier_id', binding='qoqa.shipper.service'),
+         'shipper_service_id'),
+        (m2o_to_backend('shipper_rate_id', binding='qoqa.shipper.rate'),
+         'shipper_rate_id'),
         ('ref', 'id'),
         ('active', 'is_active'),
     ]

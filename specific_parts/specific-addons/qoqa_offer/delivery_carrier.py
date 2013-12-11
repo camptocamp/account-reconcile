@@ -20,27 +20,14 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-from ..unit.binder import QoQaDirectBinder
-from ..backend import qoqa
 
 
-class delivery_service(orm.Model):
-    _inherit = 'delivery.service'
+class delivery_carrier(orm.Model):
+    _inherit = 'delivery.carrier'
 
     _columns = {
-        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_type': fields.selection(
+            [('service', 'Service'),
+             ('rate', 'Rate')],
+            string='Type on QoQa'),
     }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({
-            'qoqa_id': False,
-        })
-        return super(delivery_service, self).copy_data(
-            cr, uid, id, default=default, context=context)
-
-
-@qoqa
-class DeliveryServiceBinder(QoQaDirectBinder):
-    _model_name = 'delivery.service'

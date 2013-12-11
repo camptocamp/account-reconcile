@@ -20,19 +20,17 @@
 ##############################################################################
 
 from datetime import datetime, timedelta
-import pytz
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
-                                            on_record_unlink,
                                             )
 from ..backend import qoqa
 from .. import consumer
 from ..unit.export_synchronizer import QoQaExporter, Translations
-from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 from ..unit.mapper import m2o_to_backend
+from ..connector import utc_datetime_to_iso8601
 from ..qoqa_offer_position.exporter import delay_export as position_delay_export
 
 
@@ -49,18 +47,10 @@ def delay_export(session, model_name, record_id, fields=None):
         # modified
         if fields == ['stock_bias']:
             return
-    consumer.delay_export(session, model_name, record_id, fields=fields)
-
-
-@on_record_unlink(model_names='qoqa.offer')
-def delay_unlink(session, model_name, record_id):
-    consumer.delay_unlink(session, model_name, record_id)
-
-
-@qoqa
-class OfferDeleteSynchronizer(QoQaDeleteSynchronizer):
-    """ Offer deleter for QoQa """
-    _model_name = ['qoqa.offer']
+    # High priority because we want the changes to be quick
+    # so they are displayed asap to the customer.
+    consumer.delay_export(session, model_name, record_id,
+                          fields=fields, priority=4)
 
 
 @qoqa
@@ -85,16 +75,15 @@ class OfferExportMapper(ExportMapper):
          'shipper_service_id'),
         (m2o_to_backend('shipper_rate_id', binding='qoqa.shipper.rate'),
          'shipper_rate_id'),
+        ('ref', 'id'),
+        ('active', 'is_active'),
     ]
 
     @staticmethod
     def _qoqa_datetime(date, hours):
         dt = datetime.strptime(date, DEFAULT_SERVER_DATE_FORMAT)
         dt += timedelta(hours=hours)
-        utc = pytz.timezone('UTC')
-        utc_dt = utc.localize(dt, is_dst=False)  # UTC = no DST
-        # local_dt = utc_dt.astimezone(QOQA_TZ)
-        return utc_dt.isoformat()
+        return utc_datetime_to_iso8601(dt)
 
     @mapping
     def start_at(self, record):
@@ -112,18 +101,6 @@ class OfferExportMapper(ExportMapper):
         binder = self.get_binder_for_model('res.currency')
         qoqa_ccy_id = binder.to_backend(currency.id, wrap=True)
         return {'currency_id': qoqa_ccy_id}
-
-    @mapping
-    def todo(self, record):
-        # TODO
-        values = {
-            'slots_available': 0,  # notnull
-            # 'is_queue_enabled': 0,
-            'lot_per_package': 2,  # notnull
-            'is_active': 1,
-            'logistic_status_id': 1,
-        }
-        return values
 
     @mapping
     def translations(self, record):

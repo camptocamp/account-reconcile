@@ -98,7 +98,7 @@ msgstr "Offre QoQa"
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_shipper_service
 msgid "QoQa Shipper Service"
-msgstr "QoQa Shipper Service"
+msgstr "Service de livraison QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
@@ -251,7 +251,7 @@ msgstr "Nom QoQa"
 #: field:delivery.carrier,qoqa_bind_rate_ids:0
 #: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_rate_ids
 msgid "QoQa Bindings (Rates)"
-msgstr "Liens QoQa (Rates)"
+msgstr "Liens QoQa (Frais de livraison)"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_debug
@@ -263,7 +263,7 @@ msgstr "Debug"
 #: field:delivery.carrier,qoqa_bind_service_ids:0
 #: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_service_ids
 msgid "QoQa Bindings (Services)"
-msgstr "Liens QoQa (Services)"
+msgstr "Liens QoQa (Services de livraison)"
 
 #. module: connector_qoqa
 #: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shop
@@ -465,7 +465,7 @@ msgstr "Request Key"
 #: sql_constraint:qoqa.shipper.rate:0
 #: sql_constraint:qoqa.shipper.service:0
 msgid "A shipper rate with the same ID on QoQa already exists"
-msgstr "Un \"Shipper Rate\" avec le même ID QoQa existe déjà."
+msgstr "Des frais de livraison avec le même ID QoQa existe déjà."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.sale.order:0
@@ -635,7 +635,7 @@ msgstr "ID sur QoQa"
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_delivery_service
 msgid "Delivery Service"
-msgstr "Delivery Service"
+msgstr "Service de livraison"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
@@ -803,7 +803,7 @@ msgstr "Modèle d'article QoQa"
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_shipper_rate
 msgid "QoQa Shipper Rate"
-msgstr "QoQa Shipper Rate"
+msgstr "Frais de livraison QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
@@ -967,7 +967,7 @@ msgstr "Adresse"
 #. module: connector_qoqa
 #: view:delivery.carrier:0
 msgid "QoQa Service"
-msgstr "QoQa Service"
+msgstr "Service de livraison QoQa"
 
 #. module: connector_qoqa
 #: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend
@@ -977,7 +977,7 @@ msgstr "QoQa Backends"
 #. module: connector_qoqa
 #: view:delivery.carrier:0
 msgid "QoQa Rate"
-msgstr "QoQa Rate"
+msgstr "Frais de livraison QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0

@@ -167,7 +167,6 @@ class QoQaAdapter(CRUDAdapter):
                                    data=json.dumps(vals),
                                    headers=headers)
         self._handle_response(response)
-        return True
 
     def read(self, id):
         url = "{0}{1}".format(self.url(), id)

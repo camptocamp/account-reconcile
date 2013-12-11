@@ -59,6 +59,9 @@ Feature: Parameter the new database
         | product_cost_incl_bom                           |
         | product_standard_margin                         |
         | product_historical_margin                       |
+        | product_price_history                           |
+        | product_cost_incl_bom_price_history             |
+        | product_stock_cost_field_report                 |
         | qoqa_offer_historical_margin                    |
         # Shipping labels
         | base_delivery_carrier_label                     |
@@ -83,7 +86,6 @@ Feature: Parameter the new database
         | connector_qoqa                                  |
         | document                                        |
         | purchase_landed_costs                           |
-        | product_price_history                           |
         | crm_claim_rma                                   |
         | crm_rma_by_shop                                 |
         | specific_fct                                    |

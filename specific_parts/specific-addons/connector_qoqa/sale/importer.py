@@ -126,8 +126,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
                 if sale.state != 'cancel' and not sale.canceled_in_backend:
                     self.session.write('sale.order', [sale_id],
                                        {'canceled_in_backend': True})
-                return _('Sales order %s has been has been marked '
-                         'as "to cancel".') % self.qoqa_record['id']
+                    return _('Sales order %s has been marked '
+                             'as "to cancel".') % self.qoqa_record['id']
 
     def _is_uptodate(self, binding_id):
         """ Check whether the current sale order should be imported or not.

@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import json
 from openerp.osv import orm, fields
 import openerp.addons.decimal_precision as dp
 
@@ -101,3 +102,11 @@ class sale_order(orm.Model):
 class QoQaSaleOrder(QoQaAdapter):
     _model_name = 'qoqa.sale.order'
     _endpoint = 'order'
+
+    def cancel(self, id):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.put(url + str(id),
+                                   data=json.dumps({'action': 'cancel'}),
+                                   headers=headers)
+        self._handle_response(response)

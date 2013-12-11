@@ -295,7 +295,7 @@ msgstr "+- 10 jours"
 #: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_offer_config
 #: view:qoqa.offer:0
 msgid "Offers"
-msgstr "Offers"
+msgstr "Offres"
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_message_follower_ids

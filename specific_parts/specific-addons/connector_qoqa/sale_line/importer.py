@@ -138,8 +138,9 @@ class SaleOrderLineImportMapper(ImportMapper):
         # line builder
         builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
         builder.price_unit = 0
-        if offer.carrier_id:
-            builder.carrier = offer.carrier_id
+        if offer.shipper_rate_id:
+            # this is the delivery carrier having the rates
+            builder.carrier = offer.shipper_rate_id
         values = builder.get_line()
         del values['price_unit']  # keep the price of the direct mapping
         return values

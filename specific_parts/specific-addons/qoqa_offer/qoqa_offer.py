@@ -86,6 +86,8 @@ class qoqa_offer(orm.Model):
             # We consider the last day to be 2013-12-04
             if offer.time_end == 0:
                 calendar_end = end - timedelta(days=1)
+            else:
+                calendar_end = end
 
             res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),
@@ -342,12 +344,14 @@ class qoqa_offer(orm.Model):
             type='char',
             string='Day',
             store=True),
-        'shipper_service_id': fields.many2one(
-            'delivery.service',
-            string='Delivery Service'),
         'carrier_id': fields.many2one(
             'delivery.carrier',
-            string='Shipping Method'),
+            string='Delivery Method',
+            domain="[('qoqa_type', '=', 'service')]"),
+        'shipper_rate_id': fields.many2one(
+            'delivery.carrier',
+            string='Shipper Rate',
+            domain="[('qoqa_type', '=', 'rate')]"),
         'pricelist_id': fields.many2one(
             'product.pricelist',
             string='Pricelist',

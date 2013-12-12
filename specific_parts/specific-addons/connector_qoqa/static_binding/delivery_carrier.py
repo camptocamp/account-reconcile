@@ -31,12 +31,10 @@ class delivery_carrier(orm.Model):
     _columns = {
         'qoqa_bind_service_ids': fields.one2many(
             'qoqa.shipper.service', 'openerp_id',
-            string='QoQa Bindings (Services)',
-            readonly=True),
+            string='QoQa Bindings (Services)'),
         'qoqa_bind_rate_ids': fields.one2many(
             'qoqa.shipper.rate', 'openerp_id',
-            string='QoQa Bindings (Rates)',
-            readonly=True),
+            string='QoQa Bindings (Rates)'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

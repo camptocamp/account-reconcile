@@ -7,13 +7,23 @@
             <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
             <field name="arch" type="xml">
                 <field name="active" position="after">
-                    <group name="connector" string="Connector">
-                        <group string="QoQa Service" invisible="[('qoqa_type', '!=', 'service')]">
-                            <field name="qoqa_bind_service_ids" nolabel="1"/>
-                        </group>
-                        <group string="QoQa Rate" invisible="[('qoqa_type', '!=', 'rate')]">
-                            <field name="qoqa_bind_rate_ids" nolabel="1"/>
-                        </group>
+                    <group name="connector" string="Connector" colspan="4">
+                        <field name="qoqa_bind_service_ids" attrs="{'invisible': [('qoqa_type', '!=', 'service')]}">
+                            <tree string="Services">
+                                <field name="qoqa_id"/>
+                              </tree>
+                            <form string="Services">
+                                <field name="qoqa_id"/>
+                            </form>
+                        </field>
+                        <field name="qoqa_bind_rate_ids" attrs="{'invisible': [('qoqa_type', '!=', 'rate')]}">
+                            <tree string="Services">
+                                <field name="qoqa_id"/>
+                              </tree>
+                            <form string="Services">
+                                <field name="qoqa_id"/>
+                            </form>
+                        </field>
                     </group>
                 </field>
             </field>

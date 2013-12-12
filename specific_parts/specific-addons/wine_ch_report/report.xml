@@ -35,10 +35,19 @@
       <field name="target">new</field>
     </record>
 
-    <menuitem name="Wine CH Inventory" id="menu_wine_ch_inventory"
-        parent="account.menu_finance_legal_statement" action="action_wine_ch_inventory_webkit"
-        />
-        <!--groups="account.group_account_manager,account.group_account_user"  id="account.menu_general_ledger"/>-->
+    <menuitem name="Wine CH Inventory"
+      id="menu_wine_ch_inventory"
+      parent="stock.next_id_61"
+      sequence="60"
+      action="action_wine_ch_inventory_webkit"
+      groups="stock.group_stock_user"/>
+
+    <menuitem
+      id="menu_wine_move_analysis"
+      name="Wine Moves Analysis"
+      sequence="61"
+      action="action_wine_move_analysis"
+      parent="stock.next_id_61"/>
 
   </data>
 </openerp>

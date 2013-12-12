@@ -43,6 +43,7 @@ the report only on products using a 'Wine' attribute set.
      ],
  'data': [
      'wizard/wine_ch_inventory_wizard_view.xml',
+     'report/wine_move_analysis_view.xml',
      'report.xml',
      'wine_view.xml',
      'wine_data.xml',

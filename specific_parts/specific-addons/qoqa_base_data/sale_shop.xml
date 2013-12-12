@@ -21,6 +21,15 @@
             <field name="name">Qstyle.ch</field>
             <field name="payment_default_id" ref="account.account_payment_term_net"/>
         </record>
+        <record model="sale.shop" id="shop_qooking_ch">
+            <field name="name">Qooking.ch</field>
+            <field name="payment_default_id" ref="account.account_payment_term_net"/>
+        </record>
+        <record model="sale.shop" id="shop_general_ch">
+            <field name="name">General</field>
+            <field name="payment_default_id" ref="account.account_payment_term_net"/>
+        </record>
+
         <record model="sale.shop" id="shop_qoqa_fr">
             <field name="name">QoQa.fr</field>
             <field name="payment_default_id" ref="account.account_payment_term_net"/>
@@ -29,8 +38,8 @@
             <field name="name">Qwine.fr</field>
             <field name="payment_default_id" ref="account.account_payment_term_net"/>
         </record>
-        <record model="sale.shop" id="shop_qooking_ch">
-            <field name="name">Qooking.ch</field>
+        <record model="sale.shop" id="shop_general_fr">
+            <field name="name">General</field>
             <field name="payment_default_id" ref="account.account_payment_term_net"/>
         </record>
     </data>

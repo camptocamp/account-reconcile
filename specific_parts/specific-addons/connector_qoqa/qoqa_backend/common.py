@@ -229,3 +229,19 @@ class qoqa_backend(orm.Model):
         self._import_one(cr, uid, ids, 'qoqa.offer',
                          'import_offer_id', context=context)
         return True
+
+    def _exec_scheduler_callback(self, cr, uid, callback, context=None):
+        ids = self.search(cr, uid, [], context=context)
+        callback(cr, uid, ids, context=context)
+
+    def _scheduler_import_sale_order(self, cr, uid, context=None):
+        self._exec_scheduler_callback(cr, uid, self.import_sale_order,
+                                      context=context)
+
+    def _scheduler_import_res_partner(self, cr, uid, context=None):
+        self._exec_scheduler_callback(cr, uid, self.import_res_partner,
+                                      context=context)
+
+    def _scheduler_import_address(self, cr, uid, context=None):
+        self._exec_scheduler_callback(cr, uid, self.import_address,
+                                      context=context)

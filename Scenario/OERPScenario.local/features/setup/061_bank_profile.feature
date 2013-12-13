@@ -56,7 +56,7 @@ Feature: BANK PROFILES
      | oid                                           | name                      | account | receivable_acc |
      | scenario.profile_import_cb_postfinance        | Import CB Postfinance     |   10900 |          11000 |
      | scenario.profile_import_visa_mastercard_ch    | Import Visa / Mastercard  |   32930 |          11010 |
-     | scenario.profile_paypal_ch                    | Paypal                    |   32930 |                |
+     | scenario.profile_paypal_ch                    | Paypal                    |   32930 |          11060 |
      | scenario.profile_reglement_cb_postfinance     | Reglement Postfinance     |   10900 |          11030 |
      | scenario.profile_reglement_visa_mastercard_ch | Reglement Visa Mastercard |   10900 |          11030 |
 

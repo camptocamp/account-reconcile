@@ -82,6 +82,7 @@ Feature: Parameter the new database
         | mail_environment                                |
         # Other
         | sale_order_webkit                               |
+        | sale_jit_on_services                            |
         | connector_ecommerce                             |
         | connector_qoqa                                  |
         | document                                        |

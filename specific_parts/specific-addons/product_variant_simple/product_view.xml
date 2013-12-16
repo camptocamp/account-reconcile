@@ -49,9 +49,9 @@
                 <search string="Product Variants">
                     <field name="product_tmpl_id" string="Product"/>
                     <field name="name" string="Variant"
-                        filter_domain="['|', '|',
-                                             ('variants', 'ilike', self),
-                                             ('default_code', 'ilike', self)]"/>
+                        filter_domain="['|',
+                                        ('variants', 'ilike', self),
+                                        ('default_code', 'ilike', self)]"/>
                     <group  expand='0' string='Group by...'>
                         <filter string='Template'
                             icon="terp-stock_symbol-selection"

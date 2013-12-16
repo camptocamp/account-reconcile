@@ -417,7 +417,9 @@ class SaleOrderImportMapper(ImportMapper):
         values['qoqa_order_line_ids'] = items
 
         onchange = self.get_connector_unit_for_model(SaleOrderOnChange)
-        return onchange.play(values, values['qoqa_order_line_ids'])
+        # date is required to apply the fiscal position rules
+        with self.session.change_context({'date': values['date_order']}):
+            return onchange.play(values, values['qoqa_order_line_ids'])
 
     def extract_lines(self, map_record):
         """ Lines are composed of 3 list of dicts. Extract lines.

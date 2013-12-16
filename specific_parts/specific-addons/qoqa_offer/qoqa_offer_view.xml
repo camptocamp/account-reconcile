@@ -238,8 +238,8 @@
                                         /><field name="time_begin" widget="float_time" class="oe_inline"/> - 
                                     <field name="date_end" class="oe_inline"/><field name="time_end" widget="float_time" class="oe_inline"/>
                                 </div>
-                                <field name="shipper_service_id"/>
                                 <field name="carrier_id"/>
+                                <field name="shipper_rate_id"/>
                                 <field name="company_id" invisible="1"/>
                                 <field name="pricelist_id"/>
                                 <field name="lang_id" widget="selection"/>

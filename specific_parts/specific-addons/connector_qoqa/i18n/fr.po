@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 15:27+0000\n"
-"PO-Revision-Date: 2013-09-26 15:27+0000\n"
+"POT-Creation-Date: 2013-12-11 15:11+0000\n"
+"PO-Revision-Date: 2013-12-11 15:11+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,51 +22,83 @@ msgid "Record %s deleted on QoQa"
 msgstr "Enregistrement %s supprimé sur QoQa"
 
 #. module: connector_qoqa
-#: field:qoqa.backend,client_key:0
-#: field:qoqa.backend.oauth,client_key:0
-msgid "Client Key"
-msgstr "Client Key"
+#: view:qoqa.backend:0
+msgid "Import 1 offer position"
+msgstr "Importer 1 position d'offre"
 
 #. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Confirm"
-msgstr "Confirmer"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_date_import_inactive
+#: field:qoqa.backend,date_import_inactive:0
+msgid "Sales Orders Inactive before"
+msgstr "Commandes désactivées avant"
 
 #. module: connector_qoqa
-#: field:qoqa.shop,openerp_id:0
-msgid "Sale Shop"
-msgstr "Magasin"
+#: view:product.template:0
+msgid "Internal Description"
+msgstr "Description interne"
 
 #. module: connector_qoqa
-#: field:qoqa.backend,access_token:0
-msgid "OAuth Token"
-msgstr "Token OAuth"
+#: field:attribute.attribute,qoqa_id:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_attribute_attribute_qoqa_id
+msgid "Name of the field on QoQa"
+msgstr "Nom du champ sur QoQa"
 
 #. module: connector_qoqa
-#: field:qoqa.backend,version:0
-msgid "API Version"
-msgstr "Version de l'API"
+#: sql_constraint:qoqa.res.partner:0
+msgid "A user with the same ID on QoQa already exists"
+msgstr "Un utilisateur avec le même ID QoQa existe déjà."
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "Check Connection"
-msgstr "Contrôler la connexion"
+msgid "Import 1 offer"
+msgstr "Importer 1 offre"
 
 #. module: connector_qoqa
+#: view:delivery.carrier:0
+msgid "Connector"
+msgstr "Connecteur"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_sync_date
+#: field:qoqa.address,sync_date:0
 #: field:qoqa.binding,sync_date:0
+#: field:qoqa.buyphrase,qoqa_sync_date:0
+#: field:qoqa.offer,qoqa_sync_date:0
+#: field:qoqa.offer.position,qoqa_sync_date:0
+#: field:qoqa.offer.position.variant,qoqa_sync_date:0
+#: field:qoqa.product.product,sync_date:0
+#: field:qoqa.product.template,sync_date:0
+#: field:qoqa.res.partner,sync_date:0
+#: field:qoqa.sale.order,sync_date:0
+#: field:qoqa.sale.order.line,sync_date:0
+#: field:qoqa.shipper.rate,sync_date:0
+#: field:qoqa.shipper.service,sync_date:0
 #: field:qoqa.shop,sync_date:0
 msgid "Last synchronization date"
 msgstr "Dernière date de synchronisation"
 
 #. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Request a token"
-msgstr "Récupérer un token"
+#: model:ir.model,name:connector_qoqa.model_qoqa_offer
+msgid "QoQa Offer"
+msgstr "Offre QoQa"
 
 #. module: connector_qoqa
-#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_backend
-msgid "Backends"
-msgstr "Backends"
+#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_service
+msgid "QoQa Shipper Service"
+msgstr "Service de livraison QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
@@ -74,33 +106,60 @@ msgid "Open the link below in a new tab and copy the PIN."
 msgstr "Suivre le lien suivant puis copier le PIN."
 
 #. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Get Authentication Tokens"
-msgstr "Récupérer les tokens d'authentification"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_openerp_id
+#: field:qoqa.product.template,openerp_id:0
+msgid "Template"
+msgstr "Modèle d'article"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_backend
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_backend_id
+#: field:qoqa.address,backend_id:0
 #: view:qoqa.backend:0
 #: field:qoqa.backend.oauth,backend_id:0
 #: field:qoqa.binding,backend_id:0
+#: field:qoqa.buyphrase,backend_id:0
+#: field:qoqa.offer,backend_id:0
+#: field:qoqa.offer.position,backend_id:0
+#: field:qoqa.offer.position.variant,backend_id:0
+#: field:qoqa.product.product,backend_id:0
+#: field:qoqa.product.template,backend_id:0
+#: field:qoqa.res.partner,backend_id:0
+#: field:qoqa.sale.order,backend_id:0
+#: field:qoqa.sale.order.line,backend_id:0
+#: field:qoqa.shipper.rate,backend_id:0
+#: field:qoqa.shipper.service,backend_id:0
 #: field:qoqa.shop,backend_id:0
 msgid "QoQa Backend"
 msgstr "QoQa Backend"
 
 #. module: connector_qoqa
-#: help:qoqa.backend,default_lang_id:0
-#: help:sale.shop,lang_id:0
-msgid "If a default language is selected, the records will be imported in the translation of this language.\n"
-"Note that a similar configuration exists for each shop."
-msgstr "If a default language is selected, the records will be imported in the translation of this language.\n"
-"Note that a similar configuration exists for each shop."
+#: help:attribute.attribute,qoqa_id:0
+msgid "If empty, it uses the name of the attribute without the x_ prefix"
+msgstr "Si laissé vide, utilise le nom de l'attribut sans préfixe x_"
 
 #. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Get the PIN on this page"
-msgstr "Récupérer le PIN sur cette page"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_order_line_ids
+#: field:qoqa.sale.order,qoqa_order_line_ids:0
+msgid "QoQa Order Lines"
+msgstr "Lignes de commande QoQa"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_pin
 #: field:qoqa.backend.oauth,pin:0
 msgid "PIN"
 msgstr "PIN"
@@ -108,12 +167,13 @@ msgstr "PIN"
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_binding
 msgid "QoQa Binding (abstract)"
-msgstr "QoQa Binding (abstract)"
+msgstr "Liens QoQa (abstrait)"
 
 #. module: connector_qoqa
-#: field:qoqa.backend.oauth,request_secret:0
-msgid "Request Secret"
-msgstr "Request Secret"
+#: code:addons/connector_qoqa/sale/exporter.py:44
+#, python-format
+msgid "Sales order canceled on QoQa"
+msgstr "Commande annulée sur QoQa"
 
 #. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
@@ -121,34 +181,142 @@ msgid "Authenticate with OAuth"
 msgstr "Authentification avec OAuth"
 
 #. module: connector_qoqa
-#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend_oauth
-msgid "QoQa Oauth"
-msgstr "QoQa Oauth"
+#: field:attribute.option,qoqa_id:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_attribute_option_qoqa_id
+msgid "Value of the option on QoQa"
+msgstr "Valeur de l'option sur QoQa"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_sale_shop
-msgid "Sales Shop"
-msgstr "Magasin"
+#: sql_constraint:qoqa.address:0
+msgid "An address with the same ID on QoQa already exists"
+msgstr "Une addresse avec le même ID QoQa existe déjà."
 
 #. module: connector_qoqa
-#: field:qoqa.backend,access_token_secret:0
-msgid "OAuth Token Secret"
-msgstr "Token OAuth Secret"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_store
-msgid "QoQa Store"
-msgstr "Boutique QoQa"
-
-#. module: connector_qoqa
-#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend
-msgid "QoQa Backends"
-msgstr "QoQa Backends"
-
-#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_product_product_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_product_template_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_shop_qoqa_bind_ids
+#: field:product.product,qoqa_bind_ids:0
+#: field:product.template,qoqa_bind_ids:0
 #: field:sale.shop,qoqa_bind_ids:0
 msgid "QoQa Bindings"
 msgstr "Liens QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order_line
+msgid "QoQa Sales Order Line"
+msgstr "Lignes de commandes QoQa"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/export_synchronizer.py:283
+#, python-format
+msgid "Record exported with ID %s on QoQa."
+msgstr "Enregistrement exporté sur QoQa avec l'ID %s"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Single Imports"
+msgstr "Imports unitaires (debug)"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/exporter.py:42
+#, python-format
+msgid "Sales order does not exist on QoQa"
+msgstr "La commande n'existe pas sur QoQa."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_product_template_description_ecommerce
+#: field:product.template,description_ecommerce:0
+msgid "E-commerce Description"
+msgstr "Description e-commerce"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_access_token
+#: field:qoqa.backend,access_token:0
+msgid "OAuth Token"
+msgstr "Token OAuth"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_offer/common.py:61
+#, python-format
+msgid "Exported Offers can no longer be deleted (ref: %s).They can still be deactivated using the \"active\" checkbox."
+msgstr "Les offres exportées ne peuvent plus être supprimées (ref: %s).\n Elles peuvent toutefois être désactivées avec la case à cocher \"actif\"."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_name
+#: field:qoqa.res.partner,qoqa_name:0
+msgid "QoQa Name"
+msgstr "Nom QoQa"
+
+#. module: connector_qoqa
+#: field:delivery.carrier,qoqa_bind_rate_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_rate_ids
+msgid "QoQa Bindings (Rates)"
+msgstr "Liens QoQa (Frais de livraison)"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_debug
+#: field:qoqa.backend,debug:0
+msgid "Debug"
+msgstr "Debug"
+
+#. module: connector_qoqa
+#: field:delivery.carrier,qoqa_bind_service_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_service_ids
+msgid "QoQa Bindings (Services)"
+msgstr "Liens QoQa (Services de livraison)"
+
+#. module: connector_qoqa
+#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shop
+msgid "Shops"
+msgstr "Magasins"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_openerp_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_openerp_id
+#: field:qoqa.shipper.rate,openerp_id:0
+#: field:qoqa.shipper.service,openerp_id:0
+msgid "Delivery Method"
+msgstr "Méthode de livraison"
+
+#. module: connector_qoqa
+#: model:sale.exception,name:connector_qoqa.excep_wrong_total_amount
+msgid "Total Amount differs from QoQa"
+msgstr "Le montant total n'est pas égal à celui calculé sur QoQa."
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_res_lang
+msgid "Languages"
+msgstr "Langues"
+
+#. module: connector_qoqa
+#: view:res.partner:0
+msgid "QBindings for Adresses"
+msgstr "Liens QoQa pour les addresses"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_account_tax
+msgid "Tax"
+msgstr "Taxes"
+
+#. module: connector_qoqa
+#: view:qoqa.product.product:0
+msgid "QProduct"
+msgstr "QProduct"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_attribute_attribute
+msgid "Attribute"
+msgstr "Attribut"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_res_partner
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position
+msgid "QoQa Offer Position"
+msgstr "Position d'offre"
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
@@ -156,118 +324,215 @@ msgid "Main Configuration"
 msgstr "Configuration principale"
 
 #. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Initial Imports"
+msgstr "Imports initiaux"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_sale_order_line
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_openerp_id
+#: field:qoqa.sale.order.line,openerp_id:0
+msgid "Sales Order Line"
+msgstr "Ligne de commandes de vente"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_updated_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_updated_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_updated_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_updated_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_updated_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_updated_at
+#: field:qoqa.address,updated_at:0
+#: field:qoqa.product.product,updated_at:0
+#: field:qoqa.product.template,updated_at:0
+#: field:qoqa.res.partner,updated_at:0
+#: field:qoqa.sale.order,updated_at:0
+#: field:qoqa.sale.order.line,updated_at:0
+msgid "Updated At (on QoQa)"
+msgstr "Mis à jour à (sur QoQa)"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_backend/common.py:130
+#, python-format
+msgid "Authentification Error"
+msgstr "Erreur d'authentification"
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_address
+#: field:res.partner,qoqa_address:0
+msgid "Address from QoQa"
+msgstr "Addresse venant de QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_sequence
+#: field:payment.method,sequence:0
+msgid "Priority"
+msgstr "Priorité"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_active
+#: field:qoqa.res.partner,qoqa_active:0
+msgid "QoQa Active"
+msgstr "Actif sur QoQa"
+
+#. module: connector_qoqa
+#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_backend
+msgid "Backends"
+msgstr "Backends"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Get Authentication Tokens"
+msgstr "Obtenir les jetons d'authentification"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_backend/common.py:131
+#, python-format
+msgid "The authentification failed. Use the \"Get Authentication Tokens\" button to request access"
+msgstr "L'authentification a échoué. Utiliser le bouton \"Obtenir les jetons d'authentification\" pour obtenir un accès."
+
+#. module: connector_qoqa
+#: help:qoqa.backend,default_lang_id:0
+#: help:qoqa.shop,lang_id:0
+msgid "If a default language is selected, the records will be imported in the translation of this language.\n"
+"Note that a similar configuration exists for each shop."
+msgstr "Si une langue par défaut est sélectionné, les enregistrements vont être importé dans cette langue.\n"
+"Une configuration similaire existe pour chaque magasin."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_company_connector_user_id
+#: field:res.company,connector_user_id:0
+msgid "Connector User"
+msgstr "Utilisateur pour le connecteur"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_digicode
+#: field:res.partner,digicode:0
+msgid "Digicode"
+msgstr "Digicode"
+
+#. module: connector_qoqa
+#: view:product.product:0
+#: view:product.template:0
+msgid "E-Commerce Description"
+msgstr "Description E-Commerce"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import in background"
+msgstr "Importer en arrière-plan"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_product_product
+msgid "QoQa Product"
+msgstr "Variant QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_backend_oauth
+msgid "QoQa Backend OAuth Wizard"
+msgstr "Assistant Oauth"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_access_token_secret
+#: field:qoqa.backend,access_token_secret:0
+msgid "OAuth Token Secret"
+msgstr "Jeton OAuth secret"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/importer.py:129
+#, python-format
+msgid "Sales order %s has been marked as \"to cancel\"."
+msgstr "Le bulletin de commande %s a été marqué comme \"à annuler\"."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_sale_id
+#: field:qoqa.backend,import_sale_id:0
+msgid "Sales Order ID"
+msgstr "ID de commande"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_request_key
 #: field:qoqa.backend.oauth,request_key:0
 msgid "Request Key"
 msgstr "Request Key"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/export_synchronizer.py:195
-#, python-format
-msgid "Record exported with ID %s on QoQa."
-msgstr "Enregistrement exporté sur QoQa avec l'ID %s"
+#: sql_constraint:qoqa.shipper.rate:0
+#: sql_constraint:qoqa.shipper.service:0
+msgid "A shipper rate with the same ID on QoQa already exists"
+msgstr "Des frais de livraison avec le même ID QoQa existe déjà."
 
 #. module: connector_qoqa
-#: field:qoqa.backend,name:0
-msgid "Name"
-msgstr "Nom"
+#: sql_constraint:qoqa.sale.order:0
+msgid "A sales order with the same ID on QoQa already exists"
+msgstr "Une bulletin de commande avec le même ID QoQa existe déjà."
 
 #. module: connector_qoqa
-#: view:qoqa.shop:0
-msgid "Informations"
-msgstr "Informations"
+#: help:qoqa.backend,date_really_import:0
+msgid "Before this date, the sales order will be imported without accounting entries."
+msgstr "Avant cette date, les commandes seront importées sans écritures comptables."
 
 #. module: connector_qoqa
-#: field:qoqa.backend,url:0
-msgid "URL"
-msgstr "URL"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_order_id
+#: field:qoqa.sale.order.line,qoqa_order_id:0
+msgid "QoQa Sale Order"
+msgstr "Bulletin de commande QoQa"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_backend_oauth
-msgid "QoQa Backend OAuth Wizard"
-msgstr "Wizard OAuth QoQa"
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_line_custom_text
+#: field:sale.order.line,custom_text:0
+msgid "Custom Text"
+msgstr "Text personnalisé"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_res_company
-msgid "Companies"
-msgstr "Sociétés"
+#: view:qoqa.backend:0
+msgid "Import 1 sales order"
+msgstr "Importer 1 bulletin de commande"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/export_synchronizer.py:184
-#: code:addons/connector_qoqa/unit/export_synchronizer.py:191
+#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position_variant
+msgid "QoQa Offer Position Variant"
+msgstr "QoQa Offer Position Variant"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/export_synchronizer.py:276
+#: code:addons/connector_qoqa/unit/export_synchronizer.py:281
 #, python-format
 msgid "Nothing to export."
 msgstr "Rien à exporter."
 
 #. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Synchronize Metadata"
-msgstr "Synchroniser les métadonnées"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_created_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_created_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_created_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_created_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_created_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_created_at
+#: field:qoqa.address,created_at:0
+#: field:qoqa.product.product,created_at:0
+#: field:qoqa.product.template,created_at:0
+#: field:qoqa.res.partner,created_at:0
+#: field:qoqa.sale.order,created_at:0
+#: field:qoqa.sale.order.line,created_at:0
+msgid "Created At (on QoQa)"
+msgstr "Créé le (sur QoQa)"
 
 #. module: connector_qoqa
-#: field:qoqa.backend,default_lang_id:0
-#: field:sale.shop,lang_id:0
-msgid "Default Language"
-msgstr "Language par défaut"
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_model.py:119
-#, python-format
-msgid "Error"
-msgstr "Erreur"
-
-#. module: connector_qoqa
-#: field:qoqa.backend,debug:0
-msgid "Debug"
-msgstr "Debug"
-
-#. module: connector_qoqa
-#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shop
-msgid "Shops"
-msgstr "Boutiques"
-
-#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_authorize_url
 #: field:qoqa.backend.oauth,authorize_url:0
 msgid "Authorize URL"
 msgstr "Autoriser l'URL"
 
 #. module: connector_qoqa
-#: view:qoqa.shop:0
-msgid "Options"
-msgstr "Options"
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_model.py:120
-#, python-format
-msgid "Only 1 QoQa configuration is allowed."
-msgstr "Une seule configuration QoQa est possible."
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_shop
-#: view:qoqa.shop:0
-msgid "QoQa Shop"
-msgstr "Boutique QoQa"
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/import_synchronizer.py:148
-#, python-format
-msgid "Already up-to-date."
-msgstr "Déjà à jour."
-
-#. module: connector_qoqa
-#: field:qoqa.shop,domain:0
-msgid "Domain"
-msgstr "Domaine"
-
-#. module: connector_qoqa
-#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_root
-#: view:res.company:0
-msgid "QoQa"
-msgstr "QoQa"
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "or"
-msgstr "ou"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_product_product_from_date
+#: field:qoqa.backend,import_product_product_from_date:0
+msgid "Import product variants from date"
+msgstr "Importer les articles depuis"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_connector_qoqa_installed
@@ -275,26 +540,18 @@ msgid "connector_qoqa.installed"
 msgstr "connector_qoqa.installed"
 
 #. module: connector_qoqa
-#: field:qoqa.binding,qoqa_id:0
-#: field:qoqa.shop,qoqa_id:0
-#: field:res.company,qoqa_id:0
-msgid "ID on QoQa"
-msgstr "ID sur QoQa"
+#: model:ir.model,name:connector_qoqa.model_qoqa_shop
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_shop_id
+#: field:qoqa.sale.order,qoqa_shop_id:0
+#: view:qoqa.shop:0
+msgid "QoQa Shop"
+msgstr "Magasin QoQa"
 
 #. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "API Configuration"
-msgstr "API Configuration"
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Cancel"
-msgstr "Annuler"
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "e.g. http://www.qoqa.ch"
-msgstr "Par ex. http://www.qoqa.ch"
+#: code:addons/connector_qoqa/unit/import_synchronizer.py:246
+#, python-format
+msgid "Already up-to-date."
+msgstr "Déjà à jour."
 
 #. module: connector_qoqa
 #: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_shop
@@ -302,19 +559,572 @@ msgid "QoQa Shops"
 msgstr "QoQa Shops"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/import_synchronizer.py:144
-#, python-format
-msgid "Record does no longer exist in QoQa"
-msgstr "L'enregistrement n'existe plus sur QoQa."
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_date_really_import
+#: field:qoqa.backend,date_really_import:0
+msgid "Import historic only until"
+msgstr "Importer uniquement l'historique jusqu'à"
 
 #. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Synchronize Metadata"
+msgstr "Synchroniser les métadonnées"
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.product.product:0
+#: sql_constraint:qoqa.product.template:0
+msgid "A product with the same ID on QoQa already exists"
+msgstr "Un article avec le même id QoQa existe déjà."
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_res_currency
+msgid "Currency"
+msgstr "Devise"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_default_lang_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_lang_id
+#: field:qoqa.backend,default_lang_id:0
+#: field:qoqa.shop,lang_id:0
+msgid "Default Language"
+msgstr "Langue par défaut"
+
+#. module: connector_qoqa
+#: field:account.tax,qoqa_id:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_tax_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_company_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_country_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_currency_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_lang_qoqa_id
+#: field:payment.method,qoqa_id:0
+#: field:qoqa.address,qoqa_id:0
+#: field:qoqa.binding,qoqa_id:0
+#: field:qoqa.buyphrase,qoqa_id:0
+#: field:qoqa.offer,qoqa_id:0
+#: field:qoqa.offer.position,qoqa_id:0
+#: field:qoqa.offer.position.variant,qoqa_id:0
+#: field:qoqa.product.product,qoqa_id:0
+#: field:qoqa.product.template,qoqa_id:0
+#: field:qoqa.res.partner,qoqa_id:0
+#: field:qoqa.sale.order,qoqa_id:0
+#: field:qoqa.sale.order.line,qoqa_id:0
+#: field:qoqa.shipper.rate,qoqa_id:0
+#: field:qoqa.shipper.service,qoqa_id:0
+#: field:qoqa.shop,qoqa_id:0
+#: field:res.company,qoqa_id:0
+#: field:res.country,qoqa_id:0
+#: field:res.currency,qoqa_id:0
+#: field:res.lang,qoqa_id:0
+msgid "ID on QoQa"
+msgstr "ID sur QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_delivery_service
+msgid "Delivery Service"
+msgstr "Service de livraison"
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "or"
+msgstr "ou"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_client_secret
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_client_secret
 #: field:qoqa.backend,client_secret:0
 #: field:qoqa.backend.oauth,client_secret:0
 msgid "Client Secret"
 msgstr "Client Secret"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_amount_total
+#: field:qoqa.sale.order,qoqa_amount_total:0
+msgid "Total amount on QoQa"
+msgstr "Montant total sur QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_gift_card
+#: field:payment.method,gift_card:0
+msgid "Gift Card"
+msgstr "Bon cadeau"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_client_key
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_client_key
+#: field:qoqa.backend,client_key:0
+#: field:qoqa.backend.oauth,client_key:0
+msgid "Client Key"
+msgstr "Client Key"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_buyphrase
+msgid "QoQa Buyphrase"
+msgstr "QoQa Buyphrase"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Check Connection"
+msgstr "Contrôler la connexion"
+
+#. module: connector_qoqa
 #: view:qoqa.backend.oauth:0
 msgid "QoQa OAuth"
 msgstr "QoQa OAuth"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import"
+msgstr "Importer"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_status
+#: field:qoqa.res.partner,qoqa_status:0
+msgid "Status on QoQa"
+msgstr "État sur QoQa"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "By clicking on the buttons,\n"
+"                                    you will initiate the synchronizations\n"
+"                                    with QoQa.\n"
+"                                    Note that the import or exports\n"
+"                                    won't be done directly,\n"
+"                                    they will create 'Jobs'\n"
+"                                    executed as soon as possible."
+msgstr "En cliquant sur les boutons,\n"
+"                                    vous allez déclencher les synchronisations\n"
+"                                    avec QoQa.\n"
+"                                    Les imports et exports\n"
+"                                    ne sont pas immédiats,\n"
+"                                    mais créent des 'Jobs'\n"
+"                                    exécutés aussitôt que possible."
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_res_partner
+#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order
+#: view:qoqa.res.partner:0
+msgid "QoQa User"
+msgstr "Utilisateur QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_sale_order
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_openerp_id
+#: field:qoqa.sale.order,openerp_id:0
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_res_partner_from_date
+#: field:qoqa.backend,import_res_partner_from_date:0
+msgid "Import Customers from date"
+msgstr "Importer les clients depuis"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_address_from_date
+#: field:qoqa.backend,import_address_from_date:0
+msgid "Import Addresses from date"
+msgstr "Importer les addresses depuis"
+
+#. module: connector_qoqa
+#: view:qoqa.shop:0
+msgid "Options"
+msgstr "Options"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_variant_id
+#: field:qoqa.backend,import_variant_id:0
+msgid "Variant ID"
+msgstr "ID de variante"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_attribute_option
+msgid "Attribute Option"
+msgstr "Option d'attribut"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_product_template_from_date
+#: field:qoqa.backend,import_product_template_from_date:0
+msgid "Import product templates from date"
+msgstr "Importer les modèles d'articles depuis"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_sale_shop
+msgid "Sales Shop"
+msgstr "Magasin"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_active
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_active
+#: field:payment.method,active:0
+#: selection:qoqa.res.partner,qoqa_status:0
+#: field:sale.order,active:0
+msgid "Active"
+msgstr "Actif"
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.sale.order.line:0
+msgid "A sales order line with the same ID on QoQa already exists"
+msgstr "Une ligne de commande avec le même ID QoQa existe déjà."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_qoqa_bind_ids
+#: view:product.product:0
+#: view:res.partner:0
+#: field:res.partner,qoqa_bind_ids:0
+#: field:sale.order,qoqa_bind_ids:0
+msgid "QBindings"
+msgstr "QBindings"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_product_template
+msgid "QoQa Template"
+msgstr "Modèle d'article QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_rate
+msgid "QoQa Shipper Rate"
+msgstr "Frais de livraison QoQa"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import customers since"
+msgstr "Importer les clients depuis"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_backend/common.py:134
+#: code:addons/connector_qoqa/qoqa_backend/common.py:152
+#: code:addons/connector_qoqa/qoqa_offer/common.py:60
+#: code:addons/connector_qoqa/qoqa_offer_position/common.py:59
+#: code:addons/connector_qoqa/wizard/qoqa_backend_oauth.py:92
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_backend/common.py:153
+#, python-format
+msgid "Only 1 QoQa configuration is allowed."
+msgstr "Impossible de créer plusieurs configurations QoQa."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_quantity
+#: field:qoqa.sale.order.line,qoqa_quantity:0
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: connector_qoqa
+#: view:qoqa.shop:0
+msgid "Informations"
+msgstr "Informations"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Imports"
+msgstr "Imports"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/importer.py:120
+#, python-format
+msgid "Sales order %s is not imported because it has been canceled."
+msgstr "La commande %s n'a pas été importée parce qu'elle est annulée."
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_name
+#: field:qoqa.backend,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_request_secret
+#: field:qoqa.backend.oauth,request_secret:0
+msgid "Request Secret"
+msgstr "Request Secret"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_offer_position/common.py:60
+#, python-format
+msgid "Exported positions can not be deleted when they have been exported. They can still be deactivated using the \"active\" checkbox."
+msgstr "Les positions exportées ne peuvent pas être supprimées. Elles peuvent toujours être désactivées en utilisant la case à cocher \"actif\"."
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/import_synchronizer.py:238
+#, python-format
+msgid "Record does no longer exist in QoQa"
+msgstr "L'enregistrement n'existe plus sur QoQa."
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import 1 product variant"
+msgstr "Importer 1 article"
+
+#. module: connector_qoqa
+#: help:payment.method,gift_card:0
+msgid "Generates a gift line in the sales order."
+msgstr "Génère une ligne de cadeau dans la commande"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_address_bind_ids
+#: field:res.partner,qoqa_address_bind_ids:0
+msgid "QBindings for Addresses"
+msgstr "QBindings for Addresses"
+
+#. module: connector_qoqa
+#: model:sale.exception,description:connector_qoqa.excep_wrong_total_amount
+msgid "The amount computed in OpenERP doesn't match with the amount in QoQa."
+msgstr "Le montant calculé par OpenERP ne correspond pas au montant calculé par QoQa."
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import sales orders since"
+msgstr "Importer les commandes depuis"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_address
+#: view:qoqa.address:0
+msgid "QoQa Address"
+msgstr "Adresse QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_version
+#: field:qoqa.backend,version:0
+msgid "API Version"
+msgstr "Version de l'API"
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Request a token"
+msgstr "Récupérer un jeton"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import product variants since"
+msgstr "Importer les articles depuis"
+
+#. module: connector_qoqa
+#: help:payment.method,sequence:0
+msgid "When a sales order has been paid with several payment methods, the sales order will be assigned to the first method found, according to their priority.\n"
+"This impacts the automatic workflow applied to the sales order."
+msgstr "Quand un bulletin de commande a été payé avec plusieurs méthodes de paiement, la commande sera liée à la première méthode trouvée, selon leur priorité."
+"Le flux automatisé de la commande sera donc déterminé par la méthode de paiement prioritaire."
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Get the PIN on this page"
+msgstr "Récupérer le PIN sur cette page"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_payment_method
+msgid "Payment Method"
+msgstr "Méthode de paiement"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_url
+#: field:qoqa.backend,url:0
+msgid "URL"
+msgstr "URL"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import product templates since"
+msgstr "Importer les modèles d'articles depuis"
+
+#. module: connector_qoqa
+#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend_oauth
+msgid "QoQa Oauth"
+msgstr "QoQa Oauth"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_openerp_id
+#: field:qoqa.address,openerp_id:0
+msgid "Address"
+msgstr "Adresse"
+
+#. module: connector_qoqa
+#: view:delivery.carrier:0
+msgid "QoQa Service"
+msgstr "Service de livraison QoQa"
+
+#. module: connector_qoqa
+#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend
+msgid "QoQa Backends"
+msgstr "QoQa Backends"
+
+#. module: connector_qoqa
+#: view:delivery.carrier:0
+msgid "QoQa Rate"
+msgstr "Frais de livraison QoQa"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import addresses since"
+msgstr "Importer les adresses depuis"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_openerp_id
+#: field:qoqa.res.partner,openerp_id:0
+msgid "Customer"
+msgstr "Client"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/wizard/qoqa_backend_oauth.py:93
+#, python-format
+msgid "Could not request the tokens: %s"
+msgstr "Impossible d'obtenir les jetons: %s"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_invoice_ref
+#: field:qoqa.sale.order,invoice_ref:0
+msgid "Invoice Ref. on QoQa"
+msgstr "Réf. de facture QoQa"
+
+#. module: connector_qoqa
+#: help:qoqa.backend,date_import_inactive:0
+msgid "Before this date, the sales order will be imported as inactive"
+msgstr "Avant cette date, les commandes seront importées inactives."
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_res_country
+msgid "Country"
+msgstr "Pays"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_product_product
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_openerp_id
+#: field:qoqa.product.product,openerp_id:0
+msgid "Product"
+msgstr "Article"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_product_template
+msgid "Product Template"
+msgstr "Modèle d'article"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/qoqa_backend/common.py:125
+#, python-format
+msgid "Security Error"
+msgstr "Erreur de sécurité"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_delivery_carrier
+msgid "Carrier"
+msgstr "Transporteur"
+
+#. module: connector_qoqa
+#: help:attribute.option,qoqa_id:0
+msgid "If empty, it uses the current value.\n"
+"Not applicable for attributes with a relation."
+msgstr "Si laissé vide, utilise la valeur courante.\n"
+"Non applicable pour les attributs avec une relation."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_origin_shop_id
+#: field:qoqa.res.partner,origin_shop_id:0
+msgid "Origin Shop"
+msgstr "Magasin QoQa d'origine"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_sale_order_from_date
+#: field:qoqa.backend,import_sale_order_from_date:0
+msgid "Import Sales Orders from date"
+msgstr "Importer les bulletins de commande depuis"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Once imported,\n"
+"                                    some types of records,\n"
+"                                    like the products or categories,\n"
+"                                    need a manual review.\n"
+"                                    You will find the list\n"
+"                                    of the new records to review\n"
+"                                    in the menu 'Connectors > Checkpoint'."
+msgstr "Une fois importés,\n"
+"                                    certains types d'enregistrements,\n"
+"                                    comme les articles ou catégories,\n"
+"                                    peuvent nécessiter une revue manuelle.\n"
+"                                    Vous trouverez cette liste\n"
+"                                    de nouveaux enregistrements à vérifier\n"
+"                                    dans le menu 'Connectors > Checkpoint'."
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_id
+#: field:qoqa.backend,import_offer_id:0
+msgid "Offer ID"
+msgstr "ID d'offre"
+
+#. module: connector_qoqa
+#: selection:qoqa.res.partner,qoqa_status:0
+msgid "Prospect"
+msgstr "Prospect"
+
+#. module: connector_qoqa
+#: view:qoqa.res.partner:0
+msgid "QoQa Partner"
+msgstr "Client QoQa"
+
+#. module: connector_qoqa
+#: view:account.tax:0
+#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_root
+#: view:payment.method:0
+#: view:res.company:0
+msgid "QoQa"
+msgstr "QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_suspicious
+#: field:qoqa.res.partner,suspicious:0
+msgid "Suspicious"
+msgstr "Suspicieux"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_position_id
+#: field:qoqa.backend,import_offer_position_id:0
+msgid "Offer Position ID"
+msgstr "ID de position d'offre"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_lot_size
+#: field:qoqa.sale.order.line,qoqa_lot_size:0
+msgid "Lot Size"
+msgstr "Taille du lot"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "API Configuration"
+msgstr "Configuration de l'API"
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "e.g. http://www.qoqa.ch"
+msgstr "Par ex. http://www.qoqa.ch"
+
+#. module: connector_qoqa
+#: help:qoqa.sale.order.line,qoqa_lot_size:0
+msgid "Number of items in 1 unit of quantity. The Quantity in OpenERP is 'QoQa Quantity * Lot Size'. We keep the original value for reference."
+msgstr "Nombre d'articles dans 1 unité. La quantité vendue sur OpenERP sera 'Quantité vendue sur QoQa * Taille du lot'. La quantité originale est conservée pour référence."
 

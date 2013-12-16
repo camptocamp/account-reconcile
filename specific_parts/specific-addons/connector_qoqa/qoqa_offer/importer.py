@@ -75,8 +75,11 @@ class QoQaOfferImportMapper(ImportMapper):
     direct = [(ifmissing('notes', '<p></p>'), 'note'),
               (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
-              (backend_to_m2o('shipper_rate_id'), 'carrier_id'),
-              (backend_to_m2o('shipper_service_id'), 'shipper_service_id'),
+              (backend_to_m2o('shipper_service_id',
+                              binding='qoqa.shipper.service'),
+               'carrier_id'),
+              (backend_to_m2o('shipper_rate_id', binding='qoqa.shipper.rate'),
+               'shipper_rate_id'),
               ('id', 'ref'),
               ('is_active', 'active'),
               ]

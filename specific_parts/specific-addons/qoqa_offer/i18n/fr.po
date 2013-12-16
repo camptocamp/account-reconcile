@@ -1,13 +1,13 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-#	* qoqa_deal
+#	* qoqa_offer
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-20 09:57+0000\n"
-"PO-Revision-Date: 2013-09-20 09:57+0000\n"
+"POT-Creation-Date: 2013-12-12 08:31+0000\n"
+"PO-Revision-Date: 2013-12-12 08:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,446 +15,732 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Sales Deal"
-msgstr "Deals"
+#. module: qoqa_offer
+#: field:delivery.carrier,qoqa_type:0
+msgid "Type on QoQa"
+msgstr "Type sur QoQa"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Planning Deal"
-msgstr "Planning des Deals"
+#. module: qoqa_offer
+#: selection:delivery.carrier,qoqa_type:0
+msgid "Service"
+msgstr "Service"
 
-#. module: qoqa_deal
-#: selection:qoqa.deal,site:0
-msgid "QStyle"
-msgstr ""
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer,title:0
+msgid "Title"
+msgstr "Titre"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "End"
-msgstr "Fin"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Sales Deal that haven't yet been confirmed"
-msgstr "Deals qui n'ont pas encore été confirmés"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Confirm"
-msgstr "Confirmer"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "days"
-msgstr "jours"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
+#. module: qoqa_offer
+#: view:qoqa.offer:0
 msgid "Internal Description"
-msgstr "Description interne"
+msgstr "Notes internes"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Delays"
-msgstr "Délais"
-
-#. module: qoqa_deal
-#: selection:qoqa.deal,shipping_type:0
-msgid "PostMail CH: SmallSmall"
-msgstr ""
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Site"
-msgstr ""
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
+#. module: qoqa_offer
+#: view:qoqa.offer:0
 msgid "Group By..."
 msgstr "Grouper par..."
 
-#. module: qoqa_deal
-#: field:qoqa.deal,message_summary:0
-msgid "Summary"
-msgstr "Résumé"
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_offer
+#: view:qoqa.offer:0
+msgid "QoQa Offer"
+msgstr "Offre QoQa"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,name:0
-msgid "Deal Reference"
-msgstr "Référence du Deal"
+#. module: qoqa_offer
+#: field:qoqa.offer,datetime_begin:0
+msgid "Begins at"
+msgstr "Débute le"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,message_follower_ids:0
-msgid "Followers"
-msgstr ""
+#. module: qoqa_offer
+#: field:qoqa.offer,stock_progress:0
+#: field:qoqa.offer.position,stock_progress:0
+#: field:qoqa.offer.position.variant,stock_progress:0
+msgid "Progress"
+msgstr "Progrès"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,sum_stock_sold:0
-msgid "Sold and reserved"
-msgstr "Vendu et réservé"
-
-#. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_stock_picking
-msgid "Picking List"
-msgstr ""
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Indicators"
-msgstr "Indicateurs"
-
-#. module: qoqa_deal
-#: field:qoqa.deal,price_observed:0
-msgid "Observed Price"
-msgstr "Prix observé"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: selection:qoqa.deal,state:0
-msgid "Proposal"
-msgstr "Proposition"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: selection:qoqa.deal,state:0
-msgid "Negociation"
-msgstr "Négociation"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal.variant,stock_residual:0
+#. module: qoqa_offer
+#: field:qoqa.offer.position.variant,stock_residual:0
 msgid "Remaining"
 msgstr "Restant"
 
-#. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_qoqa_deal_variant
-msgid "QoQa Deal Variant"
-msgstr "Variante de Deal"
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Today"
+msgstr "Aujourd'hui"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal,sum_stock_available:0
-msgid "Available"
-msgstr "Disponible"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,installment_price:0
+msgid "Installment Price"
+msgstr "Valeur du versement"
 
-#. module: qoqa_deal
-#: model:ir.actions.act_window,help:qoqa_deal.action_deal
-msgid "<p class=\"oe_view_nocontent_create\">\n"
-"                Click to create a deal in the planning.\n"
-"              </p>\n"
-"            "
-msgstr "<p class=\"oe_view_nocontent_create\">\n"
-"                Cliquer pour créer un deal dans le planning.\n"
-"              </p>\n"
-"            "
+#. module: qoqa_offer
+#: field:qoqa.offer.position,max_sellable:0
+msgid "Max Sellable"
+msgstr "Max. en vente"
 
+#. module: qoqa_offer
+#: field:account.invoice,offer_id:0
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,offer_id:0
+#: view:sale.order:0
+#: field:sale.order,offer_id:0
+#: field:stock.picking,offer_id:0
+#: view:stock.picking.out:0
+#: field:stock.picking.out,offer_id:0
+msgid "Offer"
+msgstr "Offre"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,product_tmpl_id:0
-#: field:qoqa.deal.variant,product_id:0
-msgid "Product"
-msgstr "Produit"
-
-#. module: qoqa_deal
-#: field:qoqa.deal,shipping_type:0
-msgid "Shipping Type"
-msgstr "Type d'expédition"
-
-#. module: qoqa_deal
-#: field:qoqa.deal,description:0
-msgid "Description"
-msgstr "Description"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Start"
-msgstr "Début"
-
-#. module: qoqa_deal
-#: field:qoqa.deal,currency_id:0
-msgid "Currency"
-msgstr "Devise"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal,message_unread:0
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer,message_unread:0
 msgid "Unread Messages"
-msgstr ""
+msgstr "Messages non lus"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,company_id:0
+#. module: qoqa_offer
+#: field:qoqa.offer,company_id:0
 msgid "Company"
 msgstr "Société"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid ": Stock (Sold / Available)"
-msgstr "Stock (Vendu / Disponible)"
+#. module: qoqa_offer
+#: field:qoqa.offer,sum_residual:0
+#: field:qoqa.offer.position,sum_residual:0
+msgid "Residual"
+msgstr "Restant"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Stock:"
-msgstr "Stock :"
+#. module: qoqa_offer
+#: help:qoqa.offer,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "If checked new messages require your attention."
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal.variant,stock_sold:0
-msgid "Sold"
-msgstr "Vendu"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,booking_delivery:0
+msgid "Booking Delivery"
+msgstr "Booking Delivery"
 
-#. module: qoqa_deal
-#: help:qoqa.deal,shipping_max_delay:0
-msgid "Maximum number of days before the delivery.\n"
-"It can't be more than 10 days."
-msgstr "Nombre maxima de jours avant la livraison.\n"
-"Ne doit pas être au dessus de 10 jours."
+#. module: qoqa_offer
+#: field:qoqa.offer.position,order_url:0
+msgid "Order URL"
+msgstr "Order URL"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,message_is_follower:0
-msgid "Is a Follower"
-msgstr ""
-
-#. module: qoqa_deal
-#: field:qoqa.deal,date_warranty:0
-msgid "Warranty Expiration"
-msgstr "Expiration de la garantie"
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal,variant_ids:0
-msgid "Variants"
-msgstr "Variantes"
-
-#. module: qoqa_deal
-#: selection:qoqa.deal,shipping_type:0
-msgid "PostLogistics CH: Basic"
-msgstr ""
-
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal,day:0
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer,day:0
 msgid "Day"
 msgstr "Jour"
 
-#. module: qoqa_deal
-#: help:qoqa.deal,image:0
-msgid "This field holds the image used as image for the product, limited to 1024x1024px."
-msgstr "Contient le image du produit, limité à 1024x1024px."
+#. module: qoqa_offer
+#: constraint:qoqa.offer:0
+msgid "The pricelist and the shop must belong to the same company."
+msgstr "La liste de prix et le magasin doivent appartenir à la même société."
 
-#. module: qoqa_deal
+#. module: qoqa_offer
+#: field:qoqa.offer.position,ecotax:0
+msgid "Ecotax"
+msgstr "Eco-taxe"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,shipper_rate_id:0
+msgid "Shipper Rate"
+msgstr "Shipper Rate"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers Today!"
+msgstr "Offres du jour !"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,message_ids:0
+msgid "Messages"
+msgstr "Messages"
+
+#. module: qoqa_offer
+#: selection:qoqa.offer.position,regular_price_type:0
+msgid "Direct Price"
+msgstr "Prix direct"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position.variant,position_id:0
+msgid "Position"
+msgstr "Position"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,carrier_id:0
+msgid "Delivery Method"
+msgstr "Méthode de livraison"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,pricelist_id:0
+msgid "Pricelist"
+msgstr "Liste de prix"
+
+#. module: qoqa_offer
+#: field:qoqa.buyphrase,qoqa_shop_id:0
 #: view:sale.order:0
-msgid "Customer"
-msgstr "Client"
+msgid "Shop"
+msgstr "Magasin"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,date_end:0
-msgid "End Date"
-msgstr "Date de fin"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,regular_price_type:0
+msgid "Regular Price Type"
+msgstr "Regular Price Type"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Start"
+msgstr "Début"
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,help:qoqa_offer.action_offer
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a new offer.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"                Cliquer pour créer une nouvelle offre.\n"
+"              </p>\n"
+"            "
+
+#. module: qoqa_offer
+#: field:qoqa.offer.position,tax_id:0
+msgid "Tax"
+msgstr "Taxe"
+
+#. module: qoqa_offer
+#: constraint:qoqa.offer:0
+msgid "The beginning date must be anterior to the ending date"
+msgstr "La date de départ doit précéder la date de fin."
+
+#. module: qoqa_offer
+#: help:qoqa.offer,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+
+#. module: qoqa_offer
+#: field:qoqa.offer,date_warranty:0
+msgid "Warranty Expiration"
+msgstr "Expiration de la garantie"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_offer_position
+msgid "QoQa Offer Position"
+msgstr "Position d'offre QoQa"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_stock_picking_out
+msgid "Delivery Orders"
+msgstr "Bons de livraisons"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commandes de vente"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers +- 10 days"
+msgstr "Offres +- 10 jours"
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.action_qoqa_buyphrase
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_buyphrase
+msgid "Buyphrases"
+msgstr "Phrases d'achat"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "+- 10 days"
+msgstr "+- 10 jours"
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.action_offer
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_offer
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_offer_config
+#: view:qoqa.offer:0
+msgid "Offers"
+msgstr "Offres"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,message_follower_ids:0
+msgid "Followers"
+msgstr "Followers"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_stock_picking
+msgid "Picking List"
+msgstr "Opération de manutention"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Ref"
+msgstr "Réf"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,image_small:0
+#: field:qoqa.offer.position,image_small:0
+msgid "Thumbnail"
+msgstr "Miniature"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "View Sales Orders"
+msgstr "Voir les commandes"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,stock_bias:0
+#: field:qoqa.offer.position,stock_bias:0
+msgid "Stock Bias"
+msgstr "Biais"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers +- 30 days"
+msgstr "Offres +- 30 jours"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Prices"
+msgstr "Prix"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,main_brand:0
+msgid "Main Brand"
+msgstr "Marque principale"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Configuration"
+msgstr "Configuration"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "With bias:"
+msgstr "Avec biais :"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,shop_kanban_image:0
+msgid "Shop Image"
+msgstr "Image du magasin"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
 msgid "Dates"
 msgstr "Dates"
 
-#. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_qoqa_deal
-#: view:qoqa.deal:0
-msgid "QoQa Deal"
-msgstr "Deal"
+#. module: qoqa_offer
+#: field:qoqa.shop,openerp_id:0
+msgid "Sale Shop"
+msgstr "Magasin"
 
-#. module: qoqa_deal
-#: help:qoqa.deal,message_ids:0
-msgid "Messages and communication history"
-msgstr ""
+#. module: qoqa_offer
+#: selection:qoqa.offer.position,regular_price_type:0
+msgid "Normal Price"
+msgstr "Prix normal"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,stock_progress:0
-#: field:qoqa.deal.variant,stock_progress:0
-msgid "Progress"
-msgstr "Progression"
+#. module: qoqa_offer
+#: field:qoqa.offer,date_end_calendar:0
+msgid "Ends at (Calendar)"
+msgstr "Termine à (calendrier)"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,message_ids:0
-msgid "Messages"
-msgstr ""
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_offer_position_variant
+msgid "QoQa Offer Position Variant"
+msgstr "Variant de position d'offre QoQa"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Search Sales Deal"
-msgstr "Rechercher des Deals"
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_shop
+#: view:qoqa.offer:0
+msgid "QoQa Shop"
+msgstr "Magasin QoQa"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Products"
-msgstr "Produits"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,buy_price:0
+msgid "Buy Price"
+msgstr "Prix d'achat"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: selection:qoqa.deal,state:0
-msgid "Planned"
-msgstr "Planifié"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,date_delivery:0
+msgid "Delivery Date"
+msgstr "Date de livraison"
 
-#. module: qoqa_deal
-#: model:ir.actions.act_window,name:qoqa_deal.picking_dispatch_create_act_window
-msgid "Create Picking Dispatch"
-msgstr "Créer un Picking Dispatch"
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Group by day in +- 10 days."
+msgstr "Grouper par jour, +- 10 jours."
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Sales Deals done"
-msgstr "Deals terminés"
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Month"
+msgstr "Mois"
 
-#. module: qoqa_deal
-#: selection:qoqa.deal,site:0
-msgid "QWine"
-msgstr ""
+#. module: qoqa_offer
+#: field:qoqa.offer,currency_symbol:0
+#: field:qoqa.offer.position,currency_id:0
+msgid "Currency"
+msgstr "Devise"
 
-#. module: qoqa_deal
-#: help:qoqa.deal,message_unread:0
-msgid "If checked new messages require your attention."
-msgstr ""
+#. module: qoqa_offer
+#: field:sale.order.line,qoqa_bind_ids:0
+msgid "QBindings"
+msgstr "QBindings"
 
-#. module: qoqa_deal
-#: field:qoqa.deal.variant,stock_available:0
-msgid "Quantity on Hand"
-msgstr "Quantité disponible"
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Open Sales Orders"
+msgstr "Ouvrir les commandes"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal,state:0
+#. module: qoqa_offer
+#: field:qoqa.offer,date_begin:0
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: qoqa_offer
+#: field:product.template,brand:0
+msgid "Brand"
+msgstr "Marque"
+
+#. module: qoqa_offer
+#: sql_constraint:qoqa.offer.position:0
+msgid "Lot size must be a value greater than 0."
+msgstr "La taille du lot doit être plus grande que 0."
+
+#. module: qoqa_offer
+#: help:qoqa.offer.position,sequence:0
+msgid "The first position is the main one"
+msgstr "La première position est la principale."
+
+#. module: qoqa_offer
+#: field:sale.order.line,offer_position_id:0
+msgid "Offer Position"
+msgstr "Position d'offre"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,stock_progress_remaining:0
+#: field:qoqa.offer.position,stock_progress_remaining:0
+#: field:qoqa.offer.position.variant,stock_progress_remaining:0
+msgid "Remaining (%)"
+msgstr "Restant (%)"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "End"
+msgstr "Fin"
+
+#. module: qoqa_offer
 #: view:stock.picking.out:0
 msgid "Status"
 msgstr "État"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,price_recommended:0
-msgid "Recommended Price"
-msgstr "Prix recommandé"
+#. module: qoqa_offer
+#: field:sale.shop,kanban_image:0
+msgid "Kanban Image"
+msgstr "Image Kanban"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: field:qoqa.deal.variant,stock_reserved:0
-msgid "Reserved"
-msgstr "Réservé"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,top_price:0
+msgid "Top Price"
+msgstr "Top Price"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,site:0
-msgid "Sell on"
-msgstr "Vendu sur"
+#. module: qoqa_offer
+#: field:qoqa.offer,date_begin_calendar:0
+msgid "Begins at (Calendar)"
+msgstr "Begins at (Calendar)"
 
-#. module: qoqa_deal
-#: field:account.invoice,deal_id:0
-#: field:qoqa.deal.variant,deal_id:0
-#: view:sale.order:0
-#: field:sale.order,deal_id:0
-#: field:stock.picking,deal_id:0
-#: view:stock.picking.out:0
-#: field:stock.picking.out,deal_id:0
-msgid "Deal"
-msgstr ""
+#. module: qoqa_offer
+#: field:qoqa.offer,sale_ids:0
+msgid "Sales Orders"
+msgstr "Bulletins de commande"
 
-#. module: qoqa_deal
-#: field:qoqa.deal.variant,sequence:0
-msgid "Sequence"
-msgstr "Séquence"
+#. module: qoqa_offer
+#: field:qoqa.offer,main_position_id:0
+msgid "Main Position"
+msgstr "Position principale"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,price_sale:0
-msgid "Sale Price"
-msgstr "Prix de vente"
+#. module: qoqa_offer
+#: field:qoqa.offer,time_end:0
+msgid "End Time"
+msgstr "Heure de fin"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,image:0
-msgid "Image"
-msgstr "Image"
+#. module: qoqa_offer
+#: field:qoqa.offer,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Is a Follower"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,shipping_max_delay:0
-msgid "Ship before (in days)"
-msgstr "Livrer avant (en jours)"
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_sale_shop
+msgid "Sales Shop"
+msgstr "Magasin"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Sales Deals Ready"
-msgstr "Deals prêts"
+#. module: qoqa_offer
+#: field:qoqa.buyphrase,active:0
+#: field:qoqa.offer,active:0
+#: field:qoqa.offer.position,active:0
+msgid "Active"
+msgstr "Actif"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,month:0
-msgid "Month"
-msgstr "Mois"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,poste_cumbersome_package:0
+msgid "Poste Cumbersome Package"
+msgstr "Poste Cumbersome Package"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,shipping_costs:0
-msgid "Shipping Fees"
-msgstr "Frais de livraison"
+#. module: qoqa_offer
+#: selection:qoqa.offer.position,regular_price_type:0
+msgid "No Price"
+msgstr "Pas de prix"
 
-#. module: qoqa_deal
-#: selection:qoqa.deal,state:0
-msgid "Canceled"
-msgstr "Annulé"
+#. module: qoqa_offer
+#: field:qoqa.offer,lang_id:0
+msgid "Language"
+msgstr "Langue"
 
-#. module: qoqa_deal
-#: help:qoqa.deal,message_summary:0
-msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
-msgstr ""
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer,position_ids:0
+msgid "Positions"
+msgstr "Positions"
 
-#. module: qoqa_deal
-#: model:ir.actions.act_window,name:qoqa_deal.action_deal
-#: model:ir.ui.menu,name:qoqa_deal.menu_qoqa_deal
-#: view:qoqa.deal:0
-msgid "Planning"
-msgstr "Planning"
+#. module: qoqa_offer
+#: field:qoqa.offer,message_summary:0
+msgid "Summary"
+msgstr "Résumé"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-#: selection:qoqa.deal,state:0
-msgid "Done"
-msgstr "Prêt"
+#. module: qoqa_offer
+#: field:qoqa.offer,ref:0
+msgid "Offer Reference"
+msgstr "Référence de l'offre"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Descriptions"
-msgstr "Descriptions"
+#. module: qoqa_offer
+#: field:qoqa.buyphrase,action:0
+msgid "Action"
+msgstr "Action"
 
-#. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_account_invoice
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Search Sales Offer"
+msgstr "Rechercher les offres"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,sum_quantity:0
+#: field:qoqa.offer.position,sum_quantity:0
+#: field:qoqa.offer.position.variant,quantity:0
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: qoqa_offer
+#: help:qoqa.offer,date_end_calendar:0
+msgid "When an ending date is date_begin + 1 day at 00:00 this date is set at date_begin, so the calendar won't display the offer on 2 days"
+msgstr "When an ending date is date_begin + 1 day at 00:00 this date is set at date_begin, so the calendar won't display the offer on 2 days"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Stock:"
+msgstr "Stock :"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_account_invoice
 msgid "Invoice"
 msgstr "Facture"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Cancel"
-msgstr "Annuler"
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Various"
+msgstr "Divers"
 
-#. module: qoqa_deal
-#: view:qoqa.deal:0
-msgid "Close"
-msgstr "Fermer"
+#. module: qoqa_offer
+#: field:qoqa.offer,stock_progress_with_bias:0
+msgid "Remaining with Bias (%)"
+msgstr "Restant avec biais (%)"
 
-#. module: qoqa_deal
-#: field:qoqa.deal,date_begin:0
-msgid "Start Date"
-msgstr "Date de début"
+#. module: qoqa_offer
+#: code:addons/qoqa_offer/qoqa_offer.py:107
+#, python-format
+msgid "...?"
+msgstr "...?"
 
-#. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_sale_order
-msgid "Sales Order"
-msgstr "Commandes de ventes"
+#. module: qoqa_offer
+#: field:qoqa.offer.position,regular_price:0
+msgid "Regular Price"
+msgstr "Regular Price"
 
-#. module: qoqa_deal
-#: model:ir.model,name:qoqa_deal.model_stock_picking_out
-msgid "Delivery Orders"
-msgstr "Bulletins de livraisons"
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Content"
+msgstr "Contenu"
 
-#. module: qoqa_deal
-#: selection:qoqa.deal,site:0
-msgid "QoQa"
-msgstr ""
+#. module: qoqa_offer
+#: field:qoqa.offer,main_product_name:0
+msgid "Main Product Name"
+msgstr "Nom de l'article principal"
 
-#. module: qoqa_deal
-#: selection:qoqa.deal,site:0
-msgid "QSport"
-msgstr ""
+#. module: qoqa_offer
+#: field:qoqa.offer,main_regular_price:0
+#: field:qoqa.offer,main_unit_price:0
+#: field:qoqa.offer.position,unit_price:0
+msgid "Unit Price"
+msgstr "Prix unitaire"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Bias:"
+msgstr "Biais :"
+
+#. module: qoqa_offer
+#: help:sale.shop,kanban_image:0
+msgid "Image displayed on the Kanban views for this shop"
+msgstr "Image affichée sur les vues kanban pour ce magasin"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Stock"
+msgstr "Stock"
+
+#. module: qoqa_offer
+#: field:qoqa.offer.position.variant,product_id:0
+msgid "Product"
+msgstr "Article"
+
+#. module: qoqa_offer
+#: field:qoqa.buyphrase,description:0
+#: field:qoqa.offer,description:0
+msgid "Description"
+msgstr "Description"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,time_begin:0
+msgid "Start Time"
+msgstr "Heure de début"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,note:0
+msgid "Internal Notes"
+msgstr "Notes internes"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,buyphrase_id:0
+msgid "Buyphrase"
+msgstr "Phrase d'achat"
+
+#. module: qoqa_offer
+#: view:qoqa.buyphrase:0
+msgid "QoQa Buyphrases"
+msgstr "Phrases d'achat QoQa"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,variant_ids:0
+msgid "Variants"
+msgstr "Variantes"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,sum_stock_sold:0
+#: field:qoqa.offer.position,sum_stock_sold:0
+#: field:qoqa.offer.position.variant,stock_sold:0
+msgid "Sold"
+msgstr "Vendu"
+
+#. module: qoqa_offer
+#: view:sale.order:0
+msgid "Customer"
+msgstr "Client"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,date_end:0
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,name:0
+msgid "Ref and Name"
+msgstr "Réf. et nom"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_product_template
+#: field:qoqa.offer.position,product_tmpl_id:0
+msgid "Product Template"
+msgstr "Modèle d'article"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,image_medium:0
+#: field:qoqa.offer.position,image_medium:0
+msgid "Medium-sized Image"
+msgstr "Image moyenne"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_delivery_carrier
+msgid "Carrier"
+msgstr "Transporteur"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "+- 30 days"
+msgstr "+- 30 jours"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "％"
+msgstr "％"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_buyphrase
+#: view:qoqa.buyphrase:0
+msgid "QoQa Buyphrase"
+msgstr "Phrase d'achat QoQa"
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.picking_dispatch_create_act_window
+msgid "Create Picking Dispatch"
+msgstr "Créer un Bon de Préparation"
+
+#. module: qoqa_offer
+#: help:qoqa.offer,message_ids:0
+msgid "Messages and communication history"
+msgstr "Messages and communication history"
+
+#. module: qoqa_offer
+#: field:qoqa.offer.position,sequence:0
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,qoqa_shop_id:0
+msgid "Sell on"
+msgstr "Vendre sur"
+
+#. module: qoqa_offer
+#: selection:delivery.carrier,qoqa_type:0
+msgid "Rate"
+msgstr "Frais de livraison"
+
+#. module: qoqa_offer
+#: field:qoqa.offer.position,lot_size:0
+msgid "Lot Size"
+msgstr "Taille du lot"
+
+#. module: qoqa_offer
+#: field:qoqa.offer,datetime_end:0
+msgid "Ends at"
+msgstr "Termine le"
+
+#. module: qoqa_offer
+#: field:qoqa.buyphrase,name:0
+msgid "Phrase"
+msgstr "Phrase"
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,help:qoqa_offer.action_qoqa_buyphrase
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a new buyphrase.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"                Cliquer pour créer une nouvelle phrase d'achat.\n"
+"              </p>\n"
+"            "
 

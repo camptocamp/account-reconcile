@@ -1,0 +1,212 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* wine_ch_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-11 15:08+0000\n"
+"PO-Revision-Date: 2013-12-11 15:08+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: wine_ch_report
+#: view:wine.bottle:0
+msgid "Wine bottlees"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_parent_id
+#: field:wine.class,parent_id:0
+msgid "Parent class"
+msgstr ""
+
+#. module: wine_ch_report
+#: code:addons/wine_ch_report/report/wine_ch_cscv_form.py:44
+#: code:addons/wine_ch_report/report/wine_ch_inventory.py:43
+#: model:ir.actions.act_window,name:wine_ch_report.action_wine_ch_inventory_webkit
+#: model:ir.ui.menu,name:wine_ch_report.menu_wine_ch_inventory
+#, python-format
+msgid "Wine CH Inventory"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model,name:wine_ch_report.model_wine_ch_inventory_wizard
+#: view:wine.ch.inventory.wizard:0
+msgid "Wine CH Report"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_parent_right
+#: field:wine.class,parent_right:0
+msgid "Right Parent"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_bottle_complete_name
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_complete_name
+#: field:wine.bottle,complete_name:0
+#: field:wine.class,complete_name:0
+msgid "Complete name"
+msgstr ""
+
+#. module: wine_ch_report
+#: view:wine.ch.inventory.wizard:0
+msgid "or"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_ch_inventory_wizard_company_id
+#: field:wine.ch.inventory.wizard,company_id:0
+msgid "Company"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_product_template_wine_bottle_id
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_bottle_volume
+#: field:product.template,wine_bottle_id:0
+#: field:wine.bottle,volume:0
+msgid "Volume"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_ch_inventory_wizard_attribute_set_id
+#: field:wine.ch.inventory.wizard,attribute_set_id:0
+msgid "Wine attribute set"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_child_ids
+#: field:wine.class,child_ids:0
+msgid "Children classes"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.actions.act_window,name:wine_ch_report.action_wine_class
+#: model:ir.ui.menu,name:wine_ch_report.menu_wine_class
+#: view:wine.class:0
+msgid "Wine Classes"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.actions.act_window,name:wine_ch_report.action_wine_bottle
+#: model:ir.ui.menu,name:wine_ch_report.menu_wine_bottle
+msgid "Wine Bottles"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_bottle_name
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_name
+#: field:wine.bottle,name:0
+#: field:wine.class,name:0
+msgid "Name"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.actions.act_window,help:wine_ch_report.action_wine_bottle
+#: model:ir.actions.act_window,help:wine_ch_report.action_wine_class
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a new wine class.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_res_company_wine_exploitation_number
+#: field:res.company,wine_exploitation_number:0
+msgid "Wine exploitation number"
+msgstr ""
+
+#. module: wine_ch_report
+#: constraint:wine.class:0
+msgid "Error! You cannot create recursive wine classes."
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model,name:wine_ch_report.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: wine_ch_report
+#: view:wine.class:0
+msgid "wine.classs"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model,name:wine_ch_report.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: wine_ch_report
+#: view:wine.bottle:0
+msgid "wine.bottles"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.actions.report.xml,name:wine_ch_report.wine_ch_inventory_webkit
+msgid "Wine CH Inventory Report"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model,name:wine_ch_report.model_wine_bottle
+msgid "Wine Bottle"
+msgstr ""
+
+#. module: wine_ch_report
+#: view:wine.ch.inventory.wizard:0
+msgid "Print CSCV Form"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_parent_left
+#: field:wine.class,parent_left:0
+msgid "Left Parent"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_bottle_code
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_class_code
+#: field:wine.bottle,code:0
+#: field:wine.class,code:0
+msgid "Code"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_ch_inventory_wizard_inventory_date
+#: field:wine.ch.inventory.wizard,inventory_date:0
+msgid "Inventory date"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model,name:wine_ch_report.model_wine_class
+#: model:ir.model.fields,field_description:wine_ch_report.field_product_template_wine_class_id
+#: field:product.template,wine_class_id:0
+msgid "Wine Class"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.model.fields,field_description:wine_ch_report.field_wine_ch_inventory_wizard_location_ids
+#: field:wine.ch.inventory.wizard,location_ids:0
+msgid "Filter on locations"
+msgstr ""
+
+#. module: wine_ch_report
+#: view:wine.ch.inventory.wizard:0
+msgid "Cancel"
+msgstr ""
+
+#. module: wine_ch_report
+#: view:wine.ch.inventory.wizard:0
+msgid "Print Inventory"
+msgstr ""
+
+#. module: wine_ch_report
+#: model:ir.actions.report.xml,name:wine_ch_report.wine_ch_cscv_form_webkit
+msgid "Wine CH CSCV Form Report"
+msgstr ""
+

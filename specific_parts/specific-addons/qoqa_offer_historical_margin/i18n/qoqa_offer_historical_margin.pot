@@ -18,44 +18,44 @@ msgstr ""
 #. module: qoqa_offer_historical_margin
 #: view:qoqa.offer:0
 msgid "Financial informations"
-msgstr "Informations financières"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: model:ir.model.fields,field_description:qoqa_offer_historical_margin.field_qoqa_offer_subtotal_company
 #: field:qoqa.offer,subtotal_company:0
 msgid "Net Sales"
-msgstr "Ventes Net"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: model:ir.model.fields,field_description:qoqa_offer_historical_margin.field_qoqa_offer_margin_relative
 #: field:qoqa.offer,margin_relative:0
 msgid "Real Margin (%)"
-msgstr "Marge réelle (%)"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: model:ir.actions.act_window,name:qoqa_offer_historical_margin.act_qoqa_offer_act_open_invoice_lines
 msgid "Margin Details"
-msgstr "Détails des marges"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: help:qoqa.offer,margin_relative:0
 msgid "The Real Margin [ Real Margin / sale price ] of the product in relative value based on historical values computed from open and paid invoices.If no real margin set, will display 999.0 (if not invoiced yet for example)."
-msgstr "La marge réelle (Marge réelle / prix de vente) du produit en valeur relative basée sur les valeurs historiques, calculée selon les facture ouvertes et payées. Si il n'y a pas de marge réelle, une valeur de 999.0 sera affichée (pas encore facturé par exemple)."
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: view:qoqa.offer:0
 msgid "Internal Description"
-msgstr "Notes internes"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: help:qoqa.offer,subtotal_company:0
 msgid "The subtotal net sales of all invoice lines linked to this offer."
-msgstr "The sous-total net de toutes les lignes de facture liées à cette offre. "
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: model:ir.model,name:qoqa_offer_historical_margin.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "Ligne de facture"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: view:account.invoice.line:0
@@ -63,32 +63,32 @@ msgstr "Ligne de facture"
 #: model:ir.model,name:qoqa_offer_historical_margin.model_qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer_historical_margin.field_account_invoice_line_offer_id
 msgid "QoQa Offer"
-msgstr "Offre QoQa"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: model:ir.model.fields,field_description:qoqa_offer_historical_margin.field_qoqa_offer_subtotal_cost_price_company
 #: field:qoqa.offer,subtotal_cost_price_company:0
 msgid "Cost"
-msgstr "Coût"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: help:qoqa.offer,subtotal_cost_price_company:0
 msgid "The cost subtotal of all invoice lines linked to this offer."
-msgstr "Le coût (sous-total) de toutes les lignes de facture liées à cette offre."
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: model:ir.model.fields,field_description:qoqa_offer_historical_margin.field_qoqa_offer_margin_absolute
 #: field:qoqa.offer,margin_absolute:0
 msgid "Real Margin"
-msgstr "Marge réelle"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: view:qoqa.offer:0
 msgid "Margin"
-msgstr "Marge"
+msgstr ""
 
 #. module: qoqa_offer_historical_margin
 #: help:qoqa.offer,margin_absolute:0
 msgid "The Real Margin [ sale price - cost price ] of the product in absolute value based on historical values computed from open and paid invoices."
-msgstr "La marge réelle ( Prix de vente - coût ) du produit en valeur absolue basée sur les valeurs historiques, calculée selon les facture ouvertes et payées."
+msgstr ""
 

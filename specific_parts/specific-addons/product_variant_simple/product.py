@@ -31,6 +31,21 @@ class product_template(orm.Model):
             string='Variants'),
     }
 
+    def copy_translations(self, cr, uid, old_id, new_id, context=None):
+        """ When we do not copy the template along the variant,
+        copy_translations sometimes receives 2 identical IDs.
+
+        That's because the ORM follows the o2m to copy the translations,
+        so in that case, it follows 'variant_ids' and for each variant,
+        it copy the translations. One of the variant is the 'new_id'.
+
+        Just skip it.
+        """
+        if context.get('view_is_product_variant'):
+            return
+        super(product_template, self).copy_translations(
+            cr, uid, old_id, new_id, context=context)
+
 
 class product_product(orm.Model):
     _inherit = 'product.product'
@@ -63,6 +78,68 @@ class product_product(orm.Model):
                         if key not in blacklist)
         return data
 
+    def _copy_translation_no_inherits(self, cr, uid, old_id, new_id, context=None):
+        """ Copy the translation of the current model, not following the
+        inherits.
+
+        Nearly a copy of ``copy_translations``, but skip all the
+        inherits fields because the inherits'ed records have not been
+        copied. If we were using the normal method, the translations of
+        the ``_inherits`` would have been copied again and again (x2 at
+        each duplicate).
+
+        """
+        if context is None:
+            context = {}
+        # avoid recursion through already copied records in case of circular relationship
+        seen_map = context.setdefault('__copy_translations_seen',{})
+        if old_id in seen_map.setdefault(self._name,[]):
+            return
+        seen_map[self._name].append(old_id)
+
+        trans_obj = self.pool.get('ir.translation')
+        # TODO it seems fields_get can be replaced by _all_columns (no need for translation)
+        fields = self.fields_get(cr, uid, context=context)
+
+        for field_name, field_def in fields.items():
+            # removing the lang to compare untranslated values
+            context_wo_lang = dict(context, lang=None)
+            old_record, new_record = self.browse(cr, uid, [old_id, new_id], context=context_wo_lang)
+            # we must recursively copy the translations for o2o and o2m
+            if field_def['type'] == 'one2many':
+                target_obj = self.pool.get(field_def['relation'])
+                # here we rely on the order of the ids to match the translations
+                # as foreseen in copy_data()
+                old_children = sorted(r.id for r in old_record[field_name])
+                new_children = sorted(r.id for r in new_record[field_name])
+                for (old_child, new_child) in zip(old_children, new_children):
+                    target_obj.copy_translations(cr, uid, old_child, new_child, context=context)
+            # and for translatable fields we keep them for copy
+            elif field_def.get('translate'):
+                if field_name in self._columns:
+                    trans_name = self._name + "," + field_name
+                    target_id = new_id
+                    source_id = old_id
+                else:  # inherits
+                    continue
+
+                trans_ids = trans_obj.search(cr, uid, [
+                        ('name', '=', trans_name),
+                        ('res_id', '=', source_id)
+                ])
+                user_lang = context.get('lang')
+                for record in trans_obj.read(cr, uid, trans_ids, context=context):
+                    del record['id']
+                    # remove source to avoid triggering _set_src
+                    del record['source']
+                    record.update({'res_id': target_id})
+                    if user_lang and user_lang == record['lang']:
+                        # 'source' to force the call to _set_src
+                        # 'value' needed if value is changed in copy(), want to see the new_value
+                        record['source'] = old_record[field_name]
+                        record['value'] = new_record[field_name]
+                    trans_obj.create(cr, uid, record, context=context)
+
     def copy_translations(self, cr, uid, old_id, new_id, context=None):
         """ When we do not copy the template along the variant,
         copy_translations sometimes receives 2 identical IDs.
@@ -73,7 +150,14 @@ class product_product(orm.Model):
 
         Just skip it.
         """
-        if context.get('view_is_product_variant') and old_id == new_id:
-            return
-        super(product_product, self).copy_translations(
-            cr, uid, old_id, new_id, context=context)
+        if context is None:
+            context = {}
+        if context.get('view_is_product_variant'):
+            if old_id == new_id:
+                return
+            self._copy_translation_no_inherits(cr, uid, old_id, new_id,
+                                               context=context)
+
+        else:
+            super(product_product, self).copy_translations(
+                cr, uid, old_id, new_id, context=context)

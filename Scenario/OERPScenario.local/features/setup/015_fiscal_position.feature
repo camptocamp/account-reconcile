@@ -70,19 +70,3 @@ Feature: Create fiscal position and fiscal position rules
       | date_end           | 2014-12-31                                |
       | use_sale           | True                                      |
       | fiscal_position_id | by oid: scenario.fiscalpos_196            |
-
-
-  @historic_account_tax
-  Scenario: I set the historic account taxes for CH (7.6%,3.6%,2.4%) as inactiv
-    Given I need a "account.tax" with oid: scenario.vat_76
-    And having
-         | key                  | value                                                           |
-         | active               | False                                                            |
-    Given I need a "account.tax" with oid: scenario.vat_36
-    And having
-         | key                  | value                                                           |
-         | active               | False                                                            |
-    Given I need a "account.tax" with oid: scenario.vat_24
-    And having
-         | key                  | value                                                           |
-         | active               | False                                                            |

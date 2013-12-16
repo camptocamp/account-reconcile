@@ -80,7 +80,7 @@ Feature: Configure the CH's accounting
       | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
   @journals
-  Scenario Outline: Create an accounting journal for a Bank Journal
+  Scenario: Create an accounting journal for a Bank Journal
     Given I need a "account.journal" with oid: scenario.journal_bon_achat_ch
     And having:
       | key                       | value                    |

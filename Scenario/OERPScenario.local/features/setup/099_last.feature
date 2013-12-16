@@ -47,12 +47,13 @@ Feature: Configure things which must be done after all the other things... updat
   Scenario: I create default filters for the wine move analysis
     Given I need an "ir.filters" with oid: scenario.filter_wine_form_b_ch
     And having:
-      | key      | value                                                                                                          |
-      | name     | Formulaire B en litres de vin CH                                                                               |
-      | model_id | report.wine.move.analysis                                                                                      |
-      | domain   | [['attribute_set_id', '=', 2], ['location_id', '=', 12], ['location_dest_id', '=', 9], ['state', '=', 'done']] |
-      | context  | {'default_attribute_set_id': 2, 'default_location_id': 12, 'default_location_dest_id': 9}                      |
-      | user_id  | False                                                                                                          |
+      | key        | value                                                                                                          |
+      | name       | Formulaire B en litres de vin CH                                                                               |
+      | model_id   | report.wine.move.analysis                                                                                      |
+      | domain     | [['attribute_set_id', '=', 2], ['location_id', '=', 12], ['location_dest_id', '=', 9], ['state', '=', 'done']] |
+      | context    | {'default_attribute_set_id': 2, 'default_location_id': 12, 'default_location_dest_id': 9}                      |
+      | user_id    | False                                                                                                          |
+      | is_default | True                                                                                                           |
     Given I need an "ir.filters" with oid: scenario.filter_liquor_form_b_ch
     And having:
       | key      | value                                                                                                          |

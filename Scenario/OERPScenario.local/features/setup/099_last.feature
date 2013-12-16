@@ -30,11 +30,15 @@ Feature: Configure things which must be done after all the other things... updat
         WHERE module = 'scenario'
         AND name IN ('ir_values_product_taxes_ch',
                      'ir_values_product_taxes_fr',
+                     'ir_values_product_taxes_holding',
                      'ir_values_product_supplier_taxes_ch',
                      'ir_values_product_supplier_taxes_fr',
+                     'ir_values_product_supplier_taxes_holding',
                      'ir_values_template_taxes_ch',
                      'ir_values_template_taxes_fr',
+                     'ir_values_template_taxes_holding',
                      'ir_values_template_supplier_taxes_ch',
-                     'ir_values_template_supplier_taxes_fr')
+                     'ir_values_template_supplier_taxes_fr',
+                     'ir_values_template_supplier_taxes_holding')
     )
     """

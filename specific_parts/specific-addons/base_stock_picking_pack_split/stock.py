@@ -96,7 +96,7 @@ class stock_picking(orm.Model):
                     # ensure written change is readable
                     move.refresh()
 
-                    # find created move with resudual products we can't use
+                    # find created move with residual products we can't use
                     # pick.move_lines as browse record isn't refreshed
                     new_move_ids = move_obj.search(
                         cr, uid,

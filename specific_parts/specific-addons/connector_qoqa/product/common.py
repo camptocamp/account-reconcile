@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
@@ -66,9 +67,18 @@ class product_product(orm.Model):
          'The Internal Reference must be unique')
     ]
 
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+
+        return super(product_product, self).copy(cr, uid, id, default, context)
+
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
             default = {}
+        product = self.browse(cr, uid, id, context=context)
+        if product.default_code:
+            default['default_code'] = product.default_code + _('-copy')
         default['qoqa_bind_ids'] = False
         return super(product_product, self).copy_data(cr, uid, id,
                                                       default=default,

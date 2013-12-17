@@ -21,3 +21,4 @@
 
 from . import wine_ch_inventory
 from . import wine_ch_cscv_form
+from . import wine_move_analysis

@@ -77,7 +77,7 @@ class OfferPositionExportMapper(ExportMapper):
               (floatqoqa('top_price'), 'top_price'),
               ('ecotax', 'ecotax'),
               (date_to_iso8601('date_delivery'), 'delivery_at'),
-              (date_to_iso8601('booking_delivery'), 'booking_delivery'),
+              ('booking_delivery', 'booking_delivery'),
               ('order_url', 'order_url'),
               ('stock_bias', 'stock_bias'),
               ('max_sellable', 'max_sellable'),

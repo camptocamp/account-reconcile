@@ -25,14 +25,15 @@
 Split picking per pack
 ======================
 
-This module adds a function on stock.picking to divide it in mutiple pack
-based on a simple rule. In the future it could be the base of more complexe
+This module adds a function on stock.picking to divide it in mutiple packs
+based on a simple rule. In the future it could be the base of more complex
 packaging.
 
-The basic function of this module is a simple maximum of product a pack can
-contains. In case of multiple packs we consider all product are the same size.
+The basic function of this module is a simple maximum of product a pack
+can contain. In case of multiple packs we consider that all products
+have the same size.
 
-So different product can be added in a same pack.
+So different products can be added in a same pack.
 
 Contributors
 ------------
@@ -44,8 +45,7 @@ Contributors
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
  'depends': ['stock'],
- 'data': [
-     ],
+ 'data': [],
  'test': [],
  'installable': True,
  'auto_install': False,

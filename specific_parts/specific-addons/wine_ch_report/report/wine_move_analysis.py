@@ -21,7 +21,6 @@
 
 from openerp import tools
 from openerp.osv import orm, fields
-from openerp.addons.decimal_precision import decimal_precision as dp
 
 
 class report_wine_move_analysis(orm.Model):

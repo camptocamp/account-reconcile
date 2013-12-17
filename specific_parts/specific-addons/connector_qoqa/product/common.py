@@ -61,6 +61,11 @@ class product_product(orm.Model):
             required=True),  # field overridden to add "required"
     }
 
+    _sql_constraints = [
+        ('default_code_uniq', 'unique(default_code)',
+         'The Internal Reference must be unique')
+    ]
+
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
             default = {}

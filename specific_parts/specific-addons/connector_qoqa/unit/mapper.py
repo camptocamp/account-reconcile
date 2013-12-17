@@ -76,7 +76,8 @@ def ifmissing(field, value):
 
 
 def iso8601_to_utc(field):
-    """ A modifier intended to be used on the ``direct`` mappings.
+    """ A modifier intended to be used on the ``direct`` mappings for
+    importers.
 
     A QoQa date is formatted using the ISO 8601 format.
     Convert an ISO 8601 timestamp to an UTC datetime as string
@@ -101,7 +102,8 @@ def iso8601_to_utc(field):
 
 
 def date_to_iso8601(field):
-    """ A modifier intended to be used on the ``direct`` mappings.
+    """ A modifier intended to be used on the ``direct`` mappings for
+    exporters.
 
     Convert dates to the ISO 8601 format.
 
@@ -128,8 +130,7 @@ def date_to_iso8601(field):
         else:
             fmt = DEFAULT_SERVER_DATETIME_FORMAT
         dt = datetime.strptime(value, fmt)
-        utc_date = utc_datetime_to_iso8601(dt)
-        return utc_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        return utc_datetime_to_iso8601(dt)
     return modifier
 
 

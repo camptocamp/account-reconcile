@@ -96,8 +96,9 @@ class stock_picking(orm.Model):
                     # ensure written change is readable
                     move.refresh()
 
-                    # find created move with residual products we can't use
-                    # pick.move_lines as browse record isn't refreshed
+                    # Find created move with residual products using search as
+                    # we can't use pick.move_lines. Because browse record isn't
+                    # refreshed
                     new_move_ids = move_obj.search(
                         cr, uid,
                         [('picking_id', '=', pick.id),
@@ -105,9 +106,14 @@ class stock_picking(orm.Model):
                         context=context)
 
                     if new_move_ids:
+                        # split function must have created only 1 move
+                        assert len(new_move_ids) == 1
                         known_move_ids.append(new_move_ids[0])
                         new_move = move_obj.browse(cr, uid, new_move_ids,
                                                    context=context)[0]
                         moves_to_split.append(new_move)
                     else:
+                        # If qty to split == move qty (qty_to_pack == 0),
+                        # the move was simply given a new tracking_id.
+                        # We add it to check it again.
                         moves_to_split.append(move)

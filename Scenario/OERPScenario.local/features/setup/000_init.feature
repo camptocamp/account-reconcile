@@ -95,6 +95,8 @@ Feature: Parameter the new database
         | wine_ch_report                                  |
         | qoqa_claim                                      |
         | qoqa_base_data                                  |
+        | base_stock_picking_pack_split                   |
+        | qoqa_label_dispatch_pack_split                  |
         | account_fiscal_position_rule                    |
         | account_fiscal_position_rule_sale               |
         | web_translate_dialog                            |

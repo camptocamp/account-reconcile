@@ -79,7 +79,7 @@ Feature: Configure the CH's accounting
       | scenario.journal_reglement_visa_mastercard_ch | Reglement Visa Mastercard | RVISA  |   11010 |
       | scenario.journal_swissbilling                 | Swissbilling              | SWISS  |   11011 |
 
-  @journals
+  @bon @journals
   Scenario: Create an accounting journal for a Bank Journal
     Given I need a "account.journal" with oid: scenario.journal_bon_achat_ch
     And having:

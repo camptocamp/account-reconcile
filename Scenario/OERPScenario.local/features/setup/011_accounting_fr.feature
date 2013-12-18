@@ -94,6 +94,20 @@ Feature: Configure the FR's accounting
       | scenario.journal_i_paiement_3x   | Import Paiement 3x  | IPAY3X |
       | scenario.journal_i_paypal_fr     | Import Paypal       | IPAYPA |
 
+  @bon @journals
+  Scenario: Create an accounting journal for a Bank Journal
+    Given I need a "account.journal" with oid: scenario.journal_bon_achat_fr
+    And having:
+      | key                       | value                    |
+      | name                      | Bon d'achat              |
+      | code                      | BONS                     |
+      | type                      | bank                     |
+      | company_id                | by oid: scenario.qoqa_fr |
+      | default_debit_account_id  | by code: 467100          |
+      | default_credit_account_id | by code: 707000          |
+      | allow_date                | false                    |
+      # TODO accounts are wrong
+
   @currency_rate
   Scenario Outline: I create the historic currency rates so we can import sales orders from 2005
     Given I need a "res.currency.rate" with oid: scenario.rate_euro_<year>

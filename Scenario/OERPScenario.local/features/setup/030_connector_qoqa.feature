@@ -25,7 +25,12 @@ Feature: Configure the connector's backend
          | client_key          | obfRm2CNDY40DBbcvqZLmF2rUFRyjBxM                                                 |
          | client_secret       | IoDEPZcUlYH1P5DNkkrtsD4ok227yQaTlFFnMeJ3bcUYkfWDVmFwI2VTnRjcht9hjC7qX52KIPaX4G4T |
          | access_token        | nF3DqSXq0FImmPHGWth2gQTnqHpqjOeN                                                 |
-
+  Given I am configuring the company with ref "scenario.qoqa_ch"
+    And I set global property named "property_voucher_journal_id_ch" for model "qoqa.backend" and field "property_voucher_journal_id" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "account.journal" using column "name" and value "Bon d'achat"
+  Given I am configuring the company with ref "scenario.qoqa_fr"
+    And I set global property named "property_voucher_journal_id_fr" for model "qoqa.backend" and field "property_voucher_journal_id" for company with ref "scenario.qoqa_fr"
+    And the property is related to model "account.journal" using column "name" and value "Bon d'achat"
 
   @automatic_workflows
   Scenario: Configure Sales Automatic Workflows
@@ -48,7 +53,7 @@ Feature: Configure the connector's backend
       | validate_order   | False       |
       | validate_invoice | True        |
 
-  @sale_payment_methods @gift
+  @bon @sale_payment_methods
   Scenario: Create the automatic payment methods for gift cards
   Given I need a "payment.method" with oid: scenario.payment_method_gift_card_ch
     And having:
@@ -67,6 +72,7 @@ Feature: Configure the connector's backend
       | workflow_process_id | by oid: sale_automatic_workflow.automatic_validation |
       | import_rule         | paid                                                 |
       | qoqa_id             | 9                                                    |
+      | journal_id          | by oid: scenario.journal_bon_achat_fr                |
       | sequence            | 99                                                   |
       | company_id          | by oid:  scenario.qoqa_fr                            |
 

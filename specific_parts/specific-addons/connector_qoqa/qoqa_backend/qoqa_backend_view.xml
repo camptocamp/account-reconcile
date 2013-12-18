@@ -111,6 +111,11 @@
                                         string="Import in background"/>
                                 </group>
                             </page>
+                            <page name="advanced_configuration" string="Advanced Configuration">
+                                <group>
+                                    <field name="property_voucher_journal_id" required="1"/>
+                                </group>
+                            </page>
                             <page name="import_one" string="Single Imports" groups="base.group_no_one">
                                 <group>
                                     <div>

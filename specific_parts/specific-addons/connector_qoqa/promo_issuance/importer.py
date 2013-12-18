@@ -159,6 +159,7 @@ class BaseLineMapper(ImportMapper):
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
+              # TODO check if 'date' is created_at or date
               (iso8601_to_utc('date'), 'date'),
               ('label', 'name'),
               ]
@@ -278,7 +279,10 @@ class VoucherIssuanceMapper(ImportMapper):
     def move_vals(self, record):
         cr, uid = self.session.cr, self.session.uid
         context = self.session.context
-        journal_id = 44
+        journal = self.backend_record.voucher_journal_id
+        if not journal:
+            raise MappingError('No journal defined for the vouchers.\n'
+                               'Please configure it on the QoQa backend')
         date = record['date']
         ref = _('Issuance Voucher %s') % record['voucher_id']
         company_binder = self.get_binder_for_model('res.company')
@@ -286,7 +290,7 @@ class VoucherIssuanceMapper(ImportMapper):
         assert company_id
 
         move_obj = self.session.pool['account.move']
-        vals = move_obj.account_move_prepare(cr, uid, journal_id, date=date,
+        vals = move_obj.account_move_prepare(cr, uid, journal.id, date=date,
                                              ref=ref, company_id=company_id,
                                              context=context)
         return vals
@@ -325,7 +329,7 @@ class VoucherIssuanceLineImport(BaseIssuanceImport):
             'journal_id': line.journal_id.id,
             'period_id': line.period_id.id,
             'name': line.name,
-            'account_id': 1483,  # TODO
+            'account_id': line.journal_id.default_credit_account_id.id,
             'move_id': line.move_id.id,
             'partner_id': line.partner_id.id if line.partner_id else False,
             'currency_id': line.currency_id.id if line.currency_id else False,
@@ -341,14 +345,18 @@ class VoucherIssuanceLineMapper(BaseLineMapper):
     _model_name = 'qoqa.voucher.issuance.line'
 
     direct = (BaseLineMapper.direct +
-              [(backend_to_m2o('voucher_id', binding='qoqa.voucher.issuance'),
-                'move_id'),
-               (qoqafloat('amount'), 'credit'),
+              [(qoqafloat('amount'), 'credit'),
                ])
 
     @mapping
-    def account(self, record):
-        return {'account_id': 1483}
+    def from_move(self, record):
+        binder = self.get_binder_for_model('qoqa.voucher.issuance')
+        move_id = binder.to_openerp(record['voucher_id'], unwrap=True)
+        move = self.session.browse('account.move', move_id)
+        values = {'move_id': move_id,
+                  'account_id': move.journal_id.default_debit_account_id.id
+                  }
+        return values
 
     @mapping
     def partner_id(self, record):

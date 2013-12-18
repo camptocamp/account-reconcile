@@ -75,6 +75,14 @@ class qoqa_backend(orm.Model):
         'access_token_secret': fields.char('OAuth Token Secret'),
         'debug': fields.boolean('Debug'),
 
+        'property_voucher_journal_id': fields.property(
+            'account.journal',
+            type='many2one',
+            relation='account.journal',
+            view_load=True,
+            string='Journal for Vouchers',
+            domain="[('type', '=', 'bank')]"),
+
         'import_product_template_from_date': fields.datetime(
             'Import product templates from date', required=True),
         'import_product_product_from_date': fields.datetime(

@@ -85,10 +85,13 @@ class qoqa_backend(orm.Model):
             'Import Addresses from date', required=True),
         'import_sale_order_from_date': fields.datetime(
             'Import Sales Orders from date', required=True),
+        'import_promo_issuance_from_date': fields.datetime(
+            'Import Promo Issuances from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
         'import_variant_id': fields.char('Variant ID'),
         'import_offer_id': fields.char('Offer ID'),
         'import_offer_position_id': fields.char('Offer Position ID'),
+        'import_promo_issuance_id': fields.char('Promo Issuance ID'),
 
         'date_really_import': fields.datetime(
             'Import historic only until', required=True,
@@ -108,6 +111,7 @@ class qoqa_backend(orm.Model):
         'import_res_partner_from_date': '2005-12-12 00:00:00',
         'import_address_from_date': '2005-12-12 00:00:00',
         'import_sale_order_from_date': '2005-12-12 00:00:00',
+        'import_promo_issuance_from_date': '2005-12-12 00:00:00',
         'date_really_import': '2014-01-01 00:00:00',
         'date_import_inactive': '2012-01-01 00:00:00',
     }
@@ -201,6 +205,12 @@ class qoqa_backend(orm.Model):
                                context=context)
         return True
 
+    def import_promo_issuance(self, cr, uid, ids, context=None):
+        self._import_from_date(cr, uid, ids, 'qoqa.promo.issuance.line',
+                               'import_promo_issuance_from_date',
+                               context=context)
+        return True
+
     def _import_one(self, cr, uid, ids, model, field, context=None):
         session = ConnectorSession(cr, uid, context=context)
         for backend in self.browse(cr, uid, ids, context=context):
@@ -225,6 +235,11 @@ class qoqa_backend(orm.Model):
                          'import_offer_position_id', context=context)
         return True
 
+    def import_one_promo_issuance(self, cr, uid, ids, context=None):
+        self._import_one(cr, uid, ids, 'qoqa.promo.issuance.line',
+                         'import_promo_issuance_id', context=context)
+        return True
+
     def import_one_offer(self, cr, uid, ids, context=None):
         self._import_one(cr, uid, ids, 'qoqa.offer',
                          'import_offer_id', context=context)
@@ -244,4 +259,8 @@ class qoqa_backend(orm.Model):
 
     def _scheduler_import_address(self, cr, uid, context=None):
         self._exec_scheduler_callback(cr, uid, self.import_address,
+                                      context=context)
+
+    def _scheduler_promo_issuance(self, cr, uid, context=None):
+        self._exec_scheduler_callback(cr, uid, self.import_promo_issuance,
                                       context=context)

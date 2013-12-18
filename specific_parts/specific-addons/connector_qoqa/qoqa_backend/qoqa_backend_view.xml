@@ -97,6 +97,19 @@
                                         class="oe_highlight"
                                         string="Import in background"/>
                                 </group>
+                                <group>
+                                    <div>
+                                        <label string="Import promo issuances since"
+                                            class="oe_inline"/>
+                                        <field name="import_promo_issuance_from_date"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_promo_issuance"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import in background"/>
+                                </group>
                             </page>
                             <page name="import_one" string="Single Imports" groups="base.group_no_one">
                                 <group>
@@ -147,6 +160,19 @@
                                             nolabel="1"/>
                                     </div>
                                     <button name="import_one_offer_position"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import"/>
+                                </group>
+                                <group>
+                                    <div>
+                                        <label string="Import 1 promo issuance line"
+                                            class="oe_inline"/>
+                                        <field name="import_promo_issuance_id"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_one_promo_issuance"
                                         type="object"
                                         class="oe_highlight"
                                         string="Import"/>

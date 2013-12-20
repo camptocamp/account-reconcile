@@ -1,7 +1,7 @@
 # TODO: replace 1.0.x with the version number installed on production.
 #       replace 1.0.y with the new version
 
-@upgrade_from_1.0.x
+@upgrade_from_1.0.x @qoqa
 
 Feature: upgrade to 1.0.y
 

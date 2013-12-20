@@ -262,7 +262,7 @@ class PromoIssuanceMapper(BaseIssuanceMapper):
         journal_id = 46
         # TODO convert from iso8601 and extract the date only
         date = record['created_at']
-        ref = _('Promo Issuance %s') % record['promo_id']
+        ref = unicode(record['promo_id'])
         company_binder = self.get_binder_for_model('res.company')
         company_id = company_binder.to_openerp(record['company_id'])
         assert company_id
@@ -317,7 +317,7 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
                                user.company_id.name)
         # TODO convert from iso8601 and extract the date only
         date = record['created_at']
-        ref = _('Voucher Issuance %s') % record['voucher_id']
+        ref = unicode(record['voucher_id'])
         company_binder = self.get_binder_for_model('res.company')
         company_id = company_binder.to_openerp(record['company_id'])
         assert company_id

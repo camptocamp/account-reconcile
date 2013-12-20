@@ -85,11 +85,11 @@ class AccountingIssuanceBatchImporter(DelayedBatchImport):
 
     def _import_record(self, record_id, **kwargs):
         """ Delay the import of the records"""
-        import_issuance_line.delay(self.session,
-                                   self.model._name,
-                                   self.backend_record.id,
-                                   record_id,
-                                   **kwargs)
+        import_accounting_issuance.delay(self.session,
+                                         self.model._name,
+                                         self.backend_record.id,
+                                         record_id,
+                                         **kwargs)
 
 
 @qoqa

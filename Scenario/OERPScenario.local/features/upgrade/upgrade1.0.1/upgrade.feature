@@ -9,19 +9,15 @@ Feature: upgrade to 1.0.1
       | connector_qoqa            |
     Then my modules should have been installed and models reloaded
 
-    # Scenario: reconfigure sales
-    #   Given I am configuring the company with ref "base.main_company"
-    #   Given I need a "sale.config.settings" with oid: scen.sale_settings_doremi
-    #    And having:
-    #    | name                        | value   |
-    #    | group_sale_delivery_address | true    |
-    #    | group_discount_per_so_line  | true    |
-    #    | group_multiple_shops        | true    |
-    #    | group_invoice_deli_orders   | true    |
-    #    | group_invoice_so_lines      | true    |
-    #    | group_sale_pricelist        | true    |
-    #    | default_order_policy        | picking |
-    #    Then execute the setup
+  @qoqa_backend
+  Scenario: Configure the QoQa backend
+    Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
+    Given I am configuring the company with ref "scenario.qoqa_ch"
+    And I set global property named "property_voucher_journal_id_ch" for model "qoqa.backend" and field "property_voucher_journal_id" for company with ref "scenario.qoqa_ch"
+    And the property is related to model "account.journal" using column "name" and value "Bon d'achat"
+    Given I am configuring the company with ref "scenario.qoqa_fr"
+    And I set global property named "property_voucher_journal_id_fr" for model "qoqa.backend" and field "property_voucher_journal_id" for company with ref "scenario.qoqa_fr"
+    And the property is related to model "account.journal" using column "name" and value "Bon d'achat"
 
   Scenario: update application version
     Given I set the version of the instance to "1.0.1"

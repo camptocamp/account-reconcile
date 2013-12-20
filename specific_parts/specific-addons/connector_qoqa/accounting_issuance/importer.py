@@ -27,16 +27,12 @@ We call the adapter of only of them but it returns the data for vouchers
 and promos issuances.
 
 ::
-    Promos:
-    qoqa.promo.issuance      -> account.move
-    qoqa.promo.issuance.line -> account.move.line
-
-    Vouchers:
-    qoqa.voucher.issuance      -> account.move
+    qoqa.accounting.issuance   -> account.move
+    qoqa.promo.issuance.line   -> account.move.line
     qoqa.voucher.issuance.line -> account.move.line
 
     API:
-    /api/v1/promo_accounting
+    /api/v1/promo_accounting_group
 
 
 """
@@ -47,13 +43,16 @@ import logging
 
 from openerp.tools.translate import _
 from openerp.addons.connector.connector import ConnectorUnit
-from openerp.addons.connector.exception import IDMissingInBackend
+from openerp.addons.connector.exception import (IDMissingInBackend,
+                                                MappingError
+                                                )
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   only_create,
                                                   backend_to_m2o,
                                                   ImportMapper,
+                                                  ImportMapChild,
                                                   )
 from ..exception import QoQaError
 from ..connector import get_environment
@@ -67,23 +66,22 @@ _logger = logging.getLogger(__name__)
 
 
 @job
-def import_issuance_line(session, model_name, backend_id, qoqa_id, force=False):
-    """ Import an issuance line from QoQa """
+def import_accounting_issuance(session, model_name, backend_id, qoqa_id, force=False):
+    """ Import an accounting issuance group from QoQa """
     env = get_environment(session, model_name, backend_id)
-    dispatcher = env.get_connector_unit(IssuanceLineDispatcher)
+    dispatcher = env.get_connector_unit(AccountingIssuanceDispatcher)
     dispatcher.dispatch(qoqa_id, force=force)
 
 
 @qoqa
-class IssuanceLineBatchImport(DelayedBatchImport):
-    """ Import the QoQa Promo Issuance.
+class AccountingIssuanceBatchImporter(DelayedBatchImport):
+    """ Import the QoQa Accounting Issuances.
 
-    For every id in in the list of users, a delayed job is created.
+    For every id in in the list of moves, a delayed job is created.
     Import from a date
+
     """
-    _model_name = ['qoqa.promo.issuance.line',
-                   'qoqa.voucher.issuance.line',
-                   ]
+    _model_name = 'qoqa.accounting.issuance',
 
     def _import_record(self, record_id, **kwargs):
         """ Delay the import of the records"""
@@ -95,30 +93,28 @@ class IssuanceLineBatchImport(DelayedBatchImport):
 
 
 @qoqa
-class IssuanceLineDispatcher(ConnectorUnit):
-    """ Call the correct importer whether the line is promo or voucher. """
+class AccountingIssuanceDispatcher(ConnectorUnit):
+    """ Call the correct importer whether the move is promo or voucher. """
 
-    _model_name = ['qoqa.promo.issuance.line',
-                   'qoqa.voucher.issuance.line',
-                   ]
+    _model_name = 'qoqa.accounting.issuance'
 
     def __init__(self, environment):
         """
         :param environment: current environment (backend, session, ...)
         :type environment: :py:class:`connector.connector.Environment`
         """
-        super(IssuanceLineDispatcher, self).__init__(environment)
+        super(AccountingIssuanceDispatcher, self).__init__(environment)
         self.qoqa_id = None
         self.qoqa_record = None
 
-    def _get_model(self):
+    def _get_base_importer(self):
         assert self.qoqa_record['voucher_id'] or self.qoqa_record['promo_id']
         assert not(self.qoqa_record['voucher_id'] and
                    self.qoqa_record['promo_id'])
         if self.qoqa_record['promo_id']:
-            return 'qoqa.promo.issuance.line'
+            return PromoIssuanceImporter
         else:
-            return 'qoqa.voucher.issuance.line'
+            return VoucherIssuanceImporter
 
     def _get_qoqa_data(self):
         """ Return the raw QoQa data for ``self.qoqa_id`` """
@@ -135,12 +131,11 @@ class IssuanceLineDispatcher(ConnectorUnit):
             self.qoqa_record = self._get_qoqa_data()
         except IDMissingInBackend:
             return _('Record does no longer exist in QoQa')
-        importer = self.get_connector_unit_for_model(BaseIssuanceImport,
-                                                     self._get_model())
+        importer = self.get_connector_unit_for_model(self._get_base_importer())
         return importer.run(qoqa_id, force=force, record=self.qoqa_record)
 
 
-class BaseIssuanceImport(QoQaImportSynchronizer):
+class BaseIssuanceImporter(QoQaImportSynchronizer):
 
     def _import(self, binding_id):
         company_binder = self.get_binder_for_model('res.company')
@@ -152,38 +147,30 @@ class BaseIssuanceImport(QoQaImportSynchronizer):
             raise QoQaError('No connector user configured for company %s' %
                             company.name)
         with self.session.change_user(user.id):
-            super(BaseIssuanceImport, self)._import(binding_id)
+            super(BaseIssuanceImporter, self)._import(binding_id)
 
-
-class BaseLineMapper(ImportMapper):
-
-    direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('updated_at'), 'updated_at'),
-              # TODO check if 'date' is created_at or date
-              (iso8601_to_utc('date'), 'date'),
-              ('label', 'name'),
-              ]
-
-    @mapping
-    def currency(self, record):
-        company_binder = self.get_binder_for_model('res.company')
-        company_id = company_binder.to_openerp(record['company_id'])
-        assert company_id
-        company = self.session.browse('res.company', company_id)
-        binder = self.get_binder_for_model('res.currency')
-        currency_id = binder.to_openerp(record['currency_id'])
-        if currency_id != company.currency_id.id:
-            return {'currency_id': currency_id}
+    def _is_uptodate(self, binding_id):
+        # already imported, skip it (unless if `force` is used)
+        assert self.qoqa_record
+        if self.binder.to_openerp(self.qoqa_id) is not None:
+            return True
 
 
 @qoqa
-class PromoIssuanceImport(BaseIssuanceImport):
-    _model_name = 'qoqa.promo.issuance'
+class PromoIssuanceImporter(BaseIssuanceImporter):
+    _model_name = 'qoqa.accounting.issuance'
+
+    @property
+    def mapper(self):
+        if self._mapper is None:
+            get_unit = self.environment.get_connector_unit
+            self._mapper = get_unit(PromoIssuanceMapper)
+        return self._mapper
 
 
 @qoqa
 class PromoIssuanceMapper(ImportMapper):
-    _model_name = 'qoqa.promo.issuance'
+    _model_name = 'qoqa.accounting.issuance'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
@@ -208,7 +195,7 @@ class PromoIssuanceMapper(ImportMapper):
 
 
 @qoqa
-class PromoIssuanceLineImport(BaseIssuanceImport):
+class PromoIssuanceLineImporter(BaseIssuanceImporter):
     _model_name = 'qoqa.promo.issuance.line'
 
     def _import_promo(self):
@@ -222,13 +209,38 @@ class PromoIssuanceLineImport(BaseIssuanceImport):
         binder = self.get_binder_for_model('qoqa.promo.issuance')
         if binder.to_openerp(promo_id) is None:
             importer = self.get_connector_unit_for_model(
-                BaseIssuanceImport, model='qoqa.promo.issuance')
+                BaseIssuanceImporter, model='qoqa.promo.issuance')
             importer.run(promo_id, record=self.qoqa_record)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
         assert self.qoqa_record
         self._import_promo()
+
+
+class BaseLineMapper(ImportMapper):
+
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
+              ('label', 'name'),
+              ]
+
+    @mapping
+    def date(self, record):
+        return {'date': self.options.date}
+
+    @mapping
+    def partner(self, record):
+        return {'partner_id': self.options.partner_id}
+
+    @mapping
+    def journal(self, record):
+        return {'journal_id': self.options.journal_id}
+
+    @mapping
+    def currency(self, record):
+        if self.options.currency_id:
+            return {'currency_id': self.options.currency_id}
 
 
 @qoqa
@@ -263,13 +275,20 @@ class PromoIssuanceLineMapper(BaseLineMapper):
 
 
 @qoqa
-class VoucherIssuanceImport(BaseIssuanceImport):
-    _model_name = 'qoqa.voucher.issuance'
+class VoucherIssuanceImporter(BaseIssuanceImporter):
+    _model_name = 'qoqa.accounting.issuance'
+
+    @property
+    def mapper(self):
+        if self._mapper is None:
+            get_unit = self.environment.get_connector_unit
+            self._mapper = get_unit(VoucherIssuanceMapper)
+        return self._mapper
 
 
 @qoqa
 class VoucherIssuanceMapper(ImportMapper):
-    _model_name = 'qoqa.voucher.issuance'
+    _model_name = 'qoqa.accounting.issuance'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
@@ -279,11 +298,16 @@ class VoucherIssuanceMapper(ImportMapper):
     def move_vals(self, record):
         cr, uid = self.session.cr, self.session.uid
         context = self.session.context
-        journal = self.backend_record.voucher_journal_id
+        # read the backend record in the company's context
+        backend = self.session.browse('qoqa.backend', self.backend_record.id)
+        journal = backend.property_voucher_journal_id
         if not journal:
-            raise MappingError('No journal defined for the vouchers.\n'
-                               'Please configure it on the QoQa backend')
-        date = record['date']
+            user = self.session.browse('res.users', uid)
+            raise MappingError('No journal defined for the vouchers for '
+                               'company %s.\n'
+                               'Please configure it on the QoQa backend.',
+                               user.company_id.name)
+        date = record['created_at']
         ref = _('Issuance Voucher %s') % record['voucher_id']
         company_binder = self.get_binder_for_model('res.company')
         company_id = company_binder.to_openerp(record['company_id'])
@@ -295,76 +319,90 @@ class VoucherIssuanceMapper(ImportMapper):
                                              context=context)
         return vals
 
-
-@qoqa
-class VoucherIssuanceLineImport(BaseIssuanceImport):
-    _model_name = 'qoqa.voucher.issuance.line'
-
-    def _import_voucher(self):
-        """ Create a move for the lines.
-
-        Pass the full record to the importer so it can use any
-        values.
-
-        """
-        voucher_id = self.qoqa_record['voucher_id']
-        binder = self.get_binder_for_model('qoqa.voucher.issuance')
-        if binder.to_openerp(voucher_id) is None:
-            importer = self.get_connector_unit_for_model(
-                BaseIssuanceImport, model='qoqa.voucher.issuance')
-            importer.run(voucher_id, record=self.qoqa_record)
-
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
-        assert self.qoqa_record
-        self._import_voucher()
-
-    def _after_import(self, binding_id):
-        """ Hook called at the end of the import """
-        line = self.session.browse(self.model._name, binding_id).openerp_id
-        self._create_counterpart(line)
-
-    def _create_counterpart(self, line):
+    def _counterpart(self, items, values):
+        assert len(items) == 1
+        # items is something like: [
+        # (0, 0, {'account_id': 1460,
+        #         'account_tax_id': 3,
+        #         'created_at': '2013-12-19 15:47:28',
+        #         'credit': 11.0,
+        #         'date': '2013-12-19 15:47:28',
+        #         'name': u'Vente bons cadeaux',
+        #         'partner_id': 124381,
+        #         'updated_at': '2013-12-19 15:47:28'})
+        # ]
+        line = items[0][2]
+        partner_id = line['partner_id']
+        partner = self.session.browse('res.partner', partner_id)
         move_line = {
-            'journal_id': line.journal_id.id,
-            'period_id': line.period_id.id,
-            'name': line.name,
-            'account_id': line.journal_id.default_credit_account_id.id,
-            'move_id': line.move_id.id,
-            'partner_id': line.partner_id.id if line.partner_id else False,
-            'currency_id': line.currency_id.id if line.currency_id else False,
+            'journal_id': line['journal_id'],
+            # 'period_id': map_record['period_id'],
+            'name': line['name'],
+            'account_id': partner.property_account_receivable.id,
+            'partner_id': partner_id,
             'credit': 0,
-            'debit': line.credit,
-            'date': line.date,
+            'debit': line['credit'],
+            'date': line['date'],
         }
-        self.session.create('account.move.line', move_line)
+        if line.get('currency_id'):
+            move_line['currency_id'] = line['currency_id']
+        return (0, 0, move_line)
+
+    def _partner_id(self, map_record):
+        binder = self.get_binder_for_model('qoqa.res.partner')
+        partner_id = binder.to_openerp(map_record.source['user_id'],
+                                       unwrap=True)
+        # TODO add import_dependency
+        assert partner_id, \
+            "user_id should have been imported in import_dependencies"
+        return partner_id
+
+    def _company_id(self, map_record):
+        company_binder = self.get_binder_for_model('res.company')
+        company_id = company_binder.to_openerp(map_record.source['company_id'])
+        assert company_id
+        return company_id
+
+    def _currency_id(self, map_record, company_id):
+        company = self.session.browse('res.company', company_id)
+        binder = self.get_binder_for_model('res.currency')
+        currency_id = binder.to_openerp(map_record.source['currency_id'])
+        assert currency_id
+        if currency_id != company.currency_id.id:
+            return currency_id
+
+    def finalize(self, map_record, values):
+        lines = map_record.source['promo_accountings']
+        options = self.options.copy()
+        company_id = self._company_id(map_record)
+        options.update({
+            'journal_id': values['journal_id'],
+            'partner_id': self._partner_id(map_record),
+            'company_id': company_id,
+            'date': values['date'],
+        })
+        currency_id = self._currency_id(map_record, company_id)
+        if currency_id:
+            options['currency_id'] = currency_id
+        map_child = self._get_map_child_unit('qoqa.voucher.issuance.line')
+        items = map_child.get_items(lines, map_record,
+                                    'qoqa_voucher_line_ids',
+                                    options=options)
+        values['qoqa_voucher_line_ids'] = items
+        values['line_id'] = [self._counterpart(items, values)]
+        return values
 
 
 @qoqa
 class VoucherIssuanceLineMapper(BaseLineMapper):
     _model_name = 'qoqa.voucher.issuance.line'
 
-    direct = (BaseLineMapper.direct +
-              [(qoqafloat('amount'), 'credit'),
-               ])
+    @mapping
+    def credit(self, record):
+        return {'credit': -record['amount'] / 100}
 
     @mapping
-    def from_move(self, record):
-        binder = self.get_binder_for_model('qoqa.voucher.issuance')
-        move_id = binder.to_openerp(record['voucher_id'], unwrap=True)
-        move = self.session.browse('account.move', move_id)
-        values = {'move_id': move_id,
-                  'account_id': move.journal_id.default_debit_account_id.id
-                  }
-        return values
-
-    @mapping
-    def partner_id(self, record):
-        return {'partner_id': False}
-
-    @mapping
-    def taxes(self, record):
-        binder = self.get_binder_for_model('account.tax')
-        tax_id = binder.to_openerp(record['vat_id'])
-        # tax code may change per line
-        return {'account_tax_id': tax_id}
+    def credit_account(self, record):
+        journal_id = self.options.journal_id
+        journal = self.session.browse('account.journal', journal_id)
+        return {'account_id': journal.default_credit_account_id.id}

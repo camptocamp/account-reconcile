@@ -49,11 +49,11 @@ from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
 
-class qoqa_promo_issuance(orm.Model):
-    _name = 'qoqa.promo.issuance'
+class qoqa_accounting_issuance(orm.Model):
+    _name = 'qoqa.accounting.issuance'
     _inherit = 'qoqa.binding'
     _inherits = {'account.move': 'openerp_id'}
-    _description = 'QoQa Promo Issuance'
+    _description = 'QoQa Accounting Issuance'
 
     _columns = {
         'openerp_id': fields.many2one('account.move',
@@ -62,6 +62,15 @@ class qoqa_promo_issuance(orm.Model):
                                       ondelete='cascade'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
+        # either promo, either voucher
+        'voucher_id': fields.float('QoQa Voucher ID'),
+        'promo_id': fields.float('QoQa Promo ID'),
+        'qoqa_promo_line_ids': fields.one2many('qoqa.promo.issuance.line',
+                                               'qoqa_issuance_id',
+                                               'QoQa Promo Issuance Line'),
+        'qoqa_voucher_line_ids': fields.one2many('qoqa.voucher.issuance.line',
+                                                 'qoqa_issuance_id',
+                                                 'QoQa Voucher Issuance Line'),
     }
 
     _sql_constraints = [
@@ -83,6 +92,12 @@ class qoqa_promo_issuance_line(orm.Model):
                                       ondelete='cascade'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
+        'qoqa_issuance_id': fields.many2one('qoqa.accounting.issuance',
+                                            'QoQa Accounting Issuance',
+                                            required=True,
+                                            readonly=True,
+                                            ondelete='cascade',
+                                            select=True),
     }
 
     _sql_constraints = [
@@ -90,26 +105,17 @@ class qoqa_promo_issuance_line(orm.Model):
          "A promo issuance line with the same ID on QoQa already exists")
     ]
 
-
-class qoqa_voucher_issuance(orm.Model):
-    _name = 'qoqa.voucher.issuance'
-    _inherit = 'qoqa.binding'
-    _inherits = {'account.move': 'openerp_id'}
-    _description = 'QoQa Voucher Issuance'
-
-    _columns = {
-        'openerp_id': fields.many2one('account.move',
-                                      string='Journal Entry',
-                                      required=True,
-                                      ondelete='cascade'),
-        'created_at': fields.datetime('Created At (on QoQa)'),
-        'updated_at': fields.datetime('Updated At (on QoQa)'),
-    }
-
-    _sql_constraints = [
-        ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A voucher issuance with the same ID on QoQa already exists")
-    ]
+    def create(self, cr, uid, vals, context=None):
+        # rebind lines with the move as they are created
+        # through _inherits
+        binding_id = vals['qoqa_issuance_id']
+        issuance_obj = self.pool['qoqa.accounting.issuance']
+        binding = issuance_obj.read(cr, uid, binding_id,
+                                    ['openerp_id'], context=context)
+        issuance_id = binding['openerp_id']
+        vals['move_id'] = issuance_id[0]
+        return super(qoqa_promo_issuance_line, self
+                     ).create(cr, uid, vals, context=context)
 
 
 class qoqa_voucher_issuance_line(orm.Model):
@@ -125,6 +131,12 @@ class qoqa_voucher_issuance_line(orm.Model):
                                       ondelete='cascade'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),
+        'qoqa_issuance_id': fields.many2one('qoqa.accounting.issuance',
+                                            'QoQa Accounting Issuance',
+                                            required=True,
+                                            readonly=True,
+                                            ondelete='cascade',
+                                            select=True),
     }
 
     _sql_constraints = [
@@ -132,32 +144,35 @@ class qoqa_voucher_issuance_line(orm.Model):
          "A voucher issuance line with the same ID on QoQa already exists")
     ]
 
+    def create(self, cr, uid, vals, context=None):
+        # rebind lines with the move as they are created
+        # through _inherits
+        binding_id = vals['qoqa_issuance_id']
+        issuance_obj = self.pool['qoqa.accounting.issuance']
+        binding = issuance_obj.read(cr, uid, binding_id,
+                                    ['openerp_id'], context=context)
+        issuance_id = binding['openerp_id']
+        vals['move_id'] = issuance_id[0]
+        return super(qoqa_voucher_issuance_line, self
+                     ).create(cr, uid, vals, context=context)
+
 
 class account_move(orm.Model):
     _inherit = 'account.move'
 
     _columns = {
-        'qoqa_promo_issuance_bind_ids': fields.one2many(
-            'qoqa.promo.issuance',
-            'openerp_id',
-            string='QoQa Promo Issuances'),
-        'qoqa_voucher_issuance_bind_ids': fields.one2many(
+        'qoqa_accounting_issuance_bind_ids': fields.one2many(
             'qoqa.voucher.issuance',
             'openerp_id',
-            string='QoQa Voucher Issuances'),
+            string='QoQa Accounting Issuances'),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
             default = {}
-        default.update({
-            'qoqa_promo_issuance_bind_ids': False,
-            'qoqa_voucher_issuance_bind_ids': False,
-        })
+        default['qoqa_accounting_issuance_bind_ids'] = False
         return super(account_move, self
                      ).copy_data(cr, uid, id, default=default, context=context)
-
-
 
 
 class account_move_line(orm.Model):
@@ -198,8 +213,6 @@ class account_move_line(orm.Model):
 
 
 @qoqa
-class qoqa_promo_issuance(QoQaAdapter):
-    _model_name = ['qoqa.promo.issuance.line',
-                   'qoqa.voucher.issuance.line',
-                   ]
-    _endpoint = 'promo_accounting'
+class qoqa_accounting_issuance(QoQaAdapter):
+    _model_name = 'qoqa.accounting.issuance',
+    _endpoint = 'promo_accounting_group'

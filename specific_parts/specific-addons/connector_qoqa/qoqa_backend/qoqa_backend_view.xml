@@ -99,13 +99,13 @@
                                 </group>
                                 <group>
                                     <div>
-                                        <label string="Import promo issuances since"
+                                        <label string="Import accounting issuances since"
                                             class="oe_inline"/>
-                                        <field name="import_promo_issuance_from_date"
+                                        <field name="import_accounting_issuance_from_date"
                                             class="oe_inline"
                                             nolabel="1"/>
                                     </div>
-                                    <button name="import_promo_issuance"
+                                    <button name="import_accounting_issuance"
                                         type="object"
                                         class="oe_highlight"
                                         string="Import in background"/>
@@ -113,7 +113,7 @@
                             </page>
                             <page name="advanced_configuration" string="Advanced Configuration">
                                 <group>
-                                    <field name="property_voucher_journal_id" required="1"/>
+                                    <field name="property_voucher_journal_id"/>
                                 </group>
                             </page>
                             <page name="import_one" string="Single Imports" groups="base.group_no_one">
@@ -171,13 +171,13 @@
                                 </group>
                                 <group>
                                     <div>
-                                        <label string="Import 1 promo issuance line"
+                                        <label string="Import 1 accounting issuance group"
                                             class="oe_inline"/>
-                                        <field name="import_promo_issuance_id"
+                                        <field name="import_accounting_issuance_id"
                                             class="oe_inline"
                                             nolabel="1"/>
                                     </div>
-                                    <button name="import_one_promo_issuance"
+                                    <button name="import_one_accounting_issuance"
                                         type="object"
                                         class="oe_highlight"
                                         string="Import"/>

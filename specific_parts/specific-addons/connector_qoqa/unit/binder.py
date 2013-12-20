@@ -164,9 +164,8 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.address',
                    'qoqa.sale.order',
                    'qoqa.sale.order.line',
-                   'qoqa.promo.issuance',
+                   'qoqa.accounting.issuance',
                    'qoqa.promo.issuance.line',
-                   'qoqa.voucher.issuance',
                    'qoqa.voucher.issuance.line',
                    ]
     _sync_date_field = 'sync_date'

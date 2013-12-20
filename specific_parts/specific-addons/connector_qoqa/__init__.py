@@ -16,7 +16,7 @@ from . import qoqa_offer
 from . import qoqa_offer_position
 from . import qoqa_offer_position_variant
 from . import qoqa_buyphrase
-from . import promo_issuance
+from . import accounting_issuance
 from . import promo
 from . import static_binding
 from . import wizard

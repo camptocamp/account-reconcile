@@ -359,7 +359,7 @@ class SaleOrderImportMapper(ImportMapper):
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
         try:
-            methods = (_get_payment_method(self, payment, company_id)
+            methods = ((payment, _get_payment_method(self, payment, company_id))
                        for payment in qpayments)
         except FailedJobError:
             if historic_import(self, record).historic:
@@ -368,11 +368,14 @@ class SaleOrderImportMapper(ImportMapper):
                 # historical sales orders.
                 return
             raise
-        methods = (method for method in methods if method)
-        methods = sorted(methods, key=attrgetter('sequence'))
+        methods = (method for method in methods if method[1])
+        methods = sorted(methods, key=lambda m: m[1].sequence)
         if not methods:
             return
-        return {'payment_method_id': methods[0].id}
+        method = methods[0]
+        transaction_id = method[0].get('transaction')
+        return {'payment_method_id': method[1].id,
+                'transaction_id': transaction_id}
 
     @mapping
     def from_invoice(self, record):

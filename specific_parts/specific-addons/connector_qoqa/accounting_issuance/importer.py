@@ -175,7 +175,58 @@ class PromoIssuanceImporter(BaseIssuanceImporter):
 
 
 @qoqa
-class PromoIssuanceMapper(ImportMapper):
+class VoucherIssuanceImporter(BaseIssuanceImporter):
+    _model_name = 'qoqa.accounting.issuance'
+
+    @property
+    def mapper(self):
+        if self._mapper is None:
+            get_unit = self.environment.get_connector_unit
+            self._mapper = get_unit(VoucherIssuanceMapper)
+        return self._mapper
+
+
+class BaseIssuanceMapper(ImportMapper):
+
+    def _partner_id(self, map_record):
+        binder = self.get_binder_for_model('qoqa.res.partner')
+        partner_id = binder.to_openerp(map_record.source['user_id'],
+                                       unwrap=True)
+        assert partner_id, \
+            "user_id should have been imported in import_dependencies"
+        return partner_id
+
+    def _company_id(self, map_record):
+        company_binder = self.get_binder_for_model('res.company')
+        company_id = company_binder.to_openerp(map_record.source['company_id'])
+        assert company_id
+        return company_id
+
+    def _currency_id(self, map_record, company_id):
+        company = self.session.browse('res.company', company_id)
+        binder = self.get_binder_for_model('res.currency')
+        currency_id = binder.to_openerp(map_record.source['currency_id'])
+        assert currency_id
+        if currency_id != company.currency_id.id:
+            return currency_id
+
+    def _line_options(self, map_record, values):
+        options = self.options.copy()
+        company_id = self._company_id(map_record)
+        options.update({
+            'journal_id': values['journal_id'],
+            'partner_id': self._partner_id(map_record),
+            'company_id': company_id,
+            'date': values['date'],
+        })
+        currency_id = self._currency_id(map_record, company_id)
+        if currency_id:
+            options['currency_id'] = currency_id
+        return options
+
+
+@qoqa
+class PromoIssuanceMapper(BaseIssuanceMapper):
     _model_name = 'qoqa.accounting.issuance'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
@@ -199,101 +250,19 @@ class PromoIssuanceMapper(ImportMapper):
                                              context=context)
         return vals
 
-
-@qoqa
-class PromoIssuanceLineImporter(BaseIssuanceImporter):
-    _model_name = 'qoqa.promo.issuance.line'
-
-    def _import_promo(self):
-        """ Create a move for the lines.
-
-        Pass the full record to the importer so it can use any
-        values.
-
-        """
-        promo_id = self.qoqa_record['promo_id']
-        binder = self.get_binder_for_model('qoqa.promo.issuance')
-        if binder.to_openerp(promo_id) is None:
-            importer = self.get_connector_unit_for_model(
-                BaseIssuanceImporter, model='qoqa.promo.issuance')
-            importer.run(promo_id, record=self.qoqa_record)
-
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
-        assert self.qoqa_record
-        self._import_promo()
-
-
-class BaseLineMapper(ImportMapper):
-
-    direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('updated_at'), 'updated_at'),
-              ('label', 'name'),
-              ]
-
-    @mapping
-    def date(self, record):
-        return {'date': self.options.date}
-
-    @mapping
-    def partner(self, record):
-        return {'partner_id': self.options.partner_id}
-
-    @mapping
-    def journal(self, record):
-        return {'journal_id': self.options.journal_id}
-
-    @mapping
-    def currency(self, record):
-        if self.options.currency_id:
-            return {'currency_id': self.options.currency_id}
+    def finalize(self, map_record, values):
+        lines = map_record.source['promo_accountings']
+        map_child = self._get_map_child_unit('qoqa.voucher.issuance.line')
+        options = self._line_options(map_record, values)
+        items = map_child.get_items(lines, map_record,
+                                    'qoqa_promo_line_ids',
+                                    options=options)
+        values['qoqa_promo_line_ids'] = items
+        return values
 
 
 @qoqa
-class PromoIssuanceLineMapper(BaseLineMapper):
-    _model_name = 'qoqa.promo.issuance.line'
-
-    direct = (BaseLineMapper.direct +
-              [(backend_to_m2o('promo_id', binding='qoqa.promo.issuance'),
-                'move_id'),
-               ])
-
-    @mapping
-    def amount(self, record):
-        # TODO: can be either credit either debit
-        # no sign in the API currently
-        return {'debit': record['amount'] / 100}
-
-    @mapping
-    def account(self, record):
-        return {'account_id': 1483}
-
-    @mapping
-    def partner_id(self, record):
-        return {'partner_id': False}
-
-    @mapping
-    def taxes(self, record):
-        binder = self.get_binder_for_model('account.tax')
-        tax_id = binder.to_openerp(record['vat_id'])
-        # tax code may change per line
-        return {'account_tax_id': tax_id}
-
-
-@qoqa
-class VoucherIssuanceImporter(BaseIssuanceImporter):
-    _model_name = 'qoqa.accounting.issuance'
-
-    @property
-    def mapper(self):
-        if self._mapper is None:
-            get_unit = self.environment.get_connector_unit
-            self._mapper = get_unit(VoucherIssuanceMapper)
-        return self._mapper
-
-
-@qoqa
-class VoucherIssuanceMapper(ImportMapper):
+class VoucherIssuanceMapper(BaseIssuanceMapper):
     _model_name = 'qoqa.accounting.issuance'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
@@ -359,49 +328,72 @@ class VoucherIssuanceMapper(ImportMapper):
             move_line['currency_id'] = line['currency_id']
         return (0, 0, move_line)
 
-    def _partner_id(self, map_record):
-        binder = self.get_binder_for_model('qoqa.res.partner')
-        partner_id = binder.to_openerp(map_record.source['user_id'],
-                                       unwrap=True)
-        # TODO add import_dependency
-        assert partner_id, \
-            "user_id should have been imported in import_dependencies"
-        return partner_id
-
-    def _company_id(self, map_record):
-        company_binder = self.get_binder_for_model('res.company')
-        company_id = company_binder.to_openerp(map_record.source['company_id'])
-        assert company_id
-        return company_id
-
-    def _currency_id(self, map_record, company_id):
-        company = self.session.browse('res.company', company_id)
-        binder = self.get_binder_for_model('res.currency')
-        currency_id = binder.to_openerp(map_record.source['currency_id'])
-        assert currency_id
-        if currency_id != company.currency_id.id:
-            return currency_id
-
     def finalize(self, map_record, values):
         lines = map_record.source['promo_accountings']
-        options = self.options.copy()
-        company_id = self._company_id(map_record)
-        options.update({
-            'journal_id': values['journal_id'],
-            'partner_id': self._partner_id(map_record),
-            'company_id': company_id,
-            'date': values['date'],
-        })
-        currency_id = self._currency_id(map_record, company_id)
-        if currency_id:
-            options['currency_id'] = currency_id
         map_child = self._get_map_child_unit('qoqa.voucher.issuance.line')
+        options = self._line_options(map_record, values)
         items = map_child.get_items(lines, map_record,
                                     'qoqa_voucher_line_ids',
                                     options=options)
         values['qoqa_voucher_line_ids'] = items
         values['line_id'] = [self._counterpart(items, values)]
         return values
+
+
+class BaseLineMapper(ImportMapper):
+
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
+              ('label', 'name'),
+              ]
+
+    @mapping
+    def date(self, record):
+        return {'date': self.options.date}
+
+    @mapping
+    def partner(self, record):
+        return {'partner_id': self.options.partner_id}
+
+    @mapping
+    def journal(self, record):
+        return {'journal_id': self.options.journal_id}
+
+    @mapping
+    def currency(self, record):
+        if self.options.currency_id:
+            return {'currency_id': self.options.currency_id}
+
+
+@qoqa
+class PromoIssuanceLineMapper(BaseLineMapper):
+    _model_name = 'qoqa.promo.issuance.line'
+
+    direct = (BaseLineMapper.direct +
+              [(backend_to_m2o('promo_id', binding='qoqa.promo.issuance'),
+                'move_id'),
+               ])
+
+    @mapping
+    def amount(self, record):
+        # TODO: can be either credit either debit
+        # no sign in the API currently
+        return {'debit': record['amount'] / 100}
+
+    @mapping
+    def account(self, record):
+        return {'account_id': 1483}
+
+    @mapping
+    def partner_id(self, record):
+        return {'partner_id': False}
+
+    @mapping
+    def taxes(self, record):
+        binder = self.get_binder_for_model('account.tax')
+        tax_id = binder.to_openerp(record['vat_id'])
+        # tax code may change per line
+        return {'account_tax_id': tax_id}
 
 
 @qoqa

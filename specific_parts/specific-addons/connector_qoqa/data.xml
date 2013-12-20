@@ -24,6 +24,48 @@
             <field name="debug" eval="1"/>
         </record>
 
+        <record model="qoqa.promo.type" id="promo_type_customer_service">
+            <field name="name">Customer service</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="connector_ecommerce.product_product_discount"/>
+            <field name="qoqa_id">1</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_marketing">
+            <field name="name">Marketing</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">2</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_affiliation">
+            <field name="name">Affiliation</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">3</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_staff">
+            <field name="name">Staff</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">4</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_mailing">
+            <field name="name">Mailing</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">5</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_refund_coupon">
+            <field name="name">Bon remboursement</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_refund_coupon"/>
+            <field name="qoqa_id"></field>
+        </record>
+
         <record id="excep_wrong_total_amount" model="sale.exception">
             <field name="name">Total Amount differs from QoQa</field>
             <field name="description">The amount computed in OpenERP doesn't match with the amount in QoQa.</field>

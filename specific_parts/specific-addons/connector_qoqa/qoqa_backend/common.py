@@ -82,7 +82,10 @@ class qoqa_backend(orm.Model):
             relation='account.journal',
             view_load=True,
             string='Journal for Vouchers',
-            domain="[('type', '=', 'bank')]"),
+            domain="[('type', '=', 'general')]"),
+        'promo_type_ids': fields.one2many(
+            'qoqa.promo.type', 'backend_id',
+            string='Promo Types'),
 
         'import_product_template_from_date': fields.datetime(
             'Import product templates from date', required=True),

@@ -19,7 +19,10 @@
 #
 ##############################################################################
 
+from openerp.osv import orm, fields
+
 from ..unit.backend_adapter import QoQaAdapter
+from ..unit.binder import QoQaDirectBinder
 from ..backend import qoqa
 
 
@@ -27,3 +30,52 @@ from ..backend import qoqa
 class QoQaPromo(QoQaAdapter):
     _model_name = 'qoqa.promo'
     _endpoint = 'promo'
+
+
+class qoqa_promo_type(orm.Model):
+    """ Promo types on QoQa.
+
+    Allow to configure the accounting journals and products for
+    the promotions.
+
+    Promos are:
+
+        1 Customer service
+        2 Marketing
+        3 Affiliation
+        4 Staff
+        5 Mailing
+
+    On the backend:
+
+        http://admin.test02.qoqa.com/promoType
+
+    """
+    _name = 'qoqa.promo.type'
+    _inherit = 'qoqa.binding'
+    _description = 'QoQa Promo Type'
+
+    _columns = {
+        'name': fields.char('Name'),
+        'property_journal_id': fields.property(
+            'account.journal',
+            type='many2one',
+            relation='account.journal',
+            view_load=True,
+            string='Journal',
+            domain="[('type', '=', 'general')]"),
+        'product_id': fields.many2one(
+            'product.product',
+            string='Product',
+            required=True),
+    }
+
+
+@qoqa
+class PromoTypeBinder(QoQaDirectBinder):
+    _model_name = 'qoqa.promo.type'
+
+    def bind(self, external_id, binding_id):
+        """ Company are not synchronized, raise an error """
+        raise TypeError('Promo Types are not synchronized, thus, bind() '
+                        'is not applicable')

@@ -112,8 +112,18 @@
                                 </group>
                             </page>
                             <page name="advanced_configuration" string="Advanced Configuration">
-                                <group>
+                                <group string="Voucher" name="voucher">
                                     <field name="property_voucher_journal_id"/>
+                                </group>
+                                <group string="Promo Types" name="promo">
+                                    <field name="promo_type_ids" nolabel="1">
+                                        <tree string="Promo Types" editable="bottom">
+                                            <field name="name"/>
+                                            <field name="property_journal_id"/>
+                                            <field name="product_id"/>
+                                            <field name="qoqa_id"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page name="import_one" string="Single Imports" groups="base.group_no_one">

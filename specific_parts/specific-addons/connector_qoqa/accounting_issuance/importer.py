@@ -258,8 +258,15 @@ class PromoIssuanceMapper(BaseIssuanceMapper):
     def move_vals(self, record):
         cr, uid = self.session.cr, self.session.uid
         context = self.session.context
-        # TODO
-        journal_id = 46
+        promo_type = self._promo_type(record)
+        journal = promo_type.property_journal_id
+        if not journal:
+            user = self.session.browse('res.users', self.session.uid)
+            raise MappingError('No journal defined for the promo type "%s" '
+                               'for company "%s".\n'
+                               'Please configure it on the QoQa backend.' %
+                               (promo_type.name, user.company_id.name))
+
         # TODO convert from iso8601 and extract the date only
         date = record['created_at']
         ref = unicode(record['promo_id'])
@@ -268,19 +275,20 @@ class PromoIssuanceMapper(BaseIssuanceMapper):
         assert company_id
 
         move_obj = self.session.pool['account.move']
-        vals = move_obj.account_move_prepare(cr, uid, journal_id, date=date,
+        vals = move_obj.account_move_prepare(cr, uid, journal.id, date=date,
                                              ref=ref, company_id=company_id,
                                              context=context)
         return vals
 
+    def _promo_type(self, record):
+        promo_binder = self.get_binder_for_model('qoqa.promo.type')
+        qpromo_type_id = record['promo_type_id']
+        promo_type_id = promo_binder.to_openerp(qpromo_type_id)
+        return self.session.browse('qoqa.promo.type', promo_type_id)
+
     def _product(self, map_record):
-        promo_type_id = map_record.source['promo_type_id']
-        product_ref = promo_products.get(promo_type_id)
-        session = self.session
-        model_data_obj = session.pool['ir.model.data']
-        __, product_id = model_data_obj.get_object_reference(
-            session.cr, session.uid, *product_ref)
-        return session.browse('product.product', product_id)
+        promo_type = self._promo_type(map_record.source)
+        return promo_type.product_id
 
     def finalize(self, map_record, values):
         lines = map_record.source['promo_accountings']
@@ -313,7 +321,7 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
             user = self.session.browse('res.users', uid)
             raise MappingError('No journal defined for the vouchers for '
                                'company %s.\n'
-                               'Please configure it on the QoQa backend.',
+                               'Please configure it on the QoQa backend.' %
                                user.company_id.name)
         # TODO convert from iso8601 and extract the date only
         date = record['created_at']

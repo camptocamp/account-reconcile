@@ -51,13 +51,6 @@ QOQA_ITEM_SHIPPING = 2
 QOQA_ITEM_DISCOUNT = 3
 QOQA_ITEM_SERVICE = 4
 
-# http://admin.test02.qoqa.com/promoType
-QOQA_PROMO_CUSTOMER_SERVICE = 1  # discount
-QOQA_PROMO_MARKETING = 2  # marketing
-QOQA_PROMO_AFFILIATION = 3  # marketing
-QOQA_PROMO_STAFF = 4  # marketing
-QOQA_PROMO_MAILING = 5  # marketing
-
 
 @qoqa
 class SaleOrderLineImportMapper(ImportMapper):
@@ -75,19 +68,6 @@ class SaleOrderLineImportMapper(ImportMapper):
               ('quantity', 'qoqa_quantity'),  # original quantity, without lot
               ('item_id', 'qoqa_id'),
               ]
-
-    promo_products = {
-        QOQA_PROMO_CUSTOMER_SERVICE: ('connector_ecommerce',
-                                      'product_product_discount'),
-        QOQA_PROMO_MARKETING: ('qoqa_base_data',
-                               'product_product_marketing_coupon'),
-        QOQA_PROMO_AFFILIATION: ('qoqa_base_data',
-                                 'product_product_marketing_coupon'),
-        QOQA_PROMO_STAFF: ('qoqa_base_data',
-                           'product_product_marketing_coupon'),
-        QOQA_PROMO_MAILING: ('qoqa_base_data',
-                             'product_product_marketing_coupon'),
-    }
 
     def finalize(self, map_record, values):
         """ complete the values values from the 'item' sub-record """
@@ -145,19 +125,22 @@ class SaleOrderLineImportMapper(ImportMapper):
         del values['price_unit']  # keep the price of the direct mapping
         return values
 
+    def _promo_type(self, promo):
+        qpromo_type_id = promo['promo_type_id']
+        promo_binder = self.get_binder_for_model('qoqa.promo.type')
+        promo_type_id = promo_binder.to_openerp(qpromo_type_id)
+        if promo_type_id is None:
+            raise MappingError("Type of promo '%s' is not supported." %
+                               promo_type_id)
+        return self.session.browse('qoqa.promo.type', promo_type_id)
+
     def _item_discount(self, item, promo):
         # line builder
         builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
-
-        # choose product according to the promo type
-        promo_type_id = promo['promo_type_id']
-        product_ref = self.promo_products.get(promo_type_id)
-        if product_ref is None:
-            raise MappingError("Type of promo '%s' is not supported" %
-                               promo_type_id)
-
+        promo_type = self._promo_type(promo)
         builder.price_unit = 0
-        builder.product_ref = product_ref
+        # choose product according to the promo type
+        builder.product = promo_type.product_id
         builder.code = item['promo_id']
         values = builder.get_line()
         del values['price_unit']  # keep the price of the direct mapping

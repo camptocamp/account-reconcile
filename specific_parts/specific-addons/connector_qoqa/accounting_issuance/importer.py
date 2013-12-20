@@ -345,6 +345,7 @@ class BaseLineMapper(ImportMapper):
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ('label', 'name'),
+              ('id', 'qoqa_id'),
               ]
 
     @mapping

@@ -88,6 +88,7 @@ class VariantImportMapper(ImportMapper):
         (backend_to_m2o('product_id', binding='qoqa.product.template'),
          'product_tmpl_id'),
         ('warranty', 'warranty'),
+        (qoqafloat('cost_price'), 'standard_price'),
     ]
 
     @mapping

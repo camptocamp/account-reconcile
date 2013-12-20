@@ -155,6 +155,12 @@ class BaseIssuanceImporter(QoQaImportSynchronizer):
         if self.binder.to_openerp(self.qoqa_id) is not None:
             return True
 
+    def _import_dependencies(self):
+        """ Import the dependencies for the record """
+        assert self.qoqa_record
+        rec = self.qoqa_record
+        self._import_dependency(rec['user_id'], 'qoqa.res.partner')
+
 
 @qoqa
 class PromoIssuanceImporter(BaseIssuanceImporter):
@@ -320,6 +326,12 @@ class VoucherIssuanceMapper(ImportMapper):
         return vals
 
     def _counterpart(self, items, values):
+        """ Create a counterpart for the credit line given by the API.
+
+        The API gives only the credit line, and we create the receivable
+        line.
+
+        """
         assert len(items) == 1
         # items is something like: [
         # (0, 0, {'account_id': 1460,
@@ -336,7 +348,6 @@ class VoucherIssuanceMapper(ImportMapper):
         partner = self.session.browse('res.partner', partner_id)
         move_line = {
             'journal_id': line['journal_id'],
-            # 'period_id': map_record['period_id'],
             'name': line['name'],
             'account_id': partner.property_account_receivable.id,
             'partner_id': partner_id,

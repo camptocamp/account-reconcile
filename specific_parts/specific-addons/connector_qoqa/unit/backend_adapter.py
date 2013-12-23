@@ -145,7 +145,7 @@ class QoQaAdapter(CRUDAdapter):
             def rec():
                 with open('/tmp/err.html', 'w') as f:
                     f.write(response.content)
-            # import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
             raise QoQaResponseNotParsable(err)
         return parsed
 

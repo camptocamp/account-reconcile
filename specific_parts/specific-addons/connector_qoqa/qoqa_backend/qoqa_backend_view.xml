@@ -97,6 +97,34 @@
                                         class="oe_highlight"
                                         string="Import in background"/>
                                 </group>
+                                <group>
+                                    <div>
+                                        <label string="Import accounting issuances since"
+                                            class="oe_inline"/>
+                                        <field name="import_accounting_issuance_from_date"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_accounting_issuance"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import in background"/>
+                                </group>
+                            </page>
+                            <page name="advanced_configuration" string="Advanced Configuration">
+                                <group string="Voucher" name="voucher">
+                                    <field name="property_voucher_journal_id"/>
+                                </group>
+                                <group string="Promo Types" name="promo">
+                                    <field name="promo_type_ids" nolabel="1">
+                                        <tree string="Promo Types" editable="bottom">
+                                            <field name="name"/>
+                                            <field name="property_journal_id"/>
+                                            <field name="product_id"/>
+                                            <field name="qoqa_id"/>
+                                        </tree>
+                                    </field>
+                                </group>
                             </page>
                             <page name="import_one" string="Single Imports" groups="base.group_no_one">
                                 <group>
@@ -147,6 +175,19 @@
                                             nolabel="1"/>
                                     </div>
                                     <button name="import_one_offer_position"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import"/>
+                                </group>
+                                <group>
+                                    <div>
+                                        <label string="Import 1 accounting issuance group"
+                                            class="oe_inline"/>
+                                        <field name="import_accounting_issuance_id"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_one_accounting_issuance"
                                         type="object"
                                         class="oe_highlight"
                                         string="Import"/>

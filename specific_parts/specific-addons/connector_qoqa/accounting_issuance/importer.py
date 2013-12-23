@@ -49,8 +49,6 @@ from openerp.addons.connector.exception import (IDMissingInBackend,
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  only_create,
-                                                  backend_to_m2o,
                                                   ImportMapper,
                                                   ImportMapChild,
                                                   )
@@ -60,7 +58,7 @@ from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
-from ..unit.mapper import iso8601_to_utc, qoqafloat
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -224,26 +222,6 @@ class BaseIssuanceMapper(ImportMapper):
         if currency_id:
             options['currency_id'] = currency_id
         return options
-
-
-QOQA_PROMO_CUSTOMER_SERVICE = 1  # discount
-QOQA_PROMO_MARKETING = 2  # marketing
-QOQA_PROMO_AFFILIATION = 3  # marketing
-QOQA_PROMO_STAFF = 4  # marketing
-QOQA_PROMO_MAILING = 5  # marketing
-# TODO replace by config
-promo_products = {
-    QOQA_PROMO_CUSTOMER_SERVICE: ('connector_ecommerce',
-                                    'product_product_discount'),
-    QOQA_PROMO_MARKETING: ('qoqa_base_data',
-                            'product_product_marketing_coupon'),
-    QOQA_PROMO_AFFILIATION: ('qoqa_base_data',
-                                'product_product_marketing_coupon'),
-    QOQA_PROMO_STAFF: ('qoqa_base_data',
-                        'product_product_marketing_coupon'),
-    QOQA_PROMO_MAILING: ('qoqa_base_data',
-                            'product_product_marketing_coupon'),
-}
 
 
 @qoqa

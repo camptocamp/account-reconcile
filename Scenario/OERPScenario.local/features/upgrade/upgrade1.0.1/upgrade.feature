@@ -6,9 +6,11 @@ Feature: upgrade to 1.0.1
   Scenario: upgrade
     Given I back up the database to "/srv/openerp/before_upgrade_backups"
     Given I install the required modules with dependencies:
-      | name                       |
-      | connector_qoqa             |
-      | account_compute_tax_amount |
+      | name                                 |
+      | connector_qoqa                       |
+      | account_compute_tax_amount           |
+      | base_delivery_carrier_label          |
+      | delivery_carrier_label_postlogistics |
     Then my modules should have been installed and models reloaded
 
   @voucher @qoqa_backend

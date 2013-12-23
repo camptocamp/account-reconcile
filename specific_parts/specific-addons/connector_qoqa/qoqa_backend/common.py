@@ -123,7 +123,7 @@ class qoqa_backend(orm.Model):
         'import_res_partner_from_date': '2005-12-12 00:00:00',
         'import_address_from_date': '2005-12-12 00:00:00',
         'import_sale_order_from_date': '2005-12-12 00:00:00',
-        'import_accounting_issuance_from_date': '2005-12-12 00:00:00',
+        'import_accounting_issuance_from_date': '2013-11-01 00:00:00',
         'date_really_import': '2014-01-01 00:00:00',
         'date_import_inactive': '2012-01-01 00:00:00',
     }

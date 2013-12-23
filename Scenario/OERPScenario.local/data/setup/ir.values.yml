@@ -39,7 +39,7 @@
       key         : default
       value       : |
                     (lp0
-                    L1L
+                    L2L
                     a.
       company_id  : scenario.qoqa_ch
       key2        :
@@ -61,7 +61,7 @@
       key         : default
       value       : |
                     (lp0
-                    L1L
+                    L2L
                     aL20L
                     a.
       company_id  : base.main_company
@@ -107,7 +107,7 @@
       key         : default
       value       : |
                     (lp0
-                    L1L
+                    L2L
                     a.
       company_id  : scenario.qoqa_ch
       key2        :
@@ -129,7 +129,7 @@
       key         : default
       value       : |
                     (lp0
-                    L1L
+                    L2L
                     aL20L
                     a.
       company_id  : base.main_company

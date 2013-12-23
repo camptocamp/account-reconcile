@@ -1,0 +1,17 @@
+# TODO: replace 1.0.x with the version number installed on production.
+#       replace 1.0.y with the new version
+
+@upgrade_from_1.0.x @qoqa
+
+Feature: upgrade to 1.0.y
+
+  Scenario: dump database
+    Given I back up the database to "~/instances/openerp_prod_qoqa/databases/"
+     # Given I install the required modules with dependencies:
+     #  | name                          |
+     #  | TODO: list modules to upgrade |
+
+  # Add data migration Scenarios here
+
+  Scenario: update application version
+    Given I set the version of the instance to "1.0.y"

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 @upgrade_from_1.0.0 @qoqa
 
 Feature: upgrade to 1.0.1
@@ -10,15 +11,58 @@ Feature: upgrade to 1.0.1
       | account_compute_tax_amount |
     Then my modules should have been installed and models reloaded
 
-  @qoqa_backend
-  Scenario: Configure the QoQa backend
-    Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
+  @voucher @qoqa_backend
+  Scenario: Configure the vouchers issuance on QoQa backend
+    Given user "admin_ch" log in with password "admin_ch"
     Given I am configuring the company with ref "scenario.qoqa_ch"
-    And I set global property named "property_voucher_journal_id_ch" for model "qoqa.backend" and field "property_voucher_journal_id" for company with ref "scenario.qoqa_ch"
-    And the property is related to model "account.journal" using column "name" and value "Règlement par Bon Cadeau"
+    Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
+    And having:
+      | key                         | value                             |
+      | property_voucher_journal_id | by name: Règlement par Bon Cadeau |
+    Given user "admin_fr" log in with password "admin_fr"
     Given I am configuring the company with ref "scenario.qoqa_fr"
-    And I set global property named "property_voucher_journal_id_fr" for model "qoqa.backend" and field "property_voucher_journal_id" for company with ref "scenario.qoqa_fr"
-    And the property is related to model "account.journal" using column "name" and value "Règlement par Bon Cadeau"
+    Given I find a "qoqa.backend" with oid: connector_qoqa.qoqa_backend_config
+    And having:
+      | key                         | value                             |
+      | property_voucher_journal_id | by name: Règlement par Bon Cadeau |
+    Then login with the admin user
+
+  @translations
+  Scenario: Fix some translations
+    Given I execute the SQL commands
+    """
+    UPDATE account_journal SET name = 'Bons Remboursement' WHERE id in (47, 53);
+    UPDATE ir_translation SET value = 'Bons Remboursement' WHERE value like 'Bon%Remboursement%';
+    UPDATE account_journal SET name = 'Bons de réduction' WHERE id = 46;
+    UPDATE ir_translation SET value = 'Bons de réduction' WHERE value like 'Bon de réduction';
+    UPDATE account_journal SET name = 'Bons Rabais' WHERE id = 52;
+    UPDATE ir_translation SET value = 'Bons Rabais' WHERE value like 'Bon Rabais';
+    UPDATE account_account SET name = 'Bons Remboursement' WHERE id in (2545);
+    UPDATE account_account SET name = 'Bons de réduction' WHERE id in (2543);
+    UPDATE account_account SET name = 'Bons Marketing' WHERE id in (2544);
+    UPDATE account_account SET name = 'Différences d''arrondis' WHERE id in (2546);
+    DELETE FROM ir_translation WHERE res_id = 2546 and lang = 'de_DE' and name = 'account.account,name';
+    """
+
+  @promo @qoqa_backend
+  Scenario Outline: Configure the promos issuance
+    Given user "<user>" log in with password "<user>"
+    Given I am configuring the company with ref "<company>"
+    Given I find a "qoqa.promo.type" with oid: <promo_type_oid>
+    And having:
+      | key                 | value                   |
+      | property_journal_id | by name: <journal_name> |
+    Then login with the admin user
+
+    Examples: CH
+      | user     | company          | promo_type_oid                             | journal_name       |
+      | admin_ch | scenario.qoqa_ch | connector_qoqa.promo_type_customer_service | Bons Rabais        |
+      | admin_ch | scenario.qoqa_ch | connector_qoqa.promo_type_refund_coupon    | Bons Remboursement |
+
+    Examples: FR
+      | user     | company          | promo_type_oid                             | journal_name       |
+      | admin_fr | scenario.qoqa_fr | connector_qoqa.promo_type_customer_service | Bons de réduction  |
+      | admin_fr | scenario.qoqa_fr | connector_qoqa.promo_type_refund_coupon    | Bons Remboursement |
 
   @product @taxes @default
   Scenario: I set the default values for the taxes on the products

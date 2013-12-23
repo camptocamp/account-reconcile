@@ -351,6 +351,7 @@ class qoqa_offer(orm.Model):
         'shipper_rate_id': fields.many2one(
             'delivery.carrier',
             string='Shipper Rate',
+            required=True,
             domain="[('qoqa_type', '=', 'rate')]"),
         'pricelist_id': fields.many2one(
             'product.pricelist',

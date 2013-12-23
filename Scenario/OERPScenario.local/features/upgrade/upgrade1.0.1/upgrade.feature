@@ -7,6 +7,7 @@ Feature: upgrade to 1.0.1
     Given I back up the database to "/srv/openerp/before_upgrade_backups"
     Given I install the required modules with dependencies:
       | name                                 |
+      | qoqa_offer                           |
       | connector_qoqa                       |
       | account_compute_tax_amount           |
       | base_delivery_carrier_label          |

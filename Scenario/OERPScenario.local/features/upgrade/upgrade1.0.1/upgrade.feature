@@ -11,6 +11,7 @@ Feature: upgrade to 1.0.1
       | account_compute_tax_amount           |
       | base_delivery_carrier_label          |
       | delivery_carrier_label_postlogistics |
+      | stock_picking_report                 |
     Then my modules should have been installed and models reloaded
 
   @voucher @qoqa_backend

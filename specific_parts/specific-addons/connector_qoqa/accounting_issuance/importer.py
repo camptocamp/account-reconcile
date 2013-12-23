@@ -42,6 +42,7 @@ from __future__ import division
 import logging
 
 from openerp.tools.translate import _
+from openerp.tools.misc import DEFAULT_SERVER_DATE_FORMAT
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.exception import (IDMissingInBackend,
                                                 MappingError
@@ -53,7 +54,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapChild,
                                                   )
 from ..exception import QoQaError
-from ..connector import get_environment
+from ..connector import get_environment, iso8601_to_utc_datetime
 from ..backend import qoqa
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
@@ -186,6 +187,33 @@ class VoucherIssuanceImporter(BaseIssuanceImporter):
 
 class BaseIssuanceMapper(ImportMapper):
 
+    def _specific_move_values(self, record):
+        """ Values of the moves which depend on the promo / vouchers
+
+        :return: browse_record of journal, ref
+
+        """
+        raise NotImplementedError
+
+    @mapping
+    def move_values(self, record):
+        cr, uid = self.session.cr, self.session.uid
+        context = self.session.context
+
+        journal, ref = self._specific_move_values(record)
+
+        parsed = iso8601_to_utc_datetime(record['created_at'])
+        date = parsed.date().strftime(DEFAULT_SERVER_DATE_FORMAT)
+        company_binder = self.get_binder_for_model('res.company')
+        company_id = company_binder.to_openerp(record['company_id'])
+        assert company_id
+
+        move_obj = self.session.pool['account.move']
+        vals = move_obj.account_move_prepare(cr, uid, journal.id, date=date,
+                                             ref=ref, company_id=company_id,
+                                             context=context)
+        return vals
+
     def _partner_id(self, map_record):
         binder = self.get_binder_for_model('qoqa.res.partner')
         partner_id = binder.to_openerp(map_record.source['user_id'],
@@ -232,10 +260,12 @@ class PromoIssuanceMapper(BaseIssuanceMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ]
 
-    @mapping
-    def move_vals(self, record):
-        cr, uid = self.session.cr, self.session.uid
-        context = self.session.context
+    def _specific_move_values(self, record):
+        """ Values of the moves which depend on the promo / vouchers
+
+        :return: browse_record of journal, ref
+
+        """
         promo_type = self._promo_type(record)
         journal = promo_type.property_journal_id
         if not journal:
@@ -244,19 +274,8 @@ class PromoIssuanceMapper(BaseIssuanceMapper):
                                'for company "%s".\n'
                                'Please configure it on the QoQa backend.' %
                                (promo_type.name, user.company_id.name))
-
-        # TODO convert from iso8601 and extract the date only
-        date = record['created_at']
         ref = unicode(record['promo_id'])
-        company_binder = self.get_binder_for_model('res.company')
-        company_id = company_binder.to_openerp(record['company_id'])
-        assert company_id
-
-        move_obj = self.session.pool['account.move']
-        vals = move_obj.account_move_prepare(cr, uid, journal.id, date=date,
-                                             ref=ref, company_id=company_id,
-                                             context=context)
-        return vals
+        return journal, ref
 
     def _promo_type(self, record):
         promo_binder = self.get_binder_for_model('qoqa.promo.type')
@@ -288,31 +307,23 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
               (iso8601_to_utc('updated_at'), 'updated_at'),
               ]
 
-    @mapping
-    def move_vals(self, record):
-        cr, uid = self.session.cr, self.session.uid
-        context = self.session.context
+    def _specific_move_values(self, record):
+        """ Values of the moves which depend on the promo / vouchers
+
+        :return: browse_record of journal, ref
+
+        """
         # read the backend record in the company's context
         backend = self.session.browse('qoqa.backend', self.backend_record.id)
         journal = backend.property_voucher_journal_id
         if not journal:
-            user = self.session.browse('res.users', uid)
+            user = self.session.browse('res.users', self.session.uid)
             raise MappingError('No journal defined for the vouchers for '
                                'company %s.\n'
                                'Please configure it on the QoQa backend.' %
                                user.company_id.name)
-        # TODO convert from iso8601 and extract the date only
-        date = record['created_at']
         ref = unicode(record['voucher_id'])
-        company_binder = self.get_binder_for_model('res.company')
-        company_id = company_binder.to_openerp(record['company_id'])
-        assert company_id
-
-        move_obj = self.session.pool['account.move']
-        vals = move_obj.account_move_prepare(cr, uid, journal.id, date=date,
-                                             ref=ref, company_id=company_id,
-                                             context=context)
-        return vals
+        return journal, ref
 
     def _counterpart(self, items, values):
         """ Create a counterpart for the credit line given by the API.

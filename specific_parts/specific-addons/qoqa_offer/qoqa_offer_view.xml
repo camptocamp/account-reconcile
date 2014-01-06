@@ -291,6 +291,7 @@
                                                     <group name="various" string="Various" colspan="4">
                                                         <field name="date_delivery"/>
                                                         <field name="booking_delivery"/>
+                                                        <field name="poste_cumbersome_package"/>
                                                         <field name="order_url"/>
                                                         <field name="active"/>
                                                     </group>

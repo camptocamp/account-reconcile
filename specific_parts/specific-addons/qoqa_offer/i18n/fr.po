@@ -487,7 +487,7 @@ msgstr "Actif"
 #. module: qoqa_offer
 #: field:qoqa.offer.position,poste_cumbersome_package:0
 msgid "Poste Cumbersome Package"
-msgstr "Poste Cumbersome Package"
+msgstr "Poste colis encombrant"
 
 #. module: qoqa_offer
 #: selection:qoqa.offer.position,regular_price_type:0

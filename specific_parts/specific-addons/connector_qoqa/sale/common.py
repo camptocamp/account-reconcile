@@ -110,3 +110,11 @@ class QoQaSaleOrder(QoQaAdapter):
                                    data=json.dumps({'action': 'cancel'}),
                                    headers=headers)
         self._handle_response(response)
+
+    def add_trackings(self, vals):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(vals),
+                                   headers=headers)
+        self._handle_response(response)

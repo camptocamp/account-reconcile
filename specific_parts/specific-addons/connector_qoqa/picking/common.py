@@ -79,12 +79,6 @@ class stock_picking_out(orm.Model):
     }
 
 
-@qoqa
-class TrackingAdapter(QoQaAdapter):
-    _model_name = 'qoqa.stock.picking'
-    _endpoint = 'tracking'
-
-
 @on_picking_out_done
 def picking_done_create_binding(session, model_name, record_id,
                                 picking_method):

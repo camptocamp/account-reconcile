@@ -74,8 +74,12 @@ class QoQaTrackingExporter(ExportSynchronizer):
 
             items = []
             for line in lines:
-                sale_line = line.sale_id
+                sale_line = line.sale_line_id
+                if not sale_line:
+                    continue
                 item_id = slbinder.to_backend(sale_line.id, wrap=True)
+                if not item_id:
+                    continue
                 items.append({'item_id': item_id,
                               'quantity': line.product_qty,
                               })
@@ -91,10 +95,9 @@ class QoQaTrackingExporter(ExportSynchronizer):
         """ Export the tracking numbers to QoQa """
         binding = self.session.browse(self.model._name, binding_id)
         data = self._get_tracking_numbers(binding)
-        import pdb; pdb.set_trace()
-        adapter = self.get_connector_unit_for_model('qoqa.sale.order',
+        sale_adapter = self.get_connector_unit_for_model('qoqa.sale.order',
                                                     BackendAdapter)
-        adapter.create(data)
+        sale_adapter.add_trackings(data)
         self.session.write(self.model._name, binding_id, {'exported': True})
 
 

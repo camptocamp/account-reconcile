@@ -99,7 +99,7 @@ class sale_order(orm.Model):
 
 
 @qoqa
-class QoQaSaleOrder(QoQaAdapter):
+class QoQaSaleOrderAdapter(QoQaAdapter):
     _model_name = 'qoqa.sale.order'
     _endpoint = 'order'
 

@@ -85,7 +85,7 @@ class QoQaTrackingExporter(ExportSynchronizer):
                               })
             numbers.append({
                 'number': number,
-                'items': items,
+                'item_ids': items,
                 'shipper_service_id': shipper_service_id,
             })
 
@@ -95,9 +95,9 @@ class QoQaTrackingExporter(ExportSynchronizer):
         """ Export the tracking numbers to QoQa """
         binding = self.session.browse(self.model._name, binding_id)
         data = self._get_tracking_numbers(binding)
-        sale_adapter = self.get_connector_unit_for_model('qoqa.sale.order',
-                                                    BackendAdapter)
-        sale_adapter.add_trackings(data)
+        adapter = self.get_connector_unit_for_model('qoqa.picking.label',
+                                                     BackendAdapter)
+        adapter.add_trackings(data)
         self.session.write(self.model._name, binding_id, {'exported': True})
 
 

@@ -108,7 +108,7 @@ class qoqa_binding(orm.AbstractModel):
             required=True,
             readonly=True,
             ondelete='restrict'),
-        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_id': fields.char('ID on QoQa', select=True),
     }
 
     def _get_default_backend_id(self, cr, uid, context=None):

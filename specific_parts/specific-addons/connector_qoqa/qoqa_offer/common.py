@@ -35,7 +35,7 @@ class qoqa_offer(orm.Model):
             relation='qoqa.backend',
             string='QoQa Backend',
             readonly=True),
-        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_id': fields.char('ID on QoQa', select=True),
         'qoqa_sync_date': fields.datetime('Last synchronization date'),
     }
 

@@ -28,7 +28,7 @@ class payment_method(orm.Model):
     _inherit = 'payment.method'
 
     _columns = {
-        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_id': fields.char('ID on QoQa', select=True),
         'sequence': fields.integer(
             'Priority',
             help="When a sales order has been paid with "

@@ -37,7 +37,7 @@ class qoqa_shop(orm.Model):
             required=True,
             readonly=True,
             ondelete='restrict'),
-        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_id': fields.char('ID on QoQa', select=True),
         'sync_date': fields.datetime('Last synchronization date'),
         'lang_id': fields.many2one(
             'res.lang',

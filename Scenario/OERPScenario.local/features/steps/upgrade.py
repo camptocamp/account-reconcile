@@ -14,7 +14,7 @@ def impl(ctx, dump_directory):
                         "%s_%s.dump" % (db_name,
                                         dt.datetime.now().strftime('%Y%m%d_%H%M%S'))
                             )
-    cmd = ['pg_dump', '-Fc', '--no-owner',
+    cmd = ['pg_dump', '--no-owner',
            '--file', filename.encode('utf-8')]
     if ctx.conf.get('db_user'):
         cmd += ['--username', ctx.conf.get('db_user')]

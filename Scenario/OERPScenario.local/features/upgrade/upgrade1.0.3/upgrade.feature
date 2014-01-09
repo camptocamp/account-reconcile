@@ -12,10 +12,10 @@ Feature: upgrade to 1.0.3
     Then my modules should have been installed and models reloaded
 
   @ecotax
-  Scenario: Activate the ecotax checkbox on the ecotax tax codes
+  Scenario: Activate the ecotax checkbox on the ecotax taxes
     Given I execute the SQL commands
     """
-    UPDATE account_tax_code SET ecotax = TRUE WHERE name LIKE '%TAR%';
+    UPDATE account_tax SET ecotax = TRUE WHERE name LIKE '%TAR%';
     """
 
   Scenario: update application version

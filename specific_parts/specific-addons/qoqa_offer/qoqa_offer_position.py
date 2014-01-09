@@ -247,7 +247,8 @@ class qoqa_offer_position(orm.Model):
             'account.tax',
             string='Tax',
             required=True,
-            domain=[('type_tax_use', '=', 'sale'), ('ecotax', '=', False)]),
+            domain=[('type_tax_use', 'in', ('sale', 'all')),
+                    ('ecotax', '=', False)]),
         'lot_size': fields.integer('Lot Size', required=True),
         'max_sellable': fields.integer('Max Sellable', required=True),
         'stock_bias': fields.related(
@@ -281,7 +282,8 @@ class qoqa_offer_position(orm.Model):
         'ecotax_id': fields.many2one(
             'account.tax',
             string='Ecotax',
-            domain=[('type_tax_use', '=', 'sale'), ('ecotax', '=', True)]),
+            domain=[('type_tax_use', 'in', ('sale', 'all')),
+                    ('ecotax', '=', True)]),
         'date_delivery': fields.date('Delivery Date'),
         'booking_delivery': fields.boolean('Booking Delivery'),
         'buyphrase_id': fields.many2one('qoqa.buyphrase',

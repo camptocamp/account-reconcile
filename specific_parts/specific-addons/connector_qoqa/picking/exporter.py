@@ -22,6 +22,7 @@
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.event import on_record_create
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
+from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 from openerp.addons.connector.exception import MappingError
 
 from ..connector import get_environment
@@ -85,7 +86,7 @@ class QoQaTrackingExporter(ExportSynchronizer):
                               })
             numbers.append({
                 'number': number,
-                'item_ids': items,
+                'items': items,
                 'shipper_service_id': shipper_service_id,
             })
 
@@ -95,8 +96,8 @@ class QoQaTrackingExporter(ExportSynchronizer):
         """ Export the tracking numbers to QoQa """
         binding = self.session.browse(self.model._name, binding_id)
         data = self._get_tracking_numbers(binding)
-        adapter = self.get_connector_unit_for_model('qoqa.picking.label',
-                                                     BackendAdapter)
+        adapter = self.get_connector_unit_for_model(BackendAdapter,
+                                                    'qoqa.picking.label')
         adapter.add_trackings(data)
         self.session.write(self.model._name, binding_id, {'exported': True})
 

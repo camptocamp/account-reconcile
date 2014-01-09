@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import json
 from openerp.osv import orm, fields
 from openerp.addons.connector_ecommerce.event import on_picking_out_done
 from ..unit.backend_adapter import QoQaAdapter
@@ -105,7 +106,7 @@ class QoQaPickingLabelAdapter(QoQaAdapter):
     def add_trackings(self, vals):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(vals),
-                                   headers=headers)
+        response = self.client.post(url + 'generate_shippments',
+                                    data=json.dumps(vals),
+                                    headers=headers)
         self._handle_response(response)

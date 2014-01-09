@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <record id="view_tax_code_form_eco_tax" model="ir.ui.view">
-      <field name="name">account.tax.code.eco_tax.form</field>
-      <field name="model">account.tax.code</field>
-      <field name="inherit_id" ref="account.view_tax_code_form"/>
+    <record id="view_tax_form" model="ir.ui.view">
+      <field name="name">account.tax.form</field>
+      <field name="model">account.tax</field>
+      <field name="inherit_id" ref="account.view_tax_form"/>
       <field name="arch" type="xml">
         <data>
-          <field name="company_id" position="after">
+          <field name="child_depend" position="after">
             <field name="ecotax"/>
           </field>
         </data>

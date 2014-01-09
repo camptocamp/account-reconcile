@@ -34,7 +34,7 @@
  "category": "Specific Module",
  "description":
 """
-Add an "Ecotax" field on tax codes to categorize them.
+Add an "Ecotax" field on taxes to categorize them.
 """,
  "website": "http://camptocamp.com",
  "depends": ['account',

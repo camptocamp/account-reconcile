@@ -22,9 +22,9 @@
 from openerp.osv import orm, fields
 
 
-class account_tax_code(orm.Model):
+class account_tax(orm.Model):
 
-    _inherit = 'account.tax.code'
+    _inherit = 'account.tax'
 
     _columns = {
         'ecotax': fields.boolean('Ecotax'),

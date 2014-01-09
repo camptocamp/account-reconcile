@@ -49,7 +49,7 @@ class qoqa_offer_position_variant(orm.Model):
                        "AND l.product_id = %s ",
                        (variant.position_id.offer_id.id,
                         variant.product_id.id))
-            num_sold = cr.fetchone()[0]
+            num_sold = cr.fetchone()[0] or 0
             # Example: we sell 500 lot of 6 bottles of wine. 1 bottle =
             # 1 unit. In the sales orders, 1 lot will be expanded to 6 units.
             # So we compare lots, not units.

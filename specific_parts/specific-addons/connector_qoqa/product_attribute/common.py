@@ -29,7 +29,8 @@ class attribute_attribute(orm.Model):
     _columns = {
         'qoqa_id': fields.char('Name of the field on QoQa',
                                help="If empty, it uses the name of the "
-                                    "attribute without the x_ prefix"),
+                                    "attribute without the x_ prefix",
+                               select=True),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

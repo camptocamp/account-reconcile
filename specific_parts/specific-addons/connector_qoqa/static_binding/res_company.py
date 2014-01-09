@@ -28,7 +28,7 @@ from ..exception import QoQaError
 class res_company(orm.Model):
     _inherit = 'res.company'
     _columns = {
-        'qoqa_id': fields.char('ID on QoQa'),
+        'qoqa_id': fields.char('ID on QoQa', select=True),
         'connector_user_id': fields.many2one('res.users',
                                              string='Connector User'),
     }

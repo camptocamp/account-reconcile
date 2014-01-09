@@ -39,16 +39,17 @@ class qoqa_offer_position_variant(orm.Model):
         res = {}
         sale_line_obj = self.pool.get('sale.order.line')
         for variant in self.browse(cr, uid, ids, context=context):
-            product_ids = sale_line_obj.search(
-                cr, uid,
-                [('product_id', '=', variant.product_id.id),
-                 ('order_id.offer_id', '=', variant.position_id.offer_id.id)],
-                context=context)
-            sales_lines = sale_line_obj.browse(cr, uid, product_ids,
-                                               context=context)
-            num_sold = sum([line.product_uom_qty for line
-                            in sales_lines
-                            if line.order_id.state not in ['draft', 'cancel']])
+            # the equivalent with the ORM takes up to 7 seconds
+            cr.execute("SELECT SUM(l.product_uom_qty) "
+                       "FROM sale_order_line l "
+                       "INNER JOIN sale_order so "
+                       "ON so.id = l.order_id "
+                       "WHERE so.offer_id = %s "
+                       "AND so.state NOT IN ('draft', 'cancel') "
+                       "AND l.product_id = %s ",
+                       (variant.position_id.offer_id.id,
+                        variant.product_id.id))
+            num_sold = cr.fetchone()[0]
             # Example: we sell 500 lot of 6 bottles of wine. 1 bottle =
             # 1 unit. In the sales orders, 1 lot will be expanded to 6 units.
             # So we compare lots, not units.

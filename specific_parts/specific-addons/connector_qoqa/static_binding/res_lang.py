@@ -28,7 +28,7 @@ class res_lang(orm.Model):
     _inherit = 'res.lang'
 
     _columns = {
-        'qoqa_id': fields.char('ID on QoQa')
+        'qoqa_id': fields.char('ID on QoQa', select=True)
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

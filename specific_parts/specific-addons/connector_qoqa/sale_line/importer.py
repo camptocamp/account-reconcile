@@ -131,7 +131,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         promo_type_id = promo_binder.to_openerp(qpromo_type_id)
         if promo_type_id is None:
             raise MappingError("Type of promo '%s' is not supported." %
-                               promo_type_id)
+                               qpromo_type_id)
         return self.session.browse('qoqa.promo.type', promo_type_id)
 
     def _item_discount(self, item, promo):

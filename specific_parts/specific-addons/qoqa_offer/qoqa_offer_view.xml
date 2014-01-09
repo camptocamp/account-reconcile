@@ -281,7 +281,7 @@
                                                     <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                     <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                     <field name="tax_id"/>
-                                                    <field name="ecotax"/>
+                                                    <field name="ecotax_id"/>
                                                 </group>
                                                 <group>
                                                     <group name="stock" string="Stock" colspan="4">

@@ -75,7 +75,6 @@ class OfferPositionExportMapper(ExportMapper):
               (floatqoqa('regular_price'), 'regular_price'),
               (floatqoqa('buy_price'), 'buy_price'),
               (floatqoqa('top_price'), 'top_price'),
-              ('ecotax', 'ecotax'),
               (date_to_iso8601('date_delivery'), 'delivery_at'),
               ('booking_delivery', 'booking_delivery'),
               ('order_url', 'order_url'),
@@ -90,6 +89,11 @@ class OfferPositionExportMapper(ExportMapper):
               ('active', 'is_active'),
               ('poste_cumbersome_package', 'poste_cumbersome_package'),
               ]
+
+    @mapping
+    def ecotax(self, record):
+        amount = record.ecotax_id.amount
+        return {'ecotax': int(amount * 100)}
 
     @mapping
     def regular_price_type(self, record):

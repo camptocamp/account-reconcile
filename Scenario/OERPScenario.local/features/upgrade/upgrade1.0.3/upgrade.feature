@@ -16,6 +16,7 @@ Feature: upgrade to 1.0.3
     Given I execute the SQL commands
     """
     UPDATE account_tax SET ecotax = TRUE WHERE name LIKE '%TAR%';
+    UPDATE qoqa_offer_position SET ecotax_id = (SELECT id FROM account_tax WHERE amount = qoqa_offer_position.ecotax / 100 AND ecotax IS TRUE) WHERE ecotax > 0;
     """
 
   Scenario: update application version

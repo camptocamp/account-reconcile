@@ -42,6 +42,7 @@ set cost_method default to average
  'images': [],
  'demo': [],
  'data': ['security/security.xml',
+          'stock_view.xml',
           ],
  'installable': True,
  'application': True,

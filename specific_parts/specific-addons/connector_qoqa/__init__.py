@@ -18,5 +18,6 @@ from . import qoqa_offer_position_variant
 from . import qoqa_buyphrase
 from . import accounting_issuance
 from . import promo
+from . import picking
 from . import static_binding
 from . import wizard

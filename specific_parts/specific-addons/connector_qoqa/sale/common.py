@@ -99,7 +99,7 @@ class sale_order(orm.Model):
 
 
 @qoqa
-class QoQaSaleOrder(QoQaAdapter):
+class QoQaSaleOrderAdapter(QoQaAdapter):
     _model_name = 'qoqa.sale.order'
     _endpoint = 'order'
 
@@ -108,5 +108,13 @@ class QoQaSaleOrder(QoQaAdapter):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         response = self.client.put(url + str(id),
                                    data=json.dumps({'action': 'cancel'}),
+                                   headers=headers)
+        self._handle_response(response)
+
+    def add_trackings(self, vals):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(vals),
                                    headers=headers)
         self._handle_response(response)

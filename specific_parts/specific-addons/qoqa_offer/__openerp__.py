@@ -40,6 +40,7 @@ when a product has variants, a position may sell several of them.
               'delivery',
               'product_variant_simple',  # specific-addons
               'picking_dispatch',  # stock-logistic-flows
+              'ecotax',
               ],
  'data': ['qoqa_offer_data.xml',
           'sale_order_view.xml',

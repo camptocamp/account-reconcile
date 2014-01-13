@@ -44,11 +44,21 @@ class stock_picking(orm.Model):
             result[picking.id] = number_of_products
         return result
 
+    def _get_picking(self, cr, uid, ids, context=None):
+        result = set()
+        move_obj = self.pool.get('stock.move')
+        for line in move_obj.browse(cr, uid, ids, context=context):
+            result.add(line.picking_id.id)
+        return list(result)
+
     _columns = {
         'number_of_products': fields.function(
             _get_number_of_products, method=True,
             type='integer', string='Number of products',
-            store=True),
+            store={
+                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['move_lines'], 10),
+                'stock.move': (_get_picking, ['product_qty'], 10),
+            }),
     }
 
 class stock_picking_in(orm.Model):
@@ -74,11 +84,21 @@ class stock_picking_in(orm.Model):
             result[picking.id] = number_of_products
         return result
 
+    def _get_picking(self, cr, uid, ids, context=None):
+        result = set()
+        move_obj = self.pool.get('stock.move')
+        for line in move_obj.browse(cr, uid, ids, context=context):
+            result.add(line.picking_id.id)
+        return list(result)
+
     _columns = {
         'number_of_products': fields.function(
             _get_number_of_products, method=True,
             type='integer', string='Number of products',
-            store=True),
+            store={
+                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['move_lines'], 10),
+                'stock.move': (_get_picking, ['product_qty'], 10),
+            }),
     }
 
 class stock_picking_out(orm.Model):
@@ -104,9 +124,19 @@ class stock_picking_out(orm.Model):
             result[picking.id] = number_of_products
         return result
 
+    def _get_picking(self, cr, uid, ids, context=None):
+        result = set()
+        move_obj = self.pool.get('stock.move')
+        for line in move_obj.browse(cr, uid, ids, context=context):
+            result.add(line.picking_id.id)
+        return list(result)
+
     _columns = {
         'number_of_products': fields.function(
             _get_number_of_products, method=True,
             type='integer', string='Number of products',
-            store=True),
+            store={
+                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['move_lines'], 10),
+                'stock.move': (_get_picking, ['product_qty'], 10),
+            }),
     }

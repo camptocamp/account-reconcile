@@ -9,6 +9,7 @@ Feature: upgrade to 1.0.3
       | name                                |
       | ecotax                              |
       | connector_qoqa                      |
+      | specific_fct                        |
     Then my modules should have been installed and models reloaded
 
   @ecotax

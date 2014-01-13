@@ -8,6 +8,7 @@ Feature: upgrade to 1.0.3
     Given I install the required modules with dependencies:
       | name                                |
       | ecotax                              |
+      | qoqa_offer                          |
       | connector_qoqa                      |
       | specific_fct                        |
     Then my modules should have been installed and models reloaded
@@ -19,6 +20,11 @@ Feature: upgrade to 1.0.3
     UPDATE account_tax SET ecotax = TRUE WHERE name LIKE '%TAR%';
     UPDATE qoqa_offer_position SET ecotax_id = (SELECT id FROM account_tax WHERE amount = qoqa_offer_position.ecotax / 100 AND ecotax IS TRUE) WHERE ecotax > 0;
     """
+
+  @attribute @highlights
+  Scenario: Remove the 'highlights' attribute
+    Given I find a "attribute.attribute" with name: x_highlights
+    Then I delete it
 
   Scenario: update application version
     Given I set the version of the instance to "1.0.3"

@@ -53,13 +53,15 @@ class stock_picking(orm.Model):
 
     _columns = {
         'number_of_products': fields.function(
-            _get_number_of_products, method=True,
+            _get_number_of_products,
             type='integer', string='Number of products',
             store={
-                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['move_lines'], 10),
+                'stock.picking': (lambda self, cr, uid, ids, c=None: ids,
+                                  ['move_lines'], 10),
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
     }
+
 
 class stock_picking_in(orm.Model):
     """ Add a number of products field to allow search on it.
@@ -93,13 +95,15 @@ class stock_picking_in(orm.Model):
 
     _columns = {
         'number_of_products': fields.function(
-            _get_number_of_products, method=True,
+            _get_number_of_products,
             type='integer', string='Number of products',
             store={
-                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['move_lines'], 10),
+                'stock.picking': (lambda self, cr, uid, ids, c=None: ids,
+                                  ['move_lines'], 10),
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
     }
+
 
 class stock_picking_out(orm.Model):
     """ Add a number of products field to allow search on it.
@@ -133,10 +137,11 @@ class stock_picking_out(orm.Model):
 
     _columns = {
         'number_of_products': fields.function(
-            _get_number_of_products, method=True,
+            _get_number_of_products,
             type='integer', string='Number of products',
             store={
-                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['move_lines'], 10),
+                'stock.picking': (lambda self, cr, uid, ids, c=None: ids,
+                                  ['move_lines'], 10),
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
     }

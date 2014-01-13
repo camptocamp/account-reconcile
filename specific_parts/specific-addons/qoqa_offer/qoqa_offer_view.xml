@@ -228,22 +228,29 @@
                             <group name="content" string="Content">
                                 <field name="title"/>
                                 <field name="description" colspan="2" nolabel="1"/>
+                                <label for="description_ecommerce" colspan="2"/>
+                                <field name="description_ecommerce" colspan="2" nolabel="1"/>
                             </group>
-                            <group name="configuration" string="Configuration">
-                                <field name="qoqa_shop_id" widget="selection"/>
-                                <label for="date_begin" string="Dates"/>
-                                <div>
-                                    <field name="date_begin" class="oe_inline"
-                                        on_change="onchange_date_begin(date_begin)"
-                                        /><field name="time_begin" widget="float_time" class="oe_inline"/> - 
-                                    <field name="date_end" class="oe_inline"/><field name="time_end" widget="float_time" class="oe_inline"/>
-                                </div>
-                                <field name="carrier_id"/>
-                                <field name="shipper_rate_id"/>
-                                <field name="company_id" invisible="1"/>
-                                <field name="pricelist_id"/>
-                                <field name="lang_id" widget="selection"/>
-                                <field name="active"/>
+                            <group col="1">
+                                <group name="configuration" string="Configuration">
+                                    <field name="qoqa_shop_id" widget="selection"/>
+                                    <label for="date_begin" string="Dates"/>
+                                    <div>
+                                        <field name="date_begin" class="oe_inline"
+                                            on_change="onchange_date_begin(date_begin)"
+                                            /><field name="time_begin" widget="float_time" class="oe_inline"/> - 
+                                        <field name="date_end" class="oe_inline"/><field name="time_end" widget="float_time" class="oe_inline"/>
+                                    </div>
+                                    <field name="carrier_id"/>
+                                    <field name="shipper_rate_id"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="pricelist_id"/>
+                                    <field name="lang_id" widget="selection"/>
+                                    <field name="active"/>
+                                </group>
+                                <group name="group_highlights" string="Highlights">
+                                    <field name="highlights" nolabel="1"/>
+                                </group>
                             </group>
                         </group>
                         <notebook>

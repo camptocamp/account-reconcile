@@ -55,6 +55,7 @@ class product_template(orm.Model):
             'openerp_id',
             string='QoQa Bindings'),
         'description_ecommerce': fields.html('E-commerce Description',
+                                             deprecated=True,
                                              translate=True),
     }
 

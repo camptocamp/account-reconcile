@@ -85,7 +85,6 @@ class TemplateExportMapper(ExportMapper):
 
     translatable_fields = [
         ('name', 'name'),
-        ('description_ecommerce', 'description')
     ]
 
     @mapping

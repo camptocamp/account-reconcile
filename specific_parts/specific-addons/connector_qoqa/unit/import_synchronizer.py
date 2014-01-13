@@ -331,6 +331,7 @@ class TranslationImporter(ImportSynchronizer):
     _model_name = ['qoqa.product.template',
                    'qoqa.product.product',
                    'qoqa.offer',
+                   'qoqa.offer.position',
                    'qoqa.buyphrase',
                    ]
 

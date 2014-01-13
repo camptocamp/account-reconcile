@@ -24,6 +24,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper)
 from ..backend import qoqa
 from ..unit.import_synchronizer import QoQaImportSynchronizer
+from ..unit.mapper import ifmissing
 from ..unit.mapper import iso8601_to_utc, qoqafloat
 
 
@@ -51,6 +52,11 @@ class QoQaOfferPositionImportMapper(ImportMapper):
                  'qoqa.offer.position.variant'),
                 ]
 
+    translatable_fields = [
+        (ifmissing('description', ''), 'description'),
+        (ifmissing('highlights', ''), 'highlights'),
+    ]
+
     direct = [(backend_to_m2o('deal_id'), 'offer_id'),
               (backend_to_m2o('product_id', binding='qoqa.product.template'),
                'product_tmpl_id'),
@@ -77,3 +83,19 @@ class QoQaOfferPositionImportMapper(ImportMapper):
         binder = self.get_binder_for_model('qoqa.regular.price.type')
         binding_id = binder.to_openerp(record['regular_price_type'])
         return {'regular_price_type': binding_id}
+
+    @mapping
+    def from_translations(self, record):
+        """ The translatable fields are only provided in
+        a 'translations' dict, we take the translation
+        for the main record in OpenERP.
+        """
+        binder = self.get_binder_for_model('res.lang')
+        lang = self.options.lang or self.backend_record.default_lang_id
+        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
+        main = next((tr for tr in record['translations']
+                     if str(tr['language_id']) == str(qoqa_lang_id)), {})
+        values = {}
+        for source, target in self.translatable_fields:
+            values[target] = self._map_direct(main, source, target)
+        return values

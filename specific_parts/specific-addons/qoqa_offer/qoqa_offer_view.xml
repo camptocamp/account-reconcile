@@ -229,21 +229,23 @@
                                 <field name="title"/>
                                 <field name="description" colspan="2" nolabel="1"/>
                             </group>
-                            <group name="configuration" string="Configuration">
-                                <field name="qoqa_shop_id" widget="selection"/>
-                                <label for="date_begin" string="Dates"/>
-                                <div>
-                                    <field name="date_begin" class="oe_inline"
-                                        on_change="onchange_date_begin(date_begin)"
-                                        /><field name="time_begin" widget="float_time" class="oe_inline"/> - 
-                                    <field name="date_end" class="oe_inline"/><field name="time_end" widget="float_time" class="oe_inline"/>
-                                </div>
-                                <field name="carrier_id"/>
-                                <field name="shipper_rate_id"/>
-                                <field name="company_id" invisible="1"/>
-                                <field name="pricelist_id"/>
-                                <field name="lang_id" widget="selection"/>
-                                <field name="active"/>
+                            <group col="1">
+                                <group name="configuration" string="Configuration">
+                                    <field name="qoqa_shop_id" widget="selection"/>
+                                    <label for="date_begin" string="Dates"/>
+                                    <div>
+                                        <field name="date_begin" class="oe_inline"
+                                            on_change="onchange_date_begin(date_begin)"
+                                            /><field name="time_begin" widget="float_time" class="oe_inline"/> - 
+                                        <field name="date_end" class="oe_inline"/><field name="time_end" widget="float_time" class="oe_inline"/>
+                                    </div>
+                                    <field name="carrier_id"/>
+                                    <field name="shipper_rate_id"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="pricelist_id"/>
+                                    <field name="lang_id" widget="selection"/>
+                                    <field name="active"/>
+                                </group>
                             </group>
                         </group>
                         <notebook>
@@ -271,37 +273,50 @@
                                                 <field name="product_tmpl_id"
                                                     on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
                                             </h1>
-                                            <group>
-                                                <group name="price" string="Prices">
-                                                    <field name="currency_id" invisible="1"/>
-                                                    <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                    <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                    <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                    <field name="regular_price_type"/>
-                                                    <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                    <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                                    <field name="tax_id"/>
-                                                    <field name="ecotax_id"/>
-                                                </group>
-                                                <group>
-                                                    <group name="stock" string="Stock" colspan="4">
-                                                        <field name="lot_size"/>
-                                                        <field name="max_sellable"/>
+                                            <notebook>
+                                                <page string="Options">
+                                                    <group>
+                                                        <group name="price" string="Prices">
+                                                            <field name="currency_id" invisible="1"/>
+                                                            <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="regular_price_type"/>
+                                                            <field name="buy_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="top_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="tax_id"/>
+                                                            <field name="ecotax_id"/>
+                                                        </group>
+                                                        <group>
+                                                            <group name="stock" string="Stock" colspan="4">
+                                                                <field name="lot_size"/>
+                                                                <field name="max_sellable"/>
+                                                            </group>
+                                                            <group name="various" string="Various" colspan="4">
+                                                                <field name="date_delivery"/>
+                                                                <field name="booking_delivery"/>
+                                                                <field name="poste_cumbersome_package"/>
+                                                                <field name="order_url"/>
+                                                                <field name="active"/>
+                                                            </group>
+                                                        </group>
                                                     </group>
-                                                    <group name="various" string="Various" colspan="4">
-                                                        <field name="date_delivery"/>
-                                                        <field name="booking_delivery"/>
-                                                        <field name="poste_cumbersome_package"/>
-                                                        <field name="order_url"/>
-                                                        <field name="active"/>
+                                                </page>
+
+                                                <page string="Descriptions">
+                                                    <group name="description" string="Description" colspan="2">
+                                                        <field name="description" nolabel="1"/>
                                                     </group>
-                                                </group>
-                                            </group>
-                                            <group colspan="4" name="buyphrase" string="Buyphrase">
-                                                <field name="buyphrase_id" nolabel="1"
-                                                    options='{"no_open": 1}'
-                                                    colspan="4"/>
-                                            </group>
+                                                    <group name="highlights" string="Highlights" colspan="2">
+                                                        <field name="highlights" nolabel="1"/>
+                                                    </group>
+                                                    <group colspan="4" name="buyphrase" string="Buyphrase">
+                                                        <field name="buyphrase_id" nolabel="1"
+                                                            options='{"no_open": 1}'
+                                                            colspan="4"/>
+                                                    </group>
+                                                </page>
+                                            </notebook>
                                             <group colspan="4" name="variant" string="Variants">
                                                 <field name="variant_ids" nolabel="1">
                                                     <tree string="Variants" editable="bottom">

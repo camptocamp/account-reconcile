@@ -289,6 +289,7 @@ class Translations(ConnectorUnit):
     of the custom attributes if any).
     """
     _model_name = ['qoqa.offer',
+                   'qoqa.offer.position',
                    'qoqa.product.product',
                    'qoqa.product.template',
                    'qoqa.buyphrase',

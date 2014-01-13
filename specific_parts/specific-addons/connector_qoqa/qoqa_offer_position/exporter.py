@@ -28,7 +28,7 @@ from openerp.addons.connector.event import (on_record_create,
                                             )
 from ..backend import qoqa
 from .. import consumer
-from ..unit.export_synchronizer import QoQaExporter
+from ..unit.export_synchronizer import QoQaExporter, Translations
 from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 from ..unit.mapper import (m2o_to_backend,
                            floatqoqa,
@@ -70,6 +70,11 @@ class OfferPositionExportMapper(ExportMapper):
                  'qoqa.offer.position.variant'),
                 ]
 
+    translatable_fields = [
+        ('description', 'description'),
+        ('highlights', 'highlights'),
+    ]
+
     direct = [(floatqoqa('unit_price'), 'unit_price'),
               (floatqoqa('installment_price'), 'installment_price'),
               (floatqoqa('regular_price'), 'regular_price'),
@@ -107,3 +112,14 @@ class OfferPositionExportMapper(ExportMapper):
         binder = self.get_binder_for_model('res.currency')
         qoqa_ccy_id = binder.to_backend(currency.id, wrap=True)
         return {'currency_id': qoqa_ccy_id}
+
+    @mapping
+    def translations(self, record):
+        """ Map all the translatable values
+
+        Translatable fields for QoQa are sent in a `translations`
+        key and are not sent in the main record.
+        """
+        fields = self.translatable_fields
+        trans = self.get_connector_unit_for_model(Translations)
+        return trans.get_translations(record, normal_fields=fields)

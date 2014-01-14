@@ -26,5 +26,9 @@ Feature: upgrade to 1.0.3
     Given I find a "attribute.attribute" with name: x_highlights
     Then I delete it
 
+  @costprice
+  Scenario: write the standard price in order to trigger the cost price / margin update
+    Given I write the current standard price on products to update the stored function fields
+
   Scenario: update application version
     Given I set the version of the instance to "1.0.3"

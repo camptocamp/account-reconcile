@@ -11,6 +11,9 @@ Feature: upgrade to 1.0.3
       | qoqa_offer                          |
       | connector_qoqa                      |
       | specific_fct                        |
+      | sale_payment_method                 |
+      | sale_automatic_workflow             |
+      | connector                           |
     Then my modules should have been installed and models reloaded
 
   @ecotax

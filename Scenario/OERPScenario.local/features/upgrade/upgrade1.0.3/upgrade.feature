@@ -35,6 +35,7 @@ Feature: upgrade to 1.0.3
     And I execute the SQL commands
     """
     DELETE FROM queue_job WHERE func_string LIKE 'openerp.addons.connector_qoqa.unit.export_synchronizer.export_record(''qoqa.product.template'', %, fields=[''standard_price''])';
+    DELETE FROM queue_job WHERE func_string LIKE 'openerp.addons.connector_qoqa.unit.export_synchronizer.export_record(''qoqa.product.product'', %, fields=[''standard_price''])';
     """
 
   Scenario: update application version

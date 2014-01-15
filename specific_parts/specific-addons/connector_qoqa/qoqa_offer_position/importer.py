@@ -70,7 +70,6 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               (qoqafloat('regular_price'), 'regular_price'),
               (qoqafloat('buy_price'), 'buy_price'),
               (qoqafloat('top_price'), 'top_price'),
-              ('ecotax', 'ecotax'),
               (iso8601_to_utc('delivery_at'), 'date_delivery'),
               ('booking_delivery', 'booking_delivery'),
               ('order_url', 'order_url'),

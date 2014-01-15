@@ -32,6 +32,10 @@ Feature: upgrade to 1.0.3
   @costprice
   Scenario: write the standard price in order to trigger the cost price / margin update
     Given I write the current standard price on products to update the stored function fields
+    And I execute the SQL commands
+    """
+    DELETE FROM queue_job WHERE func_string LIKE 'openerp.addons.connector_qoqa.unit.export_synchronizer.export_record(''qoqa.product.template'', %, fields=[''standard_price''])';
+    """
 
   Scenario: update application version
     Given I set the version of the instance to "1.0.3"

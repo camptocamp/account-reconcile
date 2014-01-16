@@ -95,8 +95,8 @@ class report_wine_move_analysis(orm.Model):
         'categ_id': fields.many2one('product.category', 'Product Category'),
         'product_qty_in': fields.integer('In Qty', readonly=True),
         'product_qty_out': fields.integer('Out Qty', readonly=True),
-        'product_volume_in': fields.integer('In Volume (Liters)', readonly=True),
-        'product_volume_out': fields.integer('Out Volume (Liters)', readonly=True),
+        'product_volume_in': fields.float('In Volume (Liters)', readonly=True),
+        'product_volume_out': fields.float('Out Volume (Liters)', readonly=True),
         'stock_journal': fields.many2one(
             'stock.journal',
             'Stock Journal',

@@ -32,3 +32,11 @@ def impl(ctx):
               'supplier_taxes_id': [(6, 0, [purchtax_ch.id, purchtax_fr.id])],
               }
     ProductProduct.write(ids, values)
+
+@given('I write the current standard price on products to update the stored function fields')
+def impl(ctx):
+    std_prices = model('product.price.history').browse(['name = standard_price'])
+    templates = [stdp.product_id for stdp in std_prices]
+    products = [variant for tmpl in templates for variant in tmpl.variant_ids]
+    for product in products:
+        product.write({'standard_price': product.standard_price})

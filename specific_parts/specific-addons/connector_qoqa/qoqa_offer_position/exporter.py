@@ -38,10 +38,11 @@ from ..unit.mapper import (m2o_to_backend,
 
 @on_record_create(model_names='qoqa.offer.position')
 @on_record_write(model_names='qoqa.offer.position')
-def delay_export(session, model_name, record_id, fields=None):
+def delay_export(session, model_name, record_id, vals):
     # High priority when we want, for instance, to update the
     # bias in a short timeframe.  Priority still lower than
     # offers though, so they have a change to be exported before
+    fields = vals.keys()
     consumer.delay_export(session, model_name, record_id,
                           fields=fields, priority=5)
 

@@ -32,7 +32,8 @@ from ..unit.mapper import m2o_to_backend
 
 @on_record_create(model_names='qoqa.buyphrase')
 @on_record_write(model_names='qoqa.buyphrase')
-def delay_export(session, model_name, record_id, fields=None):
+def delay_export(session, model_name, record_id, vals):
+    fields = vals.keys()
     consumer.delay_export(session, model_name, record_id,
                           fields=fields)
 

@@ -45,10 +45,11 @@ class CancelSalesOrder(ExportSynchronizer):
 
 
 @on_record_write(model_names='sale.order')
-def delay_cancel_sales_order(session, model_name, record_id, fields=None):
+def delay_cancel_sales_order(session, model_name, record_id, vals):
     """ Delay a job to cancel a sales order. """
     if session.context.get('connector_no_export'):
         return
+    fields = vals.keys()
     if not (fields and 'state' in fields):
         return
     sale = session.browse(model_name, record_id)

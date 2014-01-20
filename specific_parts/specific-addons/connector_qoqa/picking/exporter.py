@@ -30,7 +30,7 @@ from ..backend import qoqa
 
 
 @on_record_create(model_names='qoqa.stock.picking')
-def delay_export(session, model_name, record_id, fields=None):
+def delay_export(session, model_name, record_id, vals):
     export_picking_tracking_done.delay(session, model_name,
                                        record_id)
 

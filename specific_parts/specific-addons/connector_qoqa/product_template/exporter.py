@@ -35,12 +35,14 @@ from ..backend import qoqa
 
 @on_record_create(model_names='qoqa.product.template')
 @on_record_write(model_names='qoqa.product.template')
-def delay_export(session, model_name, record_id, fields=None):
+def delay_export(session, model_name, record_id, vals):
+    fields = vals.keys()
     consumer.delay_export(session, model_name, record_id, fields=fields)
 
 
 @on_record_write(model_names='product.template')
-def delay_export_all_bindings(session, model_name, record_id, fields=None):
+def delay_export_all_bindings(session, model_name, record_id, vals):
+    fields = vals.keys()
     if fields is not None and 'warranty' in fields:
         # the warranty should be exported on the variant, not the
         # template

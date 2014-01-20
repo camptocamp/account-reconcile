@@ -35,17 +35,19 @@ from ..backend import qoqa
 
 @on_record_create(model_names='qoqa.product.product')
 @on_record_write(model_names='qoqa.product.product')
-def delay_export(session, model_name, record_id, fields=None):
+def delay_export(session, model_name, record_id, vals):
+    fields = vals.keys()
     consumer.delay_export(session, model_name, record_id, fields=fields)
 
 
 @on_record_write(model_names='product.product')
-def delay_export_all_bindings(session, model_name, record_id, fields=None):
+def delay_export_all_bindings(session, model_name, record_id, vals):
     if fields == ['qoqa_bind_ids']:
         # QoQa binding edited from the product's view.
         # When only this field has been modified, an other job has
         # been delayed for the qoqa.product.product record.
         return
+    fields = vals.keys()
     consumer.delay_export_all_bindings(session, model_name,
                                        record_id, fields=fields)
 

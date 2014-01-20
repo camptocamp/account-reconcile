@@ -99,6 +99,8 @@ class qoqa_backend(orm.Model):
             'Import Sales Orders from date', required=True),
         'import_accounting_issuance_from_date': fields.datetime(
             'Import Accounting Issuances from date', required=True),
+        'import_offer_position_from_date': fields.datetime(
+            'Import Offer Positions from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
         'import_variant_id': fields.char('Variant ID'),
         'import_offer_id': fields.char('Offer ID'),
@@ -124,6 +126,7 @@ class qoqa_backend(orm.Model):
         'import_address_from_date': '2005-12-12 00:00:00',
         'import_sale_order_from_date': '2005-12-12 00:00:00',
         'import_accounting_issuance_from_date': '2013-11-01 00:00:00',
+        'import_offer_position_from_date': '2005-12-12 00:00:00',
         'date_really_import': '2014-01-01 00:00:00',
         'date_import_inactive': '2012-01-01 00:00:00',
     }
@@ -220,6 +223,12 @@ class qoqa_backend(orm.Model):
     def import_accounting_issuance(self, cr, uid, ids, context=None):
         self._import_from_date(cr, uid, ids, 'qoqa.accounting.issuance',
                                'import_accounting_issuance_from_date',
+                               context=context)
+        return True
+
+    def import_offer_position(self, cr, uid, ids, context=None):
+        self._import_from_date(cr, uid, ids, 'qoqa.offer.position',
+                               'import_offer_position_from_date',
                                context=context)
         return True
 

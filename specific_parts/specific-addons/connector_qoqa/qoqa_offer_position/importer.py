@@ -23,9 +23,21 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
                                                   ImportMapper)
 from ..backend import qoqa
-from ..unit.import_synchronizer import QoQaImportSynchronizer
+from ..unit.import_synchronizer import (QoQaImportSynchronizer,
+                                        DelayedBatchImport,
+                                        )
 from ..unit.mapper import ifmissing
 from ..unit.mapper import iso8601_to_utc, qoqafloat
+
+
+@qoqa
+class QoQaOfferPositionBatchImport(DelayedBatchImport):
+    """ Import the QoQa Product Variants.
+
+    For every product in the list, a delayed job is created.
+    Import from a date
+    """
+    _model_name = ['qoqa.offer.position']
 
 
 @qoqa

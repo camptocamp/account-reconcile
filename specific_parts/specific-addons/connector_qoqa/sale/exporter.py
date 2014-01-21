@@ -49,8 +49,7 @@ def delay_cancel_sales_order(session, model_name, record_id, vals):
     """ Delay a job to cancel a sales order. """
     if session.context.get('connector_no_export'):
         return
-    fields = vals.keys()
-    if not (fields and 'state' in fields):
+    if 'state' in vals:
         return
     sale = session.browse(model_name, record_id)
     # canceled_in_backend means already canceled on QoQa

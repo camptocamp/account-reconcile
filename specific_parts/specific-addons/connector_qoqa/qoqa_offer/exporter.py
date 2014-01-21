@@ -37,21 +37,21 @@ from ..qoqa_offer_position.exporter import delay_export as position_delay_export
 @on_record_create(model_names='qoqa.offer')
 @on_record_write(model_names='qoqa.offer')
 def delay_export(session, model_name, record_id, vals):
-    fields = vals.keys()
-    if fields is not None and 'stock_bias' in fields:
+    if 'stock_bias' in vals:
         # particular case: stock_bias is stored in the positions on
         # the QoQa backend, delay export of all positions
         for position in session.browse(model_name, record_id).position_ids:
             position_delay_export(session, 'qoqa.offer.position',
-                                  position.id, fields=['stock_bias'])
+                                  position.id,
+                                  {'stock_bias': vals['stock_bias']})
         # just skip the export of the offer if only the bias has been
         # modified
-        if fields == ['stock_bias']:
+        if vals.keys() == ['stock_bias']:
             return
     # High priority because we want the changes to be quick
     # so they are displayed asap to the customer.
     consumer.delay_export(session, model_name, record_id,
-                          fields=fields, priority=4)
+                          vals, priority=4)
 
 
 @qoqa

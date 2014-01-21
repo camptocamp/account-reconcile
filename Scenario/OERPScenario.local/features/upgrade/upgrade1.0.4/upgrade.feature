@@ -8,6 +8,7 @@ Feature: upgrade to 1.0.4
     Given I install the required modules with dependencies:
       | name                                 |
       | connector_qoqa                       |
+      | delivery_carrier_label_dispatch      |
       | delivery_carrier_label_postlogistics |
     Then my modules should have been installed and models reloaded
 

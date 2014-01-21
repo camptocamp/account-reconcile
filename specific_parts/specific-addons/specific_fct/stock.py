@@ -20,6 +20,8 @@
 ##############################################################################
 from openerp.osv import orm, fields
 
+from postlogistics.web_service import PostlogisticsWebServiceQoQa
+
 
 class stock_picking(orm.Model):
     """ Add a number of products field to allow search on it.
@@ -61,6 +63,14 @@ class stock_picking(orm.Model):
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
     }
+
+    def _generate_postlogistics_label(self, cr, uid, picking,
+                                      webservice_class=None, context=None):
+        """ Generate post label using QoQa specific to hide parent name in  """
+        return super(stock_picking, self)._generate_postlogistics_label(
+            cr, uid, picking,
+            webservice_class=PostlogisticsWebServiceQoQa,
+            context=context)
 
 
 class stock_picking_in(orm.Model):

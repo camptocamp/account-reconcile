@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -25,10 +25,10 @@ from openerp.addons.delivery_carrier_label_postlogistics_shop_logo.postlogistics
 
 
 class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
-    """ Use picking information to get shop logo """
 
     def _prepare_recipient(self, picking):
         """ Create a ns0:Recipient as a dict from a partner
+
         Add a check to ensure we don't write parent name
         of QoQa customer containing email adresse
 

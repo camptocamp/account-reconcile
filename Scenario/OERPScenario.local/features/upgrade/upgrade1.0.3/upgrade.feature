@@ -13,6 +13,7 @@ Feature: upgrade to 1.0.3
       | specific_fct                        |
       | sale_payment_method                 |
       | sale_automatic_workflow             |
+      | delivery_carrier_label_dispatch     |
       | connector                           |
     Then my modules should have been installed and models reloaded
 

@@ -26,6 +26,7 @@
              'product',
              'product_custom_attributes',
              'purchase',
+             'delivery_carrier_label_postlogistics_shop_logo'
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

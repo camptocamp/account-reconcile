@@ -36,6 +36,8 @@ class RefundExporter(ExportSynchronizer):
     def run(self, refund_id):
         """ Create a refund on the QoQa backend """
         refund = self.session.browse(self.model._name, refund_id)
+        if refund.transaction_id:
+            return _('Already a transaction ID for this refund')
         invoice = refund.refund_from_invoice_id
         if not invoice:
             return _('No origin invoice')

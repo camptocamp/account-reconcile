@@ -52,6 +52,11 @@ class qoqa_sale_order(orm.Model):
             'Total amount on QoQa',
             digits_compute=dp.get_precision('Account')),
         'invoice_ref': fields.char('Invoice Ref. on QoQa'),
+        # id of the main payment on qoqa, used as key for reconciliation
+        'qoqa_payment_id': fields.char('ID of the payment on QoQa'),
+        # field with name 'transaction' in the main payment
+        'qoqa_transaction': fields.char('Transaction number of the payment '
+                                        'on QoQa'),
     }
 
     _sql_constraints = [
@@ -114,7 +119,22 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
     def add_trackings(self, vals):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url + str(id),
+        response = self.client.put(url,
                                    data=json.dumps(vals),
                                    headers=headers)
         self._handle_response(response)
+
+    def refund(self, id, payment_id, amount):
+        """ Create a refund on the QoQa backend, return the payment id """
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'credit',
+                   'refno': payment_id,
+                   'amount': amount}
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        response = self._handle_response(response)
+        # TODO I do not know the content of the response actually
+        # it should return the ID of the payment
+        return response['id']

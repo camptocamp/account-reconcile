@@ -96,8 +96,9 @@ class OfferPositionExportMapper(ExportMapper):
 
     @mapping
     def ecotax(self, record):
-        amount = record.ecotax_id.amount
-        return {'ecotax': int(amount * 100)}
+        if record.ecotax_id:
+            amount = record.ecotax_id.amount
+            return {'ecotax': int(amount * 100)}
 
     @mapping
     def regular_price_type(self, record):

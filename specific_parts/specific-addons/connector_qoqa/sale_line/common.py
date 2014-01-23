@@ -41,11 +41,6 @@ class qoqa_sale_order_line(orm.Model):
                                          readonly=True,
                                          ondelete='cascade',
                                          select=True),
-        'qoqa_lot_size': fields.integer(
-            'Lot Size',
-            help="Number of items in 1 unit of quantity. "
-                 "The Quantity in OpenERP is 'QoQa Quantity * Lot Size'. "
-                 "We keep the original value for reference."),
         'qoqa_quantity': fields.integer('Quantity'),
     }
 

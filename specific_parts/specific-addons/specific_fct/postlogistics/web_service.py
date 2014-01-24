@@ -19,6 +19,9 @@
 #
 ##############################################################################
 
+from openerp.osv import orm
+from openerp.tools.translate import _
+
 from openerp.addons.delivery_carrier_label_postlogistics_shop_logo.postlogistics import (
     web_service
 )
@@ -76,7 +79,11 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
 
         if picking.claim_id:
             partner = picking.claim_id.partner_id
-
+            if not partner:
+                raise orm.except_orm(
+                    _('Error'),
+                    _('Cannot write sender on label, no partner assigned '
+                    'on Claim'))
             sender = {
                 'Name1': partner.name,
                 'Street': partner.street,

@@ -116,14 +116,6 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    headers=headers)
         self._handle_response(response)
 
-    def add_trackings(self, vals):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url,
-                                   data=json.dumps(vals),
-                                   headers=headers)
-        self._handle_response(response)
-
     def refund(self, id, payment_id, amount):
         """ Create a refund on the QoQa backend, return the payment id """
         url = self.url(with_lang=False)

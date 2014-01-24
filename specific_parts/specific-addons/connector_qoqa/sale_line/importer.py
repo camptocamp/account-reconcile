@@ -72,10 +72,7 @@ class SaleOrderLineImportMapper(ImportMapper):
     def finalize(self, map_record, values):
         """ complete the values values from the 'item' sub-record """
         item = map_record.source['item']
-        values.update({
-            'custom_text': item['custom_text'],
-            'qoqa_lot_size': item['lot_size'],
-        })
+        values['custom_text'] = item['custom_text']
         type_id = item['type_id']
         if type_id == QOQA_ITEM_PRODUCT:
             values.update(self._item_product(item))
@@ -159,13 +156,9 @@ class SaleOrderLineImportMapper(ImportMapper):
 
         """
         quantity = record['quantity']
-        lot_size = record['item']['lot_size'] or 1
         price = record['unit_price'] / 100
-        if lot_size > 1:
-            price = price / lot_size
-        total = quantity * lot_size
-        values = {'product_uos_qty': total,
-                  'product_uom_qty': total,
+        values = {'product_uos_qty': quantity,
+                  'product_uom_qty': quantity,
                   'price_unit': price}
         return values
 

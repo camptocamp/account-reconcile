@@ -28,7 +28,7 @@ r'''{
         "item_id": 99999999,
         "type_id": 1,
         "status_id": 1,
-        "quantity": 2,
+        "quantity": 12,
         "delivery_at": "2013-10-28T00:00:00+0100",
         "created_at": "2013-10-11T17:34:42+0200",
         "updated_at": "2013-10-11T17:34:42+0200"
@@ -42,7 +42,6 @@ r'''{
         "variation_id": 99999999,
         "promo_id": 99999999,
         "stock_id": null,
-        "lot_size": 6,
         "custom_text": "custom text",
         "created_at": "2013-10-11T17:34:42+0200",
         "updated_at": "2013-10-11T17:34:42+0200"
@@ -102,8 +101,8 @@ r'''{
             "type_id": 1,
             "credit_acct": null,
             "debit_acct": null,
-            "quantity": 2,
-            "unit_price": 10500,
+            "quantity": 12,
+            "unit_price": 17500,
             "ignore_credit": 0,
             "is_net_price": 1,
             "book_line_id": null,
@@ -116,7 +115,6 @@ r'''{
               "variation_id": 99999999,
               "promo_id": 99999999,
               "stock_id": null,
-              "lot_size": 6,
               "custom_text": "custom text",
               "created_at": "2013-10-11T17:34:42+0200",
               "updated_at": "2013-10-11T17:34:42+0200"
@@ -144,7 +142,6 @@ r'''{
               "variation_id": null,
               "promo_id": 99999999,
               "stock_id": null,
-              "lot_size": 1,
               "custom_text": null,
               "created_at": "2013-10-11T17:35:03+0200",
               "updated_at": "2013-10-11T17:35:03+0200"
@@ -172,7 +169,6 @@ r'''{
               "variation_id": null,
               "promo_id": null,
               "stock_id": null,
-              "lot_size": 1,
               "custom_text": null,
               "created_at": "2013-10-11T17:35:03+0200",
               "updated_at": "2013-10-11T17:35:03+0200"

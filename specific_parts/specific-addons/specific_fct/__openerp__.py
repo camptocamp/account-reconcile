@@ -26,6 +26,7 @@
              'product',
              'product_custom_attributes',
              'purchase',
+             'crm_claim_rma',
              'delivery_carrier_label_postlogistics_shop_logo'
              ],
  'author': 'Camptocamp',

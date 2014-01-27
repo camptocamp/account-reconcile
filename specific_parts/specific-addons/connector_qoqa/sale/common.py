@@ -127,6 +127,4 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    data=json.dumps(payload),
                                    headers=headers)
         response = self._handle_response(response)
-        # TODO I do not know the content of the response actually
-        # it should return the ID of the payment
-        return response['id']
+        return response['data']['id']

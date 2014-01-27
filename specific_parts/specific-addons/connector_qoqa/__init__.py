@@ -19,5 +19,6 @@ from . import qoqa_buyphrase
 from . import accounting_issuance
 from . import promo
 from . import picking
+from . import invoice
 from . import static_binding
 from . import wizard

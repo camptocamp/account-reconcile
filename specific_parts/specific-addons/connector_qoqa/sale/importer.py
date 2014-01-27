@@ -375,7 +375,11 @@ class SaleOrderImportMapper(ImportMapper):
         method = methods[0]
         transaction_id = method[0].get('transaction')
         return {'payment_method_id': method[1].id,
-                'transaction_id': transaction_id}
+                'qoqa_transaction': transaction_id,
+                # keep as payment's reference
+                'qoqa_payment_id': method[0]['id'],
+                # used for the reconciliation (transfered to invoice)
+                'transaction_id': method[0]['id']}
 
     @mapping
     def from_invoice(self, record):

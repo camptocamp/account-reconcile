@@ -4,7 +4,7 @@
 Feature: upgrade to 1.0.4
 
   Scenario: upgrade
-    Given I back up the database to "/srv/openerp/before_upgrade_backups"
+    Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I install the required modules with dependencies:
       | name                                 |
       | connector_qoqa                       |

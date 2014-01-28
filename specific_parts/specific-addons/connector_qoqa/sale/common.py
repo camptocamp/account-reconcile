@@ -121,8 +121,10 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         payload = {'action': 'credit',
-                   'refno': payment_id,
-                   'amount': amount}
+                   'params': {'refno': payment_id,
+                              'amount': amount,
+                              }
+                   }
         response = self.client.put(url + str(id),
                                    data=json.dumps(payload),
                                    headers=headers)

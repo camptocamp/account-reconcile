@@ -56,7 +56,7 @@ class RefundExporter(ExportSynchronizer):
                                                     'qoqa.sale.order')
         payment_id = adapter.refund(qsale.qoqa_id,
                                     origin_payment_id,
-                                    refund.amount_total)
+                                    int(refund.amount_total * 100))
         self.session.write(self.model._name, refund_id,
                            {'transaction_id': payment_id})
         return _('Refund created with payment id: %s' % payment_id)

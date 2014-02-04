@@ -29,3 +29,11 @@ Feature: upgrade to 1.0.5
 
   Scenario: update application version
     Given I set the version of the instance to "1.0.5"
+
+  @mail_setup_incoming
+  Scenario: CREATE THE INCOMING MAIL SERVER
+    Given I need a "fetchmail.server" with oid: scenario.openerp_catchall
+    And having:
+    | name       | value                                |
+    | name       | openerp_catchall              |
+    And I test and confirm the incomming mail server

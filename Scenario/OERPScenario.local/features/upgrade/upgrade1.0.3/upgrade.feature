@@ -41,3 +41,11 @@ Feature: upgrade to 1.0.3
 
   Scenario: update application version
     Given I set the version of the instance to "1.0.3"
+
+  @mail_setup_incoming
+  Scenario: CREATE THE INCOMING MAIL SERVER
+    Given I need a "fetchmail.server" with oid: scenario.openerp_incomming_claim
+    And having:
+    | name       | value                                |
+    | name       | openerp_incomming_claim              |
+    And I test and confirm the incomming mail server

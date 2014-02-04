@@ -51,7 +51,7 @@ class RefundExporter(ExportSynchronizer):
                 _('Error'),
                 _('Cannot be refund on the QoQa backend because '
                   'the payment ID is not stored on the sales order %s') %
-                sale.name)
+                qsale.name)
         adapter = self.get_connector_unit_for_model(BackendAdapter,
                                                     'qoqa.sale.order')
         payment_id = adapter.refund(qsale.qoqa_id,

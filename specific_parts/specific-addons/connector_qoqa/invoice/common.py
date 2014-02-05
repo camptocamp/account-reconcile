@@ -60,6 +60,7 @@ class account_invoice(orm.Model):
             cr, uid, invoice, date=date, period_id=period_id,
             description=description, journal_id=journal_id, context=context)
         result['refund_from_invoice_id'] = invoice.id
+        result['offer_id'] = invoice.offer_id and invoice.offer_id.id or False
         return result
 
     def refund_on_qoqa(self, cr, uid, ids, context=None):

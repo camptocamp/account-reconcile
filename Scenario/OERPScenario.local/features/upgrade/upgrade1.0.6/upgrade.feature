@@ -9,6 +9,7 @@ Feature: upgrade to 1.0.6
       | name                                                   |
       | l10n_ch_payment_slip_base_transaction_id               |
       | l10n_ch_payment_slip_account_statement_base_completion |
+      | l10n_ch_dta_base_transaction_id                        |
     Then my modules should have been installed and models reloaded
 
   @mail_setup_incoming

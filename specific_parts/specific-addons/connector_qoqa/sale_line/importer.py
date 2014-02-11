@@ -145,9 +145,11 @@ class SaleOrderLineImportMapper(ImportMapper):
 
     @mapping
     def quantity(self, record):
-        """ Quantity is multiplied by the lot size:
+        """ Return the quantity and the unit price
 
-        Example: a customer buy 2 x 6 bottles of wine: 12 units
+        Example: a customer buy 2 x 6 bottles of wine: 12 units.
+        The lot size here is 2. QoQa gives the quantity as units,
+        but it gives the price of a lot.
 
         The unit price on QoQa is the price for a *lot*.
         We want the price for a *unit*. We divide the price
@@ -155,8 +157,11 @@ class SaleOrderLineImportMapper(ImportMapper):
         should be 3 digits to ensure we do not lose precision.
 
         """
+        lot_size = record['lot_size']
         quantity = record['quantity']
         price = record['unit_price'] / 100
+        if lot_size > 1:
+            price /= lot_size
         values = {'product_uos_qty': quantity,
                   'product_uom_qty': quantity,
                   'price_unit': price}

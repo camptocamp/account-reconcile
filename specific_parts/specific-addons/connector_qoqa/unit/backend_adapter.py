@@ -146,7 +146,8 @@ class QoQaAdapter(CRUDAdapter):
                 with open('/tmp/err.html', 'w') as f:
                     f.write(response.content)
             # import pdb; pdb.set_trace()
-            raise QoQaResponseNotParsable(err)
+            msg = "%s\n\n%s" % (err, response.content)
+            raise QoQaResponseNotParsable(msg)
         return parsed
 
     def create(self, vals):

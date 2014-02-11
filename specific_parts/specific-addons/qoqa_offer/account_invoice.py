@@ -32,3 +32,12 @@ class account_invoice(orm.Model):
             readonly=True,
             ondelete='restrict'),
     }
+
+    def _prepare_refund(self, cr, uid, invoice, date=None, period_id=None,
+                        description=None, journal_id=None, context=None):
+        result = super(account_invoice, self)._prepare_refund(
+            cr, uid, invoice, date=date, period_id=period_id,
+            description=description, journal_id=journal_id, context=context)
+        if invoice.offer_id:
+            result['offer_id'] = invoice.offer_id.id
+        return result

@@ -60,7 +60,7 @@ class account_invoice(orm.Model):
             cr, uid, invoice, date=date, period_id=period_id,
             description=description, journal_id=journal_id, context=context)
         result['refund_from_invoice_id'] = invoice.id
-    return result
+        return result
 
     def refund_on_qoqa(self, cr, uid, ids, context=None):
         """ Create (synchronously) a refund in the qoqa backend.

@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from itertools import islice
+from itertools import islice, groupby
 from openerp.osv import orm, fields
 
 
@@ -66,19 +66,32 @@ class picking_dispatch_grouper(orm.TransientModel):
                 return
             yield chunk
 
+    @staticmethod
+    def _pack_sort_key(pack):
+        return [(move.product_id.id, move.product_qty) for
+                move in pack.move_ids]
+
     def _group_packs(self, cr, uid, wizard, pack_ids, context=None):
         pack_obj = self.pool['stock.tracking']
         move_obj = self.pool['stock.move']
         dispatch_obj = self.pool['picking.dispatch']
 
         max_pack = wizard.max_pack
+        group_by_set = wizard.group_by_set
 
-        dispatchs = pack_obj.browse(cr, uid, pack_ids, context=context)
+        packs = pack_obj.browse(cr, uid, pack_ids, context=context)
+
+        if group_by_set:
+            packs = sorted(packs, key=self._pack_sort_key)
+            dispatchs = (list(gpacks) for _content, gpacks in
+                         groupby(packs, self._pack_sort_key))
+        else:
+            # one dispatch with all the packs
+            dispatchs = [packs]
 
         if max_pack:
-            dispatchs = self.chunks(dispatchs, max_pack)
-        else:
-            dispatchs = [dispatchs]
+            dispatchs = [chunk for dispatch in dispatchs
+                         for chunk in self.chunks(dispatch, max_pack)]
 
         for packs in dispatchs:
             dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)

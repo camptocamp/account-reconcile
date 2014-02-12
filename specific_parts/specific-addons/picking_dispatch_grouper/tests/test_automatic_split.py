@@ -119,10 +119,14 @@ class test_automatic_group(common.TransactionCase):
         self.existing_dispatch_ids = self.Dispatch.search(
             self.cr, self.uid, [])
 
-    def _new_dispatchs(self):
-        ids = self.Dispatch.search(
-            self.cr, self.uid, [('id', 'not in', self.existing_dispatch_ids)])
-        return self.Dispatch.browse(self.cr, self.uid, ids)
+    def _call_wizard(self, options):
+        Wizard = self.registry('picking.dispatch.grouper')
+        Dispatch = self.registry('picking.dispatch')
+        wizard_id = Wizard.create(self.cr, self.uid, options)
+        wizard = Wizard.browse(self.cr, self.uid, wizard_id)
+        dispatch_ids = Wizard._group_packs(self.cr, self.uid, wizard,
+                                           self.all_pack_ids)
+        return Dispatch.browse(self.cr, self.uid, dispatch_ids)
 
     def test_group_one(self):
         """ Without grouping packs and without max.
@@ -130,19 +134,12 @@ class test_automatic_group(common.TransactionCase):
         Should generate 1 dispatch.
 
         """
-        Wizard = self.registry('picking.dispatch.grouper')
-        wizard_id = Wizard.create(
-            self.cr, self.uid,
-            {'max_pack': 0,
-             'only_product_ids': [],
-             'group_by_set': False,
-             'group_leftovers': False,
-             })
-        ctx = {'active_model': 'stock.tracking',
-               'active_ids': self.all_pack_ids,
-               }
-        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
-        dispatchs = self._new_dispatchs()
+        options = {'max_pack': 0,
+                   'only_product_ids': [],
+                   'group_by_set': False,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
         self.assertEquals(len(dispatchs), 1)
         self.assertEquals(len(dispatchs[0].move_ids), 16)
 
@@ -153,19 +150,12 @@ class test_automatic_group(common.TransactionCase):
         dispatchs.
 
         """
-        Wizard = self.registry('picking.dispatch.grouper')
-        wizard_id = Wizard.create(
-            self.cr, self.uid,
-            {'max_pack': 3,
-             'only_product_ids': [],
-             'group_by_set': False,
-             'group_leftovers': False,
-             })
-        ctx = {'active_model': 'stock.tracking',
-               'active_ids': self.all_pack_ids,
-               }
-        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
-        dispatchs = self._new_dispatchs()
+        options = {'max_pack': 3,
+                   'only_product_ids': [],
+                   'group_by_set': False,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
         self.assertEquals(len(dispatchs), 3)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
@@ -187,19 +177,12 @@ class test_automatic_group(common.TransactionCase):
             pack 6
 
         """
-        Wizard = self.registry('picking.dispatch.grouper')
-        wizard_id = Wizard.create(
-            self.cr, self.uid,
-            {'max_pack': 0,
-             'only_product_ids': [],
-             'group_by_set': True,
-             'group_leftovers': False,
-             })
-        ctx = {'active_model': 'stock.tracking',
-               'active_ids': self.all_pack_ids,
-               }
-        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
-        dispatchs = self._new_dispatchs()
+        options = {'max_pack': 0,
+                   'only_product_ids': [],
+                   'group_by_set': True,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
         self.assertEquals(len(dispatchs), 5)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
@@ -217,19 +200,12 @@ class test_automatic_group(common.TransactionCase):
             pack 4, pack 5, pack 6 (leftovers)
 
         """
-        Wizard = self.registry('picking.dispatch.grouper')
-        wizard_id = Wizard.create(
-            self.cr, self.uid,
-            {'max_pack': 0,
-             'only_product_ids': [],
-             'group_by_set': True,
-             'group_leftovers': True,
-             })
-        ctx = {'active_model': 'stock.tracking',
-               'active_ids': self.all_pack_ids,
-               }
-        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
-        dispatchs = self._new_dispatchs()
+        options = {'max_pack': 0,
+                   'only_product_ids': [],
+                   'group_by_set': True,
+                   'group_leftovers': True,
+                   }
+        dispatchs = self._call_wizard(options)
         self.assertEquals(len(dispatchs), 3)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
@@ -253,19 +229,12 @@ class test_automatic_group(common.TransactionCase):
             pack 6
 
         """
-        Wizard = self.registry('picking.dispatch.grouper')
-        wizard_id = Wizard.create(
-            self.cr, self.uid,
-            {'max_pack': 2,
-             'only_product_ids': [],
-             'group_by_set': True,
-             'group_leftovers': False,
-             })
-        ctx = {'active_model': 'stock.tracking',
-               'active_ids': self.all_pack_ids,
-               }
-        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
-        dispatchs = self._new_dispatchs()
+        options = {'max_pack': 2,
+                   'only_product_ids': [],
+                   'group_by_set': True,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
         self.assertEquals(len(dispatchs), 6)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
@@ -285,19 +254,12 @@ class test_automatic_group(common.TransactionCase):
             pack 6, pack 7 (leftovers)
 
         """
-        Wizard = self.registry('picking.dispatch.grouper')
-        wizard_id = Wizard.create(
-            self.cr, self.uid,
-            {'max_pack': 2,
-             'only_product_ids': [],
-             'group_by_set': True,
-             'group_leftovers': True,
-             })
-        ctx = {'active_model': 'stock.tracking',
-               'active_ids': self.all_pack_ids,
-               }
-        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
-        dispatchs = self._new_dispatchs()
+        options = {'max_pack': 2,
+                   'only_product_ids': [],
+                   'group_by_set': True,
+                   'group_leftovers': True,
+                   }
+        dispatchs = self._call_wizard(options)
         self.assertEquals(len(dispatchs), 4)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)

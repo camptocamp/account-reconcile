@@ -122,11 +122,14 @@ class picking_dispatch_grouper(orm.TransientModel):
                     group_dispatchs.append(leftovers)
             dispatchs = group_dispatchs
 
+        created_ids = []
         for packs in dispatchs:
             dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)
             move_ids = [move.id for pack in packs for move in pack.move_ids]
             move_obj.write(cr, uid, move_ids, {'dispatch_id': dispatch_id},
                            context=context)
+            created_ids.append(dispatch_id)
+        return created_ids
 
     def group(self, cr, uid, ids, context=None):
         if context is None:

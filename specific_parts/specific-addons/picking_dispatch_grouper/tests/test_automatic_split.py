@@ -214,7 +214,7 @@ class test_automatic_group(common.TransactionCase):
 
             pack 2, pack 8
 
-            pack 4, pack 5, pack 6
+            pack 4, pack 5, pack 6 (leftovers)
 
         """
         Wizard = self.registry('picking.dispatch.grouper')
@@ -267,5 +267,37 @@ class test_automatic_group(common.TransactionCase):
         Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
         dispatchs = self._new_dispatchs()
         self.assertEquals(len(dispatchs), 6)
+        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        self.assertEquals(len(moves), 16)
+
+    def test_group_by_set_with_leftovers_and_max(self):
+        """ With grouping packs, grouping of leftovers and max limit of 2.
+
+        Given the input packs, we should have dispatchs with identical
+        content as following:
+
+            pack 1, pack 3,
+
+            pack 2, pack 8
+
+            pack 4, pack 5 (leftovers)
+
+            pack 6, pack 7 (leftovers)
+
+        """
+        Wizard = self.registry('picking.dispatch.grouper')
+        wizard_id = Wizard.create(
+            self.cr, self.uid,
+            {'max_pack': 2,
+             'only_product_ids': [],
+             'group_by_set': True,
+             'group_leftovers': True,
+             })
+        ctx = {'active_model': 'stock.tracking',
+               'active_ids': self.all_pack_ids,
+               }
+        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
+        dispatchs = self._new_dispatchs()
+        self.assertEquals(len(dispatchs), 4)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)

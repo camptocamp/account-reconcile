@@ -93,17 +93,8 @@ class picking_dispatch_grouper(orm.TransientModel):
 
         if group_by_set:
             packs = sorted(packs, key=self._pack_sort_key)
-            leftovers = []
-            dispatchs = []
-            for _content, group in groupby(packs, self._pack_sort_key):
-                group = list(group)  # consume the generator
-                if (group_leftovers and
-                        len(group) <= group_leftovers_limit):
-                    leftovers += group
-                else:
-                    dispatchs.append(group)
-            if leftovers:
-                dispatchs.append(leftovers)
+            dispatchs = (list(gpacks) for _content, gpacks in
+                         groupby(packs, self._pack_sort_key))
 
         else:
             # one dispatch with all the packs
@@ -112,6 +103,24 @@ class picking_dispatch_grouper(orm.TransientModel):
         if max_pack:
             dispatchs = (chunk for dispatch in dispatchs
                          for chunk in self.chunks(dispatch, max_pack))
+
+        # done after the split because the split can create new
+        # leftovers by leaving a pack alone in a picking dispatch
+        if group_leftovers:
+            leftovers = []
+            group_dispatchs = []
+            for packs in dispatchs:
+                if len(packs) <= group_leftovers_limit:
+                    leftovers += packs
+                else:
+                    group_dispatchs.append(packs)
+            if leftovers:
+                # we should re-apply the limit on the leftovers
+                if max_pack:
+                    group_dispatchs += self.chunks(leftovers, max_pack)
+                else:
+                    group_dispatchs.append(leftovers)
+            dispatchs = group_dispatchs
 
         for packs in dispatchs:
             dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)

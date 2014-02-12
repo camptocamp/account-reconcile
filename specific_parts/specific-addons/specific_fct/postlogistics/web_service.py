@@ -92,4 +92,10 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
                 'Country': partner.country_id.code,
             }
             customer.update(sender)
+            # remove logo
+            if 'Logo' in customer:
+                del customer['Logo']
+            if 'LogoFormat' in customer:
+                del customer['LogoFormat']
+
         return customer

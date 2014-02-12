@@ -125,7 +125,7 @@ class test_automatic_group(common.TransactionCase):
         return self.Dispatch.browse(self.cr, self.uid, ids)
 
     def test_group_one(self):
-        """ Generate dispatch without grouping packs and without max.
+        """ Without grouping packs and without max.
 
         Should generate 1 dispatch.
 
@@ -147,7 +147,7 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(dispatchs[0].move_ids), 16)
 
     def test_group_max(self):
-        """ Generate dispatch without grouping packs but with a max limit.
+        """ Without grouping packs but with a max limit.
 
         We set a limit of 3 packs per dispatch, it should generate 5
         dispatchs.
@@ -171,8 +171,7 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(moves), 16)
 
     def test_group_by_set(self):
-        """ Generate dispatch with grouping packs, no grouping of leftovers
-        and no size limit.
+        """ With grouping packs, no grouping of leftovers and no size limit.
 
         Given the input packs, we should have dispatchs with identical
         content as following:
@@ -206,8 +205,7 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(moves), 16)
 
     def test_group_by_set_with_leftovers(self):
-        """ Generate dispatch with grouping packs, grouping of leftovers
-        and no max limit.
+        """ With grouping packs, grouping of leftovers and no max limit.
 
         Given the input packs, we should have dispatchs with identical
         content as following:
@@ -237,8 +235,7 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(moves), 16)
 
     def test_group_by_set_with_max(self):
-        """ Generate dispatch with grouping packs, no grouping of leftovers
-        and a max limit of 2.
+        """ With grouping packs, no grouping of leftovers and a max limit of 2.
 
         Given the input packs, we should have dispatchs with identical
         content as following:

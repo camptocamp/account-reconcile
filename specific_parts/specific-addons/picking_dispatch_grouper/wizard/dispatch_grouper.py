@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+from itertools import islice
 from openerp.osv import orm, fields
 
 
@@ -56,17 +57,34 @@ class picking_dispatch_grouper(orm.TransientModel):
         pack_ids = (move['tracking_id'][0] for move in moves)
         return list(set(pack_ids))
 
+    @staticmethod
+    def chunks(iterable, size):
+        it = iter(iterable)
+        while True:
+            chunk = tuple(islice(it, size))
+            if not chunk:
+                return
+            yield chunk
+
     def _group_packs(self, cr, uid, wizard, pack_ids, context=None):
         pack_obj = self.pool['stock.tracking']
         move_obj = self.pool['stock.move']
         dispatch_obj = self.pool['picking.dispatch']
-        acc = []
-        for pack in pack_obj.browse(cr, uid, pack_ids, context=context):
-            acc.append(pack)
-        dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)
-        move_ids = [move.id for pack in acc for move in pack.move_ids]
-        move_obj.write(cr, uid, move_ids, {'dispatch_id': dispatch_id},
-                       context=context)
+
+        max_pack = wizard.max_pack
+
+        dispatchs = pack_obj.browse(cr, uid, pack_ids, context=context)
+
+        if max_pack:
+            dispatchs = self.chunks(dispatchs, max_pack)
+        else:
+            dispatchs = [dispatchs]
+
+        for packs in dispatchs:
+            dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)
+            move_ids = [move.id for pack in packs for move in pack.move_ids]
+            move_obj.write(cr, uid, move_ids, {'dispatch_id': dispatch_id},
+                           context=context)
 
     def group(self, cr, uid, ids, context=None):
         if context is None:

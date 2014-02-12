@@ -50,7 +50,6 @@ class test_automatic_group(common.TransactionCase):
 
     def setUp(self):
         super(test_automatic_group, self).setUp()
-        cr, uid = self.cr, self.uid
         self.pack_id_1 = create_pack(
             self,
             prepare_pack(self),
@@ -138,3 +137,27 @@ class test_automatic_group(common.TransactionCase):
         dispatchs = self._new_dispatchs()
         self.assertEquals(len(dispatchs), 1)
         self.assertEquals(len(dispatchs[0].move_ids), 14)
+
+    def test_group_max(self):
+        """ Generate dispatch without grouping packs but with a max limit.
+
+        We set a limit of 3 packs per dispatch, it should generate 5
+        dispatchs.
+
+        """
+        Wizard = self.registry('picking.dispatch.grouper')
+        wizard_id = Wizard.create(
+            self.cr, self.uid,
+            {'max_pack': 3,
+             'only_product_ids': [],
+             'group_by_set': False,
+             'group_leftovers': False,
+             })
+        ctx = {'active_model': 'stock.tracking',
+               'active_ids': self.all_pack_ids,
+               }
+        Wizard.group(self.cr, self.uid, wizard_id, context=ctx)
+        dispatchs = self._new_dispatchs()
+        self.assertEquals(len(dispatchs), 3)
+        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        self.assertEquals(len(moves), 14)

@@ -19,6 +19,9 @@
 #
 ##############################################################################
 
+from openerp.osv import orm
+from openerp.tools.translate import _
+
 from openerp.addons.delivery_carrier_label_postlogistics_shop_logo.postlogistics import (
     web_service
 )
@@ -47,3 +50,52 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
             recipient['PersonallyAddressed'] = True
 
         return recipient
+
+    def _prepare_attributes(self, picking):
+        """ Set the Free Text on label for SAV
+
+        On merchandise return we need the RMA number on it
+
+        """
+        attributes = super(PostlogisticsWebServiceQoQa, self
+                          )._prepare_attributes(picking)
+
+        if picking.claim_id:
+            attributes['FreeText'] = picking.claim_id.number
+        return attributes
+
+    def _prepare_customer(self, picking):
+        """ Create a ns0:Customer as a dict from picking
+
+        Change Postlogistic Customer, thus the sender by 
+        your customer's address for RMA claim
+
+        :param picking: picking browse record
+        :return a dict containing data for ns0:Customer
+
+        """
+        customer = super(PostlogisticsWebServiceQoQa, self
+                          )._prepare_customer(picking)
+
+        if picking.claim_id:
+            partner = picking.claim_id.partner_id
+            if not partner:
+                raise orm.except_orm(
+                    _('Error'),
+                    _('Cannot write sender on label, no partner assigned '
+                    'on Claim'))
+            sender = {
+                'Name1': partner.name,
+                'Street': partner.street,
+                'ZIP': partner.zip,
+                'City': partner.city,
+                'Country': partner.country_id.code,
+            }
+            customer.update(sender)
+            # remove logo
+            if 'Logo' in customer:
+                del customer['Logo']
+            if 'LogoFormat' in customer:
+                del customer['LogoFormat']
+
+        return customer

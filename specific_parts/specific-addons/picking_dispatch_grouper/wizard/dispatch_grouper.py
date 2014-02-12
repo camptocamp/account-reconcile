@@ -45,6 +45,14 @@ class picking_dispatch_grouper(orm.TransientModel):
             'Put the leftovers in the same dispatch',
             help='When packs do not fall in a group, they will be '
                  'grouped in a dispach'),
+        'group_leftovers_limit': fields.integer(
+            'A group is considered as a leftover below')
+    }
+
+    _defaults = {
+        'group_by_set': True,
+        'group_leftovers': True,
+        'group_leftovers_limit': 1,
     }
 
     def _picking_to_pack_ids(self, cr, uid, picking_ids, context=None):
@@ -78,20 +86,31 @@ class picking_dispatch_grouper(orm.TransientModel):
 
         max_pack = wizard.max_pack
         group_by_set = wizard.group_by_set
+        group_leftovers = wizard.group_leftovers
+        group_leftovers_limit = wizard.group_leftovers_limit
 
         packs = pack_obj.browse(cr, uid, pack_ids, context=context)
 
         if group_by_set:
             packs = sorted(packs, key=self._pack_sort_key)
-            dispatchs = (list(gpacks) for _content, gpacks in
-                         groupby(packs, self._pack_sort_key))
+            leftovers = []
+            dispatchs = []
+            for _content, group in groupby(packs, self._pack_sort_key):
+                group = list(group)  # consume the generator
+                if (group_leftovers and
+                        len(group) <= group_leftovers_limit):
+                    leftovers += group
+                else:
+                    dispatchs.append(group)
+            dispatchs.append(leftovers)
+
         else:
             # one dispatch with all the packs
             dispatchs = [packs]
 
         if max_pack:
-            dispatchs = [chunk for dispatch in dispatchs
-                         for chunk in self.chunks(dispatch, max_pack)]
+            dispatchs = (chunk for dispatch in dispatchs
+                         for chunk in self.chunks(dispatch, max_pack))
 
         for packs in dispatchs:
             dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)

@@ -102,7 +102,8 @@ class picking_dispatch_grouper(orm.TransientModel):
                     leftovers += group
                 else:
                     dispatchs.append(group)
-            dispatchs.append(leftovers)
+            if leftovers:
+                dispatchs.append(leftovers)
 
         else:
             # one dispatch with all the packs

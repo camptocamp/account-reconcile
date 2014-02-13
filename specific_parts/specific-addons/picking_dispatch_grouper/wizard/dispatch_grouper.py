@@ -92,10 +92,22 @@ class picking_dispatch_grouper(orm.TransientModel):
     def _filter_packs(self, cr, uid, wizard, packs, context=None):
         filter_product_ids = set(pr.id for pr in wizard.only_product_ids)
         for pack in packs:
+            if not filter_product_ids:
+                yield pack
+                continue
             product_ids = set(move.product_id.id for move in pack.move_ids)
             if product_ids != filter_product_ids:
                 continue
             yield pack
+
+    def _group_by_content(self, cr, uid, wizard, packs, context=None):
+        if wizard.group_by_content:
+            packs = sorted(packs, key=self._pack_sort_key)
+            for _content, gpacks in groupby(packs, self._pack_sort_key):
+                yield list(gpacks)
+        else:
+            # one dispatch with all the packs
+            yield packs
 
     def _group_packs(self, cr, uid, wizard, pack_ids, context=None):
         pack_obj = self.pool['stock.tracking']
@@ -103,23 +115,15 @@ class picking_dispatch_grouper(orm.TransientModel):
         dispatch_obj = self.pool['picking.dispatch']
 
         max_pack = wizard.max_pack
-        group_by_content = wizard.group_by_content
         group_leftovers = wizard.group_leftovers
         group_leftovers_limit = wizard.group_leftovers_limit
 
         packs = pack_obj.browse(cr, uid, pack_ids, context=context)
 
-        if wizard.only_product_ids:
-            packs = self._filter_packs(cr, uid, wizard, packs, context=context)
+        packs = self._filter_packs(cr, uid, wizard, packs, context=context)
 
-        if group_by_content:
-            packs = sorted(packs, key=self._pack_sort_key)
-            dispatchs = (list(gpacks) for _content, gpacks in
-                         groupby(packs, self._pack_sort_key))
-
-        else:
-            # one dispatch with all the packs
-            dispatchs = [packs]
+        dispatchs = self._group_by_content(cr, uid, wizard, packs,
+                                           context=context)
 
         if max_pack:
             dispatchs = (chunk for dispatch in dispatchs

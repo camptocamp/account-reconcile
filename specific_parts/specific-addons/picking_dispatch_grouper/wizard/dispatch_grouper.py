@@ -29,24 +29,30 @@ class picking_dispatch_grouper(orm.TransientModel):
 
     _columns = {
         'max_pack': fields.integer(
-            'Max number of packs in a dispatch',
-            help='Leave 0 to set no limit'),
+            'Limit of packs',
+            help='The number of packs per dispatch will be limited to this '
+                 'quantity. Leave 0 to set no limit.'),
         'only_product_ids': fields.many2many(
             'product.product',
             string='Filter on products',
-            help='Dispatchs will be created only if the '
-                 'pack contains at least one of these products.\n'
-                 'No filter is applied when no product is selected. '),
+            help='Dispatchs will be created only if the content of the '
+                 'pack contains exactly the same content '
+                 '(without consideration for the quantity).\n'
+                 'No filter is applied when no product is selected.'),
         'group_by_content': fields.boolean(
             'Group By Content',
             help='Packs with similar content will be grouped in '
                  'the same dispatch'),
         'group_leftovers': fields.boolean(
             'Put the leftovers in the same dispatch',
-            help='When packs do not fall in a group, they will be '
-                 'grouped in a dispach'),
+            help='When packs do not fall in a group, they will all be '
+                 'grouped in a dispatch'),
         'group_leftovers_limit': fields.integer(
-            'A group is considered as a leftover below')
+            'Size of leftovers',
+            help='A group of packs with the same content is considered '
+                 'as a leftover below this number. With the default '
+                 'value of 1, only the packs with a unique content '
+                 'will be grouped in the leftovers dispatch.')
     }
 
     _defaults = {

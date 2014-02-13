@@ -37,8 +37,8 @@ class picking_dispatch_grouper(orm.TransientModel):
             help='Dispatchs will be created only if the '
                  'pack contains at least one of these products.\n'
                  'No filter is applied when no product is selected. '),
-        'group_by_set': fields.boolean(
-            'Group By Set',
+        'group_by_content': fields.boolean(
+            'Group By Content',
             help='Packs with similar content will be grouped in '
                  'the same dispatch'),
         'group_leftovers': fields.boolean(
@@ -50,7 +50,7 @@ class picking_dispatch_grouper(orm.TransientModel):
     }
 
     _defaults = {
-        'group_by_set': True,
+        'group_by_content': True,
         'group_leftovers': True,
         'group_leftovers_limit': 1,
     }
@@ -89,13 +89,13 @@ class picking_dispatch_grouper(orm.TransientModel):
         dispatch_obj = self.pool['picking.dispatch']
 
         max_pack = wizard.max_pack
-        group_by_set = wizard.group_by_set
+        group_by_content = wizard.group_by_content
         group_leftovers = wizard.group_leftovers
         group_leftovers_limit = wizard.group_leftovers_limit
 
         packs = pack_obj.browse(cr, uid, pack_ids, context=context)
 
-        if group_by_set:
+        if group_by_content:
             packs = sorted(packs, key=self._pack_sort_key)
             dispatchs = (list(gpacks) for _content, gpacks in
                          groupby(packs, self._pack_sort_key))

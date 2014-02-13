@@ -136,7 +136,7 @@ class test_automatic_group(common.TransactionCase):
         """
         options = {'max_pack': 0,
                    'only_product_ids': [],
-                   'group_by_set': False,
+                   'group_by_content': False,
                    'group_leftovers': False,
                    }
         dispatchs = self._call_wizard(options)
@@ -152,7 +152,7 @@ class test_automatic_group(common.TransactionCase):
         """
         options = {'max_pack': 3,
                    'only_product_ids': [],
-                   'group_by_set': False,
+                   'group_by_content': False,
                    'group_leftovers': False,
                    }
         dispatchs = self._call_wizard(options)
@@ -160,7 +160,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
 
-    def test_group_by_set(self):
+    def test_group_by_content(self):
         """ With grouping packs, no grouping of leftovers and no size limit.
 
         Given the input packs, we should have dispatchs with identical
@@ -179,7 +179,7 @@ class test_automatic_group(common.TransactionCase):
         """
         options = {'max_pack': 0,
                    'only_product_ids': [],
-                   'group_by_set': True,
+                   'group_by_content': True,
                    'group_leftovers': False,
                    }
         dispatchs = self._call_wizard(options)
@@ -187,7 +187,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
 
-    def test_group_by_set_with_leftovers(self):
+    def test_group_by_content_with_leftovers(self):
         """ With grouping packs, grouping of leftovers and no max limit.
 
         Given the input packs, we should have dispatchs with identical
@@ -202,7 +202,7 @@ class test_automatic_group(common.TransactionCase):
         """
         options = {'max_pack': 0,
                    'only_product_ids': [],
-                   'group_by_set': True,
+                   'group_by_content': True,
                    'group_leftovers': True,
                    }
         dispatchs = self._call_wizard(options)
@@ -210,7 +210,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
 
-    def test_group_by_set_with_max(self):
+    def test_group_by_content_with_max(self):
         """ With grouping packs, no grouping of leftovers and a max limit of 2.
 
         Given the input packs, we should have dispatchs with identical
@@ -231,7 +231,7 @@ class test_automatic_group(common.TransactionCase):
         """
         options = {'max_pack': 2,
                    'only_product_ids': [],
-                   'group_by_set': True,
+                   'group_by_content': True,
                    'group_leftovers': False,
                    }
         dispatchs = self._call_wizard(options)
@@ -239,7 +239,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
 
-    def test_group_by_set_with_leftovers_and_max(self):
+    def test_group_by_content_with_leftovers_and_max(self):
         """ With grouping packs, grouping of leftovers and max limit of 2.
 
         Given the input packs, we should have dispatchs with identical
@@ -256,7 +256,7 @@ class test_automatic_group(common.TransactionCase):
         """
         options = {'max_pack': 2,
                    'only_product_ids': [],
-                   'group_by_set': True,
+                   'group_by_content': True,
                    'group_leftovers': True,
                    }
         dispatchs = self._call_wizard(options)

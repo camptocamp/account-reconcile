@@ -47,7 +47,7 @@ class picking_dispatch_grouper(orm.TransientModel):
             'Put the leftovers in the same dispatch',
             help='When packs do not fall in a group, they will all be '
                  'grouped in a dispatch'),
-        'group_leftovers_limit': fields.integer(
+        'group_leftovers_limit': fields.integer(  # TODO rename to threshold
             'Size of leftovers',
             help='A group of packs with the same content is considered '
                  'as a leftover below this number. With the default '
@@ -62,6 +62,7 @@ class picking_dispatch_grouper(orm.TransientModel):
     }
 
     def _picking_to_pack_ids(self, cr, uid, picking_ids, context=None):
+        """ Get the pack ids from picking ids """
         move_obj = self.pool['stock.move']
         move_ids = move_obj.search(cr, uid,
                                    [('picking_id', 'in', picking_ids)],
@@ -73,6 +74,7 @@ class picking_dispatch_grouper(orm.TransientModel):
 
     @staticmethod
     def chunks(iterable, size):
+        """ Chunk iterable to n parts of size `size` """
         it = iter(iterable)
         while True:
             chunk = tuple(islice(it, size))
@@ -80,16 +82,8 @@ class picking_dispatch_grouper(orm.TransientModel):
                 return
             yield chunk
 
-    @staticmethod
-    def _pack_sort_key(pack):
-        sorted_moves = sorted(pack.move_ids,
-                              key=lambda m: (m.product_id.id,
-                                             m.product_qty,
-                                             m.product_uom.id))
-        return [(move.product_id.id, move.product_qty, move.product_uom.id) for
-                move in sorted_moves]
-
     def _filter_packs(self, cr, uid, wizard, packs, context=None):
+        """ Filter the packs. Their content should equal to the filter """
         filter_product_ids = set(pr.id for pr in wizard.only_product_ids)
         for pack in packs:
             if not filter_product_ids:
@@ -100,7 +94,20 @@ class picking_dispatch_grouper(orm.TransientModel):
                 continue
             yield pack
 
+    @staticmethod
+    def _pack_sort_key(pack):
+        """ Sort key used for the grouping of the packs """
+        # sort the moves so they are compared equally,
+        # e.g. avoid to compare [(1, 10), (2, 20)] vs [(2, 20), (1, 10)]
+        sorted_moves = sorted(pack.move_ids,
+                              key=lambda m: (m.product_id.id,
+                                             m.product_qty,
+                                             m.product_uom.id))
+        return [(move.product_id.id, move.product_qty, move.product_uom.id) for
+                move in sorted_moves]
+
     def _group_by_content(self, cr, uid, wizard, packs, context=None):
+        """ Group the packs by the equality of their content """
         if wizard.group_by_content:
             packs = sorted(packs, key=self._pack_sort_key)
             for _content, gpacks in groupby(packs, self._pack_sort_key):
@@ -109,14 +116,58 @@ class picking_dispatch_grouper(orm.TransientModel):
             # one dispatch with all the packs
             yield packs
 
-    def _group_packs(self, cr, uid, wizard, pack_ids, context=None):
-        pack_obj = self.pool['stock.tracking']
+    def _split_dispatchs_to_limit(self, cr, uid, wizard, dispatchs,
+                                  context=None):
+        """ Split the dispatchs having a count of packs above the limit """
+        max_pack = wizard.max_pack
+        for dispatch in dispatchs:
+            if max_pack:
+                for chunk in self.chunks(dispatch, max_pack):
+                    yield chunk
+            else:
+                yield dispatch
+
+    def _dispatch_leftovers(self, cr, uid, wizard, dispatchs, context=None):
+        """ Find the leftovers dispatchs and group them in a final dispatch.
+
+        Leftovers are dispatchs containing less packs than a defined
+        threshold (1 by default).  The leftovers may be grouped in one
+        (or several when using a limit of packs per dispatch) dispatch
+        to avoid having one dispatch for each unique pack.
+
+        """
+        limit = wizard.group_leftovers_limit
+        leftovers = []
+        for packs in dispatchs:
+            if wizard.group_leftovers:
+                if len(packs) <= limit:
+                    leftovers += packs
+                else:
+                    yield packs
+            else:
+                yield packs
+
+        if leftovers:
+            # we should re-apply the limit on the leftovers
+            leftovers = self._split_dispatchs_to_limit(cr, uid, wizard,
+                                                       [leftovers],
+                                                       context=context)
+            for leftover in leftovers:
+                yield leftover
+
+    def _create_dispatch(self, cr, uid, vals, packs, context=None):
+        """ Create a dispatch for packs """
         move_obj = self.pool['stock.move']
         dispatch_obj = self.pool['picking.dispatch']
+        dispatch_id = dispatch_obj.create(cr, uid, vals, context=context)
+        move_ids = [move.id for pack in packs for move in pack.move_ids]
+        move_obj.write(cr, uid, move_ids, {'dispatch_id': dispatch_id},
+                       context=context)
+        return dispatch_id
 
-        max_pack = wizard.max_pack
-        group_leftovers = wizard.group_leftovers
-        group_leftovers_limit = wizard.group_leftovers_limit
+    def _group_packs(self, cr, uid, wizard, pack_ids, context=None):
+        """ Split a set of packs in many dispatches according to rules """
+        pack_obj = self.pool['stock.tracking']
 
         packs = pack_obj.browse(cr, uid, pack_ids, context=context)
 
@@ -125,38 +176,29 @@ class picking_dispatch_grouper(orm.TransientModel):
         dispatchs = self._group_by_content(cr, uid, wizard, packs,
                                            context=context)
 
-        if max_pack:
-            dispatchs = (chunk for dispatch in dispatchs
-                         for chunk in self.chunks(dispatch, max_pack))
+        dispatchs = self._split_dispatchs_to_limit(cr, uid, wizard,
+                                                   dispatchs, context=context)
 
         # done after the split because the split can create new
         # leftovers by leaving a pack alone in a picking dispatch
-        if group_leftovers:
-            leftovers = []
-            group_dispatchs = []
-            for packs in dispatchs:
-                if len(packs) <= group_leftovers_limit:
-                    leftovers += packs
-                else:
-                    group_dispatchs.append(packs)
-            if leftovers:
-                # we should re-apply the limit on the leftovers
-                if max_pack:
-                    group_dispatchs += self.chunks(leftovers, max_pack)
-                else:
-                    group_dispatchs.append(leftovers)
-            dispatchs = group_dispatchs
+        dispatchs = self._dispatch_leftovers(cr, uid, wizard, dispatchs,
+                                             context=context)
 
         created_ids = []
         for packs in dispatchs:
-            dispatch_id = dispatch_obj.create(cr, uid, {}, context=context)
-            move_ids = [move.id for pack in packs for move in pack.move_ids]
-            move_obj.write(cr, uid, move_ids, {'dispatch_id': dispatch_id},
-                           context=context)
+            dispatch_id = self._create_dispatch(cr, uid, {}, packs,
+                                                context=context)
             created_ids.append(dispatch_id)
         return created_ids
 
     def group(self, cr, uid, ids, context=None):
+        """ Public method to use the wizard.
+
+        Can be used from Delivery Orders or Packs.
+        When used with Delivery Orders, it consumes all the packs
+        of the selected delivery orders.
+
+        """
         if context is None:
             context = {}
         if isinstance(ids, (tuple, list)):

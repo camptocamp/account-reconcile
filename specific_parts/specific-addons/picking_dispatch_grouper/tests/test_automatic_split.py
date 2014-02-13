@@ -263,3 +263,96 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(dispatchs), 4)
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
+
+    def test_group_filter(self):
+        """ Without grouping packs, no limit, filter on a group of products.
+
+        Filter on products
+             'product.product_product_33'
+             'product.product_product_20'
+
+        We should have 4 packs in 1 dispatch.
+
+        """
+        pr33 = self.ref('product.product_product_33')
+        pr20 = self.ref('product.product_product_20')
+        options = {'max_pack': 0,
+                   'only_product_ids': [(6, 0, [pr33, pr20])],
+                   'group_by_content': False,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
+        self.assertEquals(len(dispatchs), 1)
+        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        self.assertEquals(len(moves), 8)
+
+    def test_group_filter_grouping(self):
+        """ With grouping packs, no limit, filter on a group of products.
+
+        Filter on products
+             'product.product_product_33'
+             'product.product_product_20'
+
+        We should have 4 packs in 2 dispatch.
+
+        """
+        pr33 = self.ref('product.product_product_33')
+        pr20 = self.ref('product.product_product_20')
+        options = {'max_pack': 0,
+                   'only_product_ids': [(6, 0, [pr33, pr20])],
+                   'group_by_content': True,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
+        self.assertEquals(len(dispatchs), 2)
+        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        self.assertEquals(len(moves), 8)
+
+    def test_group_filter_grouping_max(self):
+        """ With grouping packs, a limit, filter on a group of products.
+
+        Filter on products
+             'product.product_product_33'
+             'product.product_product_20'
+
+        With a limit of 2.
+
+        We should have 4 packs in 3 dispatch.
+
+        """
+        pr33 = self.ref('product.product_product_33')
+        pr20 = self.ref('product.product_product_20')
+        options = {'max_pack': 2,
+                   'only_product_ids': [(6, 0, [pr33, pr20])],
+                   'group_by_content': True,
+                   'group_leftovers': False,
+                   }
+        dispatchs = self._call_wizard(options)
+        self.assertEquals(len(dispatchs), 3)
+        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        self.assertEquals(len(moves), 8)
+
+    def test_group_filter_grouping_max_leftovers(self):
+        """ With grouping packs and leftovers, a limit, filter on a group of products.
+
+        Filter on products
+             'product.product_product_33'
+             'product.product_product_20'
+
+        With a limit of 2.
+
+        We should have 4 packs in 2 dispatchs (the leftover of first group
+        will be grouped with the standalone pack).
+
+        """
+        pr33 = self.ref('product.product_product_33')
+        pr20 = self.ref('product.product_product_20')
+        options = {'max_pack': 2,
+                   'only_product_ids': [(6, 0, [pr33, pr20])],
+                   'group_by_content': True,
+                   'group_leftovers': True,
+                   }
+        dispatchs = self._call_wizard(options)
+        self.assertEquals(len(dispatchs), 2)
+        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        self.assertEquals(len(moves), 8)

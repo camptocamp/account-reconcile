@@ -76,8 +76,12 @@ class picking_dispatch_grouper(orm.TransientModel):
 
     @staticmethod
     def _pack_sort_key(pack):
-        return [(move.product_id.id, move.product_qty) for
-                move in pack.move_ids]
+        sorted_moves = sorted(pack.move_ids,
+                              key=lambda m: (m.product_id.id,
+                                             m.product_qty,
+                                             m.product_uom.id))
+        return [(move.product_id.id, move.product_qty, move.product_uom.id) for
+                move in sorted_moves]
 
     def _group_packs(self, cr, uid, wizard, pack_ids, context=None):
         pack_obj = self.pool['stock.tracking']

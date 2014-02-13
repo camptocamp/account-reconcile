@@ -149,7 +149,7 @@ class test_automatic_group(common.TransactionCase):
                                            self.all_pack_ids)
         return Dispatch.browse(self.cr, self.uid, dispatch_ids)
 
-    def test_group_one(self):
+    def test_all_off(self):
         """ Without grouping packs and without limit.
 
         Should generate 1 dispatch.
@@ -165,7 +165,7 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(dispatchs), 1)
         self.assertEquals(len(dispatchs[0].move_ids), 19)
 
-    def test_group_limit(self):
+    def test_limit(self):
         """ Without grouping packs but with a limit.
 
         We set a limit of 3 packs per dispatch, it should generate 4
@@ -183,7 +183,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_by_content(self):
+    def test_group(self):
         """ With grouping packs, no grouping of leftovers and no size limit.
 
         Given the input packs, we should have dispatchs with identical
@@ -213,7 +213,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_by_content_with_leftovers(self):
+    def test_group_leftovers(self):
         """ With grouping packs, grouping of leftovers and no limit.
 
         Given the input packs, we should have dispatchs with identical
@@ -240,7 +240,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_by_content_with_limit(self):
+    def test_group_limit(self):
         """ With grouping packs, no grouping of leftovers and a limit of 2 without threshold.
 
         Given the input packs, we should have dispatchs with identical
@@ -274,7 +274,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_by_content_with_leftovers_and_limit(self):
+    def test_group_leftovers_limit(self):
         """ With grouping packs, grouping of leftovers and limit of 2.
 
         Given the input packs, we should have dispatchs with identical
@@ -304,7 +304,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_filter(self):
+    def test_filter(self):
         """ Without grouping packs, no limit, filter on a group of products.
 
         Filter on products
@@ -327,7 +327,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
-    def test_group_filter_grouping(self):
+    def test_filter_group(self):
         """ With grouping packs, no limit, filter on a group of products.
 
         Filter on products
@@ -350,7 +350,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
-    def test_group_filter_grouping_limit(self):
+    def test_filter_group_limit(self):
         """ With grouping packs, a limit, filter on a group of products.
 
         Filter on products
@@ -375,7 +375,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
-    def test_group_filter_grouping_limit_leftovers(self):
+    def test_filter_group_limit_leftovers(self):
         """ With grouping packs and leftovers, a limit, filter on a group of products.
 
         Filter on products
@@ -401,7 +401,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
-    def test_group_limit_with_threshold(self):
+    def test_limit_threshold(self):
         """ Without grouping packs but with a limit and a limit threshold.
 
         We set a limit of 3 packs per dispatch, it should generate 4
@@ -420,7 +420,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_by_content_with_limit_with_threshold(self):
+    def test_group_limit_threshold(self):
         """ With grouping packs, no grouping of leftovers and a limit of 2 with threshold.
 
         Given the input packs, we should have dispatchs with identical
@@ -452,7 +452,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
-    def test_group_by_content_with_leftovers_and_limit_with_threshold(self):
+    def test_group_leftovers_limit_threshold(self):
         """ With grouping packs, grouping of leftovers and limit of 2 with a threshold.
 
         Given the input packs, we should have dispatchs with identical

@@ -129,12 +129,12 @@ class test_automatic_group(common.TransactionCase):
         return Dispatch.browse(self.cr, self.uid, dispatch_ids)
 
     def test_group_one(self):
-        """ Without grouping packs and without max.
+        """ Without grouping packs and without limit.
 
         Should generate 1 dispatch.
 
         """
-        options = {'max_pack': 0,
+        options = {'pack_limit': 0,
                    'only_product_ids': [],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -143,14 +143,14 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(dispatchs), 1)
         self.assertEquals(len(dispatchs[0].move_ids), 16)
 
-    def test_group_max(self):
-        """ Without grouping packs but with a max limit.
+    def test_group_limit(self):
+        """ Without grouping packs but with a limit.
 
         We set a limit of 3 packs per dispatch, it should generate 5
         dispatchs.
 
         """
-        options = {'max_pack': 3,
+        options = {'pack_limit': 3,
                    'only_product_ids': [],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -177,7 +177,7 @@ class test_automatic_group(common.TransactionCase):
             pack 6
 
         """
-        options = {'max_pack': 0,
+        options = {'pack_limit': 0,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -188,7 +188,7 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(moves), 16)
 
     def test_group_by_content_with_leftovers(self):
-        """ With grouping packs, grouping of leftovers and no max limit.
+        """ With grouping packs, grouping of leftovers and no limit.
 
         Given the input packs, we should have dispatchs with identical
         content as following:
@@ -200,7 +200,7 @@ class test_automatic_group(common.TransactionCase):
             pack 4, pack 5, pack 6 (leftovers)
 
         """
-        options = {'max_pack': 0,
+        options = {'pack_limit': 0,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': True,
@@ -210,8 +210,8 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
 
-    def test_group_by_content_with_max(self):
-        """ With grouping packs, no grouping of leftovers and a max limit of 2.
+    def test_group_by_content_with_limit(self):
+        """ With grouping packs, no grouping of leftovers and a limit of 2.
 
         Given the input packs, we should have dispatchs with identical
         content as following:
@@ -229,7 +229,7 @@ class test_automatic_group(common.TransactionCase):
             pack 6
 
         """
-        options = {'max_pack': 2,
+        options = {'pack_limit': 2,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -239,8 +239,8 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 16)
 
-    def test_group_by_content_with_leftovers_and_max(self):
-        """ With grouping packs, grouping of leftovers and max limit of 2.
+    def test_group_by_content_with_leftovers_and_limit(self):
+        """ With grouping packs, grouping of leftovers and limit of 2.
 
         Given the input packs, we should have dispatchs with identical
         content as following:
@@ -254,7 +254,7 @@ class test_automatic_group(common.TransactionCase):
             pack 6, pack 7 (leftovers)
 
         """
-        options = {'max_pack': 2,
+        options = {'pack_limit': 2,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': True,
@@ -276,7 +276,7 @@ class test_automatic_group(common.TransactionCase):
         """
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
-        options = {'max_pack': 0,
+        options = {'pack_limit': 0,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -298,7 +298,7 @@ class test_automatic_group(common.TransactionCase):
         """
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
-        options = {'max_pack': 0,
+        options = {'pack_limit': 0,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -308,7 +308,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
-    def test_group_filter_grouping_max(self):
+    def test_group_filter_grouping_limit(self):
         """ With grouping packs, a limit, filter on a group of products.
 
         Filter on products
@@ -322,7 +322,7 @@ class test_automatic_group(common.TransactionCase):
         """
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
-        options = {'max_pack': 2,
+        options = {'pack_limit': 2,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -332,7 +332,7 @@ class test_automatic_group(common.TransactionCase):
         moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
-    def test_group_filter_grouping_max_leftovers(self):
+    def test_group_filter_grouping_limit_leftovers(self):
         """ With grouping packs and leftovers, a limit, filter on a group of products.
 
         Filter on products
@@ -347,7 +347,7 @@ class test_automatic_group(common.TransactionCase):
         """
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
-        options = {'max_pack': 2,
+        options = {'pack_limit': 2,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': True,
                    'group_leftovers': True,

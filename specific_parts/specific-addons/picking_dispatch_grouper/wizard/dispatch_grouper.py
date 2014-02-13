@@ -28,7 +28,7 @@ class picking_dispatch_grouper(orm.TransientModel):
     _description = 'Picking Dispatch Grouper'
 
     _columns = {
-        'max_pack': fields.integer(
+        'pack_limit': fields.integer(
             'Limit of packs',
             help='The number of packs per dispatch will be limited to this '
                  'quantity. Leave 0 to set no limit.'),
@@ -36,7 +36,7 @@ class picking_dispatch_grouper(orm.TransientModel):
             'product.product',
             string='Filter on products',
             help='Dispatchs will be created only if the content of the '
-                 'pack contains exactly the same content '
+                 'pack contains exactly the same products than selected '
                  '(without consideration for the quantity).\n'
                  'No filter is applied when no product is selected.'),
         'group_by_content': fields.boolean(
@@ -44,21 +44,23 @@ class picking_dispatch_grouper(orm.TransientModel):
             help='Packs with similar content will be grouped in '
                  'the same dispatch'),
         'group_leftovers': fields.boolean(
-            'Put the leftovers in the same dispatch',
-            help='When packs do not fall in a group, they will all be '
-                 'grouped in a dispatch'),
-        'group_leftovers_limit': fields.integer(  # TODO rename to threshold
-            'Size of leftovers',
-            help='A group of packs with the same content is considered '
-                 'as a leftover below this number. With the default '
-                 'value of 1, only the packs with a unique content '
-                 'will be grouped in the leftovers dispatch.')
+            'Group Leftovers',
+            help='Leftovers are dispatchs generated and containing a '
+                 'number of packs below a threshold. This option will '
+                 'group them all in a final dispatch'),
+        'group_leftovers_threshold': fields.integer(
+            'Threshold',
+            help='Generated dispatchs are considered as leftovers when '
+                 'they have a less or equal number of packs than the '
+                 'threshold.\n'
+                 'With the default value of 1, the dispatchs with 1 pack '
+                 'will be grouped in a final dispatch.')
     }
 
     _defaults = {
         'group_by_content': True,
         'group_leftovers': True,
-        'group_leftovers_limit': 1,
+        'group_leftovers_threshold': 1,
     }
 
     def _picking_to_pack_ids(self, cr, uid, picking_ids, context=None):
@@ -119,10 +121,10 @@ class picking_dispatch_grouper(orm.TransientModel):
     def _split_dispatchs_to_limit(self, cr, uid, wizard, dispatchs,
                                   context=None):
         """ Split the dispatchs having a count of packs above the limit """
-        max_pack = wizard.max_pack
+        pack_limit = wizard.pack_limit
         for dispatch in dispatchs:
-            if max_pack:
-                for chunk in self.chunks(dispatch, max_pack):
+            if pack_limit:
+                for chunk in self.chunks(dispatch, pack_limit):
                     yield chunk
             else:
                 yield dispatch
@@ -136,11 +138,11 @@ class picking_dispatch_grouper(orm.TransientModel):
         to avoid having one dispatch for each unique pack.
 
         """
-        limit = wizard.group_leftovers_limit
+        threshold = wizard.group_leftovers_threshold
         leftovers = []
         for packs in dispatchs:
             if wizard.group_leftovers:
-                if len(packs) <= limit:
+                if len(packs) <= threshold:
                     leftovers += packs
                 else:
                     yield packs

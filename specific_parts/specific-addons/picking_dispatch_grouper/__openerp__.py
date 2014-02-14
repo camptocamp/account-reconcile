@@ -19,15 +19,15 @@
 #
 ##############################################################################
 
-{'name' : 'Picking Dispatch - Automatic Grouper',
- 'version' : '1.0',
- 'author' : 'Camptocamp',
+{'name': 'Picking Dispatch - Automatic Grouper',
+ 'version': '1.0',
+ 'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'license': 'AGPL-3',
  'category': 'Stock Logistics',
  'complexity': "normal",
- 'depends' : ['picking_dispatch',
-              ],
+ 'depends': ['picking_dispatch',
+             ],
  'description': """
 Picking Dispatch - Automatic Grouper
 ====================================
@@ -36,7 +36,8 @@ Allows to create picking dispatchs based on a list of Delivery Orders.
 
 """,
  'website': 'http://www.camptocamp.com',
- 'data': [],
+ 'data': ['wizard/dispatch_grouper_view.xml',
+          ],
  'test': [],
  'installable': True,
  'auto_install': False,

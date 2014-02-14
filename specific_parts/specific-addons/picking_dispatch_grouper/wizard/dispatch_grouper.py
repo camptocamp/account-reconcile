@@ -29,7 +29,7 @@ class picking_dispatch_grouper(orm.TransientModel):
 
     _columns = {
         'pack_limit': fields.integer(
-            'Limit of packs',
+            'Number of packs',
             help='The number of packs per dispatch will be limited to this '
                  'quantity. Leave 0 to set no limit.'),
         'pack_limit_apply_threshold': fields.boolean(
@@ -63,11 +63,19 @@ class picking_dispatch_grouper(orm.TransientModel):
     }
 
     _defaults = {
-        'pack_limit_apply_threshold': False,
+        'pack_limit_apply_threshold': True,
         'group_by_content': True,
         'group_leftovers': True,
         'group_leftovers_threshold': 1,
     }
+
+    _sql_constraints = [
+        ('pack_limit_number', 'CHECK (pack_limit >= 0)',
+         'The pack limit must be equal or above 0.'),
+        ('group_leftovers_threshold_number',
+         'CHECK (group_leftovers_threshold >= 1)',
+         'The Leftovers threshold must be above 0.'),
+    ]
 
     def _picking_to_pack_ids(self, cr, uid, picking_ids, context=None):
         """ Get the pack ids from picking ids """
@@ -77,7 +85,8 @@ class picking_dispatch_grouper(orm.TransientModel):
                                    context=context)
         moves = move_obj.read(cr, uid, move_ids, ['tracking_id'],
                               context=context)
-        pack_ids = (move['tracking_id'][0] for move in moves)
+        pack_ids = (move['tracking_id'][0] for move in moves
+                    if move['tracking_id'])
         return list(set(pack_ids))
 
     @staticmethod
@@ -92,6 +101,8 @@ class picking_dispatch_grouper(orm.TransientModel):
 
     def _filter_packs(self, cr, uid, wizard, packs, context=None):
         """ Filter the packs. Their content should equal to the filter """
+        # exclude packs without moves
+        packs = [pack for pack in packs if pack.move_ids]
         if not wizard.only_product_ids:
             return packs
         filter_product_ids = set(pr.id for pr in wizard.only_product_ids)
@@ -189,8 +200,8 @@ class picking_dispatch_grouper(orm.TransientModel):
         """ Create a dispatch for packs """
         move_obj = self.pool['stock.move']
         dispatch_obj = self.pool['picking.dispatch']
-        dispatch_id = dispatch_obj.create(cr, uid, vals, context=context)
         move_ids = [move.id for pack in packs for move in pack.move_ids]
+        dispatch_id = dispatch_obj.create(cr, uid, vals, context=context)
         move_obj.write(cr, uid, move_ids, {'dispatch_id': dispatch_id},
                        context=context)
         return dispatch_id
@@ -237,11 +248,11 @@ class picking_dispatch_grouper(orm.TransientModel):
             assert len(ids) == 1, "expect 1 ID, got %s" % ids
             ids = ids[0]
         model = context.get('active_model')
-        assert model in ('stock.picking', 'stock.tracking'), \
-            "no supported 'active_model', got %s" % model
+        assert model in ('stock.picking.out', 'stock.tracking'), \
+            "unexpected 'active_model', got %s" % model
         assert context.get('active_ids'), "'active_ids' required"
         pack_ids = context['active_ids']
-        if model == 'stock.picking':
+        if model == 'stock.picking.out':
             pack_ids = self._picking_to_pack_ids(cr, uid, pack_ids,
                                                  context=context)
         wizard = self.browse(cr, uid, ids, context=context)

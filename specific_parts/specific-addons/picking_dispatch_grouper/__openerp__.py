@@ -37,6 +37,7 @@ Allows to create picking dispatches based on a list of Delivery Orders.
 """,
  'website': 'http://www.camptocamp.com',
  'data': ['wizard/dispatch_grouper_view.xml',
+          'picking_view.xml',
           ],
  'test': [],
  'installable': True,

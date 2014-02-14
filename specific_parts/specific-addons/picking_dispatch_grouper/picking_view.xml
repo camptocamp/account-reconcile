@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="0">
+
+    <record id="view_picking_out_tree" model="ir.ui.view">
+      <field name="name">stock.picking.out.tree</field>
+      <field name="model">stock.picking.out</field>
+      <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+      <field name="arch" type="xml">
+        <field name="state" position="before">
+          <field name="all_in_dispatch"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_picking_out_search" model="ir.ui.view">
+      <field name="name">stock.picking.out.search</field>
+      <field name="model">stock.picking.out</field>
+      <field name="inherit_id" ref="stock.view_picking_out_search"/>
+      <field name="arch" type="xml">
+        <filter name="done" position="after">
+          <separator/>
+          <filter name="need_dispatch"
+            string="Need Dispatch"
+            icon="terp-check"
+            domain="[('all_in_dispatch', '=', False)]"
+            help="At least 1 pack need to be put in a dispatch."/>
+        </filter>
+      </field>
+    </record>
+
+  </data>
+</openerp>

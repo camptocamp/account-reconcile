@@ -102,7 +102,9 @@ class picking_dispatch_grouper(orm.TransientModel):
     def _filter_packs(self, cr, uid, wizard, packs, context=None):
         """ Filter the packs. Their content should equal to the filter """
         # exclude packs without moves
-        packs = [pack for pack in packs if pack.move_ids]
+        packs = (pack for pack in packs if pack.move_ids)
+        packs = [pack for pack in packs if
+                 not any(move.dispatch_id for move in pack.move_ids)]
         if not wizard.only_product_ids:
             return packs
         filter_product_ids = set(pr.id for pr in wizard.only_product_ids)
@@ -214,6 +216,8 @@ class picking_dispatch_grouper(orm.TransientModel):
         """ Split a set of packs in many dispatches according to rules """
         packs = self._read_packs(cr, uid, wizard, pack_ids, context=context)
         packs = self._filter_packs(cr, uid, wizard, packs, context=context)
+        if not packs:
+            return []
         dispatchs = self._group_by_content(cr, uid, wizard, packs,
                                            context=context)
         dispatchs = self._split_dispatchs_to_limit(

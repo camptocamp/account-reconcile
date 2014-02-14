@@ -20,30 +20,7 @@
 ##############################################################################
 
 import openerp.tests.common as common
-
-
-def prepare_move(test, product_ref, quantity):
-    return {'name': '/',
-            'product_id': test.ref(product_ref),
-            'product_uom': test.ref('product.product_uom_unit'),
-            'product_qty': quantity,
-            'location_id': test.ref('stock.stock_location_14'),
-            'location_dest_id': test.ref('stock.stock_location_7'),
-            }
-
-
-def prepare_pack(test):
-    return {
-            }
-
-
-def create_pack(test, pack, moves):
-    pack_id = test.registry('stock.tracking').create(
-        test.cr, test.uid, pack)
-    for move in moves:
-        test.registry('stock.move').create(
-            test.cr, test.uid, dict(move, tracking_id=pack_id))
-    return pack_id
+from .common import prepare_move, prepare_pack, create_pack
 
 
 class test_automatic_group(common.TransactionCase):

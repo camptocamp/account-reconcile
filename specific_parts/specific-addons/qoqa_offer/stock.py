@@ -51,3 +51,17 @@ class stock_picking_out(orm.Model):
             string='Offer',
             readonly=True),
     }
+
+
+class stock_move(orm.Model):
+    _inherit = 'stock.move'
+
+    _columns = {
+        'offer_id': fields.related(
+            'picking_id', 'offer_id',
+            type='many2one',
+            relation='qoqa.offer',
+            readonly=True,
+            store=True,
+            string='Offer'),
+    }

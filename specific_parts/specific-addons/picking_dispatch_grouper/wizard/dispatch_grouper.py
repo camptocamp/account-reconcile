@@ -21,6 +21,7 @@
 
 from itertools import islice, groupby
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 
 
 class picking_dispatch_grouper(orm.TransientModel):
@@ -260,5 +261,14 @@ class picking_dispatch_grouper(orm.TransientModel):
             pack_ids = self._picking_to_pack_ids(cr, uid, pack_ids,
                                                  context=context)
         wizard = self.browse(cr, uid, ids, context=context)
-        self._group_packs(cr, uid, wizard, pack_ids, context=context)
-        return True
+        dispatch_ids = self._group_packs(cr, uid, wizard, pack_ids,
+                                         context=context)
+        return {
+            'domain': "[('id', 'in', %s)]" % dispatch_ids,
+            'name': _('Generated Dispatches'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'picking.dispatch',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+        }

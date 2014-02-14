@@ -32,7 +32,7 @@
 Picking Dispatch - Automatic Grouper
 ====================================
 
-Allows to create picking dispatchs based on a list of Delivery Orders.
+Allows to create picking dispatches based on a list of Delivery Orders.
 
 """,
  'website': 'http://www.camptocamp.com',

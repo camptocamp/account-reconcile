@@ -138,15 +138,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': False,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 1)
-        self.assertEquals(len(dispatchs[0].move_ids), 19)
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 1)
+        self.assertEquals(len(dispatches[0].move_ids), 19)
 
     def test_limit(self):
         """ Without grouping packs but with a limit.
 
         We set a limit of 3 packs per dispatch, it should generate 4
-        dispatchs.
+        dispatches.
 
         """
         options = {'pack_limit': 3,
@@ -155,15 +155,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': False,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 4)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 4)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_group(self):
         """ With grouping packs, no grouping of leftovers and no size limit.
 
-        Given the input packs, we should have dispatchs with identical
+        Given the input packs, we should have dispatches with identical
         content as following:
 
             pack 1, pack 3, pack 7
@@ -185,15 +185,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 6)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 6)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_group_leftovers(self):
         """ With grouping packs, grouping of leftovers and no limit.
 
-        Given the input packs, we should have dispatchs with identical
+        Given the input packs, we should have dispatches with identical
         content as following:
 
             pack 1, pack 3, pack 7
@@ -212,15 +212,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': True,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 4)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 4)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_group_limit(self):
         """ With grouping packs, no grouping of leftovers and a limit of 2 without threshold.
 
-        Given the input packs, we should have dispatchs with identical
+        Given the input packs, we should have dispatches with identical
         content as following:
 
             pack 1, pack 3
@@ -246,15 +246,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 8)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 8)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_group_leftovers_limit(self):
         """ With grouping packs, grouping of leftovers and limit of 2.
 
-        Given the input packs, we should have dispatchs with identical
+        Given the input packs, we should have dispatches with identical
         content as following:
 
             pack 1, pack 3,
@@ -276,9 +276,9 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': True,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 6)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 6)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_filter(self):
@@ -299,9 +299,9 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': False,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 1)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 1)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
     def test_filter_group(self):
@@ -322,9 +322,9 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 2)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 2)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
     def test_filter_group_limit(self):
@@ -347,9 +347,9 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 3)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 3)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
     def test_filter_group_limit_leftovers(self):
@@ -361,7 +361,7 @@ class test_automatic_group(common.TransactionCase):
 
         With a limit of 2.
 
-        We should have 4 packs in 2 dispatchs (the leftover of first group
+        We should have 4 packs in 2 dispatches (the leftover of first group
         will be grouped with the standalone pack).
 
         """
@@ -373,16 +373,16 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': True,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 2)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 2)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 8)
 
     def test_limit_threshold(self):
         """ Without grouping packs but with a limit and a limit threshold.
 
         We set a limit of 3 packs per dispatch, it should generate 4
-        dispatchs. The threshold should have no effect as the packs are
+        dispatches. The threshold should have no effect as the packs are
         not grouped.
 
         """
@@ -392,15 +392,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': False,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 4)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 4)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_group_limit_threshold(self):
         """ With grouping packs, no grouping of leftovers and a limit of 2 with threshold.
 
-        Given the input packs, we should have dispatchs with identical
+        Given the input packs, we should have dispatches with identical
         content as following:
 
             pack 1, pack 3
@@ -424,15 +424,15 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 7)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 7)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)
 
     def test_group_leftovers_limit_threshold(self):
         """ With grouping packs, grouping of leftovers and limit of 2 with a threshold.
 
-        Given the input packs, we should have dispatchs with identical
+        Given the input packs, we should have dispatches with identical
         content as following:
 
             pack 1, pack 3,
@@ -452,7 +452,7 @@ class test_automatic_group(common.TransactionCase):
                    'group_by_content': True,
                    'group_leftovers': True,
                    }
-        dispatchs = self._call_wizard(options)
-        self.assertEquals(len(dispatchs), 5)
-        moves = [m for dispatch in dispatchs for m in dispatch.move_ids]
+        dispatches = self._call_wizard(options)
+        self.assertEquals(len(dispatches), 5)
+        moves = [m for dispatch in dispatches for m in dispatch.move_ids]
         self.assertEquals(len(moves), 19)

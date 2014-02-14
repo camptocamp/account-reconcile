@@ -66,12 +66,12 @@ class test_run_several(common.TransactionCase):
                    'group_by_content': False,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard([self.pack_id_1, self.pack_id_2],
-                                      options)
-        self.assertEquals(len(dispatchs), 1)
-        dispatchs = self._call_wizard([self.pack_id_1, self.pack_id_2],
-                                      options)
-        self.assertFalse(dispatchs)
+        dispatches = self._call_wizard([self.pack_id_1, self.pack_id_2],
+                                       options)
+        self.assertEquals(len(dispatches), 1)
+        dispatches = self._call_wizard([self.pack_id_1, self.pack_id_2],
+                                       options)
+        self.assertFalse(dispatches)
 
     def test_dispatch_remaining(self):
         """ Create a dispatch for the remaining packs when some are already dispatched"""
@@ -81,13 +81,13 @@ class test_run_several(common.TransactionCase):
                    'group_by_content': False,
                    'group_leftovers': False,
                    }
-        dispatchs = self._call_wizard([self.pack_id_1],
-                                      options)
-        self.assertEquals(len(dispatchs), 1)
-        self.assertEquals(dispatchs[0].move_ids[0].tracking_id.id,
+        dispatches = self._call_wizard([self.pack_id_1],
+                                       options)
+        self.assertEquals(len(dispatches), 1)
+        self.assertEquals(dispatches[0].move_ids[0].tracking_id.id,
                           self.pack_id_1)
-        dispatchs = self._call_wizard([self.pack_id_1, self.pack_id_2],
-                                      options)
-        self.assertEquals(len(dispatchs), 1)
-        self.assertEquals(dispatchs[0].move_ids[0].tracking_id.id,
+        dispatches = self._call_wizard([self.pack_id_1, self.pack_id_2],
+                                       options)
+        self.assertEquals(len(dispatches), 1)
+        self.assertEquals(dispatches[0].move_ids[0].tracking_id.id,
                           self.pack_id_2)

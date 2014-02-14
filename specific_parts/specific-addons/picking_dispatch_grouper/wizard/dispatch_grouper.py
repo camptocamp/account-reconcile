@@ -90,6 +90,40 @@ class picking_dispatch_grouper(orm.TransientModel):
                     if move['tracking_id'])
         return list(set(pack_ids))
 
+    def _move_to_pack_ids(self, cr, uid, move_ids, context=None):
+        """ Get the pack ids from move ids
+
+        All the moves of a pack should be selected to be considered.
+        When only a part of the moves of a pack are in the selection,
+        the whole pack is discarded.
+
+        """
+        move_obj = self.pool['stock.move']
+        moves = move_obj.read(cr, uid, move_ids, ['tracking_id'],
+                              context=context)
+        # candidate packs, we still have to exclude the incomplete ones
+        pack_ids = set(move['tracking_id'][0] for move in moves
+                       if move['tracking_id'])
+        # search all the moves of the candidate packs
+        packs_all_move_ids = move_obj.search(
+            cr, uid,
+            [('tracking_id', 'in', list(pack_ids))],
+            context=context)
+        packs_all_moves = move_obj.read(
+            cr, uid, packs_all_move_ids,
+            ['tracking_id'], context=context)
+        for move in packs_all_moves:
+            move_id = move['id']
+            pack_id = move['tracking_id'][0]
+            if pack_id not in pack_ids:
+                continue  # already rejected
+            if move_id not in move_ids:
+                # we found a move that is not is the user's selection,
+                # we caugth pack not selected completely, reject it
+                pack_ids.remove(pack_id)
+
+        return list(pack_ids)
+
     @staticmethod
     def chunks(iterable, size):
         """ Chunk iterable to n parts of size `size` """
@@ -253,13 +287,18 @@ class picking_dispatch_grouper(orm.TransientModel):
             assert len(ids) == 1, "expect 1 ID, got %s" % ids
             ids = ids[0]
         model = context.get('active_model')
-        assert model in ('stock.picking.out', 'stock.tracking'), \
-            "unexpected 'active_model', got %s" % model
+        assert model in ('stock.picking.out', 'stock.tracking', 'stock.move'),\
+            "unexpected active_model, got %s" % model
         assert context.get('active_ids'), "'active_ids' required"
         pack_ids = context['active_ids']
+
         if model == 'stock.picking.out':
             pack_ids = self._picking_to_pack_ids(cr, uid, pack_ids,
                                                  context=context)
+        elif model == 'stock.move':
+            pack_ids = self._move_to_pack_ids(cr, uid, pack_ids,
+                                              context=context)
+
         wizard = self.browse(cr, uid, ids, context=context)
         dispatch_ids = self._group_packs(cr, uid, wizard, pack_ids,
                                          context=context)

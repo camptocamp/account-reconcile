@@ -109,19 +109,19 @@ class test_automatic_group(common.TransactionCase):
         self.pack_id_9 = create_pack(
             self,
             prepare_pack(self),
-            [prepare_move(self, 'product.product_product_31', 5),
+            [prepare_move(self, 'product.product_product_31', 1),
              ])
 
         self.pack_id_10 = create_pack(
             self,
             prepare_pack(self),
-            [prepare_move(self, 'product.product_product_31', 5),
+            [prepare_move(self, 'product.product_product_31', 1),
              ])
 
         self.pack_id_11 = create_pack(
             self,
             prepare_pack(self),
-            [prepare_move(self, 'product.product_product_31', 5),
+            [prepare_move(self, 'product.product_product_31', 1),
              ])
 
         self.all_pack_ids = [self.pack_id_1,
@@ -156,7 +156,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 0,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -173,7 +173,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 3,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -203,7 +203,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 0,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -230,7 +230,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 0,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': True,
@@ -264,7 +264,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 2,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -294,7 +294,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 2,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': True,
@@ -317,7 +317,7 @@ class test_automatic_group(common.TransactionCase):
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
         options = {'pack_limit': 0,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -340,7 +340,7 @@ class test_automatic_group(common.TransactionCase):
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
         options = {'pack_limit': 0,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -365,7 +365,7 @@ class test_automatic_group(common.TransactionCase):
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
         options = {'pack_limit': 2,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -391,7 +391,7 @@ class test_automatic_group(common.TransactionCase):
         pr33 = self.ref('product.product_product_33')
         pr20 = self.ref('product.product_product_20')
         options = {'pack_limit': 2,
-                   'pack_limit_apply_threshold': 0,
+                   'pack_limit_apply_threshold': False,
                    'only_product_ids': [(6, 0, [pr33, pr20])],
                    'group_by_content': True,
                    'group_leftovers': True,
@@ -410,7 +410,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 3,
-                   'pack_limit_apply_threshold': 1,
+                   'pack_limit_apply_threshold': True,
                    'only_product_ids': [],
                    'group_by_content': False,
                    'group_leftovers': False,
@@ -442,7 +442,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 2,
-                   'pack_limit_apply_threshold': 1,
+                   'pack_limit_apply_threshold': True,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': False,
@@ -470,7 +470,7 @@ class test_automatic_group(common.TransactionCase):
 
         """
         options = {'pack_limit': 2,
-                   'pack_limit_apply_threshold': 1,
+                   'pack_limit_apply_threshold': True,
                    'only_product_ids': [],
                    'group_by_content': True,
                    'group_leftovers': True,

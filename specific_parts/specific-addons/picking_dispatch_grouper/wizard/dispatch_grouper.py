@@ -32,12 +32,11 @@ class picking_dispatch_grouper(orm.TransientModel):
             'Limit of packs',
             help='The number of packs per dispatch will be limited to this '
                  'quantity. Leave 0 to set no limit.'),
-        'pack_limit_apply_threshold': fields.integer(
-            'No limit below',
+        'pack_limit_apply_threshold': fields.boolean(
+            'No limit for 1 unit',
             help='The limit is not applied when the packs contains '
-                 'this number or less of products. Does only apply to '
-                 'the dispatchs grouped with similar content.\n'
-                 'Set to 0 to always apply the limit.'),
+                 'only 1 unit. Does only apply to '
+                 'the dispatchs grouped with similar content.'),
         'only_product_ids': fields.many2many(
             'product.product',
             string='Filter on products',
@@ -64,7 +63,7 @@ class picking_dispatch_grouper(orm.TransientModel):
     }
 
     _defaults = {
-        'pack_limit_apply_threshold': 1,
+        'pack_limit_apply_threshold': False,
         'group_by_content': True,
         'group_leftovers': True,
         'group_leftovers_threshold': 1,
@@ -143,7 +142,8 @@ class picking_dispatch_grouper(orm.TransientModel):
             if allow_threshold and threshold:
                 first_pack = packs[0]
                 # ignore the limit when below the threshold
-                if len(first_pack.move_ids) <= threshold:
+                if (len(first_pack.move_ids) == 1 and
+                        first_pack.move_ids[0].product_qty == 1):
                     yield packs
                     continue
             if pack_limit:

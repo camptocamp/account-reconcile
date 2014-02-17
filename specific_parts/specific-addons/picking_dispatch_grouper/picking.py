@@ -82,3 +82,24 @@ class stock_picking_out(orm.Model):
             type='boolean',
             string='All In Dispatch')
     }
+
+
+class stock_move(orm.Model):
+    _inherit = 'stock.move'
+
+    def _check_tracking(self, cr, uid, ids, context=None):
+        for move in self.browse(cr, uid, ids, context=context):
+            if not move.tracking_id:
+                continue
+            picking = move.picking_id
+            if any(tm.picking_id != picking for
+                   tm in move.tracking_id.move_ids):
+                return False
+        return True
+
+    _constraints = [
+        (_check_tracking,
+         'The tracking cannot be shared accross '
+         'different Delivery Orders / Shipments.',
+         ['tracking_id']),
+    ]

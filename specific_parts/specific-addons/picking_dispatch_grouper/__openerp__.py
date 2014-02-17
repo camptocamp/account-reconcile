@@ -39,6 +39,7 @@ Allows to create picking dispatches based on a list of Delivery Orders.
  'data': ['wizard/dispatch_grouper_view.xml',
           'picking_view.xml',
           'stock_move_view.xml',
+          'report.xml',
           ],
  'test': [],
  'installable': True,

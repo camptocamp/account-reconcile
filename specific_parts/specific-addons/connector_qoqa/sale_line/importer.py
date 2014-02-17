@@ -157,7 +157,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         should be 3 digits to ensure we do not lose precision.
 
         """
-        lot_size = record['lot_size']
+        lot_size = record['item']['lot_size'] or 1
         quantity = record['quantity']
         price = record['unit_price'] / 100
         if lot_size > 1:

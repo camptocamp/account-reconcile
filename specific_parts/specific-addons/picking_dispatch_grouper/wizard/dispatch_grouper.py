@@ -138,6 +138,7 @@ class picking_dispatch_grouper(orm.TransientModel):
         """ Filter the packs. Their content should equal to the filter """
         # exclude packs without moves
         packs = (pack for pack in packs if pack.move_ids)
+        # exclude packs when an least one move is already in a dispatch
         packs = [pack for pack in packs if
                  not any(move.dispatch_id for move in pack.move_ids)]
         if not wizard.only_product_ids:

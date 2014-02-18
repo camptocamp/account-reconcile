@@ -28,6 +28,9 @@ QoQa specific - Number of product on dispatch Label generation
 This module adds a number of product per pack on the picking wizard
 to generate related picking labels
 
+TO REMOVE: the wizard has been extracted into an individual wizard
+in picking_dispatch_grouper
+
 Contributors
 ------------
 
@@ -41,7 +44,6 @@ Contributors
              'base_stock_picking_pack_split',
              ],
  'data': [
-     'wizard/generate_labels_view.xml',
      ],
  'test': [],
  'installable': True,

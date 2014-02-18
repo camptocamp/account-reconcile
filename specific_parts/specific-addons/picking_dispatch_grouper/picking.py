@@ -84,22 +84,26 @@ class stock_picking_out(orm.Model):
     }
 
 
-class stock_move(orm.Model):
-    _inherit = 'stock.move'
+# TODO activate when the
+# https://bugs.launchpad.net/ocb-addons/+bug/1281558
+# bug is corrected, meanwhile it would prevent to duplicate a picking
 
-    def _check_tracking(self, cr, uid, ids, context=None):
-        for move in self.browse(cr, uid, ids, context=context):
-            if not move.tracking_id:
-                continue
-            picking = move.picking_id
-            if any(tm.picking_id != picking for
-                   tm in move.tracking_id.move_ids):
-                return False
-        return True
+# class stock_move(orm.Model):
+#     _inherit = 'stock.move'
 
-    _constraints = [
-        (_check_tracking,
-         'The tracking cannot be shared accross '
-         'different Delivery Orders / Shipments.',
-         ['tracking_id']),
-    ]
+#     def _check_tracking(self, cr, uid, ids, context=None):
+#         for move in self.browse(cr, uid, ids, context=context):
+#             if not move.tracking_id:
+#                 continue
+#             picking = move.picking_id
+#             if any(tm.picking_id != picking for
+#                    tm in move.tracking_id.move_ids):
+#                 return False
+#         return True
+
+#     _constraints = [
+#         (_check_tracking,
+#          'The tracking cannot be shared accross '
+#          'different Delivery Orders / Shipments.',
+#          ['tracking_id']),
+#     ]

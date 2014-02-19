@@ -13,6 +13,7 @@ Feature: upgrade to 1.0.7
       | picking_dispatch_grouper                               |
       | base_delivery_carrier_label                            |
       | delivery_carrier_label_default_webkit                  |
+      | qoqa_offer                                             |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

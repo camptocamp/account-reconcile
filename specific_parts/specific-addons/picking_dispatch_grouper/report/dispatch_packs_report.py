@@ -39,7 +39,7 @@ class PrintDispatchPacks(report_sxw.rml_parse):
         })
 
     def _get_packs(self, dispatch):
-        moves = sorted(dispatch.move_ids, key=attrgetter('tracking_id'))
+        moves = sorted(dispatch.move_ids, key=attrgetter('tracking_id.name'))
         for pack, moves in groupby(moves, key=attrgetter('tracking_id')):
             yield pack, list(moves)
 

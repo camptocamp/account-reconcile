@@ -241,7 +241,7 @@ class qoqa_offer_position(orm.Model):
             readonly=True),
         'highlights': fields.text('Highlights', translate=True),
         'description': fields.html('Description',
-                                    translate=True),
+                                   translate=True),
         # only 1 tax is used on the QoQa backend, so we
         # have to choose only 1 for the position, the field
         # will also keep the reference to the historical tax
@@ -279,14 +279,6 @@ class qoqa_offer_position(orm.Model):
         'top_price': fields.float(
             'Top Price',
             digits_compute=dp.get_precision('Product Price')),
-        # kept so we can migrate the data, can be removed after
-        # half-2014
-        'ecotax': fields.integer('Ecotax', deprecated=True),
-        'ecotax_id': fields.many2one(
-            'account.tax',
-            string='Ecotax',
-            domain=[('type_tax_use', 'in', ('sale', 'all')),
-                    ('ecotax', '=', True)]),
         'date_delivery': fields.date('Delivery Date'),
         'booking_delivery': fields.boolean('Booking Delivery'),
         'buyphrase_id': fields.many2one('qoqa.buyphrase',
@@ -353,13 +345,8 @@ class qoqa_offer_position(orm.Model):
         template_obj = self.pool.get('product.template')
         template = template_obj.browse(cr, uid, product_tmpl_id,
                                        context=context)
-        tax_ids = []
-        ecotax_ids = []
-        for tax in template.taxes_id:
-            if tax.ecotax:
-                ecotax_ids.append(tax.id)
-            else:
-                tax_ids.append(tax.id)
+
+        tax_ids = [tax.id for tax in template.taxes_id if not tax.ecotax]
 
         lines = [{'product_id': variant.id, 'quantity': 1} for
                  variant in template.variant_ids]
@@ -368,7 +355,6 @@ class qoqa_offer_position(orm.Model):
             'unit_price': template.list_price,
             'buy_price': template.standard_price,
             'tax_id': tax_ids[0] if len(tax_ids) == 1 else False,
-            'ecotax_id': ecotax_ids[0] if len(ecotax_ids) == 1 else False,
         }
         res['value'] = values
         return res

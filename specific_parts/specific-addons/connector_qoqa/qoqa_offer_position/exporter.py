@@ -95,12 +95,6 @@ class OfferPositionExportMapper(ExportMapper):
               ]
 
     @mapping
-    def ecotax(self, record):
-        if record.ecotax_id:
-            amount = record.ecotax_id.amount
-            return {'ecotax': int(amount * 100)}
-
-    @mapping
     def regular_price_type(self, record):
         binder = self.get_binder_for_model('qoqa.regular.price.type')
         binding_id = binder.to_backend(record.regular_price_type)

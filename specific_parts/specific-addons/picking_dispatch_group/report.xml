@@ -6,7 +6,7 @@
             name="webkit.dispatch_packs"
             auto="False"
             model="picking.dispatch"
-            file="picking_dispatch_grouper/report/dispatch_packs.html.mako"
+            file="picking_dispatch_group/report/dispatch_packs.html.mako"
             string="Grouped by packs"
             report_type="webkit"
             header="False"

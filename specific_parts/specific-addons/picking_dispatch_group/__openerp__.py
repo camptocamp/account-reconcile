@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-{'name': 'Picking Dispatch - Automatic Grouper',
+{'name': 'Picking Dispatch - Automatic Grouping',
  'version': '1.0',
  'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
@@ -29,14 +29,14 @@
  'depends': ['picking_dispatch',
              ],
  'description': """
-Picking Dispatch - Automatic Grouper
+Picking Dispatch - Automatic Grouping
 ====================================
 
 Allows to create picking dispatches based on a list of Delivery Orders.
 
 """,
  'website': 'http://www.camptocamp.com',
- 'data': ['wizard/dispatch_grouper_view.xml',
+ 'data': ['wizard/dispatch_group_view.xml',
           'picking_view.xml',
           'stock_move_view.xml',
           'report.xml',

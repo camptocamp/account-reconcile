@@ -49,7 +49,7 @@ class test_run_several(common.TransactionCase):
              ])
 
     def _call_wizard(self, pack_ids, options):
-        Wizard = self.registry('picking.dispatch.grouper')
+        Wizard = self.registry('picking.dispatch.group')
         Dispatch = self.registry('picking.dispatch')
         wizard_id = Wizard.create(self.cr, self.uid, options)
         wizard = Wizard.browse(self.cr, self.uid, wizard_id)

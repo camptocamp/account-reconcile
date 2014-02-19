@@ -46,5 +46,5 @@ class PrintDispatchPacks(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.webkit.dispatch_packs',
                       'picking.dispatch',
-                      'addons/picking_dispatch_grouper/report/dispatch_packs.html.mako',
+                      'addons/picking_dispatch_group/report/dispatch_packs.html.mako',
                       parser=PrintDispatchPacks)

@@ -118,7 +118,7 @@ class test_automatic_group(common.TransactionCase):
             self.cr, self.uid, [])
 
     def _call_wizard(self, options):
-        Wizard = self.registry('picking.dispatch.grouper')
+        Wizard = self.registry('picking.dispatch.group')
         Dispatch = self.registry('picking.dispatch')
         wizard_id = Wizard.create(self.cr, self.uid, options)
         wizard = Wizard.browse(self.cr, self.uid, wizard_id)

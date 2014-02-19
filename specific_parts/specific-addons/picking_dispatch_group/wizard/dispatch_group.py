@@ -24,9 +24,9 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 
 
-class picking_dispatch_grouper(orm.TransientModel):
-    _name = 'picking.dispatch.grouper'
-    _description = 'Picking Dispatch Grouper'
+class picking_dispatch_group(orm.TransientModel):
+    _name = 'picking.dispatch.group'
+    _description = 'Picking Dispatch Grouping'
 
     _columns = {
         'pack_limit': fields.integer(

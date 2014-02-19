@@ -2,9 +2,9 @@
 <openerp>
   <data noupdate="0">
 
-    <record id="view_picking_dispatch_grouper" model="ir.ui.view">
-      <field name="name">picking.dispatch.grouper.form</field>
-      <field name="model">picking.dispatch.grouper</field>
+    <record id="view_picking_dispatch_group" model="ir.ui.view">
+      <field name="name">picking.dispatch.group.form</field>
+      <field name="model">picking.dispatch.group</field>
       <field name="arch" type="xml">
         <form string="Generate Grouped Dispatches" version="7.0">
           <notebook>
@@ -68,30 +68,30 @@
       </field>
     </record>
 
-    <record id="action_picking_dispatch_grouper" model="ir.actions.act_window">
+    <record id="action_picking_dispatch_group" model="ir.actions.act_window">
       <field name="name">Generate Grouped Dispatches</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">picking.dispatch.grouper</field>
+      <field name="res_model">picking.dispatch.group</field>
       <field name="view_type">form</field>
       <field name="view_mode">form</field>
-      <field name="view_id" ref="view_picking_dispatch_grouper"/>
+      <field name="view_id" ref="view_picking_dispatch_group"/>
       <field name="target">new</field>
     </record>
 
-    <record model="ir.values" id="stock_picking_out_picking_dispatch_grouper">
+    <record model="ir.values" id="stock_picking_out_picking_dispatch_group">
       <field name="model_id" ref="stock.model_stock_picking_out" />
       <field name="name">Generate Grouped Dispatches</field>
       <field name="key2">client_action_multi</field>
-      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_picking_dispatch_grouper'))" />
+      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_picking_dispatch_group'))" />
       <field name="key">action</field>
       <field name="model">stock.picking.out</field>
     </record>
 
-    <record model="ir.values" id="stock_tracking_picking_dispatch_grouper">
+    <record model="ir.values" id="stock_tracking_picking_dispatch_group">
       <field name="model_id" ref="stock.model_stock_tracking" />
       <field name="name">Generate Grouped Dispatches</field>
       <field name="key2">client_action_multi</field>
-      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_picking_dispatch_grouper'))" />
+      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_picking_dispatch_group'))" />
       <field name="key">action</field>
       <field name="model">stock.tracking</field>
     </record>

@@ -14,6 +14,8 @@ Feature: upgrade to 1.0.7
       | base_delivery_carrier_label                            |
       | delivery_carrier_label_default_webkit                  |
       | qoqa_offer                                             |
+      | specific_report                                        |
+      | l10n_ch_sepa                                           |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

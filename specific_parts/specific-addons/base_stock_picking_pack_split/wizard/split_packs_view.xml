@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="0">
+
+    <record id="view_picking_split_packs" model="ir.ui.view">
+      <field name="name">picking.split.packs.form</field>
+      <field name="model">picking.split.packs</field>
+      <field name="arch" type="xml">
+        <form string="Split Delivery Orders in Packs" version="7.0">
+          <group>
+            <field name="qty_per_pack"/>
+          </group>
+          <footer>
+            <button name="split_packs" string="Create Packs" type="object" class="oe_highlight"/>
+            or
+            <button string="Cancel" class="oe_link" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_picking_split_packs" model="ir.actions.act_window">
+      <field name="name">Split Delivery Orders in Packs</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">picking.split.packs</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_picking_split_packs"/>
+      <field name="target">new</field>
+    </record>
+
+    <record model="ir.values" id="stock_picking_out_picking_split_packs">
+      <field name="model_id" ref="stock.model_stock_picking_out" />
+      <field name="name">Split Delivery Orders in Packs</field>
+      <field name="key2">client_action_multi</field>
+      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_picking_split_packs'))" />
+      <field name="key">action</field>
+      <field name="model">stock.picking.out</field>
+    </record>
+
+  </data>
+</openerp>
+

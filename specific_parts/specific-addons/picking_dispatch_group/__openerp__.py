@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Author: Guewen Baconnier
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,35 +18,30 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name': 'QoQa Label dispatch and pack slit',
+
+{'name': 'Picking Dispatch - Automatic Grouping',
  'version': '1.0',
- 'category': 'QoQa',
- 'description': """
-QoQa specific - Number of product on dispatch Label generation
-==============================================================
-
-This module adds a number of product per pack on the picking wizard
-to generate related picking labels
-
-TO REMOVE: the wizard has been extracted into an individual wizard
-in base_stock_picking_pack_split
-
-Contributors
-------------
-
-* Yannick Vaucher <yannick.vaucher@camptocamp.com>
-
-""",
  'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
- 'website': 'http://www.camptocamp.com/',
- 'depends': ['delivery_carrier_label_dispatch',
-             'base_stock_picking_pack_split',
+ 'license': 'AGPL-3',
+ 'category': 'Stock Logistics',
+ 'complexity': "normal",
+ 'depends': ['picking_dispatch',
              ],
- 'data': [
-     ],
+ 'description': """
+Picking Dispatch - Automatic Grouping
+=====================================
+
+Allows to create picking dispatches based on a list of Delivery Orders.
+
+""",
+ 'website': 'http://www.camptocamp.com',
+ 'data': ['wizard/dispatch_group_view.xml',
+          'picking_view.xml',
+          'stock_move_view.xml',
+          'report.xml',
+          ],
  'test': [],
  'installable': True,
  'auto_install': False,
- 'application': True,
- }
+}

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Author: Guewen Baconnier
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,5 +18,28 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import stock
-from . import wizard
+
+
+def prepare_move(test, product_ref, quantity):
+    return {'name': '/',
+            'product_id': test.ref(product_ref),
+            'product_uom': test.ref('product.product_uom_unit'),
+            'product_qty': quantity,
+            'location_id': test.ref('stock.stock_location_14'),
+            'location_dest_id': test.ref('stock.stock_location_7'),
+            }
+
+
+def prepare_pack(test):
+    return {
+            }
+
+
+def create_pack(test, pack, moves):
+    pack_id = test.registry('stock.tracking').create(
+        test.cr, test.uid, pack)
+    for move in moves:
+        test.registry('stock.move').create(
+            test.cr, test.uid, dict(move, tracking_id=pack_id))
+    return pack_id
+

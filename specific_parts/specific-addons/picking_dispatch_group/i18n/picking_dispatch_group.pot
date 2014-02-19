@@ -1,0 +1,144 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* picking_dispatch_group
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-19 15:44+0000\n"
+"PO-Revision-Date: 2014-02-19 15:44+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The packs with identical content will be grouped in the same dispatch."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:stock.picking.out:0
+msgid "At least 1 pack need to be put in a dispatch."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The packs will not be grouped according to their content, the dispatches\n"
+"                  will contain various packs."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Leftovers are dispatches generated with a number of packs below a defined threshold."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: model:ir.model,name:picking_dispatch_group.model_stock_picking
+msgid "Picking List"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Filter Products"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The leftovers will all be grouped in a final dispatch."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Limit per Dispatch"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The limit is applied even for packs with only 1 unit."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The generated dispatches will not contain more packs than the limit."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The limit is applied excepted for packs with only 1 unit."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Generate Dispatches"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The generated dispatches will contain an unlimited number of packs."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: model:ir.actions.report.xml,name:picking_dispatch_group.webkit_dispatch_pack
+msgid "Grouped by packs"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Cancel"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Options"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Grouping"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "The leftovers will not be grouped."
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Dispatches are considered as leftovers when they contains less that the Threshold"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: model:ir.model,name:picking_dispatch_group.model_picking_dispatch_group
+msgid "Picking Dispatch Grouping"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:stock.move:0
+msgid "Dispatch"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:stock.picking.out:0
+msgid "Need Dispatch"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: model:ir.actions.act_window,name:picking_dispatch_group.action_picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "Generate Grouped Dispatches"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: model:ir.model,name:picking_dispatch_group.model_stock_picking_out
+msgid "Delivery Orders"
+msgstr ""
+
+#. module: picking_dispatch_group
+#: view:picking.dispatch.group:0
+msgid "or"
+msgstr ""
+

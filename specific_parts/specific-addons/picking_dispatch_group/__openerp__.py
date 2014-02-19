@@ -30,7 +30,7 @@
              ],
  'description': """
 Picking Dispatch - Automatic Grouping
-====================================
+=====================================
 
 Allows to create picking dispatches based on a list of Delivery Orders.
 

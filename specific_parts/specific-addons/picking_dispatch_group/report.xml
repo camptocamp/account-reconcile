@@ -2,8 +2,8 @@
 <openerp>
   <data>
 
-    <report id="webkit_dispatch_packs"
-            name="webkit.dispatch_packs"
+    <report id="webkit_dispatch_pack"
+            name="webkit.dispatch_pack"
             auto="False"
             model="picking.dispatch"
             file="picking_dispatch_group/report/dispatch_packs.html.mako"

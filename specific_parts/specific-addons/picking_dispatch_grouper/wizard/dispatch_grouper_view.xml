@@ -96,14 +96,5 @@
       <field name="model">stock.tracking</field>
     </record>
 
-    <record model="ir.values" id="stock_move_picking_dispatch_grouper">
-      <field name="model_id" ref="stock.model_stock_move" />
-      <field name="name">Generate Grouped Dispatches</field>
-      <field name="key2">client_action_multi</field>
-      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_picking_dispatch_grouper'))" />
-      <field name="key">action</field>
-      <field name="model">stock.move</field>
-    </record>
-
   </data>
 </openerp>

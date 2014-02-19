@@ -31,21 +31,15 @@ def prepare_move(test, product_ref, quantity):
 
 
 def prepare_pack(test):
-    return {}
+    return {
+            }
 
 
 def create_pack(test, pack, moves):
     pack_id = test.registry('stock.tracking').create(
         test.cr, test.uid, pack)
     for move in moves:
-        Move = test.registry('stock.move')
-        if isinstance(move, dict):
-            Move.create(test.cr, test.uid, dict(move, tracking_id=pack_id))
-        else:
-            Move.write(test.cr, test.uid, move, {'tracking_id': pack_id})
+        test.registry('stock.move').create(
+            test.cr, test.uid, dict(move, tracking_id=pack_id))
     return pack_id
 
-
-def create_move(test, move):
-    return test.registry('stock.move').create(
-        test.cr, test.uid, move)

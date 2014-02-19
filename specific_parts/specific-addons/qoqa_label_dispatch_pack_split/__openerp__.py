@@ -29,7 +29,7 @@ This module adds a number of product per pack on the picking wizard
 to generate related picking labels
 
 TO REMOVE: the wizard has been extracted into an individual wizard
-in picking_dispatch_group
+in base_stock_picking_pack_split
 
 Contributors
 ------------

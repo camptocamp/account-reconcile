@@ -10,7 +10,7 @@ Feature: upgrade to 1.0.7
       | qoqa_label_dispatch_pack_split                         |
       | base_stock_picking_pack_split                          |
       | picking_dispatch                                       |
-      | picking_dispatch_grouper                               |
+      | picking_dispatch_group                                 |
       | base_delivery_carrier_label                            |
       | delivery_carrier_label_default_webkit                  |
       | qoqa_offer                                             |

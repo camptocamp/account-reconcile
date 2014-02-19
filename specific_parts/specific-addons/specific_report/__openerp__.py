@@ -20,19 +20,21 @@
 ##############################################################################
 
 {'name': 'Customer small specific report',
- 'version': '1.0.0',
+ 'version': '1.0.1',
  'category': 'other',
  'description': """
  Customer specific report
 
  Contains:
  - specific report headers
+ - specific shipping default webkit labels
  """,
  'author': 'Camptocamp',
  'website': 'http://www.camptocamp.com',
  'depends': ['base_headers_webkit',
-             ],
+             'delivery_carrier_label_default_webkit'],
  'data': ['base_headers_data.xml',
+          'reports.xml'
           ],
  'test': [],
  'installable': True,

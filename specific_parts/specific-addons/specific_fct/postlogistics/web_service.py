@@ -78,12 +78,12 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
                           )._prepare_customer(picking)
 
         if picking.claim_id:
-            partner = picking.claim_id.partner_id
+            partner = picking.claim_id.delivery_address_id
             if not partner:
                 raise orm.except_orm(
                     _('Error'),
-                    _('Cannot write sender on label, no partner assigned '
-                    'on Claim'))
+                    _('Cannot write sender on label, no delivery address '
+                      'assigned on Claim'))
             sender = {
                 'Name1': partner.name,
                 'Street': partner.street,

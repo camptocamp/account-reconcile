@@ -85,7 +85,8 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
                     _('Cannot write sender on label, no delivery address '
                       'assigned on Claim'))
             sender = {
-                'Name1': partner.name,
+                # only 25 character per address line for sender
+                'Name1': partner.name[:24],
                 'Street': partner.street,
                 'ZIP': partner.zip,
                 'City': partner.city,

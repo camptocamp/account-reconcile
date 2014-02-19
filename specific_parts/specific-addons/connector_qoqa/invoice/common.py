@@ -109,7 +109,8 @@ class account_invoice(orm.Model):
                     _('The backend failed to create the refund.'))
         return True
 
-    def action_move_create(self, cr, uid, ids, context=None):
-        self.refund_on_qoqa(cr, uid, ids, context=context)
-        return super(account_invoice, self).action_move_create(
+    def invoice_validate(self, cr, uid, ids, context=None):
+        result = super(account_invoice, self).invoice_validate(
             cr, uid, ids, context=context)
+        self.refund_on_qoqa(cr, uid, ids, context=context)
+        return result

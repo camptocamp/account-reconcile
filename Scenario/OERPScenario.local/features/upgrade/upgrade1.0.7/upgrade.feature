@@ -7,6 +7,12 @@ Feature: upgrade to 1.0.7
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I install the required modules with dependencies:
       | name                                                   |
+      | qoqa_label_dispatch_pack_split                         |
+      | base_stock_picking_pack_split                          |
+      | picking_dispatch                                       |
+      | picking_dispatch_grouper                               |
+      | base_delivery_carrier_label                            |
+      | delivery_carrier_label_default_webkit                  |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

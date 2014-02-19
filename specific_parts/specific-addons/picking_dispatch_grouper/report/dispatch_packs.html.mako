@@ -60,7 +60,9 @@ table.pack td {
       %endif
       %for move in moves:
         <tr align="left">
-          <td>${move.product_id.name_get()[0][1]}</td>
+          <td>${move.product_id.default_code}</td>
+          <td>${move.product_id.name}</td>
+          <td>${move.product_id.variants}</td>
           <td>${move.product_qty} ${move.product_uom.name}</td>
           <td>${move.state}</td>
         </tr>

@@ -65,11 +65,13 @@ class stock_picking(orm.Model):
     }
 
     def _generate_postlogistics_label(self, cr, uid, picking,
-                                      webservice_class=None, context=None):
+                                      webservice_class=None,
+                                      tracking_ids=None, context=None):
         """ Generate post label using QoQa specific to hide parent name in  """
         return super(stock_picking, self)._generate_postlogistics_label(
             cr, uid, picking,
             webservice_class=PostlogisticsWebServiceQoQa,
+            tracking_ids=tracking_ids,
             context=context)
 
 

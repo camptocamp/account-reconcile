@@ -142,11 +142,15 @@ class QoQaAdapter(CRUDAdapter):
         try:
             parsed = json.loads(response.content)
         except ValueError as err:
-            def rec():
-                with open('/tmp/err.html', 'w') as f:
-                    f.write(response.content)
-            # import pdb; pdb.set_trace()
-            msg = "%s\n\n%s" % (err, response.content)
+            req = "%s %s with content:\n%s\n\nReturned %s %s:\n%s" % (
+                response.request.method,
+                response.url,
+                response.request.body,
+                response.status_code,
+                response.reason,
+                response.content,
+            )
+            msg = "%s\n\n%s" % (err, req)
             raise QoQaResponseNotParsable(msg)
         return parsed
 

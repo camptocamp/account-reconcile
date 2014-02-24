@@ -2,7 +2,6 @@
 
 import csv
 import logging
-from contextlib import closing
 
 from support import *
 from support.tools import model
@@ -16,7 +15,7 @@ def _fileopen(ctx, filename, mode='r'):
     tmp_path = [str(x) for x in tmp_path]
     path = os.path.join('/', *tmp_path)
     assert os.path.exists(path)
-    return closing(open(path, mode))
+    return open(path, mode)
 
 
 @step('I import from QoQa the "{import_model}" with QoQa ids from file "{path}"')

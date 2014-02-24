@@ -96,7 +96,6 @@ class AddressImportMapper(ImportMapper):
     def company(self, record):
         return {'company_id': False}
 
-    @only_create
     @mapping
     def name(self, record):
         parts = [part for part in (record['firstname'], record['lastname'])

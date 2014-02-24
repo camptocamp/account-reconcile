@@ -62,8 +62,21 @@ table.pack td {
         <tr align="left">
           <td>${move.product_id.default_code}</td>
           <td>${move.product_id.name}</td>
-          <td>${move.product_id.variants}</td>
+          <td>
+            %if move.product_id.variants:
+              ${move.product_id.variants}
+            %else:
+              ${'-'}
+            %endif
+          </td>
           <td>${move.product_qty} ${move.product_uom.name}</td>
+          <td>
+            %if move.picking_id.stock_journal_id:
+              ${move.picking_id.stock_journal_id.name}
+            %else:
+              ${'-'}
+            %endif
+          </td>
           <td>${move.state}</td>
         </tr>
       %endfor

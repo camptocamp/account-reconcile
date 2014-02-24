@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,39 +19,17 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Specific',
- 'version': '0.0.2',
- 'category': 'Others',
- 'depends': ['sale',
-             'product',
-             'product_custom_attributes',
-             'purchase',
-             'crm_claim_rma',
-             'delivery_carrier_label_postlogistics_shop_logo',
-             'picking_dispatch',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Specific
-=============
+from openerp.osv import orm, fields
 
-Local customizations for QoQa.
 
-Product:
+class picking_dispatch(orm.Model):
+    _inherit = 'picking.dispatch'
 
-set cost_method default to average
-
-""",
- 'images': [],
- 'demo': [],
- 'data': ['security/security.xml',
-          'stock_view.xml',
-          'product_view.xml',
-          'purchase_view.xml',
-          'dispatch_view.xml',
-          ],
- 'installable': True,
- 'application': True,
-}
+    def action_assign_moves(self, cr, uid, ids, context=None):
+        for dispatch_id in ids:
+            move_obj = self.pool['stock.move']
+            move_ids = move_obj.search(cr, uid,
+                                       [('dispatch_id', '=', dispatch_id)],
+                                       context=context)
+            move_obj.action_assign(cr, uid, move_ids)
+        return True

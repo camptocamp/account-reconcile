@@ -96,14 +96,11 @@ class AddressImportMapper(ImportMapper):
     def company(self, record):
         return {'company_id': False}
 
-    @only_create
     @mapping
     def name(self, record):
         parts = [part for part in (record['firstname'], record['lastname'])
                  if part]
         name = ' '.join(parts)
-        if record.get('company'):
-            name = "%s (%s)" % (record['company'], name)
         return {'name': name}
 
     @only_create

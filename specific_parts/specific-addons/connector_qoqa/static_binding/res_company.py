@@ -60,9 +60,8 @@ class CompanyBinder(QoQaDirectBinder):
         :rtype: int
         """
         # use super id to search the companies
-        with self.session.change_context(dict(user_preference=True)):
-            openerp_id = super(CompanyBinder, self).to_openerp(external_id,
-                                                               unwrap=unwrap)
+        openerp_id = super(CompanyBinder, self).to_openerp(external_id,
+                                                           unwrap=unwrap)
         if openerp_id is None:
             raise QoQaError('No company found in OpenERP for the QoQa ID: %s' %
                             external_id)

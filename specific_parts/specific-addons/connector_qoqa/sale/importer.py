@@ -21,10 +21,11 @@
 from __future__ import division
 
 import logging
-from operator import attrgetter
 from dateutil import parser
 
 from openerp.tools.translate import _
+from openerp.tools.float_utils import float_is_zero
+
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   backend_to_m2o,
@@ -353,6 +354,21 @@ class SaleOrderImportMapper(ImportMapper):
     def payment_method(self, record):
         qpayments = record['payments']
         if not qpayments:
+            # a sales order may not have a payment method because the
+            # customer didn't need to pay: it has a discount as high as
+            # the total. In that case, we force an automatic workflow
+            invoices = valid_invoices(record)
+            invoice = find_sale_invoice(invoices)
+            if float_is_zero(invoice['total'] / 100, precision_digits=2):
+                data_obj = self.session.pool['ir.model.data']
+                xmlid = ('sale_automatic_workflow', 'automatic_validation')
+                cr, uid = self.session.cr, self.session.uid
+                try:
+                    __, wkf_id = data_obj.get_object_reference(cr, uid, *xmlid)
+                except ValueError:
+                    raise MappingError('Can not find the sale workflow with '
+                                       'XML ID %s.%s' % (xmlid[0], xmlid[1]))
+                return {'workflow_process_id': wkf_id}
             return
         qshop_binder = self.get_binder_for_model('qoqa.shop')
         qshop_id = qshop_binder.to_openerp(record['shop_id'])

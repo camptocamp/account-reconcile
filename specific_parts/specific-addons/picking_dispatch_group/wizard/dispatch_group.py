@@ -60,7 +60,8 @@ class picking_dispatch_group(orm.TransientModel):
                  'they have a less or equal number of packs than the '
                  'threshold.\n'
                  'With the default value of 1, the dispatches with 1 pack '
-                 'will be grouped in a final dispatch.')
+                 'will be grouped in a final dispatch.'),
+        'suffix': fields.char('Suffix'),
     }
 
     _defaults = {
@@ -200,7 +201,7 @@ class picking_dispatch_group(orm.TransientModel):
             for leftover in leftovers:
                 yield leftover
 
-    def _create_dispatch(self, cr, uid, vals, packs, context=None):
+    def _create_dispatch(self, cr, uid, wizard, vals, packs, context=None):
         """ Create a dispatch for packs """
         move_obj = self.pool['stock.move']
         dispatch_obj = self.pool['picking.dispatch']
@@ -235,7 +236,11 @@ class picking_dispatch_group(orm.TransientModel):
 
         created_ids = []
         for packs in dispatches:
-            dispatch_id = self._create_dispatch(cr, uid, {}, packs,
+            name = self.pool['ir.sequence'].get(cr, uid, 'picking.dispatch')
+            if wizard.suffix:
+                name = ' - '.join([name, wizard.suffix])
+            vals = {'name': name}
+            dispatch_id = self._create_dispatch(cr, uid, wizard, vals, packs,
                                                 context=context)
             created_ids.append(dispatch_id)
         return created_ids

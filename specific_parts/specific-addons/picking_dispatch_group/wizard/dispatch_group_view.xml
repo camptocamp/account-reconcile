@@ -9,6 +9,9 @@
         <form string="Generate Grouped Dispatches" version="7.0">
           <notebook>
             <page string="Options">
+              <group string="Name" col="4">
+                <field name="suffix"/>
+              </group>
               <group string="Limit per Dispatch" col="4">
                 <field name="pack_limit"/>
                 <field name="pack_limit_apply_threshold"

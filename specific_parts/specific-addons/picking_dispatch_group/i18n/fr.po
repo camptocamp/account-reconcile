@@ -18,286 +18,290 @@ msgstr ""
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The packs with identical content will be grouped in the same dispatch."
-msgstr ""
+msgstr "Les colis avec un contenu identique seront regroupés dans le même bon de préparation"
 
 #. module: picking_dispatch_group
 #: code:addons/picking_dispatch_group/wizard/dispatch_group.py:292
 #, python-format
 msgid "%d packs grouped by: %s"
-msgstr ""
+msgstr "%d colis groupés par : %s"
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:45
 msgid "Dispatch Order"
-msgstr ""
+msgstr "Bon de préparation"
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,group_leftovers_threshold:0
 msgid "Threshold"
-msgstr ""
+msgstr "Seuil"
 
 #. module: picking_dispatch_group
 #: view:stock.picking.out:0
 msgid "At least 1 pack need to be put in a dispatch."
-msgstr ""
+msgstr "Au moins 1 colis doit être mis dans un bon de préparation"
 
 #. module: picking_dispatch_group
 #: code:addons/picking_dispatch_group/wizard/dispatch_group.py:289
 #, python-format
 msgid "%sx[%s]"
-msgstr ""
+msgstr "%sx[%s]"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The leftovers will not be grouped."
-msgstr ""
+msgstr "Les reliquats ne seront pas groupés."
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:59
 msgid "Not in a pack"
-msgstr ""
+msgstr "Pas dans un colis"
 
 #. module: picking_dispatch_group
 #: code:addons/picking_dispatch_group/wizard/dispatch_group.py:359
 #, python-format
 msgid "Generated Dispatches"
-msgstr ""
+msgstr "Bons de préparation générés"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Leftovers are dispatches generated with a number of packs below a defined threshold."
-msgstr ""
+msgstr "Les reliquats sont des bons de préparation générés avec un nombre de colis sous le seuil défini."
 
 #. module: picking_dispatch_group
 #: model:ir.model,name:picking_dispatch_group.model_stock_picking
 msgid "Picking List"
-msgstr ""
+msgstr "Opération de manutention"
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,group_leftovers:0
 msgid "Group Leftovers"
-msgstr ""
+msgstr "Grouper les reliquats"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Filter Products"
-msgstr ""
+msgstr "Filtrer les produits"
 
 #. module: picking_dispatch_group
 #: help:picking.dispatch.group,pack_limit_apply_threshold:0
 msgid "The limit is not applied when the packs contains only 1 unit. Does only apply to the dispatches grouped with similar content."
-msgstr ""
+msgstr "La limite n'est pas appliquée quand les colis contiennent 1 unité. Uniquement pour les bons de préparation groupés par contenu similaire"
 
 #. module: picking_dispatch_group
 #: help:picking.dispatch.group,only_product_ids:0
 msgid "Dispatches will be created only if the content of the pack contains exactly the same products than selected (without consideration for the quantity).\n"
 "No filter is applied when no product is selected."
-msgstr ""
+msgstr "Les bons de préparation seront créés seulement si le contenu des colis contient exactement les mêmes produits que sélectionnés (sans considération pour la quantité).\n"
+"Pas de filtre appliqué lorsqu'aucun produit n'est sélectionné."
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,pack_limit_apply_threshold:0
 msgid "No limit for 1 unit"
-msgstr ""
+msgstr "Pas de limite pour 1 unité"
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:57
 msgid "Pack %s has no tracking number"
-msgstr ""
+msgstr "Le colis %s n'a pas de numéro de suivi transporteur"
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,pack_limit:0
 msgid "Number of packs"
-msgstr ""
+msgstr "Nombre de colis"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Limit per Dispatch"
-msgstr ""
+msgstr "Limite par bon de préparation"
 
 #. module: picking_dispatch_group
 #: sql_constraint:picking.dispatch.group:0
 msgid "The pack limit must be equal or above 0."
-msgstr ""
+msgstr "La limite de colis doit être au-dessus ou égale à 0."
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,group_by_content:0
 msgid "Group By Content"
-msgstr ""
+msgstr "Grouper par contenu"
 
 #. module: picking_dispatch_group
 #: model:ir.model,name:picking_dispatch_group.model_picking_dispatch
 msgid "Dispatch Picking Order"
-msgstr ""
+msgstr "Bon de préparation"
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:36
 msgid "Printed by"
-msgstr ""
+msgstr "Imprimé par"
+
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The packs will not be grouped according to their content, the dispatches\n"
 "                  will contain various packs."
-msgstr ""
+msgstr "Les colis ne seront pas groupés selon leur contenu, les bons de préparation"
+"                  contiendront des colis mélangés."
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,only_product_ids:0
 msgid "Filter on products"
-msgstr ""
+msgstr "Filtrer sur les produits"
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:35
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The generated dispatches will not contain more packs than the limit."
-msgstr ""
+msgstr "Les bons de préparation générés ne contiendront pas plus de colis que la limite."
 
 #. module: picking_dispatch_group
 #: help:picking.dispatch.group,group_leftovers_threshold:0
 msgid "Generated dispatches are considered as leftovers when they have a less or equal number of packs than the threshold.\n"
 "With the default value of 1, the dispatches with 1 pack will be grouped in a final dispatch."
-msgstr ""
+msgstr "Les bons de préparation sont considérés comme des reliquats quand ils ont un nombre de colis inférieur au seuil.\n"
+"Avec la valeur par défaut de 1, les bons de préparation avec 1 colis seront regroupés dans un bon de préparation final."
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The limit is applied excepted for packs with only 1 unit."
-msgstr ""
+msgstr "La limite est appliquée excepté pour les colis avec 1 unité."
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Generate Dispatches"
-msgstr ""
+msgstr "Générer les bons de préparation"
 
 #. module: picking_dispatch_group
 #: help:picking.dispatch.group,group_leftovers:0
 msgid "Leftovers are dispatches generated and containing a number of packs below a threshold. This option will group them all in a final dispatch"
-msgstr ""
+msgstr "Les reliquats sont des bons de préparation générés et contenant un nombre de colis inférieur à un seuil. Cette option va les grouper dans un bon de préparation final."
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #. module: picking_dispatch_group
 #: field:stock.picking,all_in_dispatch:0
 #: field:stock.picking.out,all_in_dispatch:0
 msgid "All In Dispatch"
-msgstr ""
+msgstr "Bon de préparation"
 
 #. module: picking_dispatch_group
 #: view:stock.picking.out:0
 msgid "Need Dispatch"
-msgstr ""
+msgstr "Besoin de bon de préparation"
 
 #. module: picking_dispatch_group
 #: code:addons/picking_dispatch_group/wizard/dispatch_group.py:283
 #, python-format
 msgid "%d packs of leftovers with various units"
-msgstr ""
+msgstr "%d colis reliquats de quantités différentes"
 
 #. module: picking_dispatch_group
 #: model:ir.actions.report.xml,name:picking_dispatch_group.webkit_dispatch_pack
 msgid "Grouped by packs"
-msgstr ""
+msgstr "Groupé par colis"
 
 #. module: picking_dispatch_group
 #: help:picking.dispatch.group,pack_limit:0
 msgid "The number of packs per dispatch will be limited to this quantity. Leave 0 to set no limit."
-msgstr ""
+msgstr "Le nombre de colis par bon de préparation sera limité à cette quantité. Laisser 0 pour ne pas appliquer de limite."
 
 #. module: picking_dispatch_group
 #: model:ir.actions.act_window,name:picking_dispatch_group.action_picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Generate Grouped Dispatches"
-msgstr ""
+msgstr "Générer des bons de préparation groupés"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The generated dispatches will contain an unlimited number of packs."
-msgstr ""
+msgstr "Les bons de préparation groupés vont contenir un nombre illimité de colis."
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Grouping"
-msgstr ""
+msgstr "Regroupement"
 
 #. module: picking_dispatch_group
 #: code:addons/picking_dispatch_group/wizard/dispatch_group.py:286
 #, python-format
 msgid "%d packs of leftovers with %s units"
-msgstr ""
+msgstr "%d colis reliquats avec %s unités"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The limit is applied even for packs with only 1 unit."
-msgstr ""
+msgstr "La limite est appliquée même pour les colis avec 1 unité."
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,suffix:0
 msgid "Suffix"
-msgstr ""
+msgstr "Suffixe"
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:48
 msgid "Picked by"
-msgstr ""
+msgstr "Préparateur"
 
 #. module: picking_dispatch_group
 #: sql_constraint:picking.dispatch.group:0
 msgid "The Leftovers threshold must be above 0."
-msgstr ""
+msgstr "Le seuil de reliquats doit être supérieur à 0."
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Dispatches are considered as leftovers when they contains less that the Threshold"
-msgstr ""
+msgstr "Les bons de préparation sont considérés comme reliquats quand ils contiennent moins de colis que le seuil."
 
 #. module: picking_dispatch_group
 #: model:ir.model,name:picking_dispatch_group.model_picking_dispatch_group
 msgid "Picking Dispatch Grouping"
-msgstr ""
+msgstr "Regroupement de bons de préparation"
 
 #. module: picking_dispatch_group
 #: help:picking.dispatch.group,group_by_content:0
 msgid "Packs with similar content will be grouped in the same dispatch"
-msgstr ""
+msgstr "Les colis avec un contenu similaire seront groupés dans un bon de préparation"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "The leftovers will all be grouped in a final dispatch."
-msgstr ""
+msgstr "Les relicats seront regroupés dans un bon de préparation final."
 
 #. module: picking_dispatch_group
 #: view:stock.move:0
 msgid "Dispatch"
-msgstr ""
+msgstr "Bon de préparation"
 
 #. module: picking_dispatch_group
 #: code:addons/picking_dispatch_group/wizard/dispatch_group.py:278
 #, python-format
 msgid "%d packs of mixed content"
-msgstr ""
+msgstr "%d colis de contenu varié"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #. module: picking_dispatch_group
 #: model:ir.model,name:picking_dispatch_group.model_stock_picking_out
 msgid "Delivery Orders"
-msgstr ""
+msgstr "Bons de livraison"
 
 #. module: picking_dispatch_group
 #: view:picking.dispatch.group:0
 msgid "or"
-msgstr ""
+msgstr "ou"
 

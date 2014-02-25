@@ -28,8 +28,10 @@ from openerp.tools.translate import _
 # packs: list of packs
 # group: boolean, True means that all the packs are identical
 # leftover: means it is the result of grouping all the leftovers
+# leftover_size: quantity of products in the packs of the leftover
+# dispatch (leftovers are grouped by quantity of products
 PreparedDispatch = namedtuple('PreparedDispatch',
-                              'packs group leftover')
+                              'packs group leftover leftover_size')
 
 
 class picking_dispatch_group(orm.TransientModel):
@@ -145,10 +147,11 @@ class picking_dispatch_group(orm.TransientModel):
             packs = sorted(packs, key=self._pack_sort_key)
             for _content, gpacks in groupby(packs, self._pack_sort_key):
                 yield PreparedDispatch(list(gpacks), group=True,
-                                       leftover=False)
+                                       leftover=False, leftover_size=None)
         else:
             # one dispatch with all the packs
-            yield PreparedDispatch(packs, group=False, leftover=False)
+            yield PreparedDispatch(packs, group=False,
+                                   leftover=False, leftover_size=None)
 
     def _split_dispatches_to_limit(self, cr, uid, wizard, dispatches,
                                    context=None):
@@ -161,7 +164,7 @@ class picking_dispatch_group(orm.TransientModel):
         """
         pack_limit = wizard.pack_limit
         threshold = wizard.pack_limit_apply_threshold
-        for packs, group, leftover in dispatches:
+        for packs, group, leftover, leftover_size in dispatches:
             # only make sense for groups when all the packs have the
             # same content
             if group and threshold:
@@ -170,15 +173,18 @@ class picking_dispatch_group(orm.TransientModel):
                 if (len(first_pack.move_ids) == 1 and
                         first_pack.move_ids[0].product_qty == 1):
                     yield PreparedDispatch(packs, group=group,
-                                           leftover=leftover)
+                                           leftover=leftover,
+                                           leftover_size=leftover_size)
                     continue
             if pack_limit:
                 for chunk in self.chunks(packs, pack_limit):
                     yield PreparedDispatch(chunk, group=group,
-                                           leftover=leftover)
+                                           leftover=leftover,
+                                           leftover_size=leftover_size)
             else:
                 yield PreparedDispatch(packs, group=group,
-                                       leftover=leftover)
+                                       leftover=leftover,
+                                       leftover_size=leftover_size)
 
     def _dispatch_leftovers(self, cr, uid, wizard, dispatches, context=None):
         """ Find the leftovers dispatches and group them in a final dispatch.
@@ -192,22 +198,64 @@ class picking_dispatch_group(orm.TransientModel):
         group_leftovers = wizard.group_leftovers
         threshold = wizard.group_leftovers_threshold
         leftovers_packs = []
-        for packs, group, leftover in dispatches:
+        for packs, group, leftover, leftover_size in dispatches:
             if group_leftovers:
                 if len(packs) <= threshold:
                     leftovers_packs += packs
                 else:
                     yield PreparedDispatch(packs, group=group,
-                                           leftover=leftover)
+                                           leftover=leftover,
+                                           leftover_size=leftover_size)
             else:
-                yield PreparedDispatch(packs, group=group, leftover=leftover)
+                yield PreparedDispatch(packs, group=group,
+                                       leftover=leftover,
+                                       leftover_size=leftover_size)
 
         if leftovers_packs:
-            # we should re-apply the limit on the leftovers
-            leftovers = PreparedDispatch(leftovers_packs, group=False,
-                                         leftover=True)
+            yield PreparedDispatch(leftovers_packs, group=False,
+                                   leftover=True, leftover_size=None)
+
+    @staticmethod
+    def _leftovers_sort_key(pack):
+        """ Used to split leftover dispatches according to the quantity
+        of products.
+        """
+        return sum(move.product_qty for move in pack.move_ids)
+
+    def _group_leftovers(self, cr, uid, wizard, dispatches, context=None):
+        """ Group leftovers by number of products.
+
+        The leftovers are packs of mixed content and it would help if
+        packs are grouped by total quantity of product in leftovers so
+        dispatches have all the same quantity of products.
+
+        """
+        leftovers = []
+        for prepared_dispatch in dispatches:
+            if not prepared_dispatch.leftover:
+                yield prepared_dispatch
+                continue
+            packs = sorted(prepared_dispatch.packs,
+                           key=self._leftovers_sort_key)
+            for qty, gpacks in groupby(packs, self._leftovers_sort_key):
+                dispatch = PreparedDispatch(
+                    list(gpacks), group=prepared_dispatch.group,
+                    leftover=prepared_dispatch.leftover,
+                    leftover_size=qty)
+                # we must re-apply the limit on the leftovers
+                split = self._split_dispatches_to_limit(cr, uid, wizard,
+                                                        [dispatch],
+                                                        context=context)
+                for prepared_dispatch in split:
+                    leftovers.append(prepared_dispatch)
+        if leftovers:
+            # one more time, but only on the leftovers, so if dispatches
+            # have been generated below the threshold, we group them
+            # again in a "leftover of leftovers".
+            leftovers = self._dispatch_leftovers(cr, uid, wizard, leftovers,
+                                                 context=context)
             leftovers = self._split_dispatches_to_limit(cr, uid, wizard,
-                                                        [leftovers],
+                                                        leftovers,
                                                         context=context)
             for prepared_dispatch in leftovers:
                 yield prepared_dispatch
@@ -230,12 +278,19 @@ class picking_dispatch_group(orm.TransientModel):
             descr = _('%d packs of mixed content') % nb_packs
         # a grouped leftover should not happen
         elif prepared_dispatch.leftover:
-            descr = _('%d packs of leftovers') % nb_packs
+            size = prepared_dispatch.leftover_size
+            if size is None:
+                descr = (_('%d packs of leftovers with various units') %
+                         (nb_packs))
+            else:
+                descr = (_('%d packs of leftovers with %s units') %
+                         (nb_packs, size))
         elif prepared_dispatch.group:
             prods = [_("%sx[%s]") % (move.product_qty,
                                      move.product_id.default_code)
                      for move in prepared_dispatch.packs[0].move_ids]
-            descr = _('%d packs grouped by: %s') % (nb_packs, ' + '.join(prods))
+            descr = _('%d packs grouped by: %s') % (nb_packs,
+                                                    ' + '.join(prods))
 
         name = ' - '.join([part for part in (name, wizard.suffix, descr)
                            if part])
@@ -261,6 +316,8 @@ class picking_dispatch_group(orm.TransientModel):
         # leftovers by leaving a pack alone in a picking dispatch
         dispatches = self._dispatch_leftovers(cr, uid, wizard, dispatches,
                                               context=context)
+        dispatches = self._group_leftovers(cr, uid, wizard, dispatches,
+                                           context=context)
 
         created_ids = []
         for prepared_dispatch in dispatches:

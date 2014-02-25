@@ -64,6 +64,7 @@ table.pack td {
           <td>${move.product_id.name}</td>
           <td>${move.product_id.variants if move.product_id.variants else ''}</td>
           <td>${move.product_qty} ${move.product_uom.name}</td>
+          <td>${move.picking_id.stock_journal_id.name if move.picking_id.stock_journal_id else ''}</td>
           <td>${move.state}</td>
         </tr>
       %endfor

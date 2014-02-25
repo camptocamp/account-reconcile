@@ -222,6 +222,26 @@ class picking_dispatch_group(orm.TransientModel):
                        context=context)
         return dispatch_id
 
+    def _prepare_dispatch_vals(self, cr, uid, wizard, prepared_dispatch,
+                               context=None):
+        name = self.pool['ir.sequence'].get(cr, uid, 'picking.dispatch')
+        nb_packs = len(prepared_dispatch.packs)
+        if not (prepared_dispatch.group or prepared_dispatch.leftover):
+            descr = _('%d packs of mixed content') % nb_packs
+        # a grouped leftover should not happen
+        elif prepared_dispatch.leftover:
+            descr = _('%d packs of leftovers') % nb_packs
+        elif prepared_dispatch.group:
+            prods = [_("%sx[%s]") % (move.product_qty,
+                                     move.product_id.default_code)
+                     for move in prepared_dispatch.packs[0].move_ids]
+            descr = _('%d packs grouped by: %s') % (nb_packs, ' + '.join(prods))
+
+        name = ' - '.join([part for part in (name, wizard.suffix, descr)
+                           if part])
+        vals = {'name': name}
+        return vals
+
     def _read_packs(self, cr, uid, wizard, pack_ids, context=None):
         pack_obj = self.pool['stock.tracking']
         return pack_obj.browse(cr, uid, pack_ids, context=context)
@@ -243,12 +263,12 @@ class picking_dispatch_group(orm.TransientModel):
                                               context=context)
 
         created_ids = []
-        for packs, group, leftover in dispatches:
-            name = self.pool['ir.sequence'].get(cr, uid, 'picking.dispatch')
-            if wizard.suffix:
-                name = ' - '.join([name, wizard.suffix])
-            vals = {'name': name}
-            dispatch_id = self._create_dispatch(cr, uid, wizard, vals, packs,
+        for prepared_dispatch in dispatches:
+            vals = self._prepare_dispatch_vals(cr, uid, wizard,
+                                               prepared_dispatch,
+                                               context=context)
+            dispatch_id = self._create_dispatch(cr, uid, wizard, vals,
+                                                prepared_dispatch.packs,
                                                 context=context)
             created_ids.append(dispatch_id)
         return created_ids

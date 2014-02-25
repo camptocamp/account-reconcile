@@ -20,8 +20,16 @@
 ##############################################################################
 
 from itertools import islice, groupby
+from collections import namedtuple
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
+
+
+# packs: list of packs
+# group: boolean, True means that all the packs are identical
+# leftover: means it is the result of grouping all the leftovers
+PreparedDispatch = namedtuple('PreparedDispatch',
+                              'packs group leftover')
 
 
 class picking_dispatch_group(orm.TransientModel):
@@ -136,13 +144,14 @@ class picking_dispatch_group(orm.TransientModel):
         if wizard.group_by_content:
             packs = sorted(packs, key=self._pack_sort_key)
             for _content, gpacks in groupby(packs, self._pack_sort_key):
-                yield list(gpacks)
+                yield PreparedDispatch(list(gpacks), group=True,
+                                       leftover=False)
         else:
             # one dispatch with all the packs
-            yield packs
+            yield PreparedDispatch(packs, group=False, leftover=False)
 
     def _split_dispatches_to_limit(self, cr, uid, wizard, dispatches,
-                                   allow_threshold=False, context=None):
+                                   context=None):
         """ Split the dispatches having a count of packs above the limit
 
         Threshold should not be applied when a dispatch has packs
@@ -152,21 +161,24 @@ class picking_dispatch_group(orm.TransientModel):
         """
         pack_limit = wizard.pack_limit
         threshold = wizard.pack_limit_apply_threshold
-        for packs in dispatches:
+        for packs, group, leftover in dispatches:
             # only make sense for groups when all the packs have the
             # same content
-            if allow_threshold and threshold:
+            if group and threshold:
                 first_pack = packs[0]
                 # ignore the limit when below the threshold
                 if (len(first_pack.move_ids) == 1 and
                         first_pack.move_ids[0].product_qty == 1):
-                    yield packs
+                    yield PreparedDispatch(packs, group=group,
+                                           leftover=leftover)
                     continue
             if pack_limit:
                 for chunk in self.chunks(packs, pack_limit):
-                    yield chunk
+                    yield PreparedDispatch(chunk, group=group,
+                                           leftover=leftover)
             else:
-                yield packs
+                yield PreparedDispatch(packs, group=group,
+                                       leftover=leftover)
 
     def _dispatch_leftovers(self, cr, uid, wizard, dispatches, context=None):
         """ Find the leftovers dispatches and group them in a final dispatch.
@@ -179,27 +191,26 @@ class picking_dispatch_group(orm.TransientModel):
         """
         group_leftovers = wizard.group_leftovers
         threshold = wizard.group_leftovers_threshold
-        leftovers = []
-        for packs in dispatches:
+        leftovers_packs = []
+        for packs, group, leftover in dispatches:
             if group_leftovers:
                 if len(packs) <= threshold:
-                    leftovers += packs
+                    leftovers_packs += packs
                 else:
-                    yield packs
+                    yield PreparedDispatch(packs, group=group,
+                                           leftover=leftover)
             else:
-                yield packs
+                yield PreparedDispatch(packs, group=group, leftover=leftover)
 
-        if leftovers:
+        if leftovers_packs:
             # we should re-apply the limit on the leftovers
+            leftovers = PreparedDispatch(leftovers_packs, group=False,
+                                         leftover=True)
             leftovers = self._split_dispatches_to_limit(cr, uid, wizard,
                                                         [leftovers],
-                                                        # applied only on
-                                                        # groups of
-                                                        # similar content
-                                                        allow_threshold=False,
                                                         context=context)
-            for leftover in leftovers:
-                yield leftover
+            for prepared_dispatch in leftovers:
+                yield prepared_dispatch
 
     def _create_dispatch(self, cr, uid, wizard, vals, packs, context=None):
         """ Create a dispatch for packs """
@@ -223,19 +234,16 @@ class picking_dispatch_group(orm.TransientModel):
             return []
         dispatches = self._group_by_content(cr, uid, wizard, packs,
                                             context=context)
-        dispatches = self._split_dispatches_to_limit(
-            cr, uid, wizard,
-            # no threshold allowed when the content of the packs may be
-            # different
-            dispatches, allow_threshold=wizard.group_by_content,
-            context=context)
+        dispatches = self._split_dispatches_to_limit(cr, uid, wizard,
+                                                     dispatches,
+                                                     context=context)
         # done after the split because the split can create new
         # leftovers by leaving a pack alone in a picking dispatch
         dispatches = self._dispatch_leftovers(cr, uid, wizard, dispatches,
                                               context=context)
 
         created_ids = []
-        for packs in dispatches:
+        for packs, group, leftover in dispatches:
             name = self.pool['ir.sequence'].get(cr, uid, 'picking.dispatch')
             if wizard.suffix:
                 name = ' - '.join([name, wizard.suffix])

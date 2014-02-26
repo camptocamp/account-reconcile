@@ -42,7 +42,7 @@ table.pack td {
 %for dispatch in objects:
   <table style="dispatch">
     <tr>
-      <td><h1>${_('Dispatch Order')} ${dispatch.name}</h1></td>
+      <td><h1>${_('Packing List')} ${dispatch.name}</h1></td>
     </tr>
     <tr>
       <td>${_('Picked by')}: ${dispatch.picker_id.name if dispatch.picker_id else ''}</td>

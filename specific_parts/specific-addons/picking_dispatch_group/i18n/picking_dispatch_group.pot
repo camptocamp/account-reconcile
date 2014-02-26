@@ -28,7 +28,7 @@ msgstr ""
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:45
-msgid "Dispatch Order"
+msgid "Packing List"
 msgstr ""
 
 #. module: picking_dispatch_group

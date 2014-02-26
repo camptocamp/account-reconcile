@@ -28,8 +28,8 @@ msgstr "%d colis groupés par : %s"
 
 #. module: picking_dispatch_group
 #: report:addons/picking_dispatch_group/report/dispatch_packs.html.mako:45
-msgid "Dispatch Order"
-msgstr "Bon de préparation"
+msgid "Packing List"
+msgstr "Liste de Colisage"
 
 #. module: picking_dispatch_group
 #: field:picking.dispatch.group,group_leftovers_threshold:0

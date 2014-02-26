@@ -74,7 +74,7 @@ class OfferPositionExportMapper(ExportMapper):
         ('highlights', 'highlights'),
     ]
 
-    direct = [(floatqoqa('unit_price'), 'unit_price'),
+    direct = [(floatqoqa('lot_price'), 'unit_price'),
               (floatqoqa('installment_price'), 'installment_price'),
               (floatqoqa('regular_price'), 'regular_price'),
               (floatqoqa('buy_price'), 'buy_price'),

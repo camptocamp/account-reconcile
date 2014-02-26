@@ -122,7 +122,7 @@
                     <field name="stock_bias"/>
                     <field name="stock_progress_with_bias"/>
                     <field name="shop_kanban_image"/>
-                    <field name="main_unit_price"/>
+                    <field name="main_lot_price"/>
                     <field name="main_regular_price"/>
                     <field name="currency_symbol"/>
                     <templates>
@@ -147,7 +147,7 @@
                                     <div class="qoqa_content">
                                         <div class="qoqa_box">
                                             <div class="qoqa_left_box">
-                                                <field name="main_unit_price"/> <field name="currency_symbol"/>
+                                                <field name="main_lot_price"/> <field name="currency_symbol"/>
                                                 <t t-esc="'('"/><field name="main_regular_price"/> <field name="currency_symbol"/><t t-esc="')'"/>
                                             </div>
                                             <div class="qoqa_right_box">
@@ -257,7 +257,7 @@
                                         <tree string="Positions">
                                             <field name="sequence" widget="handle"/>
                                             <field name="product_tmpl_id"/>
-                                            <field name="unit_price"/>
+                                            <field name="lot_price"/>
                                             <field name="sum_quantity"/>
                                             <field name="sum_stock_sold"/>
                                             <field name="stock_progress" widget="progressbar"/>
@@ -271,14 +271,19 @@
                                             </div>
                                             <h1>
                                                 <field name="product_tmpl_id"
-                                                    on_change="onchange_product_tmpl_id(product_tmpl_id)"/>
+                                                    on_change="onchange_product_tmpl_id(product_tmpl_id, lot_size)"/>
                                             </h1>
                                             <notebook>
                                                 <page string="Options">
                                                     <group>
                                                         <group name="price" string="Prices">
                                                             <field name="currency_id" invisible="1"/>
-                                                            <field name="unit_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="current_unit_price"
+                                                                on_change="onchange_current_price(current_unit_price, lot_size)"
+                                                                widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="unit_price"
+                                                                widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                                            <field name="lot_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                             <field name="installment_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                             <field name="regular_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                                             <field name="regular_price_type"/>
@@ -288,7 +293,8 @@
                                                         </group>
                                                         <group>
                                                             <group name="stock" string="Stock" colspan="4">
-                                                                <field name="lot_size"/>
+                                                                <field name="lot_size"
+                                                                    on_change="onchange_current_price(current_unit_price, lot_size)"/>
                                                                 <field name="max_sellable"/>
                                                             </group>
                                                             <group name="various" string="Various" colspan="4">

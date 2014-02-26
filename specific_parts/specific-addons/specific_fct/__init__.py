@@ -4,4 +4,3 @@ from . import sale
 from . import stock
 from . import partner
 from . import postlogistics
-from . import dispatch

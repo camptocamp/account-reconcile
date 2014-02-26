@@ -7,6 +7,7 @@ Feature: upgrade to 1.0.9
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I install the required modules with dependencies:
       | name                                                   |
+      | picking_dispatch                                       |
       | picking_dispatch_group                                 |
       | web_ckeditor4                                          |
       | qoqa_offer                                             |

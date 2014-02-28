@@ -48,7 +48,6 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         if parent.qoqa_bind_ids:
             del recipient['Name2']
             recipient['PersonallyAddressed'] = True
-
         return recipient
 
     def _prepare_attributes(self, picking):
@@ -77,7 +76,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         customer = super(PostlogisticsWebServiceQoQa, self
                           )._prepare_customer(picking)
 
-        if picking.claim_id:
+        if picking.claim_id and picking.type == 'in':
             partner = picking.claim_id.delivery_address_id
             if not partner:
                 raise orm.except_orm(

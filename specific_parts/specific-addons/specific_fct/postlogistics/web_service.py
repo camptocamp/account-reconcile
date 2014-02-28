@@ -42,12 +42,32 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         recipient = super(PostlogisticsWebServiceQoQa, self
                           )._prepare_recipient(picking)
 
-        parent = picking.partner_id.parent_id
+        partner = picking.partner_id
+        parent = partner.parent_id
         # We consider an addresse's parent being a unwanted 'company' name
         # if qoqa_bind_ids is not empty
         if parent.qoqa_bind_ids:
             del recipient['Name2']
             recipient['PersonallyAddressed'] = True
+            # Let's forge the address lines as street1 and street2
+            # must keep order as company name could be writen in
+            # street1
+            address_lines = []
+            address_lines.append(partner.name)
+            address_lines.append(partner.street)
+            if partner.street2:
+                # 35 is the size limit of an address line in labels
+                if len(partner.street2) > 35:
+                    street2_1 = partner.street2[:35]
+                    street2_2 = partner.street2[35:]
+                    address_lines.append(street2_1)
+                    address_lines.append(street2_2)
+                else:
+                    address_lines.append(partner.street2)
+
+            recipient['LabelAddress'] = {
+                'LabelLine': address_lines
+            }
         return recipient
 
     def _prepare_attributes(self, picking):

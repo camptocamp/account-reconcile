@@ -77,30 +77,34 @@ class qoqa_offer_position_variant(orm.Model):
             context=context)
         return pos_variant_ids
 
-    def _get_from_offer(self, cr, uid, ids, context=None):
-        this = self.pool.get('qoqa.offer.position.variant')
-        pos_variant_ids = this.search(
-            cr, uid,
-            [('position_id.offer_id', 'in', ids)],
-            context=context)
-        return pos_variant_ids
-
     def _get_from_sale_order(self, cr, uid, ids, context=None):
         this = self.pool.get('qoqa.offer.position.variant')
         sale_obj = self.pool.get('sale.order')
-        sales = sale_obj.read(cr, uid, ids, ['offer_id'], context=context)
-        offer_ids = [sale['offer_id'][0] for sale in sales
-                     if sale['offer_id']]
-        return this._get_from_offer(cr, uid, offer_ids, context=context)
+        sales = sale_obj.read(cr, uid, ids, ['order_line'], context=context)
+
+        line_ids = [lines for sale in sales for lines in sale['order_line']]
+        return this._get_from_sale_order_line(
+            cr, uid, line_ids, context=context)
 
     def _get_from_sale_order_line(self, cr, uid, ids, context=None):
         this = self.pool.get('qoqa.offer.position.variant')
         line_obj = self.pool.get('sale.order.line')
-        lines = line_obj.read(cr, uid, ids, ['offer_position_id'],
+        lines = line_obj.read(cr, uid, ids,
+                              ['offer_position_id', 'product_id'],
                               context=context)
-        offer_ids = [line['offer_position_id'][0] for line in lines
-                     if line['offer_position_id']]
-        return this._get_from_offer(cr, uid, offer_ids, context=context)
+        position_ids = []
+        product_ids = []
+        for line in lines:
+            if line['offer_position_id']:
+                position_ids.append(line['offer_position_id'][0])
+            if line['product_id']:
+                product_ids.append(line['product_id'][0])
+        this_ids = this.search(
+            cr, uid,
+            [('position_id', 'in', position_ids),
+             ('product_id', 'in', product_ids)],
+            context=context)
+        return this_ids
 
     _progress_store = {
         _name: (lambda self, cr, uid, ids, context=None: ids, None, 10),

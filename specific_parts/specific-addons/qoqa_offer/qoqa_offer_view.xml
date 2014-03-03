@@ -311,7 +311,6 @@
                                                     </group>
                                                     <group colspan="4" name="buyphrase" string="Buyphrase">
                                                         <field name="buyphrase_id" nolabel="1"
-                                                            options='{"no_open": 1}'
                                                             colspan="4"/>
                                                     </group>
                                                 </page>

@@ -77,7 +77,7 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               ('lot_size', 'lot_size'),
               ('max_sellable', 'max_sellable'),
               ('stock_bias', 'stock_bias'),
-              (qoqafloat('unit_price'), 'unit_price'),
+              (qoqafloat('unit_price'), 'lot_price'),
               (qoqafloat('installment_price'), 'installment_price'),
               (qoqafloat('regular_price'), 'regular_price'),
               (qoqafloat('buy_price'), 'buy_price'),

@@ -382,12 +382,12 @@ class qoqa_offer(orm.Model):
         'currency_symbol': fields.related(
             'pricelist_id', 'currency_id', 'symbol',
             type='char', string='Currency', readonly=True),
-        'main_unit_price': fields.related(
-            'main_position_id', 'unit_price',
+        'main_lot_price': fields.related(
+            'main_position_id', 'lot_price',
             string='Unit Price', type='float',
             readonly=True),
         'main_regular_price': fields.related(
-            'main_position_id', 'unit_price',
+            'main_position_id', 'regular_price',
             string='Unit Price', type='float', readonly=True),
         'stock_bias': fields.integer('Stock Bias'),
     }

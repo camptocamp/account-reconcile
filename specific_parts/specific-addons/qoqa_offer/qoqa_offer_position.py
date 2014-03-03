@@ -209,6 +209,12 @@ class qoqa_offer_position(orm.Model):
                 break
         return res
 
+    def _get_lot_price(self, cr, uid, ids, fieldnames, args, context=None):
+        res = {}
+        for position in self.browse(cr, uid, ids, context=context):
+            res[position.id] = position.unit_price * position.lot_size
+        return res
+
     _columns = {
         'offer_id': fields.many2one(
             'qoqa.offer',
@@ -262,10 +268,21 @@ class qoqa_offer_position(orm.Model):
             'offer_id', 'stock_bias',
             string='Stock Bias',
             readonly=True),
+        'current_unit_price': fields.related(
+            'product_tmpl_id', 'list_price',
+            string="Current Product's price",
+            type='float',
+            help="The current price of the product. "
+                 "It will be modified directly on the product.",
+            digits_compute=dp.get_precision('Product Price')),
         'unit_price': fields.float(
-            'Unit Price',
+            string='Unit Price',
             digits_compute=dp.get_precision('Product Price'),
-            required=True),
+            readonly=True),
+        'lot_price': fields.float(
+            string='Lot Price',
+            digits_compute=dp.get_precision('Product Price'),
+            readonly=True),
         'installment_price': fields.float(
             'Installment Price',
             digits_compute=dp.get_precision('Product Price')),
@@ -331,8 +348,55 @@ class qoqa_offer_position(orm.Model):
          'Lot size must be a value greater than 0.'),
     ]
 
+    def create(self, cr, uid, vals, context=None):
+        price = vals.get('current_unit_price') or 0
+        lot_size = vals.get('lot_size') or 1
+        vals = vals.copy()
+        vals.update({
+            'unit_price': price,
+            'lot_price': price * lot_size,
+        })
+        res = super(qoqa_offer_position, self).\
+            create(cr, uid, vals, context=context)
+
+        # workaround: the related does not write the new price
+        # on the product template when we create the record, so
+        # do it manually
+        if 'current_unit_price' in vals:
+            tmpl_id = vals['product_tmpl_id']
+            tmpl_obj = self.pool['product.template']
+            tmpl_obj.write(cr, uid, [tmpl_id],
+                           {'list_price': price},
+                           context=context)
+        return res
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        if 'current_unit_price' in vals or 'lot_size' in vals:
+            for position in self.browse(cr, uid, ids, context=context):
+                if 'current_unit_price' in vals:
+                    price = vals['current_unit_price']
+                else:
+                    price = position.current_unit_price
+                if 'lot_size' in vals:
+                    lot_size = vals['lot_size']
+                else:
+                    lot_size = position.lot_size
+                local_vals = vals.copy()
+                local_vals.update({
+                    'unit_price': price,
+                    'lot_price': price * lot_size
+                })
+                super(qoqa_offer_position, self).\
+                    write(cr, uid, [position.id], local_vals, context=context)
+            return True
+        else:
+            return super(qoqa_offer_position, self).\
+                write(cr, uid, ids, vals, context=context)
+
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
-                                 context=None):
+                                 lot_size, context=None):
         """ Automatically adds all the variants of the template and
         set sensible default values for some fields.
 
@@ -347,18 +411,38 @@ class qoqa_offer_position(orm.Model):
         if not product_tmpl_id:
             return res
         template_obj = self.pool.get('product.template')
+        if ids:
+            assert len(ids) == 1
+            position = self.browse(cr, uid, ids[0], context=context)
+        else:
+            position = None
+
         template = template_obj.browse(cr, uid, product_tmpl_id,
                                        context=context)
-
-        tax_ids = [tax.id for tax in template.taxes_id if not tax.ecotax]
-
-        lines = [{'product_id': variant.id, 'quantity': 1} for
-                 variant in template.variant_ids]
         values = {
-            'variant_ids': lines,
-            'unit_price': template.list_price,
+            'current_unit_price': template.list_price,
             'buy_price': template.standard_price,
-            'tax_id': tax_ids[0] if len(tax_ids) == 1 else False,
+        }
+
+        # do not refresh the taxes and variants if the template has not
+        # been modified, but something has been changed on the product
+        if not position or position.product_tmpl_id.id != product_tmpl_id:
+            tax_ids = [tax.id for tax in template.taxes_id if not tax.ecotax]
+            lines = [{'product_id': variant.id, 'quantity': 1} for
+                     variant in template.variant_ids]
+            values.update({
+                'variant_ids': lines,
+                'tax_id': tax_ids[0] if len(tax_ids) == 1 else False,
+            })
+        res['value'] = values
+        return res
+
+    def onchange_current_price(self, cr, uid, ids, current_unit_price, lot_size,
+                               context=None):
+        res = {'value': {}}
+        values = {
+            'unit_price': current_unit_price,
+            'lot_price': current_unit_price * lot_size,
         }
         res['value'] = values
         return res

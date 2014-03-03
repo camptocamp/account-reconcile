@@ -25,6 +25,7 @@ from datetime import datetime
 from openerp.tools.misc import (DEFAULT_SERVER_DATETIME_FORMAT,
                                 DEFAULT_SERVER_DATE_FORMAT,
                                 )
+from openerp.tools.float_utils import float_round
 from openerp.addons.connector.unit import mapper
 from ..connector import iso8601_to_utc_datetime, utc_datetime_to_iso8601
 
@@ -188,5 +189,8 @@ def floatqoqa(field):
     """
     def modifier(self, record, to_attr):
         value = record[field] or 0
-        return float(value) * 100
+        value = float(value)
+        # qoqa uses 2 digits
+        rounded = float_round(value, precision_digits=2)
+        return rounded * 100
     return modifier

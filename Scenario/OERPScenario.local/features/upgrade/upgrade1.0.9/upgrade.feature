@@ -11,6 +11,7 @@ Feature: upgrade to 1.0.9
       | picking_dispatch_group                                 |
       | web_ckeditor4                                          |
       | qoqa_offer                                             |
+      | account_statement_ext                                  |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

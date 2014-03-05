@@ -12,6 +12,7 @@ Feature: upgrade to 1.0.9
       | web_ckeditor4                                          |
       | qoqa_offer                                             |
       | account_statement_ext                                  |
+      | account_payment_transaction_id                         |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

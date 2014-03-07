@@ -50,11 +50,6 @@ class qoqa_offer_position_variant(orm.Model):
                        (variant.position_id.offer_id.id,
                         variant.product_id.id))
             num_sold = cr.fetchone()[0] or 0
-            # Example: we sell 500 lot of 6 bottles of wine. 1 bottle =
-            # 1 unit. In the sales orders, 1 lot will be expanded to 6 units.
-            # So we compare lots, not units.
-            lot_size = variant.position_id.lot_size
-            num_sold /= lot_size
             quantity = variant.quantity
             residual = quantity - num_sold
             progress = 0.
@@ -108,7 +103,6 @@ class qoqa_offer_position_variant(orm.Model):
 
     _progress_store = {
         _name: (lambda self, cr, uid, ids, context=None: ids, None, 10),
-        'qoqa.offer.position': (_get_from_offer_position, ['lot_size'], 10),
         'sale.order': (_get_from_sale_order,
                        ['offer_id', 'order_line', 'state'], 10),
         'sale.order.line': (_get_from_sale_order_line,

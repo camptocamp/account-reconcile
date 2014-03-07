@@ -14,6 +14,8 @@ Feature: upgrade to 1.0.9
       | account_statement_ext                                  |
       | account_payment_transaction_id                         |
       | account_statement_one_move                             |
+      | account_easy_reconcile                                 |
+      | account_statement_transactionid_completion             |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

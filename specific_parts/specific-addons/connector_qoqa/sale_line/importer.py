@@ -71,22 +71,24 @@ class SaleOrderLineImportMapper(ImportMapper):
 
     def finalize(self, map_record, values):
         """ complete the values values from the 'item' sub-record """
+        line = map_record.source
         item = map_record.source['item']
         values['custom_text'] = item['custom_text']
         type_id = item['type_id']
         if type_id == QOQA_ITEM_PRODUCT:
-            values.update(self._item_product(item))
+            values.update(self._item_product(line))
 
         if type_id == QOQA_ITEM_SHIPPING:
-            values.update(self._item_shipping(item, map_record.parent))
+            values.update(self._item_shipping(line, map_record.parent))
 
         elif type_id == QOQA_ITEM_DISCOUNT:
-            values.update(self._item_discount(item, map_record.source['promo']))
+            values.update(self._item_discount(line, map_record.source['promo']))
 
         return values
 
-    def _item_product(self, item):
+    def _item_product(self, line):
         # get id of qoqa.offer.position
+        item = line['item']
         q_position_id = item['offer_id']
         binder = self.get_binder_for_model('qoqa.offer.position')
         position_id = binder.to_openerp(q_position_id)
@@ -102,7 +104,7 @@ class SaleOrderLineImportMapper(ImportMapper):
                   }
         return values
 
-    def _item_shipping(self, item, parent):
+    def _item_shipping(self, line, parent):
         # find carrier_id from parent record (sales order)
         binder = self.get_binder_for_model('qoqa.offer')
         qdeal_id = parent.source['deal_id']
@@ -115,6 +117,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         # line builder
         builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
         builder.price_unit = 0
+        builder.quantity = line['quantity']
         if offer.shipper_rate_id:
             # this is the delivery carrier having the rates
             builder.carrier = offer.shipper_rate_id
@@ -131,8 +134,9 @@ class SaleOrderLineImportMapper(ImportMapper):
                                qpromo_type_id)
         return self.session.browse('qoqa.promo.type', promo_type_id)
 
-    def _item_discount(self, item, promo):
+    def _item_discount(self, line, promo):
         # line builder
+        item = line['item']
         builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
         promo_type = self._promo_type(promo)
         builder.price_unit = 0

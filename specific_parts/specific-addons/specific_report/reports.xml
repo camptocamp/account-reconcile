@@ -11,6 +11,7 @@
       attachment_use="1"
       multi="True"
       webkit_header="specific_report.label_report_header"
+      header="False"
       report_type="webkit"/>
   </data>
 </openerp>

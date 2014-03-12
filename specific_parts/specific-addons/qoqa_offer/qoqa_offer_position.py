@@ -101,8 +101,16 @@ class qoqa_offer_position_variant(orm.Model):
             context=context)
         return this_ids
 
+    def _get_from_position(self, cr, uid, ids, context=None):
+        this = self.pool.get('qoqa.offer.position.variant')
+        return this.search(cr, uid, [('position_id', 'in', ids)],
+                           context=context)
+
     _progress_store = {
         _name: (lambda self, cr, uid, ids, context=None: ids, None, 10),
+        # weirdly, field is not computed on the creation of the variant
+        # if this trigger is not there
+        'qoqa.offer.position': (_get_from_position, ['variant_ids'], 10),
         'sale.order': (_get_from_sale_order,
                        ['offer_id', 'order_line', 'state'], 10),
         'sale.order.line': (_get_from_sale_order_line,

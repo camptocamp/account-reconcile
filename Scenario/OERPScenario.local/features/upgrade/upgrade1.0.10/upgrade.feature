@@ -8,6 +8,8 @@ Feature: upgrade to 1.0.10
     Given I install the required modules with dependencies:
       | name                                                   |
       | account_invoice_zero                                   |
+      | specific_report                                        |
+      | delivery_carrier_label_swiss_pp                        |
     Then my modules should have been installed and models reloaded
 
   Scenario: update application version

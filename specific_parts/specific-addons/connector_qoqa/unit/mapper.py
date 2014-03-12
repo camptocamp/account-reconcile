@@ -191,6 +191,6 @@ def floatqoqa(field):
         value = record[field] or 0
         value = float(value)
         # qoqa uses 2 digits
-        rounded = float_round(value, precision_digits=2)
-        return rounded * 100
+        rounded = float_round(value * 100, precision_digits=0)
+        return int(rounded)
     return modifier

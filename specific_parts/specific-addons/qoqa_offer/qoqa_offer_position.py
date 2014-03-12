@@ -275,7 +275,7 @@ class qoqa_offer_position(orm.Model):
             readonly=True),
         'lot_price': fields.float(
             string='Lot Price',
-            digits_compute=dp.get_precision('Product Price'),
+            digits=(16, 2),
             readonly=True),
         'installment_price': fields.float(
             'Installment Price',

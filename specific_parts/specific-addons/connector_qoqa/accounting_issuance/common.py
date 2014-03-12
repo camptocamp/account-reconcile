@@ -162,7 +162,7 @@ class account_move(orm.Model):
 
     _columns = {
         'qoqa_accounting_issuance_bind_ids': fields.one2many(
-            'qoqa.voucher.issuance',
+            'qoqa.accounting.issuance',
             'openerp_id',
             string='QoQa Accounting Issuances'),
     }

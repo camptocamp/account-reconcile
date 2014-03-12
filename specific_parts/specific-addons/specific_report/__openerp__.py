@@ -20,7 +20,7 @@
 ##############################################################################
 
 {'name': 'Customer small specific report',
- 'version': '1.0.1',
+ 'version': '1.1.0',
  'category': 'other',
  'description': """
  Customer specific report
@@ -28,6 +28,7 @@
  Contains:
  - specific report headers
  - specific shipping default webkit labels
+ - specific invoice report to fit with QoQa addresses
  """,
  'author': 'Camptocamp',
  'website': 'http://www.camptocamp.com',

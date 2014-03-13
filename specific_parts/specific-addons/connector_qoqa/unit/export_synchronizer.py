@@ -296,7 +296,7 @@ class Translations(ConnectorUnit):
                    ]
 
     def get_translations(self, record, normal_fields=None,
-                         attributes_unit=None):
+                         attributes_unit=None, only_langs=None):
         """ The dict will contain:
 
         * all the translations of ``normal_fields``
@@ -307,14 +307,20 @@ class Translations(ConnectorUnit):
         :param attributes_unit: ConnectorUnit class which respond to
                                 ``get_values()`` and return the values
                                 of the custom attributes.
+        :param only_langs: list of langs to export
+        :type only_langs: list of browse_record
         """
         if normal_fields is None:
             normal_fields = []
-        lang_ids = self.session.search('res.lang',
-                                       [('translatable', '=', True)])
+        if only_langs:
+            langs = only_langs
+        else:
+            lang_ids = self.session.search('res.lang',
+                                           [('translatable', '=', True)])
+            langs = self.session.browse('res.lang', lang_ids)
         lang_binder = self.get_binder_for_model('res.lang')
         lang_values = []
-        for lang in self.session.browse('res.lang', lang_ids):
+        for lang in langs:
             qoqa_lang_id = lang_binder.to_backend(lang.id)
             if qoqa_lang_id is None:
                 _logger.debug('Language %s skipped for export because '

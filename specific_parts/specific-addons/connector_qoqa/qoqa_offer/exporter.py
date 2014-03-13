@@ -112,4 +112,6 @@ class OfferExportMapper(ExportMapper):
         """
         fields = self.translatable_fields
         trans = self.get_connector_unit_for_model(Translations)
-        return trans.get_translations(record, normal_fields=fields)
+        langs = [record.lang_id] if record.lang_id else None
+        return trans.get_translations(record, normal_fields=fields,
+                                      only_langs=langs)

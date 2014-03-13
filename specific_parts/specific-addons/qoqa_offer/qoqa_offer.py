@@ -360,7 +360,8 @@ class qoqa_offer(orm.Model):
             required=True),
         'lang_id': fields.many2one(
             'res.lang',
-            string='Language'),
+            string='Language',
+            domain=[('translatable', '=', True)]),
         'company_id': fields.related(
             'qoqa_shop_id', 'company_id',
             string='Company',

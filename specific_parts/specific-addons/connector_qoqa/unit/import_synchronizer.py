@@ -411,14 +411,16 @@ def import_batch(session, model_name, backend_id, from_date=None, to_date=None):
 
 
 @job
-def import_batch_divider(session, model_name, backend_id, from_date=None):
+def import_batch_divider(session, model_name, backend_id, from_date=None,
+                         **kwargs):
     """ Delay an import batch job per week from the date.
 
     We need to split the batch imports (ranges on weeks), otherwise
     the QoQa backend has memory issues.
     """
     if from_date is None:
-        import_batch.delay(session, model_name, backend_id)
+        import_batch.delay(session, model_name, backend_id, **kwargs)
+        return
 
     dates = rrule.rrule(rrule.WEEKLY, dtstart=from_date,
                         until=datetime.now())
@@ -427,7 +429,8 @@ def import_batch_divider(session, model_name, backend_id, from_date=None):
     # last full week
     for startd, stopd in pairwise(chain(dates, (None,))):
         import_batch.delay(session, model_name, backend_id,
-                           from_date=startd, to_date=stopd)
+                           from_date=startd, to_date=stopd,
+                           **kwargs)
 
 
 @job

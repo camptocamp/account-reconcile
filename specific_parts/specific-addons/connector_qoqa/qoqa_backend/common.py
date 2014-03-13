@@ -186,7 +186,7 @@ class qoqa_backend(orm.Model):
             else:
                 from_date = None
             import_batch_divider(session, model, backend.id,
-                                 from_date=from_date)
+                                 from_date=from_date, priority=9)
         self.write(cr, uid, ids,
                    {from_date_field: import_start_time})
 

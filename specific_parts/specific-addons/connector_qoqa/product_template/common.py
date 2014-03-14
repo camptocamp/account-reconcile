@@ -54,8 +54,9 @@ class product_template(orm.Model):
             'qoqa.product.template',
             'openerp_id',
             string='QoQa Bindings'),
+        # deprecated (do not use the `deprecated` argument, it spams
+        # warnings at each browse of a product
         'description_ecommerce': fields.html('E-commerce Description',
-                                             deprecated=True,
                                              translate=True),
     }
 

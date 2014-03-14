@@ -26,5 +26,6 @@ class product_template(orm.Model):
     _inherit = 'product.template'
 
     _columns = {
-        'brand': fields.char('Brand'),  # used in custom attributes
+        # used in custom attributes
+        'brand': fields.char('Brand', translate=True),
     }

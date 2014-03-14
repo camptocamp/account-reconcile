@@ -451,7 +451,8 @@ class qoqa_offer(orm.Model):
             default = {}
         else:
             default = default.copy()
-        default['ref'] = '/'
+        default.setdefault('ref', '/')
+        default.setdefault('sale_ids', False)
         return super(qoqa_offer, self).copy_data(
             cr, uid, id, default=default, context=context)
 

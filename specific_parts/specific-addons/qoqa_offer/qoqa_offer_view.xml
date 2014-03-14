@@ -27,6 +27,17 @@
                                  ]"
                         help="Offers Today!"/>
                     <filter
+                        string="+- 2 days"
+                        name="in2days"
+                        domain="['|',
+                                 ('date_begin', '&gt;=', (context_today() - datetime.timedelta(days=2)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&gt;=', (context_today() - datetime.timedelta(days=2)).strftime('%%Y-%%m-%%d')),
+                                 '|',
+                                 ('date_begin', '&lt;=', (context_today() + datetime.timedelta(days=2)).strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=2)).strftime('%%Y-%%m-%%d')),
+                                 ]"
+                        help="Offers +- 2 days"/>
+                    <filter
                         string="+- 10 days"
                         name="in10days"
                         domain="['|',

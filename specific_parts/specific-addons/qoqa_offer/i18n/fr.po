@@ -248,6 +248,11 @@ msgid "Offers +- 10 days"
 msgstr "Offres +- 10 jours"
 
 #. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers +- 2 days"
+msgstr "Offres +- 2 jours"
+
+#. module: qoqa_offer
 #: model:ir.actions.act_window,name:qoqa_offer.action_qoqa_buyphrase
 #: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_buyphrase
 msgid "Buyphrases"
@@ -257,6 +262,11 @@ msgstr "Phrases d'achat"
 #: view:qoqa.offer:0
 msgid "+- 10 days"
 msgstr "+- 10 jours"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "+- 2 days"
+msgstr "+- 2 jours"
 
 #. module: qoqa_offer
 #: model:ir.actions.act_window,name:qoqa_offer.action_offer

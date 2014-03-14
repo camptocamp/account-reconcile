@@ -39,6 +39,11 @@ class qoqa_offer_position_variant(orm.Model):
         res = {}
         sale_line_obj = self.pool.get('sale.order.line')
         for variant in self.browse(cr, uid, ids, context=context):
+            if not variant.exists():
+                # when we delete a variant from a position, the trigger
+                # will call the recompute also for the deleted variant,
+                # so it would fail to compute for a missing record
+                continue
             # the equivalent with the ORM takes up to 7 seconds
             cr.execute("SELECT SUM(l.product_uom_qty) "
                        "FROM sale_order_line l "

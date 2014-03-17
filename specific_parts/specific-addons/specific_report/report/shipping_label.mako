@@ -69,7 +69,11 @@
         <% setLang(partner.lang) %>
         <div class="address">
           <div class="code">
-            ${picking.offer_id.ref}.${picking.sale_id.name}
+          %if picking.offer_id.ref and picking.sale_id.name:
+              ${picking.offer_id.ref}.${picking.sale_id.name}
+          %else:
+              ${picking.name}/${picking.origin}
+          %endif
           </div>
           <table class="recipient">
             ${address(partner=partner)}

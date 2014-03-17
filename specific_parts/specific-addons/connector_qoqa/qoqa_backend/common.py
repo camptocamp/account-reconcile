@@ -106,6 +106,7 @@ class qoqa_backend(orm.Model):
         'import_offer_id': fields.char('Offer ID'),
         'import_offer_position_id': fields.char('Offer Position ID'),
         'import_accounting_issuance_id': fields.char('Accounting Issuance ID'),
+        'import_address_id': fields.char('Address ID'),
 
         'date_really_import': fields.datetime(
             'Import historic only until', required=True,
@@ -269,6 +270,11 @@ class qoqa_backend(orm.Model):
     def import_one_offer(self, cr, uid, ids, context=None):
         self._import_one(cr, uid, ids, 'qoqa.offer',
                          'import_offer_id', context=context)
+        return True
+
+    def import_one_address(self, cr, uid, ids, context=None):
+        self._import_one(cr, uid, ids, 'qoqa.address',
+                         'import_address_id', context=context)
         return True
 
     def _exec_scheduler_callback(self, cr, uid, callback, context=None):

@@ -77,7 +77,6 @@ class QoQaOfferPositionImportMapper(ImportMapper):
               ('lot_size', 'lot_size'),
               ('max_sellable', 'max_sellable'),
               ('stock_bias', 'stock_bias'),
-              (qoqafloat('unit_price'), 'lot_price'),
               (qoqafloat('installment_price'), 'installment_price'),
               (qoqafloat('regular_price'), 'regular_price'),
               (qoqafloat('buy_price'), 'buy_price'),
@@ -94,6 +93,15 @@ class QoQaOfferPositionImportMapper(ImportMapper):
         binder = self.get_binder_for_model('qoqa.regular.price.type')
         binding_id = binder.to_openerp(record['regular_price_type'])
         return {'regular_price_type': binding_id}
+
+    @mapping
+    def prices(self, record):
+        # despite the naming, this is the lot price
+        price = qoqafloat('unit_price')(self, record, '')
+        lot_size = record.get('lot_size') or 1
+        if lot_size > 1:
+            price /= lot_size
+        return {'current_unit_price': price}
 
     @mapping
     def from_translations(self, record):

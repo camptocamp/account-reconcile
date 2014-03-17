@@ -192,6 +192,19 @@
                                         class="oe_highlight"
                                         string="Import"/>
                                 </group>
+                                <group>
+                                    <div>
+                                        <label string="Import 1 address"
+                                            class="oe_inline"/>
+                                        <field name="import_address_id"
+                                            class="oe_inline"
+                                            nolabel="1"/>
+                                    </div>
+                                    <button name="import_one_address"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import"/>
+                                </group>
                             </page>
                             <page name="initial_import" string="Initial Imports">
                                 <p class="oe_grey oe_inline">

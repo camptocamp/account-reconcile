@@ -74,7 +74,6 @@ class AddressImportMapper(ImportMapper):
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
-              (backend_to_m2o('user_id', binding='qoqa.res.partner'), 'parent_id'),
               ('street', 'street'),
               ('street2', 'street2'),
               ('code', 'zip'),
@@ -112,3 +111,12 @@ class AddressImportMapper(ImportMapper):
     @mapping
     def customer(self, record):
         return {'customer': True}
+
+    @mapping
+    def parent_id(self, record):
+        binder = self.get_binder_for_model('qoqa.res.partner')
+        parent_id = binder.to_openerp(record['user_id'], unwrap=True)
+        parent = self.session.browse('res.partner', parent_id)
+        return {'parent_id': parent_id,
+                'lang': parent.lang,
+                }

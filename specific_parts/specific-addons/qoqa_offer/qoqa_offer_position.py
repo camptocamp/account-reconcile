@@ -351,8 +351,22 @@ class qoqa_offer_position(orm.Model):
     }
 
     _sql_constraints = [
-        ('lot_size', 'CHECK (lot_size>0)',
+        ('lot_size', 'check (lot_size > 0)',
          'Lot size must be a value greater than 0.'),
+        ('lot_price', 'check (lot_price > 0)',
+         'Lot price must be a value greater than 0.'),
+    ]
+
+    def _lot_price(self, cr, uid, ids, context=None):
+        for position in self.browse(cr, uid, ids, context=context):
+            if position.lot_price <= 0:
+                return False
+        return True
+
+    _constraints = [
+        # duplicates what the _sql_constraints does, but the sql
+        # constraint cannot be created until all prices are > 0.
+        (_lot_price, 'Lot price must be above 0', ['lot_price']),
     ]
 
     def create(self, cr, uid, vals, context=None):

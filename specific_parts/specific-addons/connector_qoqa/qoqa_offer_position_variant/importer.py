@@ -20,7 +20,9 @@
 ##############################################################################
 
 from openerp.addons.connector.unit.mapper import (backend_to_m2o,
-                                                  ImportMapper)
+                                                  ImportMapper,
+                                                  ImportMapChild
+                                                  )
 from ..backend import qoqa
 
 
@@ -33,3 +35,31 @@ class QoQaOfferPositionVariantImportMapper(ImportMapper):
                'product_id'),
               ('id', 'qoqa_id'),
               ]
+
+
+@qoqa
+class LineMapChild(ImportMapChild):
+    _model_name = 'qoqa.offer.position.variant'
+
+    def get_item_values(self, map_record, to_attr, options):
+        values = map_record.values(**options)
+        binder = self.get_binder_for_model()
+        binding_id = binder.to_openerp(map_record.source['id'])
+        if binding_id is not None:
+            # already exists, keeps the id
+            values['binding_id'] = binding_id
+        return values
+
+    def format_items(self, items_values):
+        # if we already have an ID (found in get_item_values())
+        # we change the command to update the existing record
+        items = []
+        for item in items_values[:]:
+            if item.get('binding_id'):
+                binding_id = item.pop('binding_id')
+                # update the record
+                items.append((1, binding_id, item))
+            else:
+                # create the record
+                items.append((0, 0, item))
+        return items

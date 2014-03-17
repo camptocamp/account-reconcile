@@ -21,6 +21,7 @@
 
 import logging
 from datetime import datetime
+from openerp import SUPERUSER_ID
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import ConnectorUnit
@@ -183,9 +184,11 @@ class QoQaExporter(QoQaBaseExporter):
             # create the binding for the template.
             else:
                 with self.session.change_context({'connector_no_export': True}):
-                    bind_values = {'backend_id': self.backend_record.id,
-                                   'openerp_id': relation.id}
-                    binding_id = self.session.create(binding_model, bind_values)
+                    with self.session.change_user(SUPERUSER_ID):
+                        bind_values = {'backend_id': self.backend_record.id,
+                                       'openerp_id': relation.id}
+                        binding_id = self.session.create(binding_model,
+                                                         bind_values)
         else:
             # If qoqa_bind_ids does not exist we are typically in a
             # "direct" binding (the binding record is the same record).

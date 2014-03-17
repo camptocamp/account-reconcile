@@ -22,6 +22,7 @@
 from datetime import datetime
 from openerp.osv import orm
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from openerp import SUPERUSER_ID
 from openerp.addons.connector.connector import Binder
 from ..backend import qoqa
 
@@ -139,11 +140,12 @@ class QoQaDirectBinder(QoQaBinder):
         now_fmt = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         # avoid to trigger the export when we modify the `qoqa_id`
         with self.session.change_context({'connector_no_export': True}):
-            self.session.write(
+            with self.session.change_user(SUPERUSER_ID):
+                self.session.write(
                     self.model._name,
                     binding_id,
                     {'qoqa_id': str(external_id),
-                     self._sync_date_field: now_fmt})
+                    self._sync_date_field: now_fmt})
 
 
 @qoqa
@@ -234,9 +236,10 @@ class QoQaInheritsBinder(QoQaBinder):
         now_fmt = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         # avoid to trigger the export when we modify the `qoqa_id`
         with self.session.change_context({'connector_no_export': True}):
-            values = {'qoqa_id': str(external_id),
-                      self._sync_date_field: now_fmt}
-            self.session.write(self.model._name, binding_id, values)
+            with self.session.change_user(SUPERUSER_ID):
+                values = {'qoqa_id': str(external_id),
+                          self._sync_date_field: now_fmt}
+                self.session.write(self.model._name, binding_id, values)
 
 
 class ByAnyFieldBinder(QoQaBinder):

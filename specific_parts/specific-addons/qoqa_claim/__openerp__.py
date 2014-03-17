@@ -22,7 +22,7 @@
 {'name': 'QoQa Claim Specifics',
  'version': '0.0.2',
  'category': 'Others',
- 'depends': ['crm_claim', 'sale'
+ 'depends': ['crm_claim_rma',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',
@@ -32,7 +32,7 @@ QoQa Claim Specific
 ===================
 
 Local claim customizations for QoQa.
- * Add method to use a server action to attribute the shop
+ * Add related for company on the warehouse
 
 """,
  'images': [],

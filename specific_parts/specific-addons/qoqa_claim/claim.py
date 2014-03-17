@@ -26,7 +26,14 @@ class crm_claim(orm.Model):
     """
     _inherit = "crm.claim"
 
-    # _columns = {
-    #     'shop_id': fields.many2one('sale.shop', 'Shop', select="1"),
-    # }
+    _columns = {
+        'company_id': fields.related(
+            'warehouse_id',
+            'company_id',
+            type='many2one',
+            relation='res.company',
+            string='Company',
+            store=True,
+            readonly=True),
+    }
 

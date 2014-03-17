@@ -379,7 +379,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
             <field name="context">{'search_default_groupby_days': 1,
-                                   'search_default_in10days': 1}</field>
+                                   'search_default_in2days': 1}</field>
             <field name="domain">[]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">

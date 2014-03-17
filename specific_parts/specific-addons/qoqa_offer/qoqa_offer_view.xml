@@ -19,6 +19,14 @@
                     <separator/>
 
                     <filter
+                        string="Current"
+                        name="current"
+                        domain="[('date_begin', '&lt;=', time.strftime('%%Y-%%m-%%d')),
+                                 ('date_end', '&gt;=', time.strftime('%%Y-%%m-%%d')),
+                                 ]"
+                        help="Current Offers!"/>
+
+                    <filter
                         string="Today"
                         name="today"
                         domain="['|',

@@ -27,6 +27,7 @@ from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 
 from ..connector import get_environment
 from ..backend import qoqa
+from ..sale.payment_id_importer import ImportPaymentId
 
 
 @qoqa
@@ -47,10 +48,18 @@ class RefundExporter(ExportSynchronizer):
         qsale = sales[0].qoqa_bind_ids[0]
         origin_payment_id = qsale.qoqa_payment_id
         if not origin_payment_id:
+            # the payment_id has not been imported during the historic
+            # import, retrieve it using a special importer
+            importer = self.get_connector_unit_for_model(
+                ImportPaymentId, 'qoqa.sale.order')
+            importer.get_payment_id(qsale.id)
+            qsale.refresh()
+            origin_payment_id = qsale.qoqa_payment_id
+        if not origin_payment_id:
             raise orm.except_orm(
                 _('Error'),
                 _('Cannot be refund on the QoQa backend because '
-                  'the payment ID is not stored on the sales order %s') %
+                  'no payment ID could be retrieved for the sales order %s') %
                 qsale.name)
         adapter = self.get_connector_unit_for_model(BackendAdapter,
                                                     'qoqa.sale.order')

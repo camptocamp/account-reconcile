@@ -21,9 +21,9 @@
                     <filter
                         string="Current"
                         name="current"
-                        domain="[('date_begin', '&lt;=', time.strftime('%%Y-%%m-%%d')),
-                                 ('date_end', '&gt;=', time.strftime('%%Y-%%m-%%d')),
-                                 ]"
+                        domain="[('datetime_begin_filter', '&lt;=', time.strftime('%%Y-%%m-%%d %%H:%%M:%%S')),
+                                 ('datetime_end_filter', '&gt;=', time.strftime('%%Y-%%m-%%d %%H:%%M:%%S')),
+                                   ]"
                         help="Current Offers!"/>
 
                     <filter

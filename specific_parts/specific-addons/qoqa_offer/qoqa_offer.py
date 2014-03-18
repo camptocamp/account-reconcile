@@ -92,6 +92,8 @@ class qoqa_offer(orm.Model):
             res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),
                 'datetime_end': end.strftime(fmt),
+                'datetime_begin_filter': begin.strftime(fmt),
+                'datetime_end_filter': end.strftime(fmt),
                 'date_begin_calendar': offer.date_begin,
                 'date_end_calendar': calendar_end.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
             }
@@ -316,6 +318,22 @@ class qoqa_offer(orm.Model):
             _full_dates,
             string='Ends at',
             type='char',
+            multi='_full_dates',
+            store=True,
+            readonly=True),
+        # used in search view 'current' filter
+        # a datetime is necessary instead of a char
+        'datetime_begin_filter': fields.function(
+            _full_dates,
+            string='Begins at',
+            type='datetime',
+            multi='_full_dates',
+            store=True,
+            readonly=True),
+        'datetime_end_filter': fields.function(
+            _full_dates,
+            string='Ends at',
+            type='datetime',
             multi='_full_dates',
             store=True,
             readonly=True),

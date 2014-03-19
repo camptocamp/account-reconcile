@@ -25,15 +25,6 @@
                                  ('datetime_end_filter', '&gt;=', time.strftime('%%Y-%%m-%%d %%H:%%M:%%S')),
                                    ]"
                         help="Current Offers!"/>
-
-                    <filter
-                        string="Today"
-                        name="today"
-                        domain="['|',
-                                 ('date_begin', '=', time.strftime('%%Y-%%m-%%d')),
-                                 ('date_end', '=', time.strftime('%%Y-%%m-%%d')),
-                                 ]"
-                        help="Offers Today!"/>
                     <filter
                         string="+- 2 days"
                         name="in2days"
@@ -387,7 +378,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
             <field name="context">{'search_default_groupby_days': 1,
-                                   'search_default_in2days': 1}</field>
+                                   'search_default_current': 1}</field>
             <field name="domain">[]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">

@@ -59,6 +59,7 @@ class qoqa_offer(orm.Model):
 
         """
         date_fmt = DEFAULT_SERVER_DATE_FORMAT
+        datetime_fmt = DEFAULT_SERVER_DATETIME_FORMAT
         user = self.pool['res.users'].browse(cr, uid, uid, context=context)
         lang_obj = self.pool['res.lang']
         lang_ids = lang_obj.search(cr, uid,
@@ -92,8 +93,8 @@ class qoqa_offer(orm.Model):
             res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),
                 'datetime_end': end.strftime(fmt),
-                'datetime_begin_filter': begin.strftime(fmt),
-                'datetime_end_filter': end.strftime(fmt),
+                'datetime_begin_filter': begin.strftime(datetime_fmt),
+                'datetime_end_filter': end.strftime(datetime_fmt),
                 'date_begin_calendar': offer.date_begin,
                 'date_end_calendar': calendar_end.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
             }

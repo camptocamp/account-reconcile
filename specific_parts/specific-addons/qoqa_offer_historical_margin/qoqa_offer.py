@@ -99,6 +99,7 @@ class qoqa_offer(Model):
             res[offer_id]['margin_absolute'] += (sale - cost)
             res[offer_id]['subtotal_company'] += sale
             res[offer_id]['subtotal_cost_price_company'] += cost
+            tot_sale[offer_id] += sale
         for offer_id in tot_sale:
             if tot_sale[offer_id] == 0:
                 _logger.debug("Sale price for product ID %d is 0, cannot compute margin rate...", offer_id)

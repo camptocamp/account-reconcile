@@ -9,6 +9,9 @@
                 <field name="description" position="after">
                     <field name="qoqa_link" widget="url" />
                 </field>
+                <field name="tax_id" position="attributes">
+                  <attribute name="domain">[('qoqa_id', '!=', False)]</attribute>
+                </field>
             </field>
         </record>
     </data>

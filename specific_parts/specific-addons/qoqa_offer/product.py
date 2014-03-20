@@ -19,7 +19,11 @@
 #
 ##############################################################################
 
+from datetime import datetime, timedelta
+
 from openerp.osv import orm, fields
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+                           DEFAULT_SERVER_DATETIME_FORMAT)
 
 
 class product_template(orm.Model):
@@ -29,3 +33,18 @@ class product_template(orm.Model):
         # used in custom attributes
         'brand': fields.char('Brand', translate=True),
     }
+
+    def _read_flat(self, cr, uid, ids, fields,
+                   context=None, load='_classic_read'):
+        if context is None:
+            context = {}
+        if (context.get('date_begin') is not None and
+                context.get('time_begin') is not None):
+            context = context.copy()
+            date_fmt = DEFAULT_SERVER_DATE_FORMAT
+            datetime_fmt = DEFAULT_SERVER_DATETIME_FORMAT
+            begin = datetime.strptime(context.pop('date_begin'), date_fmt)
+            begin += timedelta(hours=context.pop('time_begin'))
+            context['to_date'] = begin.strftime(datetime_fmt)
+        return super(product_template, self)._read_flat(
+            cr, uid, ids, fields, context=context, load=load)

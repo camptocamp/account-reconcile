@@ -263,7 +263,9 @@
                                 <group>
                                     <field name="stock_bias"/>
                                     <newline/>
-                                    <field name="position_ids" nolabel="1" colspan="4">
+                                    <field name="position_ids" nolabel="1"
+                                      context="{'date_begin': date_begin, 'time_begin': time_begin}"
+                                      colspan="4">
                                         <tree string="Positions">
                                             <field name="sequence" widget="handle"/>
                                             <field name="product_tmpl_id"/>
@@ -281,7 +283,7 @@
                                             </div>
                                             <h1>
                                                 <field name="product_tmpl_id"
-                                                    on_change="onchange_product_tmpl_id(product_tmpl_id, lot_size)"/>
+                                                    on_change="onchange_product_tmpl_id(product_tmpl_id, lot_size, parent.date_begin, parent.time_begin)"/>
                                             </h1>
                                             <notebook>
                                                 <page string="Options">

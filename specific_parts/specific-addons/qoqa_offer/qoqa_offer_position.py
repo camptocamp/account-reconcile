@@ -21,7 +21,11 @@
 
 from __future__ import division
 
+from datetime import datetime, timedelta
+
 from openerp.osv import orm, fields
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+                           DEFAULT_SERVER_DATETIME_FORMAT)
 import openerp.addons.decimal_precision as dp
 from .qoqa_offer import qoqa_offer
 
@@ -277,10 +281,10 @@ class qoqa_offer_position(orm.Model):
             readonly=True),
         'current_unit_price': fields.related(
             'product_tmpl_id', 'list_price',
-            string="Current Product's price",
+            string="Product Price at Date",
             type='float',
-            help="The current price of the product. "
-                 "It will be modified directly on the product.",
+            help="The price of the product at the beginning date of the "
+                 "offer. It will be modified directly on the product.",
             digits_compute=dp.get_precision('Product Price')),
         'unit_price': fields.float(
             string='Unit Price',
@@ -357,6 +361,13 @@ class qoqa_offer_position(orm.Model):
          'Lot price must be a value greater or equal to 0.'),
     ]
 
+    @staticmethod
+    def _history_price_date(offer):
+        date_fmt = DEFAULT_SERVER_DATE_FORMAT
+        datetime_fmt = DEFAULT_SERVER_DATETIME_FORMAT
+        begin = datetime.strptime(offer.date_begin, date_fmt)
+        begin += timedelta(hours=offer.time_begin)
+        return begin.strftime(datetime_fmt)
 
     def create(self, cr, uid, vals, context=None):
         price = vals.get('current_unit_price') or 0
@@ -366,6 +377,12 @@ class qoqa_offer_position(orm.Model):
             'unit_price': price,
             'lot_price': price * lot_size,
         })
+        if vals.get('offer_id'):
+            offer_obj = self.pool['qoqa.offer']
+            offer = offer_obj.browse(cr, uid, vals['offer_id'],
+                                     context=context)
+            context = context.copy()
+            context['to_date'] = self._history_price_date(offer)
         res = super(qoqa_offer_position, self).\
             create(cr, uid, vals, context=context)
 
@@ -383,8 +400,19 @@ class qoqa_offer_position(orm.Model):
     def write(self, cr, uid, ids, vals, context=None):
         if isinstance(ids, (int, long)):
             ids = [ids]
+
         if 'current_unit_price' in vals or 'lot_size' in vals:
             for position in self.browse(cr, uid, ids, context=context):
+                offer_obj = self.pool['qoqa.offer']
+                if vals.get('offer_id'):
+                    offer = offer_obj.browse(cr, uid, vals['offer_id'],
+                                             context=context)
+                else:
+                    offer = position.offer_id
+
+                ctx = context.copy()
+                ctx['to_date'] = self._history_price_date(offer)
+
                 if 'current_unit_price' in vals:
                     price = vals['current_unit_price']
                 else:
@@ -399,14 +427,15 @@ class qoqa_offer_position(orm.Model):
                     'lot_price': price * lot_size
                 })
                 super(qoqa_offer_position, self).\
-                    write(cr, uid, [position.id], local_vals, context=context)
+                    write(cr, uid, [position.id], local_vals, context=ctx)
             return True
         else:
             return super(qoqa_offer_position, self).\
                 write(cr, uid, ids, vals, context=context)
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
-                                 lot_size, context=None):
+                                 lot_size, date_begin, time_begin,
+                                 context=None):
         """ Automatically adds all the variants of the template and
         set sensible default values for some fields.
 
@@ -417,6 +446,8 @@ class qoqa_offer_position(orm.Model):
         on the template, but leaves the field empty if the product has several
         taxes (as of today, only 1 tax is supported on the QoQa backend).
         """
+        if context is None:
+            context = {}
         res = {'value': {}}
         if not product_tmpl_id:
             return res
@@ -427,6 +458,11 @@ class qoqa_offer_position(orm.Model):
         else:
             position = None
 
+        context = context.copy()
+        context.update({
+            'date_begin': date_begin,
+            'time_begin': time_begin,
+        })
         template = template_obj.browse(cr, uid, product_tmpl_id,
                                        context=context)
         values = {

@@ -21,6 +21,7 @@
 
 from openerp.osv import orm
 from openerp.tools.translate import _
+from openerp.tools.float_utils import float_round
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
@@ -63,9 +64,11 @@ class RefundExporter(ExportSynchronizer):
                 qsale.name)
         adapter = self.get_connector_unit_for_model(BackendAdapter,
                                                     'qoqa.sale.order')
+        # qoqa uses 2 digits, expressed in integers
+        amount = float_round(refund.amount_total * 100, precision_digits=0)
         payment_id = adapter.refund(qsale.qoqa_id,
                                     origin_payment_id,
-                                    int(refund.amount_total * 100))
+                                    int(amount))
         self.session.write(self.model._name, refund_id,
                            {'transaction_id': payment_id})
         return _('Refund created with payment id: %s' % payment_id)

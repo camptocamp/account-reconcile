@@ -25,7 +25,10 @@ import requests
 from requests_oauthlib import OAuth1
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import NetworkRetryableError
-from ..exception import QoQaResponseNotParsable, QoQaAPISecurityError
+from ..exception import (QoQaResponseNotParsable,
+                         QoQaAPISecurityError,
+                         QoQaResponseError,
+                         )
 
 _logger = logging.getLogger(__name__)
 
@@ -152,6 +155,11 @@ class QoQaAdapter(CRUDAdapter):
             )
             msg = "%s\n\n%s" % (err, req)
             raise QoQaResponseNotParsable(msg)
+        if parsed.get('errors'):
+            raise QoQaResponseError(
+                [(err['type'], err['code'], err['message'])
+                 for err in parsed['errors']]
+            )
         return parsed
 
     def create(self, vals):

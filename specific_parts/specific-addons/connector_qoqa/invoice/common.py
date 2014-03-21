@@ -36,7 +36,10 @@ from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.exception import NetworkRetryableError
 from .exporter import create_refund
-from ..exception import QoQaResponseNotParsable, QoQaAPISecurityError
+from ..exception import (QoQaResponseNotParsable,
+                         QoQaAPISecurityError,
+                         QoQaResponseError,
+                         )
 
 
 class account_invoice(orm.Model):
@@ -101,6 +104,10 @@ class account_invoice(orm.Model):
                 raise orm.except_orm(
                     _('Authentication Error'),
                     _('Impossible to refund on the backend.\n\n%s') % err)
+            except QoQaResponseError as err:
+                raise orm.except_orm(
+                    _('Error(s) on the QoQa Backend'),
+                    unicode(err))
             except QoQaResponseNotParsable as err:
                 # The response from the backend cannot be parsed, not a
                 # JSON.  So we don't know what the error is.

@@ -31,13 +31,33 @@ class QoQaAPIError(QoQaError):
     """ Error with the QoQa API. """
 
 
-class QoQaAPISecurityError(QoQaError):
+class QoQaAPISecurityError(QoQaAPIError):
     """ Security error with the QoQa API. """
 
 
 class QoQaResponseNotParsable(QoQaAPIError):
     """ Happens when a response from the QoQa API is not parsable. """
 
+
+class QoQaResponseError(QoQaAPIError):
+    """ The API responded but gave details about errors """
+
+    def __init__(self, errors):
+        """
+
+        :param errors: errors of the API, list of tuples
+                       (type, code, message)
+        """
+        self.errors = errors
+
+    def __str__(self):
+        if not self.errors:
+            return 'Unknow error'
+        else:
+            return ','.join([
+                "[{0} {1}]: {2}".format(errtype, code, msg)
+                for errtype, code, msg in self.errors
+            ])
 
 class OrderImportRuleRetry(RetryableJobError):
     """ The sale order import will be retried later. """

@@ -22,6 +22,7 @@
 from __future__ import division
 import math
 from datetime import datetime, timedelta
+import pytz
 from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            DEFAULT_SERVER_DATETIME_FORMAT)
 from openerp.tools.translate import _
@@ -81,6 +82,13 @@ class qoqa_offer(orm.Model):
             end = datetime.strptime(offer.date_end, date_fmt)
             end += timedelta(hours=offer.time_end)
 
+            # For filters we need a utc time
+            local = pytz.timezone('Europe/Zurich')
+            begin_local = local.localize(begin, is_dst=None)
+            begin_utc = begin_local.astimezone(pytz.utc)
+            end_local = local.localize(end, is_dst=None)
+            end_utc = end_local.astimezone(pytz.utc)
+
             # Avoid to display an offer on number of calendar days + 1
             # when the last day is at midnight. Example:
             # Begin: 2013-12-04 00:00 End: 2013-12-05 00:00
@@ -93,8 +101,8 @@ class qoqa_offer(orm.Model):
             res[offer.id] = {
                 'datetime_begin': begin.strftime(fmt),
                 'datetime_end': end.strftime(fmt),
-                'datetime_begin_filter': begin.strftime(datetime_fmt),
-                'datetime_end_filter': end.strftime(datetime_fmt),
+                'datetime_begin_filter': begin_utc.strftime(datetime_fmt),
+                'datetime_end_filter': end_utc.strftime(datetime_fmt),
                 'date_begin_calendar': offer.date_begin,
                 'date_end_calendar': calendar_end.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
             }

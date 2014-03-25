@@ -113,6 +113,10 @@ class picking_dispatch_group(orm.TransientModel):
 
     def _filter_packs(self, cr, uid, wizard, packs, context=None):
         """ Filter the packs. Their content should equal to the filter """
+        # exclude packs that are in canceled or done pickings
+        packs = (pack for pack in packs if
+                 not any(move.picking_id.state in ('cancel', 'done')
+                         for move in pack.move_ids))
         # exclude packs without moves
         packs = (pack for pack in packs if pack.move_ids)
         # exclude packs when an least one move is already in a dispatch

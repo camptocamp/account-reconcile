@@ -61,6 +61,8 @@ class stock_picking(orm.Model):
         move_obj = self.pool.get('stock.move')
 
         for pick in self.browse(cr, uid, ids, context=context):
+            if pick.state in ('cancel', 'done'):
+                continue
 
             # We register moves to find which move has been added
             known_move_ids = [m.id for m in pick.move_lines]
@@ -117,3 +119,4 @@ class stock_picking(orm.Model):
                         # the move was simply given a new tracking_id.
                         # We add it to check it again.
                         moves_to_split.append(move)
+        return True

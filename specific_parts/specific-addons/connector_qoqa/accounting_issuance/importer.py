@@ -236,6 +236,14 @@ class BaseIssuanceMapper(ImportMapper):
         if currency_id != company.currency_id.id:
             return currency_id
 
+    def _analytic_account_id(self, map_record):
+        binder = self.get_binder_for_model('qoqa.shop')
+        shop_id = binder.to_openerp(map_record.source['shop_id'],
+                                    unwrap=True)
+        assert shop_id, "Unknow shop_id, refresh the Backend's metadata"
+        shop = self.session.browse('sale.shop', shop_id)
+        return shop.project_id.id
+
     def _line_options(self, map_record, values):
         options = self.options.copy()
         company_id = self._company_id(map_record)
@@ -245,6 +253,7 @@ class BaseIssuanceMapper(ImportMapper):
             'partner_id': self._partner_id(map_record),
             'company_id': company_id,
             'date': values['date'],
+            'analytic_account_id': self._analytic_account_id(map_record),
         })
         currency_id = self._currency_id(map_record, company_id)
         if currency_id:
@@ -403,6 +412,10 @@ class BaseLineMapper(ImportMapper):
     @mapping
     def journal(self, record):
         return {'journal_id': self.options.journal.id}
+
+    @mapping
+    def analytic_account(self, record):
+        return {'analytic_account_id': self.options.analytic_account_id}
 
     @mapping
     def currency(self, record):

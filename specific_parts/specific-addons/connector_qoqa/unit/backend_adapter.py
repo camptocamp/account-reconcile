@@ -156,6 +156,13 @@ class QoQaAdapter(CRUDAdapter):
             msg = "%s\n\n%s" % (err, req)
             raise QoQaResponseNotParsable(msg)
         if parsed.get('errors'):
+            _logger.error("%s %s with content:\n%s\n\nReturned %s %s:\n%s",
+                          response.request.method,
+                          response.url,
+                          response.request.body,
+                          response.status_code,
+                          response.reason,
+                          response.content)
             raise QoQaResponseError(
                 [(err['type'], err['code'], err['message'])
                  for err in parsed['errors']]

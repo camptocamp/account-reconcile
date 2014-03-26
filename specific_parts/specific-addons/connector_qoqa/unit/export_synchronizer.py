@@ -265,6 +265,12 @@ class QoQaExporter(QoQaBaseExporter):
         if not self.qoqa_id:
             fields = None  # should be created with all the fields
 
+        s = self.session
+        if not s.pool[self.model._name].exists(s.cr, s.uid,
+                                               self.binding_id,
+                                               context=s.context):
+            return _('Record to export does no longer exist.')
+
         if self._has_to_skip():
             return
 

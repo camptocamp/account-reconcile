@@ -163,10 +163,13 @@ class QoQaAdapter(CRUDAdapter):
                           response.status_code,
                           response.reason,
                           response.content)
-            raise QoQaResponseError(
-                [(err['type'], err['code'], err['message'])
-                 for err in parsed['errors']]
-            )
+            errors = []
+            for err in parsed['errors']:
+                message = err['message']
+                if err.get('extras'):
+                    message += err['extras']
+                errors.append((err['type'], err['code'], message))
+            raise QoQaResponseError(errors)
         return parsed
 
     def create(self, vals):

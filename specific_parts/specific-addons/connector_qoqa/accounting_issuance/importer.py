@@ -414,10 +414,6 @@ class BaseLineMapper(ImportMapper):
         return {'journal_id': self.options.journal.id}
 
     @mapping
-    def analytic_account(self, record):
-        return {'analytic_account_id': self.options.analytic_account_id}
-
-    @mapping
     def currency(self, record):
         if self.options.currency_id:
             return {'currency_id': self.options.currency_id}
@@ -456,7 +452,11 @@ class PromoIssuanceLineMapper(BaseLineMapper):
                 raise MappingError('No Default Debit Account configured on '
                                    'journal [%s] %s' %
                                    (journal.code, journal.name))
-        return {'account_id': account.id}
+
+        vals = {'account_id': account.id}
+        if account.user_type.analytic_policy != 'never':
+            vals['analytic_account_id'] = self.options.analytic_account_id
+        return vals
 
     @mapping
     def taxes(self, record):

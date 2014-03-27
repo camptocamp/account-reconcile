@@ -79,7 +79,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         attributes = super(PostlogisticsWebServiceQoQa, self
                           )._prepare_attributes(picking)
 
-        if picking.claim_id:
+        if picking.claim_id and picking.type == 'in':
             attributes['FreeText'] = picking.claim_id.number
         return attributes
 

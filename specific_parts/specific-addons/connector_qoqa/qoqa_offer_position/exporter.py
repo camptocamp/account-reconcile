@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+from datetime import datetime
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper,
                                                   )
@@ -39,10 +40,13 @@ from ..unit.mapper import (m2o_to_backend,
 @on_record_create(model_names='qoqa.offer.position')
 @on_record_write(model_names='qoqa.offer.position')
 def delay_export(session, model_name, record_id, vals):
-    # High priority when we want, for instance, to update the
-    # bias in a short timeframe.  Priority still lower than
-    # offers though, so they have a change to be exported before
-    consumer.delay_export(session, model_name, record_id, vals, priority=5)
+    # High priority, update of offers should be done as soon as
+    # possible.  Priority still lower than offers though, so they have a
+    # change to be exported before. Also, set an ETA to now, so others
+    # jobs with an ETA won't be executed before (sorting of jobs is:
+    # eta, priority, create_date)
+    consumer.delay_export(session, model_name, record_id, vals, priority=5,
+                          eta=datetime.now())
 
 
 @qoqa

@@ -28,7 +28,7 @@ from openerp.addons.connector.event import (on_record_create,
                                             )
 from ..backend import qoqa
 from .. import consumer
-from ..unit.export_synchronizer import QoQaExporter, Translations
+from ..unit.export_synchronizer import QoQaExporter, Translations, export_record
 from ..unit.mapper import m2o_to_backend
 from ..connector import utc_datetime_to_iso8601
 from ..qoqa_offer_position.exporter import delay_export as position_delay_export
@@ -37,21 +37,23 @@ from ..qoqa_offer_position.exporter import delay_export as position_delay_export
 @on_record_create(model_names='qoqa.offer')
 @on_record_write(model_names='qoqa.offer')
 def delay_export(session, model_name, record_id, vals):
-    if 'stock_bias' in vals:
+    if 'stock_bias' in vals and not session.context.get('connector_no_export'):
         # particular case: stock_bias is stored in the positions on
         # the QoQa backend, delay export of all positions
         for position in session.browse(model_name, record_id).position_ids:
-            position_delay_export(session, 'qoqa.offer.position',
-                                  position.id,
-                                  {'stock_bias': vals['stock_bias']})
+            export_record.delay(session, 'qoqa.offer.position',
+                                position.id, ['stock_bias'], priority=1,
+                                eta=datetime.now())
         # just skip the export of the offer if only the bias has been
         # modified
         if vals.keys() == ['stock_bias']:
             return
     # High priority because we want the changes to be quick
-    # so they are displayed asap to the customer.
+    # so they are displayed asap to the customer. Also, set
+    # an ETA to now, so others jobs with an ETA won't be executed before
+    # (sorting of jobs is: eta, priority, create_date)
     consumer.delay_export(session, model_name, record_id,
-                          vals, priority=4)
+                          vals, priority=4, eta=datetime.now())
 
 
 @qoqa

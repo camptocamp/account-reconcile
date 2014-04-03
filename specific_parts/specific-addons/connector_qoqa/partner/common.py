@@ -36,6 +36,7 @@ class qoqa_res_partner(orm.Model):
         'openerp_id': fields.many2one('res.partner',
                                       string='Customer',
                                       required=True,
+                                      select=True,
                                       ondelete='restrict'),
         'qoqa_name': fields.char('QoQa Name'),
         'qoqa_active': fields.boolean('QoQa Active'),

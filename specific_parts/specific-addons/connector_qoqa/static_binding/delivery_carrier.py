@@ -64,6 +64,7 @@ class qoqa_shipper_rate(orm.Model):
         'openerp_id': fields.many2one('delivery.carrier',
                                       string='Delivery Method',
                                       required=True,
+                                      select=True,
                                       ondelete='restrict'),
     }
 
@@ -89,6 +90,7 @@ class qoqa_shipper_service(orm.Model):
         'openerp_id': fields.many2one('delivery.carrier',
                                       string='Delivery Method',
                                       required=True,
+                                      select=True,
                                       ondelete='restrict'),
     }
 

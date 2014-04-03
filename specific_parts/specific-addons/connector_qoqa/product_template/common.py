@@ -35,6 +35,7 @@ class qoqa_product_template(orm.Model):
         'openerp_id': fields.many2one('product.template',
                                       string='Template',
                                       required=True,
+                                      select=True,
                                       ondelete='restrict'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),

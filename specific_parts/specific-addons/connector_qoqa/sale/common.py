@@ -37,6 +37,7 @@ class qoqa_sale_order(orm.Model):
         'openerp_id': fields.many2one('sale.order',
                                       string='Sales Order',
                                       required=True,
+                                      select=True,
                                       ondelete='restrict'),
         'created_at': fields.datetime('Created At (on QoQa)'),
         'updated_at': fields.datetime('Updated At (on QoQa)'),

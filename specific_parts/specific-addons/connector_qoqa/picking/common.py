@@ -36,6 +36,7 @@ class qoqa_stock_picking(orm.Model):
         'openerp_id': fields.many2one('stock.picking.out',
                                       string='Delivery Order',
                                       required=True,
+                                      select=True,
                                       ondelete='restrict'),
         'qoqa_sale_binding_id': fields.many2one(
             'qoqa.sale.order',

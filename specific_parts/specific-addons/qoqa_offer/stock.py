@@ -50,6 +50,7 @@ class stock_picking_out(orm.Model):
         'offer_id': fields.many2one(
             'qoqa.offer',
             string='Offer',
+            select=True,
             readonly=True),
     }
 

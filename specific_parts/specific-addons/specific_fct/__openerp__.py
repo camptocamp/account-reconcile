@@ -49,6 +49,7 @@ set cost_method default to average
           'stock_view.xml',
           'product_view.xml',
           'purchase_view.xml',
+          'sale_view.xml',
           ],
  'installable': True,
  'application': True,

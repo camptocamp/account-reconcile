@@ -131,12 +131,14 @@ class qoqa_offer_position_variant(orm.Model):
             'qoqa.offer.position',
             string='Position',
             readonly=True,
+            select=True,
             required=True,
             ondelete='cascade'),
         'product_id': fields.many2one(
             'product.product',
             string='Product',
             required=True,
+            select=True,
             ondelete='restrict'),
         'quantity': fields.integer('Quantity', required=True),
         'stock_sold': fields.function(
@@ -231,6 +233,7 @@ class qoqa_offer_position(orm.Model):
             'qoqa.offer',
             string='Offer',
             readonly=True,
+            select=True,
             required=True),
         'variant_ids': fields.one2many(
             'qoqa.offer.position.variant',

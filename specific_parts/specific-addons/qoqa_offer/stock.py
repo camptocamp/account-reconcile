@@ -30,6 +30,7 @@ class stock_picking(orm.Model):
             'qoqa.offer',
             string='Offer',
             readonly=True,
+            select=True,
             ondelete='restrict'),
     }
 
@@ -63,5 +64,6 @@ class stock_move(orm.Model):
             relation='qoqa.offer',
             readonly=True,
             store=True,
+            select=True,
             string='Offer'),
     }

@@ -40,6 +40,7 @@ class sale_order(orm.Model):
             'qoqa.offer',
             string='Offer',
             readonly=True,
+            select=True,
             ondelete='restrict')
     }
 
@@ -70,5 +71,6 @@ class sale_order_line(orm.Model):
             'qoqa.offer.position',
             string='Offer Position',
             readonly=True,
+            select=True,
             ondelete='restrict'),
     }

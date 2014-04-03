@@ -30,6 +30,7 @@ class account_invoice(orm.Model):
             'qoqa.offer',
             string='Offer',
             readonly=True,
+            select=True,
             ondelete='restrict'),
     }
 

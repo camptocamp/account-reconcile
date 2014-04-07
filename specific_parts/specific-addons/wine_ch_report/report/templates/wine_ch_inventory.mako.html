@@ -140,6 +140,7 @@ ${css}
                     <%
                       class_total_volume = 0.0
                       wine_ids = get_wine_ids(wine_class.id, color.name)
+                      wine_ids = [w for w in wine_ids if w in wine_lines]
                     %>
                     %if wine_ids:
                         <div class="act_as_row">
@@ -152,24 +153,22 @@ ${css}
                           <div class="act_as_cell" style="width: 70px;"></div>
                         </div>
                         %for p_id in wine_ids:
-                            %if p_id in wine_lines:
-                                <div class="act_as_row">
-                                  <% p_name, stock, sum = wine_lines.get(p_id) %>
-                                  <div class="act_as_cell"></div>
-                                  <div class="act_as_cell title3" style="width: 70px;">${p_name}</div>
-                                  %for b in wine_bottles:
-                                      <div class="act_as_cell amount" style="width: 70px;">${stock.get(b, '')}</div>
-                                  %endfor
-                                  <% is_subtotal = p_id == wine_ids[-1] and len([w for w in wine_ids if w in wine_lines]) > 1 %>
-                                  <div class="act_as_cell amount sub_total_col ${is_subtotal and 'sub_total_cell'}" style="width: 70px;">${sum}</div>
-                                  <% class_total_volume += sum %>
-                                  <div class="act_as_cell amount" style="width: 70px;">
-                                  %if p_id == wine_ids[-1]:
-                                      ${class_total_volume}
-                                  %endif
-                                  </div>
-                                </div>
-                            %endif
+                            <div class="act_as_row">
+                              <% p_name, stock, sum = wine_lines.get(p_id) %>
+                              <div class="act_as_cell"></div>
+                              <div class="act_as_cell title3" style="width: 70px;">${p_name}</div>
+                              %for b in wine_bottles:
+                                  <div class="act_as_cell amount" style="width: 70px;">${stock.get(b, '')}</div>
+                              %endfor
+                              <% is_subtotal = p_id == wine_ids[-1] and len([w for w in wine_ids if w in wine_lines]) > 1 %>
+                              <div class="act_as_cell amount sub_total_col ${is_subtotal and 'sub_total_cell'}" style="width: 70px;">${sum}</div>
+                              <% class_total_volume += sum %>
+                              <div class="act_as_cell amount" style="width: 70px;">
+                              %if p_id == wine_ids[-1]:
+                                  ${class_total_volume}
+                              %endif
+                              </div>
+                            </div>
                         %endfor
                         <% total_volume += class_total_volume %>
                     %endif

@@ -43,7 +43,9 @@ class qoqa_product_template(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A product with the same ID on QoQa already exists")
+         "A product template with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A product template can be exported only once on the same backend"),
     ]
 
 

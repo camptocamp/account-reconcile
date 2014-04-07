@@ -43,7 +43,7 @@ class qoqa_address(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "An address with the same ID on QoQa already exists")
+         "An address with the same ID on QoQa already exists"),
     ]
 
 

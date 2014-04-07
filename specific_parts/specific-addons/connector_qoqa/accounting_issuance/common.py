@@ -76,7 +76,9 @@ class qoqa_accounting_issuance(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A promo issuance with the same ID on QoQa already exists")
+         "A promo issuance with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A promo issuance can be exported only once on the same backend"),
     ]
 
 
@@ -104,7 +106,10 @@ class qoqa_promo_issuance_line(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A promo issuance line with the same ID on QoQa already exists")
+         "A promo issuance line with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A promo issuance line can be exported only once on "
+         "the same backend"),
     ]
 
     def create(self, cr, uid, vals, context=None):
@@ -144,7 +149,10 @@ class qoqa_voucher_issuance_line(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A voucher issuance line with the same ID on QoQa already exists")
+         "A voucher issuance line with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A voucher issuance line can be exported only once "
+         "on the same backend"),
     ]
 
     def create(self, cr, uid, vals, context=None):

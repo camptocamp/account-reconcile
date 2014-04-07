@@ -20,13 +20,16 @@
 ##############################################################################
 
 import logging
+from contextlib import contextmanager
 from datetime import datetime
+import psycopg2
 from openerp import SUPERUSER_ID
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
+from openerp.addons.connector.exception import RetryableJobError
 from .import_synchronizer import import_record
 from ..connector import get_environment
 from ..backend import qoqa
@@ -133,6 +136,34 @@ class QoQaExporter(QoQaBaseExporter):
         """ Return True if the export can be skipped """
         return False
 
+    @contextmanager
+    def _retry_unique_violation(self):
+        """ Context manager: catch Unique constraint error and retry the
+        job later.
+
+        When we execute several jobs workers concurrently, it happens
+        that 2 jobs are creating the same record at the same time (binding
+        record created by :meth:`_export_dependency`), resulting in:
+
+            IntegrityError: duplicate key value violates unique
+            constraint "qoqa_product_template_openerp_uniq"
+            DETAIL:  Key (backend_id, openerp_id)=(1, 4851) already exists.
+
+        In that case, we'll retry the import just later.
+
+        """
+        try:
+            yield
+        except psycopg2.IntegrityError as err:
+            if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
+                raise RetryableJobError(
+                    'A database error caused the failure of the job:\n'
+                    '%s\n\n'
+                    'Likely due to 2 concurrent jobs wanting to create '
+                    'the same record. The job will be retried later.' % err)
+            else:
+                raise
+
     def _export_dependency(self, relation, binding_model,
                            exporter_class=None):
         """
@@ -187,8 +218,15 @@ class QoQaExporter(QoQaBaseExporter):
                     with self.session.change_user(SUPERUSER_ID):
                         bind_values = {'backend_id': self.backend_record.id,
                                        'openerp_id': relation.id}
-                        binding_id = self.session.create(binding_model,
-                                                         bind_values)
+                        # If 2 jobs create it at the same time, retry
+                        # one later. A unique constraint (backend_id,
+                        # openerp_id) should exist on the binding model
+                        with self._retry_unique_violation():
+                            binding_id = self.session.create(binding_model,
+                                                             bind_values)
+                            # Eager commit to avoid having 2 jobs
+                            # exporting at the same time.
+                            self.session.commit()
         else:
             # If qoqa_bind_ids does not exist we are typically in a
             # "direct" binding (the binding record is the same record).
@@ -252,6 +290,36 @@ class QoQaExporter(QoQaBaseExporter):
         self._validate_data(data)
         self.backend_adapter.write(self.qoqa_id, data)
 
+    def _lock(self):
+        """ Lock the binding record.
+
+        Lock the binding record so we are sure that only one export
+        job is running for this record if concurrent jobs have to export the
+        same record.
+
+        When concurrent jobs try to export the same record, the first one
+        will lock and proceed, the others will fail to lock and will be
+        retried later.
+
+        This behavior works also when the export becomes multilevel
+        with :meth:`_export_dependencies`. Each level will set its own lock
+        on the binding record it has to export.
+
+        """
+        sql = ("SELECT id FROM %s WHERE ID = %%s FOR UPDATE NOWAIT" %
+               self.model._table)
+        try:
+            self.session.cr.execute(sql, (self.binding_id,),
+                                    log_exceptions=False)
+        except psycopg2.OperationalError:
+            _logger.info('A concurrent job is already exporting the same '
+                         'record (%s with id %s). Job delayed later.',
+                         self.model._name, self.binding_id)
+            raise RetryableJobError(
+                'A concurrent job is already exporting the same record '
+                '(%s with id %s). The job will be retried later.' %
+                (self.model._name, self.binding_id))
+
     def _run(self, fields=None):
         """ Flow of the synchronization, implemented in inherited classes.
 
@@ -276,6 +344,10 @@ class QoQaExporter(QoQaBaseExporter):
 
         # export the missing linked resources
         self._export_dependencies()
+
+        # prevent other jobs to export the same record
+        # will be released on commit (or rollback)
+        self._lock()
 
         map_record = self._map_data(fields=fields)
 

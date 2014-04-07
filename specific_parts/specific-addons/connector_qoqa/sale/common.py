@@ -62,7 +62,10 @@ class qoqa_sale_order(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A sales order with the same ID on QoQa already exists")
+         "A sales order with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A sales order can be exported only once on the same backend"),
+
     ]
 
 

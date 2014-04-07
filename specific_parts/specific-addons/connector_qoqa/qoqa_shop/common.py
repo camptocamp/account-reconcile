@@ -47,6 +47,13 @@ class qoqa_shop(orm.Model):
                  "Note that a similar configuration exists for each shop."),
     }
 
+    _sql_constraints = [
+        ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
+         "A shop with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A shop can be exported only once on the same backend"),
+    ]
+
 
 class sale_shop(orm.Model):
     _inherit = 'sale.shop'

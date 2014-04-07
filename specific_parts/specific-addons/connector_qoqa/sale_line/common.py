@@ -47,7 +47,10 @@ class qoqa_sale_order_line(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A sales order line with the same ID on QoQa already exists")
+         "A sales order line with the same ID on QoQa already exists"),
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A sales order line can be exported only once on the same backend"),
+
     ]
 
     def create(self, cr, uid, vals, context=None):

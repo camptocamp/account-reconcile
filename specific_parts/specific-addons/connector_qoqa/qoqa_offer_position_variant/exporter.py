@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.unit.mapper import ExportMapper
+from openerp.addons.connector.unit.mapper import ExportMapper, mapping
 from ..backend import qoqa
 from ..unit.mapper import m2o_to_backend
 
@@ -33,3 +33,15 @@ class OfferPositionVariantExportMapper(ExportMapper):
                'variation_id'),
               ('quantity', 'quantity'),
               ]
+
+    def finalize(self, map_record, values):
+        values = super(OfferPositionVariantExportMapper, self).finalize(
+            map_record, values)
+        # We can't use the sequence directly because it does not always
+        # reflect the correct order (example: all lines have the same
+        # sequence or have no sequence defined)
+        variants = map_record.parent.source.variant_ids
+        variant_sort = [variant.id for variant in variants]
+        index = variant_sort.index(map_record.source.id) + 1
+        values['sorting_weight'] = index
+        return values

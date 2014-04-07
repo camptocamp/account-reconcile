@@ -33,6 +33,7 @@ from .qoqa_offer import qoqa_offer
 class qoqa_offer_position_variant(orm.Model):
     _name = 'qoqa.offer.position.variant'
     _description = 'QoQa Offer Position Variant'
+    _order = 'sequence asc'
 
     def _get_stock(self, cr, uid, ids, fields, args, context=None):
         """Get number of products sold, remaining and the progress.
@@ -127,6 +128,7 @@ class qoqa_offer_position_variant(orm.Model):
     }
 
     _columns = {
+        'sequence': fields.integer('Sequence'),
         'position_id': fields.many2one(
             'qoqa.offer.position',
             string='Position',

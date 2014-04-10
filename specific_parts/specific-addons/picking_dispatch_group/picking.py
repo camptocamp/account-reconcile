@@ -68,12 +68,12 @@ class stock_picking_out(orm.Model):
     _inherit = 'stock.picking.out'
 
     def _get_all_in_dispatch(self, cr, uid, ids, name, args, context=None):
-        return super(stock_picking_out, self).\
-            _get_all_in_dispatch(cr, uid, ids, name, args, context=context)
+        return self.pool['stock.picking']._get_all_in_dispatch(
+            cr, uid, ids, name, args, context=context)
 
     def _search_all_in_dispatch(self, cr, uid, obj, name, args, context):
-        return super(stock_picking_out, self).\
-            _search_all_in_dispatch(cr, uid, obj, name, args, context=context)
+        return self.pool['stock.picking']._search_all_in_dispatch(
+            cr, uid, obj, name, args, context=context)
 
     _columns = {
         'all_in_dispatch': fields.function(

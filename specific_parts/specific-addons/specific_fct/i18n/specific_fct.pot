@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-03 12:57+0000\n"
-"PO-Revision-Date: 2014-04-03 12:57+0000\n"
+"POT-Creation-Date: 2014-04-10 09:04+0000\n"
+"PO-Revision-Date: 2014-04-10 09:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -90,6 +90,12 @@ msgstr ""
 #: model:ir.model,name:specific_fct.model_sale_order_line
 #, python-format
 msgid "Sales Order Line"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
+#: field:product.template,variant_codes:0
+msgid "Variants References"
 msgstr ""
 
 #. module: specific_fct

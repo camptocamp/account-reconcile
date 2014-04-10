@@ -28,6 +28,7 @@
              'purchase',
              'crm_claim_rma',
              'delivery_carrier_label_postlogistics_shop_logo',
+             'product_variant_simple',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

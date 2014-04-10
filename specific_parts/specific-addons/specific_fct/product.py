@@ -50,7 +50,7 @@ class product_template(orm.Model):
             type='char',
             select=True,
             store={
-                _inherit: (lambda c, u, ids, ctx: ids, ['variant_ids'], 20),
+                _inherit: (lambda s, c, u, ids, ctx: ids, ['variant_ids'], 20),
                 'product.product': (_template_from_variant_ids,
                                     ['default_code', 'product_tmpl_id'], 20)
             }),

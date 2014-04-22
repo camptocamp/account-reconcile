@@ -19,6 +19,7 @@
       <field name="arch" type="xml">
         <field name="name" position="before">
           <field name="variant_codes"/>
+          <field name="brand"/>
         </field>
       </field>
     </record>
@@ -30,6 +31,7 @@
       <field name="arch" type="xml">
         <field name="name" position="after">
           <field name="variant_codes"/>
+          <field name="brand"/>
         </field>
       </field>
     </record>

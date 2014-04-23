@@ -67,4 +67,13 @@ object.write({'stage_id': stage_id})
       <field name="server_action_ids" eval="[(4, ref('crm_claim_mail.send_claim_mail')), (4, ref('crm_claim_mail.open_claim'))]"/>
     </record>
   </data>
+
+  <data>
+    <record id="crm_claim.stage_claim1" model="crm.claim.stage">
+    <!-- hides the state when not used so users cannot select it, we
+         must avoid claims to go back to the draft state or an email
+         will be sent again -->
+      <field name="fold" eval="True"/>
+    </record>
+  </data>
 </openerp>

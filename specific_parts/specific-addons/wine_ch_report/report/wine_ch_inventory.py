@@ -55,7 +55,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
              }
         """
         cr = self.cursor
-        cr.execute("SELECT p.id, COALESCE(t.x_wine_short_name, t.name), wmk.name, b.volume,"
+        cr.execute("SELECT p.id, t.name, wmk.name, b.volume,"
                    "       CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END AS qty,"
                    "       (CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END) * b.volume AS sum"
                    "  FROM product_product p "

@@ -57,6 +57,7 @@ object.write({'stage_id': stage_id})
       <field name="name">New claims</field>
       <field name="model_id">crm.claim</field>
       <field name="domain">[('state', '=', 'draft')]</field>
+      <field name="user_id" eval="False"/>
     </record>
 
     <record id="action_rule_send_mail_and_open_claim" model="base.action.rule">

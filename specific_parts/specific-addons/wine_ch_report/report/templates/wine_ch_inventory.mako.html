@@ -154,9 +154,12 @@ ${css}
                         </div>
                         %for p_id in wine_ids:
                             <div class="act_as_row">
-                              <% p_name, stock, sum = wine_lines.get(p_id) %>
+                              <% p_name, winemaker, stock, sum = wine_lines.get(p_id) %>
                               <div class="act_as_cell"></div>
-                              <div class="act_as_cell title3" style="width: 70px;">${p_name}</div>
+                              <div class="act_as_cell title3" style="width: 70px;">
+                                  <div>${p_name}</div>
+                                  <i>${winemaker}</i>
+                              </div>
                               %for b in wine_bottles:
                                   <div class="act_as_cell amount" style="width: 70px;">${stock.get(b, '')}</div>
                               %endfor

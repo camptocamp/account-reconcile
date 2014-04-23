@@ -55,12 +55,13 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
              }
         """
         cr = self.cursor
-        cr.execute("SELECT p.id, COALESCE(t.x_wine_short_name, t.name), b.volume,"
+        cr.execute("SELECT p.id, COALESCE(t.x_wine_short_name, t.name), wmk.name, b.volume,"
                    "       CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END AS qty,"
                    "       (CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END) * b.volume AS sum"
                    "  FROM product_product p "
                    "  INNER JOIN product_template t ON (p.product_tmpl_id=t.id) "
                    "  INNER JOIN wine_bottle b ON (b.id=t.wine_bottle_id) "
+                   "  INNER JOIN res_partner wmk ON (wmk.id=t.x_winemaker) "
                    "  LEFT OUTER JOIN "
                    "    (SELECT p.id, sum(m.product_qty) AS qty_in"
                    "      FROM stock_move m "
@@ -95,10 +96,10 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                     set_id,
                     ))
         rows = cr.fetchall()
-        volumes = set(vol for pid, pname, vol, qty, sum_vol in rows if qty > 0)
+        volumes = set(vol for pid, pname, winemaker, vol, qty, sum_vol in rows if qty > 0)
         volumes = [v for v in sorted(list(volumes), reverse=True)]
-        wine_lines = dict((pid, (pname, {vol: '%i' % qty}, sum_vol))
-                          for pid, pname, vol, qty, sum_vol in rows if qty > 0)
+        wine_lines = dict((pid, (pname, winemaker, {vol: '%i' % qty}, sum_vol))
+                          for pid, pname, winemaker, vol, qty, sum_vol in rows if qty > 0)
         return volumes, wine_lines
 
     def _get_wine_ids(self, class_id, color):

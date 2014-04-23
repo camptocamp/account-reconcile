@@ -33,7 +33,7 @@ CRM Claim Mail
 
 Customizations for QoQa on CRM and e-mails.
 This is specific because it makes assumptions about how the setup is done.
-Exemple: the number of the claims should be RMA-\d+
+Exemple: the number of the claims should be RMA-\\d+
 
 Features:
 

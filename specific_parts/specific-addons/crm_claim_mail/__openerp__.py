@@ -43,7 +43,8 @@ Features:
 
  """,
  'website': 'http://www.camptocamp.com',
- 'data': ['mail_data.xml',
+ 'data': ['send_mail_on_new_claim.xml',
+          'reopen_claim_on_mail.xml',
           ],
  'installable': True,
  'auto_install': False,

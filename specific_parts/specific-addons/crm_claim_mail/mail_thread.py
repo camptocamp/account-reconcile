@@ -47,8 +47,9 @@ def message_route(self, cr, uid, message, model=None, thread_id=None,
             claim_ids = claim_obj.search(cr, uid,
                                          [('number', '=', claim_number)],
                                          context=ctx)
-            return [('crm.claim', claim_id, custom_values, uid)
-                    for claim_id in claim_ids]
+            if claim_ids:
+                return [('crm.claim', claim_id, custom_values, uid)
+                        for claim_id in claim_ids]
         raise
 
 mail_thread.message_route = types.MethodType(message_route, None, mail_thread)

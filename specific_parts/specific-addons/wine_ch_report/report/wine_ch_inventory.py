@@ -61,7 +61,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "  FROM product_product p "
                    "  INNER JOIN product_template t ON (p.product_tmpl_id=t.id) "
                    "  INNER JOIN wine_bottle b ON (b.id=t.wine_bottle_id) "
-                   "  INNER JOIN res_partner wmk ON (wmk.id=t.x_winemaker) "
+                   "  INNER JOIN attribute_option wmk ON (wmk.id=t.x_winemaker) "
                    "  LEFT OUTER JOIN "
                    "    (SELECT p.id, sum(m.product_qty) AS qty_in"
                    "      FROM stock_move m "

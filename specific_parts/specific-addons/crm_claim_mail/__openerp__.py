@@ -40,6 +40,10 @@ Features:
 * When an email cannot be linked with its originating claim with the
  'In-Reply-To' or 'References' header, it tries to match it with it
  number. The numbers of the claims must start with RMA-
+* When a new claim is created, an email is sent to the customer and the claim
+ is set to the stage 'In Progress'.
+* When an email is received on an existing claim, the claim is set back to a
+  new stage "Response Received"
 
  """,
  'website': 'http://www.camptocamp.com',

@@ -18,6 +18,7 @@ Feature: upgrade to 1.0.28
       | specific_fct                                           |
       | crm_claim_mail                                         |
       | web_confirm_window_close                               |
+      | web_send_message_popup                                 |
     Then my modules should have been installed and models reloaded
 
   Scenario: Set the Re-Open Claim server action on the mail incoming servers

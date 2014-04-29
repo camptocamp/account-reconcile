@@ -16,6 +16,7 @@ Feature: upgrade to 1.0.28
     Given I install the required modules with dependencies:
       | name                                                   |
       | specific_fct                                           |
+      | crm_claim_merge                                        |
       | crm_claim_mail                                         |
       | web_confirm_window_close                               |
       | web_send_message_popup                                 |

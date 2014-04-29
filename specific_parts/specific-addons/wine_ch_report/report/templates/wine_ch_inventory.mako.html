@@ -22,6 +22,7 @@ ${css}
 .act_as_cell {
   display: table-cell;
   border-left: 1px solid grey;
+  padding-bottom: 7px;
 }
 .list_table, .data_table {
   table-layout: fixed
@@ -35,16 +36,21 @@ ${css}
   font-size: 12px;
   font-weight: bold;
   text-align: left;
-  padding-left: 20px;
+  padding-left: 14px;
 }
 .title3 {
   text-align: left;
-  padding-left: 40px;
+  padding-left: 21px;
+}
+.winemaker {
+    text-align: left;
+    padding-left: 7px;
+    font-style: italic;
 }
 .amount {
   text-align: right;
   white-space: nowrap;
-  padding-right: 20px;
+  padding-right: 14px;
 }
 /***********/
 .labels {
@@ -92,6 +98,9 @@ ${css}
 .line_grp2 {
   background-color: white;
 }
+.nobreak {
+    page-break-inside: avoid;
+}
     </style>
   </head>
   <body>
@@ -128,10 +137,10 @@ ${css}
                   <div class="act_as_cell title">${wine_class.code}</div>
                   <div class="act_as_cell title">${wine_class.name}</div>
                   %for b in range(len(wine_bottles)):
-                      <div class="act_as_cell" style="width: 70px;"></div>
+                      <div class="act_as_cell" style="width: 80px;"></div>
                   %endfor
-                  <div class="act_as_cell sub_total_col " style="width: 70px;"></div>
-                  <div class="act_as_cell" style="width: 70px;"></div>
+                  <div class="act_as_cell sub_total_col " style="width: 80px;"></div>
+                  <div class="act_as_cell" style="width: 80px;"></div>
                 </div>
             %endif
             %if not wine_class.child_ids:
@@ -147,26 +156,28 @@ ${css}
                           <div class="act_as_cell"></div>
                           <div class="act_as_cell title2">${wine_class.name}: ${color.name}</div>
                           %for b in range(len(wine_bottles)):
-                              <div class="act_as_cell" style="width: 70px;"></div>
+                              <div class="act_as_cell" style="width: 80px;"></div>
                           %endfor
-                          <div class="act_as_cell sub_total_col " style="width: 70px;"></div>
-                          <div class="act_as_cell" style="width: 70px;"></div>
+                          <div class="act_as_cell sub_total_col " style="width: 80px;"></div>
+                          <div class="act_as_cell" style="width: 80px;"></div>
                         </div>
                         %for p_id in wine_ids:
                             <div class="act_as_row">
                               <% p_name, winemaker, stock, sum = wine_lines.get(p_id) %>
                               <div class="act_as_cell"></div>
-                              <div class="act_as_cell title3" style="width: 70px;">
-                                  <div>${p_name}</div>
-                                  <i>${winemaker}</i>
+                              <div class="act_as_cell title3" style="width: 80px;">
+                                  <div class="nobreak">
+                                      <div class="winemaker">${winemaker}</div>
+                                      <div>${p_name}</div>
+                                  </div>
                               </div>
                               %for b in wine_bottles:
-                                  <div class="act_as_cell amount" style="width: 70px;">${stock.get(b, '')}</div>
+                                  <div class="act_as_cell amount" style="width: 80px;">${stock.get(b, '')}</div>
                               %endfor
                               <% is_subtotal = p_id == wine_ids[-1] and len([w for w in wine_ids if w in wine_lines]) > 1 %>
-                              <div class="act_as_cell amount sub_total_col ${is_subtotal and 'sub_total_cell'}" style="width: 70px;">${sum}</div>
+                              <div class="act_as_cell amount sub_total_col ${is_subtotal and 'sub_total_cell'}" style="width: 80px;">${sum}</div>
                               <% class_total_volume += sum %>
-                              <div class="act_as_cell amount" style="width: 70px;">
+                              <div class="act_as_cell amount" style="width: 80px;">
                               %if p_id == wine_ids[-1]:
                                   ${class_total_volume}
                               %endif

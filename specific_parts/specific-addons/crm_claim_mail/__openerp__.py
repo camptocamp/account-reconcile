@@ -26,7 +26,9 @@
  'maintainer': 'Camptocamp',
  'license': 'AGPL-3',
  'category': 'Customer Relationship Management',
- 'depends': ['crm_claim_rma'],
+ 'depends': ['crm_claim_rma',  # in lp:openerp-rma
+             'crm_claim_merge',  # in lp:openerp-crm
+             ],
  'description': """
 CRM Claim Mail
 ==============

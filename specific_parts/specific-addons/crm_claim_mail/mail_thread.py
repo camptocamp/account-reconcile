@@ -47,6 +47,12 @@ def message_route(self, cr, uid, message, model=None, thread_id=None,
             claim_ids = claim_obj.search(cr, uid,
                                          [('number', '=', claim_number)],
                                          context=ctx)
+            if not claim_ids:
+                # search also in merged claims
+                pattern = '"%s"' % claim_number
+                cr.execute("SELECT id FROM crm_claim "
+                           "WHERE merged_numbers ~ %s", (pattern,))
+                claim_ids = [row[0] for row in cr.fetchall()]
             if claim_ids:
                 return [('crm.claim', claim_id, custom_values, uid)
                         for claim_id in claim_ids]

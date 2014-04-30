@@ -18,8 +18,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from itertools import chain
+from datetime import datetime
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+                           DEFAULT_SERVER_TIME_FORMAT,
+                           DEFAULT_SERVER_DATETIME_FORMAT,
+                           )
+from openerp.addons.email_template import html2text
 
 
 class crm_claim(orm.Model):
@@ -56,3 +62,61 @@ class crm_claim(orm.Model):
         if 'merged_numbers' in merge_fields:
             merge_fields.remove('merged_numbers')
         return merge_fields
+
+    def message_quote(self, cr, uid, id, context=None):
+        """ For a claim, generate a thread with quotations.
+
+        It converts HTML to text (markdown style) and prepend
+        the messages with '>' characters.
+
+        Example with 2 emails::
+
+            On 2014-04-30 15:12:05, Deep Thought wrote:
+            > Six by nine. Forty two.
+            > On 2014-04-30 15:10:00, Arthur Dent wrote:
+            >> What do you get if you multiply six by nine?
+
+        """
+        if isinstance(id, (tuple, list)):
+            assert len(id) == 1, "1 ID expected, got: %s" % id
+            id = id[0]
+        message_obj = self.pool['mail.message']
+        user_obj = self.pool['res.users']
+        lang_obj = self.pool['res.lang']
+        message_ids = message_obj.search(
+            cr, uid,
+            [('res_id', '=', id),
+             ('model', '=', self._name),
+             ('type', 'in', ('email', 'comment')),
+             ],
+            order='date asc',
+            context=context)
+        if not message_ids:
+            return ''
+        else:
+            messages = message_obj.browse(cr, uid, message_ids,
+                                          context=context)
+            user = user_obj.browse(cr, uid, uid, context=context)
+            lang = user.lang
+            if not lang:
+                lang = 'en_US'
+            lang_ids = lang_obj.search(cr, uid, [('code', '=', lang)],
+                                       context=context)
+            lang = lang_obj.browse(cr, uid, lang_ids[0], context=context)
+            date_fmt = lang.date_format or DEFAULT_SERVER_DATE_FORMAT
+            time_fmt = lang.time_format or DEFAULT_SERVER_TIME_FORMAT
+            body = []
+            for message in messages:
+                msg_date = datetime.strptime(message.date,
+                                             DEFAULT_SERVER_DATETIME_FORMAT)
+                msg_date_f = msg_date.strftime(date_fmt)
+                msg_time_f = msg_date.strftime(time_fmt)
+                header = _('On %s at %s, %s wrote:') % (msg_date_f,
+                                                        msg_time_f,
+                                                        message.author_id.name)
+                plain = html2text.html2text(message.body).split('\n')
+                plain += body
+                body = [header] + ['> %s' % line for line in plain]
+
+            body = '<br/>'.join(body)
+            return body

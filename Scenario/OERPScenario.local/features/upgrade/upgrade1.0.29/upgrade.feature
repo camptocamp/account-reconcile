@@ -13,6 +13,7 @@ Feature: upgrade to 1.0.29
     """
 
   Scenario: upgrade
+    Given I update the module list
     Given I install the required modules with dependencies:
       | name                                                   |
       | specific_fct                                           |

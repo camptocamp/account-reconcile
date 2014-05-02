@@ -97,7 +97,7 @@ class crm_claim(orm.Model):
         assert output in ('html', 'text'), ("output should be html or "
                                             "text, got: %s" % output)
         chars = {'html': {'br': '<br/>', 'gt': '&gt;'},
-                 'text': {'br': '\\n', 'gt': '>'}}
+                 'text': {'br': '\n', 'gt': '>'}}
         br = chars[output]['br']
         gt = chars[output]['gt']
         message_obj = self.pool['mail.message']

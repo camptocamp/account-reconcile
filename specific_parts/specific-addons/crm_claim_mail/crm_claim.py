@@ -116,7 +116,7 @@ class crm_claim(orm.Model):
                                                         message.author_id.name)
                 plain = html2text.html2text(message.body).split('\n')
                 plain += body
-                body = [header] + ['> %s' % line for line in plain]
+                body = [header] + ['&gt; %s' % line for line in plain]
 
             body = '<br/>'.join(body)
             return body

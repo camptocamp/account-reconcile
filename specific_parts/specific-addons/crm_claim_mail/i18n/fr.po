@@ -18,7 +18,7 @@ msgstr ""
 #. module: crm_claim_mail
 #: model:email.template,subject:crm_claim_mail.email_template_rma_received
 msgid "${object.name_get()[0][1]|safe}"
-msgstr "${object.name_get()[0][1]|safe}"
+msgstr ""
 
 #. module: crm_claim_mail
 #: code:_description:0
@@ -26,11 +26,6 @@ msgstr "${object.name_get()[0][1]|safe}"
 #, python-format
 msgid "Claim"
 msgstr "Réclamation"
-
-#. module: crm_claim_mail
-#: model:email.template,body_html:crm_claim_mail.email_template_rma_received
-msgid "Hey, we received your claim"
-msgstr "Hey, we received your claim"
 
 #. module: crm_claim_mail
 #: field:crm.claim,merged_numbers:0

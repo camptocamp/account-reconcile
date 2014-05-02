@@ -28,11 +28,6 @@ msgid "Claim"
 msgstr ""
 
 #. module: crm_claim_mail
-#: model:email.template,body_html:crm_claim_mail.email_template_rma_received
-msgid "Hey, we received your claim"
-msgstr ""
-
-#. module: crm_claim_mail
 #: field:crm.claim,merged_numbers:0
 #: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_merged_numbers
 msgid "Merged claims numbers"

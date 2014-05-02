@@ -31,6 +31,13 @@ from openerp.addons.email_template import html2text
 class crm_claim(orm.Model):
     _inherit = 'crm.claim'
 
+    def _get_message_quote(self, cr, uid, ids, fields, args, context=None):
+        result = {}
+        for claim_id in ids:
+            result[claim_id] = self.message_quote(cr, uid, claim_id,
+                                                  context=context)
+        return result
+
     _columns = {
         # should always be readonly since it is used to match
         # incoming emails
@@ -43,6 +50,10 @@ class crm_claim(orm.Model):
         # so a the failsafe method that link emails from the number
         # can keep working based on the old numbers
         'merged_numbers': fields.serialized('Merged claims numbers'),
+        'message_quote_for_email': fields.function(
+            _get_message_quote,
+            type='html',
+            string='Message quote'),
     }
 
     def _merge_data(self, cr, uid, merge_in, claims, fields, context=None):

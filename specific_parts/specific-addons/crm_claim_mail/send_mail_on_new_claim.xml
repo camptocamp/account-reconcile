@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+
+    <record id="email_template_rma_received" model="email.template">
+      <field name="name">Envoi de mail au client lors de création de claim</field>
+      <field name="email_from">${(object.company_id.email or 'contact@qoqa.com')|safe} </field>
+      <field name="subject">${object.name_get()[0][1]|safe}</field>
+      <field name="email_to">${object.email_from}</field>
+      <field name="model_id" ref="crm_claim.model_crm_claim"/>
+      <field name="auto_delete" eval="True"/>
+      <field name="body_html"><![CDATA[
+        <div>
+          <div>Bonjour,</div>
+          <div><br></div>
+          <div>Notre service clients a bien enregistré votre demande et
+            s'efforce de la traiter le plus rapidement possible. Pour
+            tout suivi concernant votre demande, nous vous prions de
+            répondre directement au message concerné en laissant le
+            numéro de ticket dans le sujet.</div>
+          <div><br></div>
+          <div><b>Votre numéro de ticket est : [${object.number}]</b></div>
+          <div><br></div>
+          <div>Merci d'indiquer ce numéro également si vous devez nous
+            contacter par téléphone au sujet de votre demande. Cela nous
+            aidera à vous servir plus rapidement et efficacement.</div>
+          <div><br></div>
+          <div>Voici un aperçu de votre demande :</div>
+          <div><b><pre>${object.description | trim}</pre></b></div>
+          <div><br></div>
+          <div>Merci de votre patience et meilleures salutations,</div>
+          <div><br></div><div>Votre équipe <a href="http://qoqa.ch" target="_blank">qoqa.ch</a></div>
+          <div><a href="http://www.qoqa.ch" target="_blank">http://www.qoqa.ch</a></div></div>
+          <div><br></div>
+      ]]>
+      </field>
+      <field name="lang">${object.partner_id.lang or 'fr_FR'}</field>
+    </record>
+
+    <record model="ir.translation" id="trans_email_template_rma_received_fr_body_html">
+      <field name="name">email.template,body_html</field>
+      <field name="lang">fr_FR</field>
+      <field name="type">model</field>
+      <field name="res_id" ref="email_template_rma_received"/>
+      <field name="src"></field>
+      <field name="value"><![CDATA[
+        <div>
+          <div>Bonjour,</div>
+          <div><br></div>
+          <div>Notre service clients a bien enregistré votre demande et
+            s'efforce de la traiter le plus rapidement possible. Pour
+            tout suivi concernant votre demande, nous vous prions de
+            répondre directement au message concerné en laissant le
+            numéro de ticket dans le sujet.</div>
+          <div><br></div>
+          <div><b>Votre numéro de ticket est : ${object.number}</b></div>
+          <div><br></div>
+          <div>Merci d'indiquer ce numéro également si vous devez nous
+            contacter par téléphone au sujet de votre demande. Cela nous
+            aidera à vous servir plus rapidement et efficacement.</div>
+          <div><br></div>
+          <div>Voici un aperçu de votre demande :</div>
+          <div><b><pre>${object.description | trim}</pre></b></div>
+          <div><br></div>
+          <div>Merci de votre patience et meilleures salutations,</div>
+          <div><br></div><div>Votre équipe <a href="http://qoqa.ch" target="_blank">qoqa.ch</a></div>
+          <div><a href="http://www.qoqa.ch" target="_blank">http://www.qoqa.ch</a></div></div>
+          <div><br></div>
+      ]]>
+      </field>
+    </record>
+
+    <record model="ir.translation" id="trans_email_template_rma_received_de_body_html">
+      <field name="name">email.template,body_html</field>
+      <field name="lang">de_DE</field>
+      <field name="type">model</field>
+      <field name="res_id" ref="email_template_rma_received"/>
+      <field name="src"></field>
+      <field name="value"><![CDATA[
+        <span style="width:207.7777862548828px;display:inline-block;padding:2px 2px 2px 0px;vertical-align:top"><span>
+        <font color="#4c4c4c" face="Lucida Grande, Helvetica, Verdana, Arial, sans-serif">
+        <div> Guten Tag,</div>
+        <div><br></div>
+        <div>Unser Kundendienst hat Ihre Anfrage gespeichert. Sie werden
+          sobald wie möglich eine Antwort erhalten, während den
+          Arbeitstagen (Aufgepasst: unser Kundendienst ist am Wochenende
+          und während den Feiertagen geschlossen).</div>
+        <div><br></div>
+        <div>Bei jedem offenen Fall, bitten wir Sie unsere letzte E-Mail
+          zu beantworten, so dass wir immer dieselbe Ticketnummer für
+          den gleichen Fall benutzen. Sie werden somit besser und
+          schneller bedient.</div>
+        <div><br></div>
+        <div><b>Ihre Ticket-Nummer lautet: ${object.number}</b></div>
+        <div><br></div><div>Hier unten eine Übersicht von Ihrer Anfrage :</div>
+        <div><b><pre>${object.description | trim}</pre></b></div>
+        <div><br></div>
+        <div>Danke für Ihre Geduld und freundliche Grüsse,</div>
+        <div><br></div>
+        <div>Das QoQa-Team</div>
+        <div><a href="http://www.qoqa.ch" target="_blank">http://www.qoqa.ch</a></div>
+        </font></span></span>
+        ]]></field>
+    </record>
+
+    <record id="send_claim_mail" model="ir.actions.server">
+      <field name="code">template_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'crm_claim_mail', 'email_template_rma_received')[1]
+self.pool['email.template'].send_mail(cr, uid, template_id, object.id)</field>
+      <field name="state">code</field>
+      <field name="type">ir.actions.server</field>
+      <field name="model_id" ref="crm_claim.model_crm_claim"/>
+      <field name="condition">object.email_from</field>
+      <field name="name">Send an email when a claim is created</field>
+    </record>
+
+    <record id="open_claim" model="ir.actions.server">
+      <field name="name">Set to open</field>
+      <field name="state">code</field>
+      <field name="model_id" ref="crm_claim.model_crm_claim"/>
+      <field name="condition">object.state == 'draft'</field>
+      <field name="sequence">6</field>
+      <field name="code">
+stage_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'crm_claim', 'stage_claim5')[1]
+object.write({'stage_id': stage_id})
+      </field>
+    </record>
+
+    <record id="filter_new_claim" model="ir.filters">
+      <field name="name">New claims</field>
+      <field name="model_id">crm.claim</field>
+      <field name="domain">[('state', '=', 'draft')]</field>
+      <field name="user_id" eval="False"/>
+    </record>
+
+    <record id="action_rule_send_mail_and_open_claim" model="base.action.rule">
+      <field name="name">Send an email when a claim is created, then open it</field>
+      <field name="model_id" ref="crm_claim.model_crm_claim"/>
+      <field name="active" eval="True"/>
+      <field name="filter_id" ref="crm_claim_mail.filter_new_claim"/>
+      <field name="server_action_ids" eval="[(4, ref('crm_claim_mail.send_claim_mail')), (4, ref('crm_claim_mail.open_claim'))]"/>
+    </record>
+  </data>
+
+  <data>
+    <record id="crm_claim.stage_claim1" model="crm.claim.stage">
+    <!-- hides the state when not used so users cannot select it, we
+         must avoid claims to go back to the draft state or an email
+         will be sent again -->
+      <field name="fold" eval="True"/>
+    </record>
+  </data>
+</openerp>

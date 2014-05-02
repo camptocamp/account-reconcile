@@ -35,7 +35,6 @@ class crm_claim(orm.Model):
         result = {}
         for claim_id in ids:
             result[claim_id] = self.message_quote(cr, uid, claim_id,
-                                                  output='text',
                                                   context=context)
         return result
 
@@ -53,7 +52,7 @@ class crm_claim(orm.Model):
         'merged_numbers': fields.serialized('Merged claims numbers'),
         'message_quote_for_email': fields.function(
             _get_message_quote,
-            type='text',
+            type='html',
             string='Message quote'),
     }
 
@@ -75,7 +74,7 @@ class crm_claim(orm.Model):
             merge_fields.remove('merged_numbers')
         return merge_fields
 
-    def message_quote(self, cr, uid, id, output='html', context=None):
+    def message_quote(self, cr, uid, id, context=None):
         """ For a claim, generate a thread with quotations.
 
         It converts HTML to text (markdown style) and prepend
@@ -88,18 +87,10 @@ class crm_claim(orm.Model):
             > On 2014-04-30 15:10:00, Arthur Dent wrote:
             >> What do you get if you multiply six by nine?
 
-        :param output: text or html
-
         """
         if isinstance(id, (tuple, list)):
             assert len(id) == 1, "1 ID expected, got: %s" % id
             id = id[0]
-        assert output in ('html', 'text'), ("output should be html or "
-                                            "text, got: %s" % output)
-        chars = {'html': {'br': '<br/>', 'gt': '&gt;'},
-                 'text': {'br': '\n', 'gt': '>'}}
-        br = chars[output]['br']
-        gt = chars[output]['gt']
         message_obj = self.pool['mail.message']
         user_obj = self.pool['res.users']
         lang_obj = self.pool['res.lang']
@@ -136,7 +127,7 @@ class crm_claim(orm.Model):
                                                         message.author_id.name)
                 plain = html2text.html2text(message.body).split('\n')
                 plain += body
-                body = [header] + ['%s %s' % (gt, line) for line in plain]
+                body = [header] + ['&gt; %s' % line for line in plain]
 
-            body = br.join(body)
+            body = '<br/>'.join(body)
             return body

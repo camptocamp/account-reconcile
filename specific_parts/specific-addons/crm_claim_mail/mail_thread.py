@@ -48,9 +48,8 @@ def is_dsn(message):
     Content-Type: message/rfc822 The original message.
 
     """
-    message_content_type = message.get_payload(1).get_content_type()
     return (message.is_multipart() and len(message.get_payload()) > 1 and
-            message_content_type == 'message/delivery-status')
+            message.get_payload(1).get_content_type() == 'message/delivery-status')
 
 
 def claim_subject_route(mail_thread, cr, uid, message, custom_values=None,
@@ -100,9 +99,11 @@ def message_route(self, cr, uid, message, model=None, thread_id=None,
     except ValueError:  # no route found
         # If the subject contains [RMA-\d+], search for a claim
         if not is_dsn(message):
-            return claim_subject_route(self, cr, uid, message,
-                                       custom_values=custom_values,
-                                       context=context)
+            routes = claim_subject_route(self, cr, uid, message,
+                                         custom_values=custom_values,
+                                         context=context)
+            if routes:
+                return routes
         raise
 
 mail_thread.message_route = types.MethodType(message_route, None, mail_thread)

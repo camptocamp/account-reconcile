@@ -56,6 +56,8 @@ def claim_subject_route(mail_thread, cr, uid, message, custom_values=None,
                         context=None):
     """ Link a message to an existing route using the reference in the
     subject """
+    if context is None:
+        context = {}
     if custom_values is None:
         custom_values = {}
 

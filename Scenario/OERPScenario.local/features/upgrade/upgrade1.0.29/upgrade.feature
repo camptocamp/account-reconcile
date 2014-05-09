@@ -6,12 +6,6 @@ Feature: upgrade to 1.0.29
   Scenario: upgrade
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
 
-  Scenario: Set all the new claim to draft to avoid to send emails on already created claims
-    Given I execute the SQL commands
-    """
-    UPDATE crm_claim SET stage_id = 2, state = 'open' WHERE state = 'draft';
-    """
-
   Scenario: upgrade
     Given I update the module list
     Given I install the required modules with dependencies:

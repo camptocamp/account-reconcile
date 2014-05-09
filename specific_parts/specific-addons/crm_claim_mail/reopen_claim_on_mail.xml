@@ -9,7 +9,9 @@
       <!-- hides when not selected -->
       <field name="fold" eval="True"/>
     </record>
+  </data>
 
+  <data noupdate="1">
     <record id="reopen_claim" model="ir.actions.server">
       <field name="name">Re-open Claim</field>
       <field name="state">code</field>

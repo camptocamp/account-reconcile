@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="0">
+  <data noupdate="1">
 
     <record id="email_template_rma_received" model="email.template">
       <field name="name">Envoi de mail au client lors de création de claim</field>

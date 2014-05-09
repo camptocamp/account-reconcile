@@ -94,18 +94,17 @@ def claim_subject_route(mail_thread, cr, uid, message, custom_values=None,
 old_message_route = mail_thread.message_route
 def message_route(self, cr, uid, message, model=None, thread_id=None,
                   custom_values=None, context=None):
-    try:
-        return old_message_route(
-            self, cr, uid, message, model=model, thread_id=thread_id,
-            custom_values=custom_values, context=context)
-    except ValueError:  # no route found
+    # first search if the email is a response to a claim with the
+    # subject, then fallback on the other routes
+    if not is_dsn(message):
         # If the subject contains [RMA-\d+], search for a claim
-        if not is_dsn(message):
-            routes = claim_subject_route(self, cr, uid, message,
-                                         custom_values=custom_values,
-                                         context=context)
-            if routes:
-                return routes
-        raise
+        routes = claim_subject_route(self, cr, uid, message,
+                                     custom_values=custom_values,
+                                     context=context)
+        if routes:
+            return routes
+    return old_message_route(
+        self, cr, uid, message, model=model, thread_id=thread_id,
+        custom_values=custom_values, context=context)
 
 mail_thread.message_route = types.MethodType(message_route, None, mail_thread)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="1">
+  <data noupdate="0">
     <record model="crm.claim.stage" id="stage_response_received">
       <field name="name">Response Received</field>
       <field name="state">open</field>

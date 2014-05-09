@@ -54,6 +54,7 @@ class crm_claim(orm.Model):
             _get_message_quote,
             type='html',
             string='Message quote'),
+        'confirmation_email_sent': fields.boolean('Confirmation Mail Sent'),
     }
 
     def _merge_data(self, cr, uid, merge_in, claims, fields, context=None):

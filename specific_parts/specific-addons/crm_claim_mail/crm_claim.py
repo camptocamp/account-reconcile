@@ -57,6 +57,29 @@ class crm_claim(orm.Model):
         'confirmation_email_sent': fields.boolean('Confirmation Mail Sent'),
     }
 
+    _defaults = {
+        # The flag is set to false when the claim is created from an
+        # email, this is to avoid to send an email on claims created
+        # manually.
+        'confirmation_email_sent': True,
+    }
+
+    def message_new(self, cr, uid, msg, custom_values=None, context=None):
+        """ Overrides mail_thread message_new that is called by the mailgateway
+        through message_process.
+
+        This set the confirmation_email_sent to False so an automatic email
+        can be sent.
+
+        """
+        if custom_values is None:
+            custom_values = {}
+        else:
+            custom_values = custom_values.copy()
+        custom_values.setdefault('confirmation_email_sent', False)
+        return super(crm_claim, self).message_new(
+            cr, uid, msg, custom_values=custom_values, context=context)
+
     def _merge_data(self, cr, uid, merge_in, claims, fields, context=None):
         result = super(crm_claim, self)._merge_data(
             cr, uid, merge_in, claims, fields, context=context)

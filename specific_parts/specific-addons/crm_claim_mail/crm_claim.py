@@ -123,6 +123,7 @@ class crm_claim(orm.Model):
             [('res_id', '=', id),
              ('model', '=', self._name),
              ('type', 'in', ('email', 'comment')),
+             ('subtype_id', '!=', False),
              ],
             order='date asc',
             context=context)

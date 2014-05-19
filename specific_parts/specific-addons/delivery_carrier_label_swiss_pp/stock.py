@@ -51,6 +51,7 @@ class stock_picking(orm.Model):
         return {'name': '%s.pdf' % report.report_name,
                 'file': pdf_report,
                 'file_type': 'pdf',
+                'tracking_id': tracking_ids and tracking_ids[0],
                 }
 
     def generate_shipping_labels(self, cr, uid, ids, tracking_ids=None,

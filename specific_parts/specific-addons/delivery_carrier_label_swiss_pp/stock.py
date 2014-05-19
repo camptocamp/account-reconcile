@@ -19,7 +19,7 @@
 #
 ##############################################################################
 from openerp.osv import orm
-from openerp.netsvc import Service
+from openerp.netsvc import LocalService
 
 
 class stock_picking(orm.Model):
@@ -29,27 +29,19 @@ class stock_picking(orm.Model):
                                       tracking_ids=None,
                                       context=None):
         """ Generate labels and write tracking numbers received """
-        user_obj = self.pool.get('res.users')
+        user_obj = self.pool['res.users']
+        report_obj = self.pool['ir.actions.report.xml']
+        ir_model_data_obj = self.pool['ir.model.data']
         user = user_obj.browse(cr, uid, uid, context=context)
         company = user.company_id
 
         assert len(ids) == 1
-        report_obj = self.pool.get('ir.actions.report.xml')
-        ir_model_data_obj = self.pool.get('ir.model.data')
+        report_name = 'delivery.shipping.label.swiss.pp.webkit'
+        service = LocalService('report.%s' % report_name)
+        result, __ = service.create(cr, uid, ids, {}, context=context)
 
-        __, report_id = ir_model_data_obj.get_object_reference(
-            cr, uid, 'delivery', 'shipping_label_swiss_pp_webkit')
-
-        report = report_obj.browse(cr, uid, report_id, context=context)
-
-        data = {'ids': ids}
-        report_parser = Service._services['report.%s' % report.report_name]
-        pdf_report = report_parser.create_single_pdf(cr, uid, ids,
-                                                     data, report,
-                                                     context=context)[0]
-
-        return {'name': '%s.pdf' % report.report_name,
-                'file': pdf_report,
+        return {'name': '%s.pdf' % report_name,
+                'file': result,
                 'file_type': 'pdf',
                 'tracking_id': tracking_ids and tracking_ids[0],
                 }

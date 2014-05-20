@@ -52,6 +52,7 @@ set cost_method default to average
           'product_view.xml',
           'purchase_view.xml',
           'sale_view.xml',
+          'crm_claim_view.xml'
           ],
  'installable': True,
  'application': True,

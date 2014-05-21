@@ -9,5 +9,7 @@ Feature: upgrade to 1.0.35
       | name                                                   |
       | specific_fct                                           |
       | account_easy_reconcile                                 |
+      # update addons with updated xml
+      | base                                                   |
     Then my modules should have been installed and models reloaded
     Given I set the version of the instance to "1.0.35"

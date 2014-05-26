@@ -7,9 +7,50 @@
       <field name="model">purchase.order</field>
       <field name="inherit_id" ref="purchase.purchase_order_form"/>
       <field name="arch" type="xml">
-        <field name="minimum_planned_date" position="attributes">
-          <attribute name="required">1</attribute>
-        </field>
+          <field name="minimum_planned_date" position="attributes">
+            <attribute name="required">1</attribute>
+          </field>
+      </field>
+    </record>
+
+    <record id="purchase_order_line_form" model="ir.ui.view">
+      <field name="name">purchase.order.line.form</field>
+      <field name="model">purchase.order.line</field>
+      <field name="inherit_id" ref="purchase.purchase_order_line_form"/>
+      <field name="arch" type="xml">
+          <field name="invoice_lines" position="inside">
+              <tree string="Invoice Line">
+                <field name="name"/>
+                <field name="account_id" groups="account.group_account_user"/>
+                <field name="quantity"/>
+                <field name="uos_id" groups="product.group_uom"/>
+                <field name="price_unit"/>
+                <field name="discount" groups="sale.group_discount_per_so_line"/>
+                <field name="price_subtotal"/>
+              </tree>
+              <form>
+                <group>
+                    <group>
+                        <field name="product_id"/>
+                        <label for="quantity"/>
+                        <div>
+                            <field name="quantity" class="oe_inline"/>
+                            <field name="uos_id" class="oe_inline" groups="product.group_uom"/>
+                        </div>
+                        <field name="price_unit"/>
+                        <field name="discount" groups="sale.group_discount_per_so_line"/>
+                    </group>
+                    <group>
+                        <field name="account_id" groups="account.group_account_user"/>
+                        <field name="invoice_line_tax_id" widget="many2many_tags"/>
+                        <field name="account_analytic_id" groups="analytic.group_analytic_accounting"/>
+                        <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                    </group>
+                </group>
+                <label for="name"/>
+                <field name="name"/>
+              </form>
+          </field>
       </field>
     </record>
 

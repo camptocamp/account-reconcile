@@ -72,9 +72,9 @@
         <% partner = picking.partner_id %>
         <% setLang(partner.lang) %>
         <div class="address">
-          %if picking.offer_id.ref and picking.sale_id.name:
+          %if picking.offer_id.ref and picking.sale_id.name and len(picking.move_lines) > 0 and picking.move_lines[0].tracking_id:
               <div class="code">
-                ${picking.offer_id.ref}.${picking.sale_id.name}
+                ${picking.offer_id.ref}.${picking.sale_id.name}.${picking.move_lines[0].tracking_id.name}
               </div>
           %endif
           <table class="recipient">

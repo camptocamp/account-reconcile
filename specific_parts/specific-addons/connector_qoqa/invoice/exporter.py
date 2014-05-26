@@ -71,6 +71,11 @@ class RefundExporter(ExportSynchronizer):
                                     int(amount))
         self.session.write(self.model._name, refund_id,
                            {'transaction_id': payment_id})
+        ## We search move_line to write transaction_ref
+        move_line_ids = self.session.search('account.move.line',[('move_id','=',refund.move_id.id),('account_id','=',refund.account_id.id)])
+        ## We deactive the account_counstraint check by updating the context 
+        with self.session.change_context({'from_parent_object':True}):
+            self.session.write('account.move.line',move_line_ids,{'transaction_ref':payment_id})
         return _('Refund created with payment id: %s' % payment_id)
 
 

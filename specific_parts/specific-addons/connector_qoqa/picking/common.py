@@ -93,6 +93,13 @@ def picking_done_create_binding(session, model_name, record_id,
         return
     if not sale.qoqa_bind_ids:
         return  # does not comes from QoQa
+
+    # if no tracking ref on picking and no pack where defined,
+    # we don't want to export trackings
+    if (not picking.carrier_tracking_ref
+            and not any(line.tracking_id for line in picking.move_lines)):
+        return
+
     for sale_binding in sale.qoqa_bind_ids:
         session.create('qoqa.stock.picking',
                        {'backend_id': sale_binding.backend_id.id,

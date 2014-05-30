@@ -94,3 +94,12 @@ class product_template(orm.Model):
             ids = self.search(cr, uid, args, limit=limit, context=context)
         result = self.name_get(cr, uid, ids, context=context)
         return result
+
+class product_supplierinfo(orm.Model):
+    _inherit = 'product.supplierinfo'
+    _name = "product.supplierinfo"
+
+    # Re-definition of product_code to be mandatory
+    _columns = {
+        'product_code': fields.char('Supplier Product Code', size=64, help="This supplier's product code will be used when printing a request for quotation. Keep empty to use the internal one.", required=True),
+    }

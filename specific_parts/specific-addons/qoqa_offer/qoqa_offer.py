@@ -28,7 +28,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 from openerp.tools.translate import _
 
 from openerp.osv import orm, fields
-
+import re
 
 class qoqa_offer(orm.Model):
     _name = 'qoqa.offer'
@@ -468,10 +468,26 @@ class qoqa_offer(orm.Model):
         seq_obj = self.pool.get('ir.sequence')
         return seq_obj.next_by_code(cr, uid, 'qoqa.offer')
 
+    def _clean_html_description(self, vals):
+        """ In Chrome, editing the description in cleditor
+            puts <div> instead of <p>; not much we can do but
+            clean up the stored value."""
+        if 'description' in vals:
+            vals['description'] = re.sub(r'<(\/?)div>', r'<\1p>',
+                                         vals['description'])
+
     def create(self, cr, uid, vals, context=None):
         if (vals.get('ref', '/') or '/') == '/':
             vals['ref'] = self._get_reference(cr, uid, context=context)
+        # Clean the content of the description
+        self._clean_html_description(vals)
         return super(qoqa_offer, self).create(cr, uid, vals, context=context)
+
+    def write(self, cr, uid, ids, vals, context=None):
+        # Clean the content of the description
+        self._clean_html_description(vals)
+        return super(qoqa_offer, self).write(cr, uid, ids, vals,
+                                             context=context)
 
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:

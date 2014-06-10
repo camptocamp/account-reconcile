@@ -98,12 +98,12 @@ class ResPartnerImportMapper(ImportMapper):
         """ partners are shared between companies """
         return {'company_id': False}
 
-    @only_create
     @mapping
     def name(self, record):
-        # the 'firstname' and 'lastname' fields are wrong in QoQa
-        # and should not be used, instead, we take the login if existing
-        # and email
+        """ The 'firstname' and 'lastname' fields are wrong in QoQa and
+        should not be used, instead, we take the login if existing and
+        email.
+        """
         login = record.get('name')
         email = record['email']
         if login:

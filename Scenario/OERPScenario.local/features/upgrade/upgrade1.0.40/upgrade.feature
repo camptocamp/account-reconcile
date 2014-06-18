@@ -7,6 +7,7 @@ Feature: upgrade to 1.0.40
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                                   |
+      | account_constraints                                    |
       | account_statement_cancel_line                          |
       | account_advanced_reconcile_bank_statement              |
       | account_move_line_search_extension                     |

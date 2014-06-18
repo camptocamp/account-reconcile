@@ -7,9 +7,11 @@ Feature: upgrade to 1.0.40
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                                   |
+      | account_constraints                                    |
+      | account_financial_report_webkit                        |
       | account_statement_cancel_line                          |
       | account_advanced_reconcile_bank_statement              |
-      | account_move_line_search_extension                     |
       | account_move_validation_improvement                    |
+      | account_move_line_search_extension                     |
     Then my modules should have been installed and models reloaded
     Given I set the version of the instance to "1.0.40"

@@ -11,7 +11,14 @@ Feature: upgrade to 1.0.40
       | account_financial_report_webkit                        |
       | account_statement_cancel_line                          |
       | account_advanced_reconcile_bank_statement              |
-      | account_move_validation_improvement                    |
       | account_move_line_search_extension                     |
     Then my modules should have been installed and models reloaded
+    Given I execute the SQL commands
+"""
+    UPDATE account_bank_statement_line as sl 
+    SET state = 'confirmed'
+    FROM account_bank_statement as s 
+    WHERE sl.statement_id = s.id 
+    AND s.state = 'confirm';
+"""
     Given I set the version of the instance to "1.0.40"

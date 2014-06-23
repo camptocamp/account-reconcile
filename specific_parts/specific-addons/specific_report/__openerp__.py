@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2013-2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -29,13 +29,17 @@
  - specific report headers
  - specific shipping default webkit labels
  - specific invoice report to fit with QoQa addresses
+ - specific stock.location report "Stock Inventory Overview" with
+   added description_warehouse info
  """,
  'author': 'Camptocamp',
  'website': 'http://www.camptocamp.com',
  'depends': ['base_headers_webkit',
-             'delivery_carrier_label_default_webkit'],
+             'delivery_carrier_label_default_webkit',
+             'picking_dispatch'],
  'data': ['base_headers_data.xml',
-          'reports.xml'
+          'reports.xml',
+          'stock_report.xml',
           ],
  'test': [],
  'installable': True,

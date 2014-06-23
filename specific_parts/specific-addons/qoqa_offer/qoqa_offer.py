@@ -472,7 +472,7 @@ class qoqa_offer(orm.Model):
         """ In Chrome, editing the description in cleditor
             puts <div> instead of <p>; not much we can do but
             clean up the stored value."""
-        if 'description' in vals:
+        if 'description' in vals and vals['description']:
             vals['description'] = re.sub(r'<(\/?)div>', r'<\1p>',
                                          vals['description'])
 

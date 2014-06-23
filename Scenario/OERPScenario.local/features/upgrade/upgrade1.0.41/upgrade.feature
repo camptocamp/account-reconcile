@@ -8,7 +8,7 @@ Feature: upgrade to 1.0.41
     Given I update the module list
     Given I install the required modules with dependencies:
       | name         |
-      | sale         |
+      | sale_stock   |
       | specific_fct |
     Then my modules should have been installed and models reloaded
 

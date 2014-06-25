@@ -44,6 +44,9 @@ Product:
 
 set cost_method default to average
 
+Stock.move:
+
+Overwrite of do_partial to keep tracking id of unprocessed packs
 """,
  'images': [],
  'demo': [],

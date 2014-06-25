@@ -176,7 +176,8 @@ class stock_picking(orm.Model):
             # list all tracking_id with at least one move to pick partially
             # this give us the tracking that cannot be reused
             used_tracking_ids = [m.tracking_id.id for m in pick.move_lines
-                                 if move_product_qty[m.id] != 0]
+                                 if m.state in ('cancel', 'done')
+                                 or move_product_qty[m.id] != 0]
 # End change 1/2
 ###############################################################################
 
@@ -452,7 +453,8 @@ class stock_move(orm.Model):
         # list all tracking_id with at least one move to pick partially
         # this give us the tracking that cannot be reused
         used_tracking_ids = [m.tracking_id.id for m in all_moves
-                             if move_product_qty[m.id] != 0]
+                             if m.state in ('cancel', 'done')
+                             or move_product_qty[m.id] != 0]
 # End change 2/3
 ###############################################################################
         for move in too_few:

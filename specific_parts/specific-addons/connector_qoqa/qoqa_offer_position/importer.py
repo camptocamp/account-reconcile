@@ -20,21 +20,20 @@
 ##############################################################################
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  backend_to_m2o,
                                                   ImportMapper)
 from ..backend import qoqa
 from ..unit.import_synchronizer import (QoQaImportSynchronizer,
+                                        TranslationImporter,
                                         DelayedBatchImport,
                                         )
 from ..unit.mapper import ifmissing
-from ..unit.mapper import iso8601_to_utc, qoqafloat
 
 
 @qoqa
 class QoQaOfferPositionBatchImport(DelayedBatchImport):
-    """ Import the QoQa Product Variants.
+    """ Import the QoQa offer positions.
 
-    For every product in the list, a delayed job is created.
+    For every offer position in the list, a delayed job is created.
     Import from a date
     """
     _model_name = ['qoqa.offer.position']
@@ -42,6 +41,14 @@ class QoQaOfferPositionBatchImport(DelayedBatchImport):
 
 @qoqa
 class QoQaOfferPositionImport(QoQaImportSynchronizer):
+    """ Import the description of the offer position.
+
+    All the offer's fields are master in OpenERP but the
+    ``description`` field.
+    This field is filed on the QoQa Backend and we get
+    back its value on OpenERP.
+
+    """
     _model_name = 'qoqa.offer.position'
 
     def _import_dependencies(self):
@@ -49,65 +56,39 @@ class QoQaOfferPositionImport(QoQaImportSynchronizer):
         assert self.qoqa_record
         rec = self.qoqa_record
         self._import_dependency(rec['deal_id'], 'qoqa.offer')
-        self._import_dependency(rec['product_id'], 'qoqa.product.template')
-        self._import_dependency(rec['buyphrase_id'], 'qoqa.buyphrase')
-        for var in rec['offer_variations']:
-            self._import_dependency(var['variation_id'],
-                                    'qoqa.product.product')
+
+    def _is_uptodate(self, binding_id):
+        """ We don't mind, we want to update it because
+        we want the description to be updated even if the
+        rest is more recent """
+        return False
+
+    def _after_import(self, binding_id):
+        """ Hook called at the end of the import """
+        translation_importer = self.get_connector_unit_for_model(
+            TranslationImporter)
+        translation_importer.run(self.qoqa_record, binding_id)
 
 
 @qoqa
 class QoQaOfferPositionImportMapper(ImportMapper):
     _model_name = 'qoqa.offer.position'
 
-    children = [('offer_variations', 'variant_ids',
-                 'qoqa.offer.position.variant'),
-                ]
-
     translatable_fields = [
         (ifmissing('description', ''), 'description'),
         (ifmissing('highlights', ''), 'highlights'),
     ]
-
-    direct = [(backend_to_m2o('deal_id'), 'offer_id'),
-              (backend_to_m2o('product_id', binding='qoqa.product.template'),
-               'product_tmpl_id'),
-              (backend_to_m2o('vat_id'), 'tax_id'),
-              (backend_to_m2o('buyphrase_id'), 'buyphrase_id'),
-              ('lot_size', 'lot_size'),
-              ('max_sellable', 'max_sellable'),
-              ('stock_bias', 'stock_bias'),
-              (qoqafloat('installment_price'), 'installment_price'),
-              (qoqafloat('regular_price'), 'regular_price'),
-              (qoqafloat('buy_price'), 'buy_price'),
-              (qoqafloat('top_price'), 'top_price'),
-              (iso8601_to_utc('delivery_at'), 'date_delivery'),
-              ('booking_delivery', 'booking_delivery'),
-              ('order_url', 'order_url'),
-              ('active', 'is_active'),
-              ('poste_cumbersome_package', 'poste_cumbersome_package'),
-              ]
-
-    @mapping
-    def regular_price_type(self, record):
-        binder = self.get_binder_for_model('qoqa.regular.price.type')
-        binding_id = binder.to_openerp(record['regular_price_type'])
-        return {'regular_price_type': binding_id}
-
-    @mapping
-    def prices(self, record):
-        # despite the naming, this is the lot price
-        price = qoqafloat('unit_price')(self, record, '')
-        lot_size = record.get('lot_size') or 1
-        if lot_size > 1:
-            price /= lot_size
-        return {'current_unit_price': price}
 
     @mapping
     def from_translations(self, record):
         """ The translatable fields are only provided in
         a 'translations' dict, we take the translation
         for the main record in OpenERP.
+
+        The Mapper is called one time per language, when it
+        want to map the translation, it sets the translation
+        language in self.options.lang. The mapper for translations
+        is called in the importer._after_import.
         """
         binder = self.get_binder_for_model('res.lang')
         lang = self.options.lang or self.backend_record.default_lang_id

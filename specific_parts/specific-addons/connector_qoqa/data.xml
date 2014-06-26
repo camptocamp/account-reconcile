@@ -127,5 +127,32 @@
             <field eval="'_scheduler_accounting_issuance'" name="function"/>
             <field eval="'()'" name="args"/>
         </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_offer" model="ir.cron">
+            <field name="name">QoQa - Import Offers Descriptions</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_offer'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_offer_position" model="ir.cron">
+            <field name="name">QoQa - Import Offers Positions Descriptions</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_offer_position'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
     </data>
 </openerp>

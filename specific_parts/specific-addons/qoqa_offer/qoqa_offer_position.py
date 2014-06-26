@@ -265,8 +265,9 @@ class qoqa_offer_position(orm.Model):
             relation='res.currency',
             string='Currency',
             readonly=True),
-        'highlights': fields.text('Highlights', translate=True),
+        'highlights': fields.text('Highlights', readonly=True, translate=True),
         'description': fields.html('Description',
+                                   readonly=True,
                                    translate=True),
         # only 1 tax is used on the QoQa backend, so we
         # have to choose only 1 for the position, the field

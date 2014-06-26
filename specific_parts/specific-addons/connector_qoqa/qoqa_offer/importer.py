@@ -21,22 +21,37 @@
 
 from __future__ import division
 
-from datetime import datetime
-
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  backend_to_m2o,
                                                   ImportMapper)
-from openerp.addons.connector.exception import MappingError
 from ..backend import qoqa
 from ..unit.import_synchronizer import (QoQaImportSynchronizer,
                                         TranslationImporter,
+                                        DelayedBatchImport,
                                         )
 from ..unit.mapper import ifmissing
 from ..exception import QoQaError
 
 
 @qoqa
+class SaleOrderBatchImport(DelayedBatchImport):
+    """ Import the QoQa offers.
+
+    For every offer's id in the list, a delayed job is created.
+    Import from a date
+    """
+    _model_name = 'qoqa.offer'
+
+
+@qoqa
 class QoQaOfferImport(QoQaImportSynchronizer):
+    """ Import the description of the offer.
+
+    All the offer's fields are master in OpenERP but the
+    ``description`` field.
+    This field is filed on the QoQa Backend and we get
+    back its value on OpenERP.
+
+    """
     _model_name = 'qoqa.offer'
 
     def _import_dependencies(self):
@@ -44,6 +59,12 @@ class QoQaOfferImport(QoQaImportSynchronizer):
         assert self.qoqa_record
         rec = self.qoqa_record
         self._import_dependency(rec['shop_id'], 'qoqa.shop')
+
+    def _is_uptodate(self, binding_id):
+        """ We don't mind, we want to update it because
+        we want the description to be updated even if the
+        rest is more recent """
+        return False
 
     def _import(self, binding_id):
         """ Use the user from the shop's company for the import
@@ -72,67 +93,20 @@ class QoQaOfferImport(QoQaImportSynchronizer):
 class QoQaOfferImportMapper(ImportMapper):
     _model_name = 'qoqa.offer'
 
-    direct = [(ifmissing('notes', '<p></p>'), 'note'),
-              (backend_to_m2o('language_id', binding='res.lang'), 'lang_id'),
-              (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
-              (backend_to_m2o('shipper_service_id',
-                              binding='qoqa.shipper.service'),
-               'carrier_id'),
-              (backend_to_m2o('shipper_rate_id', binding='qoqa.shipper.rate'),
-               'shipper_rate_id'),
-              ('id', 'ref'),
-              ('is_active', 'active'),
-              ]
-
     translatable_fields = [
-        ('title', 'title'),
         (ifmissing('content', ''), 'description'),
     ]
-
-    @mapping
-    def pricelist(self, record):
-        binder = self.get_binder_for_model('res.currency')
-        currency_id = binder.to_openerp(record['currency_id'], unwrap=True)
-        pricelist_ids = self.session.search(
-            'product.pricelist', [('type', '=', 'sale'),
-                                  ('currency_id', '=', currency_id)])
-        if not pricelist_ids:
-            raise MappingError('No pricelist for currency %d' % currency_id)
-        return {'pricelist_id': pricelist_ids[0]}
-
-    @staticmethod
-    def _qoqa_datetime(timestamp):
-        """ The start and end dates of an offer are special:
-
-        We want them to be displayed at the same time to the user
-        whatever their timezone is.  The date / time should be displayed
-        in the QoQa TZ, that is: Europe/Zurich.
-        So we do not store it as a normal timestamp, but as separate
-        date and time thus they are not stored in UTC. We also keep
-        them at the QoQa's local time.
-
-        """
-        dt_str = timestamp[0:10]
-        time_str = timestamp[11:19]
-        time = datetime.strptime(time_str, '%H:%M:%S')
-        time_f = time.hour + (time.minute / 60) + (time.second / 3600)
-        return dt_str, time_f
-
-    @mapping
-    def start_at(self, record):
-        dt, time = self._qoqa_datetime(record['start_at'])
-        return {'date_begin': dt, 'time_begin': time}
-
-    @mapping
-    def stop_at(self, record):
-        dt, time = self._qoqa_datetime(record['stop_at'])
-        return {'date_end': dt, 'time_end': time}
 
     @mapping
     def from_translations(self, record):
         """ The translatable fields are only provided in
         a 'translations' dict, we take the translation
         for the main record in OpenERP.
+
+        The Mapper is called one time per language, when it
+        want to map the translation, it sets the translation
+        language in self.options.lang. The mapper for translations
+        is called in the importer._after_import.
         """
         binder = self.get_binder_for_model('res.lang')
         lang = self.options.lang or self.backend_record.default_lang_id

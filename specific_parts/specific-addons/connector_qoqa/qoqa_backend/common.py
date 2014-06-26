@@ -305,3 +305,11 @@ class qoqa_backend(orm.Model):
     def _scheduler_accounting_issuance(self, cr, uid, context=None):
         self._exec_scheduler_callback(cr, uid, self.import_accounting_issuance,
                                       context=context)
+
+    def _scheduler_import_offer(self, cr, uid, context=None):
+        self._exec_scheduler_callback(cr, uid, self.import_offer,
+                                      context=context)
+
+    def _scheduler_import_offer_position(self, cr, uid, context=None):
+        self._exec_scheduler_callback(cr, uid, self.import_offer_position,
+                                      context=context)

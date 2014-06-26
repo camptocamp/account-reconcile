@@ -76,6 +76,7 @@ class QoQaOfferPositionImportMapper(ImportMapper):
 
     translatable_fields = [
         (ifmissing('description', ''), 'description'),
+        (ifmissing('highlights', ''), 'highlights'),
     ]
 
     @mapping

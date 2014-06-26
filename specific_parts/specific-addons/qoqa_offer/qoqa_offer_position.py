@@ -265,7 +265,7 @@ class qoqa_offer_position(orm.Model):
             relation='res.currency',
             string='Currency',
             readonly=True),
-        'highlights': fields.text('Highlights', translate=True),
+        'highlights': fields.text('Highlights', readonly=True, translate=True),
         'description': fields.html('Description',
                                    readonly=True,
                                    translate=True),

@@ -73,10 +73,7 @@ class OfferPositionExportMapper(ExportMapper):
                  'qoqa.offer.position.variant'),
                 ]
 
-    translatable_fields = [
-        ('description', 'description'),
-        ('highlights', 'highlights'),
-    ]
+    translatable_fields = []
 
     direct = [(floatqoqa('lot_price'), 'unit_price'),
               (floatqoqa('installment_price'), 'installment_price'),

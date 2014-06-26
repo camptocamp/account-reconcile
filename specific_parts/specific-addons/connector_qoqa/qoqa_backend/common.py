@@ -99,8 +99,10 @@ class qoqa_backend(orm.Model):
             'Import Sales Orders from date', required=True),
         'import_accounting_issuance_from_date': fields.datetime(
             'Import Accounting Issuances from date', required=True),
+        'import_offer_from_date': fields.datetime(
+            'Import Offer (descriptions) from date', required=True),
         'import_offer_position_from_date': fields.datetime(
-            'Import Offer Positions from date', required=True),
+            'Import Offer Positions (descriptions) from date', required=True),
         'import_sale_id': fields.char('Sales Order ID'),
         'import_variant_id': fields.char('Variant ID'),
         'import_offer_id': fields.char('Offer ID'),
@@ -127,7 +129,8 @@ class qoqa_backend(orm.Model):
         'import_address_from_date': '2005-12-12 00:00:00',
         'import_sale_order_from_date': '2005-12-12 00:00:00',
         'import_accounting_issuance_from_date': '2013-11-01 00:00:00',
-        'import_offer_position_from_date': '2005-12-12 00:00:00',
+        'import_offer_from_date': '2014-06-26 00:00:00',
+        'import_offer_position_from_date': '2014-06-26 00:00:00',
         'date_really_import': '2014-01-01 00:00:00',
         'date_import_inactive': '2012-01-01 00:00:00',
     }
@@ -227,6 +230,12 @@ class qoqa_backend(orm.Model):
                                context=context)
         return True
 
+    def import_offer(self, cr, uid, ids, context=None):
+        self._import_from_date(cr, uid, ids, 'qoqa.offer',
+                               'import_offer_from_date',
+                               context=context)
+        return True
+
     def import_offer_position(self, cr, uid, ids, context=None):
         self._import_from_date(cr, uid, ids, 'qoqa.offer.position',
                                'import_offer_position_from_date',
@@ -255,6 +264,11 @@ class qoqa_backend(orm.Model):
                          'import_variant_id', context=context)
         return True
 
+    def import_one_offer(self, cr, uid, ids, context=None):
+        self._import_one(cr, uid, ids, 'qoqa.offer',
+                         'import_offer_id', context=context)
+        return True
+
     def import_one_offer_position(self, cr, uid, ids, context=None):
         self._import_one(cr, uid, ids, 'qoqa.offer.position',
                          'import_offer_position_id', context=context)
@@ -265,11 +279,6 @@ class qoqa_backend(orm.Model):
                          'import_accounting_issuance_id',
                          import_func=import_accounting_issuance,
                          context=context)
-        return True
-
-    def import_one_offer(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.offer',
-                         'import_offer_id', context=context)
         return True
 
     def import_one_address(self, cr, uid, ids, context=None):

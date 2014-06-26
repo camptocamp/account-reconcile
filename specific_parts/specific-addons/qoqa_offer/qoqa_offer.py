@@ -233,7 +233,9 @@ class qoqa_offer(orm.Model):
             multi='name',
             store=_name_store),
         'title': fields.char('Title', translate=True),
-        'description': fields.html('Description', translate=True),
+        'description': fields.html('Description',
+                                   readonly=True,
+                                   translate=True),
         'note': fields.html('Internal Notes'),
         'qoqa_shop_id': fields.many2one(
             'qoqa.shop',

@@ -67,7 +67,6 @@ class OfferExportMapper(ExportMapper):
 
     translatable_fields = [
         ('title', 'title'),
-        ('description', 'content'),
     ]
 
     direct = [

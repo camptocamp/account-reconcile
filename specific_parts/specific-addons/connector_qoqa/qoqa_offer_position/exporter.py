@@ -75,6 +75,14 @@ class OfferPositionExportMapper(ExportMapper):
 
     translatable_fields = []
 
+    only_create_translatable_fields = [
+        # fields are edited on QoQa backend and are readonly
+        # on OpenERP but we export them on creation so when duplicated
+        # the original value is sent to the QoQa backend
+        ('description', 'description'),
+        ('highlights', 'highlights'),
+    ]
+
     direct = [(floatqoqa('lot_price'), 'unit_price'),
               (floatqoqa('installment_price'), 'installment_price'),
               (floatqoqa('regular_price'), 'regular_price'),
@@ -115,7 +123,9 @@ class OfferPositionExportMapper(ExportMapper):
         Translatable fields for QoQa are sent in a `translations`
         key and are not sent in the main record.
         """
-        fields = self.translatable_fields
+        fields = self.translatable_fields[:]
+        if self.options.for_create:
+            fields += self.only_create_translatable_fields
         trans = self.get_connector_unit_for_model(Translations)
         langs = [record.offer_id.lang_id] if record.offer_id.lang_id else None
         return trans.get_translations(record, normal_fields=fields,

@@ -54,7 +54,7 @@ class qoqa_res_partner(orm.Model):
 
     _sql_constraints = [
         ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "An user with the same ID on QoQa already exists"),
+         "A user with the same ID on QoQa already exists"),
     ]
 
 

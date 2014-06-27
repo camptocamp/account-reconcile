@@ -40,6 +40,11 @@ class qoqa_offer_position(orm.Model):
         'qoqa_sync_date': fields.datetime('Last synchronization date'),
     }
 
+    _sql_constraints = [
+        ('qoqa_uniq', 'unique(qoqa_id)',
+         "An offer position with the same ID on QoQa already exists"),
+    ]
+
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
             default = {}

@@ -77,6 +77,11 @@ class qoqa_offer(orm.Model):
             type='char'),
     }
 
+    _sql_constraints = [
+        ('qoqa_uniq', 'unique(qoqa_id)',
+         "An offer with the same ID on QoQa already exists"),
+    ]
+
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
             default = {}

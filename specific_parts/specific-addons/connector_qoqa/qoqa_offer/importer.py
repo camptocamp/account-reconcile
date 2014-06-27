@@ -94,6 +94,7 @@ class QoQaOfferImportMapper(ImportMapper):
     _model_name = 'qoqa.offer'
 
     translatable_fields = [
+        (ifmissing('title', ''), 'title'),
         (ifmissing('content', ''), 'description'),
     ]
 

@@ -66,7 +66,6 @@ class OfferExportMapper(ExportMapper):
     _model_name = 'qoqa.offer'
 
     translatable_fields = [
-        ('title', 'title'),
     ]
 
     direct = [

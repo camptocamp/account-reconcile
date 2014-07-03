@@ -25,5 +25,16 @@
       multi="True"
       webkit_header="base_headers_webkit.base_reports_portrait_header"
       report_type="webkit"/>
+      
+      
+    <report id="picking_dispatch.webkit_dispatch_order"
+            name="webkit.dispatch_order"
+            auto="False"
+            model="picking.dispatch"
+            file="specific_report/report/dispatch.html.mako"
+            string="Dispatch To Process"
+            report_type="webkit"
+            header="False"
+            webkit_header="base_headers_webkit.base_minimum_reports_portrait_header" />
   </data>
 </openerp>

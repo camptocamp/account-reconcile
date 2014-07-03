@@ -95,6 +95,21 @@ class product_template(orm.Model):
         result = self.name_get(cr, uid, ids, context=context)
         return result
 
+class product_product(orm.Model):
+    """
+    Do not copy the ean13 product code
+    """
+    _inherit = 'product.product'
+    
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        default.update({'ean13': False})
+        return super(product_product, self).copy(cr, uid, id, default, context)
+
+
+
 class product_supplierinfo(orm.Model):
     _inherit = 'product.supplierinfo'
     _name = "product.supplierinfo"

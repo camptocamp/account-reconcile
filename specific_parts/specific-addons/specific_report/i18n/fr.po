@@ -17,5 +17,5 @@ msgstr ""
 #. module: specific_report
 #: report:addons/specific_report/report/dispatch.html.mako:41
 msgid "Brand"
-msgstr ""
+msgstr "Marque"
 

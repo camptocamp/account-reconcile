@@ -12,6 +12,11 @@
                 <field name="tax_id" position="attributes">
                   <attribute name="domain">[('qoqa_id', '!=', False)]</attribute>
                 </field>
+                <button name="action_view_sale_order" position="after">
+                        <button name="button_edit_offer_content"
+                            string="Edit Offer Content" type="object"
+                            />
+                </button>
             </field>
         </record>
     </data>

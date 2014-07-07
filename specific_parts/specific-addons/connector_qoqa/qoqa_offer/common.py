@@ -62,6 +62,21 @@ class qoqa_offer(orm.Model):
             res[record.id] = url
         return res
 
+    def _get_qoqa_edit_link(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        url_template = "{url}/dot/edit/{qoqa_id}"
+        for record in self.browse(cr, uid, ids, context=context):
+            if not record.qoqa_id:
+                res[record.id] = ''
+                continue
+            values = {
+                'url': record.backend_id.url,
+                'qoqa_id': record.qoqa_id,
+            }
+            url = url_template.format(**values)
+            res[record.id] = url
+        return res
+
     _columns = {
         'backend_id': fields.related(
             'qoqa_shop_id', 'backend_id',
@@ -74,6 +89,10 @@ class qoqa_offer(orm.Model):
         'qoqa_link': fields.function(
             _get_qoqa_link,
             string='Link',
+            type='char'),
+        'qoqa_edit_link': fields.function(
+            _get_qoqa_edit_link,
+            string='Edit Offer Content',
             type='char'),
     }
 
@@ -92,6 +111,24 @@ class qoqa_offer(orm.Model):
         return super(qoqa_offer, self).copy_data(cr, uid, id,
                                                  default=default,
                                                  context=context)
+
+    def button_edit_offer_content(self, cr, uid, ids, context=None):
+        if isinstance(ids, (list, tuple)):
+            assert len(ids) == 1, "1 ID expected, got %s" % ids
+            ids = ids[0]
+        offer = self.browse(cr, uid, ids, context=context)
+        url = offer.qoqa_edit_link
+        if not url:
+            raise orm.except_orm(
+                _('Error'),
+                _('The offer has not been exported to the backend yet.')
+            )
+        action = {
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'url': url,
+        }
+        return action
 
     def unlink(self, cr, uid, ids, context=None):
         if isinstance(ids, (int, long)):

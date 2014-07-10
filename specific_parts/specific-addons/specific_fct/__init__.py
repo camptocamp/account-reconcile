@@ -5,3 +5,4 @@ from . import stock
 from . import partner
 from . import postlogistics
 from . import account
+from . import payment

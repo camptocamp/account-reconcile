@@ -30,6 +30,7 @@
              'delivery_carrier_label_postlogistics_shop_logo',
              'product_variant_simple',
              'qoqa_offer',
+             'account_payment'
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',
@@ -55,7 +56,8 @@ Overwrite of do_partial to keep tracking id of unprocessed packs
           'product_view.xml',
           'purchase_view.xml',
           'sale_view.xml',
-          'crm_claim_view.xml'
+          'crm_claim_view.xml',
+          'payment_view.xml'
           ],
  'installable': True,
  'application': True,

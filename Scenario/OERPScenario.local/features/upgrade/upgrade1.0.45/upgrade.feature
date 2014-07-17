@@ -9,6 +9,7 @@ Feature: upgrade to 1.0.45
     Given I install the required modules with dependencies:
       | name                   |
       | account_easy_reconcile |
+      | specific_fct	       |
     Then my modules should have been installed and models reloaded
 
     Given I need an "ir.cron" with oid scen.swiss_do_reconcile

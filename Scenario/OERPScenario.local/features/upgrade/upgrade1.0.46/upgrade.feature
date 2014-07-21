@@ -8,7 +8,7 @@ Feature: upgrade to 1.0.46
     Given I update the module list
     Given I install the required modules with dependencies:
       | name           |
-      | account_advanced_reconcile |
+      | account_easy_reconcile |
     Then my modules should have been installed and models reloaded
 
   Scenario: I configure the level of commit when reconcile is performed automaticaly

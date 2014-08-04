@@ -302,7 +302,8 @@ class qoqa_offer_position(orm.Model):
             readonly=True),
         'installment_price': fields.float(
             'Installment Price',
-            digits_compute=dp.get_precision('Product Price')),
+            digits_compute=dp.get_precision('Product Price'),
+            readonly=True),
         'regular_price': fields.float(
             'Regular Price',
             digits_compute=dp.get_precision('Product Price'),

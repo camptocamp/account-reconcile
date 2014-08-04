@@ -28,6 +28,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            DEFAULT_SERVER_DATETIME_FORMAT)
 import openerp.addons.decimal_precision as dp
 from .qoqa_offer import qoqa_offer
+from openerp.tools.translate import _
 
 
 class qoqa_offer_position_variant(orm.Model):
@@ -402,11 +403,30 @@ class qoqa_offer_position(orm.Model):
             tmpl_obj.write(cr, uid, [tmpl_id],
                            {'list_price': price},
                            context=context)
+        if 'date_delivery' in vals:
+            if vals.get('date_delivery'):
+                self.check_date(cr,uid,vals.get('date_delivery'), context=context)
+
         return res
 
+    def check_date(self,cr,uid,current_date,context=None):
+        if current_date < fields.date.context_today(self,cr,uid,context=context):
+            raise orm.except_orm(
+                    _('Error'), _('You cannot select a delivery date in the past'))
+        else:
+            return True
+        
     def write(self, cr, uid, ids, vals, context=None):
         if isinstance(ids, (int, long)):
             ids = [ids]
+        
+        if 'date_delivery' in vals:
+            ''' 
+            We will check that the deleivery date is not anteri
+            '''
+            for position in self.browse(cr, uid, ids, context=context):
+                if (not position.date_delivery) and vals.get('date_delivery'):
+                    self.check_date(cr,uid,vals.get('date_delivery'), context)
 
         if 'current_unit_price' in vals or 'lot_size' in vals:
             for position in self.browse(cr, uid, ids, context=context):

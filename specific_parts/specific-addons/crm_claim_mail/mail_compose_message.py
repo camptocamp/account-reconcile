@@ -30,7 +30,7 @@ class mail_compose_message(orm.TransientModel):
             cr, uid, model, res_id, context=context)
         if model == 'crm.claim':
             claim_obj = self.pool[model]
-            body = claim_obj.message_quote(cr, uid, res_id, context=context)
+            body = claim_obj.message_quote(cr, uid, res_id,limit=2, context=context)
             if body:
                 values['body'] = body
         return values

@@ -35,7 +35,7 @@ class crm_claim(orm.Model):
         result = {}
         for claim_id in ids:
             result[claim_id] = self.message_quote(cr, uid, claim_id,
-                                                  context=context)
+                                                  limit=2,context=context)
         return result
 
     _columns = {
@@ -98,7 +98,7 @@ class crm_claim(orm.Model):
             merge_fields.remove('merged_numbers')
         return merge_fields
 
-    def message_quote(self, cr, uid, id, context=None):
+    def message_quote(self, cr, uid, id,limit=None, context=None):
         """ For a claim, generate a thread with quotations.
 
         It converts HTML to text (markdown style) and prepend
@@ -126,6 +126,7 @@ class crm_claim(orm.Model):
              ('subtype_id', '!=', False),
              ],
             order='date asc',
+            limit=limit,
             context=context)
         if not message_ids:
             return ''

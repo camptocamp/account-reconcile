@@ -415,6 +415,16 @@ class qoqa_offer_position(orm.Model):
                     _('Error'), _('You cannot select a delivery date in the past'))
         else:
             return True
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        if self.browse(cr,uid,id,context=context).date_delivery:
+            Date = datetime.strptime(fields.date.context_today(self,cr,uid,context=context), '%Y-%m-%d')
+            current_date_plus_15_days = Date + timedelta(days=15)
+            default.update({'date_delivery': current_date_plus_15_days.strftime('%Y-%m-%d')})
+        return super(qoqa_offer_position, self).copy_data(cr, uid, id, default=default, context=context)
         
     def write(self, cr, uid, ids, vals, context=None):
         if isinstance(ids, (int, long)):
@@ -425,7 +435,7 @@ class qoqa_offer_position(orm.Model):
             We will check that the deleivery date is not anteri
             '''
             for position in self.browse(cr, uid, ids, context=context):
-                if (not position.date_delivery) and vals.get('date_delivery'):
+                if vals.get('date_delivery'):
                     self.check_date(cr,uid,vals.get('date_delivery'), context)
 
         if 'current_unit_price' in vals or 'lot_size' in vals:
@@ -459,6 +469,8 @@ class qoqa_offer_position(orm.Model):
         else:
             return super(qoqa_offer_position, self).\
                 write(cr, uid, ids, vals, context=context)
+
+
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
                                  lot_size, date_begin, time_begin,

@@ -839,3 +839,15 @@ msgid "<p class=\"oe_view_nocontent_create\">\n"
 "            "
 msgstr ""
 
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "Error :"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "You cannot select a delivery date in the past"
+msgstr ""
+

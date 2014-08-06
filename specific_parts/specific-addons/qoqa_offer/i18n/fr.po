@@ -753,4 +753,15 @@ msgstr "<p class=\"oe_view_nocontent_create\">\n"
 "                Cliquer pour créer une nouvelle phrase d'achat.\n"
 "              </p>\n"
 "            "
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "Error :"
+msgstr "Erreur :"
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "You cannot select a delivery date in the past"
+msgstr "Vous ne pouvez sélectionner une date de livraison dans le passé"
 

@@ -360,6 +360,7 @@ class qoqa_offer_position(orm.Model):
         'max_sellable': 3,
         'lot_size': 1,
         'active': 1,
+        'date_delivery': lambda *a: (datetime.now() + timedelta(days=13)).strftime("%Y-%m-%d")
     }
 
     _sql_constraints = [
@@ -422,8 +423,8 @@ class qoqa_offer_position(orm.Model):
         default = default.copy()
         if self.browse(cr,uid,id,context=context).date_delivery:
             Date = datetime.strptime(fields.date.context_today(self,cr,uid,context=context), '%Y-%m-%d')
-            current_date_plus_15_days = Date + timedelta(days=15)
-            default.update({'date_delivery': current_date_plus_15_days.strftime('%Y-%m-%d')})
+            current_date_plus_13_days = Date + timedelta(days=13)
+            default.update({'date_delivery': current_date_plus_13_days.strftime('%Y-%m-%d')})
         return super(qoqa_offer_position, self).copy_data(cr, uid, id, default=default, context=context)
         
     def write(self, cr, uid, ids, vals, context=None):

@@ -20,6 +20,7 @@
     position: absolute;
     top: 40mm;
     left: 0mm;
+    width: 24mm;
     height: 24mm;
     -webkit-transform: rotate(-90deg);
 }

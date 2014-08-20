@@ -74,19 +74,24 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         """ Set the Free Text on label for SAV
 
         On merchandise return we need the RMA number on it
+        On deliveries, we need the offer ID and the sale ID
 
         """
         attributes = super(PostlogisticsWebServiceQoQa, self
                           )._prepare_attributes(picking)
 
-        if picking.claim_id and picking.type == 'in':
+        if picking.type == 'out' and picking.offer_id and picking.sale_id:
+            attributes['FreeText'] = picking.offer_id.ref + \
+                                     "." + \
+                                     picking.sale_id.name
+        elif picking.type == 'in' and picking.claim_id:
             attributes['FreeText'] = picking.claim_id.number
         return attributes
 
     def _prepare_customer(self, picking):
         """ Create a ns0:Customer as a dict from picking
 
-        Change Postlogistic Customer, thus the sender by 
+        Change Postlogistic Customer, thus the sender by
         your customer's address for RMA claim
 
         :param picking: picking browse record

@@ -16,9 +16,20 @@
     top: 40mm;
     left: 20mm;
 }
+.sender_address {
+    position: absolute;
+    top: 40mm;
+    left: 0mm;
+    height: 24mm;
+    -webkit-transform: rotate(-90deg);
+}
 .recipient{
     border-collapse: collapse;
     font-size: 70%;
+}
+.sender{
+    border-collapse: collapse;
+    font-size: 50%;
 }
 .code {
     margin-left: 1px;
@@ -64,7 +75,13 @@
             ${helper.embed_image('png', company.swiss_pp_stamp_image, width=58, unit='mm')|n}
         </div>
         <% shop = picking.sale_id.shop_id %>
-        %if shop:
+        %if picking.type == 'in' and picking.claim_id:
+            <div class="sender_address">
+                <table class="sender">
+                    ${address(partner=picking.claim_id.delivery_address_id)}
+                </table>
+            </div>
+        %elif shop:
             <div class="logo">
                 ${helper.embed_image('png', shop.swiss_pp_logo, height=24, unit='mm')|n}
             </div>
@@ -72,9 +89,15 @@
         <% partner = picking.partner_id %>
         <% setLang(partner.lang) %>
         <div class="address">
-          %if picking.offer_id.ref and picking.sale_id.name and len(picking.move_lines) > 0 and picking.move_lines[0].tracking_id:
+          %if picking.type == 'out' and picking.offer_id.ref \
+          and picking.sale_id.name and len(picking.move_lines) > 0 \
+          and picking.move_lines[0].tracking_id:
               <div class="code">
                 ${picking.offer_id.ref}.${picking.sale_id.name}.${picking.move_lines[0].tracking_id.name}
+              </div>
+          %elif picking.type == 'in' and picking.claim_id:
+              <div class="code">
+                ${picking.claim_id.number}
               </div>
           %endif
           <table class="recipient">

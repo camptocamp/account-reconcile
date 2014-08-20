@@ -358,10 +358,12 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         move_line = {
             'journal_id': line['journal_id'],
             'name': line['name'],
-            'account_id': partner.property_account_receivable.id,
+            'account_id': line['credit'] > 0 and
+                          partner.property_account_receivable.id or
+                          partner.property_account_payable.id,
             'partner_id': partner_id,
-            'credit': 0,
-            'debit': line['credit'],
+            'credit': line['debit'] > 0 and line['debit'] or 0,
+            'debit': line['credit'] > 0 and line['credit'] or 0,
             'date': line['date'],
         }
         if line.get('currency_id'):
@@ -481,15 +483,21 @@ class VoucherIssuanceLineMapper(BaseLineMapper):
 
     @mapping
     def credit(self, record):
-        return {'credit': -record['amount'] / 100}
+        if record['amount'] > 0:
+            return {'debit': record['amount'] / 100}
+        else:
+            return {'credit': -record['amount'] / 100}
 
     @mapping
     def credit_account(self, record):
         journal_id = self.options.journal.id
         journal = self.session.browse('account.journal', journal_id)
-        account = journal.default_credit_account_id
+        if record['amount'] > 0:
+            account = journal.default_debit_account_id
+        else:
+            account = journal.default_credit_account_id
         if not account:
-            raise MappingError('No Default Credit Account configured on '
+            raise MappingError('No Default Credit/Debit Account configured on '
                                'journal [%s] %s' %
                                (journal.code, journal.name))
         return {'account_id': account.id}

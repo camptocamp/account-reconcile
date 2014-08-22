@@ -484,9 +484,11 @@ class VoucherIssuanceLineMapper(BaseLineMapper):
     @mapping
     def credit(self, record):
         if record['amount'] > 0:
-            return {'debit': record['amount'] / 100}
+            return {'credit': 0,
+                    'debit': record['amount'] / 100}
         else:
-            return {'credit': -record['amount'] / 100}
+            return {'credit': -record['amount'] / 100,
+                    'debit': 0}
 
     @mapping
     def credit_account(self, record):

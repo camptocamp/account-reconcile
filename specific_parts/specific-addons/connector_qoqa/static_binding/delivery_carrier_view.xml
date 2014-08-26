@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record id="view_delivery_carrier_form" model="ir.ui.view">
+            <field name="name">delivery.carrier.form</field>
+            <field name="model">delivery.carrier</field>
+            <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+            <field name="arch" type="xml">
+                <field name="active" position="after">
+                    <group name="connector" string="Connector" colspan="4">
+                        <field name="qoqa_bind_service_ids" attrs="{'invisible': [('qoqa_type', '!=', 'service')]}">
+                            <tree string="Services">
+                                <field name="qoqa_id"/>
+                              </tree>
+                            <form string="Services">
+                                <field name="qoqa_id"/>
+                            </form>
+                        </field>
+                        <field name="qoqa_bind_rate_ids" attrs="{'invisible': [('qoqa_type', '!=', 'rate')]}">
+                            <tree string="Services">
+                                <field name="qoqa_id"/>
+                              </tree>
+                            <form string="Services">
+                                <field name="qoqa_id"/>
+                            </form>
+                        </field>
+                    </group>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

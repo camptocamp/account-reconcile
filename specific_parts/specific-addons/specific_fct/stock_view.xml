@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record id="vpicktree" model="ir.ui.view">
+      <field name="name">stock.picking.tree</field>
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.vpicktree"/>
+      <field name="arch" type="xml">
+        <field name="name" position="after">
+          <field name="number_of_products" invisible="1"/>
+        </field>
+      </field>
+    </record>
+    <record id="view_picking_internal_search" model="ir.ui.view">
+      <field name="name">stock.picking.internal.search</field>
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+      <field name="arch" type="xml">
+        <field name="stock_journal_id" position="after">
+          <field name="number_of_products"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_picking_out_tree" model="ir.ui.view">
+      <field name="name">stock.picking.out.tree</field>
+      <field name="model">stock.picking.out</field>
+      <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+      <field name="arch" type="xml">
+        <field name="name" position="after">
+          <field name="number_of_products" invisible="1"/>
+        </field>
+      </field>
+    </record>
+    <record id="view_picking_out_search" model="ir.ui.view">
+      <field name="name">stock.picking.out.search</field>
+      <field name="model">stock.picking.out</field>
+      <field name="inherit_id" ref="stock.view_picking_out_search"/>
+      <field name="arch" type="xml">
+        <field name="company_id" position="after">
+          <field name="number_of_products"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_picking_in_tree" model="ir.ui.view">
+      <field name="name">stock.picking.in.tree</field>
+      <field name="model">stock.picking.in</field>
+      <field name="inherit_id" ref="stock.view_picking_in_tree"/>
+      <field name="arch" type="xml">
+        <field name="name" position="after">
+          <field name="number_of_products" invisible="1"/>
+        </field>
+      </field>
+    </record>
+    <record id="view_picking_in_search" model="ir.ui.view">
+      <field name="name">stock.picking.in.search</field>
+      <field name="model">stock.picking.in</field>
+      <field name="inherit_id" ref="stock.view_picking_in_search"/>
+      <field name="arch" type="xml">
+        <field name="product_id" position="after">
+          <field name="number_of_products"/>
+        </field>
+      </field>
+    </record>
+  </data>
+</openerp>
+

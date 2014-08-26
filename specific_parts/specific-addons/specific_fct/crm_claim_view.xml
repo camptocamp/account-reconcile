@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_crm_case_claims_filter" model="ir.ui.view">
+            <field name="name">crm.claim.filter</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" string="Claims" position="before">
+                    <field name="description"/>
+                </field>
+            </field>
+        </record>
+
+     </data>
+</openerp>

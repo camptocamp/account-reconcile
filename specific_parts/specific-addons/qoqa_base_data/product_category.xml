@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="product_categ_historical" model="product.category">
+            <field name="name">Historique</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+    </data>
+</openerp>

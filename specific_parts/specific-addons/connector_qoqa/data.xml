@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record model="res.users" id="user_connector_ch">
+            <field name="name">Connecteur CH</field>
+            <field name="login">connector_ch</field>
+            <field name="active" eval="False"/>
+            <field name="notification_email_send">none</field>
+        </record>
+
+        <record model="res.users" id="user_connector_fr">
+            <field name="name">Connecteur FR</field>
+            <field name="login">connector_fr</field>
+            <field name="active" eval="False"/>
+            <field name="notification_email_send">none</field>
+        </record>
+
+        <record model="qoqa.backend" id="qoqa_backend_config">
+            <field name="name">QoQa Services</field>
+            <field name="url">http://admin.test02.qoqa.com</field>
+            <field name="version">v1</field>
+            <field name="default_lang_id" ref="base.lang_en"/>
+            <field name="debug" eval="1"/>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_customer_service">
+            <field name="name">Customer service</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="connector_ecommerce.product_product_discount"/>
+            <field name="qoqa_id">1</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_marketing">
+            <field name="name">Marketing</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">2</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_affiliation">
+            <field name="name">Affiliation</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">3</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_staff">
+            <field name="name">Staff</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">4</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_mailing">
+            <field name="name">Mailing</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_marketing_coupon"/>
+            <field name="qoqa_id">5</field>
+        </record>
+
+        <record model="qoqa.promo.type" id="promo_type_refund_coupon">
+            <field name="name">Bon remboursement</field>
+            <field name="backend_id" ref="qoqa_backend_config"/>
+            <field name="product_id" ref="qoqa_base_data.product_product_refund_coupon"/>
+            <field name="qoqa_id"></field>
+        </record>
+
+        <record id="excep_wrong_total_amount" model="sale.exception">
+            <field name="name">Total Amount differs from QoQa</field>
+            <field name="description">The amount computed in OpenERP doesn't match with the amount in QoQa.</field>
+            <field name="sequence">30</field>
+            <field name="model">sale.order</field>
+            <field name="code">if order.qoqa_bind_ids and abs(order.amount_total - order.qoqa_bind_ids[0].qoqa_amount_total) >= 0.01:
+    failed = True</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_sale_order" model="ir.cron">
+            <field name="name">QoQa - Import Sales Orders</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_sale_order'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_res_partner" model="ir.cron">
+            <field name="name">QoQa - Import Customers</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_res_partner'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_address" model="ir.cron">
+            <field name="name">QoQa - Import Addresses</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_address'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_accounting_issuance" model="ir.cron">
+            <field name="name">QoQa - Import Accounting Issuances</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_accounting_issuance'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_offer" model="ir.cron">
+            <field name="name">QoQa - Import Offers Descriptions</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_offer'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_qoqa_import_offer_position" model="ir.cron">
+            <field name="name">QoQa - Import Offers Positions Descriptions</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'qoqa.backend'" name="model"/>
+            <field eval="'_scheduler_import_offer_position'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+    </data>
+</openerp>

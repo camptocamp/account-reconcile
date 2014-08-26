@@ -1,0 +1,136 @@
+-
+  !record {model: ir.values, id: scenario.ir_values_product_taxes_ch}:
+      name        : taxes_id
+      model       : product.product
+      key         : default
+      value       : |
+                    (lp0
+                    L3L
+                    a.
+      company_id  : scenario.qoqa_ch
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_product_taxes_fr}:
+      name        : taxes_id
+      model       : product.product
+      key         : default
+      value       : |
+                    (lp0
+                    L21L
+                    a.
+      company_id  : scenario.qoqa_fr
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_product_taxes_holding}:
+      name        : taxes_id
+      model       : product.product
+      key         : default
+      value       : |
+                    (lp0
+                    L3L
+                    aL21L
+                    a.
+      company_id  : base.main_company
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_product_supplier_taxes_ch}:
+      name        : supplier_taxes_id
+      model       : product.product
+      key         : default
+      value       : |
+                    (lp0
+                    L2L
+                    a.
+      company_id  : scenario.qoqa_ch
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_product_supplier_taxes_fr}:
+      name        : supplier_taxes_id
+      model       : product.product
+      key         : default
+      value       : |
+                    (lp0
+                    L20L
+                    a.
+      company_id  : scenario.qoqa_fr
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_product_supplier_taxes_holding}:
+      name        : supplier_taxes_id
+      model       : product.product
+      key         : default
+      value       : |
+                    (lp0
+                    L2L
+                    aL20L
+                    a.
+      company_id  : base.main_company
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_template_taxes_ch}:
+      name        : taxes_id
+      model       : product.template
+      key         : default
+      value       : |
+                    (lp0
+                    L3L
+                    a.
+      company_id  : scenario.qoqa_ch
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_template_taxes_fr}:
+      name        : taxes_id
+      model       : product.template
+      key         : default
+      value       : |
+                    (lp0
+                    L21L
+                    a.
+      company_id  : scenario.qoqa_fr
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_template_taxes_holding}:
+      name        : taxes_id
+      model       : product.template
+      key         : default
+      value       : |
+                    (lp0
+                    L3L
+                    aL21L
+                    a.
+      company_id  : base.main_company
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_template_supplier_taxes_ch}:
+      name        : supplier_taxes_id
+      model       : product.template
+      key         : default
+      value       : |
+                    (lp0
+                    L2L
+                    a.
+      company_id  : scenario.qoqa_ch
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_template_supplier_taxes_fr}:
+      name        : supplier_taxes_id
+      model       : product.template
+      key         : default
+      value       : |
+                    (lp0
+                    L20L
+                    a.
+      company_id  : scenario.qoqa_fr
+      key2        :
+-
+  !record {model: ir.values, id: scenario.ir_values_template_supplier_taxes_holding}:
+      name        : supplier_taxes_id
+      model       : product.template
+      key         : default
+      value       : |
+                    (lp0
+                    L2L
+                    aL20L
+                    a.
+      company_id  : base.main_company
+      key2        :

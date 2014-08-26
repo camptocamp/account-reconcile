@@ -1,0 +1,105 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* specific_fct
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-10 09:04+0000\n"
+"PO-Revision-Date: 2014-04-10 09:04+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: specific_fct
+#: view:sale.order:0
+msgid "Cancel Order"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_stock_picking_out
+#, python-format
+msgid "Delivery Orders"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_stock_picking_in
+#, python-format
+msgid "Incoming Shipments"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_account_invoice
+#, python-format
+msgid "Invoice"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products_4965
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products_4966
+#: field:stock.picking,number_of_products:0
+#: field:stock.picking.in,number_of_products:0
+#: field:stock.picking.out,number_of_products:0
+msgid "Number of products"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_res_partner
+#, python-format
+msgid "Partner"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_stock_picking
+#, python-format
+msgid "Picking List"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_product_template
+#, python-format
+msgid "Product Template"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_related_dispatch_ids_4996
+#: field:stock.picking.in,related_dispatch_ids:0
+msgid "Related Dispatch Picking"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_sale_order
+#, python-format
+msgid "Sales Order"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_sale_order_line
+#, python-format
+msgid "Sales Order Line"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
+#: field:product.template,variant_codes:0
+msgid "Variants References"
+msgstr ""
+
+#. module: specific_fct
+#: view:product.product:0
+msgid "{'required': [('type', '=', 'product')]}"
+msgstr ""
+

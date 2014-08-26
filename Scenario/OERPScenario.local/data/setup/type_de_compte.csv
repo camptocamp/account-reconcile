@@ -1,0 +1,14 @@
+id,code,note,close_method,report_type,name
+account.account_type_asset_view_X,asset,,None,Balance Sheet (Asset account),X Asset View
+account.data_account_type_asset_X,asset,,Balance,Balance Sheet (Asset account),X Asset
+account.data_account_type_bank_X,bank,,Balance,Balance Sheet (Asset account),X Bank
+account.conf_account_type_equity_X,equity,,Balance,Balance Sheet (Liability account),X Equity
+account.account_type_expense_view_X,expense,,None,Profit & Loss (Expense account),X Expense View
+account.data_account_type_expense_X,expense,,None,Profit & Loss (Expense account),X Expense
+account.data_account_type_income_X,income,,None,Profit & Loss (Income account),X Income
+account.account_type_liability_view_X,liability,,None,Balance Sheet (Liability account),X Liability View
+account.data_account_type_liability_X,liability,,Balance,Balance Sheet (Liability account),X Liability
+account.data_account_type_payable_X,payable,,Unreconciled,Balance Sheet (Liability account),X Payable
+account.data_account_type_receivable_X,receivable,,Unreconciled,Balance Sheet (Asset account),X Receivable
+account.account_type_income_view_X,view,,None,Profit & Loss (Income account),X Income View
+account.data_account_type_view_X,view,,None,/,X Root/View

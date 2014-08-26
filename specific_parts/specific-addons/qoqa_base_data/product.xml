@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!--
+        Bon cadeau: connector_ecommerce.product_product_gift
+        Bon rabais: connector_ecommerce.product_product_discount
+        Bon marketing: qoqa_base_data.product_product_marketing_coupon
+        Bon remboursement: qoqa_base_data.product_product_refund coupon
+        -->
+
+        <record id="connector_ecommerce.product_product_gift" model="product.product">
+            <field name="default_code">CADEAU</field>
+            <field name="name">Bon cadeau</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="connector_ecommerce.product_product_discount" model="product.product">
+            <field name="default_code">RABAIS</field>
+            <field name="name">Bon rabais</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="product_product_marketing_coupon" model="product.product">
+            <field name="default_code">MARKETING</field>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="type">service</field>
+            <field name="name">Bon marketing</field>
+            <field name="categ_id" ref="connector_ecommerce.product_categ_services"/>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="product_product_refund_coupon" model="product.product">
+            <field name="default_code">REMBOURSEMENT</field>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="type">service</field>
+            <field name="name">Bon remboursement</field>
+            <field name="categ_id" ref="connector_ecommerce.product_categ_services"/>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</openerp>

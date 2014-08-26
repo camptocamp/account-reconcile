@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <record id="view_qoqa_buyphrase_tree" model="ir.ui.view">
+            <field name="name">qoqa.buyphrase.tree</field>
+            <field name="model">qoqa.buyphrase</field>
+            <field name="arch" type="xml">
+                <tree string="QoQa Buyphrases">
+                    <field name="name"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_qoqa_buyphrase_form" model="ir.ui.view">
+            <field name="name">qoqa.buyphrase.form</field>
+            <field name="model">qoqa.buyphrase</field>
+            <field name="arch" type="xml">
+                <form string="QoQa Buyphrase" version="7.0">
+                    <group>
+                        <field name="name"/>
+                        <field name="qoqa_shop_id"/>
+                        <label for="description" colspan="4"/>
+                        <field name="description" colspan="4" nolabel="1"/>
+                        <field name="action"/>
+                        <field name="active"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_qoqa_buyphrase" model="ir.actions.act_window">
+            <field name="name">Buyphrases</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">qoqa.buyphrase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new buyphrase.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_qoqa_buyphrase"
+            name="Buyphrases"
+            parent="menu_qoqa_offer_config"
+            sequence="10" action="action_qoqa_buyphrase"/>
+    </data>
+</openerp>

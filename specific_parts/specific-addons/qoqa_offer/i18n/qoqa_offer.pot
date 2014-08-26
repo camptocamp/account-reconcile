@@ -1,0 +1,853 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* qoqa_offer
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-11 20:36+0000\n"
+"PO-Revision-Date: 2013-12-11 20:36+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: qoqa_offer
+#: field:delivery.carrier,qoqa_type:0
+#: model:ir.model.fields,field_description:qoqa_offer.field_delivery_carrier_qoqa_type
+msgid "Type on QoQa"
+msgstr ""
+
+#. module: qoqa_offer
+#: selection:delivery.carrier,qoqa_type:0
+msgid "Service"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_title
+#: view:qoqa.offer:0
+#: field:qoqa.offer,title:0
+msgid "Title"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Internal Description"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Group By..."
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_offer
+#: view:qoqa.offer:0
+msgid "QoQa Offer"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_datetime_begin
+#: field:qoqa.offer,datetime_begin:0
+msgid "Begins at"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_progress
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_stock_progress
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_progress
+#: field:qoqa.offer,stock_progress:0
+#: field:qoqa.offer.position,stock_progress:0
+#: field:qoqa.offer.position.variant,stock_progress:0
+msgid "Progress"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_stock_residual
+#: field:qoqa.offer.position.variant,stock_residual:0
+msgid "Remaining"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Today"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_installment_price
+#: field:qoqa.offer.position,installment_price:0
+msgid "Installment Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_max_sellable
+#: field:qoqa.offer.position,max_sellable:0
+msgid "Max Sellable"
+msgstr ""
+
+#. module: qoqa_offer
+#: field:account.invoice,offer_id:0
+#: model:ir.model.fields,field_description:qoqa_offer.field_account_invoice_offer_id
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_offer_id
+#: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_offer_id
+#: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id
+#: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id_4516
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,offer_id:0
+#: view:sale.order:0
+#: field:sale.order,offer_id:0
+#: field:stock.picking,offer_id:0
+#: view:stock.picking.out:0
+#: field:stock.picking.out,offer_id:0
+msgid "Offer"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_message_unread
+#: view:qoqa.offer:0
+#: field:qoqa.offer,message_unread:0
+msgid "Unread Messages"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_company_id
+#: field:qoqa.offer,company_id:0
+msgid "Company"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_sum_residual
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_sum_residual
+#: field:qoqa.offer,sum_residual:0
+#: field:qoqa.offer.position,sum_residual:0
+msgid "Residual"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_booking_delivery
+#: field:qoqa.offer.position,booking_delivery:0
+msgid "Booking Delivery"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_order_url
+#: field:qoqa.offer.position,order_url:0
+msgid "Order URL"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_day
+#: view:qoqa.offer:0
+#: field:qoqa.offer,day:0
+msgid "Day"
+msgstr ""
+
+#. module: qoqa_offer
+#: constraint:qoqa.offer:0
+msgid "The pricelist and the shop must belong to the same company."
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_ecotax
+#: field:qoqa.offer.position,ecotax:0
+msgid "Ecotax"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_shipper_rate_id
+#: field:qoqa.offer,shipper_rate_id:0
+msgid "Shipper Rate"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers Today!"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_message_ids
+#: field:qoqa.offer,message_ids:0
+msgid "Messages"
+msgstr ""
+
+#. module: qoqa_offer
+#: selection:qoqa.offer.position,regular_price_type:0
+msgid "Direct Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_position_id
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position.variant,position_id:0
+msgid "Position"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_carrier_id
+#: field:qoqa.offer,carrier_id:0
+msgid "Delivery Method"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_pricelist_id
+#: field:qoqa.offer,pricelist_id:0
+msgid "Pricelist"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_qoqa_shop_id
+#: field:qoqa.buyphrase,qoqa_shop_id:0
+#: view:sale.order:0
+msgid "Shop"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_regular_price_type
+#: field:qoqa.offer.position,regular_price_type:0
+msgid "Regular Price Type"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Start"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,help:qoqa_offer.action_offer
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a new offer.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_tax_id
+#: field:qoqa.offer.position,tax_id:0
+msgid "Tax"
+msgstr ""
+
+#. module: qoqa_offer
+#: constraint:qoqa.offer:0
+msgid "The beginning date must be anterior to the ending date"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_date_warranty
+#: field:qoqa.offer,date_warranty:0
+msgid "Warranty Expiration"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_offer_position
+msgid "QoQa Offer Position"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_stock_picking_out
+msgid "Delivery Orders"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_sale_order_line
+msgid "Sales Order Line"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers +- 10 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.action_qoqa_buyphrase
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_buyphrase
+msgid "Buyphrases"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "+- 10 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.action_offer
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_offer
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_offer_config
+#: view:qoqa.offer:0
+msgid "Offers"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_message_follower_ids
+#: field:qoqa.offer,message_follower_ids:0
+msgid "Followers"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_stock_picking
+msgid "Picking List"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Ref"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_image_small
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_image_small
+#: field:qoqa.offer,image_small:0
+#: field:qoqa.offer.position,image_small:0
+msgid "Thumbnail"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "View Sales Orders"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_bias
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_bias
+#: field:qoqa.offer,stock_bias:0
+#: field:qoqa.offer.position,stock_bias:0
+msgid "Stock Bias"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Offers +- 30 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Prices"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_brand
+#: field:qoqa.offer,main_brand:0
+msgid "Main Brand"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Configuration"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "With bias:"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_shop_kanban_image
+#: field:qoqa.offer,shop_kanban_image:0
+msgid "Shop Image"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Dates"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_openerp_id
+#: field:qoqa.shop,openerp_id:0
+msgid "Sale Shop"
+msgstr ""
+
+#. module: qoqa_offer
+#: selection:qoqa.offer.position,regular_price_type:0
+msgid "Normal Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_date_end_calendar
+#: field:qoqa.offer,date_end_calendar:0
+msgid "Ends at (Calendar)"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_offer_position_variant
+msgid "QoQa Offer Position Variant"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_shop
+#: view:qoqa.offer:0
+msgid "QoQa Shop"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_buy_price
+#: field:qoqa.offer.position,buy_price:0
+msgid "Buy Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_date_delivery
+#: field:qoqa.offer.position,date_delivery:0
+msgid "Delivery Date"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Group by day in +- 10 days."
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Month"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_currency_symbol
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_currency_id
+#: field:qoqa.offer,currency_symbol:0
+#: field:qoqa.offer.position,currency_id:0
+msgid "Currency"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_line_qoqa_bind_ids
+#: field:sale.order.line,qoqa_bind_ids:0
+msgid "QBindings"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Open Sales Orders"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_delivery_service
+msgid "Delivery Service"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_date_begin
+#: field:qoqa.offer,date_begin:0
+msgid "Start Date"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_template_brand
+#: field:product.template,brand:0
+msgid "Brand"
+msgstr ""
+
+#. module: qoqa_offer
+#: sql_constraint:qoqa.offer.position:0
+msgid "Lot size must be a value greater than 0."
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer.position,sequence:0
+msgid "The first position is the main one"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_line_offer_position_id
+#: field:sale.order.line,offer_position_id:0
+msgid "Offer Position"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_progress_remaining
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_stock_progress_remaining
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_progress_remaining
+#: field:qoqa.offer,stock_progress_remaining:0
+#: field:qoqa.offer.position,stock_progress_remaining:0
+#: field:qoqa.offer.position.variant,stock_progress_remaining:0
+msgid "Remaining (%)"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "End"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:stock.picking.out:0
+msgid "Status"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_sale_shop_kanban_image
+#: field:sale.shop,kanban_image:0
+msgid "Kanban Image"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_top_price
+#: field:qoqa.offer.position,top_price:0
+msgid "Top Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_date_begin_calendar
+#: field:qoqa.offer,date_begin_calendar:0
+msgid "Begins at (Calendar)"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_sale_ids
+#: field:qoqa.offer,sale_ids:0
+msgid "Sales Orders"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_position_id
+#: field:qoqa.offer,main_position_id:0
+msgid "Main Position"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_time_end
+#: field:qoqa.offer,time_end:0
+msgid "End Time"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_message_is_follower
+#: field:qoqa.offer,message_is_follower:0
+msgid "Is a Follower"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_sale_shop
+msgid "Sales Shop"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_active
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_active
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_active
+#: field:qoqa.buyphrase,active:0
+#: field:qoqa.offer,active:0
+#: field:qoqa.offer.position,active:0
+msgid "Active"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_poste_cumbersome_package
+#: field:qoqa.offer.position,poste_cumbersome_package:0
+msgid "Poste Cumbersome Package"
+msgstr ""
+
+#. module: qoqa_offer
+#: selection:qoqa.offer.position,regular_price_type:0
+msgid "No Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_lang_id
+#: field:qoqa.offer,lang_id:0
+msgid "Language"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_ids
+#: view:qoqa.offer:0
+#: field:qoqa.offer,position_ids:0
+msgid "Positions"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_message_summary
+#: field:qoqa.offer,message_summary:0
+msgid "Summary"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_ref
+#: field:qoqa.offer,ref:0
+msgid "Offer Reference"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_action
+#: field:qoqa.buyphrase,action:0
+msgid "Action"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Search Sales Offer"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_sum_quantity
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_quantity
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_sum_quantity
+#: field:qoqa.offer,sum_quantity:0
+#: field:qoqa.offer.position,sum_quantity:0
+#: field:qoqa.offer.position.variant,quantity:0
+msgid "Quantity"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer,date_end_calendar:0
+msgid "When an ending date is date_begin + 1 day at 00:00 this date is set at date_begin, so the calendar won't display the offer on 2 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Stock:"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Various"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_progress_with_bias
+#: field:qoqa.offer,stock_progress_with_bias:0
+msgid "Remaining with Bias (%)"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:addons/qoqa_offer/qoqa_offer.py:107
+#, python-format
+msgid "...?"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_regular_price
+#: field:qoqa.offer.position,regular_price:0
+msgid "Regular Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Content"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_product_name
+#: field:qoqa.offer,main_product_name:0
+msgid "Main Product Name"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_regular_price
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_unit_price
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_unit_price
+#: field:qoqa.offer,main_regular_price:0
+#: field:qoqa.offer,main_unit_price:0
+#: field:qoqa.offer.position,unit_price:0
+msgid "Unit Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Bias:"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:sale.shop,kanban_image:0
+msgid "Image displayed on the Kanban views for this shop"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Stock"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_product_id
+#: field:qoqa.offer.position.variant,product_id:0
+msgid "Product"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_description
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_description
+#: field:qoqa.buyphrase,description:0
+#: field:qoqa.offer,description:0
+msgid "Description"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_time_begin
+#: field:qoqa.offer,time_begin:0
+msgid "Start Time"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_note
+#: field:qoqa.offer,note:0
+msgid "Internal Notes"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_buyphrase_id
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,buyphrase_id:0
+msgid "Buyphrase"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.buyphrase:0
+msgid "QoQa Buyphrases"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_ids
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,variant_ids:0
+msgid "Variants"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_sum_stock_sold
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_stock_sold
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_sum_stock_sold
+#: field:qoqa.offer,sum_stock_sold:0
+#: field:qoqa.offer.position,sum_stock_sold:0
+#: field:qoqa.offer.position.variant,stock_sold:0
+msgid "Sold"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:sale.order:0
+msgid "Customer"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_date_end
+#: field:qoqa.offer,date_end:0
+msgid "End Date"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_name
+#: field:qoqa.offer,name:0
+msgid "Ref and Name"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_product_template
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_product_tmpl_id
+#: field:qoqa.offer.position,product_tmpl_id:0
+msgid "Product Template"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_image_medium
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_image_medium
+#: field:qoqa.offer,image_medium:0
+#: field:qoqa.offer.position,image_medium:0
+msgid "Medium-sized Image"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_delivery_carrier
+msgid "Carrier"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "+- 30 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "％"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_qoqa_buyphrase
+#: view:qoqa.buyphrase:0
+msgid "QoQa Buyphrase"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.picking_dispatch_create_act_window
+msgid "Create Picking Dispatch"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer,message_ids:0
+msgid "Messages and communication history"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_sequence
+#: field:qoqa.offer.position,sequence:0
+msgid "Sequence"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_qoqa_shop_id
+#: field:qoqa.offer,qoqa_shop_id:0
+msgid "Sell on"
+msgstr ""
+
+#. module: qoqa_offer
+#: selection:delivery.carrier,qoqa_type:0
+msgid "Rate"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_lot_size
+#: field:qoqa.offer.position,lot_size:0
+msgid "Lot Size"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_datetime_end
+#: field:qoqa.offer,datetime_end:0
+msgid "Ends at"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_name
+#: field:qoqa.buyphrase,name:0
+msgid "Phrase"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,help:qoqa_offer.action_qoqa_buyphrase
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a new buyphrase.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "Error :"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "You cannot select a delivery date in the past"
+msgstr ""
+

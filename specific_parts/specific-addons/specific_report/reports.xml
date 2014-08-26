@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <report
+      auto="False"
+      id="delivery.shipping_label_webkit"
+      model="stock.picking"
+      name="delivery.shipping.label.webkit"
+      file="specific_report/report/shipping_label.mako"
+      string="Shipping Label"
+      attachment_use="1"
+      multi="True"
+      webkit_header="specific_report.label_report_header"
+      header="False"
+      report_type="webkit"/>
+
+    <report auto="False"
+      id="account.account_invoices"
+      model="account.invoice"
+      name="account.invoice"
+      file="specific_report/report/account_invoice.mako"
+      string="Invoices"
+      attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/',''))"
+      attachment_use="True"
+      multi="True"
+      webkit_header="base_headers_webkit.base_reports_portrait_header"
+      report_type="webkit"/>
+      
+      
+    <report id="picking_dispatch.webkit_dispatch_order"
+            name="webkit.dispatch_order"
+            auto="False"
+            model="picking.dispatch"
+            file="specific_report/report/dispatch.html.mako"
+            string="Dispatch To Process"
+            report_type="webkit"
+            header="False"
+            webkit_header="base_headers_webkit.base_minimum_reports_portrait_header" />
+  </data>
+</openerp>

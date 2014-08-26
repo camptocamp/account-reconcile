@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="0">
+    <record model="crm.claim.stage" id="stage_response_received">
+      <field name="name">Response Received</field>
+      <field name="state">open</field>
+      <field name="sequence">26</field>
+      <field name="case_default" eval="True"/>
+      <!-- hides when not selected -->
+      <field name="fold" eval="True"/>
+    </record>
+  </data>
+
+  <data noupdate="1">
+    <record id="reopen_claim" model="ir.actions.server">
+      <field name="name">Re-open Claim</field>
+      <field name="state">code</field>
+      <field name="model_id" ref="crm_claim.model_crm_claim"/>
+      <field name="condition">object.state != 'draft'</field>
+      <field name="sequence">6</field>
+      <field name="code">
+stage_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'crm_claim_mail', 'stage_response_received')[1]
+object.write({'stage_id': stage_id})
+      </field>
+    </record>
+
+  </data>
+</openerp>

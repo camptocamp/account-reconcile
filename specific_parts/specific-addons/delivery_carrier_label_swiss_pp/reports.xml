@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <report
+      auto="False"
+      id="delivery.shipping_label_swiss_pp_webkit"
+      model="stock.picking"
+      name="delivery.shipping.label.swiss.pp.webkit"
+      file="delivery_carrier_label_swiss_pp/report/template/shipping_label.mako"
+      string="Shipping Label"
+      attachment_use="1"
+      multi="True"
+      webkit_header="delivery_carrier_label_swiss_pp.label_report_header"
+      header="False"
+      report_type="webkit"/>
+  </data>
+</openerp>

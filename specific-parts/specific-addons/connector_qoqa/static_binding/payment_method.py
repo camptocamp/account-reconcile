@@ -40,17 +40,20 @@ class payment_method(orm.Model):
         ),
         # TODO: not used actually, consider removal
         # because configured with a journal, a payment
-        # can be generated for the gift card, mimiting
+        # can be generated for the gift card, mimicking
         # what is happening on the QoQa backend
         'gift_card': fields.boolean(
             'Gift Card',
             help="Generates a gift line in the sales order."
         ),
         'active': fields.boolean('Active'),
+        'payment_cancellable_on_qoqa': fields.boolean(
+            'The payments can be cancelled (same day)'),
     }
 
     _defaults = {
         'active': True,
+        'payment_cancellable_on_qoqa': True,
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

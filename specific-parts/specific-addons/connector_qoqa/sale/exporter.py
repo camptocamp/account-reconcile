@@ -44,24 +44,6 @@ class CancelSalesOrder(ExportSynchronizer):
         return _('Sales order canceled on QoQa')
 
 
-@on_record_write(model_names='sale.order')
-def delay_cancel_sales_order(session, model_name, record_id, vals):
-    """ Delay a job to cancel a sales order. """
-    if session.context.get('connector_no_export'):
-        return
-    if 'state' not in vals:
-        return
-    sale = session.browse(model_name, record_id)
-    # canceled_in_backend means already canceled on QoQa
-    if sale.state == 'cancel' and not sale.canceled_in_backend:
-        for binding in sale.qoqa_bind_ids:
-            # cancel as early as possible
-            cancel_sales_order.delay(session,
-                                     binding._model._name,
-                                     binding.id,
-                                     priority=1)
-
-
 @job
 def cancel_sales_order(session, model_name, record_id):
     """ Cancel a Sales Order """

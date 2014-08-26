@@ -24,7 +24,7 @@
  'category': 'Connector',
  'depends': ['connector',
              'connector_ecommerce',
-             'sale',
+             'sale_stock',
              'qoqa_offer',
              'qoqa_base_data',
              ],

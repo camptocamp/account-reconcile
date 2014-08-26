@@ -1430,3 +1430,14 @@ msgstr ""
 msgid "or"
 msgstr ""
 
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/common.py:173
+#, python-format
+msgid "Order Cancellation"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_payment_cancellable_on_qoqa
+#: field:payment.method,field_payment_method_payment_cancellable_on_qoqa:0
+msgid "The payments can be cancelled (same day)"
+msgstr ""

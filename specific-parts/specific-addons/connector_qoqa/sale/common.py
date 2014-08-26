@@ -20,11 +20,21 @@
 ##############################################################################
 
 import json
+import logging
+from datetime import datetime, date
+from openerp import netsvc
 from openerp.osv import orm, fields
 import openerp.addons.decimal_precision as dp
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+from openerp.tools.translate import _
+from openerp.addons.connector.session import ConnectorSession
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
+from .exporter import cancel_sales_order
+
+
+_logger = logging.getLogger(__name__)
 
 
 class qoqa_sale_order(orm.Model):
@@ -105,6 +115,127 @@ class sale_order(orm.Model):
                 'reference': order.name,
             })
         return values
+
+    def action_cancel(self, cr, uid, ids, context=None):
+        """ Automatically cancel a sales orders and related documents.
+
+        If the sales order has been created and canceled the same day, a
+        direct call to the QoQa API will cancel the order, which will
+        cancel the payment as well (excepted for Paypal, handled
+        manually, hence the ``payment_method_id.payment_cancellable_on_qoqa``
+        field). Otherwise, a refund will be created.
+        """
+        if context is None:
+            context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        wf_service = netsvc.LocalService('workflow')
+        invoice_obj = self.pool['account.invoice']
+        refund_wiz_obj = self.pool['account.invoice.refund']
+        for order in self.browse(cr, uid, ids, context=context):
+            cancel_direct = False
+            if (order.qoqa_bind_ids and
+                    order.payment_method_id.payment_cancellable_on_qoqa):
+                # can be canceled only the day of the payment
+                order_date = datetime.strptime(order.date_order,
+                                               DEFAULT_SERVER_DATE_FORMAT)
+                if order_date.date() == date.today():
+                    cancel_direct = True
+            payment_ids = None
+            invoice_ids = None
+            if cancel_direct:
+                # If the order can be canceled on QoQa, the payment is
+                # canceled as well on QoQa so the internal payments
+                # can just be withdrawn.
+                # Otherwise, we have to keep them, they will be
+                # reconciled with the invoice
+                for payment in order.payment_ids:
+                    payment.unlink()
+            else:
+                # create the invoice, open it because we need the move
+                # lines so we'll be able to reconcile them with the
+                # payments
+                order.action_invoice_create(grouped=False,
+                                            states=['confirmed', 'done',
+                                                    'exception', 'draft'])
+                order.refresh()
+                invoices = order.invoice_ids
+                invoice_ids = [invoice.id for invoice in invoices]
+                for invoice in invoices:
+                    wf_service.trg_validate(uid, 'account.invoice',
+                                            invoice.id, 'invoice_open', cr)
+                    # create a refund since the payment cannot be
+                    # canceled
+                    ctx = context.copy()
+                    ctx.update({
+                        'active_model': 'account.invoice',
+                        'active_ids': [invoice.id],
+                    })
+                    wizard_id = refund_wiz_obj.create(
+                        cr, uid,
+                        {'filter_refund': 'refund',
+                         'description': _('Order Cancellation'),
+                         },
+                        context=ctx)
+                    refund_wiz_obj.invoice_refund(cr, uid, [wizard_id],
+                                                  context=ctx)
+                # We can't cancel an order with open invoices, but
+                # we still want to do that, because we need the move lines
+                # to be there to reconcile them with the payments. The
+                # sales order is really canceled though. So we disconnect the
+                # invoices then link them again after the cancellation.
+                # We have the same issue with the automatic payments so
+                # we use the same trick
+                payments = order.payment_ids
+                payment_ids = [payment.id for payment in payments]
+                payment_commands = [(3, pay_id) for pay_id in payment_ids]
+                invoice_commands = [(3, inv_id) for inv_id in invoice_ids]
+                order.write({'payment_ids': payment_commands,
+                             'invoice_ids': invoice_commands})
+
+            # cancel the pickings
+            for picking in order.picking_ids:
+                # draft pickings are already canceled by the cancellation
+                # of the sale order so we don't need to take care of
+                # them.
+
+                if picking.state not in ('draft', 'cancel', 'done'):
+                    wf_service.trg_validate(uid, 'stock.picking', picking.id,
+                                            'button_cancel', cr)
+
+            super(sale_order, self).action_cancel(cr, uid, [order.id],
+                                                  context=context)
+            if payment_ids:
+                payment_commands = [(4, pay_id) for pay_id in payment_ids]
+                invoice_commands = [(4, inv_id) for inv_id in invoice_ids]
+                order.write({'payment_ids': payment_commands,
+                             'invoice_ids': invoice_commands})
+
+        # only cancel on qoqa if all the cancellations succeeded
+
+        # canceled_in_backend means already canceled on QoQa
+        if not order.canceled_in_backend:
+            session = ConnectorSession(cr, uid, context=context)
+            for binding in order.qoqa_bind_ids:
+                # should be called at the very end of the method
+                # so we won't call 'cancel' on qoqa if something
+                # failed before
+                if cancel_direct:
+                    # we want to do a direct call to the API when the payment
+                    # can be canceled before midnight because the job may take
+                    # too long time to be executed
+                    cancel_sales_order(session, binding._model._name,
+                                       binding.id)
+                    _logger.info("Cancel order %s directly on QoQa",
+                                 binding.name)
+                else:
+                    # no timing issue in this one, the sales order must be
+                    # canceled but it can be done later
+                    cancel_sales_order.delay(session, binding._model._name,
+                                             binding.id, priority=1)
+                    _logger.info("Cancel order %s later (job) on QoQa",
+                                 binding.name)
+        return True
 
 
 @qoqa

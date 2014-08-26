@@ -1,0 +1,33 @@
+#!/bin/bash
+USAGE="Launch the Python unit tests for one or several modules using oe (openerp-command).\n
+Yaml tests are not executed with this tool.\n
+\n
+rununittests -m module[.submodule] [options]\n
+\n
+Options:\n
+-m or --module: This option is the module to test in 'module[.submodule]' notation.
+    Use 'openerp' for the core OpenERP tests.  Leave empty to run every
+    declared tests.  Give a module but no submodule to run all the
+    module's declared tests. If both the module and the submodule are
+    given, the sub-module can be run even if it is not declared in the
+    module.\n
+-h or --help: display this help\n
+--help-oe: openerp-command's help\n
+"
+
+OE=`dirname $0`/oe
+ROOTDIR=`dirname $0`/..
+DBNAME=${openerp:options.db_name}
+# extract the addons path from config file, openerp-command needs colons between paths
+ADDONS_PATH=$(sed -n 's/.*addons_path *= *\([^ ]*.*\)/\1/p' < $${ROOTDIR}/etc/openerp.cfg | sed 's/,/:/g')
+PORT=${openerp:options.xmlrpc_port}
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]
+then
+    echo -e $${USAGE}
+elif [ "$1" == "--help-oe" ]
+then
+    $${OE} run-tests --help
+else
+    $${OE} run-tests --database=$${DBNAME} --port=$${PORT} --addons=$${ADDONS_PATH} $@
+fi

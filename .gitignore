@@ -62,3 +62,4 @@ openerp-command/*
 upgrade.py
 docs-connector/*
 buildout.cfg
+auto-run/

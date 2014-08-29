@@ -58,6 +58,15 @@ class sale_order(orm.Model):
             vals['offer_id'] = order.offer_id.id
         return vals
 
+    def _prepare_order_line_procurement(self, cr, uid, order, line,
+                                        move_id, date_planned, context=None):
+        values = super(sale_order, self)._prepare_order_line_procurement(
+            cr, uid, order, line,
+            move_id, date_planned, context=context
+        )
+        values['offer_id'] = order.offer_id.id
+        return values
+
 
 class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'

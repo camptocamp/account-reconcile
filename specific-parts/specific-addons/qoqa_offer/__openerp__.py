@@ -41,6 +41,7 @@ when a product has variants, a position may sell several of them.
              'product_variant_simple',  # specific-addons
              'picking_dispatch',  # stock-logistic-flows
              'ecotax',
+             'procurement',
              ],
  'data': ['qoqa_offer_data.xml',
           'sale_order_view.xml',
@@ -49,6 +50,7 @@ when a product has variants, a position may sell several of them.
           'qoqa_offer_view.xml',
           'qoqa_buyphrase_view.xml',
           'delivery_carrier_view.xml',
+          'procurement_view.xml',
           'security/ir.model.access.csv',
           ],
  'test': [],

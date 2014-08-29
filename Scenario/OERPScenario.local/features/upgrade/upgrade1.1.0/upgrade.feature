@@ -7,7 +7,17 @@ Feature: upgrade to 1.1.0
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I update the module list
     Given I install the required modules with dependencies:
-      | name                                       |
+      | name           |
+      | connector_qoqa |
     Then my modules should have been installed and models reloaded
+
+    Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch
+    And having:
+      | key                         | value |
+      | payment_cancellable_on_qoqa | false |
+    Given I find a "payment.method" with oid: scenario.payment_method_paypal_fr
+    And having:
+      | key                         | value |
+      | payment_cancellable_on_qoqa | false |
 
     Given I set the version of the instance to "1.1.0"

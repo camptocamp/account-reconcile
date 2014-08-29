@@ -95,6 +95,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id_4516
+#: model:ir.model.fields,field_description:qoqa_offer.field_procurement_order_offer_id
 #: view:qoqa.offer:0
 #: field:qoqa.offer.position,offer_id:0
 #: view:sale.order:0
@@ -102,6 +103,8 @@ msgstr ""
 #: field:stock.picking,offer_id:0
 #: view:stock.picking.out:0
 #: field:stock.picking.out,offer_id:0
+#: view:procurement.order:0
+#: field:procurement.order,offer_id:0
 msgid "Offer"
 msgstr ""
 

@@ -1430,3 +1430,62 @@ msgstr ""
 msgid "or"
 msgstr ""
 
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_payment_cancellable_on_qoqa
+#: field:payment.method,field_payment_method_payment_cancellable_on_qoqa:0
+msgid "The payments can be cancelled (same day)"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/common.py:173
+#, python-format
+msgid "Order Cancellation"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_payment_cancellable_on_qoqa
+#: field:payment.method,field_payment_method_payment_cancellable_on_qoqa:0
+msgid "The payments can be cancelled (same day)"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/common.py:228
+#, python-format
+msgid "Impossible to cancel the sales order on the backend now."
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/invoice/common.py:99
+#, python-format
+msgid "Impossible to refund on the backend."
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/backend_adapter.py:59
+#, python-format
+msgid "Network Error"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/backend_adapter.py:61
+#, python-format
+msgid "API / Network Error"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/backend_adapter.py:64
+#, python-format
+msgid "Authentication Error"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/backend_adapter.py:67
+#, python-format
+msgid "Error(s) returned by QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/unit/backend_adapter.py:71
+#, python-format
+msgid "Unknown Error"
+msgstr ""

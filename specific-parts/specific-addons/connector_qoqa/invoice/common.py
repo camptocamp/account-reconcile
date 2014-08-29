@@ -30,16 +30,11 @@ Add a link between the refunds and the invoices that generated it.
 
 """
 
-from requests.exceptions import HTTPError, RequestException, ConnectionError
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.exception import NetworkRetryableError
 from .exporter import create_refund
-from ..exception import (QoQaResponseNotParsable,
-                         QoQaAPISecurityError,
-                         QoQaResponseError,
-                         )
+from ..unit.backend_adapter import api_handle_errors
 
 
 class account_invoice(orm.Model):
@@ -101,33 +96,12 @@ class account_invoice(orm.Model):
             session = ConnectorSession(cr, uid, context=context)
             # with .delay() it would be created in a job,
             # here it is called synchronously
-            try:
+            message = _('Impossible to refund on the backend.')
+            with api_handle_errors(message):
                 create_refund(session,
                               'account.invoice',
                               qsale.backend_id.id,
                               refund.id)
-            except NetworkRetryableError as err:
-                raise orm.except_orm(
-                    _('Network Error'),
-                    _('Impossible to refund on the backend.\n\n%s') % err)
-            except (HTTPError, RequestException, ConnectionError) as err:
-                raise orm.except_orm(
-                    _('API / Network Error'),
-                    _('Impossible to refund on the backend.\n\n%s') % err)
-            except QoQaAPISecurityError as err:
-                raise orm.except_orm(
-                    _('Authentication Error'),
-                    _('Impossible to refund on the backend.\n\n%s') % err)
-            except QoQaResponseError as err:
-                raise orm.except_orm(
-                    _('Error(s) on the QoQa Backend'),
-                    unicode(err))
-            except QoQaResponseNotParsable as err:
-                # The response from the backend cannot be parsed, not a
-                # JSON.  So we don't know what the error is.
-                raise orm.except_orm(
-                    _('Unknown Error'),
-                    _('The backend failed to create the refund.'))
         return True
 
     def invoice_validate(self, cr, uid, ids, context=None):

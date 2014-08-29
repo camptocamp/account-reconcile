@@ -29,7 +29,7 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
 
-from ..unit.backend_adapter import QoQaAdapter
+from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
 from ..backend import qoqa
 from .exporter import cancel_sales_order
 
@@ -130,7 +130,6 @@ class sale_order(orm.Model):
         if isinstance(ids, (int, long)):
             ids = [ids]
         wf_service = netsvc.LocalService('workflow')
-        invoice_obj = self.pool['account.invoice']
         refund_wiz_obj = self.pool['account.invoice.refund']
         for order in self.browse(cr, uid, ids, context=context):
             cancel_direct = False
@@ -224,17 +223,20 @@ class sale_order(orm.Model):
                     # we want to do a direct call to the API when the payment
                     # can be canceled before midnight because the job may take
                     # too long time to be executed
-                    cancel_sales_order(session, binding._model._name,
-                                       binding.id)
                     _logger.info("Cancel order %s directly on QoQa",
                                  binding.name)
+                    message = _('Impossible to cancel the sales order '
+                                'on the backend now.')
+                    with api_handle_errors(message):
+                        cancel_sales_order(session, binding._model._name,
+                                           binding.id)
                 else:
                     # no timing issue in this one, the sales order must be
                     # canceled but it can be done later
-                    cancel_sales_order.delay(session, binding._model._name,
-                                             binding.id, priority=1)
                     _logger.info("Cancel order %s later (job) on QoQa",
                                  binding.name)
+                    cancel_sales_order.delay(session, binding._model._name,
+                                             binding.id, priority=1)
         return True
 
 

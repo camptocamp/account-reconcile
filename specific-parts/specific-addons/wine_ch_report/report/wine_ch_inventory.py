@@ -32,7 +32,8 @@ from openerp.addons.wine_ch_report.wine_bottle import volume_to_string
 class WineCHInventoryWebkit(report_sxw.rml_parse):
 
     def __init__(self, cr, uid, name, context):
-        super(WineCHInventoryWebkit, self).__init__(cr, uid, name, context=context)
+        super(WineCHInventoryWebkit, self).__init__(cr, uid, name,
+                                                    context=context)
         self.pool = pooler.get_pool(self.cr.dbname)
         self.cursor = self.cr
 
@@ -56,12 +57,26 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         """
         cr = self.cursor
         cr.execute("SELECT p.id, t.name, wmk.name, b.volume,"
-                   "       CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END AS qty,"
-                   "       (CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END) * b.volume AS sum"
+                   "       CASE "
+                   "       WHEN q1.qty_in IS NULL THEN 0 "
+                   "       ELSE q1.qty_in "
+                   "       END - CASE "
+                   "       WHEN q2.qty_out IS NULL THEN 0 "
+                   "       ELSE q2.qty_out END AS qty,"
+                   "       (CASE "
+                   "        WHEN q1.qty_in IS NULL THEN 0 "
+                   "        ELSE q1.qty_in "
+                   "        END - CASE "
+                   "        WHEN q2.qty_out IS NULL THEN 0 "
+                   "        ELSE q2.qty_out "
+                   "        END) * b.volume AS sum"
                    "  FROM product_product p "
-                   "  INNER JOIN product_template t ON (p.product_tmpl_id=t.id) "
-                   "  INNER JOIN wine_bottle b ON (b.id=t.wine_bottle_id) "
-                   "  INNER JOIN attribute_option wmk ON (wmk.id=t.x_winemaker) "
+                   "  INNER JOIN product_template t "
+                   "  ON (p.product_tmpl_id=t.id) "
+                   "  INNER JOIN wine_bottle b "
+                   "  ON (b.id=t.wine_bottle_id) "
+                   "  INNER JOIN attribute_option wmk "
+                   "  ON (wmk.id=t.x_winemaker) "
                    "  LEFT OUTER JOIN "
                    "    (SELECT p.id, sum(m.product_qty) AS qty_in"
                    "      FROM stock_move m "
@@ -96,10 +111,14 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                     set_id,
                     ))
         rows = cr.fetchall()
-        volumes = set(vol for pid, pname, winemaker, vol, qty, sum_vol in rows if qty > 0)
+        volumes = set(
+            vol for pid, pname, winemaker, vol, qty, sum_vol in rows if qty > 0
+        )
         volumes = [v for v in sorted(list(volumes), reverse=True)]
-        wine_lines = dict((pid, (pname, winemaker, {vol: '%i' % qty}, sum_vol))
-                          for pid, pname, winemaker, vol, qty, sum_vol in rows if qty > 0)
+        wine_lines = dict(
+            (pid, (pname, winemaker, {vol: '%i' % qty}, sum_vol))
+            for pid, pname, winemaker, vol, qty, sum_vol in rows if qty > 0
+        )
         return volumes, wine_lines
 
     def _get_wine_ids(self, class_id, color):
@@ -109,24 +128,26 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         are listed first
         """
         product_obj = self.pool.get('product.product')
-        product_ids = product_obj.search(self.cr, self.uid,
-                [('wine_class_id', '=', class_id),
-                 ('x_wine_type', '=', color)]
-                )
+        product_ids = product_obj.search(
+            self.cr, self.uid,
+            [('wine_class_id', '=', class_id),
+             ('x_wine_type', '=', color)]
+        )
         products = product_obj.browse(self.cr, self.uid, product_ids)
-        products.sort(key=lambda prod: prod.wine_bottle_id.volume, reverse=True)
+        products.sort(key=lambda prod: prod.wine_bottle_id.volume,
+                      reverse=True)
         return [p.id for p in products]
 
     def set_context(self, objects, data, ids, report_type=None):
-        """Populate a wine_report_lines attribute on each browse record that will be used
-        by mako template"""
-
+        """Populate a wine_report_lines attribute on each browse record
+        that will be used by mako template"""
         # Reading form
 
         inventory_date = self._get_inventory_date(data)
         location_ids = self._get_location_ids(data)
         attribute_set_id = self._get_attribute_set_id(data)
-        wine_bottles, wine_lines = self._get_sum_volume_by_wine(location_ids, attribute_set_id, inventory_date)
+        wine_bottles, wine_lines = self._get_sum_volume_by_wine(
+            location_ids, attribute_set_id, inventory_date)
         wine_classes = self._get_wine_classes(wine_lines.keys())
         wine_types = self._get_wine_types()
 
@@ -139,8 +160,8 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
             'get_wine_ids': self._get_wine_ids,
             'format_volume': volume_to_string,
             })
-        return super(WineCHInventoryWebkit, self).set_context(objects, data, ids,
-                                                           report_type=report_type)
+        return super(WineCHInventoryWebkit, self).set_context(
+            objects, data, ids, report_type=report_type)
 
     def _get_info(self, data, field):
         return data.get('form', {}).get(field)
@@ -178,19 +199,22 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         # get parents of those leaves
         ancestor_ids = []
         for leaf in leaf_classes:
-            ancestor_ids += class_obj.search(self.cr, self.uid,
-                    [('parent_left', '<', leaf.parent_left),
-                     ('parent_left', '<', leaf.parent_right),
-                     ('parent_right', '>', leaf.parent_left),
-                     ('parent_right', '>', leaf.parent_right),
-                     ])
+            ancestor_ids += class_obj.search(
+                self.cr, self.uid,
+                [('parent_left', '<', leaf.parent_left),
+                 ('parent_left', '<', leaf.parent_right),
+                 ('parent_right', '>', leaf.parent_left),
+                 ('parent_right', '>', leaf.parent_right),
+                 ])
 
         class_ids = [c for c in class_ids if c in ancestor_ids + leaf_ids]
         return class_obj.browse(self.cr, self.uid, class_ids)
 
     def _get_wine_types(self):
         option_obj = self.pool.get('attribute.option')
-        option_ids = option_obj.search(self.cr, self.uid, [('attribute_id.name', '=', 'x_wine_type')])
+        option_ids = option_obj.search(
+            self.cr, self.uid,
+            [('attribute_id.name', '=', 'x_wine_type')])
         return option_obj.browse(self.cr, self.uid, option_ids)
 
     def _search_wine_set_id(self):
@@ -209,7 +233,8 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         return model_obj.search(self.cr, self.uid, [])
 
 
-report_sxw.report_sxw('report.wine.ch.inventory.webkit',
-                      'wine.ch.inventory.wizard',
-                      'addons/wine_ch_report/report/templates/wine_ch_inventory.mako.html',
-                      parser=WineCHInventoryWebkit)
+report_sxw.report_sxw(
+    'report.wine.ch.inventory.webkit',
+    'wine.ch.inventory.wizard',
+    'addons/wine_ch_report/report/templates/wine_ch_inventory.mako.html',
+    parser=WineCHInventoryWebkit)

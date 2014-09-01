@@ -2,6 +2,7 @@
 
 __name__ = "move unit_price to lot_price "
 
+
 def migrate(cr, version):
     if not version:
         return

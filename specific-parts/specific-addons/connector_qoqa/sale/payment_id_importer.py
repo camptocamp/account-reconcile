@@ -70,7 +70,8 @@ class ImportPaymentId(ConnectorUnit):
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
         try:
-            methods = ((payment, _get_payment_method(self, payment, company_id))
+            methods = ((payment,
+                        _get_payment_method(self, payment, company_id))
                        for payment in qpayments)
         except FailedJobError:
             if historic_import(self, record).historic:

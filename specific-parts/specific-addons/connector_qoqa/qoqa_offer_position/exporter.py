@@ -25,12 +25,10 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   )
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
-                                            on_record_unlink,
                                             )
 from ..backend import qoqa
 from .. import consumer
 from ..unit.export_synchronizer import QoQaExporter, Translations
-from ..unit.delete_synchronizer import QoQaDeleteSynchronizer
 from ..unit.mapper import (m2o_to_backend,
                            floatqoqa,
                            date_to_iso8601,
@@ -95,7 +93,8 @@ class OfferPositionExportMapper(ExportMapper):
               ('max_sellable', 'max_sellable'),
               ('lot_size', 'lot_size'),
               (m2o_to_backend('buyphrase_id'), 'buyphrase_id'),
-              (m2o_to_backend('product_tmpl_id', binding='qoqa.product.template'),
+              (m2o_to_backend('product_tmpl_id',
+                              binding='qoqa.product.template'),
                'product_id'),
               (m2o_to_backend('tax_id'), 'vat_id'),
               (m2o_to_backend('offer_id'), 'deal_id'),

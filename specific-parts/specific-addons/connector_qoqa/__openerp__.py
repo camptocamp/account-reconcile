@@ -69,4 +69,4 @@ Synchronize OpenERP with the different QoQa Stores
           ],
  'installable': True,
  'application': True,
-}
+ }

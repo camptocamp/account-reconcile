@@ -49,6 +49,7 @@ In addition to its export job, an exporter has to:
 
 """
 
+
 class QoQaBaseExporter(ExportSynchronizer):
     """ Base exporter for QoQa """
 
@@ -187,10 +188,12 @@ class QoQaExporter(QoQaBaseExporter):
         :type relation: :py:class:`openerp.osv.orm.browse_record`
         :param binding_model: name of the binding model for the relation
         :type binding_model: str | unicode
-        :param exporter_cls: :py:class:`openerp.addons.connector.connector.ConnectorUnit`
+        :param exporter_cls: :py:class:`openerp.addons.connector.\
+                                        connector.ConnectorUnit`
                              class or parent class to use for the export.
                              By default: QoQaExporter
-        :type exporter_cls: :py:class:`openerp.addons.connector.connector.MetaConnectorUnit`
+        :type exporter_cls: :py:class:`openerp.addons.connector.\
+                                       connector.MetaConnectorUnit`
         """
         if not relation:
             return
@@ -214,7 +217,8 @@ class QoQaExporter(QoQaBaseExporter):
             # qoqa.product.product, it is exported, but we need to
             # create the binding for the template.
             else:
-                with self.session.change_context({'connector_no_export': True}):
+                ctx = {'connector_no_export': True}
+                with self.session.change_context(ctx):
                     with self.session.change_user(SUPERUSER_ID):
                         bind_values = {'backend_id': self.backend_record.id,
                                        'openerp_id': relation.id}
@@ -362,6 +366,7 @@ class QoQaExporter(QoQaBaseExporter):
                 return _('Nothing to export.')
             self.qoqa_id = self._create(record)
         return _('Record exported with ID %s on QoQa.') % self.qoqa_id
+
 
 @qoqa
 class Translations(ConnectorUnit):

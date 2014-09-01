@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Simple Product Variants',
- 'version' : '1.0',
+{'name': 'Simple Product Variants',
+ 'version': '1.0',
  'category': '',
  'description': """
 Simple Product Variants
@@ -32,11 +32,11 @@ all the bells and whistles of the product_variant_multi
 module (generators wizards, ...).
 
 """,
- 'author' : 'Camptocamp',
+ 'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends' : ['product',
-              ],
+ 'depends': ['product',
+             ],
  'data': ['product_view.xml',
           'security/security.xml',
           ],

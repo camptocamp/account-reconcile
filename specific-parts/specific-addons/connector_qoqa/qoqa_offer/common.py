@@ -25,9 +25,6 @@ import urlparse
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 
-from openerp.addons.connector.session import ConnectorSession
-
-from ..connector import get_environment
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 

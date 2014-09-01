@@ -18,7 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import re
 from openerp.osv import orm, fields
 
 
@@ -28,7 +27,8 @@ class product_template(orm.Model):
     """
     _inherit = 'product.template'
 
-    def _get_variant_codes(self, cr, uid, ids, field_names, args, context=None):
+    def _get_variant_codes(self, cr, uid, ids, field_names, args,
+                           context=None):
         res = {}
         for template in self.browse(cr, uid, ids, context=context):
             refs = ('[%s]' % product.default_code for product
@@ -95,12 +95,13 @@ class product_template(orm.Model):
         result = self.name_get(cr, uid, ids, context=context)
         return result
 
+
 class product_product(orm.Model):
     """
     Do not copy the ean13 product code
     """
     _inherit = 'product.product'
-    
+
     def copy(self, cr, uid, id, default=None, context=None):
         if default is None:
             default = {}
@@ -109,12 +110,17 @@ class product_product(orm.Model):
         return super(product_product, self).copy(cr, uid, id, default, context)
 
 
-
 class product_supplierinfo(orm.Model):
     _inherit = 'product.supplierinfo'
     _name = "product.supplierinfo"
 
     # Re-definition of product_code to be mandatory
     _columns = {
-        'product_code': fields.char('Supplier Product Code', size=64, help="This supplier's product code will be used when printing a request for quotation. Keep empty to use the internal one.", required=True),
+        'product_code': fields.char(
+            'Supplier Product Code',
+            size=64,
+            help="This supplier's product code will be used when printing "
+                 "a request for quotation. Keep empty to "
+                 "use the internal one.",
+            required=True),
     }

@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp.osv import orm
 
 
 class mail_compose_message(orm.TransientModel):
@@ -30,7 +30,8 @@ class mail_compose_message(orm.TransientModel):
             cr, uid, model, res_id, context=context)
         if model == 'crm.claim':
             claim_obj = self.pool[model]
-            body = claim_obj.message_quote(cr, uid, res_id,limit=2, context=context)
+            body = claim_obj.message_quote(cr, uid, res_id,
+                                           limit=2, context=context)
             if body:
                 values['body'] = body
         return values

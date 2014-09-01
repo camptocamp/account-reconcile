@@ -48,7 +48,8 @@ class ProductAttribute(ConnectorUnit):
                        `attribute_set_id` field
         :type record: :py:class:`openerp.osv.orm.browse_record`
         :param translatable: indicates if we want all attributes (None),
-                             only translatable (True) or non translatable (False)
+                             only translatable (True) or non
+                             translatable (False)
         :type translatable: None | boolean
         """
         result = {}

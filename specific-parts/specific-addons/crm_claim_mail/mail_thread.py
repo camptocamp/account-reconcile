@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-import email
 import re
 import types
 from openerp.addons.mail.mail_thread import decode_header, mail_thread
@@ -49,7 +48,8 @@ def is_dsn(message):
 
     """
     return (message.is_multipart() and len(message.get_payload()) > 1 and
-            message.get_payload(1).get_content_type() == 'message/delivery-status')
+            message.get_payload(1).get_content_type() ==
+            'message/delivery-status')
 
 
 def claim_subject_route(mail_thread, cr, uid, message, custom_values=None,
@@ -92,6 +92,8 @@ def claim_subject_route(mail_thread, cr, uid, message, custom_values=None,
 # we need to monkey patch message_route because inheriting
 # mail_thread is not applied!
 old_message_route = mail_thread.message_route
+
+
 def message_route(self, cr, uid, message, model=None, thread_id=None,
                   custom_values=None, context=None):
     # first search if the email is a response to a claim with the

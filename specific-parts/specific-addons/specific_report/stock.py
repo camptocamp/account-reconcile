@@ -20,11 +20,12 @@
 ##############################################################################
 from openerp.osv import orm
 
+
 class stock_location(orm.Model):
     _inherit = "stock.location"
 
     def _product_get_report(self, cr, uid, ids, product_ids=False,
-            context=None, recursive=False):
+                            context=None, recursive=False):
         """ Ugly copy of _product_get_report to overwrite it to simply
         add description_warehouse.
 
@@ -37,15 +38,19 @@ class stock_location(orm.Model):
         """
         if context is None:
             context = {}
-        product_obj = self.pool.get('product.product')
+        product_obj = self.pool['product.product']
         # Take the user company and pricetype
-        context['currency_id'] = self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id
+        user_obj = self.pool['res.users']
+        user = user_obj.browse(cr, uid, uid, context=context)
+        context['currency_id'] = user.company_id.currency_id.id
 
-        # To be able to offer recursive or non-recursive reports we need to prevent recursive quantities by default
+        # To be able to offer recursive or non-recursive reports we need
+        # to prevent recursive quantities by default
         context['compute_child'] = False
 
         if not product_ids:
-            product_ids = product_obj.search(cr, uid, [], context={'active_test': False})
+            product_ids = product_obj.search(cr, uid, [],
+                                             context={'active_test': False})
 
         products = product_obj.browse(cr, uid, product_ids, context=context)
         products_by_uom = {}
@@ -68,7 +73,7 @@ class stock_location(orm.Model):
                 ctx = context.copy()
                 ctx['uom'] = uom_id
                 qty = fnc(cr, uid, id, [x.id for x in products_by_uom[uom_id]],
-                        context=ctx)
+                          context=ctx)
                 for product_id in qty.keys():
                     if not qty[product_id]:
                         continue
@@ -77,23 +82,26 @@ class stock_location(orm.Model):
 
                     # Compute based on pricetype
                     # Choose the right filed standard_price to read
-                    amount_unit = product.price_get('standard_price', context=context)[product.id]
+                    price_get = product.price_get('standard_price',
+                                                  context=context)
+                    amount_unit = price_get[product.id]
                     price = qty[product_id] * amount_unit
 
                     total_price += price
                     result['product'].append({
                         'price': amount_unit,
                         'prod_name': product.name,
-                        'code': product.default_code, # used by lot_overview_all report!
+                        # used by lot_overview_all report!
+                        'code': product.default_code,
                         'variants': product.variants or '',
                         'uom': product.uom_id.name,
                         'prod_qty': qty[product_id],
                         'price_value': price,
-#######################################################
-# Start of change 1/1
+                        #######################################################
+                        # Start of change 1/1
                         'description_warehouse': product.description_warehouse,
-# End of change 1/1
-########################################################
+                        # End of change 1/1
+                        #######################################################
                     })
         result['total'] = quantity_total
         result['total_price'] = total_price

@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'QoQa Offers with Historical Margin',
- 'version' : '1.0',
+{'name': 'QoQa Offers with Historical Margin',
+ 'version': '1.0',
  'category': '',
  'description': """
 QoQa Offer
@@ -27,12 +27,12 @@ QoQa Offer
 
 Adds historical margin to *Offer* models.
 """,
- 'author' : 'Camptocamp',
+ 'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends' : ['qoqa_offer',
-              'product_historical_margin',
-              ],
+ 'depends': ['qoqa_offer',
+             'product_historical_margin',
+             ],
  'data': ['qoqa_offer_view.xml',
           'account_invoice_view.xml',
           ],

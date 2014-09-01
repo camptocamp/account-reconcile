@@ -31,7 +31,7 @@ from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
                                                      SpecialOrderLineBuilder,
                                                      )
 from ..backend import qoqa
-from ..unit.mapper import iso8601_to_utc, qoqafloat
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -82,7 +82,8 @@ class SaleOrderLineImportMapper(ImportMapper):
             values.update(self._item_shipping(line, map_record.parent))
 
         elif type_id == QOQA_ITEM_DISCOUNT:
-            values.update(self._item_discount(line, map_record.source['promo']))
+            values.update(self._item_discount(line,
+                                              map_record.source['promo']))
 
         return values
 

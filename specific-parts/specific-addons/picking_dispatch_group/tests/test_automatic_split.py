@@ -218,7 +218,8 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(moves), 19)
 
     def test_group_limit(self):
-        """ With grouping packs, no grouping of leftovers and a limit of 2 without threshold.
+        """ With grouping packs, no grouping of leftovers and a limit of
+        2 without threshold.
 
         Given the input packs, we should have dispatches with identical
         content as following:
@@ -398,7 +399,8 @@ class test_automatic_group(common.TransactionCase):
         self.assertEquals(len(moves), 19)
 
     def test_group_limit_threshold(self):
-        """ With grouping packs, no grouping of leftovers and a limit of 2 with threshold.
+        """ With grouping packs, no grouping of leftovers and a limit of
+        2 with threshold.
 
         Given the input packs, we should have dispatches with identical
         content as following:

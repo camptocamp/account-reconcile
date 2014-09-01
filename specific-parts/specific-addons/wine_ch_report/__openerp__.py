@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'Swiss Wine Reports',
- 'version' : '0.1',
+{'name': 'Swiss Wine Reports',
+ 'version': '0.1',
  'category': '',
  'description': """
 Swiss Wine Reports
@@ -31,10 +31,10 @@ It uses the custom attributes on the products to add the fields used in
 the report only on products using a 'Wine' attribute set.
 
 """,
- 'author' : 'Camptocamp',
+ 'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends' : [
+ 'depends': [
      'base',
      'report_webkit',
      'product_custom_attributes',

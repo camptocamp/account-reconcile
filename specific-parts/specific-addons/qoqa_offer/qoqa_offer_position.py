@@ -27,7 +27,6 @@ from openerp.osv import orm, fields
 from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            DEFAULT_SERVER_DATETIME_FORMAT)
 import openerp.addons.decimal_precision as dp
-from .qoqa_offer import qoqa_offer
 from openerp.tools.translate import _
 
 
@@ -43,7 +42,6 @@ class qoqa_offer_position_variant(orm.Model):
         :rtype: dict
         """
         res = {}
-        sale_line_obj = self.pool.get('sale.order.line')
         for variant in self.browse(cr, uid, ids, context=context):
             if not variant.exists():
                 # when we delete a variant from a position, the trigger
@@ -355,12 +353,16 @@ class qoqa_offer_position(orm.Model):
             'Poste Cumbersome Package'),
     }
 
+    def _default_date_delivery(self, cr, uid, context=None):
+        fmt = DEFAULT_SERVER_DATE_FORMAT
+        return (datetime.now() + timedelta(days=13)).strftime(fmt)
+
     _defaults = {
         'regular_price_type': 'normal',
         'max_sellable': 3,
         'lot_size': 1,
         'active': 1,
-        'date_delivery': lambda *a: (datetime.now() + timedelta(days=13)).strftime("%Y-%m-%d")
+        'date_delivery': _default_date_delivery,
     }
 
     _sql_constraints = [
@@ -404,16 +406,18 @@ class qoqa_offer_position(orm.Model):
             tmpl_obj.write(cr, uid, [tmpl_id],
                            {'list_price': price},
                            context=context)
-        if 'date_delivery' in vals:
-            if vals.get('date_delivery'):
-                self.check_date(cr,uid,vals.get('date_delivery'), context=context)
-
+        if vals.get('date_delivery'):
+            self.check_date(cr, uid, vals['date_delivery'],
+                            context=context)
         return res
 
-    def check_date(self,cr,uid,current_date,context=None):
-        if current_date < fields.date.context_today(self,cr,uid,context=context):
+    def check_date(self, cr, uid, current_date, context=None):
+        context_today = fields.date.context_today(self, cr, uid,
+                                                  context=context)
+        if current_date < context_today:
             raise orm.except_orm(
-                    _('Error'), _('You cannot select a delivery date in the past'))
+                _('Error'),
+                _('You cannot select a delivery date in the past'))
         else:
             return True
 
@@ -421,23 +425,27 @@ class qoqa_offer_position(orm.Model):
         if default is None:
             default = {}
         default = default.copy()
-        if self.browse(cr,uid,id,context=context).date_delivery:
-            Date = datetime.strptime(fields.date.context_today(self,cr,uid,context=context), '%Y-%m-%d')
-            current_date_plus_13_days = Date + timedelta(days=13)
-            default.update({'date_delivery': current_date_plus_13_days.strftime('%Y-%m-%d')})
-        return super(qoqa_offer_position, self).copy_data(cr, uid, id, default=default, context=context)
-        
+        if self.browse(cr, uid, id, context=context).date_delivery:
+            fmt = DEFAULT_SERVER_DATE_FORMAT
+            context_today = fields.date.context_today(self, cr, uid,
+                                                      context=context)
+            today = datetime.strptime(context_today, fmt)
+            today_plus_13_days = today + timedelta(days=13)
+            default.update({
+                'date_delivery': today_plus_13_days.strftime(fmt),
+            })
+        return super(qoqa_offer_position, self).copy_data(
+            cr, uid, id, default=default, context=context)
+
     def write(self, cr, uid, ids, vals, context=None):
         if isinstance(ids, (int, long)):
             ids = [ids]
-        
-        if 'date_delivery' in vals:
-            ''' 
-            We will check that the deleivery date is not anteri
-            '''
+
+        if vals.get('date_delivery'):
+            # We will check that the delivery date is not in the pas
             for position in self.browse(cr, uid, ids, context=context):
-                if vals.get('date_delivery'):
-                    self.check_date(cr,uid,vals.get('date_delivery'), context)
+                self.check_date(cr, uid, vals['date_delivery'],
+                                context=context)
 
         if 'current_unit_price' in vals or 'lot_size' in vals:
             for position in self.browse(cr, uid, ids, context=context):
@@ -470,8 +478,6 @@ class qoqa_offer_position(orm.Model):
         else:
             return super(qoqa_offer_position, self).\
                 write(cr, uid, ids, vals, context=context)
-
-
 
     def onchange_product_tmpl_id(self, cr, uid, ids, product_tmpl_id,
                                  lot_size, date_begin, time_begin,
@@ -523,8 +529,8 @@ class qoqa_offer_position(orm.Model):
         res['value'] = values
         return res
 
-    def onchange_current_price(self, cr, uid, ids, current_unit_price, lot_size,
-                               context=None):
+    def onchange_current_price(self, cr, uid, ids, current_unit_price,
+                               lot_size, context=None):
         res = {'value': {}}
         values = {
             'unit_price': current_unit_price,

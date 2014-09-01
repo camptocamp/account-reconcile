@@ -21,13 +21,14 @@
 
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
-                                            on_record_unlink,
                                             )
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 
 from ..product_attribute.exporter import ProductAttribute
-from ..product.exporter import delay_export_all_bindings as product_delay_export
+from ..product.exporter import (
+    delay_export_all_bindings as product_delay_export
+)
 from ..unit.export_synchronizer import QoQaExporter, Translations
 from .. import consumer
 from ..backend import qoqa

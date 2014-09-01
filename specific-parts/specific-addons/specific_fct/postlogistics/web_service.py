@@ -22,9 +22,8 @@
 from openerp.osv import orm
 from openerp.tools.translate import _
 
-from openerp.addons.delivery_carrier_label_postlogistics_shop_logo.postlogistics import (
-    web_service
-)
+from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
+    .postlogistics import web_service
 
 
 class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
@@ -78,12 +77,12 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
 
         """
         attributes = super(PostlogisticsWebServiceQoQa, self
-                          )._prepare_attributes(picking)
+                           )._prepare_attributes(picking)
 
         if picking.type == 'out' and picking.offer_id and picking.sale_id:
-            attributes['FreeText'] = picking.offer_id.ref + \
-                                     "." + \
-                                     picking.sale_id.name
+            attributes['FreeText'] = (picking.offer_id.ref +
+                                      "." +
+                                      picking.sale_id.name)
         elif picking.type == 'in' and picking.claim_id:
             attributes['FreeText'] = picking.claim_id.number
         return attributes
@@ -99,7 +98,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
 
         """
         customer = super(PostlogisticsWebServiceQoQa, self
-                          )._prepare_customer(picking)
+                         )._prepare_customer(picking)
 
         if picking.claim_id and picking.type == 'in':
             partner = picking.claim_id.delivery_address_id

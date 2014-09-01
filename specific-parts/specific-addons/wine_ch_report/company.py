@@ -26,5 +26,5 @@ class ResCompany(orm.Model):
     _inherit = 'res.company'
 
     _columns = {
-            'wine_exploitation_number': fields.char('Wine exploitation number')
-            }
+        'wine_exploitation_number': fields.char('Wine exploitation number'),
+    }

@@ -96,7 +96,8 @@ class SaleOrderImport(QoQaImportSynchronizer):
         rec = self.qoqa_record
         self._import_dependency(rec['shop_id'], 'qoqa.shop')
         self._import_dependency(rec['deal_id'], 'qoqa.offer')
-        self._import_dependency(rec['user_id'], 'qoqa.res.partner', always=True)
+        self._import_dependency(rec['user_id'], 'qoqa.res.partner',
+                                always=True)
         self._import_dependency(rec['billing_address_id'],
                                 'qoqa.address', always=True)
         self._import_dependency(rec['shipping_address_id'],
@@ -261,9 +262,11 @@ def _get_payment_method(connector_unit, payment, company_id):
     method_id = binder.to_openerp(qmethod_id, company_id=company_id)
     if not method_id:
         raise FailedJobError(
-            "The configuration is missing for the Payment Method with ID '%s'.\n\n"
+            "The configuration is missing for the Payment "
+            "Method with ID '%s'.\n\n"
             "Resolution:\n"
-            "- Go to 'Sales > Configuration > Sales > Customer Payment Method\n"
+            "- Go to "
+            "'Sales > Configuration > Sales > Customer Payment Method\n"
             "- Create a new Payment Method with qoqa_id '%s'\n"
             "-Eventually  link the Payment Method to an existing Workflow "
             "Process or create a new one." % (qmethod_id, qmethod_id))
@@ -375,7 +378,8 @@ class SaleOrderImportMapper(ImportMapper):
         qshop = self.session.read('qoqa.shop', qshop_id, ['company_id'])
         company_id = qshop['company_id'][0]
         try:
-            methods = ((payment, _get_payment_method(self, payment, company_id))
+            methods = ((payment,
+                        _get_payment_method(self, payment, company_id))
                        for payment in qpayments)
         except FailedJobError:
             if historic_import(self, record).historic:
@@ -483,7 +487,8 @@ class SaleOrderImportMapper(ImportMapper):
                 lines.append(line)
 
             elif type_id == QOQA_ITEM_SERVICE:
-                raise MappingError("Items of type 'Service' are not supported.")
+                raise MappingError("Items of type 'Service' are not "
+                                   "supported.")
 
         if details_by_id:
             # an or several item(s) have not been handled

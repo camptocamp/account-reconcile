@@ -65,7 +65,8 @@ _logger = logging.getLogger(__name__)
 
 
 @job
-def import_accounting_issuance(session, model_name, backend_id, qoqa_id, force=False):
+def import_accounting_issuance(session, model_name, backend_id, qoqa_id,
+                               force=False):
     """ Import an accounting issuance group from QoQa """
     env = get_environment(session, model_name, backend_id)
     dispatcher = env.get_connector_unit(AccountingIssuanceDispatcher)
@@ -355,12 +356,13 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         line = items[0][2]
         partner_id = line['partner_id']
         partner = self.session.browse('res.partner', partner_id)
+        account_id = (partner.property_account_receivable.id
+                      if line['credit'] > 0
+                      else partner.property_account_payable.id)
         move_line = {
             'journal_id': line['journal_id'],
             'name': line['name'],
-            'account_id': line['credit'] > 0 and
-                          partner.property_account_receivable.id or
-                          partner.property_account_payable.id,
+            'account_id': account_id,
             'partner_id': partner_id,
             'credit': line['debit'] > 0 and line['debit'] or 0,
             'debit': line['credit'] > 0 and line['credit'] or 0,
@@ -444,7 +446,8 @@ class PromoIssuanceLineMapper(BaseLineMapper):
         """
         amount = record['amount']
         assert amount, \
-            "lines without amount should be filtered in PromoIssuanceLineMapChild"
+            "lines without amount should be filtered " \
+            "in PromoIssuanceLineMapChild"
         if amount < 0:  # credit
             account = self.options.product.property_account_income
         else:  # debit

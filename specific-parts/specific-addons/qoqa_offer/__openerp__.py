@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name' : 'QoQa Offers',
- 'version' : '1.2',
+{'name': 'QoQa Offers',
+ 'version': '1.2',
  'category': '',
  'description': """
 QoQa Offer
@@ -32,16 +32,16 @@ A position has, roughly, a price and a quantity for a product template,
 when a product has variants, a position may sell several of them.
 
 """,
- 'author' : 'Camptocamp',
+ 'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends' : ['sale',
-              'sale_stock',
-              'delivery',
-              'product_variant_simple',  # specific-addons
-              'picking_dispatch',  # stock-logistic-flows
-              'ecotax',
-              ],
+ 'depends': ['sale',
+             'sale_stock',
+             'delivery',
+             'product_variant_simple',  # specific-addons
+             'picking_dispatch',  # stock-logistic-flows
+             'ecotax',
+             ],
  'data': ['qoqa_offer_data.xml',
           'sale_order_view.xml',
           'account_invoice_view.xml',

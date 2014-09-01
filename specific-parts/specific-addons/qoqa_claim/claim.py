@@ -21,6 +21,7 @@
 
 from openerp.osv import orm, fields
 
+
 class crm_claim(orm.Model):
     """ Crm claim
     """
@@ -36,4 +37,3 @@ class crm_claim(orm.Model):
             store=True,
             readonly=True),
     }
-

@@ -19,13 +19,11 @@
 #
 ##############################################################################
 
-{
- "name": "Account Ecotax",
+{"name": "Account Ecotax",
  "version": "1.0",
  "author": "Camptocamp",
  "category": "Specific Module",
- "description":
-"""
+ "description": """
 Add an "Ecotax" field on taxes to categorize them.
 """,
  "website": "http://camptocamp.com",
@@ -35,4 +33,4 @@ Add an "Ecotax" field on taxes to categorize them.
           ],
  "auto_install": False,
  "installable": True
-}
+ }

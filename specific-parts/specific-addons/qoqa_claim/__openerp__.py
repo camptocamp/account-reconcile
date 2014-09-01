@@ -37,9 +37,8 @@ Local claim customizations for QoQa.
 """,
  'images': [],
  'demo': [],
- 'data': [
-    'claim_view.xml',
- ],
+ 'data': ['claim_view.xml',
+          ],
  'installable': True,
  'application': True,
-}
+ }

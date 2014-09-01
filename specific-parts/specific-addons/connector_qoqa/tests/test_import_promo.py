@@ -42,4 +42,3 @@ class test_import_promo(QoQaTransactionCase):
         domain = [('qoqa_id', '=', '99999999')]
         qpromo_ids = self.QPromo.search(cr, uid, domain)
         self.assertEquals(len(qpromo_ids), 1)
-        qpromo = self.QPromo.browse(cr, uid, qpromo_ids[0])

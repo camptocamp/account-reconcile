@@ -46,6 +46,8 @@ class test_import_buyphrase(QoQaTransactionCase):
         buyphrase = self.Buyphrase.browse(cr, uid, buyphrase_ids[0])
         self.assertEquals(buyphrase.qoqa_shop_id.qoqa_id, '100')
         self.assertEquals(buyphrase.name, 'Nickel pour le Paleo !')
-        self.assertEquals(buyphrase.description, "<p>Oui, c'est ici que vous devez cliquer pour commander le produit du jour ! :)</p>")
+        self.assertEquals(buyphrase.description,
+                          "<p>Oui, c'est ici que vous devez cliquer pour "
+                          "commander le produit du jour ! :)</p>")
         self.assertTrue(buyphrase.active)
         self.assertEquals(buyphrase.action, 1)

@@ -28,10 +28,12 @@ from openerp.addons.connector.event import (on_record_create,
                                             )
 from ..backend import qoqa
 from .. import consumer
-from ..unit.export_synchronizer import QoQaExporter, Translations, export_record
+from ..unit.export_synchronizer import (QoQaExporter,
+                                        Translations,
+                                        export_record,
+                                        )
 from ..unit.mapper import m2o_to_backend
 from ..connector import utc_datetime_to_iso8601
-from ..qoqa_offer_position.exporter import delay_export as position_delay_export
 
 
 @on_record_create(model_names='qoqa.offer')

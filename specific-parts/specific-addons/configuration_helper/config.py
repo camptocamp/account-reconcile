@@ -39,33 +39,27 @@ class AbstractConfigSettings(orm.AbstractModel):
     def __init__(self, pool, cr):
         super(AbstractConfigSettings, self).__init__(pool, cr)
         if self._companyObject:
-            #print '    self._companyObject._columns.keys()', self._companyObject._columns.keys(), '\n\n'
             for field_key in self._companyObject._columns:
-                #print 'field_key', field_key
-                #allows to exclude some field
+                # allows to exclude some field
                 if self._filter_field(field_key):
+                    column = self._companyObject._columns[field_key]
                     args = ('company_id', field_key)
                     kwargs = {
-                        'string': self._companyObject._columns[field_key].string,
-                        'help': self._companyObject._columns[field_key].help,
-                        'type': self._companyObject._columns[field_key]._type,
+                        'string': column.string,
+                        'help': column.help,
+                        'type': column._type,
                     }
-                    #print '\n  __dict__:', self._companyObject._columns[field_key].__dict__, '\n  keys:', self._companyObject._columns[field_key].__dict__.keys()
-                    if '_obj' in self._companyObject._columns[field_key].__dict__.keys():
-                        kwargs['relation'] = \
-                            self._companyObject._columns[field_key]._obj
-                    if '_domain' in \
-                            self._companyObject._columns[field_key].__dict__.keys():
-                        kwargs['domain'] = \
-                            self._companyObject._columns[field_key]._domain
+                    if '_obj' in column.__dict__.keys():
+                        kwargs['relation'] = column._obj
+                    if '_domain' in column.__dict__.keys():
+                        kwargs['domain'] = column._domain
                     field_key = re.sub('^' + self._prefix, '', field_key)
-                    self._columns[field_key] = \
-                        fields.related(*args, **kwargs)
+                    self._columns[field_key] = fields.related(*args, **kwargs)
 
     _columns = {
         'company_id': fields.many2one(
             'res.company',
-            'Company',
+            string='Company',
             required=True),
     }
 
@@ -78,8 +72,8 @@ class AbstractConfigSettings(orm.AbstractModel):
     }
 
     def related_field_to_populate(self, cr, uid, field, context=None):
-        """Field with prefix name as 'module_' allows to
-        install module.
+        """ Field with prefix name as 'module_' allows to install module.
+
         'company_id' field is used to store values
         in the right companies"""
         if field != 'company_id' and field[:6] != 'module':
@@ -87,7 +81,7 @@ class AbstractConfigSettings(orm.AbstractModel):
         return False
 
     def onchange_company_id(self, cr, uid, ids, company_id, context=None):
-        " update related fields "
+        """ update related fields """
         values = {}
         values['currency_id'] = False
         if not company_id:
@@ -104,7 +98,7 @@ class AbstractConfigSettings(orm.AbstractModel):
         return {'value': values}
 
     def create(self, cr, uid, values, context=None):
-        "code from Yannick Vaucher (Camptocamp) "
+        """ code from Yannick Vaucher (Camptocamp) """
         id = super(AbstractConfigSettings, self).create(
             cr, uid, values, context=context)
         # Hack: to avoid some nasty bug, related fields are not written

@@ -157,32 +157,3 @@ class test_product_attributes(common.TransactionCase):
         self.Attribute.unlink(cr, uid, attr_ids)
         self.Set.unlink(cr, uid, self.set_id)
         super(test_product_attributes, self).tearDown()
-
-"""
-DELETE FROM attribute_option
-WHERE attribute_id IN (SELECT id FROM attribute_attribute
-                       WHERE field_id IN (SELECT id FROM ir_model_fields
-                                          WHERE name IN ('x_test_tmpl_char', 'x_test_char',
-                                                         'x_test_select', 'x_test_multiselect')
-));
-
-DELETE FROM attribute_location
-WHERE attribute_id IN (SELECT id FROM attribute_attribute
-                       WHERE field_id IN (SELECT id FROM ir_model_fields
-                                          WHERE name IN ('x_test_tmpl_char', 'x_test_char',
-                                                         'x_test_select', 'x_test_multiselect')
-));
-
-DELETE FROM attribute_attribute
-WHERE field_id IN (SELECT id FROM ir_model_fields
-                   WHERE name IN ('x_test_tmpl_char', 'x_test_char',
-                                  'x_test_select', 'x_test_multiselect'));
-
-
-DELETE FROM attribute_group WHERE name = 'Test Group';
-
-DELETE FROM attribute_set WHERE name = 'test';
-
-DELETE FROM ir_model_fields
-WHERE name IN ('x_test_tmpl_char', 'x_test_char', 'x_test_select', 'x_test_multiselect');
-"""

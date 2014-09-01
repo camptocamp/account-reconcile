@@ -31,4 +31,4 @@ before_script:
   - psql -c "CREATE USER ${db_user} WITH PASSWORD '${db_pass}' CREATEDB;" -U postgres
 
 script:
-  - flake8 ${TRAVIS_BUILD_DIR}/specific-parts/specific-addons --max-line-length=100 --exclude=__init__.py
+  - flake8 ${TRAVIS_BUILD_DIR}/specific-parts/specific-addons --exclude=__init__.py

@@ -12,9 +12,11 @@ virtualenv:
 
 before_install:
   - echo -e "Host bazaar.launchpad.net\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - echo -e "Host bazaar.camptocamp.net\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - mkdir ~/.bazaar
   - echo -e "[DEFAULT]\nlaunchpad_username = camptocamp-business-robot\n" > ~/.bazaar/bazaar.conf
   - echo -e "[Launchpad]\nhost = .launchpad.net\nscheme = ssh\n user = camptocamp-business-robot\n" > ~/.bazaar/authentication.conf
+  - echo -e "[c2cbazaar]\nhost = .camptocamp.net\nscheme = ssh\n user = camptocamp-business-robot\n" >> ~/.bazaar/authentication.conf
   - mkdir ${HOME}/.buildout
   - echo -e "[buildout]\neggs-directory = "${HOME}"/.eggs-cache\n" > ~/.buildout/default.cfg
 

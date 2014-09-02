@@ -19,11 +19,15 @@
 #
 ##############################################################################
 
-from openerp.osv import orm
+from openerp.osv import orm, fields
 
 
 class account_invoice(orm.Model):
     _inherit = 'account.invoice'
+
+    _columns = {
+        'validation_agreement': fields.boolean('Agreement to validation'),
+    }
 
     def action_move_create(self, cr, uid, ids, context=None):
         if isinstance(ids, (int, long)):

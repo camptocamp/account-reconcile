@@ -151,9 +151,17 @@ class qoqa_offer(orm.Model):
         for offer in self.browse(cr, uid, ids, context=context):
             quantity = 0
             residual = 0
+            is_online = True
+            online_failure = True
             for position in offer.position_ids:
                 quantity += position.sum_quantity
                 residual += position.sum_residual
+                # if one of the position has an offline stock,
+                # the global stock is maybe wrong so mark it as
+                # 'offline'
+                is_online = is_online and position.stock_is_online
+                online_failure = (online_failure and
+                                  position.stock_online_failure)
 
             progress = 0.0
             if quantity > 0:
@@ -166,6 +174,8 @@ class qoqa_offer(orm.Model):
                                       100)
 
             res[offer.id] = {
+                'stock_is_online': is_online,
+                'stock_online_failure': online_failure,
                 'sum_quantity': quantity,
                 'sum_residual': residual,
                 'sum_stock_sold': quantity - residual,
@@ -271,6 +281,20 @@ class qoqa_offer(orm.Model):
             string='Progress',
             type='float',
             readonly=True),
+        'stock_is_online': fields.function(
+            _get_stock,
+            string="Online Stock",
+            type='boolean',
+            multi='stock',
+            help="The stock displays the real online values when "
+                 "the offer is underway."),
+        'stock_online_failure': fields.function(
+            _get_stock,
+            string="Online Failure",
+            type='boolean',
+            multi='stock',
+            help="Failed to get the online stock, probably a network "
+                 "failure. Please retry."),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',

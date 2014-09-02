@@ -179,14 +179,21 @@ class qoqa_offer_position(orm.Model):
                           ('direct', 'Direct Price'),
                           ]
 
-    def _get_stock(self, cr, uid, ids, fields, args, context=None):
-        """Get stock numbers
+    def _get_stock_values(self, cr, uid, ids, context=None):
+        """Get stock values.
+
+        This method only computes "offline values", that means
+        the values computed using the OpenERP stock and sales.
+
+        The connector_qoqa module inherit from this method and adds the
+        "online values" logic: when an offer is in progress, the stock
+        values are read from the QoQa API so they are realtime and
+        thus more accurate.
 
         :returns: computed values
         :rtype: dict
         """
         res = {}
-
         for offer in self.browse(cr, uid, ids, context=context):
             quantity = 0
             residual = 0
@@ -199,6 +206,8 @@ class qoqa_offer_position(orm.Model):
                 progress = ((quantity - residual) / quantity) * 100
 
             res[offer.id] = {
+                'stock_is_online': False,  # changes in connector_qoqa
+                'stock_online_failure': False,  # changes in connector_qoqa
                 'sum_quantity': quantity,
                 'sum_stock_sold': quantity - residual,
                 'sum_residual': residual,
@@ -206,6 +215,9 @@ class qoqa_offer_position(orm.Model):
                 'stock_progress_remaining': 100 - progress,
             }
         return res
+
+    def _get_stock(self, cr, uid, ids, fields, args, context=None):
+        return self._get_stock_values(cr, uid, ids, context=context)
 
     def _get_image(self, cr, uid, ids, fieldnames, args, context=None):
         res = {}
@@ -322,6 +334,20 @@ class qoqa_offer_position(orm.Model):
         'buyphrase_id': fields.many2one('qoqa.buyphrase',
                                         string='Buyphrase'),
         'order_url': fields.char('Order URL'),
+        'stock_is_online': fields.function(
+            _get_stock,
+            string="Online Stock",
+            type='boolean',
+            multi='stock',
+            help="The stock displays the real online values when "
+                 "the offer is underway."),
+        'stock_online_failure': fields.function(
+            _get_stock,
+            string="Online Failure",
+            type='boolean',
+            multi='stock',
+            help="Failed to get the online stock, probably a network "
+                 "failure. Please retry."),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',

@@ -39,6 +39,7 @@ from ..connector import utc_datetime_to_iso8601
 @on_record_create(model_names='qoqa.offer')
 @on_record_write(model_names='qoqa.offer')
 def delay_export(session, model_name, record_id, vals):
+    # TODO: direct export
     if 'stock_bias' in vals and not session.context.get('connector_no_export'):
         # particular case: stock_bias is stored in the positions on
         # the QoQa backend, delay export of all positions

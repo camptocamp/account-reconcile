@@ -21,6 +21,7 @@
 
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
+from openerp.addons.connector.session import ConnectorSession
 from ..backend import qoqa
 from ..unit.backend_adapter import QoQaAdapter
 from ..unit.binder import QoQaBinder
@@ -44,6 +45,27 @@ class qoqa_offer_position(orm.Model):
         ('qoqa_uniq', 'unique(qoqa_id)',
          "An offer position with the same ID on QoQa already exists"),
     ]
+
+    def _get_stock_values(self, cr, uid, ids, context=None):
+        """Get stock values.
+
+        The original method computes "offline values", that means
+        the values computed using the OpenERP stock and sales.
+
+        This inherit of the method adds the "online values" logic: when
+        an offer is in progress, the stock values are read from the QoQa
+        API so they are realtime and thus more accurate.
+
+        When the QoQa API can't be accessed, it fallbacks to the
+        offline values.
+
+        :returns: computed values
+        :rtype: dict
+        """
+        values = super(qoqa_offer_position, self)._get_stock_values(
+            cr, uid, ids, context=context)
+        session = ConnectorSession(cr, uid, context=context)
+        return values
 
     def copy_data(self, cr, uid, id, default=None, context=None):
         if default is None:
@@ -73,6 +95,17 @@ class qoqa_offer_position(orm.Model):
 class OfferPositionAdapter(QoQaAdapter):
     _model_name = 'qoqa.offer.position'
     _endpoint = 'offer'
+
+    def stock_values(self, id):
+        """ Read the sold and reserved stock values on QoQa """
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'get_stock'}
+        response = self.client.get(url + str(id),
+                                   params=payload,
+                                   headers=headers)
+        response = self._handle_response(response)
+        return response['data']
 
 
 @qoqa

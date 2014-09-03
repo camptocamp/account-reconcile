@@ -24,7 +24,6 @@ import logging
 from openerp.tools.translate import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
-from openerp.addons.connector.event import on_record_write
 from ..connector import get_environment
 from ..backend import qoqa
 

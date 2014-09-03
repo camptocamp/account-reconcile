@@ -157,3 +157,27 @@ class crm_claim(orm.Model):
 
             body = '<br/>'.join(body)
             return body
+
+    def case_closed(self, cr, uid, ids, context=None):
+        """ Mark the claim as closed: state=done """
+        for claim in self.browse(cr, uid, ids, context=context):
+            stage_id = self.stage_find(cr, uid, [claim],
+                                       claim.section_id.id or False,
+                                       [('state', '=', 'done')],
+                                       context=context)
+            if stage_id:
+                self.case_set(cr, uid, [claim.id], values_to_update={},
+                              new_stage_id=stage_id, context=context)
+        return True
+
+    def message_post(self, cr, uid, thread_id, body='', subject=None,
+                     type='notification', subtype=None, parent_id=False,
+                     attachments=None, context=None,
+                     content_subtype='html', **kwargs):
+        result = super(crm_claim, self).message_post(
+            cr, uid, thread_id, body=body, subject=subject, type=type,
+            subtype=subtype, parent_id=parent_id, attachments=attachments,
+            context=context, content_subtype=content_subtype, **kwargs)
+        if type == 'comment':
+            self.case_closed(cr, uid, thread_id, context=context)
+        return result

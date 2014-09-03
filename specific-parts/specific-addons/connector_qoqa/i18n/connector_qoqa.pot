@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-26 09:43+0000\n"
-"PO-Revision-Date: 2014-06-26 09:43+0000\n"
+"POT-Creation-Date: 2014-09-03 12:04+0000\n"
+"PO-Revision-Date: 2014-09-03 12:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,33 +16,19 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.stock.picking:0
-msgid "A delivery order can be exported only once on the same backend"
+#: sql_constraint:qoqa.promo.issuance.line:0
+msgid "A promo issuance line can be exported only once on the same backend"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.stock.picking:0
-msgid "A delivery order with the same ID on QoQa already exists"
+#: view:qoqa.backend:0
+msgid "Import 1 offer position"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.product.product:0
-msgid "A product can be exported only once on the same backend"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:qoqa.product.template:0
-msgid "A product template can be exported only once on the same backend"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:qoqa.product.template:0
-msgid "A product template with the same ID on QoQa already exists"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:qoqa.product.product:0
-msgid "A product with the same ID on QoQa already exists"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_date_import_inactive
+#: field:qoqa.backend,date_import_inactive:0
+msgid "Sales Orders Inactive before"
 msgstr ""
 
 #. module: connector_qoqa
@@ -51,44 +37,92 @@ msgid "A promo issuance can be exported only once on the same backend"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.promo.issuance.line:0
-msgid "A promo issuance line can be exported only once on the same backend"
+#: field:account.invoice,refund_from_invoice_id:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_invoice_refund_from_invoice_id
+msgid "Refund generated from invoice"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.promo.issuance.line:0
-msgid "A promo issuance line with the same ID on QoQa already exists"
+#: sql_constraint:qoqa.res.partner:0
+msgid "A user with the same ID on QoQa already exists"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.accounting.issuance:0
-msgid "A promo issuance with the same ID on QoQa already exists"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_openerp_id
+#: field:qoqa.stock.picking,openerp_id:0
+msgid "Delivery Order"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.sale.order:0
-msgid "A sales order can be exported only once on the same backend"
+#: view:delivery.carrier:0
+msgid "Connector"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.sale.order.line:0
-msgid "A sales order line can be exported only once on the same backend"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_issuance_line_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_issuance_line_sync_date
+#: field:qoqa.accounting.issuance,sync_date:0
+#: field:qoqa.address,sync_date:0
+#: field:qoqa.binding,sync_date:0
+#: field:qoqa.buyphrase,qoqa_sync_date:0
+#: field:qoqa.offer,qoqa_sync_date:0
+#: field:qoqa.offer.position,qoqa_sync_date:0
+#: field:qoqa.offer.position.variant,qoqa_sync_date:0
+#: field:qoqa.product.product,sync_date:0
+#: field:qoqa.product.template,sync_date:0
+#: field:qoqa.promo.issuance.line,sync_date:0
+#: field:qoqa.promo.type,sync_date:0
+#: field:qoqa.res.partner,sync_date:0
+#: field:qoqa.sale.order,sync_date:0
+#: field:qoqa.sale.order.line,sync_date:0
+#: field:qoqa.shipper.rate,sync_date:0
+#: field:qoqa.shipper.service,sync_date:0
+#: field:qoqa.shop,sync_date:0
+#: field:qoqa.stock.picking,sync_date:0
+#: field:qoqa.voucher.issuance.line,sync_date:0
+msgid "Last synchronization date"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.sale.order.line:0
-msgid "A sales order line with the same ID on QoQa already exists"
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_offer
+#, python-format
+msgid "QoQa Offer"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.sale.order:0
-msgid "A sales order with the same ID on QoQa already exists"
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_service
+#, python-format
+msgid "QoQa Shipper Service"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.shipper.rate:0
-#: sql_constraint:qoqa.shipper.service:0
-msgid "A shipper rate with the same ID on QoQa already exists"
+#: view:qoqa.backend.oauth:0
+msgid "Open the link below in a new tab and copy the PIN."
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_openerp_id
+#: field:qoqa.product.template,openerp_id:0
+msgid "Template"
 msgstr ""
 
 #. module: connector_qoqa
@@ -97,65 +131,346 @@ msgid "A shop can be exported only once on the same backend"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.shop:0
-msgid "A shop with the same ID on QoQa already exists"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:qoqa.voucher.issuance.line:0
-msgid "A voucher issuance line can be exported only once on the same backend"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:qoqa.voucher.issuance.line:0
-msgid "A voucher issuance line with the same ID on QoQa already exists"
-msgstr ""
-
-#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_backend
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_issuance_line_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_issuance_line_backend_id
+#: field:qoqa.accounting.issuance,backend_id:0
+#: field:qoqa.address,backend_id:0
 #: view:qoqa.backend:0
-msgid "API Configuration"
+#: field:qoqa.backend.oauth,backend_id:0
+#: field:qoqa.binding,backend_id:0
+#: field:qoqa.buyphrase,backend_id:0
+#: field:qoqa.offer,backend_id:0
+#: field:qoqa.offer.position,backend_id:0
+#: field:qoqa.offer.position.variant,backend_id:0
+#: field:qoqa.product.product,backend_id:0
+#: field:qoqa.product.template,backend_id:0
+#: field:qoqa.promo.issuance.line,backend_id:0
+#: field:qoqa.promo.type,backend_id:0
+#: field:qoqa.res.partner,backend_id:0
+#: field:qoqa.sale.order,backend_id:0
+#: field:qoqa.sale.order.line,backend_id:0
+#: field:qoqa.shipper.rate,backend_id:0
+#: field:qoqa.shipper.service,backend_id:0
+#: field:qoqa.shop,backend_id:0
+#: field:qoqa.stock.picking,backend_id:0
+#: field:qoqa.voucher.issuance.line,backend_id:0
+#, python-format
+msgid "QoQa Backend"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_version
-#: field:qoqa.backend,version:0
-msgid "API Version"
+#: help:attribute.attribute,qoqa_id:0
+msgid "If empty, it uses the name of the attribute without the x_ prefix"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_order_line_ids
+#: field:qoqa.sale.order,qoqa_order_line_ids:0
+msgid "QoQa Order Lines"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_pin
+#: field:qoqa.backend.oauth,pin:0
+msgid "PIN"
 msgstr ""
 
 #. module: connector_qoqa
 #: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_account_move
+#: model:ir.model,name:connector_qoqa.model_qoqa_binding
 #, python-format
-msgid "Account Entry"
+msgid "QoQa Binding (abstract)"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_accounting_issuance_id
-#: field:qoqa.backend,import_accounting_issuance_id:0
-msgid "Accounting Issuance ID"
+#: view:qoqa.backend.oauth:0
+msgid "Authenticate with OAuth"
 msgstr ""
 
 #. module: connector_qoqa
-#: field:account.invoice,active:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_account_invoice_active
-#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_active
-#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_active
-#: field:payment.method,active:0
-#: selection:qoqa.res.partner,qoqa_status:0
-#: field:sale.order,active:0
-msgid "Active"
+#: field:attribute.option,qoqa_id:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_attribute_option_qoqa_id
+msgid "Value of the option on QoQa"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_openerp_id
-#: field:qoqa.address,openerp_id:0
-msgid "Address"
+#: view:delivery.carrier:0
+msgid "Services"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_address_id
-#: field:qoqa.backend,import_address_id:0
-msgid "Address ID"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_link
+#: field:qoqa.offer,qoqa_link:0
+msgid "Link"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.address:0
+msgid "An address with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:account.move,qoqa_accounting_issuance_bind_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_qoqa_accounting_issuance_bind_ids
+msgid "QoQa Accounting Issuances"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_product_product_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_product_template_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_shop_qoqa_bind_ids
+#: field:product.product,qoqa_bind_ids:0
+#: field:product.template,qoqa_bind_ids:0
+#: field:sale.shop,qoqa_bind_ids:0
+msgid "QoQa Bindings"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order_line
+#, python-format
+msgid "QoQa Sales Order Line"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_property_voucher_journal_id
+#: field:qoqa.backend,property_voucher_journal_id:0
+msgid "Journal for Vouchers"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_from_date
+#: field:qoqa.backend,import_offer_from_date:0
+msgid "Import Offer (descriptions) from date"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import accounting issuances since"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_url
+#: field:qoqa.backend,url:0
+msgid "URL"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_product_template_description_ecommerce
+#: field:product.template,description_ecommerce:0
+msgid "E-commerce Description"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_issuance_line_openerp_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_issuance_line_openerp_id
+#: field:qoqa.promo.issuance.line,openerp_id:0
+#: field:qoqa.voucher.issuance.line,openerp_id:0
+msgid "Journal Item"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_access_token
+#: field:qoqa.backend,access_token:0
+msgid "OAuth Token"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import 1 offer"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_name
+#: field:qoqa.res.partner,qoqa_name:0
+msgid "QoQa Name"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:delivery.carrier,qoqa_bind_rate_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_rate_ids
+msgid "QoQa Bindings (Rates)"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_debug
+#: field:qoqa.backend,debug:0
+msgid "Debug"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:delivery.carrier,qoqa_bind_service_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_service_ids
+msgid "QoQa Bindings (Services)"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shop
+msgid "Shops"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_openerp_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_openerp_id
+#: field:qoqa.shipper.rate,openerp_id:0
+#: field:qoqa.shipper.service,openerp_id:0
+msgid "Delivery Method"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:sale.exception,name:connector_qoqa.excep_wrong_total_amount
+msgid "Total Amount differs from QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_accounting_issuance_from_date
+#: field:qoqa.backend,import_accounting_issuance_from_date:0
+msgid "Import Accounting Issuances from date"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Check Connection"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Advanced Configuration"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_promo_type_ids
+#: view:qoqa.backend:0
+#: field:qoqa.backend,promo_type_ids:0
+msgid "Promo Types"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_buyphrase
+#, python-format
+msgid "QoQa Buyphrase"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend
+msgid "QoQa Backends"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:res.partner:0
+msgid "QBindings for Adresses"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_account_tax
+#, python-format
+msgid "Tax"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_status
+#: field:qoqa.res.partner,qoqa_status:0
+msgid "Status on QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.product.product:0
+msgid "QProduct"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Imports"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_res_partner
+#, python-format
+msgid "Partner"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position
+#, python-format
+msgid "QoQa Offer Position"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Main Configuration"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_stock_picking_out
+#, python-format
+msgid "Delivery Orders"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Initial Imports"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_sale_order_line
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_openerp_id
+#: field:qoqa.sale.order.line,openerp_id:0
+#, python-format
+msgid "Sales Order Line"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_openerp_id
+#: field:qoqa.res.partner,openerp_id:0
+msgid "Customer"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.sale.order.line:0
+msgid "A sales order line can be exported only once on the same backend"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Confirm"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_promo_issuance_line
+#, python-format
+msgid "QoQa Promo Issuance"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import 1 accounting issuance group"
 msgstr ""
 
 #. module: connector_qoqa
@@ -165,43 +480,15 @@ msgid "Address from QoQa"
 msgstr ""
 
 #. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Advanced Configuration"
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_sequence
+#: field:payment.method,sequence:0
+msgid "Priority"
 msgstr ""
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.address:0
-msgid "An address with the same ID on QoQa already exists"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:qoqa.res.partner:0
-msgid "An user with the same ID on QoQa already exists"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_attribute_attribute
-#, python-format
-msgid "Attribute"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_attribute_option
-#, python-format
-msgid "Attribute Option"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Authenticate with OAuth"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_authorize_url
-#: field:qoqa.backend.oauth,authorize_url:0
-msgid "Authorize URL"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_active
+#: field:qoqa.res.partner,qoqa_active:0
+msgid "QoQa Active"
 msgstr ""
 
 #. module: connector_qoqa
@@ -210,74 +497,20 @@ msgid "Backends"
 msgstr ""
 
 #. module: connector_qoqa
-#: help:qoqa.backend,date_import_inactive:0
-msgid "Before this date, the sales order will be imported as inactive"
-msgstr ""
-
-#. module: connector_qoqa
-#: help:qoqa.backend,date_really_import:0
-msgid "Before this date, the sales order will be imported without accounting entries."
-msgstr ""
-
-#. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "By clicking on the buttons,\n"
-"                                    you will initiate the synchronizations\n"
-"                                    with QoQa.\n"
-"                                    Note that the import or exports\n"
-"                                    won't be done directly,\n"
-"                                    they will create 'Jobs'\n"
-"                                    executed as soon as possible."
+msgid "Get Authentication Tokens"
 msgstr ""
 
 #. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Cancel"
+#: help:qoqa.backend,default_lang_id:0
+#: help:qoqa.shop,lang_id:0
+msgid "If a default language is selected, the records will be imported in the translation of this language.\n"
+"Note that a similar configuration exists for each shop."
 msgstr ""
 
 #. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_delivery_carrier
-#, python-format
-msgid "Carrier"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Check Connection"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_client_key
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_client_key
-#: field:qoqa.backend,client_key:0
-#: field:qoqa.backend.oauth,client_key:0
-msgid "Client Key"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_client_secret
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_client_secret
-#: field:qoqa.backend,client_secret:0
-#: field:qoqa.backend.oauth,client_secret:0
-msgid "Client Secret"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_res_company
-#, python-format
-msgid "Companies"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Confirm"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:delivery.carrier:0
-msgid "Connector"
+#: sql_constraint:qoqa.stock.picking:0
+msgid "A delivery order can be exported only once on the same backend"
 msgstr ""
 
 #. module: connector_qoqa
@@ -287,10 +520,104 @@ msgid "Connector User"
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_digicode
+#: field:res.partner,digicode:0
+msgid "Digicode"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import in background"
+msgstr ""
+
+#. module: connector_qoqa
 #: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_res_country
+#: model:ir.model,name:connector_qoqa.model_qoqa_stock_picking
 #, python-format
-msgid "Country"
+msgid "QoQa Delivery Order"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_backend_oauth
+#, python-format
+msgid "QoQa Backend OAuth Wizard"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_access_token_secret
+#: field:qoqa.backend,access_token_secret:0
+msgid "OAuth Token Secret"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.promo.issuance.line:0
+msgid "A promo issuance line with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.offer.position.variant:0
+msgid "An offer position variant with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_sale_id
+#: field:qoqa.backend,import_sale_id:0
+msgid "Sales Order ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_request_key
+#: field:qoqa.backend.oauth,request_key:0
+msgid "Request Key"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.shipper.rate:0
+#: sql_constraint:qoqa.shipper.service:0
+msgid "A shipper rate with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.sale.order:0
+msgid "A sales order with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: help:qoqa.backend,date_really_import:0
+msgid "Before this date, the sales order will be imported without accounting entries."
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_promo_id
+#: field:qoqa.accounting.issuance,promo_id:0
+msgid "QoQa Promo ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_order_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_qoqa_sale_binding_id
+#: field:qoqa.sale.order.line,qoqa_order_id:0
+#: field:qoqa.stock.picking,qoqa_sale_binding_id:0
+msgid "QoQa Sale Order"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_line_custom_text
+#: field:sale.order.line,custom_text:0
+msgid "Custom Text"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import 1 sales order"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position_variant
+#, python-format
+msgid "QoQa Offer Position Variant"
 msgstr ""
 
 #. module: connector_qoqa
@@ -316,28 +643,71 @@ msgid "Created At (on QoQa)"
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_authorize_url
+#: field:qoqa.backend.oauth,authorize_url:0
+msgid "Authorize URL"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_product_product_from_date
+#: field:qoqa.backend,import_product_product_from_date:0
+msgid "Import product variants from date"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_connector_qoqa_installed
+#, python-format
+msgid "connector_qoqa.installed"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_shop
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_shop_id
+#: field:qoqa.sale.order,qoqa_shop_id:0
+#: view:qoqa.shop:0
+#, python-format
+msgid "QoQa Shop"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_shop
+msgid "QoQa Shops"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_date_really_import
+#: field:qoqa.backend,date_really_import:0
+msgid "Import historic only until"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Synchronize Metadata"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.product.product:0
+msgid "A product with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_openerp_id
+#: field:qoqa.accounting.issuance,openerp_id:0
+msgid "Journal Entry"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.stock.picking:0
+msgid "A delivery order with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
 #: code:_description:0
 #: model:ir.model,name:connector_qoqa.model_res_currency
 #, python-format
 msgid "Currency"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_line_custom_text
-#: field:sale.order.line,custom_text:0
-msgid "Custom Text"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_openerp_id
-#: field:qoqa.res.partner,openerp_id:0
-msgid "Customer"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_debug
-#: field:qoqa.backend,debug:0
-msgid "Debug"
 msgstr ""
 
 #. module: connector_qoqa
@@ -346,72 +716,6 @@ msgstr ""
 #: field:qoqa.backend,default_lang_id:0
 #: field:qoqa.shop,lang_id:0
 msgid "Default Language"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_openerp_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_openerp_id
-#: field:qoqa.shipper.rate,openerp_id:0
-#: field:qoqa.shipper.service,openerp_id:0
-msgid "Delivery Method"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_openerp_id
-#: field:qoqa.stock.picking,openerp_id:0
-msgid "Delivery Order"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_stock_picking_out
-#, python-format
-msgid "Delivery Orders"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_digicode
-#: field:res.partner,digicode:0
-msgid "Digicode"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_product_template_description_ecommerce
-#: field:product.template,description_ecommerce:0
-msgid "E-commerce Description"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_exported
-#: field:qoqa.stock.picking,exported:0
-msgid "Exported"
-msgstr ""
-
-#. module: connector_qoqa
-#: help:payment.method,gift_card:0
-msgid "Generates a gift line in the sales order."
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Get Authentication Tokens"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Get the PIN on this page"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_gift_card
-#: field:payment.method,gift_card:0
-msgid "Gift Card"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_payment_id
-#: field:qoqa.sale.order,qoqa_payment_id:0
-msgid "ID of the payment on QoQa"
 msgstr ""
 
 #. module: connector_qoqa
@@ -469,86 +773,42 @@ msgid "ID on QoQa"
 msgstr ""
 
 #. module: connector_qoqa
-#: help:qoqa.backend,default_lang_id:0
-#: help:qoqa.shop,lang_id:0
-msgid "If a default language is selected, the records will be imported in the translation of this language.\n"
-"Note that a similar configuration exists for each shop."
-msgstr ""
-
-#. module: connector_qoqa
-#: help:attribute.option,qoqa_id:0
-msgid "If empty, it uses the current value.\n"
-"Not applicable for attributes with a relation."
-msgstr ""
-
-#. module: connector_qoqa
-#: help:attribute.attribute,qoqa_id:0
-msgid "If empty, it uses the name of the attribute without the x_ prefix"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import 1 accounting issuance group"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import 1 address"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import 1 offer"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import 1 offer position"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import 1 product variant"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import 1 sales order"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_accounting_issuance_from_date
-#: field:qoqa.backend,import_accounting_issuance_from_date:0
-msgid "Import Accounting Issuances from date"
-msgstr ""
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_address_from_date
 #: field:qoqa.backend,import_address_from_date:0
 msgid "Import Addresses from date"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_res_partner_from_date
-#: field:qoqa.backend,import_res_partner_from_date:0
-msgid "Import Customers from date"
+#: view:qoqa.backend.oauth:0
+msgid "or"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_from_date
-#: field:qoqa.backend,import_offer_from_date:0
-msgid "Import Offer (descriptions) from date"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_client_secret
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_client_secret
+#: field:qoqa.backend,client_secret:0
+#: field:qoqa.backend.oauth,client_secret:0
+msgid "Client Secret"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_position_from_date
-#: field:qoqa.backend,import_offer_position_from_date:0
-msgid "Import Offer Positions (descriptions) from date"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_amount_total
+#: field:qoqa.sale.order,qoqa_amount_total:0
+msgid "Total amount on QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_gift_card
+#: field:payment.method,gift_card:0
+msgid "Gift Card"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_client_key
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_client_key
+#: field:qoqa.backend,client_key:0
+#: field:qoqa.backend.oauth,client_key:0
+msgid "Client Key"
 msgstr ""
 
 #. module: connector_qoqa
@@ -558,127 +818,96 @@ msgid "Import Sales Orders from date"
 msgstr ""
 
 #. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import accounting issuances since"
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_promo_type
+#, python-format
+msgid "QoQa Promo Type"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.voucher.issuance.line:0
+msgid "A voucher issuance line with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "QoQa OAuth"
 msgstr ""
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "Import addresses since"
+msgid "Import"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_payment_id
+#: field:qoqa.sale.order,qoqa_payment_id:0
+msgid "ID of the payment on QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_address_bind_ids
+#: field:res.partner,qoqa_address_bind_ids:0
+msgid "QBindings for Addresses"
 msgstr ""
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "Import customers since"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_date_really_import
-#: field:qoqa.backend,date_really_import:0
-msgid "Import historic only until"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import in background"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import offer positions descriptions since"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import offers descriptions since"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_product_template_from_date
-#: field:qoqa.backend,import_product_template_from_date:0
-msgid "Import product templates from date"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import product templates since"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_product_product_from_date
-#: field:qoqa.backend,import_product_product_from_date:0
-msgid "Import product variants from date"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import product variants since"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Import sales orders since"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Imports"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.shop:0
-msgid "Informations"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Initial Imports"
+msgid "By clicking on the buttons,\n"
+"                                    you will initiate the synchronizations\n"
+"                                    with QoQa.\n"
+"                                    Note that the import or exports\n"
+"                                    won't be done directly,\n"
+"                                    they will create 'Jobs'\n"
+"                                    executed as soon as possible."
 msgstr ""
 
 #. module: connector_qoqa
 #: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_account_invoice
+#: model:ir.model,name:connector_qoqa.model_qoqa_res_partner
+#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order
+#: view:qoqa.res.partner:0
 #, python-format
-msgid "Invoice"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_invoice_ref
-#: field:qoqa.sale.order,invoice_ref:0
-msgid "Invoice Ref. on QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_property_journal_id
-#: field:qoqa.promo.type,property_journal_id:0
-msgid "Journal"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_openerp_id
-#: field:qoqa.accounting.issuance,openerp_id:0
-msgid "Journal Entry"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_issuance_line_openerp_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_issuance_line_openerp_id
-#: field:qoqa.promo.issuance.line,openerp_id:0
-#: field:qoqa.voucher.issuance.line,openerp_id:0
-msgid "Journal Item"
+msgid "QoQa User"
 msgstr ""
 
 #. module: connector_qoqa
 #: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_account_move_line
+#: model:ir.model,name:connector_qoqa.model_sale_order
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_openerp_id
+#: field:qoqa.sale.order,openerp_id:0
 #, python-format
-msgid "Journal Items"
+msgid "Sales Order"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_property_voucher_journal_id
-#: field:qoqa.backend,property_voucher_journal_id:0
-msgid "Journal for Vouchers"
+#: sql_constraint:qoqa.product.template:0
+msgid "A product template with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_res_partner_from_date
+#: field:qoqa.backend,import_res_partner_from_date:0
+msgid "Import Customers from date"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.shop:0
+msgid "A shop with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.sale.order:0
+msgid "A sales order can be exported only once on the same backend"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_voucher_issuance_line
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_qoqa_voucher_line_ids
+#: field:qoqa.accounting.issuance,qoqa_voucher_line_ids:0
+#, python-format
+msgid "QoQa Voucher Issuance Line"
 msgstr ""
 
 #. module: connector_qoqa
@@ -689,56 +918,178 @@ msgid "Languages"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_qoqa_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_qoqa_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_qoqa_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_issuance_line_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_issuance_line_sync_date
-#: field:qoqa.accounting.issuance,sync_date:0
-#: field:qoqa.address,sync_date:0
-#: field:qoqa.binding,sync_date:0
-#: field:qoqa.buyphrase,qoqa_sync_date:0
-#: field:qoqa.offer,qoqa_sync_date:0
-#: field:qoqa.offer.position,qoqa_sync_date:0
-#: field:qoqa.offer.position.variant,qoqa_sync_date:0
-#: field:qoqa.product.product,sync_date:0
-#: field:qoqa.product.template,sync_date:0
-#: field:qoqa.promo.issuance.line,sync_date:0
-#: field:qoqa.promo.type,sync_date:0
-#: field:qoqa.res.partner,sync_date:0
-#: field:qoqa.sale.order,sync_date:0
-#: field:qoqa.sale.order.line,sync_date:0
-#: field:qoqa.shipper.rate,sync_date:0
-#: field:qoqa.shipper.service,sync_date:0
-#: field:qoqa.shop,sync_date:0
-#: field:qoqa.stock.picking,sync_date:0
-#: field:qoqa.voucher.issuance.line,sync_date:0
-msgid "Last synchronization date"
+#: view:qoqa.shop:0
+msgid "Options"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_link
-#: field:qoqa.offer,qoqa_link:0
-msgid "Link"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_variant_id
+#: field:qoqa.backend,import_variant_id:0
+msgid "Variant ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_attribute_option
+#, python-format
+msgid "Attribute Option"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_exported
+#: field:qoqa.stock.picking,exported:0
+msgid "Exported"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_sale_shop
+#, python-format
+msgid "Sales Shop"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:account.move.line,qoqa_voucher_issuance_line_bind_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_line_qoqa_voucher_issuance_line_bind_ids
+msgid "QoQa Voucher Issuances Line"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:account.invoice,active:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_invoice_active
+#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_active
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_active
+#: field:payment.method,active:0
+#: selection:qoqa.res.partner,qoqa_status:0
+#: field:sale.order,active:0
+msgid "Active"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.sale.order.line:0
+msgid "A sales order line with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_product_template_from_date
+#: field:qoqa.backend,import_product_template_from_date:0
+msgid "Import product templates from date"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:product.product:0
+msgid "The Internal Reference must be unique"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_stock_picking_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_stock_picking_qoqa_bind_ids_3261
+#: field:stock.picking,qoqa_bind_ids:0
+#: field:stock.picking.out,qoqa_bind_ids:0
+msgid "QBindings for Delivery Orders"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.accounting.issuance:0
+msgid "A promo issuance with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_res_company
+#, python-format
+msgid "Companies"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_product_template
+#, python-format
+msgid "QoQa Template"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_rate
+#, python-format
+msgid "QoQa Shipper Rate"
 msgstr ""
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "Main Configuration"
+msgid "Import customers since"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.product.template:0
+msgid "A product template can be exported only once on the same backend"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:attribute.attribute,qoqa_id:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_attribute_attribute_qoqa_id
+msgid "Name of the field on QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import 1 address"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.res.partner:0
+msgid "QoQa Partner"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import offer positions descriptions since"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_quantity
+#: field:qoqa.sale.order.line,qoqa_quantity:0
+msgid "Quantity"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_voucher_id
+#: field:qoqa.accounting.issuance,voucher_id:0
+msgid "QoQa Voucher ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.shop:0
+msgid "Informations"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_attribute_attribute
+#, python-format
+msgid "Attribute"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import offers descriptions since"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Voucher"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_account_invoice
+#, python-format
+msgid "Invoice"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Cancel"
 msgstr ""
 
 #. module: connector_qoqa
@@ -750,165 +1101,9 @@ msgid "Name"
 msgstr ""
 
 #. module: connector_qoqa
-#: field:attribute.attribute,qoqa_id:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_attribute_attribute_qoqa_id
-msgid "Name of the field on QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_access_token
-#: field:qoqa.backend,access_token:0
-msgid "OAuth Token"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_access_token_secret
-#: field:qoqa.backend,access_token_secret:0
-msgid "OAuth Token Secret"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_id
-#: field:qoqa.backend,import_offer_id:0
-msgid "Offer ID"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_position_id
-#: field:qoqa.backend,import_offer_position_id:0
-msgid "Offer Position ID"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Once imported,\n"
-"                                    some types of records,\n"
-"                                    like the products or categories,\n"
-"                                    need a manual review.\n"
-"                                    You will find the list\n"
-"                                    of the new records to review\n"
-"                                    in the menu 'Connectors > Checkpoint'."
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "Open the link below in a new tab and copy the PIN."
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.shop:0
-msgid "Options"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_origin_shop_id
-#: field:qoqa.res.partner,origin_shop_id:0
-msgid "Origin Shop"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_pin
-#: field:qoqa.backend.oauth,pin:0
-msgid "PIN"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_res_partner
-#, python-format
-msgid "Partner"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_payment_method
-#, python-format
-msgid "Payment Method"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_stock_picking
-#, python-format
-msgid "Picking List"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_sequence
-#: field:payment.method,sequence:0
-msgid "Priority"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_product_product
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_openerp_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_product_id
-#: field:qoqa.product.product,openerp_id:0
-#: field:qoqa.promo.type,product_id:0
-#, python-format
-msgid "Product"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_product_template
-#, python-format
-msgid "Product Template"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_promo_type_ids
-#: view:qoqa.backend:0
-#: field:qoqa.backend,promo_type_ids:0
-msgid "Promo Types"
-msgstr ""
-
-#. module: connector_qoqa
-#: selection:qoqa.res.partner,qoqa_status:0
-msgid "Prospect"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_bind_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_qoqa_bind_ids
-#: view:product.product:0
-#: view:res.partner:0
-#: field:res.partner,qoqa_bind_ids:0
-#: field:sale.order,qoqa_bind_ids:0
-msgid "QBindings"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_address_bind_ids
-#: field:res.partner,qoqa_address_bind_ids:0
-msgid "QBindings for Addresses"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:res.partner:0
-msgid "QBindings for Adresses"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_stock_picking_qoqa_bind_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_stock_picking_qoqa_bind_ids_4983
-#: field:stock.picking,qoqa_bind_ids:0
-#: field:stock.picking.out,qoqa_bind_ids:0
-msgid "QBindings for Delivery Orders"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.product.product:0
-msgid "QProduct"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:account.tax:0
-#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_root
-#: view:payment.method:0
-#: view:res.company:0
-msgid "QoQa"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_request_secret
+#: field:qoqa.backend.oauth,request_secret:0
+msgid "Request Secret"
 msgstr ""
 
 #. module: connector_qoqa
@@ -923,15 +1118,48 @@ msgid "QoQa Accounting Issuance"
 msgstr ""
 
 #. module: connector_qoqa
-#: field:account.move,qoqa_accounting_issuance_bind_ids:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_qoqa_accounting_issuance_bind_ids
-msgid "QoQa Accounting Issuances"
+#: sql_constraint:qoqa.offer:0
+msgid "An offer with the same ID on QoQa already exists"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_active
-#: field:qoqa.res.partner,qoqa_active:0
-msgid "QoQa Active"
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_account_move_line
+#, python-format
+msgid "Journal Items"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import 1 product variant"
+msgstr ""
+
+#. module: connector_qoqa
+#: help:payment.method,gift_card:0
+msgid "Generates a gift line in the sales order."
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_address_id
+#: field:qoqa.backend,import_address_id:0
+msgid "Address ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:sale.exception,description:connector_qoqa.excep_wrong_total_amount
+msgid "The amount computed in OpenERP doesn't match with the amount in QoQa."
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_stock_picking
+#, python-format
+msgid "Picking List"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import sales orders since"
 msgstr ""
 
 #. module: connector_qoqa
@@ -943,304 +1171,9 @@ msgid "QoQa Address"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_backend
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_buyphrase_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_position_variant_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_issuance_line_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_rate_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_service_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_issuance_line_backend_id
-#: field:qoqa.accounting.issuance,backend_id:0
-#: field:qoqa.address,backend_id:0
-#: view:qoqa.backend:0
-#: field:qoqa.backend.oauth,backend_id:0
-#: field:qoqa.binding,backend_id:0
-#: field:qoqa.buyphrase,backend_id:0
-#: field:qoqa.offer,backend_id:0
-#: field:qoqa.offer.position,backend_id:0
-#: field:qoqa.offer.position.variant,backend_id:0
-#: field:qoqa.product.product,backend_id:0
-#: field:qoqa.product.template,backend_id:0
-#: field:qoqa.promo.issuance.line,backend_id:0
-#: field:qoqa.promo.type,backend_id:0
-#: field:qoqa.res.partner,backend_id:0
-#: field:qoqa.sale.order,backend_id:0
-#: field:qoqa.sale.order.line,backend_id:0
-#: field:qoqa.shipper.rate,backend_id:0
-#: field:qoqa.shipper.service,backend_id:0
-#: field:qoqa.shop,backend_id:0
-#: field:qoqa.stock.picking,backend_id:0
-#: field:qoqa.voucher.issuance.line,backend_id:0
-#, python-format
-msgid "QoQa Backend"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_backend_oauth
-#, python-format
-msgid "QoQa Backend OAuth Wizard"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend
-msgid "QoQa Backends"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_binding
-#, python-format
-msgid "QoQa Binding (abstract)"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_product_product_qoqa_bind_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_product_template_qoqa_bind_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_sale_shop_qoqa_bind_ids
-#: field:product.product,qoqa_bind_ids:0
-#: field:product.template,qoqa_bind_ids:0
-#: field:sale.shop,qoqa_bind_ids:0
-msgid "QoQa Bindings"
-msgstr ""
-
-#. module: connector_qoqa
-#: field:delivery.carrier,qoqa_bind_rate_ids:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_rate_ids
-msgid "QoQa Bindings (Rates)"
-msgstr ""
-
-#. module: connector_qoqa
-#: field:delivery.carrier,qoqa_bind_service_ids:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_service_ids
-msgid "QoQa Bindings (Services)"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_buyphrase
-#, python-format
-msgid "QoQa Buyphrase"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_stock_picking
-#, python-format
-msgid "QoQa Delivery Order"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_name
-#: field:qoqa.res.partner,qoqa_name:0
-msgid "QoQa Name"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "QoQa OAuth"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend_oauth
-msgid "QoQa Oauth"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_offer
-#, python-format
-msgid "QoQa Offer"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position
-#, python-format
-msgid "QoQa Offer Position"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position_variant
-#, python-format
-msgid "QoQa Offer Position Variant"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_order_line_ids
-#: field:qoqa.sale.order,qoqa_order_line_ids:0
-msgid "QoQa Order Lines"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.res.partner:0
-msgid "QoQa Partner"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_product_product
-#, python-format
-msgid "QoQa Product"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_promo_id
-#: field:qoqa.accounting.issuance,promo_id:0
-msgid "QoQa Promo ID"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_promo_issuance_line
-#, python-format
-msgid "QoQa Promo Issuance"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_qoqa_promo_line_ids
-#: field:qoqa.accounting.issuance,qoqa_promo_line_ids:0
-msgid "QoQa Promo Issuance Line"
-msgstr ""
-
-#. module: connector_qoqa
-#: field:account.move.line,qoqa_promo_issuance_line_bind_ids:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_line_qoqa_promo_issuance_line_bind_ids
-msgid "QoQa Promo Issuances Line"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_promo_type
-#, python-format
-msgid "QoQa Promo Type"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_order_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_qoqa_sale_binding_id
-#: field:qoqa.sale.order.line,qoqa_order_id:0
-#: field:qoqa.stock.picking,qoqa_sale_binding_id:0
-msgid "QoQa Sale Order"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order_line
-#, python-format
-msgid "QoQa Sales Order Line"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_rate
-#, python-format
-msgid "QoQa Shipper Rate"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_service
-#, python-format
-msgid "QoQa Shipper Service"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_shop
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_shop_id
-#: field:qoqa.sale.order,qoqa_shop_id:0
-#: view:qoqa.shop:0
-#, python-format
-msgid "QoQa Shop"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_shop
-msgid "QoQa Shops"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_product_template
-#, python-format
-msgid "QoQa Template"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_res_partner
-#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order
-#: view:qoqa.res.partner:0
-#, python-format
-msgid "QoQa User"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_voucher_id
-#: field:qoqa.accounting.issuance,voucher_id:0
-msgid "QoQa Voucher ID"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_qoqa_voucher_issuance_line
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_qoqa_voucher_line_ids
-#: field:qoqa.accounting.issuance,qoqa_voucher_line_ids:0
-#, python-format
-msgid "QoQa Voucher Issuance Line"
-msgstr ""
-
-#. module: connector_qoqa
-#: field:account.move.line,qoqa_voucher_issuance_line_bind_ids:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_line_qoqa_voucher_issuance_line_bind_ids
-msgid "QoQa Voucher Issuances Line"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_quantity
-#: field:qoqa.sale.order.line,qoqa_quantity:0
-msgid "Quantity"
-msgstr ""
-
-#. module: connector_qoqa
-#: field:account.invoice,refund_from_invoice_id:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_account_invoice_refund_from_invoice_id
-msgid "Refund generated from invoice"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_stock_picking_related_dispatch_ids_4993
-#: field:stock.picking.out,related_dispatch_ids:0
-msgid "Related Dispatch Picking"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_request_key
-#: field:qoqa.backend.oauth,request_key:0
-msgid "Request Key"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_oauth_request_secret
-#: field:qoqa.backend.oauth,request_secret:0
-msgid "Request Secret"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_version
+#: field:qoqa.backend,version:0
+msgid "API Version"
 msgstr ""
 
 #. module: connector_qoqa
@@ -1249,118 +1182,8 @@ msgid "Request a token"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_sale_order
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_openerp_id
-#: field:qoqa.sale.order,openerp_id:0
-#, python-format
-msgid "Sales Order"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_sale_id
-#: field:qoqa.backend,import_sale_id:0
-msgid "Sales Order ID"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_sale_order_line
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_openerp_id
-#: field:qoqa.sale.order.line,openerp_id:0
-#, python-format
-msgid "Sales Order Line"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_date_import_inactive
-#: field:qoqa.backend,date_import_inactive:0
-msgid "Sales Orders Inactive before"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_sale_shop
-#, python-format
-msgid "Sales Shop"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:delivery.carrier:0
-msgid "Services"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shop
-msgid "Shops"
-msgstr ""
-
-#. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "Single Imports"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_status
-#: field:qoqa.res.partner,qoqa_status:0
-msgid "Status on QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_suspicious
-#: field:qoqa.res.partner,suspicious:0
-msgid "Suspicious"
-msgstr ""
-
-#. module: connector_qoqa
-#: view:qoqa.backend:0
-msgid "Synchronize Metadata"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_account_tax
-#, python-format
-msgid "Tax"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_openerp_id
-#: field:qoqa.product.template,openerp_id:0
-msgid "Template"
-msgstr ""
-
-#. module: connector_qoqa
-#: sql_constraint:product.product:0
-msgid "The Internal Reference must be unique"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:sale.exception,description:connector_qoqa.excep_wrong_total_amount
-msgid "The amount computed in OpenERP doesn't match with the amount in QoQa."
-msgstr ""
-
-#. module: connector_qoqa
-#: model:sale.exception,name:connector_qoqa.excep_wrong_total_amount
-msgid "Total Amount differs from QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_amount_total
-#: field:qoqa.sale.order,qoqa_amount_total:0
-msgid "Total amount on QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_transaction
-#: field:qoqa.sale.order,qoqa_transaction:0
-msgid "Transaction number of the payment on QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_url
-#: field:qoqa.backend,url:0
-msgid "URL"
+msgid "Import product variants since"
 msgstr ""
 
 #. module: connector_qoqa
@@ -1386,20 +1209,14 @@ msgid "Updated At (on QoQa)"
 msgstr ""
 
 #. module: connector_qoqa
-#: field:attribute.option,qoqa_id:0
-#: model:ir.model.fields,field_description:connector_qoqa.field_attribute_option_qoqa_id
-msgid "Value of the option on QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_variant_id
-#: field:qoqa.backend,import_variant_id:0
-msgid "Variant ID"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_accounting_issuance_id
+#: field:qoqa.backend,import_accounting_issuance_id:0
+msgid "Accounting Issuance ID"
 msgstr ""
 
 #. module: connector_qoqa
 #: view:qoqa.backend:0
-msgid "Voucher"
+msgid "Single Imports"
 msgstr ""
 
 #. module: connector_qoqa
@@ -1409,15 +1226,213 @@ msgid "When a sales order has been paid with several payment methods, the sales 
 msgstr ""
 
 #. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_qoqa_product_product
+#, python-format
+msgid "QoQa Product"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend.oauth:0
+msgid "Get the PIN on this page"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_payment_method
+#, python-format
+msgid "Payment Method"
+msgstr ""
+
+#. module: connector_qoqa
+#: field:account.move.line,qoqa_promo_issuance_line_bind_ids:0
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_line_qoqa_promo_issuance_line_bind_ids
+msgid "QoQa Promo Issuances Line"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_property_journal_id
+#: field:qoqa.promo.type,property_journal_id:0
+msgid "Journal"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.product.product:0
+msgid "A product can be exported only once on the same backend"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_accounting_issuance_qoqa_promo_line_ids
+#: field:qoqa.accounting.issuance,qoqa_promo_line_ids:0
+msgid "QoQa Promo Issuance Line"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import product templates since"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_backend_oauth
+msgid "QoQa Oauth"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_openerp_id
+#: field:qoqa.address,openerp_id:0
+msgid "Address"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.offer.position:0
+msgid "An offer position with the same ID on QoQa already exists"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Import addresses since"
+msgstr ""
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.voucher.issuance.line:0
+msgid "A voucher issuance line can be exported only once on the same backend"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_invoice_ref
+#: field:qoqa.sale.order,invoice_ref:0
+msgid "Invoice Ref. on QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: help:qoqa.backend,date_import_inactive:0
+msgid "Before this date, the sales order will be imported as inactive"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_res_country
+#, python-format
+msgid "Country"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_product_product
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_openerp_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_product_id
+#: field:qoqa.product.product,openerp_id:0
+#: field:qoqa.promo.type,product_id:0
+#, python-format
+msgid "Product"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_product_template
+#, python-format
+msgid "Product Template"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_qoqa_bind_ids
+#: view:product.product:0
+#: view:res.partner:0
+#: field:res.partner,qoqa_bind_ids:0
+#: field:sale.order,qoqa_bind_ids:0
+msgid "QBindings"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_delivery_carrier
+#, python-format
+msgid "Carrier"
+msgstr ""
+
+#. module: connector_qoqa
+#: help:attribute.option,qoqa_id:0
+msgid "If empty, it uses the current value.\n"
+"Not applicable for attributes with a relation."
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_origin_shop_id
+#: field:qoqa.res.partner,origin_shop_id:0
+msgid "Origin Shop"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_offer_qoqa_edit_link
+#: view:qoqa.offer:0
+#: field:qoqa.offer,qoqa_edit_link:0
+msgid "Edit Offer Content"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "Once imported,\n"
+"                                    some types of records,\n"
+"                                    like the products or categories,\n"
+"                                    need a manual review.\n"
+"                                    You will find the list\n"
+"                                    of the new records to review\n"
+"                                    in the menu 'Connectors > Checkpoint'."
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_id
+#: field:qoqa.backend,import_offer_id:0
+msgid "Offer ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: selection:qoqa.res.partner,qoqa_status:0
+msgid "Prospect"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_position_from_date
+#: field:qoqa.backend,import_offer_position_from_date:0
+msgid "Import Offer Positions (descriptions) from date"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:_description:0
+#: model:ir.model,name:connector_qoqa.model_account_move
+#, python-format
+msgid "Account Entry"
+msgstr ""
+
+#. module: connector_qoqa
 #: view:qoqa.offer:0
 msgid "[('qoqa_id', '!=', False)]"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:_description:0
-#: model:ir.model,name:connector_qoqa.model_connector_qoqa_installed
-#, python-format
-msgid "connector_qoqa.installed"
+#: view:account.tax:0
+#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_root
+#: view:payment.method:0
+#: view:res.company:0
+msgid "QoQa"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_suspicious
+#: field:qoqa.res.partner,suspicious:0
+msgid "Suspicious"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_import_offer_position_id
+#: field:qoqa.backend,import_offer_position_id:0
+msgid "Offer Position ID"
+msgstr ""
+
+#. module: connector_qoqa
+#: view:qoqa.backend:0
+msgid "API Configuration"
 msgstr ""
 
 #. module: connector_qoqa
@@ -1426,66 +1441,8 @@ msgid "e.g. http://www.qoqa.ch"
 msgstr ""
 
 #. module: connector_qoqa
-#: view:qoqa.backend.oauth:0
-msgid "or"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_transaction
+#: field:qoqa.sale.order,qoqa_transaction:0
+msgid "Transaction number of the payment on QoQa"
 msgstr ""
 
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_payment_cancellable_on_qoqa
-#: field:payment.method,field_payment_method_payment_cancellable_on_qoqa:0
-msgid "The payments can be cancelled (same day)"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:173
-#, python-format
-msgid "Order Cancellation"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_payment_method_payment_cancellable_on_qoqa
-#: field:payment.method,field_payment_method_payment_cancellable_on_qoqa:0
-msgid "The payments can be cancelled (same day)"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:228
-#, python-format
-msgid "Impossible to cancel the sales order on the backend now."
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/common.py:99
-#, python-format
-msgid "Impossible to refund on the backend."
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/backend_adapter.py:59
-#, python-format
-msgid "Network Error"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/backend_adapter.py:61
-#, python-format
-msgid "API / Network Error"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/backend_adapter.py:64
-#, python-format
-msgid "Authentication Error"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/backend_adapter.py:67
-#, python-format
-msgid "Error(s) returned by QoQa"
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/backend_adapter.py:71
-#, python-format
-msgid "Unknown Error"
-msgstr ""

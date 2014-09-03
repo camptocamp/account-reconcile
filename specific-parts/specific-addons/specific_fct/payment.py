@@ -18,15 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, osv
+from openerp.osv import orm
 
 
-class payment_order_create(osv.osv_memory):
+class payment_order_create(orm.TransientModel):
     """
-    Change default value to comment in order to send people the email (for claims)
-     """
+    Change default value to comment in order to send people the email
+    (for claims)
+    """
     _inherit = 'payment.order.create'
-    
+
     def create_payment(self, cr, uid, ids, context=None):
         order_obj = self.pool.get('payment.order')
         line_obj = self.pool.get('account.move.line')
@@ -38,29 +39,37 @@ class payment_order_create(osv.osv_memory):
         if not line_ids:
             return {'type': 'ir.actions.act_window_close'}
 
-        payment = order_obj.browse(cr, uid, context['active_id'], context=context)
-        t = None
-        line2bank = line_obj.line2bank(cr, uid, line_ids, t, context)
+        payment = order_obj.browse(cr, uid, context['active_id'],
+                                   context=context)
+        line2bank = line_obj.line2bank(cr, uid, line_ids, None, context)
 
-        ## Finally populate the current payment with new lines:
+        # Finally populate the current payment with new lines:
         for line in line_obj.browse(cr, uid, line_ids, context=context):
             if payment.date_prefered == "now":
-                #no payment date => immediate payment
+                # no payment date => immediate payment
                 date_to_pay = False
             elif payment.date_prefered == 'due':
                 date_to_pay = line.date_maturity
             elif payment.date_prefered == 'fixed':
                 date_to_pay = payment.date_scheduled
-            payment_obj.create(cr, uid,{
+            state = 'normal'
+            if line.invoice and line.invoice.reference_type != 'none':
+                state = 'structured'
+            currency_id = line.invoice.currency_id.id if line.invoice else None
+            if not currency_id:
+                currency_id = line.journal_id.currency.id
+            if not currency_id:
+                currency_id = line.journal_id.company_id.currency_id.id
+            payment_obj.create(
+                cr, uid, {
                     'move_line_id': line.id,
                     'amount_currency': line.amount_residual_currency,
                     'bank_id': line2bank.get(line.id),
                     'order_id': payment.id,
-                    'partner_id': line.partner_id and line.partner_id.id or False,
+                    'partner_id': line.partner_id.id,
                     'communication': line.ref or '/',
-                    'state': line.invoice and line.invoice.reference_type != 'none' and 'structured' or 'normal',
+                    'state': state,
                     'date': date_to_pay,
-                    'currency': (line.invoice and line.invoice.currency_id.id) or line.journal_id.currency.id or line.journal_id.company_id.currency_id.id,
+                    'currency': currency_id,
                 }, context=context)
         return {'type': 'ir.actions.act_window_close'}
-

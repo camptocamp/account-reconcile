@@ -74,7 +74,7 @@ class test_run_several(common.TransactionCase):
         self.assertFalse(dispatches)
 
     def test_dispatch_remaining(self):
-        """ Create a dispatch for the remaining packs when some are already dispatched"""
+        """ Create a dispatch for the remaining packs after a dispatch """
         options = {'pack_limit': 0,
                    'pack_limit_apply_threshold': False,
                    'only_product_ids': [],

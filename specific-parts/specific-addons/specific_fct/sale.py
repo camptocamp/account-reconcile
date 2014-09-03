@@ -58,8 +58,9 @@ class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
 
     def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
-                          uom=False, qty_uos=0, uos=False, name='', partner_id=False,
-                          lang=False, update_tax=True, date_order=False, packaging=False,
+                          uom=False, qty_uos=0, uos=False, name='',
+                          partner_id=False, lang=False, update_tax=True,
+                          date_order=False, packaging=False,
                           fiscal_position=False, flag=False, context=None):
         """ Does not copy the description in the line, keep only the name """
 

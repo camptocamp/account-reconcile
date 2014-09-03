@@ -30,6 +30,7 @@ from openerp.tools.translate import _
 from openerp.osv import orm, fields
 import re
 
+
 class qoqa_offer(orm.Model):
     _name = 'qoqa.offer'
     _description = 'QoQa Offer'
@@ -104,7 +105,7 @@ class qoqa_offer(orm.Model):
                 'datetime_begin_filter': begin_utc.strftime(datetime_fmt),
                 'datetime_end_filter': end_utc.strftime(datetime_fmt),
                 'date_begin_calendar': offer.date_begin,
-                'date_end_calendar': calendar_end.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                'date_end_calendar': calendar_end.strftime(datetime_fmt),
             }
         return res
 
@@ -398,7 +399,8 @@ class qoqa_offer(orm.Model):
             relation='res.company',
             readonly=True,
             store={
-                _name: (lambda self, cr, uid, ids, c: ids, ['qoqa_shop_id'], 10),
+                _name: (lambda self, cr, uid, ids, c: ids,
+                        ['qoqa_shop_id'], 10),
                 'sale.shop': (_get_offer_from_sale_shop, ['company_id'], 10),
             }),
         'date_warranty': fields.date(

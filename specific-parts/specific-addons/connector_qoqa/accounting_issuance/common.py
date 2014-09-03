@@ -224,6 +224,6 @@ class account_move_line(orm.Model):
 
 
 @qoqa
-class qoqa_accounting_issuance(QoQaAdapter):
+class QoQaAccountingIssuanceAdapter(QoQaAdapter):
     _model_name = 'qoqa.accounting.issuance',
     _endpoint = 'promo_accounting_group'

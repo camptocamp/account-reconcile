@@ -27,7 +27,7 @@ from openerp.addons.connector.session import ConnectorSession
 
 
 def get_qoqa_response(responses, url, *args, **kwargs):
-    if not url in responses:
+    if url not in responses:
         raise Exception('Unhandled request: %s %s' % ('GET', url))
     response = mock.Mock()
     response.content = responses[url]

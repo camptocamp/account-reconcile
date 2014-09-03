@@ -68,9 +68,11 @@ class test_import_offer(QoQaTransactionCase):
         pos = self.OfferPos.browse(cr, uid, pos_ids[0])
         self.assertEquals(pos.offer_id.qoqa_id, '99999999')
         self.assertEquals(pos.regular_price_type, 'normal')
-        self.assertEquals(pos.product_tmpl_id.qoqa_bind_ids[0].qoqa_id, '99999999')
+        self.assertEquals(pos.product_tmpl_id.qoqa_bind_ids[0].qoqa_id,
+                          '99999999')
 
         self.assertEquals(len(pos.variant_ids), 1)
         pos_var = pos.variant_ids[0]
-        self.assertEquals(pos_var.product_id.qoqa_bind_ids[0].qoqa_id, '99999999')
+        self.assertEquals(pos_var.product_id.qoqa_bind_ids[0].qoqa_id,
+                          '99999999')
         self.assertEquals(pos_var.quantity, 100)

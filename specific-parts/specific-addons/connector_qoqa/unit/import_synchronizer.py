@@ -113,11 +113,14 @@ class QoQaImportSynchronizer(ImportSynchronizer):
         :param qoqa_id: id of the related binding to import
         :param binding_model: name of the binding model for the relation
         :type binding_model: str | unicode
-        :param importer_cls: :py:class:`openerp.addons.connector.connector.ConnectorUnit`
+        :param importer_cls: :py:class:`openerp.addons.connector.\
+                                        connector.ConnectorUnit`
                              class or parent class to use for the export.
                              By default: QoQaImportSynchronizer
-        :type importer_cls: :py:class:`openerp.addons.connector.connector.MetaConnectorUnit`
-        :param always: if True, the record is updated even if it already exists,
+        :type importer_cls: :py:class:`openerp.addons.connector.\
+                                       connector.MetaConnectorUnit`
+        :param always: if True, the record is updated even if it already
+                       exists,
                        it is still skipped if it has not been modified on QoQa
         :type always: boolean
         """
@@ -188,7 +191,6 @@ class QoQaImportSynchronizer(ImportSynchronizer):
                     'the same record. The job will be retried later.' % err)
             else:
                 raise
-
 
     def _create(self, data):
         """ Create the OpenERP record """
@@ -403,7 +405,8 @@ class AddCheckpoint(ConnectorUnit):
 
 
 @job
-def import_batch(session, model_name, backend_id, from_date=None, to_date=None):
+def import_batch(session, model_name, backend_id, from_date=None,
+                 to_date=None):
     """ Prepare a batch import of records from QoQa """
     env = get_environment(session, model_name, backend_id)
     importer = env.get_connector_unit(BatchImportSynchronizer)

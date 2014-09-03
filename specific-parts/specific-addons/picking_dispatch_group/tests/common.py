@@ -31,8 +31,7 @@ def prepare_move(test, product_ref, quantity):
 
 
 def prepare_pack(test):
-    return {
-            }
+    return {}
 
 
 def create_pack(test, pack, moves):
@@ -42,4 +41,3 @@ def create_pack(test, pack, moves):
         test.registry('stock.move').create(
             test.cr, test.uid, dict(move, tracking_id=pack_id))
     return pack_id
-

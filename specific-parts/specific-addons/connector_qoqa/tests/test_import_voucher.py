@@ -42,4 +42,3 @@ class test_import_voucher(QoQaTransactionCase):
         domain = [('qoqa_id', '=', '99999999')]
         qvoucher_ids = self.QVoucher.search(cr, uid, domain)
         self.assertEquals(len(qvoucher_ids), 1)
-        qvoucher = self.QVoucher.browse(cr, uid, qvoucher_ids[0])

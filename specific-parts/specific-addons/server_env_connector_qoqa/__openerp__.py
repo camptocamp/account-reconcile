@@ -27,8 +27,8 @@
  'category': 'Tools',
  'complexity': 'expert',
  'depends': ['server_environment',
-              'connector_qoqa',
-              ],
+             'connector_qoqa',
+             ],
  'description': """
 Server environment for QoQa Connector
 =====================================
@@ -51,4 +51,4 @@ Exemple of the section to put in the configuration file::
  'test': [],
  'installable': True,
  'auto_install': False,
-}
+ }

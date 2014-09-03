@@ -76,6 +76,7 @@ class QoQaClient(object):
         on the SSL certificat.
         """
         dispatch = getattr(requests, attr)
+
         def with_auth(*args, **kwargs):
             kwargs['auth'] = self._auth
             try:
@@ -123,7 +124,7 @@ class QoQaAdapter(CRUDAdapter):
                   'endpoint': self._endpoint,
                   }
         if with_lang:
-            values['lang'] = '/'+ self.lang
+            values['lang'] = '/' + self.lang
         return "{url}api/{version}{lang}/{endpoint}/".format(**values)
 
     def _handle_response(self, response):

@@ -38,8 +38,10 @@ class test_import_order(QoQaTransactionCase):
         super(test_import_order, self).setUp()
         self.setUpCompany()
         self.QSale = self.registry('qoqa.sale.order')
-        self.ship_product_id = self.ref('connector_ecommerce.product_product_shipping')
-        self.marketing_product_id = self.ref('qoqa_base_data.product_product_marketing_coupon')
+        ship_ref = 'connector_ecommerce.product_product_shipping'
+        marketing_ref = 'qoqa_base_data.product_product_marketing_coupon'
+        self.ship_product_id = self.ref(ship_ref)
+        self.marketing_product_id = self.ref(marketing_ref)
 
     def test_import_order(self):
         """ Import a sales order """

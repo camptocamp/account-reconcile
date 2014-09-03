@@ -25,16 +25,9 @@ from openerp.netsvc import LocalService
 class stock_picking(orm.Model):
     _inherit = 'stock.picking'
 
-    def _generate_swiss_pp_label(self, cr, uid, ids,
-                                      tracking_ids=None,
-                                      context=None):
+    def _generate_swiss_pp_label(self, cr, uid, ids, tracking_ids=None,
+                                 context=None):
         """ Generate labels and write tracking numbers received """
-        user_obj = self.pool['res.users']
-        report_obj = self.pool['ir.actions.report.xml']
-        ir_model_data_obj = self.pool['ir.model.data']
-        user = user_obj.browse(cr, uid, uid, context=context)
-        company = user.company_id
-
         assert len(ids) == 1
         report_name = 'delivery.shipping.label.swiss.pp.webkit'
         service = LocalService('report.%s' % report_name)

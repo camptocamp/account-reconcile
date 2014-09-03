@@ -59,5 +59,6 @@ class QoQaResponseError(QoQaAPIError):
                 for errtype, code, msg in self.errors
             ])
 
+
 class OrderImportRuleRetry(RetryableJobError):
     """ The sale order import will be retried later. """

@@ -34,7 +34,8 @@ class stock_tracking(orm.Model):
 class stock_move(orm.Model):
     _inherit = 'stock.move'
 
-    def compute_qty_to_pack(self, cr, uid, ids, pack_qty, max_qty, context=None):
+    def compute_qty_to_pack(self, cr, uid, ids, pack_qty, max_qty,
+                            context=None):
         res = dict.fromkeys(ids, False)
         for move in self.browse(cr, uid, ids, context=context):
             qty_to_unpack = pack_qty - max_qty

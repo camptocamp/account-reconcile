@@ -46,4 +46,4 @@ as the attribute sets, ...
           ],
  'installable': True,
  'application': True,
-}
+ }

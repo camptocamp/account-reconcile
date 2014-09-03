@@ -1,0 +1,36 @@
+language: python
+
+python:
+  - "2.7"
+
+cache:
+  directories:
+    - ${HOME}/.eggs-cache
+
+virtualenv:
+  system_site_packages: true
+
+before_install:
+  - echo -e "Host bazaar.launchpad.net\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - echo -e "Host bazaar.camptocamp.net\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - mkdir ~/.bazaar
+  - echo -e "[DEFAULT]\nlaunchpad_username = camptocamp-business-robot\n" > ~/.bazaar/bazaar.conf
+  - echo -e "[Launchpad]\nhost = .launchpad.net\nuser = camptocamp-business-robot\n" > ~/.bazaar/authentication.conf
+  - echo -e "[c2cbazaar]\nhost = bazaar.camptocamp.net\nuser = openerp\n" >> ~/.bazaar/authentication.conf
+  - mkdir ${HOME}/.buildout
+  - echo -e "[buildout]\neggs-directory = "${HOME}"/.eggs-cache\n" > ~/.buildout/default.cfg
+
+install:
+  - echo -e "[buildout]\nextends = ${TRAVIS_BUILD_DIR}/travis.cfg\n" > ${TRAVIS_BUILD_DIR}/buildout.cfg
+  - ${TRAVIS_BUILD_DIR}/bootstrap.sh
+  - ${TRAVIS_BUILD_DIR}/bin/buildout
+
+before_script:
+  - pip install -q flake8
+  - export db_name=$(grep db_name ${TRAVIS_BUILD_DIR}/etc/openerp.cfg | cut -d ' ' -f 3)
+  - export db_user=$(grep db_user ${TRAVIS_BUILD_DIR}/etc/openerp.cfg | cut -d ' ' -f 3)
+  - export db_pass=$(grep db_password ${TRAVIS_BUILD_DIR}/etc/openerp.cfg | cut -d ' ' -f 3)
+  - psql -c "CREATE USER ${db_user} WITH PASSWORD '${db_pass}' CREATEDB;" -U postgres
+
+script:
+  - flake8 ${TRAVIS_BUILD_DIR}/specific-parts/specific-addons --exclude=__init__.py

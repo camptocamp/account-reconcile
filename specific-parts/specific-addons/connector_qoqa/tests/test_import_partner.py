@@ -45,7 +45,8 @@ class test_import_partner(QoQaTransactionCase):
         qpartner_ids = self.QPartner.search(cr, uid, domain)
         self.assertEquals(len(qpartner_ids), 1)
         qpartner = self.QPartner.browse(cr, uid, qpartner_ids[0])
-        self.assertEquals(qpartner.name, 'Mykonos (christos.k@bluewin.ch-test)')
+        self.assertEquals(qpartner.name,
+                          'Mykonos (christos.k@bluewin.ch-test)')
         self.assertEquals(qpartner.qoqa_name, 'Mykonos')
         self.assertEquals(qpartner.email, 'christos.k@bluewin.ch-test')
         self.assertTrue(qpartner.is_company)

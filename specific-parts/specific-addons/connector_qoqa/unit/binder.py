@@ -145,7 +145,7 @@ class QoQaDirectBinder(QoQaBinder):
                     self.model._name,
                     binding_id,
                     {'qoqa_id': str(external_id),
-                    self._sync_date_field: now_fmt})
+                     self._sync_date_field: now_fmt})
 
 
 @qoqa

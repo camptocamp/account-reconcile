@@ -61,4 +61,4 @@ Overwrite of do_partial to keep tracking id of unprocessed packs
           ],
  'installable': True,
  'application': True,
-}
+ }

@@ -22,11 +22,11 @@ from openerp.osv import orm
 
 
 class res_partner(orm.Model):
+    """ Change default value to comment in order to send people the email
+    (for claims)
     """
-    Change default value to comment in order to send people the email (for claims)
-     """
     _inherit = 'res.partner'
 
     _defaults = {
-        'notification_email_send': lambda *args: 'comment'
+        'notification_email_send': 'comment',
     }

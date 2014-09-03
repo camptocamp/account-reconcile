@@ -44,4 +44,4 @@ Allows to create picking dispatches based on a list of Delivery Orders.
  'test': [],
  'installable': True,
  'auto_install': False,
-}
+ }

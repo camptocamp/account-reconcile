@@ -20,4 +20,4 @@ QoQa Web customisations
  'data': [],
  'installable': True,
  'application': True,
-}
+ }

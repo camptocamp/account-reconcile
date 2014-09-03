@@ -33,7 +33,8 @@ from openerp.addons.wine_ch_report.wine_bottle import volume_to_string
 class WineCHCSCVFormWebkit(report_sxw.rml_parse):
 
     def __init__(self, cr, uid, name, context):
-        super(WineCHCSCVFormWebkit, self).__init__(cr, uid, name, context=context)
+        super(WineCHCSCVFormWebkit, self).__init__(cr, uid, name,
+                                                   context=context)
         self.pool = pooler.get_pool(self.cr.dbname)
         self.cursor = self.cr
 
@@ -52,11 +53,14 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         """
         cr = self.cursor
         cr.execute("SELECT c.code, t.x_wine_type,"
-                   "       SUM((CASE WHEN q1.qty_in IS NULL THEN 0 ELSE q1.qty_in END"
-                   "        - CASE WHEN q2.qty_out IS NULL THEN 0 ELSE q2.qty_out END)"
+                   "       SUM((CASE WHEN q1.qty_in IS NULL THEN 0 "
+                   "            ELSE q1.qty_in END"
+                   "        - CASE WHEN q2.qty_out IS NULL THEN 0 "
+                   "          ELSE q2.qty_out END)"
                    "        * b.volume) AS sum"
                    "  FROM product_product p "
-                   "  INNER JOIN product_template t ON (p.product_tmpl_id=t.id) "
+                   "  INNER JOIN product_template t "
+                   "  ON (p.product_tmpl_id=t.id) "
                    "  INNER JOIN wine_bottle b ON (b.id=t.wine_bottle_id) "
                    "  INNER JOIN wine_class c ON (c.id=t.wine_class_id) "
                    "  LEFT OUTER JOIN "
@@ -106,7 +110,9 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         company_id = self._get_company_id(data)
         location_ids = self._get_location_ids(data)
         attribute_set_id = self._get_attribute_set_id(data)
-        wine_stocks = self._get_wine_stocks(location_ids, attribute_set_id, inventory_date)
+        wine_stocks = self._get_wine_stocks(location_ids,
+                                            attribute_set_id,
+                                            inventory_date)
 
         if not wine_stocks:
             raise orm.except_orm('Error', 'No stock for given location')
@@ -166,8 +172,9 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
 
     def _get_wine_types(self):
         option_obj = self.pool.get('attribute.option')
-        option_ids = option_obj.search(self.cr, self.uid,
-                                       [('attribute_id.name', '=', 'x_wine_type')])
+        option_ids = option_obj.search(
+            self.cr, self.uid,
+            [('attribute_id.name', '=', 'x_wine_type')])
         return option_obj.browse(self.cr, self.uid, option_ids)
 
     def _search_wine_set_id(self):
@@ -186,7 +193,8 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         return model_obj.search(self.cr, self.uid, [])
 
 
-report_sxw.report_sxw('report.wine.ch.cscv_form.webkit',
-                      'wine.ch.inventory.wizard',
-                      'addons/wine_ch_report/report/templates/wine_ch_cscv_form.mako.html',
-                      parser=WineCHCSCVFormWebkit)
+report_sxw.report_sxw(
+    'report.wine.ch.cscv_form.webkit',
+    'wine.ch.inventory.wizard',
+    'addons/wine_ch_report/report/templates/wine_ch_cscv_form.mako.html',
+    parser=WineCHCSCVFormWebkit)

@@ -21,12 +21,14 @@
 
 from openerp.osv import orm, fields
 
+
 class picking_dispatch(orm.Model):
     _inherit = 'picking.dispatch'
 
     _columns = {
         # remove the size limit
-        'name': fields.char('Name', required=True, select=True,
-                            states={'draft': [('readonly', False)]}, unique=True,
-                            help='Name of the picking dispatch'),
+        'name': fields.char(
+            'Name', required=True, select=True,
+            states={'draft': [('readonly', False)]}, unique=True,
+            help='Name of the picking dispatch'),
     }

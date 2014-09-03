@@ -71,7 +71,6 @@ class test_prepare_packs(common.TransactionCase):
              'location_dest_id': self.ref('stock.stock_location_7'),
              })
 
-
     def test_00_prepare_packs(self):
         """ Check pack preparation
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# flake8: noqa
+
 """
 Responses returned by the QoQa Web-Services
 """

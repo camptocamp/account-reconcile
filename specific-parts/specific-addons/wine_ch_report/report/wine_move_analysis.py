@@ -96,7 +96,8 @@ class report_wine_move_analysis(orm.Model):
         'product_qty_in': fields.integer('In Qty', readonly=True),
         'product_qty_out': fields.integer('Out Qty', readonly=True),
         'product_volume_in': fields.float('In Volume (Liters)', readonly=True),
-        'product_volume_out': fields.float('Out Volume (Liters)', readonly=True),
+        'product_volume_out': fields.float('Out Volume (Liters)',
+                                           readonly=True),
         'stock_journal': fields.many2one(
             'stock.journal',
             'Stock Journal',
@@ -114,83 +115,89 @@ class report_wine_move_analysis(orm.Model):
     def init(self, cr):
         tools.drop_view_if_exists(cr, 'report_wine_move_analysis')
         cr.execute("""
-            CREATE OR REPLACE view report_wine_move_analysis AS (
-                SELECT
-                        min(sm.id) as id,
-                        date_trunc('day', sm.date) as date,
-                        to_char(date_trunc('day',sm.date), 'YYYY') as year,
-                        to_char(date_trunc('day',sm.date), 'MM') as month,
-                        to_char(date_trunc('day',sm.date), 'YYYY-MM-DD') as day,
-                        sm.location_id as location_id,
-                        sm.picking_id as picking_id,
-                        sm.company_id as company_id,
-                        sm.location_dest_id as location_dest_id,
-                        -- Beware: the total quantity and volume does not take the uom in account
-                        -- That's the same thing in the "Stock Move Analysis" report
-                        sum(sm.product_qty) as product_qty,
-                        sum(sm.product_qty * wb.volume) as product_volume,
-                        sum(
-                            (CASE WHEN sp.type in ('out') THEN
-                                     (sm.product_qty * pu.factor / pu2.factor)
-                                  ELSE 0.0
-                            END)
-                        ) as product_qty_out,
-                        sum(
-                            (CASE WHEN sp.type in ('out') THEN
-                                     (sm.product_qty * pu.factor / pu2.factor * COALESCE(wb.volume, 0))
-                                  ELSE 0.0
-                            END)
-                        ) as product_volume_out,
-                        sum(
-                            (CASE WHEN sp.type in ('in') THEN
-                                     (sm.product_qty * pu.factor / pu2.factor)
-                                  ELSE 0.0
-                            END)
-                        ) as product_qty_in,
-                        sum(
-                            (CASE WHEN sp.type in ('in') THEN
-                                     (sm.product_qty * pu.factor / pu2.factor * COALESCE(wb.volume, 0))
-                                  ELSE 0.0
-                            END)
-                        ) as product_volume_in,
-                        sm.partner_id as partner_id,
-                        sm.product_id as product_id,
-                        sm.state as state,
-                        sm.product_uom as product_uom,
-                        pt.categ_id as categ_id ,
-                        coalesce(sp.type, 'other') as type,
-                        sp.stock_journal_id AS stock_journal,
-                        pt.attribute_set_id,
-                        pt.wine_bottle_id
-                    FROM
-                        stock_move sm
-                        LEFT JOIN stock_picking sp ON (sm.picking_id=sp.id)
-                        INNER JOIN product_product pp ON (sm.product_id=pp.id)
-                        LEFT JOIN product_uom pu ON (sm.product_uom=pu.id)
-                          LEFT JOIN product_uom pu2 ON (sm.product_uom=pu2.id)
-                        INNER JOIN product_template pt ON (pp.product_tmpl_id=pt.id)
-                        INNER JOIN attribute_set ats ON (pt.attribute_set_id=ats.id)
-                        LEFT JOIN wine_bottle wb ON (pt.wine_bottle_id=wb.id)
-                    GROUP BY
-                        coalesce(sp.type, 'other'),
-                        date_trunc('day', sm.date),
-                        sm.partner_id,
-                        sm.state,
-                        sm.product_uom,
-                        sm.date_expected,
-                        sm.product_id,
-                        pt.standard_price,
-                        sm.picking_id,
-                        sm.company_id,
-                        sm.location_id,
-                        sm.location_dest_id,
-                        pu.factor,
-                        pt.categ_id,
-                        sp.stock_journal_id,
-                        year,
-                        month,
-                        day,
-                        pt.attribute_set_id,
-                        pt.wine_bottle_id
-            )
+        CREATE OR REPLACE view report_wine_move_analysis AS (
+            SELECT
+                    min(sm.id) as id,
+                    date_trunc('day', sm.date) as date,
+                    to_char(date_trunc('day',sm.date), 'YYYY') as year,
+                    to_char(date_trunc('day',sm.date), 'MM') as month,
+                    to_char(date_trunc('day',sm.date), 'YYYY-MM-DD') as day,
+                    sm.location_id as location_id,
+                    sm.picking_id as picking_id,
+                    sm.company_id as company_id,
+                    sm.location_dest_id as location_dest_id,
+                    -- Beware: the total quantity and volume does not
+                    -- take the uom in account
+                    -- That's the same thing in the
+                    -- "Stock Move Analysis" report
+                    sum(sm.product_qty) as product_qty,
+                    sum(sm.product_qty * wb.volume) as product_volume,
+                    sum(
+                        (CASE WHEN sp.type in ('out') THEN
+                                    (sm.product_qty * pu.factor / pu2.factor)
+                                ELSE 0.0
+                        END)
+                    ) as product_qty_out,
+                    sum(
+                        (CASE WHEN sp.type in ('out') THEN
+                                    (sm.product_qty * pu.factor /
+                                     pu2.factor * COALESCE(wb.volume, 0))
+                                ELSE 0.0
+                        END)
+                    ) as product_volume_out,
+                    sum(
+                        (CASE WHEN sp.type in ('in') THEN
+                                    (sm.product_qty * pu.factor / pu2.factor)
+                                ELSE 0.0
+                        END)
+                    ) as product_qty_in,
+                    sum(
+                        (CASE WHEN sp.type in ('in') THEN
+                                    (sm.product_qty * pu.factor /
+                                     pu2.factor * COALESCE(wb.volume, 0))
+                                ELSE 0.0
+                        END)
+                    ) as product_volume_in,
+                    sm.partner_id as partner_id,
+                    sm.product_id as product_id,
+                    sm.state as state,
+                    sm.product_uom as product_uom,
+                    pt.categ_id as categ_id ,
+                    coalesce(sp.type, 'other') as type,
+                    sp.stock_journal_id AS stock_journal,
+                    pt.attribute_set_id,
+                    pt.wine_bottle_id
+                FROM
+                    stock_move sm
+                    LEFT JOIN stock_picking sp ON (sm.picking_id=sp.id)
+                    INNER JOIN product_product pp ON (sm.product_id=pp.id)
+                    LEFT JOIN product_uom pu ON (sm.product_uom=pu.id)
+                        LEFT JOIN product_uom pu2 ON (sm.product_uom=pu2.id)
+                    INNER JOIN product_template pt
+                    ON (pp.product_tmpl_id=pt.id)
+                    INNER JOIN attribute_set ats
+                    ON (pt.attribute_set_id=ats.id)
+                    LEFT JOIN wine_bottle wb ON (pt.wine_bottle_id=wb.id)
+                GROUP BY
+                    coalesce(sp.type, 'other'),
+                    date_trunc('day', sm.date),
+                    sm.partner_id,
+                    sm.state,
+                    sm.product_uom,
+                    sm.date_expected,
+                    sm.product_id,
+                    pt.standard_price,
+                    sm.picking_id,
+                    sm.company_id,
+                    sm.location_id,
+                    sm.location_dest_id,
+                    pu.factor,
+                    pt.categ_id,
+                    sp.stock_journal_id,
+                    year,
+                    month,
+                    day,
+                    pt.attribute_set_id,
+                    pt.wine_bottle_id
+        )
         """)

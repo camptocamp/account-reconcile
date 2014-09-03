@@ -23,7 +23,7 @@ import json
 from openerp.osv import orm, fields
 import openerp.addons.decimal_precision as dp
 
-from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
+from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 
 

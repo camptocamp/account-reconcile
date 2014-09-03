@@ -153,6 +153,9 @@ class qoqa_offer(orm.Model):
             residual = 0
             is_online = True
             online_failure = True
+            if not offer.position_ids:
+                is_online = False
+                online_failure = False
             for position in offer.position_ids:
                 quantity += position.sum_quantity
                 residual += position.sum_residual

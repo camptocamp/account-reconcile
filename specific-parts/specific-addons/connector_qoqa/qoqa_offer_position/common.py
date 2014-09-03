@@ -19,12 +19,16 @@
 #
 ##############################################################################
 
+from datetime import datetime
 from openerp.osv import orm, fields
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
+from ..connector import get_environment
 from ..backend import qoqa
 from ..unit.backend_adapter import QoQaAdapter
 from ..unit.binder import QoQaBinder
+from ..unit.backend_adapter import api_handle_errors
 
 
 class qoqa_offer_position(orm.Model):
@@ -65,6 +69,52 @@ class qoqa_offer_position(orm.Model):
         values = super(qoqa_offer_position, self)._get_stock_values(
             cr, uid, ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
+        for position in self.browse(cr, uid, ids, context=context):
+            # check bounds
+            fmt = DEFAULT_SERVER_DATETIME_FORMAT
+            begin = datetime.strptime(position.offer_id.datetime_begin_filter,
+                                      fmt)
+            end = datetime.strptime(position.offer_id.datetime_end_filter, fmt)
+            now = fields.datetime.context_timestamp(cr, uid,
+                                                    datetime.now(),
+                                                    context=context)
+            if not (begin <= now <= end):
+                continue
+            env = get_environment(session, self._name,
+                                  position.backend_id.id)
+            adapter = env.get_connector_unit(OfferPositionAdapter)
+            binder = env.get_connector_unit(QoQaBinder)
+            qoqa_id = binder.to_backend(position.id)
+            if not qoqa_id:
+                # so the user knows that it 'should' be displayed
+                # but can't actually
+                values[position.id]['stock_online_failure'] = True
+                continue
+            try:
+                with api_handle_errors(''):
+                    qoqa_values = adapter.stock_values(qoqa_id)
+            except orm.except_orm:
+                # api_handle_errors will return an orm.except_orm
+                # if a network or api error occurs
+                values[position.id]['stock_is_online'] = False
+                values[position.id]['stock_online_failure'] = True
+            else:
+                # TODO: reserved
+                quantity = values[position.id]['sum_quantity']
+                sold = int(qoqa_values['sold'])
+                residual = quantity - sold
+                progress = 0.0
+                if quantity > 0:
+                    progress = ((quantity - residual) / quantity) * 100
+                values[position.id].update({
+                    'stock_is_online': True,
+                    'stock_online_failure': False,
+                    'sum_stock_sold': sold,
+                    'sum_residual': residual,
+                    'stock_progress': progress,
+                    'stock_progress_remaining': 100 - progress,
+                })
+
         return values
 
     def copy_data(self, cr, uid, id, default=None, context=None):

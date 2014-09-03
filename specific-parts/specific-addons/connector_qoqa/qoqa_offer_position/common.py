@@ -99,13 +99,18 @@ class qoqa_offer_position(orm.Model):
                 values[position.id]['stock_is_online'] = False
                 values[position.id]['stock_online_failure'] = True
             else:
-                # TODO: reserved
                 quantity = values[position.id]['sum_quantity']
                 sold = int(qoqa_values['sold'])
                 residual = quantity - sold
                 progress = 0.0
                 if quantity > 0:
                     progress = ((quantity - residual) / quantity) * 100
+
+                reserved = int(qoqa_values['reserved'])
+                reserved_percent = 0.0
+                if quantity > 0:
+                    progress = reserved / quantity * 100
+
                 values[position.id].update({
                     'stock_is_online': True,
                     'stock_online_failure': False,
@@ -113,6 +118,8 @@ class qoqa_offer_position(orm.Model):
                     'sum_residual': residual,
                     'stock_progress': progress,
                     'stock_progress_remaining': 100 - progress,
+                    'stock_reserved': reserved,
+                    'stock_reserved_percent': reserved_percent,
                 })
 
         return values

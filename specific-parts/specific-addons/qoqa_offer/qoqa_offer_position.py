@@ -20,6 +20,7 @@
 ##############################################################################
 
 from __future__ import division
+import math
 
 from datetime import datetime, timedelta
 
@@ -211,8 +212,12 @@ class qoqa_offer_position(orm.Model):
                 'sum_quantity': quantity,
                 'sum_stock_sold': quantity - residual,
                 'sum_residual': residual,
-                'stock_progress': progress,
-                'stock_progress_remaining': 100 - progress,
+                'stock_progress': math.ceil(progress),
+                'stock_progress_remaining': 100 - math.ceil(progress),
+                # reserved stock is only accessible online, so
+                # implemented in connector_qoqa, hidden when offline
+                'stock_reserved': 0,
+                'stock_reserved_percent': 0,
             }
         return res
 
@@ -366,12 +371,22 @@ class qoqa_offer_position(orm.Model):
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
-            type='float',
+            type='integer',
             multi='stock'),
         'stock_progress_remaining': fields.function(
             _get_stock,
             string='Remaining (%)',
-            type='float',
+            type='integer',
+            multi='stock'),
+        'stock_reserved': fields.function(
+            _get_stock,
+            string='Reserved (online)',
+            type='integer',
+            multi='stock'),
+        'stock_reserved_percent': fields.function(
+            _get_stock,
+            string='Reserved (%) (online)',
+            type='integer',
             multi='stock'),
         'active': fields.boolean('Active'),
         # kept for import of historic deals

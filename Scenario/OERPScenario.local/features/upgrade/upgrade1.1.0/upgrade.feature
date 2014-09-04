@@ -8,6 +8,7 @@ Feature: upgrade to 1.1.0
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | stock_picking_update_date                  |
     Then my modules should have been installed and models reloaded
 
     Given I set the version of the instance to "1.1.0"

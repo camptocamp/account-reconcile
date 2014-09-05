@@ -27,7 +27,9 @@ class res_company(orm.Model):
 
     _columns = {
         'claim_sale_order_regexp': fields.char(
-            'Regular Expression for Claims'),
+            'Regular Expression for sale number',
+            help="Regular expression used to extract the sales order's "
+                 "number from the body of the emails."),
     }
 
     _default = {

@@ -18,7 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import re
 from datetime import datetime
+from operator import attrgetter
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
@@ -64,6 +66,38 @@ class crm_claim(orm.Model):
         'confirmation_email_sent': True,
     }
 
+
+    def _complete_from_sale(self, cr, uid, message, context=None):
+        # find sales order's number
+        # TODO get pattern from company
+        pattern = re.compile(u'\*\*\* Numéro de commande : (\d+) \*\*\*')
+        number = re.search(pattern, message.get('body', ''))
+        if not number:
+            return
+        number = number.group(1)
+        sale_obj = self.pool['sale.order']
+        sale_ids = sale_obj.search(cr, uid, [('name', '=', number)],
+                                   context=context)
+        if not sale_ids:
+            return
+        sale = sale_obj.browse(cr, uid, sale_ids[0], context=context)
+        invoices = (invoice for invoice in sale.invoice_ids
+                    if invoice.state != 'cancel')
+        invoices = sorted(invoices, key=attrgetter('date_invoice'),
+                          reverse=True)
+        if not invoices:
+            return
+        values = {'invoice_id': invoices[0].id}
+        res = self.onchange_invoice_id(cr, uid, [], invoices[0].id,
+                                       values.get('warehouse_id'),
+                                       context=context)
+        if res.get('value'):
+            values.update(res['value'])
+        values['claim_line_ids'] = [(0, 0, line) for line
+                                    in values['claim_line_ids']
+                                    ]
+        return values
+
     def message_new(self, cr, uid, msg, custom_values=None, context=None):
         """ Overrides mail_thread message_new that is called by the mailgateway
         through message_process.
@@ -77,6 +111,9 @@ class crm_claim(orm.Model):
         else:
             custom_values = custom_values.copy()
         custom_values.setdefault('confirmation_email_sent', False)
+        values = self._complete_from_sale(cr, uid, msg, context=context)
+        if values:
+            custom_values.update(values)
         return super(crm_claim, self).message_new(
             cr, uid, msg, custom_values=custom_values, context=context)
 

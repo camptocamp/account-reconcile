@@ -47,6 +47,10 @@ Features:
 * When an email is received on an existing claim, the claim is set back to a
   new stage "Response Received"
 
+** WARNING **
+This module needs the fr_FR and de_DE languages installed before its
+installation.
+
  """,
  'website': 'http://www.camptocamp.com',
  'data': ['send_mail_on_new_claim.xml',

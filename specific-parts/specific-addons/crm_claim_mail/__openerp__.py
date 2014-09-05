@@ -57,6 +57,7 @@ installation.
  'data': ['send_mail_on_new_claim.xml',
           'reopen_claim_on_mail.xml',
           'res_company_view.xml',
+          'crm_claim_view.xml',
           ],
  'installable': True,
  'auto_install': False,

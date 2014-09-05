@@ -69,31 +69,32 @@ class crm_claim(orm.Model):
     def _complete_from_sale(self, cr, uid, message, context=None):
         body = message.get('body')
         if not body:
-            return
+            return message, None
         user_obj = self.pool['res.users']
         user = user_obj.browse(cr, uid, uid, context=context)
         company = user.company_id
         pattern = company.claim_sale_order_regexp
         if not pattern:
-            return
+            return message, None
         # find sales order's number
-        pattern = re.compile(pattern)
+        pattern = u"^\s*%s\s*$\n?" % pattern
+        pattern = re.compile(pattern, re.MULTILINE | re.UNICODE)
         number = re.search(pattern, body)
         if not number:
-            return
+            return message, None
         number = number.group(1)
         sale_obj = self.pool['sale.order']
         sale_ids = sale_obj.search(cr, uid, [('name', '=', number)],
                                    context=context)
         if not sale_ids:
-            return
+            return message, None
         sale = sale_obj.browse(cr, uid, sale_ids[0], context=context)
         invoices = (invoice for invoice in sale.invoice_ids
                     if invoice.state != 'cancel')
         invoices = sorted(invoices, key=attrgetter('date_invoice'),
                           reverse=True)
         if not invoices:
-            return
+            return message, None
         invoice = invoices[0]
         values = {'invoice_id': invoice.id}
         res = self.onchange_invoice_id(cr, uid, [], invoice.id,
@@ -107,7 +108,10 @@ class crm_claim(orm.Model):
         partner = invoice.partner_id
         values.setdefault('partner_id', partner.id)
         values.setdefault('partner_phone', partner.phone)
-        return values
+
+        # remove the pattern from the message
+        message['body'] = re.sub(pattern, '', body)
+        return message, values
 
     def message_new(self, cr, uid, msg, custom_values=None, context=None):
         """ Overrides mail_thread message_new that is called by the mailgateway
@@ -122,7 +126,7 @@ class crm_claim(orm.Model):
         else:
             custom_values = custom_values.copy()
         custom_values.setdefault('confirmation_email_sent', False)
-        values = self._complete_from_sale(cr, uid, msg, context=context)
+        msg, values = self._complete_from_sale(cr, uid, msg, context=context)
         if values:
             custom_values.update(values)
         return super(crm_claim, self).message_new(

@@ -37,7 +37,7 @@ Message-ID: {msg_id}
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-*** Numéro de commande : {sale_number} ***
+*** sale order number: {sale_number} ***
 
 Please call me as soon as possible this afternoon!
 
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: quoted-printable
  </head>=20
  <body style=3D"margin: 0; padding: 0; background: #ffffff;-webkit-text-size-adjust: 100%;">=20
 
-  *** Numéro de commande : 7531902 ***
+  *** sale order number: {sale_number} ***
 
   <p>Please call me as soon as possible this afternoon!</p>
 
@@ -149,6 +149,13 @@ class TestMailAutocomplete(TestMailBase):
         self._create_invoice(sale_id)
         sale = self.Sale.browse(cr, uid, sale_id)
         invoice = sale.invoice_ids[0]
+
+        User = self.registry('res.users')
+        company = User.browse(cr, uid, uid).company_id
+        company.write({
+            'claim_sale_order_regexp':
+            u'\*\*\* sale order number: (\d+) \*\*\*'}
+        )
 
         msg_id = '<6198923581.41972151344608186760.JavaMail.1@agrolait.com>'
         email = self.format(MAIL_TEMPLATE, msg_id=msg_id,

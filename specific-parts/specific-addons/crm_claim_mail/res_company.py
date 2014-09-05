@@ -31,5 +31,5 @@ class res_company(orm.Model):
     }
 
     _default = {
-        'claim_sale_order_regexp': u'Numéro de commande : (\d+)',
+        'claim_sale_order_regexp': u'\*\*\* Numéro de commande : (\d+) \*\*\*',
     }

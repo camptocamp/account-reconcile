@@ -66,12 +66,19 @@ class crm_claim(orm.Model):
         'confirmation_email_sent': True,
     }
 
-
     def _complete_from_sale(self, cr, uid, message, context=None):
+        body = message.get('body')
+        if not body:
+            return
+        user_obj = self.pool['res.users']
+        user = user_obj.browse(cr, uid, uid, context=context)
+        company = user.company_id
+        pattern = company.claim_sale_order_regexp
+        if not pattern:
+            return
         # find sales order's number
-        # TODO get pattern from company
-        pattern = re.compile(u'\*\*\* Numéro de commande : (\d+) \*\*\*')
-        number = re.search(pattern, message.get('body', ''))
+        pattern = re.compile(pattern)
+        number = re.search(pattern, body)
         if not number:
             return
         number = number.group(1)

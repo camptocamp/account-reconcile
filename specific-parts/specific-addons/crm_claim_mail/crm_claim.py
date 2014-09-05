@@ -94,8 +94,9 @@ class crm_claim(orm.Model):
                           reverse=True)
         if not invoices:
             return
-        values = {'invoice_id': invoices[0].id}
-        res = self.onchange_invoice_id(cr, uid, [], invoices[0].id,
+        invoice = invoices[0]
+        values = {'invoice_id': invoice.id}
+        res = self.onchange_invoice_id(cr, uid, [], invoice.id,
                                        values.get('warehouse_id'),
                                        context=context)
         if res.get('value'):
@@ -103,6 +104,9 @@ class crm_claim(orm.Model):
         values['claim_line_ids'] = [(0, 0, line) for line
                                     in values['claim_line_ids']
                                     ]
+        partner = invoice.partner_id
+        values.setdefault('partner_id', partner.id)
+        values.setdefault('partner_phone', partner.phone)
         return values
 
     def message_new(self, cr, uid, msg, custom_values=None, context=None):

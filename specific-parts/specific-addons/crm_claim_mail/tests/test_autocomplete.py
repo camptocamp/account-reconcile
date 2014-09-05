@@ -169,3 +169,4 @@ class TestMailAutocomplete(TestMailBase):
         lines = claim.claim_line_ids
         self.assertEqual(lines[0].product_id.id,
                          self.ref('product.product_product_7'))
+        self.assertEqual(claim.partner_id.id, invoice.partner_id.id)

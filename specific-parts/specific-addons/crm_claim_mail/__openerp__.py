@@ -49,12 +49,12 @@ Features:
   new stage "Response Received"
 
 ** WARNING **
-This module needs the fr_FR and de_DE languages installed before its
-installation.
+This module installs the fr_FR and de_DE languages.
 
  """,
  'website': 'http://www.camptocamp.com',
- 'data': ['send_mail_on_new_claim.xml',
+ 'data': ['lang_install.xml',
+          'send_mail_on_new_claim.xml',
           'reopen_claim_on_mail.xml',
           'res_company_view.xml',
           'crm_claim_view.xml',

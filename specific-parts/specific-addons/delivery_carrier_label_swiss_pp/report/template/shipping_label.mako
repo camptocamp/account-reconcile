@@ -96,7 +96,7 @@
               <div class="code">
                 ${picking.offer_id.ref}.${picking.sale_id.name}.${picking.move_lines[0].tracking_id.name}
               </div>
-          %elif picking.type == 'in' and picking.claim_id:
+          %elif picking.claim_id:
               <div class="code">
                 ${picking.claim_id.number}
               </div>

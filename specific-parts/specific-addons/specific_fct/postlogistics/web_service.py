@@ -83,7 +83,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
             attributes['FreeText'] = (picking.offer_id.ref +
                                       "." +
                                       picking.sale_id.name)
-        elif picking.type == 'in' and picking.claim_id:
+        elif picking.claim_id:
             attributes['FreeText'] = picking.claim_id.number
         return attributes
 

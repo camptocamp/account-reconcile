@@ -47,12 +47,14 @@ Sylvie
 Content-Type: text/html; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 <html>
  <head>=20
   <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" />
  </head>=20
- <body style=3D"margin: 0; padding: 0; background: #ffffff;-webkit-text-size-adjust: 100%;">=20
+ <body style=3D"margin: 0; padding: 0; background:
+     #ffffff;-webkit-text-size-adjust: 100%;">=20
 
   *** sale order number: {sale_number} ***
 
@@ -65,6 +67,7 @@ Content-Transfer-Encoding: quoted-printable
 </html>
 ------=_Part_4200734_24778174.1344608186754--
 """
+
 
 class TestMailAutocomplete(TestMailBase):
 
@@ -80,21 +83,9 @@ class TestMailAutocomplete(TestMailBase):
 
     def setUp(self):
         super(TestMailAutocomplete, self).setUp()
-        cr, uid = self.cr, self.uid
-        self.Claim = Claim = self.registry('crm.claim')
+        self.Claim = self.registry('crm.claim')
         self.Sale = self.registry('sale.order')
         self.SaleLine = self.registry('sale.order.line')
-        # msg_id = '<2198923581.41972151344608186760.JavaMail@agrolait.com>'
-        # email = self.format(MAIL_TEMPLATE,
-        #                     msg_id=msg_id)
-        # claim_id = Claim.message_process(cr, uid, Claim._name, email)
-        # self.claim = claim = Claim.browse(cr, uid, claim_id)
-        # # force the number to be in the format used by QoQa,
-        # # it must match with a regular expression to be found
-        # # in the mail routing
-        # self.claim.write({'number': 'RMA-123456'})
-        # self.claim.refresh()
-        # self.msg = claim.message_ids[0]
 
     def _create_sale_order(self, number):
         cr, uid = self.cr, self.uid

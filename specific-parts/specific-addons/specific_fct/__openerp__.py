@@ -30,7 +30,8 @@
              'delivery_carrier_label_postlogistics_shop_logo',
              'product_variant_simple',
              'qoqa_offer',
-             'account_payment'
+             'account_payment',
+             'delivery_carrier_label_dispatch',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

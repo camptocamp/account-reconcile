@@ -10,6 +10,7 @@ Feature: upgrade to 1.1.0
       | name                                       |
       | picking_dispatch                           |
       | delivery_carrier_label_dispatch            |
+      | picking_dispatch_delay_done                |
     Then my modules should have been installed and models reloaded
 
     Given I find a possibly inactive "ir.cron" with oid: picking_dispatch.ir_cron_dispatch_check_assign_all

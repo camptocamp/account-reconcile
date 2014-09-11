@@ -37,7 +37,7 @@ Feature: upgrade to 1.1.0
     """
 
     Given I find a "mass.object" with name: Bon de livraison
-    And I add the field with oid stock_picking_update_date.field_stock_picking_date_expected_5267 to the mass editing
+    And I add the date_expected field to the mass editing
 
     Given I find a possibly inactive "ir.cron" with oid: picking_dispatch.ir_cron_dispatch_check_assign_all
     And having:

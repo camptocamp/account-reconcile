@@ -10,3 +10,12 @@ def impl(ctx, field_oid):
     field = model('ir.model.fields').get(field_oid)
     values = {'field_ids': [(4, field.id)]}
     ctx.found_item.write(values)
+
+
+@step('I add the date_expected field to the mass editing')
+def impl(ctx):
+    assert ctx.found_item
+    assert ctx.found_item.id
+    field = model('ir.model.fields').get(['name = date_expected', 'model_id.model = stock.picking.out'])
+    values = {'field_ids': [(4, field.id)]}
+    ctx.found_item.write(values)

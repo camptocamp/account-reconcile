@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,47 +19,28 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Specific',
- 'version': '0.0.2',
- 'category': 'Others',
- 'depends': ['sale',
-             'product',
-             'product_custom_attributes',
-             'purchase',
-             'crm_claim_rma',
-             'delivery_carrier_label_postlogistics_shop_logo',
-             'product_variant_simple',
-             'qoqa_offer',
-             'account_payment',
-             'delivery_carrier_label_dispatch',
-             ],
+{'name': 'Picking Dispatch Delay Done',
+ 'version': '1.0',
  'author': 'Camptocamp',
+ 'maintainer': 'Camptocamp',
  'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
+ 'category': 'Warehouse Management',
+ 'depends': ['picking_dispatch',  # stock-logistics-workflow
+             ],
  'description': """
-QoQa Specific
-=============
+Picking Dispatch Delay Done
+===========================
 
-Local customizations for QoQa.
+Adds a button on the Picking Dispatches allowing to set the dispatch to done,
+later. A cron will process them so the user is not blocked.
+Add a state on the picking dispatches 'Delayed Done'.
 
-Product:
-
-set cost_method default to average
-
-Stock.move:
-
-Overwrite of do_partial to keep tracking id of unprocessed packs
 """,
- 'images': [],
- 'demo': [],
- 'data': ['security/security.xml',
-          'stock_view.xml',
-          'product_view.xml',
-          'purchase_view.xml',
-          'sale_view.xml',
-          'crm_claim_view.xml',
-          'payment_view.xml'
+ 'website': 'http://www.camptocamp.com',
+ 'data': ['picking_dispatch_view.xml',
+          'cron_data.xml',
           ],
+ 'test': [],
  'installable': True,
- 'application': True,
+ 'auto_install': False,
  }

@@ -13,6 +13,9 @@ Feature: upgrade to 1.1.0
       | crm_claim_mail                             |
       | qoqa_offer                                 |
       | stock_picking_update_date                  |
+      | picking_dispatch                           |
+      | delivery_carrier_label_dispatch            |
+      | picking_dispatch_delay_done                |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch
@@ -32,5 +35,11 @@ Feature: upgrade to 1.1.0
 
     Given I find a "mass.object" with name: Bon de livraison
     And I add the field with oid stock_picking_update_date.field_stock_picking_date_expected_5267 to the mass editing
+
+    Given I find a possibly inactive "ir.cron" with oid: picking_dispatch.ir_cron_dispatch_check_assign_all
+    And having:
+      | name   | value                                  |
+      | active | true                                   |
+      | args   | '(None, [("state", "=", "assigned")])' |
 
     Given I set the version of the instance to "1.1.0"

@@ -28,6 +28,7 @@
  'category': 'Customer Relationship Management',
  'depends': ['crm_claim_rma',  # in lp:openerp-rma
              'crm_claim_merge',  # in lp:openerp-crm
+             'qoqa_base_data',
              ],
  'description': """
 CRM Claim Mail
@@ -47,10 +48,16 @@ Features:
 * When an email is received on an existing claim, the claim is set back to a
   new stage "Response Received"
 
+** WARNING **
+This module installs the fr_FR and de_DE languages.
+
  """,
  'website': 'http://www.camptocamp.com',
- 'data': ['send_mail_on_new_claim.xml',
+ 'data': ['lang_install.xml',
+          'send_mail_on_new_claim.xml',
           'reopen_claim_on_mail.xml',
+          'res_company_view.xml',
+          'crm_claim_view.xml',
           ],
  'installable': True,
  'auto_install': False,

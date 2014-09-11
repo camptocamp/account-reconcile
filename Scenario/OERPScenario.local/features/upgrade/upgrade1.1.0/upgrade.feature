@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-@upgrade_from_1.0.54 @qoqa
+@upgrade_1.1.0 @qoqa
 
 Feature: upgrade to 1.1.0
 
@@ -7,8 +7,10 @@ Feature: upgrade to 1.1.0
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I update the module list
     Given I install the required modules with dependencies:
-      | name           |
-      | connector_qoqa |
+      | name                                       |
+      | connector_qoqa                             |
+      | qoqa_base_data                             |
+      | crm_claim_mail                             |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch
@@ -19,5 +21,11 @@ Feature: upgrade to 1.1.0
     And having:
       | key                         | value |
       | payment_cancellable_on_qoqa | false |
+
+    Given I execute the SQL commands
+    """
+    UPDATE res_company
+    SET claim_sale_order_regexp = '\*\*\* Numéro de commande : (\d+) \*\*\*'
+    """
 
     Given I set the version of the instance to "1.1.0"

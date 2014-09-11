@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,32 +19,19 @@
 #
 ##############################################################################
 
-{'name': 'QoQa Base Data',
- 'version': '0.0.1',
- 'category': 'Others',
- 'depends': ['product_custom_attributes',
-             'sale',
-             'connector_ecommerce',
-             ],
- 'author': 'Camptocamp',
- 'license': 'AGPL-3',
- 'website': 'http://www.camptocamp.com',
- 'description': """
-QoQa Base Data
-==============
+from openerp.osv import orm, fields
 
-Create data used by other modules (connector_qoqa, wine_ch_report, ...),
-as the attribute sets, ...
 
-""",
- 'images': [],
- 'demo': [],
- 'data': ['attribute_set.xml',
-          'sale_shop.xml',
-          'product.xml',
-          'product_category.xml',
-          'res_company_view.xml',
-          ],
- 'installable': True,
- 'application': True,
- }
+class res_company(orm.Model):
+    _inherit = 'res.company'
+
+    _columns = {
+        'claim_sale_order_regexp': fields.char(
+            'Regular Expression for sale number',
+            help="Regular expression used to extract the sales order's "
+                 "number from the body of the emails."),
+    }
+
+    _default = {
+        'claim_sale_order_regexp': u'\*\*\* Numéro de commande : (\d+) \*\*\*',
+    }

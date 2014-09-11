@@ -18,6 +18,7 @@ Feature: upgrade to 1.1.0
       | picking_dispatch_delay_done                |
       | specific_fct                               |
       | purchase_analytic_global                   |
+      | purchase_variant_fast_entry                |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch

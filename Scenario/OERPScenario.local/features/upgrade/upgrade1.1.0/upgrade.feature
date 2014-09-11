@@ -11,6 +11,7 @@ Feature: upgrade to 1.1.0
       | connector_qoqa                             |
       | qoqa_base_data                             |
       | crm_claim_mail                             |
+      | qoqa_offer                                 |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch

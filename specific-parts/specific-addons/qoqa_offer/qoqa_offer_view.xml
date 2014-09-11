@@ -100,6 +100,7 @@
                     <field name="date_begin" invisible="1"/>
                     <field name="name"/>
                     <field name="title"/>
+                    <field name="stock_is_online"/>
                     <field name="stock_progress" widget="progressbar"/>
                     <field name="active" invisible="1"/>
                 </tree>
@@ -135,6 +136,10 @@
                     <field name="main_lot_price"/>
                     <field name="main_regular_price"/>
                     <field name="currency_symbol"/>
+                    <field name="stock_is_online"/>
+                    <field name="stock_online_failure"/>
+                    <field name="stock_reserved"/>
+                    <field name="stock_reserved_percent"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card oe_kanban_offer oe_kanban_global_click">
@@ -165,6 +170,11 @@
                                             </div>
                                         </div>
                                         <div class="qoqa_box">
+                                            <span class="oe_e oe_left">
+                                                <t t-if="record.stock_online_failure.value">&#81;</t>
+                                                <t t-if="record.stock_is_online.value and !record.stock_online_failure.value">&#8646;</t>
+                                                <t t-if="!record.stock_is_online.value and !record.stock_online_failure.value">&#124;</t>
+                                            </span>
                                             <progress t-att-value="record.stock_progress.raw_value" max="100" class="qoqa_progress"/>
                                         </div>
                                         <div class="qoqa_box">
@@ -173,7 +183,10 @@
                                               <t t-esc="'('"/><field name="stock_progress_remaining"/>％<t t-esc="')'"/>
                                             </div>
                                             <div class="qoqa_right_box">
-
+                                              <t t-if="record.stock_is_online.value and !record.stock_online_failure.value">
+                                              Reserved: <b><field name="stock_reserved"/></b>
+                                              <t t-esc="'('"/><field name="stock_reserved_percent"/>％<t t-esc="')'"/>
+                                              </t>
                                             </div>
                                         </div>
                                         <hr class="qoqa_line"/>

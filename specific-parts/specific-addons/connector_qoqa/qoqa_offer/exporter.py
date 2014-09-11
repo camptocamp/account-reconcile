@@ -21,6 +21,7 @@
 
 from datetime import datetime, timedelta
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+from openerp.tools.translate import _
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 from openerp.addons.connector.event import (on_record_create,
@@ -32,6 +33,7 @@ from ..unit.export_synchronizer import (QoQaExporter,
                                         Translations,
                                         export_record,
                                         )
+from ..unit.backend_adapter import api_handle_errors
 from ..unit.mapper import m2o_to_backend
 from ..connector import utc_datetime_to_iso8601
 
@@ -41,11 +43,13 @@ from ..connector import utc_datetime_to_iso8601
 def delay_export(session, model_name, record_id, vals):
     if 'stock_bias' in vals and not session.context.get('connector_no_export'):
         # particular case: stock_bias is stored in the positions on
-        # the QoQa backend, delay export of all positions
+        # the QoQa backend but in the offer here, export all the positions
+        message = _('Error when exporting the bias to QoQa.')
         for position in session.browse(model_name, record_id).position_ids:
-            export_record.delay(session, 'qoqa.offer.position',
-                                position.id, ['stock_bias'], priority=1,
-                                eta=datetime.now())
+            # direct export, the bias change must be direct
+            with api_handle_errors(message):
+                export_record(session, 'qoqa.offer.position',
+                              position.id, ['stock_bias'])
         # just skip the export of the offer if only the bias has been
         # modified
         if vals.keys() == ['stock_bias']:

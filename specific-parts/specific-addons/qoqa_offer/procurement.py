@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Author: Guewen Baconnier
+#    Copyright 2014 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,13 +19,17 @@
 #
 ##############################################################################
 
-from . import qoqa_shop
-from . import account_invoice
-from . import stock
-from . import qoqa_offer
-from . import qoqa_offer_position
-from . import sale_order
-from . import qoqa_buyphrase
-from . import product
-from . import delivery_carrier
-from . import procurement
+from openerp.osv import orm, fields
+
+
+class procurement_order(orm.Model):
+    _inherit = 'procurement.order'
+
+    _columns = {
+        'offer_id': fields.many2one(
+            'qoqa.offer',
+            string='Offer',
+            readonly=True,
+            select=True,
+            ondelete='restrict')
+    }

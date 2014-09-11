@@ -16,6 +16,7 @@ Feature: upgrade to 1.1.0
       | picking_dispatch                           |
       | delivery_carrier_label_dispatch            |
       | picking_dispatch_delay_done                |
+      | specific_fct                               |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch

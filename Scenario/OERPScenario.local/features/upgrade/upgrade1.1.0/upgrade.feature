@@ -12,6 +12,7 @@ Feature: upgrade to 1.1.0
       | qoqa_base_data                             |
       | crm_claim_mail                             |
       | qoqa_offer                                 |
+      | stock_picking_update_date                  |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch
@@ -28,5 +29,8 @@ Feature: upgrade to 1.1.0
     UPDATE res_company
     SET claim_sale_order_regexp = '\*\*\* Numéro de commande : (\d+) \*\*\*'
     """
+
+    Given I find a "mass.object" with name: Bon de livraison
+    And I add the field with oid stock_picking_update_date.field_stock_picking_date_expected_5267 to the mass editing
 
     Given I set the version of the instance to "1.1.0"

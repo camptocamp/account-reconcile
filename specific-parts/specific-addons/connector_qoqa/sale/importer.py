@@ -500,3 +500,25 @@ class SaleOrderImportMapper(ImportMapper):
 @qoqa
 class QoQaSaleOrderOnChange(SaleOrderOnChange):
     _model_name = 'qoqa.sale.order'
+
+    def _play_line_onchange(self, line, previous_lines, order):
+        new_line = super(QoQaSaleOrderOnChange, self)._play_line_onchange(
+            line, previous_lines, order
+        )
+        if new_line.get('offer_position_id'):
+            s = self.session
+            sale_line_obj = s.pool['sale.order.line']
+            # change the delay according to the offer position
+            position_id = new_line['offer_position_id']
+            res = sale_line_obj.onchange_offer_position_id(s.cr,
+                                                           s.uid,
+                                                           [],
+                                                           position_id,
+                                                           context=s.context)
+            self.merge_values(new_line, res)
+            # force override of 'delay' because merge_values only apply
+            # undefined fields
+            delay = res.get('value', {}).get('delay')
+            if delay:
+                new_line['delay'] = delay
+        return new_line

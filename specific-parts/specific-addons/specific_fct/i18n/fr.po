@@ -163,3 +163,20 @@ msgstr "Bons de livraisons"
 msgid "Sales Order Line"
 msgstr "Ligne de commandes de vente"
 
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
+#: field:product.template,variant_codes:0
+msgid "Variants References"
+msgstr "Références des variantes"
+
+#. module: specific_fct
+#: view:product.product:0
+msgid "{'required': [('type', '=', 'product')]}"
+msgstr "{'required': [('type', '=', 'product')]}"
+
+#. module: specific_fct
+#: view:account.invoice:0
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_validation_agreement
+#: field:account.invoice,validation_agreement:0
+msgid "Agreement to validation"
+msgstr "Accord pour validation"

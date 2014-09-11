@@ -163,3 +163,9 @@ msgstr ""
 msgid "Sales Order Line"
 msgstr ""
 
+#. module: specific_fct
+#: view:account.invoice:0
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_validation_agreement
+#: field:account.invoice,validation_agreement:0
+msgid "Agreement to validation"
+msgstr ""

@@ -84,6 +84,10 @@ class qoqa_backend_oauth(orm.TransientModel):
         # from the OAuth API
         oauth = OAuth1Session(form.client_key,
                               client_secret=form.client_secret)
+        if form.backend_id.debug:
+            # deactivate SSL checks when debugging because the
+            # tests certificates are often not verified
+            oauth.verify = False
         url = form.backend_id.url + REQUEST_URL_PART
         try:
             fetch_response = oauth.fetch_request_token(url)
@@ -127,6 +131,10 @@ class qoqa_backend_oauth(orm.TransientModel):
                               resource_owner_key=form.request_key,
                               resource_owner_secret=form.request_secret,
                               verifier=form.pin)
+        if form.backend_id.debug:
+            # deactivate SSL checks when debugging because the
+            # tests certificates are often not verified
+            oauth.verify = False
         url = form.backend_id.url + ACCESS_URL_PART
         oauth_tokens = oauth.fetch_access_token(url)
         access_token = oauth_tokens.get('oauth_token')

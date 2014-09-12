@@ -92,6 +92,10 @@ class qoqa_backend_oauth(orm.TransientModel):
                 _('Error'),
                 _('Could not request the tokens: %s') % err)
         authorize_url = fetch_response.get('authorize_url')
+        if not authorize_url:
+            # bug in the QoQa API! it sends the key with a \n
+            # and at that time they do not know why so handle that here
+            authorize_url = fetch_response.get('\nauthorize_url')
         request_key = fetch_response.get('oauth_token')
         request_secret = fetch_response.get('oauth_token_secret')
         auth_url = oauth.authorization_url(authorize_url)

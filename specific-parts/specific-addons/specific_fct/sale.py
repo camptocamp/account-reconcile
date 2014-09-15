@@ -23,6 +23,36 @@ from openerp.osv import orm
 from openerp.tools.translate import _
 
 
+class sale_order(orm.Model):
+    _inherit = 'sale.order'
+
+    def action_force_cancel(self, cr, uid, ids, context=None):
+        """ Force cancellation of a done sales order.
+
+        Only usable on done sales orders (so in the final state of the
+        workflow) to avoid to break the workflow in the middle of its
+        course.
+        At QoQa, they might deliver sales orders and only cancel the order
+        afterwards. In that case, even if the sales order is done, they need
+        to set it as canceled on OpenERP and on the backend.
+        """
+        sale_order_line_obj = self.pool.get('sale.order.line')
+        for sale in self.browse(cr, uid, ids, context=context):
+            if sale.state != 'done':
+                raise orm.except_orm(
+                    _('Cannot cancel this sales order!'),
+                    _('Only done sales orders can be forced to be canceled.'))
+            sale_order_line_obj.write(cr, uid,
+                                      [l.id for l in sale.order_line],
+                                      {'state': 'cancel'},
+                                      context=context)
+        self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
+        message = _("The sales order was done, but it has been manually "
+                    "canceled.")
+        self.message_post(cr, uid, ids, body=message, context=context)
+        return True
+
+
 class sale_order_line(orm.Model):
 
     _inherit = 'sale.order.line'

@@ -56,6 +56,7 @@ Overwrite of do_partial to keep tracking id of unprocessed packs
           'stock_view.xml',
           'product_view.xml',
           'purchase_view.xml',
+          'sale_view.xml',
           'crm_claim_view.xml',
           'payment_view.xml',
           'account_invoice_view.xml',

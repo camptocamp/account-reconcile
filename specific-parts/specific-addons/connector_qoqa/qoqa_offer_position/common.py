@@ -72,13 +72,11 @@ class qoqa_offer_position(orm.Model):
         for position in self.browse(cr, uid, ids, context=context):
             # check bounds
             fmt = DEFAULT_SERVER_DATETIME_FORMAT
+            # 'begin' and 'end' are in UTC
             begin = datetime.strptime(position.offer_id.datetime_begin_filter,
                                       fmt)
             end = datetime.strptime(position.offer_id.datetime_end_filter, fmt)
-            now = fields.datetime.context_timestamp(cr, uid,
-                                                    datetime.now(),
-                                                    context=context)
-            if not (begin <= now <= end):
+            if not (begin <= datetime.now() <= end):
                 continue
             env = get_environment(session, self._name,
                                   position.backend_id.id)

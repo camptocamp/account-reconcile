@@ -20,6 +20,8 @@ Feature: upgrade to 1.1.0
       | purchase_analytic_global                   |
       | purchase_variant_fast_entry                |
       | crm_rma_stock_location                     |
+      | stock_orderpoint_generator                 |
+      | stock_location_search_stock                |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch

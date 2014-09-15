@@ -46,6 +46,8 @@ def delay_export(session, model_name, record_id, vals):
         # the QoQa backend but in the offer here, export all the positions
         message = _('Error when exporting the bias to QoQa.')
         for position in session.browse(model_name, record_id).position_ids:
+            if not position.qoqa_id:
+                continue
             # direct export, the bias change must be direct
             with api_handle_errors(message):
                 export_record(session, 'qoqa.offer.position',

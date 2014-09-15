@@ -169,3 +169,8 @@ msgstr ""
 #: field:account.invoice,validation_agreement:0
 msgid "Agreement to validation"
 msgstr ""
+
+#. module: specific_fct
+#: view:account.invoice:0
+msgid "Agreement validated"
+msgstr ""

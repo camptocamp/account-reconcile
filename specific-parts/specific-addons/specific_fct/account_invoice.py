@@ -41,3 +41,9 @@ class account_invoice(orm.Model):
                     line.write({'account_analytic_id': False})
         return super(account_invoice, self).action_move_create(
             cr, uid, ids, context=context)
+
+    def button_validate_agreement(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids,
+                   {'validation_agreement': True},
+                   context=context)
+        return True

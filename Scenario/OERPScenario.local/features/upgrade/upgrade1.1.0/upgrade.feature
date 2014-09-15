@@ -19,6 +19,7 @@ Feature: upgrade to 1.1.0
       | specific_fct                               |
       | purchase_analytic_global                   |
       | purchase_variant_fast_entry                |
+      | crm_rma_stock_location                     |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch
@@ -55,5 +56,20 @@ Feature: upgrade to 1.1.0
     AND so.offer_id IS NOT NULL
     AND p.offer_id IS NULL
     """
+
+    Given I find a "stock.warehouse" with oid: stock.warehouse0
+    And having:
+      | name       | value                            |
+      | lot_rma_id | by oid: scenario.location_ch_sav |
+
+    Given I find a "stock.warehouse" with oid: scenario.warehouse_fr
+    And having:
+      | name       | value                            |
+      | lot_rma_id | by oid: scenario.location_fr_sav |
+
+    Given I find a "stock.location" with oid: crm_rma_stock_location.stock_location_rma
+    And having:
+      | name       | value                            |
+      | active     | false                            |
 
     Given I set the version of the instance to "1.1.0"

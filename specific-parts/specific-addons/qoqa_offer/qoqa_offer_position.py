@@ -561,8 +561,11 @@ class qoqa_offer_position(orm.Model):
         # been modified, but something has been changed on the product
         if not position or position.product_tmpl_id.id != product_tmpl_id:
             tax_ids = [tax.id for tax in template.taxes_id if not tax.ecotax]
-            lines = [{'product_id': variant.id, 'quantity': 1} for
-                     variant in template.variant_ids]
+            lines = [{'product_id': variant.id, 'quantity': 1}
+                     for variant
+                     in sorted(template.variant_ids,
+                               key=lambda variant: variant.code)
+                     ]
             values.update({
                 'variant_ids': lines,
                 'tax_id': tax_ids[0] if len(tax_ids) == 1 else False,

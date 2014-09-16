@@ -42,6 +42,34 @@ class stock_move(orm.Model):
             res[move.id] = move.product_qty - qty_to_unpack
         return res
 
+    def setlast_tracking(self, cr, uid, ids, context=None):
+        """ Optimized version of setlast_tracking
+
+        Can be removed once a PR is merged:
+            https://github.com/odoo/odoo/pull/2448
+            https://github.com/OCA/OCB/pull/49
+
+        """
+        tracking_obj = self.pool.get('stock.tracking')
+        assert len(ids) == 1, "1 ID expected, got %s" % (ids, )
+        move = self.browse(cr, uid, ids[0], context=context)
+        picking_id = move.picking_id.id
+        if picking_id:
+            move_ids = self.search(cr, uid,
+                                   [('picking_id', '=', picking_id),
+                                    ('tracking_id', '!=', False)],
+                                   limit=1,
+                                   order='tracking_id desc',
+                                   context=context)
+            if move_ids:
+                tracking_move = self.browse(cr, uid, move_ids[0],
+                                            context=context)
+                tracking_id = tracking_move.tracking_id.id
+            else:
+                tracking_id = tracking_obj.create(cr, uid, {}, context=context)
+            self.write(cr, uid, move.id, {'tracking_id': tracking_id})
+        return True
+
 
 class stock_picking(orm.Model):
     _inherit = 'stock.picking'

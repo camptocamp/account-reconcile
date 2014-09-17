@@ -46,7 +46,7 @@ Feature: upgrade to 1.1.0
     And having:
       | name   | value                                  |
       | active | true                                   |
-      | args   | '(None, [("state", "=", "assigned")])' |
+      | args   | (None, [("state", "=", "assigned")])   |
 
     Given I execute the SQL commands
     """

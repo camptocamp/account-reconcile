@@ -109,8 +109,6 @@ class crm_claim(orm.Model):
         values.setdefault('partner_id', partner.id)
         values.setdefault('partner_phone', partner.phone)
 
-        # remove the pattern from the message
-        message['body'] = re.sub(pattern, '', body)
         return message, values
 
     def message_new(self, cr, uid, msg, custom_values=None, context=None):

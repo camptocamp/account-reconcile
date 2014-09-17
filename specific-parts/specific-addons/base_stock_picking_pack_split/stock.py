@@ -24,13 +24,6 @@ from openerp.osv import orm
 class stock_move(orm.Model):
     _inherit = 'stock.move'
 
-    def compute_qty_to_pack(self, cr, uid, ids, pack_qty, max_qty,
-                            context=None):
-        res = dict.fromkeys(ids, False)
-        for move in self.browse(cr, uid, ids, context=context):
-            qty_to_unpack = pack_qty - max_qty
-            res[move.id] = move.product_qty - qty_to_unpack
-        return res
 
     def setlast_tracking(self, cr, uid, ids, context=None):
         """ Optimized version of setlast_tracking
@@ -103,8 +96,6 @@ class stock_picking(orm.Model):
                     continue
 
                 if pack_qty > max_qty:
-                    qty_to_pack = move.compute_qty_to_pack(
-                        pack_qty, max_qty)[move.id]
                     wiz_data = {'quantity': qty_to_pack}
                     wiz_ctx = context.copy()
                     wiz_ctx.update(active_ids=[move.id],
@@ -131,6 +122,7 @@ class stock_picking(orm.Model):
                         known_move_ids.append(new_move_ids[0])
                         new_move = move_obj.browse(cr, uid, new_move_ids,
                                                    context=context)[0]
+                    qty_to_pack = move.product_qty - (pack_qty - max_qty)
                         moves_to_split.append(new_move)
                     else:
                         # If qty to split == move qty (qty_to_pack == 0),

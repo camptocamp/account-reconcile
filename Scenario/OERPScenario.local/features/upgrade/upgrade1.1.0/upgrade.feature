@@ -15,7 +15,7 @@ Feature: upgrade to 1.1.0
     Given I execute the SQL commands
     """
     UPDATE res_company
-    SET claim_sale_order_regexp = '\*\*\* Numéro de commande : (\d+) \*\*\*'
+    SET claim_sale_order_regexp = 'Order\s?: https?:\/\/\S+\/(\d+)'
     """
 
     Given I set the version of the instance to "1.1.0"

@@ -534,3 +534,38 @@ class qoqa_offer(orm.Model):
                        {'stock_bias': offer.stock_bias - 1},
                        context=context)
         return True
+
+    def button_orderpoint(self, cr, uid, ids, context=None):
+        products = set()
+        for offer in self.browse(cr, uid, ids, context=context):
+            for position in offer.position_ids:
+                for variant in position.variant_ids:
+                    products.add(variant.product_id)
+        orderpoint_ids = set()
+        for product in products:
+            for orderpoint in product.orderpoint_ids:
+                orderpoint_ids.add(orderpoint.id)
+        if not orderpoint_ids:
+            raise orm.except_orm(
+                _('Error'),
+                _('The products have no orderpoints configured.')
+            )
+        orderpoint_obj = self.pool['stock.warehouse.orderpoint']
+        procurement_obj = self.pool['procurement.order']
+        orderpoint_confirm = orderpoint_obj.procure_orderpoint_confirm
+        procurement_ids = orderpoint_confirm(cr, uid, list(orderpoint_ids),
+                                             context=context)
+        purchase_ids = []
+        procurements = procurement_obj.browse(cr, uid, procurement_ids,
+                                              context=context)
+        for procurement in procurements:
+            if procurement.purchase_id:
+                purchase_ids.append(procurement.purchase_id.id)
+        return {
+            'domain': "[('id', 'in', %s)]" % purchase_ids,
+            'name': _('Generated Purchases'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'purchase.order',
+            'type': 'ir.actions.act_window',
+        }

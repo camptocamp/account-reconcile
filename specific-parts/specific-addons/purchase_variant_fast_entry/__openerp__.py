@@ -38,6 +38,7 @@ for each variant of this template.
              'product_variant_simple',
              ],
  'data': ['wizard/purchase_variant_fast_entry_view.xml',
+          'purchase_view.xml',
           ],
  'test': [],
  'installable': True,

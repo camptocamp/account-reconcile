@@ -17,6 +17,7 @@ msgstr ""
 
 #. module: purchase_variant_fast_entry
 #: model:ir.actions.act_window,name:purchase_variant_fast_entry.action_purchase_variant_fast_entry
+#: view:purchase.order:0
 msgid "Variants Fast Entry"
 msgstr ""
 

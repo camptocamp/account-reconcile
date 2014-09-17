@@ -24,6 +24,46 @@ from openerp.osv import orm
 class stock_move(orm.Model):
     _inherit = 'stock.move'
 
+    def _split_into_quantity(self, cr, uid, move, quantity, context=None):
+        """ Optimized version of the wizard stock.split.into
+
+        Contrary to the wizard, it returns the id of the new move.
+        Also, it does not call move.setlast_tracking() if it is not
+        necessary.
+        """
+        track_obj = self.pool['stock.tracking']
+        if quantity > move.product_qty:
+            raise orm.except_orm(
+                _('Error'),
+                _('Total quantity after split exceeds the '
+                  'quantity to split for this product: '
+                  '"%s" (id: %d).') % (move.product_id.name,
+                                       move.product_id.id))
+        quantity_rest = move.product_qty - quantity
+        if quantity > 0:
+            if not move.tracking_id:
+                move.setlast_tracking()
+            move.write({'product_qty': quantity,
+                        'product_uos_qty': quantity,
+                        'product_uos': move.product_uom.id,
+                        })
+
+        if quantity_rest > 0:
+            tracking_id = track_obj.create(cr, uid, {}, context=context)
+            if quantity == 0.0:
+                move.write({'tracking_id': tracking_id})
+            else:
+                default_val = {
+                    'product_qty': quantity_rest,
+                    'product_uos_qty': quantity_rest,
+                    'tracking_id': tracking_id,
+                    'state': move.state,
+                    'product_uos': move.product_uom.id
+                }
+                current_move_id = self.copy(cr, uid, move.id,
+                                            default_val, context=context)
+                return current_move_id
+
 
     def setlast_tracking(self, cr, uid, ids, context=None):
         """ Optimized version of setlast_tracking
@@ -76,16 +116,16 @@ class stock_picking(orm.Model):
             if pick.state in ('cancel', 'done'):
                 continue
 
-            # We register moves to find which move has been added
-            known_move_ids = [m.id for m in pick.move_lines]
             # copy this list of move
             moves_to_split = [m for m in pick.move_lines]
 
             current_pack = None
             while moves_to_split:
                 move = moves_to_split.pop()
+                # Set a tracking_id on the move, the value is the last
+                # one of another move of the same picking, or a new one
+                # if the last picking hadn't a tracking
                 move.setlast_tracking()
-
                 # ensure written change is readable
                 move.refresh()
 
@@ -96,33 +136,14 @@ class stock_picking(orm.Model):
                     continue
 
                 if pack_qty > max_qty:
-                    wiz_data = {'quantity': qty_to_pack}
-                    wiz_ctx = context.copy()
-                    wiz_ctx.update(active_ids=[move.id],
-                                   res_model='stock.move')
-                    wiz_id = split_wizard_obj.create(cr, uid, wiz_data,
-                                                     context=context)
-                    split_wizard_obj.split(cr, uid, [wiz_id], context=wiz_ctx)
-
-                    # ensure written change is readable
-                    move.refresh()
-
-                    # Find created move with residual products using search as
-                    # we can't use pick.move_lines. Because browse record isn't
-                    # refreshed
-                    new_move_ids = move_obj.search(
-                        cr, uid,
-                        [('picking_id', '=', pick.id),
-                         ('id', 'not in', known_move_ids)],
-                        context=context)
-
-                    if new_move_ids:
-                        # split function must have created only 1 move
-                        assert len(new_move_ids) == 1
-                        known_move_ids.append(new_move_ids[0])
-                        new_move = move_obj.browse(cr, uid, new_move_ids,
-                                                   context=context)[0]
                     qty_to_pack = move.product_qty - (pack_qty - max_qty)
+                    split = move_obj._split_into_quantity
+                    new_move_id = split(cr, uid, move, qty_to_pack,
+                                        context=context)
+
+                    if new_move_id:
+                        new_move = move_obj.browse(cr, uid, new_move_id,
+                                                   context=context)
                         moves_to_split.append(new_move)
                     else:
                         # If qty to split == move qty (qty_to_pack == 0),

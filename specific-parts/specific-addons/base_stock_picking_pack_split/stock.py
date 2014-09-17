@@ -107,12 +107,13 @@ class stock_picking(orm.Model):
         and so on...
 
         """
-        if context is None:
-            context = {}
-        split_wizard_obj = self.pool.get('stock.split.into')
         move_obj = self.pool.get('stock.move')
-
-        for pick in self.browse(cr, uid, ids, context=context):
+        for pick_id in ids:
+            # Benchmarks measured that browsing them one by one was
+            # way more fast. The browse in the for loop was consuming
+            # an exponential time, the more pickings there was,
+            # the more it took time in an exponential manner
+            pick = self.browse(cr, uid, pick_id, context=context)
             if pick.state in ('cancel', 'done'):
                 continue
 

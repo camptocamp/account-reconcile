@@ -86,3 +86,33 @@ class test_split_performance(common.TransactionCase):
 
         with self._benchmark():
             picking.prepare_packs(max_qty=1)
+
+    def test_prepare_packs_10_pickings(self):
+        """ 10 Picking with 3 products """
+        cr, uid = self.cr, self.uid
+        picking_ids = []
+        for _ in xrange(10):
+            picking_ids.append(self._create_picking(3).id)
+
+        with self._benchmark():
+            self.Picking.prepare_packs(cr, uid, picking_ids, max_qty=1)
+
+    def test_prepare_packs_100_pickings(self):
+        """ 100 Picking with 3 products """
+        cr, uid = self.cr, self.uid
+        picking_ids = []
+        for _ in xrange(100):
+            picking_ids.append(self._create_picking(3).id)
+
+        with self._benchmark():
+            self.Picking.prepare_packs(cr, uid, picking_ids, max_qty=1)
+
+    def test_prepare_packs_1000_pickings(self):
+        """ 1000 Picking with 3 products """
+        cr, uid = self.cr, self.uid
+        picking_ids = []
+        for _ in xrange(1000):
+            picking_ids.append(self._create_picking(3).id)
+
+        with self._benchmark():
+            self.Picking.prepare_packs(cr, uid, picking_ids, max_qty=1)

@@ -17,6 +17,6 @@ Feature: upgrade to 1.1.0
     And having:
       | name   | value                                  |
       | active | true                                   |
-      | args   | '(None, [("state", "=", "assigned")])' |
+      | args   | (None, [("state", "=", "assigned")])   |
 
     Given I set the version of the instance to "1.1.0"

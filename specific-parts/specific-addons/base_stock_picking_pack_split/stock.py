@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from openerp.osv import orm
+from openerp.tools.translate import _
 
 
 class stock_move(orm.Model):
@@ -63,7 +64,6 @@ class stock_move(orm.Model):
                 current_move_id = self.copy(cr, uid, move.id,
                                             default_val, context=context)
                 return current_move_id
-
 
     def setlast_tracking(self, cr, uid, ids, context=None):
         """ Optimized version of setlast_tracking

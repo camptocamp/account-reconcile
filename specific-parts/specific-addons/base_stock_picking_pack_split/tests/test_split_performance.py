@@ -65,7 +65,6 @@ class test_split_performance(common.TransactionCase):
 
     def test_prepare_packs_10_products(self):
         """ Picking with 10 products """
-        cr, uid = self.cr, self.uid
         picking = self._create_picking(10)
 
         with self._benchmark():
@@ -73,7 +72,6 @@ class test_split_performance(common.TransactionCase):
 
     def test_prepare_packs_100_products(self):
         """ Picking with 100 products """
-        cr, uid = self.cr, self.uid
         picking = self._create_picking(100)
 
         with self._benchmark():
@@ -81,7 +79,6 @@ class test_split_performance(common.TransactionCase):
 
     def test_prepare_packs_1000_products(self):
         """ Picking with 1000 products """
-        cr, uid = self.cr, self.uid
         picking = self._create_picking(1000)
 
         with self._benchmark():

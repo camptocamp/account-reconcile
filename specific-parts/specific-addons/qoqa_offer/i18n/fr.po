@@ -979,3 +979,30 @@ msgstr "<p class=\"oe_view_nocontent_create\">\n"
 msgid "Reserved (online)"
 msgstr "Réservé (temps-réel)"
 
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "You cannot select a delivery date in the past"
+msgstr "Vous ne pouvez sélectionner une date de livraison dans le passé"
+
+#: code:specific_addons/qoqa_offer/qoqa_offer.py:550
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer.py:551
+#, python-format
+msgid "The products have no orderpoints configured."
+msgstr "Les produits n'ont pas de règle d'approvisionnement configurée."
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer.py:564
+#, python-format
+msgid "Generated Purchases"
+msgstr "Achats générés"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Compute Stock Minimum Rules"
+msgstr "Calculer les règles de stock minimum"

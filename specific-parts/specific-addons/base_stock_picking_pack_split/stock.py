@@ -21,16 +21,6 @@
 from openerp.osv import orm
 
 
-class stock_tracking(orm.Model):
-    _inherit = 'stock.tracking'
-
-    def get_total_qty(self, cr, uid, ids, context=None):
-        res = dict.fromkeys(ids, False)
-        for pack in self.browse(cr, uid, ids, context=context):
-            res[pack.id] = sum(m.product_qty for m in pack.move_ids)
-        return res
-
-
 class stock_move(orm.Model):
     _inherit = 'stock.move'
 
@@ -107,8 +97,7 @@ class stock_picking(orm.Model):
                 move.refresh()
 
                 current_pack = move.tracking_id
-
-                pack_qty = current_pack.get_total_qty()[current_pack.id]
+                pack_qty = sum(m.product_qty for m in current_pack.move_ids)
                 if pack_qty == max_qty:
                     current_pack = None
                     continue

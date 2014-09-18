@@ -126,7 +126,8 @@ class stock_picking(orm.Model):
                 # Set a tracking_id on the move, the value is the last
                 # one of another move of the same picking, or a new one
                 # if the last picking hadn't a tracking
-                move.setlast_tracking()
+                if not move.tracking_id:
+                    move.setlast_tracking()
                 # ensure written change is readable
                 move.refresh()
 

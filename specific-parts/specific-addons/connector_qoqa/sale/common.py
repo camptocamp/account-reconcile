@@ -131,6 +131,7 @@ class sale_order(orm.Model):
             ids = [ids]
         wf_service = netsvc.LocalService('workflow')
         refund_wiz_obj = self.pool['account.invoice.refund']
+        actions = []
         for order in self.browse(cr, uid, ids, context=context):
             cancel_direct = False
             if (order.qoqa_bind_ids and
@@ -176,8 +177,12 @@ class sale_order(orm.Model):
                          'description': _('Order Cancellation'),
                          },
                         context=ctx)
-                    refund_wiz_obj.invoice_refund(cr, uid, [wizard_id],
-                                                  context=ctx)
+
+                    action = refund_wiz_obj.invoice_refund(cr, uid,
+                                                           [wizard_id],
+                                                           context=ctx)
+                    actions.append(action)
+
                 # We can't cancel an order with open invoices, but
                 # we still want to do that, because we need the move lines
                 # to be there to reconcile them with the payments. The
@@ -210,8 +215,38 @@ class sale_order(orm.Model):
                 order.write({'payment_ids': payment_commands,
                              'invoice_ids': invoice_commands})
 
-        # only cancel on qoqa if all the cancellations succeeded
+        action_res = None
+        if actions:
+            # Prepare the returning action.
+            # Done before we call the cancellation on QoQa so if
+            # something fails here, we won't call the QoQa API
+            action_res = actions[0]
+            refund_ids = []
+            for action in actions:
+                for field, op, value in action_res['domain']:
+                    if field == 'id' and op == 'in':
+                        refund_ids += value
+            if len(refund_ids) == 1:
+                # remove the domain, replaced by res_id
+                # the refund will be open in the form view
+                action_res['domain'] = False
+                action_res['res_id'] = refund_ids[0]
+                mod_obj = self.pool['ir.model.data']
+                ref = mod_obj.get_object_reference(cr, uid, 'account',
+                                                   'invoice_form')
+                action_res['views'] = [(ref[1] if ref else False, 'form')]
+            else:
+                # open as tree view, merge all the ids of the refunds
+                # in the domain
+                new_domain = action_res['domain']
+                for field, op, value in action_res['domain']:
+                    if field == 'id' and op == 'in':
+                        new_domain.append((field, op, refund_ids))
+                    else:
+                        new_domain.append((field, op, value))
+                action_res['domain'] = new_domain
 
+        # only cancel on qoqa if all the cancellations succeeded
         # canceled_in_backend means already canceled on QoQa
         if not order.canceled_in_backend:
             session = ConnectorSession(cr, uid, context=context)
@@ -237,6 +272,10 @@ class sale_order(orm.Model):
                                  binding.name)
                     cancel_sales_order.delay(session, binding._model._name,
                                              binding.id, priority=1)
+
+        if action_res:
+            return action_res
+
         return True
 
 

@@ -19,5 +19,4 @@
 #
 ##############################################################################
 
-from . import picking_dispatch
-from . import wizard
+from . import dispatch_delayed_done

@@ -16,7 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: picking_dispatch_delay_done
+#: view:picking.dispatch.delayed.done:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: picking_dispatch_delay_done
+#: model:ir.actions.act_window,name:picking_dispatch_delay_done.action_picking_dispatch_delayed_done
 #: view:picking.dispatch:0
+#: view:picking.dispatch.delayed.done:0
 msgid "Delayed Done"
 msgstr "Terminer en différé"
 
@@ -28,7 +35,25 @@ msgid "Dispatch Picking Order"
 msgstr "Bon de préparation"
 
 #. module: picking_dispatch_delay_done
+#: code:_description:0
+#: model:ir.model,name:picking_dispatch_delay_done.model_picking_dispatch_delayed_done
+#, python-format
+msgid "Picking Dispatch Delayed Done"
+msgstr "Terminer en différé des bons de préparation"
+
+#. module: picking_dispatch_delay_done
 #: view:picking.dispatch:0
 msgid "progress,delayed_done"
 msgstr "progress,delayed_done"
 
+#. module: picking_dispatch_delay_done
+#: code:specific_addons/picking_dispatch_delay_done/wizard/dispatch_delayed_done.py:47
+#, python-format
+msgid "All the picking dispatches must be in progress to be set to done."
+msgstr "Tout les bons de préparations doivent être en cours pour être terminés."
+
+#. module: picking_dispatch_delay_done
+#: code:specific_addons/picking_dispatch_delay_done/wizard/dispatch_delayed_done.py:38
+#, python-format
+msgid "No selected picking dispatch"
+msgstr "Pas de bon de préparation sélectionné"

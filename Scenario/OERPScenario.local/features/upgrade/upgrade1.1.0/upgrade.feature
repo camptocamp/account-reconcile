@@ -22,6 +22,7 @@ Feature: upgrade to 1.1.0
       | crm_rma_stock_location                     |
       | stock_orderpoint_generator                 |
       | stock_location_search_stock                |
+      | stock_picking_mass_assign                  |
     Then my modules should have been installed and models reloaded
 
     Given I find a "payment.method" with oid: scenario.payment_method_paypal_ch
@@ -45,8 +46,14 @@ Feature: upgrade to 1.1.0
     Given I find a possibly inactive "ir.cron" with oid: picking_dispatch.ir_cron_dispatch_check_assign_all
     And having:
       | name   | value                                  |
-      | active | true                                   |
+      | active | false                                  |
       | args   | (None, [("state", "=", "assigned")])   |
+
+    Given I find a possibly inactive "ir.cron" with oid: picking_dispatch.ir_cron_dispatch_check_assign_all.ir_cron_check_assign_all
+    And having:
+      | name            | value                         |
+      | active          | true                          |
+      | interval_number | 4                             |
 
     Given I execute the SQL commands
     """

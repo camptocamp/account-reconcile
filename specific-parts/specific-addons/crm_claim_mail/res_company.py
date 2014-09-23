@@ -33,5 +33,5 @@ class res_company(orm.Model):
     }
 
     _default = {
-        'claim_sale_order_regexp': u'Order\s?: https?:\/\/\S+\/(\d+)',
+        'claim_sale_order_regexp': u'Order\s?: \((\d+)\) http.*',
     }

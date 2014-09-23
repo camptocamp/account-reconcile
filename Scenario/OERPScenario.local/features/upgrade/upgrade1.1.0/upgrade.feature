@@ -37,7 +37,7 @@ Feature: upgrade to 1.1.0
     Given I execute the SQL commands
     """
     UPDATE res_company
-    SET claim_sale_order_regexp = 'Order\s?: https?:\/\/\S+\/(\d+)'
+    SET claim_sale_order_regexp = 'Order\s?: \((\d+)\) http.*'
     """
 
     Given I find a "mass.object" with name: Bon de livraison

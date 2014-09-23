@@ -976,3 +976,8 @@ msgstr "<p class=\"oe_view_nocontent_create\">\n"
 msgid "Reserved (online)"
 msgstr "Réservé (temps-réel)"
 
+#. module: qoqa_offer
+#: field:qoqa.offer.position,stock_online_failure_message:0
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_online_failure_message
+msgid "Stock Online Error"
+msgstr "Erreur de stock temps-réel"

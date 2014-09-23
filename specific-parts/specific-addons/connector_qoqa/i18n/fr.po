@@ -1460,3 +1460,8 @@ msgstr "Par ex. http://www.qoqa.ch"
 msgid "Transaction number of the payment on QoQa"
 msgstr "Numéro de transaction du paiement sur QoQa"
 
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/offer_position/common.py:91
+#, python-format
+msgid "Stock is offline because the offer does not exist in the QoQa backend."
+msgstr "Le stock est hors-ligne car l'offre n'existe pas sur le BO QoQa."

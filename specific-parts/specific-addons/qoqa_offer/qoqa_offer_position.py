@@ -207,8 +207,6 @@ class qoqa_offer_position(orm.Model):
                 progress = ((quantity - residual) / quantity) * 100
 
             res[offer.id] = {
-                'stock_is_online': False,  # changes in connector_qoqa
-                'stock_online_failure': False,  # changes in connector_qoqa
                 'sum_quantity': quantity,
                 'sum_stock_sold': quantity - residual,
                 'sum_residual': residual,
@@ -218,6 +216,10 @@ class qoqa_offer_position(orm.Model):
                 # implemented in connector_qoqa, hidden when offline
                 'stock_reserved': 0,
                 'stock_reserved_percent': 0,
+                # stock online fields are set in connector_qoqa
+                'stock_is_online': False,
+                'stock_online_failure': False,
+                'stock_online_failure_message': '',
             }
         return res
 
@@ -353,6 +355,11 @@ class qoqa_offer_position(orm.Model):
             multi='stock',
             help="Failed to get the online stock, probably a network "
                  "failure. Please retry."),
+        'stock_online_failure_message': fields.function(
+            _get_stock,
+            string="Stock Online Error",
+            type='text',
+            multi='stock'),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',

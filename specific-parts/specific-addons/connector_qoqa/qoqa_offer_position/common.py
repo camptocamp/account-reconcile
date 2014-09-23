@@ -87,15 +87,24 @@ class qoqa_offer_position(orm.Model):
                 # so the user knows that it 'should' be displayed
                 # but can't actually
                 values[position.id]['stock_online_failure'] = True
+                values[position.id]['stock_online_failure_message'] = (
+                    _('Stock is offline because the offer does not exist '
+                      'in the QoQa backend.')
+                )
                 continue
             try:
                 with api_handle_errors(''):
                     qoqa_values = adapter.stock_values(qoqa_id)
-            except orm.except_orm:
+            except orm.except_orm as error:
                 # api_handle_errors will return an orm.except_orm
                 # if a network or api error occurs
+                if error.value:
+                    message = "%s: %s" % (error.name, error.value.strip('\n'))
+                else:
+                    message = error.name  # on 'Unknow Error'
                 values[position.id]['stock_is_online'] = False
                 values[position.id]['stock_online_failure'] = True
+                values[position.id]['stock_online_failure_message'] = message
             else:
                 quantity = values[position.id]['sum_quantity']
                 sold = int(qoqa_values['sold'])
@@ -112,6 +121,7 @@ class qoqa_offer_position(orm.Model):
                 values[position.id].update({
                     'stock_is_online': True,
                     'stock_online_failure': False,
+                    'stock_online_failure_message': '',
                     'sum_stock_sold': sold,
                     'sum_residual': residual,
                     'stock_progress': progress,

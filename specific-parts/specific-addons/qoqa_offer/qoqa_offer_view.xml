@@ -347,6 +347,20 @@
                                                             colspan="4"/>
                                                     </group>
                                                 </page>
+
+                                                <page string="Stock">
+                                                  <group>
+                                                    <field name="stock_is_online"/>
+                                                    <field name="stock_online_failure" invisible="1"/>
+                                                    <field name="stock_online_failure_message" attrs="{'invisible': [('stock_online_failure', '=', False)]}"/>
+                                                    <field name="stock_progress" widget="progressbar"/>
+                                                    <field name="sum_quantity"/>
+                                                    <field name="sum_stock_sold"/>
+                                                    <field name="sum_residual"/>
+                                                    <field name="stock_reserved" attrs="{'invisible': [('stock_is_online', '=', False)]}"/>
+                                                    <field name="stock_reserved_percent" widget="progressbar" attrs="{'invisible': [('stock_is_online', '=', False)]}"/>
+                                                  </group>
+                                                </page>
                                             </notebook>
                                             <group colspan="4" name="variant" string="Variants">
                                                 <field name="variant_ids" nolabel="1">

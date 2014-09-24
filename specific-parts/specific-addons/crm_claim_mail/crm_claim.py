@@ -83,7 +83,19 @@ class crm_claim(orm.Model):
             return message, None
         number = number.group(1)
         sale_obj = self.pool['sale.order']
-        sale_ids = sale_obj.search(cr, uid, [('name', '=', number)],
+        # In order to avoid dependency on connector_qoqa, and
+        # to allow this search to be compatible with other sale
+        # channels, we do not search in qoqa.sale.order but right
+        # in the name of the sale order. Since the connector pads
+        # the numbers with 0, make the same thing and search the name
+        # for an exact match (eg it does not comes from the QoQa backend)
+        # or padded (it comes from the QoQa backend).
+        pad_number = '{0:08d}'.format(int(number))
+        sale_ids = sale_obj.search(cr, uid,
+                                   ['|',
+                                    ('name', '=', number),
+                                    ('name', '=', pad_number),
+                                    ],
                                    context=context)
         if not sale_ids:
             return message, None

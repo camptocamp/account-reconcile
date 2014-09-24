@@ -77,7 +77,6 @@ class crm_claim(orm.Model):
         if not pattern:
             return message, None
         # find sales order's number
-        pattern = u"^\s*%s\s*$\n?" % pattern
         pattern = re.compile(pattern, re.MULTILINE | re.UNICODE)
         number = re.search(pattern, body)
         if not number:

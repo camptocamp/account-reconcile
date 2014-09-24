@@ -34,5 +34,5 @@ class res_company(orm.Model):
 
     _default = {
         'claim_sale_order_regexp': (u'<b>Order :</b>\s*<a '
-                                     'href="http[^"]+"[^>]*>(\d+)</a>'),
+                                    'href="http[^"]+"[^>]*>(\d+)</a>'),
     }

@@ -110,6 +110,11 @@ class crm_claim(orm.Model):
         values = {'invoice_id': invoice.id}
         res = self.onchange_invoice_id(cr, uid, [], invoice.id,
                                        values.get('warehouse_id'),
+                                       'customer',
+                                       fields.datetime.now(),
+                                       company.id,
+                                       [],
+                                       create_lines=True,
                                        context=context)
         if res.get('value'):
             values.update(res['value'])

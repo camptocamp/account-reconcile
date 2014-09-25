@@ -121,7 +121,7 @@ class crm_claim(orm.Model):
         values['claim_line_ids'] = [(0, 0, line) for line
                                     in values['claim_line_ids']
                                     ]
-        partner = invoice.partner_id
+        partner = invoice.partner_id.commercial_partner_id
         values.setdefault('partner_id', partner.id)
         values.setdefault('partner_phone', partner.phone)
 

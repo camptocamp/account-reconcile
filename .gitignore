@@ -63,3 +63,6 @@ upgrade.py
 docs-connector/*
 buildout.cfg
 auto-run/
+
+# Aptana project settings
+.settings/*

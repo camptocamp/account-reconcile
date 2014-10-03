@@ -151,7 +151,7 @@ class sale_order(orm.Model):
                 # reconciled with the invoice
                 for payment in order.payment_ids:
                     payment.unlink()
-            else:
+            elif order.amount_total:
                 # create the invoice, open it because we need the move
                 # lines so we'll be able to reconcile them with the
                 # payments

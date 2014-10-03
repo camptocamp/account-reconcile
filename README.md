@@ -8,7 +8,7 @@ Private and customer specific branches for QoQa.
 
 Steps:
 
-    ln -s dev.cfg buildout.cfg
+    ln -s profiles/dev.cfg buildout.cfg
     ./bootstrap.sh
     bin/buildout
 

@@ -49,7 +49,7 @@ Feature: upgrade to 1.1.0
       | active | false                                  |
       | args   | (None, [("state", "=", "assigned")])   |
 
-    Given I find a possibly inactive "ir.cron" with oid: picking_dispatch.ir_cron_dispatch_check_assign_all.ir_cron_check_assign_all
+    Given I find a possibly inactive "ir.cron" with oid: stock_picking_mass_assign.ir_cron_check_assign_all
     And having:
       | name            | value                         |
       | active          | true                          |

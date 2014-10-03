@@ -43,6 +43,7 @@
       <field name="arch" type="xml">
         <field name="variants" position="after">
           <field name="brand"/>
+          <field name="ean13"/>
         </field>
       </field>
     </record>
@@ -58,10 +59,6 @@
       </field>
     </record>
 
-
-product_variant_tree_view
-
-
     <record id="product_search_form_view" model="ir.ui.view">
       <field name="name">product.search.form</field>
       <field name="model">product.product</field>
@@ -69,6 +66,7 @@ product_variant_tree_view
       <field name="arch" type="xml">
         <field name="categ_id" position="before">
           <field name="brand"/>
+          <field name="ean13"/>
         </field>
       </field>
     </record>

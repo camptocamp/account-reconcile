@@ -61,6 +61,7 @@
 .openerp .oe_kanban_offer .qoqa_progress {
   margin-top: 4px;
   margin-bottom: 4px;
+  width: 320px;
 }
 
 
@@ -176,4 +177,8 @@ progress[value]::-moz-progress-bar {
 .oe_kanban_offer .qoqa_buttons a.oe_kanban_button:hover,
 .oe_kanban_offer .qoqa_buttons a.oe_kanban_button:active {
   box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.3) inset;
+}
+
+.oe_kanban_offer .oe_e {
+  font-size: 24px;
 }

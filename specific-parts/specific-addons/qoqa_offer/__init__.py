@@ -28,3 +28,5 @@ from . import sale_order
 from . import qoqa_buyphrase
 from . import product
 from . import delivery_carrier
+from . import procurement
+from . import orderpoint

@@ -22,7 +22,11 @@
 import json
 import logging
 import requests
+from requests.exceptions import HTTPError, RequestException, ConnectionError
+from contextlib import contextmanager
 from requests_oauthlib import OAuth1
+from openerp.osv import orm
+from openerp.tools.translate import _
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import NetworkRetryableError
 from ..exception import (QoQaResponseNotParsable,
@@ -38,6 +42,34 @@ _logger = logging.getLogger(__name__)
 # requests_log = logging.getLogger("requests.packages.urllib3")
 # requests_log.setLevel(logging.DEBUG)
 # requests_log.propagate = True
+
+
+@contextmanager
+def api_handle_errors(message):
+    """ Handle error when calling the API
+
+    It is meant to be used when a model does a direct
+    call to a job using the API (not using job.delay()).
+    Avoid to have unhandled errors raising on front of the user,
+    instead, they are presented as ``orm.except_orm``.
+    """
+    try:
+        yield
+    except NetworkRetryableError as err:
+        raise orm.except_orm(_('Network Error'), (message + '\n\n%s') % err)
+    except (HTTPError, RequestException, ConnectionError) as err:
+        raise orm.except_orm(_('API / Network Error'),
+                             (message + '\n\n%s') % err)
+    except QoQaAPISecurityError as err:
+        raise orm.except_orm(_('Authentication Error'),
+                             (message + '\n\n%s') % err)
+    except QoQaResponseError as err:
+        raise orm.except_orm(_('Error(s) returned by QoQa'), unicode(err))
+    except QoQaResponseNotParsable:
+        # The response from the backend cannot be parsed, not a
+        # JSON.  So we don't know what the error is.
+        _logger.exception(message)
+        raise orm.except_orm(_('Unknown Error'), message)
 
 
 class QoQaClient(object):

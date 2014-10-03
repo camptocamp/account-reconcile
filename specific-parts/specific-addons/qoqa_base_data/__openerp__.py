@@ -43,6 +43,7 @@ as the attribute sets, ...
           'sale_shop.xml',
           'product.xml',
           'product_category.xml',
+          'res_company_view.xml',
           ],
  'installable': True,
  'application': True,

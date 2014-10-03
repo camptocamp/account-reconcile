@@ -207,7 +207,8 @@ class QoQaExporter(QoQaBaseExporter):
         if wrap and hasattr(relation, 'qoqa_bind_ids'):
             domain = [('openerp_id', '=', relation.id),
                       ('backend_id', '=', self.backend_record.id)]
-            binding_ids = self.session.search(binding_model, domain)
+            with self.session.change_context(dict(active_test=False)):
+                binding_ids = self.session.search(binding_model, domain)
             if binding_ids:
                 assert len(binding_ids) == 1
                 binding_id = binding_ids[0]

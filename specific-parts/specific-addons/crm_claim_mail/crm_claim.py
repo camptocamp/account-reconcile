@@ -18,7 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import re
 from datetime import datetime
+from operator import attrgetter
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
@@ -64,6 +66,67 @@ class crm_claim(orm.Model):
         'confirmation_email_sent': True,
     }
 
+    def _complete_from_sale(self, cr, uid, message, context=None):
+        body = message.get('body')
+        if not body:
+            return message, None
+        user_obj = self.pool['res.users']
+        user = user_obj.browse(cr, uid, uid, context=context)
+        company = user.company_id
+        pattern = company.claim_sale_order_regexp
+        if not pattern:
+            return message, None
+        # find sales order's number
+        pattern = re.compile(pattern, re.MULTILINE | re.UNICODE)
+        number = re.search(pattern, body)
+        if not number:
+            return message, None
+        number = number.group(1)
+        sale_obj = self.pool['sale.order']
+        # In order to avoid dependency on connector_qoqa, and
+        # to allow this search to be compatible with other sale
+        # channels, we do not search in qoqa.sale.order but right
+        # in the name of the sale order. Since the connector pads
+        # the numbers with 0, make the same thing and search the name
+        # for an exact match (eg it does not comes from the QoQa backend)
+        # or padded (it comes from the QoQa backend).
+        pad_number = '{0:08d}'.format(int(number))
+        sale_ids = sale_obj.search(cr, uid,
+                                   ['|',
+                                    ('name', '=', number),
+                                    ('name', '=', pad_number),
+                                    ],
+                                   context=context)
+        if not sale_ids:
+            return message, None
+        sale = sale_obj.browse(cr, uid, sale_ids[0], context=context)
+        invoices = (invoice for invoice in sale.invoice_ids
+                    if invoice.state != 'cancel')
+        invoices = sorted(invoices, key=attrgetter('date_invoice'),
+                          reverse=True)
+        if not invoices:
+            return message, None
+        invoice = invoices[0]
+        values = {'invoice_id': invoice.id}
+        res = self.onchange_invoice_id(cr, uid, [], invoice.id,
+                                       values.get('warehouse_id'),
+                                       'customer',
+                                       fields.datetime.now(),
+                                       company.id,
+                                       [],
+                                       create_lines=True,
+                                       context=context)
+        if res.get('value'):
+            values.update(res['value'])
+        values['claim_line_ids'] = [(0, 0, line) for line
+                                    in values['claim_line_ids']
+                                    ]
+        partner = invoice.partner_id.commercial_partner_id
+        values.setdefault('partner_id', partner.id)
+        values.setdefault('partner_phone', partner.phone)
+
+        return message, values
+
     def message_new(self, cr, uid, msg, custom_values=None, context=None):
         """ Overrides mail_thread message_new that is called by the mailgateway
         through message_process.
@@ -77,6 +140,9 @@ class crm_claim(orm.Model):
         else:
             custom_values = custom_values.copy()
         custom_values.setdefault('confirmation_email_sent', False)
+        msg, values = self._complete_from_sale(cr, uid, msg, context=context)
+        if values:
+            custom_values.update(values)
         return super(crm_claim, self).message_new(
             cr, uid, msg, custom_values=custom_values, context=context)
 
@@ -157,3 +223,27 @@ class crm_claim(orm.Model):
 
             body = '<br/>'.join(body)
             return body
+
+    def case_closed(self, cr, uid, ids, context=None):
+        """ Mark the claim as closed: state=done """
+        for claim in self.browse(cr, uid, ids, context=context):
+            stage_id = self.stage_find(cr, uid, [claim],
+                                       claim.section_id.id or False,
+                                       [('state', '=', 'done')],
+                                       context=context)
+            if stage_id:
+                self.case_set(cr, uid, [claim.id], values_to_update={},
+                              new_stage_id=stage_id, context=context)
+        return True
+
+    def message_post(self, cr, uid, thread_id, body='', subject=None,
+                     type='notification', subtype=None, parent_id=False,
+                     attachments=None, context=None,
+                     content_subtype='html', **kwargs):
+        result = super(crm_claim, self).message_post(
+            cr, uid, thread_id, body=body, subject=subject, type=type,
+            subtype=subtype, parent_id=parent_id, attachments=attachments,
+            context=context, content_subtype=content_subtype, **kwargs)
+        if type == 'comment':
+            self.case_closed(cr, uid, thread_id, context=context)
+        return result

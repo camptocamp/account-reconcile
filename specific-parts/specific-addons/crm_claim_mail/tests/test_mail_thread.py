@@ -42,6 +42,11 @@ class TestMailThread(TestMailBase):
                             msg_id=msg_id)
         claim_id = Claim.message_process(cr, uid, Claim._name, email)
         self.claim = claim = Claim.browse(cr, uid, claim_id)
+        # force the number to be in the format used by QoQa,
+        # it must match with a regular expression to be found
+        # in the mail routing
+        self.claim.write({'number': 'RMA-123456'})
+        self.claim.refresh()
         self.msg = claim.message_ids[0]
 
     def test_in_reply_to(self):

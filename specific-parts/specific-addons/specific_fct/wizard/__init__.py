@@ -19,21 +19,4 @@
 #
 ##############################################################################
 
-from openerp.osv import orm
-
-
-class account_invoice(orm.Model):
-    _inherit = 'account.invoice'
-
-    def action_move_create(self, cr, uid, ids, context=None):
-        if isinstance(ids, (int, long)):
-            ids = [ids]
-        for invoice in self.browse(cr, uid, ids, context=context):
-            for line in invoice.invoice_line:
-                # ensure that there is no analytic accounts on lines
-                # when the policy is never
-                if (line.account_id.user_type.analytic_policy == 'never' and
-                        line.account_analytic_id):
-                    line.write({'account_analytic_id': False})
-        return super(account_invoice, self).action_move_create(
-            cr, uid, ids, context=context)
+from . import dispatch_apply_carrier

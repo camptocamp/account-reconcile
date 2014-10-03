@@ -19,7 +19,9 @@
 #
 ##############################################################################
 
+from datetime import datetime, date
 from openerp.osv import orm, fields
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 
 
 class sale_shop(orm.Model):
@@ -58,6 +60,15 @@ class sale_order(orm.Model):
             vals['offer_id'] = order.offer_id.id
         return vals
 
+    def _prepare_order_line_procurement(self, cr, uid, order, line,
+                                        move_id, date_planned, context=None):
+        values = super(sale_order, self)._prepare_order_line_procurement(
+            cr, uid, order, line,
+            move_id, date_planned, context=context
+        )
+        values['offer_id'] = order.offer_id.id
+        return values
+
 
 class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
@@ -74,3 +85,27 @@ class sale_order_line(orm.Model):
             select=True,
             ondelete='restrict'),
     }
+
+    def onchange_offer_position_id(self, cr, uid, ids, position_id,
+                                   context=None):
+        """ Set the delivery delay of the line according to the offer position
+
+        If a position has a delivery date, it is used to compute the
+        number of days it takes to deliver. This number becomes the 'delay'
+        of the line.
+
+        This onchange is not used on the view actually, but is called
+        in the connector_qoqa when calling the onchanges chain.
+        """
+        if not position_id:
+            return {}
+        position_obj = self.pool['qoqa.offer.position']
+        position = position_obj.browse(cr, uid, position_id, context=context)
+        delivery_date = position.date_delivery
+        if not delivery_date:
+            return {}
+        delivery_date = datetime.strptime(delivery_date,
+                                          DEFAULT_SERVER_DATE_FORMAT).date()
+        today = date.today()
+        delay = (delivery_date - today).days
+        return {'value': {'delay': delay}}

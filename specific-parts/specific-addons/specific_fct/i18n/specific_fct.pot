@@ -6,26 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-10 09:04+0000\n"
-"PO-Revision-Date: 2014-04-10 09:04+0000\n"
+"POT-Creation-Date: 2014-09-03 15:24+0000\n"
+"PO-Revision-Date: 2014-09-03 15:24+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: specific_fct
-#: view:sale.order:0
-msgid "Cancel Order"
-msgstr ""
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_stock_picking_out
-#, python-format
-msgid "Delivery Orders"
-msgstr ""
 
 #. module: specific_fct
 #: code:_description:0
@@ -35,10 +23,94 @@ msgid "Incoming Shipments"
 msgstr ""
 
 #. module: specific_fct
+#: view:stock.picking.out:0
+msgid "Group By..."
+msgstr ""
+
+#. module: specific_fct
 #: code:_description:0
-#: model:ir.model,name:specific_fct.model_account_invoice
+#: model:ir.model,name:specific_fct.model_stock_picking
 #, python-format
-msgid "Invoice"
+msgid "Picking List"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_product_product
+#, python-format
+msgid "Product"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
+#: field:product.template,variant_codes:0
+msgid "Variants References"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_related_dispatch_ids_4996
+#: field:stock.picking.in,related_dispatch_ids:0
+msgid "Related Dispatch Picking"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_product_supplierinfo
+#, python-format
+msgid "Information about a product supplier"
+msgstr ""
+
+#. module: specific_fct
+#: view:product.product:0
+msgid "{'required': [('type', '=', 'product')]}"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_lang_5263
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_lang_5264
+#: field:stock.picking,lang:0
+#: view:stock.picking.out:0
+#: field:stock.picking.out,lang:0
+msgid "Language"
+msgstr ""
+
+#. module: specific_fct
+#: view:account.move.line:0
+#: view:payment.order.create:0
+msgid "Move lines"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_product_template
+#, python-format
+msgid "Product Template"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_payment_order_create
+#, python-format
+msgid "payment.order.create"
+msgstr ""
+
+#. module: specific_fct
+#: view:crm.claim:0
+msgid "Claims"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_crm_claim
+#, python-format
+msgid "Claim"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_stock_move
+#, python-format
+msgid "Stock Move"
 msgstr ""
 
 #. module: specific_fct
@@ -52,30 +124,22 @@ msgid "Number of products"
 msgstr ""
 
 #. module: specific_fct
+#: view:sale.order:0
+msgid "Cancel Order"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_account_invoice
+#, python-format
+msgid "Invoice"
+msgstr ""
+
+#. module: specific_fct
 #: code:_description:0
 #: model:ir.model,name:specific_fct.model_res_partner
 #, python-format
 msgid "Partner"
-msgstr ""
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_stock_picking
-#, python-format
-msgid "Picking List"
-msgstr ""
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_product_template
-#, python-format
-msgid "Product Template"
-msgstr ""
-
-#. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_related_dispatch_ids_4996
-#: field:stock.picking.in,related_dispatch_ids:0
-msgid "Related Dispatch Picking"
 msgstr ""
 
 #. module: specific_fct
@@ -87,19 +151,26 @@ msgstr ""
 
 #. module: specific_fct
 #: code:_description:0
+#: model:ir.model,name:specific_fct.model_stock_picking_out
+#, python-format
+msgid "Delivery Orders"
+msgstr ""
+
+#. module: specific_fct
+#: code:_description:0
 #: model:ir.model,name:specific_fct.model_sale_order_line
 #, python-format
 msgid "Sales Order Line"
 msgstr ""
 
 #. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
-#: field:product.template,variant_codes:0
-msgid "Variants References"
+#: view:account.invoice:0
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_validation_agreement
+#: field:account.invoice,validation_agreement:0
+msgid "Agreement to validation"
 msgstr ""
 
 #. module: specific_fct
-#: view:product.product:0
-msgid "{'required': [('type', '=', 'product')]}"
+#: view:account.invoice:0
+msgid "Agreement validated"
 msgstr ""
-

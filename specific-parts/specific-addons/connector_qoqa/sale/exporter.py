@@ -24,7 +24,6 @@ import logging
 from openerp.tools.translate import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
-from openerp.addons.connector.event import on_record_write
 from ..connector import get_environment
 from ..backend import qoqa
 
@@ -42,24 +41,6 @@ class CancelSalesOrder(ExportSynchronizer):
             return _('Sales order does not exist on QoQa')
         self.backend_adapter.cancel(qoqa_id)
         return _('Sales order canceled on QoQa')
-
-
-@on_record_write(model_names='sale.order')
-def delay_cancel_sales_order(session, model_name, record_id, vals):
-    """ Delay a job to cancel a sales order. """
-    if session.context.get('connector_no_export'):
-        return
-    if 'state' not in vals:
-        return
-    sale = session.browse(model_name, record_id)
-    # canceled_in_backend means already canceled on QoQa
-    if sale.state == 'cancel' and not sale.canceled_in_backend:
-        for binding in sale.qoqa_bind_ids:
-            # cancel as early as possible
-            cancel_sales_order.delay(session,
-                                     binding._model._name,
-                                     binding.id,
-                                     priority=1)
 
 
 @job

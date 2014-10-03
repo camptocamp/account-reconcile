@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-11 20:36+0000\n"
-"PO-Revision-Date: 2013-12-11 20:36+0000\n"
+"POT-Creation-Date: 2014-09-03 11:52+0000\n"
+"PO-Revision-Date: 2014-09-03 11:52+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_current_unit_price
+#: field:qoqa.offer.position,current_unit_price:0
+msgid "Product Price at Date"
+msgstr ""
 
 #. module: qoqa_offer
 #: field:delivery.carrier,qoqa_type:0
@@ -44,14 +50,18 @@ msgid "Group By..."
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_qoqa_offer
 #: view:qoqa.offer:0
+#, python-format
 msgid "QoQa Offer"
 msgstr ""
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_datetime_begin
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_datetime_begin_filter
 #: field:qoqa.offer,datetime_begin:0
+#: field:qoqa.offer,datetime_begin_filter:0
 msgid "Begins at"
 msgstr ""
 
@@ -72,11 +82,6 @@ msgid "Remaining"
 msgstr ""
 
 #. module: qoqa_offer
-#: view:qoqa.offer:0
-msgid "Today"
-msgstr ""
-
-#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_installment_price
 #: field:qoqa.offer.position,installment_price:0
 msgid "Installment Price"
@@ -93,15 +98,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_offer.field_account_invoice_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_offer_id
+#: model:ir.model.fields,field_description:qoqa_offer.field_stock_move_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id
+#: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id_3003
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id_4516
+#: model:ir.model.fields,field_description:qoqa_offer.field_procurement_order_offer_id
 #: view:qoqa.offer:0
 #: field:qoqa.offer.position,offer_id:0
 #: view:sale.order:0
 #: field:sale.order,offer_id:0
+#: view:stock.move:0
+#: field:stock.move,offer_id:0
 #: field:stock.picking,offer_id:0
 #: view:stock.picking.out:0
 #: field:stock.picking.out,offer_id:0
+#: view:procurement.order:0
+#: field:procurement.order,offer_id:0
 msgid "Offer"
 msgstr ""
 
@@ -138,6 +150,14 @@ msgid "Booking Delivery"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_reserved_percent
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_reserved_percent
+#: field:qoqa.offer,stock_reserved_percent:0
+#: field:qoqa.offer.position,stock_reserved_percent:0
+msgid "Reserved (%) (online)"
+msgstr ""
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_order_url
 #: field:qoqa.offer.position,order_url:0
 msgid "Order URL"
@@ -156,20 +176,9 @@ msgid "The pricelist and the shop must belong to the same company."
 msgstr ""
 
 #. module: qoqa_offer
-#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_ecotax
-#: field:qoqa.offer.position,ecotax:0
-msgid "Ecotax"
-msgstr ""
-
-#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_shipper_rate_id
 #: field:qoqa.offer,shipper_rate_id:0
 msgid "Shipper Rate"
-msgstr ""
-
-#. module: qoqa_offer
-#: view:qoqa.offer:0
-msgid "Offers Today!"
 msgstr ""
 
 #. module: qoqa_offer
@@ -197,9 +206,9 @@ msgid "Delivery Method"
 msgstr ""
 
 #. module: qoqa_offer
-#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_pricelist_id
-#: field:qoqa.offer,pricelist_id:0
-msgid "Pricelist"
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_brand
+#: field:qoqa.offer,main_brand:0
+msgid "Main Brand"
 msgstr ""
 
 #. module: qoqa_offer
@@ -229,6 +238,13 @@ msgid "<p class=\"oe_view_nocontent_create\">\n"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
+#: model:ir.model,name:qoqa_offer.model_stock_move
+#, python-format
+msgid "Stock Move"
+msgstr ""
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_tax_id
 #: field:qoqa.offer.position,tax_id:0
 msgid "Tax"
@@ -251,22 +267,38 @@ msgid "Warranty Expiration"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_is_online
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_is_online
+#: field:qoqa.offer,stock_is_online:0
+#: field:qoqa.offer.position,stock_is_online:0
+msgid "Online Stock"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_qoqa_offer_position
+#, python-format
 msgid "QoQa Offer Position"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_sale_order
+#, python-format
 msgid "Sales Order"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_stock_picking_out
+#, python-format
 msgid "Delivery Orders"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_sale_order_line
+#, python-format
 msgid "Sales Order Line"
 msgstr ""
 
@@ -301,7 +333,9 @@ msgid "Followers"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_stock_picking
+#, python-format
 msgid "Picking List"
 msgstr ""
 
@@ -316,6 +350,11 @@ msgstr ""
 #: field:qoqa.offer,image_small:0
 #: field:qoqa.offer.position,image_small:0
 msgid "Thumbnail"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "⇆"
 msgstr ""
 
 #. module: qoqa_offer
@@ -338,13 +377,17 @@ msgstr ""
 
 #. module: qoqa_offer
 #: view:qoqa.offer:0
+msgid "+- 2 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
 msgid "Prices"
 msgstr ""
 
 #. module: qoqa_offer
-#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_brand
-#: field:qoqa.offer,main_brand:0
-msgid "Main Brand"
+#: view:qoqa.offer:0
+msgid "Open Sales Orders"
 msgstr ""
 
 #. module: qoqa_offer
@@ -386,13 +429,22 @@ msgid "Ends at (Calendar)"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_qoqa_offer_position_variant
+#, python-format
 msgid "QoQa Offer Position Variant"
 msgstr ""
 
 #. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Options"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_qoqa_shop
 #: view:qoqa.offer:0
+#, python-format
 msgid "QoQa Shop"
 msgstr ""
 
@@ -427,6 +479,11 @@ msgid "Currency"
 msgstr ""
 
 #. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Descriptions"
+msgstr ""
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_line_qoqa_bind_ids
 #: field:sale.order.line,qoqa_bind_ids:0
 msgid "QBindings"
@@ -434,12 +491,7 @@ msgstr ""
 
 #. module: qoqa_offer
 #: view:qoqa.offer:0
-msgid "Open Sales Orders"
-msgstr ""
-
-#. module: qoqa_offer
-#: model:ir.model,name:qoqa_offer.model_delivery_service
-msgid "Delivery Service"
+msgid "Reserved:"
 msgstr ""
 
 #. module: qoqa_offer
@@ -465,9 +517,22 @@ msgid "The first position is the main one"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
+#: model:ir.model,name:qoqa_offer.model_qoqa_buyphrase
+#: view:qoqa.buyphrase:0
+#, python-format
+msgid "QoQa Buyphrase"
+msgstr ""
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_line_offer_position_id
 #: field:sale.order.line,offer_position_id:0
 msgid "Offer Position"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer.position,current_unit_price:0
+msgid "The price of the product at the beginning date of the offer. It will be modified directly on the product."
 msgstr ""
 
 #. module: qoqa_offer
@@ -488,6 +553,20 @@ msgstr ""
 #. module: qoqa_offer
 #: view:stock.picking.out:0
 msgid "Status"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_regular_price
+#: field:qoqa.offer.position,regular_price:0
+msgid "Regular Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_online_failure
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_online_failure
+#: field:qoqa.offer,stock_online_failure:0
+#: field:qoqa.offer.position,stock_online_failure:0
+msgid "Online Failure"
 msgstr ""
 
 #. module: qoqa_offer
@@ -533,7 +612,9 @@ msgid "Is a Follower"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_sale_shop
+#, python-format
 msgid "Sales Shop"
 msgstr ""
 
@@ -584,6 +665,12 @@ msgid "Offer Reference"
 msgstr ""
 
 #. module: qoqa_offer
+#: help:qoqa.offer,stock_is_online:0
+#: help:qoqa.offer.position,stock_is_online:0
+msgid "The stock displays the real online values when the offer is underway."
+msgstr ""
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_action
 #: field:qoqa.buyphrase,action:0
 msgid "Action"
@@ -605,6 +692,17 @@ msgid "Quantity"
 msgstr ""
 
 #. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Content"
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_pricelist_id
+#: field:qoqa.offer,pricelist_id:0
+msgid "Pricelist"
+msgstr ""
+
+#. module: qoqa_offer
 #: help:qoqa.offer,date_end_calendar:0
 msgid "When an ending date is date_begin + 1 day at 00:00 this date is set at date_begin, so the calendar won't display the offer on 2 days"
 msgstr ""
@@ -615,7 +713,9 @@ msgid "Stock:"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_account_invoice
+#, python-format
 msgid "Invoice"
 msgstr ""
 
@@ -631,20 +731,25 @@ msgid "Remaining with Bias (%)"
 msgstr ""
 
 #. module: qoqa_offer
-#: code:addons/qoqa_offer/qoqa_offer.py:107
-#, python-format
-msgid "...?"
+#: view:qoqa.offer:0
+msgid "Current Offers!"
 msgstr ""
 
 #. module: qoqa_offer
-#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_regular_price
-#: field:qoqa.offer.position,regular_price:0
-msgid "Regular Price"
+#: sql_constraint:qoqa.offer.position:0
+msgid "Lot price must be a value greater or equal to 0."
+msgstr ""
+
+#. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_highlights
+#: view:qoqa.offer:0
+#: field:qoqa.offer.position,highlights:0
+msgid "Highlights"
 msgstr ""
 
 #. module: qoqa_offer
 #: view:qoqa.offer:0
-msgid "Content"
+msgid "Current"
 msgstr ""
 
 #. module: qoqa_offer
@@ -654,11 +759,11 @@ msgid "Main Product Name"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_lot_price
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_regular_price
-#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_main_unit_price
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_unit_price
+#: field:qoqa.offer,main_lot_price:0
 #: field:qoqa.offer,main_regular_price:0
-#: field:qoqa.offer,main_unit_price:0
 #: field:qoqa.offer.position,unit_price:0
 msgid "Unit Price"
 msgstr ""
@@ -687,8 +792,11 @@ msgstr ""
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_buyphrase_description
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_description
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_description
 #: field:qoqa.buyphrase,description:0
+#: view:qoqa.offer:0
 #: field:qoqa.offer,description:0
+#: field:qoqa.offer.position,description:0
 msgid "Description"
 msgstr ""
 
@@ -751,9 +859,17 @@ msgid "Ref and Name"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_lot_price
+#: field:qoqa.offer.position,lot_price:0
+msgid "Lot Price"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_product_template
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_product_tmpl_id
 #: field:qoqa.offer.position,product_tmpl_id:0
+#, python-format
 msgid "Product Template"
 msgstr ""
 
@@ -766,7 +882,9 @@ msgid "Medium-sized Image"
 msgstr ""
 
 #. module: qoqa_offer
+#: code:_description:0
 #: model:ir.model,name:qoqa_offer.model_delivery_carrier
+#, python-format
 msgid "Carrier"
 msgstr ""
 
@@ -781,9 +899,14 @@ msgid "％"
 msgstr ""
 
 #. module: qoqa_offer
-#: model:ir.model,name:qoqa_offer.model_qoqa_buyphrase
-#: view:qoqa.buyphrase:0
-msgid "QoQa Buyphrase"
+#: view:qoqa.offer:0
+msgid "Offers +- 2 days"
+msgstr ""
+
+#. module: qoqa_offer
+#: help:qoqa.offer,stock_online_failure:0
+#: help:qoqa.offer.position,stock_online_failure:0
+msgid "Failed to get the online stock, probably a network failure. Please retry."
 msgstr ""
 
 #. module: qoqa_offer
@@ -798,7 +921,9 @@ msgstr ""
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_sequence
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_sequence
 #: field:qoqa.offer.position,sequence:0
+#: field:qoqa.offer.position.variant,sequence:0
 msgid "Sequence"
 msgstr ""
 
@@ -821,7 +946,9 @@ msgstr ""
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_datetime_end
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_datetime_end_filter
 #: field:qoqa.offer,datetime_end:0
+#: field:qoqa.offer,datetime_end_filter:0
 msgid "Ends at"
 msgstr ""
 
@@ -840,9 +967,11 @@ msgid "<p class=\"oe_view_nocontent_create\">\n"
 msgstr ""
 
 #. module: qoqa_offer
-#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
-#, python-format
-msgid "Error :"
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_reserved
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_reserved
+#: field:qoqa.offer,stock_reserved:0
+#: field:qoqa.offer.position,stock_reserved:0
+msgid "Reserved (online)"
 msgstr ""
 
 #. module: qoqa_offer
@@ -851,3 +980,31 @@ msgstr ""
 msgid "You cannot select a delivery date in the past"
 msgstr ""
 
+#: code:specific_addons/qoqa_offer/qoqa_offer.py:550
+#: code:specific_addons/qoqa_offer/qoqa_offer_position.py:415
+#, python-format
+msgid "Error"
+msgstr ""
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer.py:551
+#, python-format
+msgid "The products have no orderpoints configured."
+msgstr ""
+
+#. module: qoqa_offer
+#: code:specific_addons/qoqa_offer/qoqa_offer.py:564
+#, python-format
+msgid "Generated Purchases"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+msgid "Compute Stock Minimum Rules"
+msgstr ""
+
+#. module: qoqa_offer
+#: field:qoqa.offer.position,stock_online_failure_message:0
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_online_failure_message
+msgid "Stock Online Error"
+msgstr ""

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="0">
+    <record id="invoice_supplier_form" model="ir.ui.view">
+      <field name="name">account.invoice.supplier.form</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_supplier_form"/>
+      <field name="arch" type="xml">
+        <field name="currency_id" position="after">
+          <field name="validation_agreement"/>
+        </field>
+        <field name="state" position="after">
+          <button name="button_validate_agreement"
+            attrs="{'invisible': [('validation_agreement', '=', True)]}"
+            type="object"
+            string="Agreement validated"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_account_invoice_filter" model="ir.ui.view">
+      <field name="name">account.invoice.select</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+      <field name="arch" type="xml">
+        <filter name="unpaid" position="after">
+          <separator/>
+          <filter name="approved" string="Agreement to validation"
+            invisible="context.get('type') != 'in_invoice'"
+            domain="[('validation_agreement', '=', True)]"/>
+        </filter>
+      </field>
+    </record>
+
+    <record id="invoice_tree" model="ir.ui.view">
+      <field name="name">account.invoice.tree</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_tree"/>
+      <field name="arch" type="xml">
+        <field name="state" position="before">
+          <field name="type" invisible="1"/>
+          <field name="validation_agreement" invisible="context.get('type') != 'in_invoice'"/>
+        </field>
+      </field>
+    </record>
+  </data>
+</openerp>

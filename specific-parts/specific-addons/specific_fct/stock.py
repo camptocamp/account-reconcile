@@ -21,6 +21,7 @@
 from openerp import netsvc
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
+from openerp.addons.base.res.res_partner import _lang_get
 
 from postlogistics.web_service import PostlogisticsWebServiceQoQa
 
@@ -56,6 +57,15 @@ class stock_picking(orm.Model):
             result.add(line.picking_id.id)
         return list(result)
 
+    def _get_from_partner(self, cr, uid, ids, context=None):
+        return self.search(cr, uid, [('partner_id', 'in', ids)],
+                           context=context)
+
+    def _get_from_partner_fn(self, cr, uid, ids, context=None):
+        """ Do not modify. Let `_get_from_partner` be inheritable. """
+        return self.pool['stock.picking']._get_from_partner(cr, uid, ids,
+                                                            context=context)
+
     _columns = {
         'number_of_products': fields.function(
             _get_number_of_products,
@@ -65,6 +75,18 @@ class stock_picking(orm.Model):
                                   ['move_lines'], 10),
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
+        'lang': fields.related('partner_id', 'lang',
+                               string='Language',
+                               type='selection',
+                               selection=_lang_get,
+                               readonly=True,
+                               store={
+                                   'stock.picking': (
+                                       lambda self, cr, uid, ids, c=None: ids,
+                                       ['partner_id'], 20),
+                                   'res.partner': (_get_from_partner_fn,
+                                                   ['lang'], 20)
+                               }),
     }
 
     def _generate_postlogistics_label(self, cr, uid, picking,
@@ -382,6 +404,12 @@ class stock_picking_out(orm.Model):
             result.add(line.picking_id.id)
         return list(result)
 
+    def _get_from_partner_fn(self, cr, uid, ids, context=None):
+        """ Do not modify. Let `stock_picking._get_from_partner` be
+        inheritable. """
+        return self.pool['stock.picking']._get_from_partner(cr, uid, ids,
+                                                            context=context)
+
     _columns = {
         'number_of_products': fields.function(
             _get_number_of_products,
@@ -391,6 +419,18 @@ class stock_picking_out(orm.Model):
                                   ['move_lines'], 10),
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
+        'lang': fields.related('partner_id', 'lang',
+                               string='Language',
+                               type='selection',
+                               selection=_lang_get,
+                               readonly=True,
+                               store={
+                                   'stock.picking.out': (
+                                       lambda self, cr, uid, ids, c=None: ids,
+                                       ['partner_id'], 20),
+                                   'res.partner': (_get_from_partner_fn,
+                                                   ['lang'], 20)
+                               }),
     }
 
     def do_partial(self, cr, uid, ids, partial_datas, context=None):

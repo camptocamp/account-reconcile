@@ -1,0 +1,69 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* purchase_variant_fast_entry
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-29 15:07+0000\n"
+"PO-Revision-Date: 2014-08-29 15:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_variant_fast_entry
+#: model:ir.actions.act_window,name:purchase_variant_fast_entry.action_purchase_variant_fast_entry
+#: view:purchase.order:0
+msgid "Variants Fast Entry"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: view:purchase.variant.fast.entry:0
+msgid "Fast Entry"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: code:_description:0
+#: model:ir.model,name:purchase_variant_fast_entry.model_purchase_order
+#, python-format
+msgid "Purchase Order"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: model:ir.model.fields,field_description:purchase_variant_fast_entry.field_purchase_variant_fast_entry_product_tmpl_id
+#: field:purchase.variant.fast.entry,product_tmpl_id:0
+msgid "Product Template"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: model:ir.model.fields,field_description:purchase_variant_fast_entry.field_purchase_variant_fast_entry_quantity
+#: field:purchase.variant.fast.entry,quantity:0
+msgid "Default quantity"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: view:purchase.variant.fast.entry:0
+msgid "Fast entry of variants"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: code:_description:0
+#: model:ir.model,name:purchase_variant_fast_entry.model_purchase_variant_fast_entry
+#, python-format
+msgid "Fast entry of variants in purchase orders"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: view:purchase.variant.fast.entry:0
+msgid "Cancel"
+msgstr ""
+
+#. module: purchase_variant_fast_entry
+#: view:purchase.variant.fast.entry:0
+msgid "or"
+msgstr ""
+

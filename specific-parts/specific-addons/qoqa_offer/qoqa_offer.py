@@ -151,27 +151,44 @@ class qoqa_offer(orm.Model):
         for offer in self.browse(cr, uid, ids, context=context):
             quantity = 0
             residual = 0
+            reserved = 0
+            positions = offer.position_ids
+            # if one of the position has an offline stock,
+            # the global stock is maybe wrong so mark it as
+            # 'offline'
+            is_online = bool(positions and
+                             all(pos.stock_is_online for pos in positions))
+            online_failure = bool(positions and
+                                  any(pos.stock_online_failure
+                                      for pos in positions))
             for position in offer.position_ids:
                 quantity += position.sum_quantity
                 residual += position.sum_residual
+                reserved += position.stock_reserved
 
             progress = 0.0
             if quantity > 0:
                 progress = ((quantity - residual) / quantity) * 100
 
+            reserved_percent = 0.0
+            if quantity > 0:
+                reserved_percent = reserved / quantity * 100
+
             progress_remaining = 100 - progress
-            # always round up
-            progress_bias = math.ceil(progress_remaining *
-                                      offer.stock_bias /
-                                      100)
+            progress_bias = progress_remaining * offer.stock_bias / 100
 
             res[offer.id] = {
+                'stock_is_online': is_online,
+                'stock_online_failure': online_failure,
                 'sum_quantity': quantity,
                 'sum_residual': residual,
                 'sum_stock_sold': quantity - residual,
-                'stock_progress': progress,
+                # always round up
+                'stock_progress': math.ceil(progress),
                 'stock_progress_remaining': progress_remaining,
-                'stock_progress_with_bias': progress_bias,
+                'stock_progress_with_bias': math.ceil(progress_bias),
+                'stock_reserved': reserved,
+                'stock_reserved_percent': math.ceil(reserved_percent),
             }
         return res
 
@@ -271,6 +288,20 @@ class qoqa_offer(orm.Model):
             string='Progress',
             type='float',
             readonly=True),
+        'stock_is_online': fields.function(
+            _get_stock,
+            string="Online Stock",
+            type='boolean',
+            multi='stock',
+            help="The stock displays the real online values when "
+                 "the offer is underway."),
+        'stock_online_failure': fields.function(
+            _get_stock,
+            string="Online Failure",
+            type='boolean',
+            multi='stock',
+            help="Failed to get the online stock, probably a network "
+                 "failure. Please retry."),
         'sum_quantity': fields.function(
             _get_stock,
             string='Quantity',
@@ -289,17 +320,27 @@ class qoqa_offer(orm.Model):
         'stock_progress': fields.function(
             _get_stock,
             string='Progress',
-            type='float',
+            type='integer',
             multi='stock'),
         'stock_progress_with_bias': fields.function(
             _get_stock,
             string='Remaining with Bias (%)',
-            type='float',
+            type='integer',
             multi='stock'),
         'stock_progress_remaining': fields.function(
             _get_stock,
             string='Remaining (%)',
-            type='float',
+            type='integer',
+            multi='stock'),
+        'stock_reserved': fields.function(
+            _get_stock,
+            string='Reserved (online)',
+            type='integer',
+            multi='stock'),
+        'stock_reserved_percent': fields.function(
+            _get_stock,
+            string='Reserved (%) (online)',
+            type='integer',
             multi='stock'),
         # date & time are split in 2 fields
         # because they should not be based on the UTC
@@ -534,3 +575,38 @@ class qoqa_offer(orm.Model):
                        {'stock_bias': offer.stock_bias - 1},
                        context=context)
         return True
+
+    def button_orderpoint(self, cr, uid, ids, context=None):
+        products = set()
+        for offer in self.browse(cr, uid, ids, context=context):
+            for position in offer.position_ids:
+                for variant in position.variant_ids:
+                    products.add(variant.product_id)
+        orderpoint_ids = set()
+        for product in products:
+            for orderpoint in product.orderpoint_ids:
+                orderpoint_ids.add(orderpoint.id)
+        if not orderpoint_ids:
+            raise orm.except_orm(
+                _('Error'),
+                _('The products have no orderpoints configured.')
+            )
+        orderpoint_obj = self.pool['stock.warehouse.orderpoint']
+        procurement_obj = self.pool['procurement.order']
+        orderpoint_confirm = orderpoint_obj.procure_orderpoint_confirm
+        procurement_ids = orderpoint_confirm(cr, uid, list(orderpoint_ids),
+                                             context=context)
+        purchase_ids = []
+        procurements = procurement_obj.browse(cr, uid, procurement_ids,
+                                              context=context)
+        for procurement in procurements:
+            if procurement.purchase_id:
+                purchase_ids.append(procurement.purchase_id.id)
+        return {
+            'domain': "[('id', 'in', %s)]" % purchase_ids,
+            'name': _('Generated Purchases'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'purchase.order',
+            'type': 'ir.actions.act_window',
+        }

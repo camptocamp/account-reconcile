@@ -8,6 +8,7 @@ Feature: upgrade to 1.1.1
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | crm_claim_rma                              |
     Then my modules should have been installed and models reloaded
 
     Given I set the version of the instance to "1.1.1"

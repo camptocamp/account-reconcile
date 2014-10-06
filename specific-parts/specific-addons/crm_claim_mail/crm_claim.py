@@ -226,6 +226,8 @@ class crm_claim(orm.Model):
 
     def case_closed(self, cr, uid, ids, context=None):
         """ Mark the claim as closed: state=done """
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         for claim in self.browse(cr, uid, ids, context=context):
             stage_id = self.stage_find(cr, uid, [claim],
                                        claim.section_id.id or False,

@@ -447,7 +447,7 @@ class qoqa_offer(orm.Model):
         'date_warranty': fields.date(
             'Warranty Expiration',
             readonly=True),
-        'send_newsletters': fields.boolean('Send newsletters'),                
+        'send_newsletters': fields.boolean('Send newsletters'),
         'active': fields.boolean('Active'),
         'sale_ids': fields.one2many(
             'sale.order', 'offer_id',

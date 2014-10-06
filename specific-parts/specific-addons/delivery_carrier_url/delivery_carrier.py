@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Author: Tristan Rouiller
+#    Copyright 2014 QoQa Services SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -27,29 +27,8 @@ class delivery_carrier(orm.Model):
 
     _columns = {
         'url_template': fields.char(
-            string='Url template', 
-            help="The %s sequence will be replaced by the tracking number")
-    }
-
-
-class stock_move(orm.Model):
-    _inherit = 'stock.move'
-    
-    def _get_tracking_url(self, cr, uid, ids, name, args, context=None):
-        stock_moves = self.browse(cr, uid, ids, context=context)
-        tracking_urls = {}
-        for sm in stock_moves:
-            if not sm.picking_id or not sm.picking_id.carrier_id.url_template:
-                tracking_urls[sm.id] = False
-                continue
-            tracking_number = False
-            if sm.tracking_id:
-                tracking_number = sm.tracking_id.serial
-            if not tracking_number:
-                tracking_number = sm.picking_id.carrier_tracking_ref
-            tracking_urls[sm.id] = sm.picking_id.carrier_id.url_template % (tracking_number,)
-        return tracking_urls
-
-    _columns = {
-        'tracking_url': fields.function(_get_tracking_url, type='char', string='Tracking url')
+            string='Url template',
+            help="The '%(tracking_url)s' sequence will be replaced by the "
+                 "tracking number and the '%(lang)s' sequence will be replaced"
+                 " by the language code (en, fr, de)")
     }

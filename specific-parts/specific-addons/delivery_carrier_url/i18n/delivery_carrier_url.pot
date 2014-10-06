@@ -1,62 +1,58 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-# 	* delivery_carrier_url
+#	* delivery_carrier_url
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-06 12:04+0000\n"
-"PO-Revision-Date: 2014-10-06 14:07+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2014-10-06 12:04+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"X-Generator: Poedit 1.5.4\n"
 
 #. module: delivery_carrier_url
 #: code:_description:0
 #: model:ir.model,name:delivery_carrier_url.model_delivery_carrier
 #, python-format
 msgid "Carrier"
-msgstr "Transporteur"
+msgstr ""
 
 #. module: delivery_carrier_url
 #: code:_description:0
 #: model:ir.model,name:delivery_carrier_url.model_stock_move
 #, python-format
 msgid "Stock Move"
-msgstr "Mouvement de stock"
+msgstr ""
 
 #. module: delivery_carrier_url
 #: help:delivery.carrier,url_template:0
-msgid ""
-"The '%(tracking_url)s' sequence will be replaced by the tracking number and "
-"the '%(lang)s' sequence will be replaced by the language code (en, fr, de)"
+msgid "The '%(tracking_url)s' sequence will be replaced by the tracking number and the '%(lang)s' sequence will be replaced by the language code (en, fr, de)"
 msgstr ""
-"La séquence '%(tracking_url)s' sera remplacée par le numéro de tracking et "
-"la séquence '%(lang)s' sera remplacée par la langue (en, fr, de)"
 
 #. module: delivery_carrier_url
 #: view:stock.move:0
 msgid "Traceability"
-msgstr "Traçabilité"
+msgstr ""
 
 #. module: delivery_carrier_url
 #: model:ir.model.fields,field_description:delivery_carrier_url.field_stock_move_tracking_url
 #: field:stock.move,tracking_url:0
 msgid "Tracking url"
-msgstr "Url du tracking"
+msgstr ""
 
 #. module: delivery_carrier_url
 #: field:delivery.carrier,url_template:0
 #: model:ir.model.fields,field_description:delivery_carrier_url.field_delivery_carrier_url_template
 msgid "Url template"
-msgstr "Template d'url"
+msgstr ""
 
 #. module: delivery_carrier_url
 #: view:stock.move:0
 msgid "View tracking details"
-msgstr "Voir les détails du tracking"
+msgstr ""
+

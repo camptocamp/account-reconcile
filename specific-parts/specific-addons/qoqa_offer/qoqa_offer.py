@@ -477,7 +477,7 @@ class qoqa_offer(orm.Model):
         'ref': '/',
         'date_begin': fields.date.context_today,
         'date_end': _default_date_end,
-        'time_begin': 0,  # 00:00'
+        'time_begin': 0,  # 00:00
         'time_end': 0,
         'send_newsletters': 1,
         'active': 1,

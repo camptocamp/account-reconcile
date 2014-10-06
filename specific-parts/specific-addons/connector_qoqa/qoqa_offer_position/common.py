@@ -102,33 +102,44 @@ class qoqa_offer_position(orm.Model):
                     message = "%s: %s" % (error.name, error.value.strip('\n'))
                 else:
                     message = error.name  # on 'Unknow Error'
-                values[position.id]['stock_is_online'] = False
-                values[position.id]['stock_online_failure'] = True
-                values[position.id]['stock_online_failure_message'] = message
+                computed = {
+                    'stock_is_online': False,
+                    'stock_online_failure': True,
+                    'stock_online_failure_message': message,
+                }
             else:
-                quantity = values[position.id]['sum_quantity']
-                sold = int(qoqa_values['sold'])
-                residual = quantity - sold
-                progress = 0.0
-                if quantity > 0:
-                    progress = ((quantity - residual) / quantity) * 100
+                if 'sold' in qoqa_values:
+                    sold = int(qoqa_values['sold'])
+                    quantity = values[position.id]['sum_quantity']
+                    residual = quantity - sold
+                    progress = 0.0
+                    if quantity > 0:
+                        progress = ((quantity - residual) / quantity) * 100
 
-                reserved = int(qoqa_values['reserved'])
-                reserved_percent = 0.0
-                if quantity > 0:
-                    progress = reserved / quantity * 100
+                    reserved = int(qoqa_values['reserved'])
+                    reserved_percent = 0.0
+                    if quantity > 0:
+                        progress = reserved / quantity * 100
 
-                values[position.id].update({
-                    'stock_is_online': True,
-                    'stock_online_failure': False,
-                    'stock_online_failure_message': '',
-                    'sum_stock_sold': sold,
-                    'sum_residual': residual,
-                    'stock_progress': progress,
-                    'stock_progress_remaining': 100 - progress,
-                    'stock_reserved': reserved,
-                    'stock_reserved_percent': reserved_percent,
-                })
+                    computed = {
+                        'stock_is_online': True,
+                        'stock_online_failure': False,
+                        'stock_online_failure_message': '',
+                        'sum_stock_sold': sold,
+                        'sum_residual': residual,
+                        'stock_progress': progress,
+                        'stock_progress_remaining': 100 - progress,
+                        'stock_reserved': reserved,
+                        'stock_reserved_percent': reserved_percent,
+                    }
+                else:
+                    computed = {
+                        'stock_is_online': False,
+                        'stock_online_failure': True,
+                        'stock_online_failure_message': _('API did not return'
+                                                          'the stock values.'),
+                    }
+            values[position.id].update(computed)
 
         return values
 

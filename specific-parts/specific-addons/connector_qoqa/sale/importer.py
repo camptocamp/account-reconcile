@@ -39,7 +39,7 @@ from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
-from ..unit.mapper import iso8601_to_utc, strformat
+from ..unit.mapper import iso8601_to_utc, strformat, iso8601_local_date
 from ..connector import iso8601_to_utc_datetime, historic_import
 from ..exception import QoQaError
 from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
@@ -318,7 +318,7 @@ class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('created_at'), 'date_order'),
+              (iso8601_local_date('created_at'), 'date_order'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),

@@ -78,39 +78,13 @@ class VariantImportMapper(ImportMapper):
     _model_name = 'qoqa.product.product'
 
     translatable_fields = [
-        ('name', 'variants'),
     ]
 
     direct = [
         (iso8601_to_utc('created_at'), 'created_at'),
         (iso8601_to_utc('updated_at'), 'updated_at'),
-        ('sku', 'default_code'),
-        (backend_to_m2o('product_id', binding='qoqa.product.template'),
-         'product_tmpl_id'),
-        ('warranty', 'warranty'),
-        (qoqafloat('cost_price'), 'standard_price'),
+        ('image', 'image'),
     ]
-
-    @mapping
-    def ean(self, record):
-        if not record['ean']:
-            return
-        ean13 = str(record['ean'])
-        if check_ean(ean13):
-            return {'ean13': ean13}
-
-    @mapping
-    def attributes(self, record):
-        """ Extract the attributes from the record.
-
-        It takes all the attributes. For the translatable ones,
-        """
-        attr = self.get_connector_unit_for_model(ProductAttribute)
-        translatable = None
-        lang = self.options.lang or self.backend_record.default_lang_id
-        if lang != self.backend_record.default_lang_id:
-            translatable = True  # filter only translatable attributes
-        return attr.get_values(record, lang, translatable=translatable)
 
     @mapping
     def from_translations(self, record):

@@ -269,6 +269,7 @@
                                     <field name="company_id" invisible="1"/>
                                     <field name="pricelist_id"/>
                                     <field name="lang_id" widget="selection"/>
+                                    <field name="send_newsletters"/>
                                     <field name="active"/>
                                 </group>
                             </group>

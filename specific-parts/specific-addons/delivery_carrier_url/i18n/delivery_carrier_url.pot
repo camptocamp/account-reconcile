@@ -31,7 +31,7 @@ msgstr ""
 
 #. module: delivery_carrier_url
 #: help:delivery.carrier,url_template:0
-msgid "The '%(tracking_url)s' sequence will be replaced by the tracking number and the '%(lang)s' sequence will be replaced by the language code (en, fr, de)"
+msgid "The '%(tracking_number)s' sequence will be replaced by the tracking number and the '%(lang)s' sequence will be replaced by the language code (en, fr, de)"
 msgstr ""
 
 #. module: delivery_carrier_url

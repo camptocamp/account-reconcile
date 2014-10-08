@@ -33,10 +33,10 @@ msgstr "Mouvement de stock"
 #. module: delivery_carrier_url
 #: help:delivery.carrier,url_template:0
 msgid ""
-"The '%(tracking_url)s' sequence will be replaced by the tracking number and "
+"The '%(tracking_number)s' sequence will be replaced by the tracking number and "
 "the '%(lang)s' sequence will be replaced by the language code (en, fr, de)"
 msgstr ""
-"La séquence '%(tracking_url)s' sera remplacée par le numéro de tracking et "
+"La séquence '%(tracking_number)s' sera remplacée par le numéro de tracking et "
 "la séquence '%(lang)s' sera remplacée par la langue (en, fr, de)"
 
 #. module: delivery_carrier_url

@@ -28,7 +28,7 @@ class delivery_carrier(orm.Model):
     _columns = {
         'url_template': fields.char(
             string='Url template',
-            help="The '%(tracking_url)s' sequence will be replaced by the "
+            help="The '%(tracking_number)s' sequence will be replaced by the "
                  "tracking number and the '%(lang)s' sequence will be replaced"
                  " by the language code (en, fr, de)")
     }

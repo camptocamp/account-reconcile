@@ -24,7 +24,6 @@ from __future__ import division
 import logging
 
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  only_create,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
@@ -32,8 +31,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         TranslationImporter,
                                         )
-from ..product_attribute.importer import ProductAttribute
-from ..unit.mapper import ifmissing, iso8601_to_utc
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 

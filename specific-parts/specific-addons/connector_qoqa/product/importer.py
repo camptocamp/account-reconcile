@@ -21,9 +21,7 @@
 
 import logging
 
-from openerp.addons.product.product import check_ean
 from openerp.addons.connector.unit.mapper import (mapping,
-                                                  backend_to_m2o,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
@@ -31,9 +29,8 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         TranslationImporter,
                                         )
-from ..product_attribute.importer import ProductAttribute
 from ..product_template.importer import TemplateVariantImportMapper
-from ..unit.mapper import iso8601_to_utc, qoqafloat
+from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -46,6 +43,10 @@ class VariantBatchImport(DelayedBatchImport):
     Import from a date
     """
     _model_name = ['qoqa.product.product']
+
+    def _import_record(self, record_id, **kwargs):
+        """ Delay the import of the records"""
+        super(VariantBatchImport, self)._import_record(record_id, priority=30)
 
 
 @qoqa

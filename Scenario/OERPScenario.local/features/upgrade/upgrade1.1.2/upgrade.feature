@@ -18,5 +18,12 @@ Feature: upgrade to 1.1.2
     SET url_template = 'https://www.mypostbusiness.ch/EasyTrack/submitParcelData.do?formattedParcelCodes=%(tracking_number)s&lang=%(lang)s'
     WHERE type = 'postlogistics'
     """
+    
+    Given I execute the SQL commands
+    """
+    UPDATE qoqa_backend
+    SET import_product_product_from_date = '2014-10-01 00:00:00'
+    WHERE id = 1
+    """
 
     Given I set the version of the instance to "1.1.2"

@@ -41,8 +41,7 @@ from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
 from ..unit.mapper import iso8601_to_utc, strformat, iso8601_local_date
-from ..connector import (iso8601_to_utc_datetime,
-                         iso8601_to_local_date,
+from ..connector import (iso8601_to_local_date,
                          historic_import,
                          )
 from ..exception import QoQaError

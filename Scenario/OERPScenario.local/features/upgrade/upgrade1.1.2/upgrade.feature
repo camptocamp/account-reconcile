@@ -15,7 +15,7 @@ Feature: upgrade to 1.1.2
     Given I execute the SQL commands
     """
     UPDATE delivery_carrier
-    SET url_template = 'https://www.mypostbusiness.ch/EasyTrack/submitParcelData.do?formattedParcelCodes=%(tracking_number)s&lang=%(lang)s'
+    SET url_template = 'https://www.post.ch/EasyTrack/submitParcelData.do?domain=www.post.ch&reference=%%252fswisspost-tracking&formattedParcelCodes=%(tracking_number)s&p_language=%(lang)s&DCSext.wt_shortcut=swisspost-tracking&WT.mc_id=shortcut_swisspost-tracking'
     WHERE type = 'postlogistics'
     """
 

@@ -38,6 +38,20 @@
             </field>
         </record>
 
+        <record id="view_picking_out_tree" model="ir.ui.view">
+            <field name="name">stock.picking.out.view</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="sale_create_date"/>
+                </field>
+                <field name="date" position="replace">
+                    <field name="date" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
         <act_window name="Create Picking Dispatch"
                     res_model="picking.dispatch.creator"
                     src_model="stock.picking.out"

@@ -21,6 +21,9 @@
                 <field name="name" position="after">
                     <field name="offer_id"/>
                 </field>
+                <field name="state" position="after">
+                    <field name="create_date" string="Created date in OpenERP"/>
+                </field>
             </field>
         </record>
 

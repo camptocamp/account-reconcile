@@ -45,6 +45,9 @@ class stock_move(orm.Model):
                 tracking_number = sm.tracking_id.serial
             if not tracking_number:
                 tracking_number = sm.picking_id.carrier_tracking_ref
+            if not tracking_number:
+                tracking_urls[sm.id] = False
+                continue
             tracking_urls[sm.id] = sm.picking_id.carrier_id.url_template % {
                 'tracking_number': tracking_number,
                 'lang': lang,

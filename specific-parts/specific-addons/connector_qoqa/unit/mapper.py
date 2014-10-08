@@ -27,7 +27,10 @@ from openerp.tools.misc import (DEFAULT_SERVER_DATETIME_FORMAT,
                                 )
 from openerp.tools.float_utils import float_round
 from openerp.addons.connector.unit import mapper
-from ..connector import iso8601_to_utc_datetime, utc_datetime_to_iso8601
+from ..connector import (iso8601_to_utc_datetime,
+                         utc_datetime_to_iso8601,
+                         iso8601_to_local_date,
+                         )
 
 
 def m2o_to_backend(field, binding=None):
@@ -88,7 +91,7 @@ def iso8601_to_utc(field):
 
     Usage::
 
-        direct = [(iso8601_to_utc('name', value='Unknown'), 'name')]
+        direct = [(iso8601_to_utc('name'), 'name')]
 
     :param field: name of the source field in the record
 
@@ -99,6 +102,34 @@ def iso8601_to_utc(field):
             return False
         utc_date = iso8601_to_utc_datetime(value)
         return utc_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+    return modifier
+
+
+def iso8601_local_date(field):
+    """ A modifier intended to be used on the ``direct`` mappings for
+    importers.
+
+    A QoQa date is formatted using the ISO 8601 format.
+    Returns the local date from an iso8601 date.
+
+    Keep only the date, when we want to keep only the local date.
+    It's safe to extract it directly from the tz-aware timestamp.
+    Example with 2014-10-07T00:34:59+0200: we want 2014-10-07 and not
+    2014-10-06 that we would have using the timestamp converted to UTC.
+
+    Usage::
+
+        direct = [(iso8601_local_date('name'), 'name')]
+
+    :param field: name of the source field in the record
+
+    """
+    def modifier(self, record, to_attr):
+        value = record.get(field)
+        if not value:
+            return False
+        utc_date = iso8601_to_local_date(value)
+        return utc_date.strftime(DEFAULT_SERVER_DATE_FORMAT)
     return modifier
 
 

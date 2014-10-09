@@ -46,6 +46,10 @@ class account_invoice(orm.Model):
             'account.invoice',
             string='Refund generated from invoice',
             ondelete='restrict'),
+        'refund_ids': fields.one2many(
+            'account.invoice',
+            'refund_from_invoice_id',
+            string='Refund generated from invoice'),
     }
 
     _defaults = {

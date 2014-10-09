@@ -8,3 +8,4 @@ from . import account_invoice
 from . import payment
 from . import crm_claim
 from . import wizard
+from . import payment_method

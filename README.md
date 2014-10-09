@@ -8,11 +8,18 @@ Private and customer specific branches for QoQa.
 
 Steps:
 
-    ln -s profiles/dev.cfg buildout.cfg
+1. Create a file with name `buildout.cfg` containing:
+
+    [buildout]
+    extends = profiles/dev.cfg
+
+2. Bootstrap & build
+
     ./bootstrap.sh
     bin/buildout
 
-:warning: do not use the other configuration files if you do not know what you
+
+:warning: do not extend the other configuration files if you do not know what you
 are doing
 
 ## Travis testing

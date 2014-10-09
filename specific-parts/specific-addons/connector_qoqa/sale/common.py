@@ -65,6 +65,10 @@ class qoqa_sale_order(orm.Model):
         'invoice_ref': fields.char('Invoice Ref. on QoQa'),
         # id of the main payment on qoqa, used as key for reconciliation
         'qoqa_payment_id': fields.char('ID of the payment on QoQa'),
+        'qoqa_payment_date': fields.date('Date of the payment',
+                                         help="Local date of the payment, "
+                                              "used to know if it can be "
+                                              "canceled."),
         # field with name 'transaction' in the main payment
         'qoqa_transaction': fields.char('Transaction number of the payment '
                                         'on QoQa'),
@@ -136,10 +140,11 @@ class sale_order(orm.Model):
             cancel_direct = False
             if (order.qoqa_bind_ids and
                     order.payment_method_id.payment_cancellable_on_qoqa):
+                binding = order.qoqa_bind_ids[0]
                 # can be canceled only the day of the payment
-                order_date = datetime.strptime(order.date_order,
-                                               DEFAULT_SERVER_DATE_FORMAT)
-                if order_date.date() == date.today():
+                payment_date = datetime.strptime(binding.qoqa_payment_date,
+                                                 DEFAULT_SERVER_DATE_FORMAT)
+                if payment_date.date() == date.today():
                     cancel_direct = True
             payment_ids = None
             invoice_ids = None

@@ -93,6 +93,7 @@ class OfferExportMapper(ExportMapper):
         (m2o_to_backend('shipper_rate_id', binding='qoqa.shipper.rate'),
          'shipper_rate_id'),
         ('ref', 'id'),
+        ('send_newsletters', 'send_newsletters'),
         ('active', 'is_active'),
     ]
 

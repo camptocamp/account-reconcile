@@ -216,12 +216,16 @@ class BaseIssuanceMapper(ImportMapper):
         return vals
 
     def _partner_id(self, map_record):
-        binder = self.get_binder_for_model('qoqa.res.partner')
-        partner_id = binder.to_openerp(map_record.source['user_id'],
-                                       unwrap=True)
-        assert partner_id, \
-            "user_id should have been imported in import_dependencies"
-        return partner_id
+        # Partner can be empty; if that's the case, return False
+        if not map_record.source['user_id']:
+            return False
+        else:
+            binder = self.get_binder_for_model('qoqa.res.partner')
+            partner_id = binder.to_openerp(map_record.source['user_id'],
+                                           unwrap=True)
+            assert partner_id, \
+                "user_id should have been imported in import_dependencies"
+            return partner_id
 
     def _company_id(self, map_record):
         company_binder = self.get_binder_for_model('res.company')

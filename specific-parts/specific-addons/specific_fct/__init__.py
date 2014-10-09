@@ -9,3 +9,4 @@ from . import payment
 from . import crm_claim
 from . import wizard
 from . import account_statement_profile
+from . import payment_method

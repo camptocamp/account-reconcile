@@ -40,6 +40,11 @@
         <field name="state" position="before">
           <field name="type" invisible="1"/>
           <field name="validation_agreement" invisible="context.get('type') != 'in_invoice'"/>
+          <button name="button_validate_agreement"
+            attrs="{'invisible': [('validation_agreement', '=', True)]}"
+            type="object"
+            string="Agreement validated"
+            icon="gtk-paste-v"/>
         </field>
       </field>
     </record>

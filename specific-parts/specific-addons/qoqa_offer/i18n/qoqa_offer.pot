@@ -1008,3 +1008,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_online_failure_message
 msgid "Stock Online Error"
 msgstr ""
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0
+#: view:sale.order:0
+msgid "My favorites shops. You can change it in your settings"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:sale.order:0
+#: view:qoqa.offer:0
+#: field:res.users,qoqa_shop_ids:0
+#: model:ir.model.fields,field_description:res_users.field_res_users_qoqa_shop_ids
+msgid "Favorites Shops"
+msgstr ""

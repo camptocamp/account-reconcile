@@ -44,5 +44,4 @@ class res_users(orm.Model):
             qoqa_obj = self.pool['qoqa.shop']
             result['qoqa_shop_ids'] = qoqa_obj.search(cr, uid, [],
                                                       context=context)
-        
         return result

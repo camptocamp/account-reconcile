@@ -478,9 +478,9 @@ class qoqa_offer_position(orm.Model):
             context_today = fields.date.context_today(self, cr, uid,
                                                       context=context)
             today = datetime.strptime(context_today, fmt)
-            today_plus_13_days = today + timedelta(days=13)
+            today_plus_15_days = today + timedelta(days=15)
             default.update({
-                'date_delivery': today_plus_13_days.strftime(fmt),
+                'date_delivery': today_plus_15_days.strftime(fmt),
             })
         return super(qoqa_offer_position, self).copy_data(
             cr, uid, id, default=default, context=context)

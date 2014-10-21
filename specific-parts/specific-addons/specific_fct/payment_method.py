@@ -21,10 +21,15 @@
 
 from openerp.osv import orm, fields
 
+
 class payment_method(orm.Model):
     _inherit = 'payment.method'
 
     _columns = {
-        'refund_max_days': fields.integer('Refund max days', help="Number of days when the refund is possible"),
-        'refund_min_date': fields.date('Refund min date', help="Invoice date before this value cannot be refund"), 
+        'refund_max_days': fields.integer('Refund max days',
+                                          help="""Number of days when the
+                                                  refund is possible"""),
+        'refund_min_date': fields.date('Refund min date',
+                                       help="""Invoice date before this
+                                               value cannot be refund"""),
     }

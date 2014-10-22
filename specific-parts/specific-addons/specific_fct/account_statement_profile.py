@@ -24,11 +24,13 @@ from openerp.osv import orm
 class AccountStatementProfil(orm.Model):
     _inherit = "account.statement.profile"
 
-    # Revert code from commit 70226284b33032855c614870bbd58a4ed4d9a33b
-    # in bank-statement-reconcile: QoQa does not want to have a start balance
-    # after importing a credit card file
+    # Due to commit OCA/bank-statement-reconcile@7022628 in
+    # bank-statement-reconcile, balance_start is set in the imported
+    # bank statement. QoQa does not want it, so we redefine it to False.
     def prepare_statement_vals(self, cr, uid, profile_id, result_row_list,
                                parser, context=None):
-        vals = {'profile_id': profile_id}
-        vals.update(parser.get_st_vals())
+        vals = super(AccountStatementProfil, self).prepare_statement_vals(
+            cr, uid, profile_id, result_row_list, parser, context=context
+        )
+        vals['balance_start'] = False
         return vals

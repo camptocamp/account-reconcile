@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-03 11:52+0000\n"
-"PO-Revision-Date: 2014-10-22 09:16+0100\n"
+"PO-Revision-Date: 2014-10-22 09:56+0100\n"
 "Last-Translator: Tristan Rouiller <tristan.rouiller@qoqa.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -531,7 +531,7 @@ msgid ""
 "customer account"
 msgstr ""
 "Date de livraison maximum garantie aux clients. Cette date figure sur les "
-"confimrations de commande et le compte client."
+"confirmations de commande et le compte client."
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_progress_remaining

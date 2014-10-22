@@ -37,7 +37,7 @@ QOQA_TZ = pytz.timezone('Europe/Zurich')
 
 
 def iso8601_to_utc_datetime(isodate):
-    """ Returns the UTC date from an iso8601 date
+    """ Returns the UTC datetime from an iso8601 date
 
     A QoQa date is formatted using the ISO 8601 format.
     Example: 2013-11-04T13:52:01+0100
@@ -51,7 +51,7 @@ def iso8601_to_utc_datetime(isodate):
 
 
 def utc_datetime_to_iso8601(dt):
-    """ Returns an iso8601 date from a datetime.
+    """ Returns an iso8601 datetime from a datetime.
 
     Example: 2013-11-04 12:52:01 → 2013-11-04T12:52:01+0000
 
@@ -59,6 +59,18 @@ def utc_datetime_to_iso8601(dt):
     utc = pytz.timezone('UTC')
     utc_dt = utc.localize(dt, is_dst=False)  # UTC = no DST
     return utc_dt.isoformat()
+
+
+def iso8601_to_local_date(isodate):
+    """ Returns the local date from an iso8601 date
+
+    Keep only the date, when we want to keep only the local date.
+    It's safe to extract it directly from the tz-aware timestamp.
+    Example with 2014-10-07T00:34:59+0200: we want 2014-10-07 and not
+    2014-10-06 that we would have using the timestamp converted to UTC.
+    """
+    local_date = isodate[:10]
+    return datetime.strptime(local_date, '%Y-%m-%d').date()
 
 
 def get_environment(session, model_name, backend_id):

@@ -24,6 +24,7 @@ import logging
 from dateutil import parser
 
 from openerp.tools.translate import _
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from openerp.tools.float_utils import float_is_zero
 
 from openerp.addons.connector.exception import MappingError
@@ -39,8 +40,10 @@ from ..unit.backend_adapter import QoQaAdapter
 from ..unit.import_synchronizer import (DelayedBatchImport,
                                         QoQaImportSynchronizer,
                                         )
-from ..unit.mapper import iso8601_to_utc, strformat
-from ..connector import iso8601_to_utc_datetime, historic_import
+from ..unit.mapper import iso8601_to_utc, strformat, iso8601_local_date
+from ..connector import (iso8601_to_local_date,
+                         historic_import,
+                         )
 from ..exception import QoQaError
 from ..sale_line.importer import (QOQA_ITEM_PRODUCT, QOQA_ITEM_SHIPPING,
                                   QOQA_ITEM_DISCOUNT, QOQA_ITEM_SERVICE,
@@ -202,11 +205,10 @@ class SaleOrderImport(QoQaImportSynchronizer):
             if not journal:
                 continue
             amount = payment['amount'] / 100
-            qoqa_date = payment['trx_date'] or payment['created_at']
-            date = iso8601_to_utc_datetime(qoqa_date)
+            payment_date = _get_payment_date(payment)
             cr, uid, context = sess.cr, sess.uid, sess.context
             sale_obj._add_payment(cr, uid, sale, journal,
-                                  amount, date, context=context)
+                                  amount, payment_date, context=context)
 
     def _after_import(self, binding_id):
         # before 'date_really_import', we import only for the historic
@@ -273,6 +275,14 @@ def _get_payment_method(connector_unit, payment, company_id):
     return session.browse('payment.method', method_id)
 
 
+def _get_payment_date(payment_record):
+    payment_date = (payment_record['trx_date'] or
+                    payment_record['created_at'])
+    payment_date = iso8601_to_local_date(payment_date)
+    date_fmt = DEFAULT_SERVER_DATE_FORMAT
+    return payment_date.strftime(date_fmt)
+
+
 def valid_invoices(sale_record):
     """ Extract all invoices from a sales order having a valid status
     and of type 'invoice' (not refunds).
@@ -318,7 +328,7 @@ class SaleOrderImportMapper(ImportMapper):
     _model_name = 'qoqa.sale.order'
 
     direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('created_at'), 'date_order'),
+              (iso8601_local_date('created_at'), 'date_order'),
               (iso8601_to_utc('updated_at'), 'updated_at'),
               (backend_to_m2o('shop_id'), 'qoqa_shop_id'),
               (backend_to_m2o('shop_id', binding='qoqa.shop'), 'shop_id'),
@@ -394,10 +404,12 @@ class SaleOrderImportMapper(ImportMapper):
             return
         method = methods[0]
         transaction_id = method[0].get('transaction')
+        payment_date = _get_payment_date(method[0])
         return {'payment_method_id': method[1].id,
                 'qoqa_transaction': transaction_id,
                 # keep as payment's reference
                 'qoqa_payment_id': method[0]['id'],
+                'qoqa_payment_date': payment_date,
                 # used for the reconciliation (transfered to invoice)
                 'transaction_id': method[0]['id']}
 

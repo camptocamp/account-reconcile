@@ -246,6 +246,6 @@ class crm_claim(orm.Model):
             cr, uid, thread_id, body=body, subject=subject, type=type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
             context=context, content_subtype=content_subtype, **kwargs)
-        if type == 'comment':
+        if type == 'comment' and subtype:
             self.case_closed(cr, uid, thread_id, context=context)
         return result

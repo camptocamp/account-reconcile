@@ -1008,3 +1008,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_online_failure_message
 msgid "Stock Online Error"
 msgstr ""
+
+#. module: qoqa_offer
+#: field:qoqa.offer,send_newsletters:0
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_send_newsletters
+msgid "Send newsletters"
+msgstr ""

@@ -25,8 +25,6 @@ from openerp.addons.web.controllers import main
 
 from openerp.addons.web import http
 
-import re
-
 
 class HomeEnv(main.Home):
     _cp_path = '/'
@@ -41,4 +39,4 @@ class HomeEnv(main.Home):
             'environment_name': environment_name,
         }
 
-        return re.sub(r"<body", body_replace, html_template)
+        return html_template.replace(r"<body", body_replace)

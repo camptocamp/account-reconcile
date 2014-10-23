@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
-#    Copyright 2014 Camptocamp SA
+#    Author: Tristan Rouiller
+#    Copyright 2014 QoQa Service SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,32 +18,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 from openerp.osv import orm, fields
 
 
-class res_company(orm.Model):
-    _inherit = 'res.company'
-
+class sale_shop(orm.Model):
+    _inherit = 'sale.shop'
     _columns = {
-        'claim_sale_order_regexp': fields.char(
-            'Regular Expression for sale number',
-            help="Regular expression used to extract the sales order's "
-                 "number from the body of the emails."),
         'mail_signature_template': fields.html(
             'Mail signature template',
-            required=True, 
+            required=False, 
             translate=True,
             help='This is the mail signature template. You can add some'
                  ' variables :'
                  '$user_signature : the current user signature'
                  '$user_email : the current user email'
         ),
-    }
-
-    _default = {
-        'mail_signature_template': (u'<p>Best wishes</p>'),
-
-        'claim_sale_order_regexp': (u'<b>Order :</b>\s*<a '
-                                    'href="http[^"]+"[^>]*>(\d+)</a>'),
     }

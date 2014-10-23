@@ -10,6 +10,9 @@
           <group string="RMA" name="rma">
             <field name="claim_sale_order_regexp"/>
           </group>
+          <group string="Mail" name="mail">
+            <field name="mail_signature_template"/>
+          </group>
         </page>
       </field>
     </record>

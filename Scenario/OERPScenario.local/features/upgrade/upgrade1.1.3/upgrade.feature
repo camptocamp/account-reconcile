@@ -9,6 +9,7 @@ Feature: upgrade to 1.1.3
     Given I install the required modules with dependencies:
       | name                                       |
       | picking_dispatch                           |
+      | qoqa_offer                                 |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

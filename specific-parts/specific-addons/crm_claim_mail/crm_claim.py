@@ -40,9 +40,10 @@ class crm_claim(orm.Model):
             result[claim_id] = self.message_quote(cr, uid, claim_id,
                                                   limit=2, context=context)
         return result
+
     def _get_mail_signature(self, cr, uid, ids, fields, args, context=None):
         if context is None:
-            context= {}
+            context = {}
         claims = self.browse(cr, uid, ids, context=context)
         user = self.pool['res.users'].browse(cr, uid, uid, context=context)
         result = {}
@@ -52,11 +53,11 @@ class crm_claim(orm.Model):
 
             if lang:
                 ctx['lang'] = lang
-            
+
             claim = self.browse(cr, uid, claim.id, context=ctx)
             template = ''
             if claim.shop_id and claim.shop_id.mail_signature_template:
-                template =  claim.shop_id.mail_signature_template
+                template = claim.shop_id.mail_signature_template
             else:
                 template = claim.company_id.mail_signature_template
 

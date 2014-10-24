@@ -32,7 +32,7 @@ class res_company(orm.Model):
                  "number from the body of the emails."),
         'mail_signature_template': fields.html(
             'Mail signature template',
-            required=True, 
+            required=True,
             translate=True,
             help='This is the mail signature template. You can add some'
                  ' variables :'

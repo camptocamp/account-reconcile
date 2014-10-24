@@ -26,7 +26,7 @@ class sale_shop(orm.Model):
     _columns = {
         'mail_signature_template': fields.html(
             'Mail signature template',
-            required=False, 
+            required=False,
             translate=True,
             help='This is the mail signature template. You can add some'
                  ' variables :'

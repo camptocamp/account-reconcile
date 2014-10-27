@@ -52,6 +52,7 @@ when a product has variants, a position may sell several of them.
           'delivery_carrier_view.xml',
           'procurement_view.xml',
           'security/ir.model.access.csv',
+          'res_users_view.xml',
           ],
  'test': [],
  'installable': True,

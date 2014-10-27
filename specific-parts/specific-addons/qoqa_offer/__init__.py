@@ -30,3 +30,4 @@ from . import product
 from . import delivery_carrier
 from . import procurement
 from . import orderpoint
+from . import res_users

@@ -2,12 +2,14 @@
   width: 350px;
   min-height: 160px;
   font-size: 95%;
+  margin: 10px 5px;
 }
 
 .openerp .oe_kanban_offer .header {
   text-align: right;
   font-size: 120%;
   height: 30px;
+  line-height: 28px;
 
   padding: 4px 4px;
   border-bottom: 1px solid #cacaca;
@@ -26,6 +28,7 @@
 .openerp .oe_kanban_offer .qoqa_name {
   font-size: 115%;
   font-weight: bold;
+  margin-top: 5px;
 }
 
 .openerp .oe_kanban_offer .qoqa_name span.qoqa_main_brand {
@@ -59,8 +62,8 @@
 }
 
 .openerp .oe_kanban_offer .qoqa_progress {
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: 8px;
+  margin-bottom: 7px;
   width: 320px;
 }
 
@@ -154,7 +157,12 @@ progress[value]::-moz-progress-bar {
   height: 20px;
   background: transparent url(/qoqa_offer/static/src/img/minus_icon.png) no-repeat 0px 0px;
 }
-
+.oe_kanban_offer a.qoqa_minus:hover {
+    margin-top: 1px;
+}
+.oe_kanban_offer .qoqa_buttons {
+    margin-top: 10px;
+}
 .oe_kanban_offer .qoqa_buttons a.oe_kanban_button {
   padding: 8px;
   display: block;
@@ -181,4 +189,7 @@ progress[value]::-moz-progress-bar {
 
 .oe_kanban_offer .oe_e {
   font-size: 24px;
+}
+.oe_kanban_offer .oe_e:hover {
+    margin-top: 1px;
 }

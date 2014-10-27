@@ -35,6 +35,13 @@
                 <field name="name" position="after">
                     <field name="offer_id"/>
                 </field>
+                <filter name="message_unread" position="before">
+                    <filter
+                        string="Favorites Shops"
+                        name="favoritesshops"
+                        domain="[('offer_id.qoqa_shop_id', 'in', qoqa_shop_ids)]"
+                        help="My favorites shops. You can change it in your settings"/>
+                </filter>
                 <filter string="Customer" position="after">
                   <filter string="Shop" domain="[]" context="{'group_by':'shop_id'}"/>
                   <filter string="Offer" icon="terp-personal" domain="[]" context="{'group_by':'offer_id'}"/>
@@ -52,6 +59,10 @@
                     class="oe_avatar oe_left"/>
                 </label>
            </field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="context">{'search_default_favoritesshops': 1}</field>
         </record>
 
     </data>

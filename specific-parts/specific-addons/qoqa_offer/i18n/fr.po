@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-03 11:52+0000\n"
-"PO-Revision-Date: 2014-10-08 17:10+0100\n"
+"PO-Revision-Date: 2014-10-20 16:49+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1015,3 +1015,15 @@ msgstr "Date de création de la commande"
 #: view:sale.order:0
 msgid "Created date in OpenERP"
 msgstr "Date de création dans OpenERP"
+
+#. module: qoqa_offer
+#: view:qoqa.offer:0 view:sale.order:0
+msgid "My favorites shops. You can change it in your settings"
+msgstr ""
+"Mes magasins favoris. Vous pouvez les changer dans vos paramètres de compte."
+
+#. module: qoqa_offer
+#: view:sale.order:0 view:qoqa.offer:0 field:res.users,qoqa_shop_ids:0
+#: model:ir.model.fields,field_description:res_users.field_res_users_qoqa_shop_ids
+msgid "Favorites Shops"
+msgstr "Magasins favoris"

@@ -1,0 +1,8 @@
+body .openerp .oe_topbar {
+    background: #EB0A29;
+}
+body[env='prod'] .openerp .oe_topbar,
+body[env='production'] .openerp .oe_topbar {
+    background-color: #454343;
+    background-image: linear-gradient(to bottom, #646060, #262626);
+}

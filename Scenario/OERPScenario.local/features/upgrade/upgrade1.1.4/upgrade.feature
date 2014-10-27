@@ -11,6 +11,7 @@ Feature: upgrade to 1.1.4
       | qoqa_offer                                 |
       | connector_qoqa                             |
       | web_environment                            |
+      | specific_fct                               |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

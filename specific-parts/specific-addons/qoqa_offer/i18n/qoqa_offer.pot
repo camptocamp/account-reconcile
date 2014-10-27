@@ -536,6 +536,11 @@ msgid "The price of the product at the beginning date of the offer. It will be m
 msgstr ""
 
 #. module: qoqa_offer
+#: help:qoqa.offer.position,date_delivery:0
+msgid "Maximum delivery date for customer. This information is displayed in the customer account"
+msgstr ""
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_stock_progress_remaining
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_position_variant_stock_progress_remaining
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_stock_progress_remaining

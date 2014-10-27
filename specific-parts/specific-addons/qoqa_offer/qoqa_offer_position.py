@@ -336,7 +336,10 @@ class qoqa_offer_position(orm.Model):
         'top_price': fields.float(
             'Top Price',
             digits_compute=dp.get_precision('Product Price')),
-        'date_delivery': fields.date('Delivery Date'),
+        'date_delivery': fields.date(
+            'Delivery Date',
+            help="Maximum delivery date for customer. This information is "
+                 "displayed in the customer account"),
         'booking_delivery': fields.boolean('Booking Delivery'),
         'buyphrase_id': fields.many2one('qoqa.buyphrase',
                                         string='Buyphrase'),

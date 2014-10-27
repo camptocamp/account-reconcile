@@ -23,6 +23,7 @@
  'version': '0.0.2',
  'category': 'Others',
  'depends': ['sale',
+             'picking_dispatch',
              'product',
              'product_custom_attributes',
              'purchase',
@@ -49,11 +50,15 @@ set cost_method default to average
 Stock.move:
 
 Overwrite of do_partial to keep tracking id of unprocessed packs
+
+Picking dispatch:
+Hide the cancel button action to avoid human mistakes
 """,
  'images': [],
  'demo': [],
  'data': ['security/security.xml',
           'stock_view.xml',
+          'picking_dispatch_view.xml',
           'product_view.xml',
           'purchase_view.xml',
           'sale_view.xml',

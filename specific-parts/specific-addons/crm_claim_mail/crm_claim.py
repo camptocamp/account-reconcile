@@ -28,6 +28,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            DEFAULT_SERVER_DATETIME_FORMAT,
                            )
 from openerp.addons.email_template import html2text
+from string import Template
 
 
 class crm_claim(orm.Model):
@@ -38,6 +39,36 @@ class crm_claim(orm.Model):
         for claim_id in ids:
             result[claim_id] = self.message_quote(cr, uid, claim_id,
                                                   limit=2, context=context)
+        return result
+
+    def _get_mail_signature(self, cr, uid, ids, fields, args, context=None):
+        if context is None:
+            context = {}
+        claims = self.browse(cr, uid, ids, context=context)
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        result = {}
+        for claim in claims:
+            lang = claim.partner_id.lang
+            ctx = context.copy()
+
+            if lang:
+                ctx['lang'] = lang
+
+            claim = self.browse(cr, uid, claim.id, context=ctx)
+            template = ''
+            if claim.shop_id and claim.shop_id.mail_signature_template:
+                template = claim.shop_id.mail_signature_template
+            else:
+                template = claim.company_id.mail_signature_template
+
+            t = Template(template)
+            user_signature = "The crazy otter"
+            if user.signature:
+                user_signature = user.signature
+            t = t.safe_substitute(user_signature=user_signature,
+                                  user_email=user.email)
+            result[claim.id] = t
+
         return result
 
     _columns = {
@@ -56,6 +87,10 @@ class crm_claim(orm.Model):
             _get_message_quote,
             type='html',
             string='Message quote'),
+        'mail_signature': fields.function(
+            _get_mail_signature,
+            type='html',
+            string='Mail signature'),
         'confirmation_email_sent': fields.boolean('Confirmation Mail Sent'),
     }
 

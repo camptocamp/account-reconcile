@@ -311,3 +311,16 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    headers=headers)
         response = self._handle_response(response)
         return response['data']['id']
+
+    def cancel_refund(self, id, payment_id):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'cancel_refund',
+                   'params': {'refno': payment_id,
+                              }
+                   }
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        response = self._handle_response(response)
+        return True

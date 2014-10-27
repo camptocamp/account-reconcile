@@ -33,7 +33,7 @@ Add a link between the refunds and the invoices that generated it.
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
-from .exporter import create_refund
+from .exporter import create_refund, cancel_refund
 from ..unit.backend_adapter import api_handle_errors
 
 
@@ -108,4 +108,36 @@ class account_invoice(orm.Model):
         result = super(account_invoice, self).invoice_validate(
             cr, uid, ids, context=context)
         self.refund_on_qoqa(cr, uid, ids, context=context)
+        return result
+
+    def cancel_refund_on_qoqa(self, cr, uid, ids, context=None):
+        """ Cancel (synchronously) a refund in the qoqa backend.
+
+        The call is synchronous, if it fails, the refund cannot be
+        canceled.
+
+        """
+        for refund in self.browse(cr, uid, ids, context=context):
+            invoice = refund.refund_from_invoice_id
+            if not invoice:
+                continue
+            sales = invoice.sale_order_ids
+            if not sales or not sales[0].qoqa_bind_ids:
+                continue
+            qsale = sales[0].qoqa_bind_ids[0]
+            session = ConnectorSession(cr, uid, context=context)
+            # with .delay() it would be created in a job,
+            # here it is called synchronously
+            message = _('Impossible to cancel a refund on the backend.')
+            with api_handle_errors(message):
+                cancel_refund(session,
+                              'account.invoice',
+                              qsale.backend_id.id,
+                              refund.id)
+        return True
+
+    def action_cancel(self, cr, uid, ids, context=None):
+        result = super(account_invoice, self).action_cancel(
+            cr, uid, ids, context=context)
+        self.cancel_refund_on_qoqa(cr, uid, ids, context=context)
         return result

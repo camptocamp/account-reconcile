@@ -8,6 +8,7 @@ Feature: upgrade to 1.1.4
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | qoqa_offer                                 |
       | connector_qoqa                             |
     Then my modules should have been installed and models reloaded
 

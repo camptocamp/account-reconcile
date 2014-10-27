@@ -1014,3 +1014,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_send_newsletters
 msgid "Send newsletters"
 msgstr ""
+
+#. module: qoqa_offer
+#: field:stock.picking.out,sale_create_date:0
+#: field:stock.picking,sale_create_date:0
+#: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_out_sale_create_date
+#: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_sale_create_date
+msgid "Sale Create Date"
+msgstr ""
+
+#. module: qoqa_offer
+#: view:sale.order:0
+msgid "Created date in OpenERP"
+msgstr ""

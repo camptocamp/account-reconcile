@@ -32,6 +32,14 @@ class stock_picking(orm.Model):
             readonly=True,
             select=True,
             ondelete='restrict'),
+
+        'sale_create_date': fields.related(
+            'sale_id',
+            'create_date',
+            type='datetime',
+            string='Sale Create Date',
+            store=True,
+            readonly=True),
     }
 
     def _prepare_invoice(self, cr, uid, picking, partner, inv_type,
@@ -51,6 +59,14 @@ class stock_picking_out(orm.Model):
             'qoqa.offer',
             string='Offer',
             select=True,
+            readonly=True),
+
+        'sale_create_date': fields.related(
+            'sale_id',
+            'create_date',
+            type='datetime',
+            string='Sale Create Date',
+            store=True,
             readonly=True),
     }
 

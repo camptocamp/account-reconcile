@@ -169,6 +169,10 @@ class qoqa_offer_position_variant(orm.Model):
             store=_progress_store),
     }
 
+    _defaults = {
+        'sequence': 1,
+    }
+
 
 class qoqa_offer_position(orm.Model):
     _name = 'qoqa.offer.position'

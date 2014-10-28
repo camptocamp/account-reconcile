@@ -525,4 +525,10 @@ Feature: upgrade to 1.1.4
     WHERE name LIKE 'email.template,body_html'
     """
 
+    # UPDATE POSITIONS TO 1
+    Given I execute the SQL command
+    """
+    UPDATE qoqa_offer_position_variant SET sequence = 1 WHERE sequence = 0;
+    """
+
     Given I set the version of the instance to "1.1.4"

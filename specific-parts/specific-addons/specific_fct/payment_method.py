@@ -27,9 +27,9 @@ class payment_method(orm.Model):
 
     _columns = {
         'refund_max_days': fields.integer('Refund max days',
-                                          help="""Number of days when the
-                                                  refund is possible"""),
+                                          help="Number of days when the "
+                                               "refund is possible"),
         'refund_min_date': fields.date('Refund min date',
-                                       help="""Invoice date before this
-                                               value cannot be refund"""),
+                                       help="Invoice date older than "
+                                            "this value cannot be refund"),
     }

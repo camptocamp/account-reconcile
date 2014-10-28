@@ -41,22 +41,22 @@ class account_invoice_refund(orm.TransientModel):
                 if (payment.payment_method_id.refund_min_date and
                         payment.payment_method_id.refund_min_date >
                         inv.date_invoice):
-                    return """La commande ne sera pas remboursée par le
-                              provider de paiement (Datatrans, Mercanet,
-                              etc.)car il s' agit d'une commande datantrans
-                              d'avant le
-                           """ + payment.payment_method_id.refund_min_date
+                    return ("La commande ne sera pas remboursée par le "
+                            "provider de paiement (Datatrans, Mercanet, "
+                            "etc.) car il s'agit d'une commande "
+                            "datantrans d'avant le "
+                            + payment.payment_method_id.refund_min_date)
                 elif (payment.payment_method_id.refund_max_days and
                       payment.payment_method_id.refund_max_days <
                       delta_days):
-                    return """La commande ne sera pas remboursée par le
-                              provider de paiement (Datatrans, Mercanet,
-                              etc.) car la méthode de paiement n'autorise
-                              le remboursement que pour %s jours maximum
-                           """ % (payment.payment_method_id.refund_max_days)
+                    return ("La commande ne sera pas remboursée par le "
+                            "provider de paiement (Datatrans, Mercanet, "
+                            "etc.) car la méthode de paiement n'autorise "
+                            "le remboursement que pour %s jours maximum"
+                            % (payment.payment_method_id.refund_max_days))
             if len(inv.refund_ids) > 0:
-                return """La commande possède déjà %i avoir(s)
-                       """ % len(inv.refund_ids)
+                return ("La commande possède déjà %i avoir(s)" %
+                        len(inv.refund_ids))
             return ''
 
     _columns = {

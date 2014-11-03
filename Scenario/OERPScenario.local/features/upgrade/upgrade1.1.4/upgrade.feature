@@ -3,6 +3,7 @@
 
 Feature: upgrade to 1.1.4
 
+  # Before scenario: ./bin/start_openerp -u qoqa_offer, crm_claim_mail
   Scenario: upgrade application version
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I update the module list

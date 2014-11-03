@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record id="payment_method_view_form" model="ir.ui.view">
+            <field name="name">payment_method_view_form</field>
+            <field name="model">payment.method</field>
+            <field name="inherit_id" ref="connector_qoqa.payment_method_view_form"/>
+            <field name="arch" type="xml">
+                <field name="sequence" position="after">
+                    <field name="refund_max_days" />
+                    <field name="refund_min_date" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

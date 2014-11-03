@@ -13,6 +13,7 @@ Feature: upgrade to 1.1.4
       | web_environment                            |
       | specific_fct                               |
       | crm_claim_mail                             |
+      | specific_fct                               |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

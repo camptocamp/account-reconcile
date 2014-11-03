@@ -174,3 +174,25 @@ msgstr ""
 #: view:account.invoice:0
 msgid "Agreement validated"
 msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_payment_method_refund_max_days
+#: field:payment.method,refund_max_days:0
+msgid "Refund max days"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_payment_method_refund_min_date
+#: field:payment.method,refund_min_date:0
+msgid "Refund min date"
+msgstr ""
+
+#. module: specific_fct
+#: help:payment.method,refund_max_days:0
+msgid "Number of days when the refund is possible"
+msgstr ""
+
+#. module: specific_fct
+#: help:payment.method,refund_min_date:0
+msgid "Invoice date older than this value cannot be refund"
+msgstr ""

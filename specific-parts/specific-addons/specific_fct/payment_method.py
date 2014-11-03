@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Guewen Baconnier
-#    Copyright 2014 Camptocamp SA
+#    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,5 +19,17 @@
 #
 ##############################################################################
 
-from . import dispatch_apply_carrier
-from . import account_invoice_refund
+from openerp.osv import orm, fields
+
+
+class payment_method(orm.Model):
+    _inherit = 'payment.method'
+
+    _columns = {
+        'refund_max_days': fields.integer('Refund max days',
+                                          help="Number of days when the "
+                                               "refund is possible"),
+        'refund_min_date': fields.date('Refund min date',
+                                       help="Invoice date older than "
+                                            "this value cannot be refund"),
+    }

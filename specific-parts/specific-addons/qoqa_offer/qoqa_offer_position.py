@@ -34,7 +34,7 @@ from openerp.tools.translate import _
 class qoqa_offer_position_variant(orm.Model):
     _name = 'qoqa.offer.position.variant'
     _description = 'QoQa Offer Position Variant'
-    _order = 'sequence asc'
+    _order = 'sequence asc, id asc'
 
     def _get_stock(self, cr, uid, ids, fields, args, context=None):
         """Get number of products sold, remaining and the progress.

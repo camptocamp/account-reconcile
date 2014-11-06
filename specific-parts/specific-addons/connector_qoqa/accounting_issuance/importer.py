@@ -359,10 +359,20 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         # ]
         line = items[0][2]
         partner_id = line['partner_id']
-        partner = self.session.browse('res.partner', partner_id)
-        account_id = (partner.property_account_receivable.id
-                      if line['credit'] > 0
-                      else partner.property_account_payable.id)
+        if partner_id:
+            partner = self.session.browse('res.partner', partner_id)
+            account_id = (partner.property_account_receivable.id
+                          if line['credit'] > 0
+                          else partner.property_account_payable.id)
+        else:
+            property_obj = self.session.pool['ir.property']
+            account_id = property_obj.get(
+                self.session.cr, self.session.uid,
+                'property_account_receivable'
+                if line['credit'] > 0
+                else 'property_account_payable',
+                'res.partner',
+                self.session.context).id
         move_line = {
             'journal_id': line['journal_id'],
             'name': line['name'],

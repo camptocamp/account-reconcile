@@ -49,11 +49,14 @@ class payment_method(orm.Model):
         'active': fields.boolean('Active'),
         'payment_cancellable_on_qoqa': fields.boolean(
             'The payments can be cancelled (same day)'),
+        'payment_settlable_on_qoqa': fields.boolean(
+            'The payments must be settled'),
     }
 
     _defaults = {
         'active': True,
         'payment_cancellable_on_qoqa': True,
+        'payment_settlable_on_qoqa': False,
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):

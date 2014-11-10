@@ -350,6 +350,6 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         response = self.client.put(url + str(id),
-                                   data=json.dumps({'action': 'settle'}),
+                                   data=json.dumps({'action': 'settled'}),
                                    headers=headers)
         self._handle_response(response)

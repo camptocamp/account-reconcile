@@ -27,6 +27,9 @@
                         <field name="qoqa_id"/>
                         <field name="created_at" readonly="1"/>
                         <field name="updated_at" readonly="1"/>
+                        <button name="import_from_backend" string="Get image from BO"
+                                type="object"
+                                class=""/>
                     </group>
                 </form>
             </field>

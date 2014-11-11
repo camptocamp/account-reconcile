@@ -31,7 +31,7 @@ from openerp.addons.connector.session import ConnectorSession
 
 from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
 from ..backend import qoqa
-from .exporter import cancel_sales_order
+from .exporter import cancel_sales_order, settle_sales_order
 
 
 _logger = logging.getLogger(__name__)
@@ -146,6 +146,11 @@ class sale_order(orm.Model):
                                                  DEFAULT_SERVER_DATE_FORMAT)
                 if payment_date.date() == date.today():
                     cancel_direct = True
+            # For SwissBilling: if the SO is not done yet, cancel directly.
+            # Otherwise, refund.
+            elif (order.qoqa_bind_ids and
+                    order.payment_method_id.payment_settlable_on_qoqa):
+                cancel_direct = True
             payment_ids = None
             invoice_ids = None
             if cancel_direct:
@@ -283,6 +288,22 @@ class sale_order(orm.Model):
 
         return True
 
+    def action_done(self, cr, uid, ids, context=None):
+        res = super(sale_order, self).action_done(
+            cr, uid, ids, context=context
+        )
+        # Browse orders to send 'settled' to BO
+        for order in self.browse(cr, uid, ids, context=context):
+            if (order.qoqa_bind_ids and
+                    order.payment_method_id.payment_settlable_on_qoqa):
+                session = ConnectorSession(cr, uid, context=context)
+                for binding in order.qoqa_bind_ids:
+                    _logger.info("Settle order %s later (job) on QoQa",
+                                 binding.name)
+                    settle_sales_order.delay(session, binding._model._name,
+                                             binding.id, priority=1)
+        return res
+
 
 @qoqa
 class QoQaSaleOrderAdapter(QoQaAdapter):
@@ -311,3 +332,24 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    headers=headers)
         response = self._handle_response(response)
         return response['data']['id']
+
+    def cancel_refund(self, id, payment_id):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'cancel_refund',
+                   'params': {'refno': payment_id,
+                              }
+                   }
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        response = self._handle_response(response)
+        return True
+
+    def settle(self, id):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.put(url + str(id),
+                                   data=json.dumps({'action': 'settled'}),
+                                   headers=headers)
+        self._handle_response(response)

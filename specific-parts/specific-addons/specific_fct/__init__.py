@@ -10,3 +10,4 @@ from . import crm_claim
 from . import wizard
 from . import account_statement_profile
 from . import api_call
+from . import payment_method

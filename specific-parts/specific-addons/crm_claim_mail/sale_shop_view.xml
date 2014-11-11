@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="0">
+    <record model="ir.ui.view" id="sale_shop_form_add_signature">
+      <field name="name">sale shop form add signature</field>
+      <field name="model">sale.shop</field>
+      <field name="inherit_id" ref="sale.view_shop_form"/>
+      <field name="arch" type="xml">
+        <field name="company_id" position="after">
+            <field name="mail_signature_template"/>
+        </field>
+      </field>
+    </record>
+  </data>
+</openerp>

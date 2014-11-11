@@ -17,7 +17,13 @@
                         string="Unread Messages" name="message_unread"
                         domain="[('message_unread', '=', True)]"/>
                     <separator/>
+                    <filter
+                        string="Favorites Shops"
+                        name="favoritesshops"
+                        domain="[('qoqa_shop_id', 'in', qoqa_shop_ids)]"
+                        help="My favorites shops. You can change it in your settings"/>
 
+                    <separator/>
                     <filter
                         string="Current"
                         name="current"
@@ -112,8 +118,7 @@
             <field name="name">Offers Kanban</field>
             <field name="model">qoqa.offer</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="qoqa_shop_id"
-                      edit="false" quick_create="false" version="7.0">
+                <kanban edit="false" quick_create="false" version="7.0">
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="datetime_begin"/>
@@ -410,8 +415,7 @@
             <field name="res_model">qoqa.offer</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,calendar</field>
-            <field name="context">{'search_default_groupby_days': 1,
-                                   'search_default_current': 1}</field>
+            <field name="context">{'search_default_favoritesshops': 1, 'search_default_current': 1}</field>
             <field name="domain">[]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">

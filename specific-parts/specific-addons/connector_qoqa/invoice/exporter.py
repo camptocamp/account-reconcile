@@ -91,3 +91,40 @@ def create_refund(session, model_name, backend_id, refund_id):
     env = get_environment(session, model_name, backend_id)
     exporter = env.get_connector_unit(RefundExporter)
     return exporter.run(refund_id)
+
+
+@qoqa
+class CancelRefundExporter(ExportSynchronizer):
+    _model_name = 'account.invoice'
+
+    def run(self, refund_id):
+        """ Get the refund to cancel """
+        refund = self.session.browse(self.model._name, refund_id)
+        invoice = refund.refund_from_invoice_id
+        if not invoice:
+            return _('No origin invoice')
+        sales = invoice.sale_order_ids
+        if not sales or not sales[0].qoqa_bind_ids:
+            return _('Not a sale from the QoQa backend')
+        qsale = sales[0].qoqa_bind_ids[0]
+        origin_payment_id = refund.transaction_id
+
+        if not origin_payment_id:
+            raise orm.except_orm(
+                _('Error'),
+                _('Cannot be cancel on the QoQa backend because '
+                  'no payment ID could be retrieved for the sales order %s') %
+                qsale.name)
+        adapter = self.get_connector_unit_for_model(BackendAdapter,
+                                                    'qoqa.sale.order')
+
+        payment_id = adapter.cancel_refund(qsale.qoqa_id, origin_payment_id)
+        return _('Cancel refund with payment id: %s' % payment_id)
+
+
+@job
+def cancel_refund(session, model_name, backend_id, refund_id):
+    """ Cancel a refund """
+    env = get_environment(session, model_name, backend_id)
+    exporter = env.get_connector_unit(CancelRefundExporter)
+    return exporter.run(refund_id)

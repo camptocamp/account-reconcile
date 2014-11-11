@@ -6,19 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 14:02+0000\n"
-"PO-Revision-Date: 2014-04-30 14:02+0000\n"
+"POT-Creation-Date: 2014-10-23 14:29+0000\n"
+"PO-Revision-Date: 2014-10-23 14:29+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: crm_claim_mail
-#: model:email.template,subject:crm_claim_mail.email_template_rma_received
-msgid "${object.name_get()[0][1]|safe}"
-msgstr ""
 
 #. module: crm_claim_mail
 #: code:_description:0
@@ -28,14 +23,69 @@ msgid "Claim"
 msgstr ""
 
 #. module: crm_claim_mail
+#: code:_description:0
+#: model:ir.model,name:crm_claim_mail.model_res_company
+#, python-format
+msgid "Companies"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.actions.server,name:crm_claim_mail.open_claim
+msgid "Confirmation Email sent"
+msgstr ""
+
+#. module: crm_claim_mail
+#: field:crm.claim,confirmation_email_sent:0
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_confirmation_email_sent
+msgid "Confirmation Mail Sent"
+msgstr ""
+
+#. module: crm_claim_mail
+#: code:_description:0
+#: model:ir.model,name:crm_claim_mail.model_mail_compose_message
+#, python-format
+msgid "Email composition wizard"
+msgstr ""
+
+#. module: crm_claim_mail
+#: view:res.company:0
+msgid "Mail"
+msgstr ""
+
+#. module: crm_claim_mail
+#: field:crm.claim,mail_signature:0
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_mail_signature
+msgid "Mail signature"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.model.fields,field_description:crm_claim_mail.field_res_company_mail_signature_template
+#: model:ir.model.fields,field_description:crm_claim_mail.field_sale_shop_mail_signature_template
+#: field:res.company,mail_signature_template:0
+#: field:sale.shop,mail_signature_template:0
+msgid "Mail signature template"
+msgstr ""
+
+#. module: crm_claim_mail
 #: field:crm.claim,merged_numbers:0
 #: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_merged_numbers
 msgid "Merged claims numbers"
 msgstr ""
 
 #. module: crm_claim_mail
+#: field:crm.claim,message_quote_for_email:0
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_message_quote_for_email
+msgid "Message quote"
+msgstr ""
+
+#. module: crm_claim_mail
 #: model:ir.filters,name:crm_claim_mail.filter_new_claim
-msgid "New claims"
+msgid "No confirmation email sent"
+msgstr ""
+
+#. module: crm_claim_mail
+#: view:res.company:0
+msgid "RMA"
 msgstr ""
 
 #. module: crm_claim_mail
@@ -44,8 +94,26 @@ msgid "Re-open Claim"
 msgstr ""
 
 #. module: crm_claim_mail
+#: model:ir.model.fields,field_description:crm_claim_mail.field_res_company_claim_sale_order_regexp
+#: field:res.company,claim_sale_order_regexp:0
+msgid "Regular Expression for sale number"
+msgstr ""
+
+#. module: crm_claim_mail
+#: help:res.company,claim_sale_order_regexp:0
+msgid "Regular expression used to extract the sales order's number from the body of the emails."
+msgstr ""
+
+#. module: crm_claim_mail
 #: model:crm.claim.stage,name:crm_claim_mail.stage_response_received
 msgid "Response Received"
+msgstr ""
+
+#. module: crm_claim_mail
+#: code:_description:0
+#: model:ir.model,name:crm_claim_mail.model_sale_shop
+#, python-format
+msgid "Sales Shop"
 msgstr ""
 
 #. module: crm_claim_mail
@@ -54,12 +122,8 @@ msgid "Send an email when a claim is created"
 msgstr ""
 
 #. module: crm_claim_mail
-#: model:ir.actions.server,name:crm_claim_mail.open_claim
-msgid "Set to open"
+#: help:res.company,mail_signature_template:0
+#: help:sale.shop,mail_signature_template:0
+msgid "This is the mail signature template. You can add some variables :$user_signature : the current user signature$user_email : the current user email"
 msgstr ""
 
-#. module: crm_claim_mail
-#: code:addons/crm_claim_mail/crm_claim.py:114
-#, python-format
-msgid "On %s at %s, %s wrote:"
-msgstr ""

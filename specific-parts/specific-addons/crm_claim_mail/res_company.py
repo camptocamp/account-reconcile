@@ -30,9 +30,20 @@ class res_company(orm.Model):
             'Regular Expression for sale number',
             help="Regular expression used to extract the sales order's "
                  "number from the body of the emails."),
+        'mail_signature_template': fields.html(
+            'Mail signature template',
+            required=True,
+            translate=True,
+            help='This is the mail signature template. You can add some'
+                 ' variables :'
+                 '$user_signature : the current user signature'
+                 '$user_email : the current user email'
+        ),
     }
 
     _default = {
+        'mail_signature_template': (u'<p>Best wishes</p>'),
+
         'claim_sale_order_regexp': (u'<b>Order :</b>\s*<a '
                                     'href="http[^"]+"[^>]*>(\d+)</a>'),
     }

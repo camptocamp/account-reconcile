@@ -43,6 +43,19 @@ class CancelSalesOrder(ExportSynchronizer):
         return _('Sales order canceled on QoQa')
 
 
+@qoqa
+class SettleSalesOrder(ExportSynchronizer):
+    _model_name = 'qoqa.sale.order'
+
+    def run(self, binding_id):
+        """ Settle a sales order on QoQa"""
+        qoqa_id = self.binder.to_backend(binding_id)
+        if not qoqa_id:
+            return _('Sales order does not exist on QoQa')
+        self.backend_adapter.settle(qoqa_id)
+        return _('Sales order settled on QoQa')
+
+
 @job
 def cancel_sales_order(session, model_name, record_id):
     """ Cancel a Sales Order """
@@ -51,3 +64,13 @@ def cancel_sales_order(session, model_name, record_id):
     env = get_environment(session, model_name, backend_id)
     canceler = env.get_connector_unit(CancelSalesOrder)
     return canceler.run(record_id)
+
+
+@job
+def settle_sales_order(session, model_name, record_id):
+    """ Settle a Sales Order """
+    binding = session.browse(model_name, record_id)
+    backend_id = binding.backend_id.id
+    env = get_environment(session, model_name, backend_id)
+    settler = env.get_connector_unit(SettleSalesOrder)
+    return settler.run(record_id)

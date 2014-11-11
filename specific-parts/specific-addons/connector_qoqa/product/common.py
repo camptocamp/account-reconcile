@@ -22,7 +22,9 @@
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 
+from openerp.addons.connector.session import ConnectorSession
 from ..unit.backend_adapter import QoQaAdapter
+from ..unit.import_synchronizer import import_record
 from ..backend import qoqa
 
 
@@ -48,6 +50,15 @@ class qoqa_product_product(orm.Model):
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A product can be exported only once on the same backend"),
     ]
+
+    def import_from_backend(self, cr, uid, ids, context=None):
+        products = self.browse(cr, uid, ids, context=context)
+        session = ConnectorSession(cr, uid, context=context)
+        for product in products:
+            import_record(session, self._name, product.backend_id.id,
+                          product.qoqa_id, force=True)
+
+        return True
 
 
 class product_product(orm.Model):

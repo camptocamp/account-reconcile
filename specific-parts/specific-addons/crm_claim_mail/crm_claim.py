@@ -29,6 +29,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            )
 from openerp.addons.email_template import html2text
 from string import Template
+from openerp.tools import html2plaintext
 
 
 class crm_claim(orm.Model):
@@ -178,6 +179,10 @@ class crm_claim(orm.Model):
         msg, values = self._complete_from_sale(cr, uid, msg, context=context)
         if values:
             custom_values.update(values)
+
+        desc = html2plaintext(msg.get('body')) if msg.get('body') else ''
+        desc = re.sub(r'(\n){3,}', '\n\n', desc)
+        custom_values['description'] = desc
         return super(crm_claim, self).message_new(
             cr, uid, msg, custom_values=custom_values, context=context)
 

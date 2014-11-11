@@ -74,3 +74,4 @@ def settle_sales_order(session, model_name, record_id):
     env = get_environment(session, model_name, backend_id)
     settler = env.get_connector_unit(SettleSalesOrder)
     return settler.run(record_id)
+

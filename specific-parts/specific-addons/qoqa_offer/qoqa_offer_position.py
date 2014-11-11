@@ -410,7 +410,7 @@ class qoqa_offer_position(orm.Model):
 
     def _default_date_delivery(self, cr, uid, context=None):
         fmt = DEFAULT_SERVER_DATE_FORMAT
-        return (datetime.now() + timedelta(days=13)).strftime(fmt)
+        return (datetime.now() + timedelta(days=15)).strftime(fmt)
 
     _defaults = {
         'regular_price_type': 'normal',

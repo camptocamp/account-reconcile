@@ -12,6 +12,17 @@
                 </field>
             </field>
         </record>
+        
+        <record id="crm_claim_rma_form_view" model="ir.ui.view">
+            <field name="name">crm.claim.rma.filter</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
+            <field name="arch" type="xml">
+                <field name="invoice_id" position="attributes">
+                    <attribute name="context">{'active_test': False}</attribute>
+                </field>
+            </field>
+        </record>
 
      </data>
 </openerp>

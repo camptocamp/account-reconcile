@@ -22,8 +22,11 @@ from openerp import netsvc
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.addons.base.res.res_partner import _lang_get
+import logging
 
 from postlogistics.web_service import PostlogisticsWebServiceQoQa
+
+_logger = logging.getLogger(__name__)
 
 
 class stock_picking(orm.Model):
@@ -324,6 +327,18 @@ class stock_picking(orm.Model):
             res[pick.id] = {'delivered_picking': delivered_pack.id or False}
 
         return res
+
+    # define domain for cron in stock_picking_mass_assign,
+    # in order to use the new field from qoqa_offer, 'sale_create_date'
+    def check_assign_all(self, cr, uid, ids=None, context=None):
+        ids = self.search(cr, uid,
+                          [('type', '=', 'out'),
+                           ('state', '=', 'confirmed')],
+                          order='sale_create_date',
+                          context=context)
+        return super(stock_picking, self).check_assign_all(
+            cr, uid, ids, context=context
+        )
 
 
 class stock_picking_in(orm.Model):

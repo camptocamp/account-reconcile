@@ -328,17 +328,25 @@ class stock_picking(orm.Model):
 
         return res
 
-    # define domain for cron in stock_picking_mass_assign,
-    # in order to use the new field from qoqa_offer, 'sale_create_date'
+    # define domain and better exception catching for cron
+    # in stock_picking_mass_assign, in order to use the
+    # new field from qoqa_offer, 'sale_create_date'
     def check_assign_all(self, cr, uid, ids=None, context=None):
         ids = self.search(cr, uid,
                           [('type', '=', 'out'),
                            ('state', '=', 'confirmed')],
                           order='sale_create_date',
                           context=context)
-        return super(stock_picking, self).check_assign_all(
-            cr, uid, ids, context=context
-        )
+        for picking_id in ids:
+            try:
+                self.action_assign(cr, uid, [picking_id], context)
+            except Exception:
+                # ignore the error, the picking will just stay as confirmed
+                name = self.read(cr, uid, picking_id, ['name'],
+                                 context=context)['name']
+                _logger.info('error in action_assign for picking %s',
+                             name, exc_info=True)
+        return True
 
 
 class stock_picking_in(orm.Model):

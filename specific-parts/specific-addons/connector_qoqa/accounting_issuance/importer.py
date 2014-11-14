@@ -372,7 +372,7 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
                 if line['credit'] > 0
                 else 'property_account_payable',
                 'res.partner',
-                self.session.context).id
+                context=self.session.context).id
         move_line = {
             'journal_id': line['journal_id'],
             'name': line['name'],

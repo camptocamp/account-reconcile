@@ -23,6 +23,7 @@
  'version': '0.0.2',
  'category': 'Others',
  'depends': ['sale',
+             'picking_dispatch',
              'product',
              'product_custom_attributes',
              'purchase',
@@ -31,6 +32,7 @@
              'product_variant_simple',
              'qoqa_offer',
              'account_payment',
+             'connector_qoqa',
              'delivery_carrier_label_dispatch',
              ],
  'author': 'Camptocamp',
@@ -49,16 +51,24 @@ set cost_method default to average
 Stock.move:
 
 Overwrite of do_partial to keep tracking id of unprocessed packs
+
+Picking dispatch:
+Hide the cancel button action to avoid human mistakes
 """,
  'images': [],
  'demo': [],
+ 'css': ['static/src/css/base.css',
+         ],
  'data': ['security/security.xml',
+          'wizard/account_invoice_refund_view.xml',
           'stock_view.xml',
+          'picking_dispatch_view.xml',
           'product_view.xml',
           'purchase_view.xml',
           'sale_view.xml',
           'crm_claim_view.xml',
           'payment_view.xml',
+          'payment_method_view.xml',
           'account_invoice_view.xml',
           ],
  'installable': True,

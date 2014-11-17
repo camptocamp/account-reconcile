@@ -340,7 +340,10 @@ class qoqa_offer_position(orm.Model):
         'top_price': fields.float(
             'Top Price',
             digits_compute=dp.get_precision('Product Price')),
-        'date_delivery': fields.date('Delivery Date'),
+        'date_delivery': fields.date(
+            'Delivery Date',
+            help="Maximum delivery date for customer. This information is "
+                 "displayed in the customer account"),
         'booking_delivery': fields.boolean('Booking Delivery'),
         'buyphrase_id': fields.many2one('qoqa.buyphrase',
                                         string='Buyphrase'),
@@ -407,7 +410,7 @@ class qoqa_offer_position(orm.Model):
 
     def _default_date_delivery(self, cr, uid, context=None):
         fmt = DEFAULT_SERVER_DATE_FORMAT
-        return (datetime.now() + timedelta(days=13)).strftime(fmt)
+        return (datetime.now() + timedelta(days=15)).strftime(fmt)
 
     _defaults = {
         'regular_price_type': 'normal',

@@ -216,12 +216,16 @@ class BaseIssuanceMapper(ImportMapper):
         return vals
 
     def _partner_id(self, map_record):
-        binder = self.get_binder_for_model('qoqa.res.partner')
-        partner_id = binder.to_openerp(map_record.source['user_id'],
-                                       unwrap=True)
-        assert partner_id, \
-            "user_id should have been imported in import_dependencies"
-        return partner_id
+        # Partner can be empty; if that's the case, return False
+        if not map_record.source['user_id']:
+            return False
+        else:
+            binder = self.get_binder_for_model('qoqa.res.partner')
+            partner_id = binder.to_openerp(map_record.source['user_id'],
+                                           unwrap=True)
+            assert partner_id, \
+                "user_id should have been imported in import_dependencies"
+            return partner_id
 
     def _company_id(self, map_record):
         company_binder = self.get_binder_for_model('res.company')
@@ -355,10 +359,20 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         # ]
         line = items[0][2]
         partner_id = line['partner_id']
-        partner = self.session.browse('res.partner', partner_id)
-        account_id = (partner.property_account_receivable.id
-                      if line['credit'] > 0
-                      else partner.property_account_payable.id)
+        if partner_id:
+            partner = self.session.browse('res.partner', partner_id)
+            account_id = (partner.property_account_receivable.id
+                          if line['credit'] > 0
+                          else partner.property_account_payable.id)
+        else:
+            property_obj = self.session.pool['ir.property']
+            account_id = property_obj.get(
+                self.session.cr, self.session.uid,
+                'property_account_receivable'
+                if line['credit'] > 0
+                else 'property_account_payable',
+                'res.partner',
+                context=self.session.context).id
         move_line = {
             'journal_id': line['journal_id'],
             'name': line['name'],

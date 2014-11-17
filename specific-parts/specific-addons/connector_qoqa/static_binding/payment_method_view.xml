@@ -12,6 +12,7 @@
                         <field name="sequence" />
                         <field name="gift_card" />
                         <field name="payment_cancellable_on_qoqa" />
+                        <field name="payment_settlable_on_qoqa" />
                         <field name="active" />
                     </group>
                 </xpath>

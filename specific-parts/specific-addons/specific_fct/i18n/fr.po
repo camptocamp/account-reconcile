@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-03 15:24+0000\n"
-"PO-Revision-Date: 2014-09-03 15:24+0000\n"
+"PO-Revision-Date: 2014-10-28 11:47+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -185,3 +185,26 @@ msgstr "Accord pour validation"
 #: view:account.invoice:0
 msgid "Agreement validated"
 msgstr "Accord pour validation"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_payment_method_refund_max_days
+#: field:payment.method,refund_max_days:0
+msgid "Refund max days"
+msgstr "Jour max pour le remboursement"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_payment_method_refund_min_date
+#: field:payment.method,refund_min_date:0
+msgid "Refund min date"
+msgstr "Date min pour le remboursement"
+
+#. module: specific_fct
+#: help:payment.method,refund_max_days:0
+msgid "Number of days when the refund is possible"
+msgstr "Nombre de jour pour lequel un remboursement est possible"
+
+#. module: specific_fct
+#: help:payment.method,refund_min_date:0
+msgid "Invoice date older than this value cannot be refund"
+msgstr "Une facture avec une date plus vieille que cette valeur ne pourra pas être remboursée"
+

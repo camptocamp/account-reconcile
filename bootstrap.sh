@@ -45,7 +45,7 @@ function create_virtualenv() {
     then
         echo "reusing existing virtualenv"
     else
-        ${virtualenv} ${options} sandbox
+        ${virtualenv} ${options} --no-site-packages sandbox
         if [ -z ${options} ]
         then
             ./sandbox/bin/pip uninstall -y setuptools
@@ -53,10 +53,28 @@ function create_virtualenv() {
     fi
 }
 
+function ensure_cfg(){
+    if [ ! -e buildout.cfg ]
+    then
+        if [ -e $1 ]
+        then
+            (cat <<EOF
+[buildout]
+extends = $1
+EOF
+            ) > buildout.cfg
+        else
+            echo "Please create the buildout.cfg file or pass the profile to use as argument, example: $ ./bootstrap.sh profiles/dev.cfg"
+            exit 1
+        fi
+    fi
+}
+
 function bootstrap() {
     create_virtualenv
+    ensure_cfg $1
     sandbox/bin/python bootstrap.py
 }
 
 
-bootstrap
+bootstrap $*

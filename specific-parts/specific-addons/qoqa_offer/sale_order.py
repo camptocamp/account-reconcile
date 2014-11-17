@@ -43,7 +43,7 @@ class sale_order(orm.Model):
             string='Offer',
             readonly=True,
             select=True,
-            ondelete='restrict')
+            ondelete='restrict'),
     }
 
     def _prepare_invoice(self, cr, uid, order, lines, context=None):

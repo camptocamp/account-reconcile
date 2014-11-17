@@ -58,6 +58,7 @@ This module installs the fr_FR and de_DE languages.
           'reopen_claim_on_mail.xml',
           'res_company_view.xml',
           'crm_claim_view.xml',
+          'sale_shop_view.xml',
           ],
  'installable': True,
  'auto_install': False,

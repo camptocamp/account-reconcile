@@ -1,3 +1,8 @@
+from support.tools import puts, set_trace, model, assert_true, assert_less
+import pprint
+if False:
+    def given(str):
+        return
 
 @step('I set the version of the instance to the value of "{filename}"')
 def impl(ctx, filename):

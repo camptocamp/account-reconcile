@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import orm
+from openerp.tools.translate import _
 
 
 # define domain  for stock_picking_mass_assign,

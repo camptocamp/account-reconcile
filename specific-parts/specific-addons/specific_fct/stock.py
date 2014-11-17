@@ -332,11 +332,15 @@ class stock_picking(orm.Model):
     # in stock_picking_mass_assign, in order to use the
     # new field from qoqa_offer, 'sale_create_date'
     def check_assign_all(self, cr, uid, ids=None, context=None):
-        ids = self.search(cr, uid,
-                          [('type', '=', 'out'),
-                           ('state', '=', 'confirmed')],
-                          order='sale_create_date',
-                          context=context)
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        # no ids = cron
+        if ids is None:
+            ids = self.search(cr, uid,
+                              [('type', '=', 'out'),
+                               ('state', '=', 'confirmed')],
+                              order='sale_create_date',
+                              context=context)
         for picking_id in ids:
             try:
                 self.action_assign(cr, uid, [picking_id], context)

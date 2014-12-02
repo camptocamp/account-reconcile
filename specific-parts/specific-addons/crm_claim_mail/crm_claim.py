@@ -59,7 +59,7 @@ class crm_claim(orm.Model):
             template = ''
             if claim.shop_id and claim.shop_id.mail_signature_template:
                 template = claim.shop_id.mail_signature_template
-            else:
+            elif claim.company_id and claim.company_id.mail_signature_template:
                 template = claim.company_id.mail_signature_template
 
             t = Template(template)

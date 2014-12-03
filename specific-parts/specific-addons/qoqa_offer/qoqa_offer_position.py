@@ -578,7 +578,7 @@ class qoqa_offer_position(orm.Model):
             lines = [{'product_id': variant.id, 'quantity': 1}
                      for variant
                      in sorted(template.variant_ids,
-                               key=lambda variant: variant.code)
+                               key=lambda variant: variant.variants)
                      ]
             values.update({
                 'variant_ids': lines,

@@ -413,7 +413,7 @@ class qoqa_offer_position(orm.Model):
         'regular_price_type': 'normal',
         'max_sellable': 3,
         'lot_size': 1,
-        'active': 1
+        'active': 1,
     }
 
     _sql_constraints = [

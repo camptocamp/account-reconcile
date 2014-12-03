@@ -342,6 +342,7 @@ class qoqa_offer_position(orm.Model):
             digits_compute=dp.get_precision('Product Price')),
         'date_delivery': fields.date(
             'Delivery Date',
+            required=True,
             help="Maximum delivery date for customer. This information is "
                  "displayed in the customer account"),
         'booking_delivery': fields.boolean('Booking Delivery'),
@@ -408,16 +409,11 @@ class qoqa_offer_position(orm.Model):
             'Poste Cumbersome Package'),
     }
 
-    def _default_date_delivery(self, cr, uid, context=None):
-        fmt = DEFAULT_SERVER_DATE_FORMAT
-        return (datetime.now() + timedelta(days=15)).strftime(fmt)
-
     _defaults = {
         'regular_price_type': 'normal',
         'max_sellable': 3,
         'lot_size': 1,
-        'active': 1,
-        'date_delivery': _default_date_delivery,
+        'active': 1
     }
 
     _sql_constraints = [

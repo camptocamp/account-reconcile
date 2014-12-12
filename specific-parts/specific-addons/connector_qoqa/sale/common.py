@@ -179,6 +179,7 @@ class sale_order(orm.Model):
                     ctx = context.copy()
                     ctx.update({
                         'active_model': 'account.invoice',
+                        'active_id': invoice.id,
                         'active_ids': [invoice.id],
                     })
                     wizard_id = refund_wiz_obj.create(

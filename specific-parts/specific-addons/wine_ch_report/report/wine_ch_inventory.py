@@ -174,8 +174,12 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
 
     def _get_location_ids(self, data):
         location_ids = self._get_info(data, 'location_ids')
-        if not location_ids:
+        if not location_ids or len(location_ids) == 0:
             return self._get_all_ids('stock.location')
+        else:
+            # Retrieve children locations
+            location_ids = self._get_all_children(
+                location_ids, 'stock.location')
         return location_ids
 
     def _get_attribute_set_id(self, data):
@@ -231,6 +235,17 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
     def _get_all_ids(self, model):
         model_obj = self.pool.get(model)
         return model_obj.search(self.cr, self.uid, [])
+
+    def _get_all_children(self, ids, model):
+        model_obj = self.pool.get(model)
+        result = set(ids)
+        for object in model_obj.browse(self.cr, self.uid, ids):
+            child_ids = [x.id for x in object.child_ids]
+            if len(child_ids):
+                children = self._get_all_children(
+                    child_ids, 'stock.location')
+                result.update(children)
+        return result
 
 
 report_sxw.report_sxw(

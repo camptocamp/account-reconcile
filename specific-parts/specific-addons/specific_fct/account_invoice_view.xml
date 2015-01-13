@@ -37,15 +37,20 @@
       <field name="model">account.invoice</field>
       <field name="inherit_id" ref="account.invoice_tree"/>
       <field name="arch" type="xml">
-        <field name="state" position="before">
-          <field name="type" invisible="1"/>
-          <field name="validation_agreement" invisible="context.get('type') != 'in_invoice'"/>
-          <button name="button_validate_agreement"
-            attrs="{'invisible': [('validation_agreement', '=', True)]}"
-            type="object"
-            string="Agreement validated"
-            icon="gtk-paste-v"/>
-        </field>
+        <data>
+          <field name="state" position="before">
+            <field name="type" invisible="1"/>
+            <field name="validation_agreement" invisible="context.get('type') != 'in_invoice'"/>
+            <button name="button_validate_agreement"
+                    attrs="{'invisible': [('validation_agreement', '=', True)]}"
+                    type="object"
+                    string="Agreement validated"
+                    icon="gtk-paste-v"/>
+          </field>
+          <field name="number" position="after">
+            <field name="supplier_invoice_number" invisible="context.get('type') not in ['in_invoice', 'in_refund']"/>
+          </field>
+        </data>
       </field>
     </record>
   </data>

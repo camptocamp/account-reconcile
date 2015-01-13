@@ -238,14 +238,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
 
     def _get_all_children(self, ids, model):
         model_obj = self.pool.get(model)
-        result = set(ids)
-        for object in model_obj.browse(self.cr, self.uid, ids):
-            child_ids = [x.id for x in object.child_ids]
-            if len(child_ids):
-                children = self._get_all_children(
-                    child_ids, 'stock.location')
-                result.update(children)
-        return result
+        return model_obj.search(self.cr, self.uid, [('id', 'child_of', ids)])
 
 
 report_sxw.report_sxw(

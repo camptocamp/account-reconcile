@@ -294,7 +294,7 @@
                                             <field name="sum_quantity"/>
                                             <field name="sum_stock_sold"/>
                                             <field name="stock_progress" widget="progressbar"/>
-                                            <field name="active"/>
+                                            <field name="active" groups="base.group_system"/>
                                         </tree>
                                         <form string="Position" version="7.0">
                                             <field name="image_medium" widget="image"
@@ -335,7 +335,7 @@
                                                                 <field name="booking_delivery"/>
                                                                 <field name="poste_cumbersome_package"/>
                                                                 <field name="order_url"/>
-                                                                <field name="active"/>
+                                                                <field name="active" groups="base.group_system"/>
                                                             </group>
                                                         </group>
                                                     </group>

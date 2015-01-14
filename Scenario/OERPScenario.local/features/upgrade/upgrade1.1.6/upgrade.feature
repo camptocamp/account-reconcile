@@ -9,6 +9,8 @@ Feature: upgrade to 1.1.6
     Given I install the required modules with dependencies:
       | name                                       |
       | qoqa_offer                                 |
+      | specific_fct                               |
+      | account_financial_report_webkit            |
     Then my modules should have been installed and models reloaded
 
     Given I set the version of the instance to "1.1.6"

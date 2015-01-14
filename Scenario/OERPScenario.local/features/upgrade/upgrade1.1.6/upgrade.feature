@@ -11,6 +11,7 @@ Feature: upgrade to 1.1.6
       | qoqa_offer                                 |
       | specific_fct                               |
       | account_financial_report_webkit            |
+      | account_statement_account_partner_import   |
     Then my modules should have been installed and models reloaded
 
     Given I set the version of the instance to "1.1.6"

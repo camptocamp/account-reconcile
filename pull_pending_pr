@@ -1,0 +1,9 @@
+set -v
+set -e
+
+cd parts/bank-statement-reconcile
+git pull --no-edit origin pull/83/head # New module account_statement_account_partner_import
+cd -
+
+set +v
+set +e

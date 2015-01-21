@@ -85,7 +85,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "      WHERE m.state = %s "
                    "        AND m.location_id NOT IN %s "
                    "        AND m.location_dest_id IN %s "
-                   "        AND m.date <= %s "
+                   "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q1 "
                    "    ON q1.id = p.id "
                    "  LEFT OUTER JOIN "
@@ -96,7 +96,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "      WHERE m.state = %s "
                    "        AND m.location_id IN %s "
                    "        AND m.location_dest_id NOT IN %s "
-                   "        AND m.date <= %s "
+                   "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
                    "  WHERE t.attribute_set_id = %s",

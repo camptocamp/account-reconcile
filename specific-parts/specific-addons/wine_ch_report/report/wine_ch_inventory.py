@@ -125,15 +125,19 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         """
         Return a list of product ids for which wine_class_id is class_id
         The list must be ordered by size of bottle to ensure bigest bottles
-        are listed first
+        are listed first.  Also, return inactive products; if they have stock,
+        they must still be displayed.
         """
+        ctx = {'active_test': False}
         product_obj = self.pool.get('product.product')
         product_ids = product_obj.search(
             self.cr, self.uid,
             [('wine_class_id', '=', class_id),
-             ('x_wine_type', '=', color)]
+             ('x_wine_type', '=', color)],
+            context=ctx
         )
-        products = product_obj.browse(self.cr, self.uid, product_ids)
+        products = product_obj.browse(self.cr, self.uid,
+                                      product_ids, context=ctx)
         products.sort(key=lambda prod: prod.wine_bottle_id.volume,
                       reverse=True)
         return [p.id for p in products]

@@ -50,13 +50,15 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         Returns a dict of stock per wine class and per type of wine
         - A dict:
              {Wine: <volume sum>}
+        IMPORTANT: no negative stocks are used! This is to keep it consistent
+        with the other Wine CH report, that only displays positive stocks.
         """
         cr = self.cursor
         cr.execute("SELECT c.code, t.x_wine_type,"
-                   "       SUM((CASE WHEN q1.qty_in IS NULL THEN 0 "
+                   "       SUM(GREATEST((CASE WHEN q1.qty_in IS NULL THEN 0 "
                    "            ELSE q1.qty_in END"
                    "        - CASE WHEN q2.qty_out IS NULL THEN 0 "
-                   "          ELSE q2.qty_out END)"
+                   "          ELSE q2.qty_out END), 0)"
                    "        * b.volume) AS sum"
                    "  FROM product_product p "
                    "  INNER JOIN product_template t "
@@ -71,7 +73,7 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
                    "      WHERE m.state = %s "
                    "        AND m.location_id NOT IN %s "
                    "        AND m.location_dest_id IN %s "
-                   "        AND m.date <= %s "
+                   "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q1 "
                    "    ON q1.id = p.id "
                    "  LEFT OUTER JOIN "
@@ -82,7 +84,7 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
                    "      WHERE m.state = %s "
                    "        AND m.location_id IN %s "
                    "        AND m.location_dest_id NOT IN %s "
-                   "        AND m.date <= %s "
+                   "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
                    "  WHERE t.attribute_set_id = %s"

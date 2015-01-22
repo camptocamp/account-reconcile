@@ -85,7 +85,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "      WHERE m.state = %s "
                    "        AND m.location_id NOT IN %s "
                    "        AND m.location_dest_id IN %s "
-                   "        AND m.date <= %s "
+                   "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q1 "
                    "    ON q1.id = p.id "
                    "  LEFT OUTER JOIN "
@@ -96,7 +96,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "      WHERE m.state = %s "
                    "        AND m.location_id IN %s "
                    "        AND m.location_dest_id NOT IN %s "
-                   "        AND m.date <= %s "
+                   "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
                    "  WHERE t.attribute_set_id = %s",
@@ -125,15 +125,19 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         """
         Return a list of product ids for which wine_class_id is class_id
         The list must be ordered by size of bottle to ensure bigest bottles
-        are listed first
+        are listed first.  Also, return inactive products; if they have stock,
+        they must still be displayed.
         """
+        ctx = {'active_test': False}
         product_obj = self.pool.get('product.product')
         product_ids = product_obj.search(
             self.cr, self.uid,
             [('wine_class_id', '=', class_id),
-             ('x_wine_type', '=', color)]
+             ('x_wine_type', '=', color)],
+            context=ctx
         )
-        products = product_obj.browse(self.cr, self.uid, product_ids)
+        products = product_obj.browse(self.cr, self.uid,
+                                      product_ids, context=ctx)
         products.sort(key=lambda prod: prod.wine_bottle_id.volume,
                       reverse=True)
         return [p.id for p in products]

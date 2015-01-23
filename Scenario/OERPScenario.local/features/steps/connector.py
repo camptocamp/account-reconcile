@@ -57,3 +57,33 @@ def impl(ctx):
         for position in positions:
             import_record.delay(session, 'qoqa.offer.position',
                                 1, position.qoqa_id, force=True)
+
+
+@step('I re-import from QoQa the promo issuances with unbalanced lines')
+def impl(ctx):
+    """
+    Import records from QoQa using the connector
+    """
+    openerp = ctx.conf['server']
+    db_name = ctx.conf['db_name']
+
+    Issuance = model('qoqa.promo.issuance.line')
+    Move = model('account.move')
+
+    promo_issuances = Issuance.browse([('state', '=', 'draft'),
+                                       ('qoqa_issuance_id', '!=', False)])
+    issuances = [x.qoqa_issuance_id for x in promo_issuances]
+    qoqa_ids = list(set([x.qoqa_id for x in issuances]))
+    move_ids = list(set([x.openerp_id.id for x in issuances]))
+    Move.unlink(move_ids)
+    print "%s moves deleted" % (len(move_ids))
+
+    connector_qoqa = openerp.addons.connector_qoqa
+    import_accounting_issuance = connector_qoqa.accounting_issuance.importer.import_accounting_issuance
+    ConnectorSessionHandler = openerp.addons.connector.session.ConnectorSessionHandler
+    session_hdl = ConnectorSessionHandler(db_name, 1)
+    with session_hdl.session() as session:
+        for qoqa_id in qoqa_ids:
+            import_accounting_issuance.delay(session,
+                                             'qoqa.accounting.issuance',
+                                             1, int(qoqa_id), force=False)

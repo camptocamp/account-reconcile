@@ -312,6 +312,21 @@ class PromoIssuanceMapper(BaseIssuanceMapper):
         values['qoqa_promo_line_ids'] = items
         return values
 
+    def _line_options(self, map_record, values):
+        # Use the VAT line (always linked to the expense line)
+        # to determine if the retrieved item is an issuance
+        # or a cancellation.
+        options = super(PromoIssuanceMapper, self)._line_options(
+            map_record, values)
+        lines = map_record.source['promo_accountings']
+        for line in lines:
+            if line['is_vat']:
+                options.update({
+                    'is_cancellation': line['amount'] < 0
+                })
+                break
+        return options
+
 
 @qoqa
 class VoucherIssuanceMapper(BaseIssuanceMapper):
@@ -462,15 +477,33 @@ class PromoIssuanceLineMapper(BaseLineMapper):
         assert amount, \
             "lines without amount should be filtered " \
             "in PromoIssuanceLineMapChild"
-        if amount < 0:  # credit
-            account = self.options.product.property_account_income
-        else:  # debit
-            account = self.options.journal.default_debit_account_id
-            if not account:
-                journal = self.options.journal
-                raise MappingError('No Default Debit Account configured on '
-                                   'journal [%s] %s' %
-                                   (journal.code, journal.name))
+
+        if not self.options.is_cancellation:
+            # promo issuance
+            if amount < 0:
+                # issuance line
+                account = self.options.product.property_account_income
+            else:
+                # expense line
+                account = self.options.journal.default_debit_account_id
+                if not account:
+                    journal = self.options.journal
+                    raise MappingError('No Default Debit Account configured '
+                                       'on journal [%s] %s' %
+                                       (journal.code, journal.name))
+        else:
+            # promo cancellation
+            if amount > 0:
+                # issuance cancellation line
+                account = self.options.product.property_account_expense
+            else:
+                # expense cancellation line
+                account = self.options.journal.default_credit_account_id
+                if not account:
+                    journal = self.options.journal
+                    raise MappingError('No Default Credit Account configured '
+                                       'on journal [%s] %s' %
+                                       (journal.code, journal.name))
 
         vals = {'account_id': account.id}
         if account.user_type.analytic_policy != 'never':
@@ -481,12 +514,19 @@ class PromoIssuanceLineMapper(BaseLineMapper):
     def taxes(self, record):
         """ Return the tax used by QoQa.
 
-        QoQa provides a VAT also on the credit line, but we want it
-        only on the debit line.
+        QoQa provides a VAT also on the emission/cancellation line,
+        but we want it only on the expense line.
 
         """
+        def must_skip(amount, is_cancellation):
+            if amount < 0 and not is_cancellation:
+                return True
+            if amount > 0 and is_cancellation:
+                return True
+            return False
+
         amount = record['amount']
-        if amount < 0:  # credit
+        if must_skip(amount, self.options.is_cancellation):
             return
         binder = self.get_binder_for_model('account.tax')
         tax_id = binder.to_openerp(record['vat_id'])

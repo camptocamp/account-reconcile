@@ -33,6 +33,7 @@
              'qoqa_offer',
              'account_payment',
              'connector_qoqa',
+             'account_constraints',
              'delivery_carrier_label_dispatch',
              ],
  'author': 'Camptocamp',

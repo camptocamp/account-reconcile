@@ -19,21 +19,24 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp.osv import orm
 
 
 class AccountMoveLine(orm.Model):
     _inherit = 'account.move.line'
 
     def _check_currency_amount(self, cr, uid, ids, context=None):
-        ## Deactivation of constraint
+        # Deactivation of constraint:
+        # please see for more details the issue
+        # https://github.com/OCA/account-financial-tools/issues/135
+        # more precisely the case 1
         return True
 
     _constraints = [
-            (_check_currency_amount,
-             "The amount expressed in the secondary currency must be positive "
-             "when journal item are debit and negatif when journal item are "
-             "credit.",
-              ['amount_currency']
+                    (_check_currency_amount,
+                    "The amount expressed in the secondary currency must be positive "
+                    "when journal item are debit and negatif when journal item are "
+                    "credit.",
+                     ['amount_currency']
             ),
         ]

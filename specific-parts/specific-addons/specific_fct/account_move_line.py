@@ -26,7 +26,7 @@ class AccountMoveLine(orm.Model):
     _inherit = 'account.move.line'
 
     def _check_currency_amount(self, cr, uid, ids, context=None):
-        ## Deactivate of countraint
+        ## Deactivation of constraint
         return True
 
     _constraints = [

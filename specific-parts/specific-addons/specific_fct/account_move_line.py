@@ -32,11 +32,12 @@ class AccountMoveLine(orm.Model):
         # more precisely the case 1
         return True
 
-    _constraints = [
-                    (_check_currency_amount,
-                    "The amount expressed in the secondary currency must be positive "
-                    "when journal item are debit and negatif when journal item are "
-                    "credit.",
+    _constraints = [(_check_currency_amount,
+                     "The amount expressed in the secondary"
+                     "currency must be positive "
+                     "when journal item are debit and negatif"
+                     " when journal item are "
+                     "credit.",
                      ['amount_currency']
-            ),
-        ]
+                     ),
+                    ]

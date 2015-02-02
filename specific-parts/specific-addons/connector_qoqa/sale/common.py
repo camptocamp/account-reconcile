@@ -159,8 +159,13 @@ class sale_order(orm.Model):
                 # can just be withdrawn.
                 # Otherwise, we have to keep them, they will be
                 # reconciled with the invoice
-                for payment in order.payment_ids:
-                    payment.unlink()
+                # WARNING! Delete account.move,
+                # not just payments (account.move.line)
+                payment_moves = [payment.move_id
+                                 for payment
+                                 in order.payment_ids]
+                for move in payment_moves:
+                    move.unlink()
             elif order.amount_total:
                 # create the invoice, open it because we need the move
                 # lines so we'll be able to reconcile them with the

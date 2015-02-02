@@ -10,6 +10,4 @@ Feature: upgrade to 1.1.9
       | name                                       |
     Then my modules should have been installed and models reloaded
 
-    Given I re-import from QoQa the promo issuances with unbalanced lines
-
     Given I set the version of the instance to "1.1.9"

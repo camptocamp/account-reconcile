@@ -108,19 +108,3 @@ class product_product(orm.Model):
         default = default.copy()
         default.update({'ean13': False})
         return super(product_product, self).copy(cr, uid, id, default, context)
-
-
-class product_supplierinfo(orm.Model):
-    _inherit = 'product.supplierinfo'
-    _name = "product.supplierinfo"
-
-    # Re-definition of product_code to be mandatory
-    _columns = {
-        'product_code': fields.char(
-            'Supplier Product Code',
-            size=64,
-            help="This supplier's product code will be used when printing "
-                 "a request for quotation. Keep empty to "
-                 "use the internal one.",
-            required=True),
-    }

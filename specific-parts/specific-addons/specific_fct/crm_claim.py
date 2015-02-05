@@ -22,9 +22,9 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 
 
-class crm_case_categ(orm.Model):
+class crm_case_section(orm.Model):
     """ Category of Case """
-    _inherit = "crm.case.categ"
+    _inherit = "crm.case.section"
 
     _columns = {
         'notify': fields.boolean(
@@ -58,8 +58,14 @@ class crm_claim(orm.Model):
             self.message_subscribe(cr, uid, [claim_id],
                                    [responsible.partner_id.id],
                                    context=context)
-            self.notify_user(cr, uid, claim_id,
-                             responsible.partner_id.id, context=context)
+            if vals.get('section_id'):
+                section_obj = self.pool.get('crm.case.section')
+                section = section_obj.browse(cr, uid, vals['section_id'],
+                                             context=context)
+                if section.notify:
+                    self.notify_user(cr, uid, claim_id,
+                                     responsible.partner_id.id,
+                                     context=context)
         if vals.get('partner_id'):
             self.message_subscribe(cr, uid, [claim_id], [vals['partner_id']],
                                    context=context)
@@ -68,13 +74,9 @@ class crm_claim(orm.Model):
     def notify_user(self, cr, uid, claim_id, partner_id, context=None):
 
         claim = self.browse(cr, uid, claim_id, context=context)
-        if 'change_category' in context:
-            body = _('A ticket (%s) a change category' % (claim.name))
-            subject = _('A ticket  a change category')
-        else:
-            body = _('A new CRM claim (%s) has been assigned to you'
-                     % (claim.name))
-            subject = _('New CRM claim has been assigned to you')
+        body = _('A new CRM claim (%s) has been assigned to you'
+                 % (claim.name))
+        subject = _('New CRM claim has been assigned to you')
         self.message_post(cr, uid, [claim.id],
                           body=body, subject=subject,
                           type='email',
@@ -119,6 +121,7 @@ class crm_claim(orm.Model):
                 self.message_subscribe(cr, uid, [previous_claim.id],
                                        [vals['partner_id']], context=context)
         # Make the same for the Responsible (user_id):
+        responsible = False
         if vals.get('user_id'):
             user_obj = self.pool.get('res.users')
             responsible = user_obj.browse(cr, uid, vals['user_id'],
@@ -140,27 +143,28 @@ class crm_claim(orm.Model):
                                        [previous_claim.id],
                                        [responsible.partner_id.id],
                                        context=context)
+        if vals.get('section_id'):
+            section_obj = self.pool.get('crm.case.section')
+            section = section_obj.browse(cr, uid, vals['section_id'],
+                                         context=context)
+        else:
+            section = None
+        previous_claim_list = self.browse(cr, uid, ids, context=context)
+        for previous_claim in previous_claim_list:
+            if section:
+                current_section = section
+            else:
+                current_section = previous_claim.section_id
+            if responsible:
+                current_responsible = responsible
+            else:
+                current_responsible = previous_claim.user_id
+            if current_section.notify:
+                partner_id_notify = current_responsible.partner_id.id,
                 self.notify_claim_only_specific_user(cr, uid,
                                                      previous_claim.id,
-                                                     responsible.partner_id.id,
+                                                     partner_id_notify,
                                                      context=context)
-        if vals.get('categ_id'):
-            previous_claim_list = self.browse(cr, uid, ids, context=context)
-            claim_category = self.pool.get('crm.case.categ')
-            categ = claim_category.browse(cr, uid,
-                                          vals.get('categ_id'),
-                                          context=context)
-            for previous_claim in previous_claim_list:
-                # If the partner selected differ from the partner
-                # previously selected:
-                if categ.notify and previous_claim.user_id:
-                    ctx = context.copy()
-                    ctx['change_category'] = True
-                    partner_notify = previous_claim.user_id.partner_id.id
-                    self.notify_claim_only_specific_user(cr, uid,
-                                                         previous_claim.id,
-                                                         partner_notify,
-                                                         context=ctx)
 
         res = super(crm_claim, self).write(
             cr, uid, ids, vals, context=context)

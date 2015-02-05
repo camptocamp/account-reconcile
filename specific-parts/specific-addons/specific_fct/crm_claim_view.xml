@@ -25,12 +25,12 @@
         </record>
 
 
-        <record id="crm_case_categ-view-notify" model="ir.ui.view">
-            <field name="name">crm.case.categ.form.notify</field>
-            <field name="model">crm.case.categ</field>
-            <field name="inherit_id" ref="crm.crm_case_categ-view"/>
+        <record id="crm_case_section_view_form-notify" model="ir.ui.view">
+            <field name="name">crm.case.section.form.notify</field>
+            <field name="model">crm.case.section</field>
+            <field name="inherit_id" ref="crm.crm_case_section_view_form"/>
             <field name="arch" type="xml">
-                <field name="object_id" position="after">
+                <field name="active" position="after">
                     <field name="notify"/>
                 </field>
             </field>

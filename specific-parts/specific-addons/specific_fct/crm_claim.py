@@ -149,22 +149,23 @@ class crm_claim(orm.Model):
                                          context=context)
         else:
             section = None
-        previous_claim_list = self.browse(cr, uid, ids, context=context)
-        for previous_claim in previous_claim_list:
-            if section:
-                current_section = section
-            else:
-                current_section = previous_claim.section_id
-            if responsible:
-                current_responsible = responsible
-            else:
-                current_responsible = previous_claim.user_id
-            if current_section.notify:
-                partner_id_notify = current_responsible.partner_id.id,
-                self.notify_claim_only_specific_user(cr, uid,
-                                                     previous_claim.id,
-                                                     partner_id_notify,
-                                                     context=context)
+        if vals.get('section_id') or vals.get('user_id'):
+            previous_claim_list = self.browse(cr, uid, ids, context=context)
+            for previous_claim in previous_claim_list:
+                if section:
+                    current_section = section
+                else:
+                    current_section = previous_claim.section_id
+                if responsible:
+                    current_responsible = responsible
+                else:
+                    current_responsible = previous_claim.user_id
+                if current_section.notify:
+                    partner_id_notify = current_responsible.partner_id.id
+                    self.notify_claim_only_specific_user(cr, uid,
+                                                         previous_claim.id,
+                                                         partner_id_notify,
+                                                         context=context)
 
         res = super(crm_claim, self).write(
             cr, uid, ids, vals, context=context)

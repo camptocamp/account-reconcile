@@ -166,7 +166,7 @@ class crm_claim(orm.Model):
                     current_responsible = responsible
                 else:
                     current_responsible = previous_claim.user_id
-                # Check if the section need to be notify 
+                # Check if the section need to be notify
                 if current_section.notify:
                     partner_id_notify = current_responsible.partner_id.id
                     self.notify_claim_only_specific_user(cr, uid,

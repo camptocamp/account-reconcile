@@ -76,7 +76,7 @@ class crm_claim(orm.Model):
         claim = self.browse(cr, uid, claim_id, context=context)
         body = _('A new CRM claim (%s) has been assigned to you'
                  % (claim.name))
-        subject = _('New CRM claim has been assigned to you')
+        subject = _('A new CRM claim has been assigned to you')
         self.message_post(cr, uid, [claim.id],
                           body=body, subject=subject,
                           type='email',
@@ -88,6 +88,7 @@ class crm_claim(orm.Model):
                                         partner_id, context=None):
         ##
         claim = self.browse(cr, uid, claim_id, context=context)
+        # Get all followers of current claim
         followers_ids = self._get_followers(cr, uid, [claim.id],
                                             name=None, arg=None,
                                             context=context)
@@ -95,6 +96,8 @@ class crm_claim(orm.Model):
         if 'message_follower_ids' in followers_ids[claim.id]:
                 all_partner_ids = \
                     followers_ids[claim.id]['message_follower_ids']
+                # Remove followers on the message
+                # to not send an unuseful message to the related customer
                 self.message_unsubscribe(
                     cr, uid,
                     [claim.id],
@@ -102,6 +105,7 @@ class crm_claim(orm.Model):
                     context=context)
         self.notify_user(cr, uid, claim_id, partner_id, context=context)
         if all_partner_ids:
+            # Resuscribe all partner include customer
             self.message_subscribe(cr, uid, [claim.id],
                                    all_partner_ids, context=context)
 
@@ -143,15 +147,17 @@ class crm_claim(orm.Model):
                                        [previous_claim.id],
                                        [responsible.partner_id.id],
                                        context=context)
+        section = None
         if vals.get('section_id'):
             section_obj = self.pool.get('crm.case.section')
             section = section_obj.browse(cr, uid, vals['section_id'],
                                          context=context)
-        else:
-            section = None
+        # Notification parts
+        # We only check notification if section or responsible is modified
         if vals.get('section_id') or vals.get('user_id'):
             previous_claim_list = self.browse(cr, uid, ids, context=context)
             for previous_claim in previous_claim_list:
+                # fill section and responsible information
                 if section:
                     current_section = section
                 else:
@@ -160,6 +166,7 @@ class crm_claim(orm.Model):
                     current_responsible = responsible
                 else:
                     current_responsible = previous_claim.user_id
+                # Check if the section need to be notify 
                 if current_section.notify:
                     partner_id_notify = current_responsible.partner_id.id
                     self.notify_claim_only_specific_user(cr, uid,

@@ -95,9 +95,16 @@ msgid "payment.order.create"
 msgstr "payment.order.create"
 
 #. module: specific_fct
-#: view:crm.claim:0
-msgid "Claims"
-msgstr "Réclamations"
+#: code:addons/specific_fct/crm_claim.py:79
+#, python-format
+msgid "A new CRM claim has been assigned to you"
+msgstr "Nouvelle réclamation assignée"
+
+#. module: specific_fct
+#: code:addons/specific_fct/crm_claim.py:77
+#, python-format
+msgid "A new CRM claim (%s) has been assigned to you"
+msgstr "Une nouvelle réclamation (%s) vous a été assignée"
 
 #. module: specific_fct
 #: code:_description:0
@@ -105,6 +112,14 @@ msgstr "Réclamations"
 #, python-format
 msgid "Claim"
 msgstr "Réclamation"
+
+#. module: specific_fct
+#: code:_description:0
+#: model:ir.model,name:specific_fct.model_crm_claim
+#, python-format
+msgid "Claim"
+msgstr "Réclamation"
+
 
 #. module: specific_fct
 #: code:_description:0

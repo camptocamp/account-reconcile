@@ -134,7 +134,8 @@ class qoqa_offer(orm.Model):
             if offer.lang_id:
                 ctx['lang'] = offer.lang_id.code
             else:
-                user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+                user = self.pool['res.users'].browse(
+                    cr, uid, uid, context=context)
                 ctx['lang'] = user.lang
             product_tmpl = template_obj.browse(
                 cr, uid,

@@ -126,7 +126,21 @@ class qoqa_offer(orm.Model):
                     'main_product_name': empty,
                 }
                 continue
-            product_tmpl = offer.main_position_id.product_tmpl_id
+
+            # Retrieve lang from offer, in order to get the text
+            # in the offer's language (not the last updated language)
+            template_obj = self.pool['product.template']
+            ctx = dict(context)
+            if offer.lang_id:
+                ctx['lang'] = offer.lang_id.code
+            else:
+                user = self.pool['res.users'].browse(
+                    cr, uid, uid, context=context)
+                ctx['lang'] = user.lang
+            product_tmpl = template_obj.browse(
+                cr, uid,
+                offer.main_position_id.product_tmpl_id.id,
+                context=ctx)
 
             name = product_tmpl.name
             if product_tmpl.brand:

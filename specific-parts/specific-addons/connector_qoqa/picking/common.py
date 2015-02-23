@@ -96,9 +96,9 @@ def picking_done_create_binding(session, model_name, record_id,
 
     # if no tracking ref on picking and no pack were defined,
     # we don't want to export trackings
-    if (not picking.carrier_tracking_ref
-            and not any(line.tracking_id and line.tracking_id.serial
-                        for line in picking.move_lines)):
+    if (not picking.carrier_tracking_ref and
+            not any(line.tracking_id and line.tracking_id.serial
+                    for line in picking.move_lines)):
         return
 
     for sale_binding in sale.qoqa_bind_ids:

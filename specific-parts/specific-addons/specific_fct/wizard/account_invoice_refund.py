@@ -44,8 +44,8 @@ class account_invoice_refund(orm.TransientModel):
                     return ("La commande ne sera pas remboursée par le "
                             "provider de paiement (Datatrans, Mercanet, "
                             "etc.) car il s'agit d'une commande "
-                            "datantrans d'avant le "
-                            + payment.payment_method_id.refund_min_date)
+                            "datantrans d'avant le " +
+                            payment.payment_method_id.refund_min_date)
                 elif (payment.payment_method_id.refund_max_days and
                       payment.payment_method_id.refund_max_days <
                       delta_days):

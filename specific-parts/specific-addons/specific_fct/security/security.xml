@@ -33,6 +33,13 @@
                        (4, ref('product.group_stock_packaging')),
                        ]"/>
         </record>
+
+        <!--
+            Specific group for admin users; used to hide certain actions
+        -->
+        <record model="res.groups" id="group_admin_user">
+            <field name="name">Admin Users</field>
+        </record>
 </data>
         <!-- Change pricelist rules for multi-company  -->
 <data>

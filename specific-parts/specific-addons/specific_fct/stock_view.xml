@@ -43,6 +43,9 @@
         <field name="partner_id" position="after">
           <field name="lang"/>
         </field>
+        <button name="force_assign" position="attributes">
+            <attribute name="groups">specific_fct.group_admin_user</attribute>
+        </button>
       </field>
     </record>
     <record id="view_picking_out_search" model="ir.ui.view">

@@ -11,5 +11,9 @@ git pull --no-edit origin pull/142/head # Fix for manual entries posting
 git pull --no-edit origin pull/145/head # Fix for decimal precision in write-off
 cd -
 
+cd parts/e-commerce
+git pull --no-edit origin pull/37/head # Check invoice account for auto workflow
+cd -
+
 set +v
 set +e

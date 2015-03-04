@@ -19,7 +19,10 @@
 #
 ##############################################################################
 
+import logging
 from openerp.osv import orm
+
+_logger = logging.getLogger(__name__)
 
 
 class picking_dispatch(orm.Model):
@@ -46,7 +49,15 @@ class picking_dispatch(orm.Model):
         dispatch_ids = self.search(cr, uid, [('state', '=', 'delayed_done')],
                                    context=context)
         for dispatch_id in dispatch_ids:
-            action = self.action_done(cr, uid, [dispatch_id], context=context)
-            partial_id = action['res_id']
-            partial_move_obj.do_partial(cr, uid, [partial_id], context=context)
-            cr.commit()
+            try:
+                action = self.action_done(cr, uid, [dispatch_id],
+                                          context=context)
+                partial_id = action['res_id']
+                partial_move_obj.do_partial(cr, uid, [partial_id],
+                                            context=context)
+                cr.commit()
+            except:
+                cr.rollback()
+                _logger.exception(
+                    'Could not set picking with ID %s as done',
+                    dispatch_id)

@@ -8,6 +8,7 @@ Feature: upgrade to 1.1.11
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | mail                                       |
       | specific_fct                               |
     Then my modules should have been installed and models reloaded
 

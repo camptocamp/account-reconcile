@@ -6,9 +6,13 @@ git pull --no-edit origin pull/83/head # New module account_statement_account_pa
 cd -
 
 cd parts/server
-#git pull --no-edit origin pull/124/head # Fix for mail: show original message
+git pull --no-edit origin pull/124/head # Fix for mail: show original message
 git pull --no-edit origin pull/142/head # Fix for manual entries posting
 git pull --no-edit origin pull/145/head # Fix for decimal precision in write-off
+cd -
+
+cd parts/e-commerce
+git pull --no-edit origin pull/37/head # Check invoice account for auto workflow
 cd -
 
 set +v

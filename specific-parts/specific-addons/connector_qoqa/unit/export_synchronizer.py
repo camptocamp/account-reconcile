@@ -310,8 +310,10 @@ class QoQaExporter(QoQaBaseExporter):
         with :meth:`_export_dependencies`. Each level will set its own lock
         on the binding record it has to export.
 
+        Uses "NO KEY UPDATE", to avoid FK accesses
+        being blocked in PSQL > 9.3.
         """
-        sql = ("SELECT id FROM %s WHERE ID = %%s FOR UPDATE NOWAIT" %
+        sql = ("SELECT id FROM %s WHERE ID = %%s FOR NO KEY UPDATE NOWAIT" %
                self.model._table)
         try:
             self.session.cr.execute(sql, (self.binding_id,),

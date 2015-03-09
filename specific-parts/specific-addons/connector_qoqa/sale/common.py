@@ -310,6 +310,88 @@ class sale_order(orm.Model):
                                              binding.id, priority=1)
         return res
 
+    def action_force_cancel(self, cr, uid, ids, context=None):
+        """ Force cancellation of a done sales order.
+
+        Only usable on done sales orders (so in the final state of the
+        workflow) to avoid to break the workflow in the middle of its
+        course.
+        At QoQa, they might deliver sales orders and only cancel the order
+        afterwards. In that case, even if the sales order is done, they need
+        to set it as canceled on OpenERP and on the backend.
+        """
+        wf_service = netsvc.LocalService('workflow')
+        sale_order_line_obj = self.pool.get('sale.order.line')
+        for sale in self.browse(cr, uid, ids, context=context):
+            if sale.state != 'done':
+                raise orm.except_orm(
+                    _('Cannot cancel this sales order!'),
+                    _('Only done sales orders can be forced to be canceled.'))
+            sale_order_line_obj.write(cr, uid,
+                                      [l.id for l in sale.order_line],
+                                      {'state': 'cancel'},
+                                      context=context)
+            # Cancel direct: only done if payment date is today
+            cancel_direct = False
+            if (sale.qoqa_bind_ids and
+                    sale.payment_method_id.payment_cancellable_on_qoqa):
+                binding = sale.qoqa_bind_ids[0]
+                # can be canceled only the day of the payment
+                payment_date = datetime.strptime(binding.qoqa_payment_date,
+                                                 DEFAULT_SERVER_DATE_FORMAT)
+                if payment_date.date() == date.today():
+                    cancel_direct = True
+            if cancel_direct:
+                # If the order can be canceled on QoQa, the payment is
+                # canceled as well on QoQa so the internal payments
+                # can just be withdrawn.
+                # Otherwise, we have to keep them, they will be
+                # reconciled with the invoice
+                # WARNING! Delete account.move,
+                # not just payments (account.move.line)
+                payment_moves = [payment.move_id
+                                 for payment
+                                 in sale.payment_ids]
+                for move in payment_moves:
+                    move.unlink()
+                # Cancel the paid invoice (now re-opened) as well
+                for invoice in sale.invoice_ids:
+                    wf_service.trg_validate(uid, 'account.invoice',
+                                            invoice.id, 'invoice_cancel', cr)
+        self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
+        message = _("The sales order was done, but it has been manually "
+                    "canceled.")
+        self.message_post(cr, uid, ids, body=message, context=context)
+
+        # only cancel on qoqa if all the cancellations succeeded
+        # canceled_in_backend means already canceled on QoQa
+        if not sale.canceled_in_backend:
+            session = ConnectorSession(cr, uid, context=context)
+            for binding in sale.qoqa_bind_ids:
+                # should be called at the very end of the method
+                # so we won't call 'cancel' on qoqa if something
+                # failed before
+                if cancel_direct:
+                    # we want to do a direct call to the API when the payment
+                    # can be canceled before midnight because the job may take
+                    # too long time to be executed
+                    _logger.info("Cancel order %s directly on QoQa",
+                                 binding.name)
+                    message = _('Impossible to cancel the sales order '
+                                'on the backend now.')
+                    with api_handle_errors(message):
+                        cancel_sales_order(session, binding._model._name,
+                                           binding.id)
+                else:
+                    # no timing issue in this one, the sales order must be
+                    # canceled but it can be done later
+                    _logger.info("Cancel order %s later (job) on QoQa",
+                                 binding.name)
+                    cancel_sales_order.delay(session, binding._model._name,
+                                             binding.id, priority=1)
+
+        return True
+
 
 @qoqa
 class QoQaSaleOrderAdapter(QoQaAdapter):

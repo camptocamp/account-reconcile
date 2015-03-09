@@ -236,3 +236,8 @@
 .openerp .oe_form .oe_form_field_text {
     width: 640px;
 }
+
+.openerp .oe_list_content > tbody > tr:nth-child(2n+1) {
+    background-color: #efeff8 !important;
+    background-image: linear-gradient(to bottom, #f0f0fa, #eeeef6) !important;
+}

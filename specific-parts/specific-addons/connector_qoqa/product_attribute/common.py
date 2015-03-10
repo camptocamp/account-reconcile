@@ -172,6 +172,7 @@ class AttributeOptionBinder(QoQaDirectBinder):
         """
         raise TypeError('%s cannot be synchronized' % self._model_name)
 
+
 @qoqa
 class WineBottleBinder(QoQaDirectBinder):
     _model_name = 'wine.bottle'

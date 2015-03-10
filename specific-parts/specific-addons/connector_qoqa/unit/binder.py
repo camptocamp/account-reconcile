@@ -58,9 +58,7 @@ class QoQaNoneBinder(QoQaBinder):
     an empty value to QoQa. QoQa ignores the attributes it
     doesn't know.
     """
-    _model_name = ['wine.class',
-                   'wine.bottle',
-                   ]
+    _model_name = ['wine.class']
 
     def to_openerp(self, external_id, unwrap=False):
         return None

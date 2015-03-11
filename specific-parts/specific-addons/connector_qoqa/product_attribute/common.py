@@ -171,3 +171,41 @@ class AttributeOptionBinder(QoQaDirectBinder):
         :type binding_id: int
         """
         raise TypeError('%s cannot be synchronized' % self._model_name)
+
+
+@qoqa
+class WineBottleBinder(QoQaDirectBinder):
+    _model_name = 'wine.bottle'
+
+    """ This mapper is to map the bottle's volume to 'capacity' """
+
+    def to_openerp(self, external_id, unwrap=False):
+        """ Give the OpenERP ID for an external ID
+
+        :param external_id: external ID for which we want the OpenERP ID
+        :param unwrap: No effect in the direct binding
+        :return: ID of the record in OpenERP
+                 or None if the external_id is not mapped
+        :rtype: int
+
+        Not used in wine.bottle.
+        """
+        return None
+
+    def to_backend(self, binding_id, wrap=False):
+        """ Give the external ID for an OpenERP ID
+
+        Wrap is not applicable for this binder because the binded record
+        is the same than the binding record.
+
+        :param binding_id: OpenERP ID for which we want the external id
+        :param wrap: if True, the value passed in binding_id is the ID of the
+                     binded record, not the binding record.
+        :return: backend identifier of the record
+        """
+        bottle = self.session.browse(self.model._name, binding_id)
+        assert bottle
+        qoqa_value = bottle.volume
+        if not qoqa_value:  # prefer None over False
+            return None
+        return qoqa_value

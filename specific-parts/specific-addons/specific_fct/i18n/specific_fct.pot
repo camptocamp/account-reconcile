@@ -107,6 +107,19 @@ msgid "Claim"
 msgstr ""
 
 #. module: specific_fct
+#: code:addons/specific_fct/crm_claim.py:79
+#, python-format
+msgid "A new CRM claim has been assigned to you"
+msgstr ""
+
+#. module: specific_fct
+#: code:addons/specific_fct/crm_claim.py:77
+#, python-format
+msgid "A new CRM claim (%s) has been assigned to you"
+msgstr ""
+
+
+#. module: specific_fct
 #: code:_description:0
 #: model:ir.model,name:specific_fct.model_stock_move
 #, python-format

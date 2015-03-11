@@ -71,6 +71,7 @@ Hide the cancel button action to avoid human mistakes
           'payment_view.xml',
           'payment_method_view.xml',
           'account_invoice_view.xml',
+          'hr_holidays_view.xml',
           ],
  'installable': True,
  'application': True,

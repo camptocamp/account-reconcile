@@ -71,5 +71,16 @@
       </field>
     </record>
 
+    <record id="product_product_form_update_group" model="ir.ui.view">
+      <field name="name">product.normal.update.group.form</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="stock.view_normal_procurement_locations_form"/>
+      <field name="arch" type="xml">
+        <button string="update" position="attributes">
+          <attribute name="groups">specific_fct.group_admin_user</attribute>
+        </button>
+      </field>
+    </record>
+
   </data>
 </openerp>

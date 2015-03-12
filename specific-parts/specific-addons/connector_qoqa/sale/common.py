@@ -176,7 +176,7 @@ class sale_order(orm.Model):
                     cancel_direct = True
             # For SwissBilling: if the SO is not done yet, cancel directly.
             # Otherwise, refund.
-            elif (order.qoqa_bind_ids and
+            if (order.qoqa_bind_ids and
                     order.payment_method_id.payment_settlable_on_qoqa):
                 cancel_direct = True
             payment_ids = None
@@ -324,7 +324,7 @@ class sale_order(orm.Model):
         afterwards. In that case, even if the sales order is done, they need
         to set it as canceled on OpenERP and on the backend.
         """
-        wf_service = netsvc.LocalService('workflow')
+        refund_wiz_obj = self.pool['account.invoice.refund']
         sale_order_line_obj = self.pool.get('sale.order.line')
         for sale in self.browse(cr, uid, ids, context=context):
             if sale.state != 'done':
@@ -335,38 +335,30 @@ class sale_order(orm.Model):
                                       [l.id for l in sale.order_line],
                                       {'state': 'cancel'},
                                       context=context)
-            # Cancel direct: only done if payment date is today
-            cancel_direct = False
-            if (sale.qoqa_bind_ids and
-                    sale.payment_method_id.payment_cancellable_on_qoqa):
-                binding = sale.qoqa_bind_ids[0]
-                # can be canceled only the day of the payment
-                payment_date = datetime.strptime(binding.qoqa_payment_date,
-                                                 DEFAULT_SERVER_DATE_FORMAT)
-                if payment_date.date() == date.today():
-                    cancel_direct = True
-            if cancel_direct:
-                # If the order can be canceled on QoQa, the payment is
-                # canceled as well on QoQa so the internal payments
-                # can just be withdrawn.
-                # Otherwise, we have to keep them, they will be
-                # reconciled with the invoice
-                # WARNING! Delete account.move,
-                # not just payments (account.move.line)
-                payment_moves = [payment.move_id
-                                 for payment
-                                 in sale.payment_ids]
-                for move in payment_moves:
-                    move.unlink()
-                # Cancel the paid invoice (now re-opened) as well
-                for invoice in sale.invoice_ids:
-                    wf_service.trg_validate(uid, 'account.invoice',
-                                            invoice.id, 'invoice_cancel', cr)
+            for invoice in sale.invoice_ids:
+                # create a refund since the payment cannot be
+                # canceled
+                ctx = context.copy()
+                ctx.update({
+                    'active_model': 'account.invoice',
+                    'active_id': invoice.id,
+                    'active_ids': [invoice.id],
+                })
+                wizard_id = refund_wiz_obj.create(
+                    cr, uid,
+                    {
+                        'filter_refund': 'refund',
+                        'description': _('Order Cancellation'),
+                    },
+                    context=ctx)
+
+                refund_wiz_obj.invoice_refund(cr, uid, [wizard_id],
+                                              context=ctx)
         self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
         message = _("The sales order was done, but it has been manually "
                     "canceled.")
         self.message_post(cr, uid, ids, body=message, context=context)
-        self._call_cancel(cr, uid, sale, cancel_direct=cancel_direct,
+        self._call_cancel(cr, uid, sale, cancel_direct=False,
                           context=context)
 
         return True

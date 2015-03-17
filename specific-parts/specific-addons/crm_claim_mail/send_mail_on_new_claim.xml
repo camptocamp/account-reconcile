@@ -104,7 +104,7 @@
     </record>
 
     <record id="send_claim_mail" model="ir.actions.server">
-      <field name="code">template_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'crm_claim_mail', 'email_template_rma_received')[1]
+      <field name="code">template_id = object.confirmation_email_template and object.confirmation_email_template.id or self.pool['ir.model.data'].get_object_reference(cr, uid, 'crm_claim_mail', 'email_template_rma_received')[1]
 self.pool['email.template'].send_mail(cr, uid, template_id, object.id)</field>
       <field name="state">code</field>
       <field name="type">ir.actions.server</field>

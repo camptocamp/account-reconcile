@@ -92,6 +92,9 @@ class crm_claim(orm.Model):
             _get_mail_signature,
             type='html',
             string='Mail signature'),
+        'confirmation_email_template': fields.many2one(
+            'email.template',
+            'Confirmation Mail Template'),
         'confirmation_email_sent': fields.boolean('Confirmation Mail Sent'),
     }
 

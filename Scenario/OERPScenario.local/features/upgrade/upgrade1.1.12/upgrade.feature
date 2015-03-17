@@ -8,6 +8,7 @@ Feature: upgrade to 1.1.12
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | crm_claim_mail                             |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

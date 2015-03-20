@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-@upgrade_from_1.1.11 @qoqa
+@upgrade_from_1.1.12 @qoqa
 
-Feature: upgrade to 1.1.12
+Feature: upgrade to 1.1.13
 
   Scenario: upgrade application version
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
@@ -22,4 +22,4 @@ Feature: upgrade to 1.1.12
     );
     """
 
-    Given I set the version of the instance to "1.1.12"
+    Given I set the version of the instance to "1.1.13"

@@ -9,6 +9,7 @@ Feature: upgrade to 1.1.13
     Given I install the required modules with dependencies:
       | name                                       |
       | crm_claim_mail                             |
+      | base_login_date_improvement                |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

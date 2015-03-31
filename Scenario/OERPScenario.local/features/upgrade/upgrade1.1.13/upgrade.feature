@@ -10,6 +10,7 @@ Feature: upgrade to 1.1.13
       | name                                       |
       | crm_claim_mail                             |
       | base_login_date_improvement                |
+      | specific_fct                               |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

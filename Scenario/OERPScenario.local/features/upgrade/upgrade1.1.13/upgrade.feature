@@ -22,6 +22,16 @@ Feature: upgrade to 1.1.13
         WHERE model = 'product.template'
         AND name = 'wine_bottle_id'
     );
+
+    UPDATE ir_act_server
+    SET code = 'template_id = object.confirmation_email_template and object.confirmation_email_template.id or self.pool[''ir.model.data''].get_object_reference(cr, uid, ''crm_claim_mail'', ''email_template_rma_received'')[1]
+self.pool[''email.template''].send_mail(cr, uid, template_id, object.id)'
+    WHERE name = 'Send an email when a claim is created';
+
+    UPDATE account_move_reconcile
+    SET type = 'auto'
+    WHERE type = 'manual'
+    AND create_uid IN (1,6,7);
     """
 
     Given I set the version of the instance to "1.1.13"

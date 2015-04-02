@@ -62,6 +62,9 @@ class ProductAttribute(ConnectorUnit):
         attr_binder = self.get_binder_for_model('attribute.attribute')
         for location in locations:
             attribute = location.attribute_id
+            # skip wine_bottle_id: mapped in product exporter
+            if attribute.name == 'wine_bottle_id':
+                continue
             if attribute.model_id.model != model_type:
                 continue
             if (translatable is not None and

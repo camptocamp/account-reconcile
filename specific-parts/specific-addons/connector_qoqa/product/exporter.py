@@ -84,6 +84,15 @@ class ProductExportMapper(ExportMapper):
         return {'product_id': qoqa_id}
 
     @mapping
+    def capacity(self, record):
+        binder = self.get_binder_for_model('wine.bottle')
+        if not record.product_tmpl_id.wine_bottle_id:
+            return
+        openerp_id = record.product_tmpl_id.wine_bottle_id.id
+        qoqa_value = binder.to_backend(openerp_id, wrap=True)
+        return {'capacity': qoqa_value}
+
+    @mapping
     def attributes(self, record):
         attrs = self.get_connector_unit_for_model(ProductAttribute)
         return attrs.get_values(record, translatable=False)

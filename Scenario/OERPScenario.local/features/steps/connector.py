@@ -87,3 +87,23 @@ def impl(ctx):
             import_accounting_issuance.delay(session,
                                              'qoqa.accounting.issuance',
                                              1, int(qoqa_id), force=False)
+
+@step('I re-export to QoQa the wine products')
+def impl(ctx):
+    """
+    Import records from QoQa using the connector
+    """
+    openerp = ctx.conf['server']
+    db_name = ctx.conf['db_name']
+
+    Product = model('qoqa.product.product')
+    products = Product.browse(['wine_bottle_id != False'])
+
+    connector_qoqa = openerp.addons.connector_qoqa
+    export_record = connector_qoqa.unit.export_synchronizer.export_record
+    ConnectorSessionHandler = openerp.addons.connector.session.ConnectorSessionHandler
+    session_hdl = ConnectorSessionHandler(db_name, 1)
+    with session_hdl.session() as session:
+        for product in products:
+            export_record.delay(session, 'qoqa.product.product',
+                                int(product.qoqa_id), ['wine_bottle_id'])

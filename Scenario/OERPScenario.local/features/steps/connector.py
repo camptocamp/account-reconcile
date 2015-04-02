@@ -106,4 +106,4 @@ def impl(ctx):
     with session_hdl.session() as session:
         for product in products:
             export_record.delay(session, 'qoqa.product.product',
-                                int(product.qoqa_id), ['wine_bottle_id'])
+                                int(product.id), ['wine_bottle_id'])

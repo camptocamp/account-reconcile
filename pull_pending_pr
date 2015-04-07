@@ -5,6 +5,12 @@ cd parts/bank-statement-reconcile
 git pull --no-edit origin pull/83/head # New module account_statement_account_partner_import
 cd -
 
+cd parts/connector
+git pull --no-edit origin pull/53/head # New connector workers with jobrunner
+# until fixed in branch: add folder parts/connector/connector/static
+mkdir -p connector/static
+cd -
+
 cd parts/server
 git pull --no-edit origin pull/124/head # Fix for mail: show original message
 git pull --no-edit origin pull/142/head # Fix for manual entries posting

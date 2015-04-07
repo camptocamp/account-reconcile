@@ -8,6 +8,7 @@ Feature: upgrade to 1.1.13
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | connector                                  |
       | crm_claim_mail                             |
       | base_login_date_improvement                |
       | specific_fct                               |
@@ -32,6 +33,11 @@ Feature: upgrade to 1.1.13
     SET type = 'auto'
     WHERE type = 'manual'
     AND create_uid IN (1,6,7);
+
+    UPDATE account_invoice SET account_id = 1906 WHERE account_id = 1460 and company_id = 4;
+    UPDATE account_invoice_line SET account_id = 2373 WHERE account_id = 576 and company_id = 4;
+    UPDATE account_invoice_line SET account_id = 2381 WHERE account_id = 580 and company_id = 4;
+    UPDATE account_invoice_line SET account_id = 2544 WHERE account_id = 1180 and company_id = 4;
     """
 
     Given I re-export to QoQa the wine products

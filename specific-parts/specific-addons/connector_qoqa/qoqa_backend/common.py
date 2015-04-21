@@ -23,6 +23,7 @@ import requests
 import logging
 import psycopg2
 from datetime import datetime
+from openerp import pooler
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -59,40 +60,32 @@ class qoqa_backend_timestamp(orm.Model):
                           from_date_field, import_start_time, context=None):
         """
             This method is called to update or create one import timestamp
-            for a qoqa.backend. A concurrency error can arise, but in that
-            case, it means that the import was called twice; a warning is
-            logged and the transaction is rollbacked (no need for
-            duplicate jobs)
+            for a qoqa.backend. A concurrency error can arise, but it's
+            handled in _import_from_date.
         """
         if backend and from_date_field and import_start_time:
-            try:
+            cr.execute(
+                """SELECT id FROM qoqa_backend_timestamp
+                   WHERE backend_id=%s
+                   AND from_date_field=%s
+                   FOR UPDATE NOWAIT""",
+                (backend.id, from_date_field)
+            )
+            timestamp_id = cr.fetchone()
+            if timestamp_id:
                 cr.execute(
-                    """SELECT id FROM qoqa_backend_timestamp
-                       WHERE backend_id=%s
-                       AND from_date_field=%s
-                       FOR UPDATE NOWAIT""",
-                    (backend.id, from_date_field)
+                    """UPDATE qoqa_backend_timestamp
+                       SET import_start_time=%s
+                       WHERE id=%s""",
+                    (import_start_time, timestamp_id[0])
                 )
-                timestamp_id = cr.fetchone()
-                if timestamp_id:
-                    cr.execute(
-                        """UPDATE qoqa_backend_timestamp
-                           SET import_start_time=%s
-                           WHERE id=%s""",
-                        (import_start_time, timestamp_id[0])
-                    )
-                else:
-                    cr.execute(
-                        """INSERT INTO qoqa_backend_timestamp
-                           (backend_id, from_date_field, import_start_time)
-                           VALUES (%s, %s, %s)""",
-                        (import_start_time, backend.id, from_date_field)
-                    )
-            except psycopg2.OperationalError:
-                _logger.warning("Failed to update timestamps "
-                                "for backend:%s and field:%s",
-                                backend, from_date_field, exc_info=True)
-                cr.rollback()
+            else:
+                cr.execute(
+                    """INSERT INTO qoqa_backend_timestamp
+                       (backend_id, from_date_field, import_start_time)
+                       VALUES (%s, %s, %s)""",
+                    (import_start_time, backend.id, from_date_field)
+                )
 
 """
 We'll have 1 ``qoqa.backend`` sharing the connection informations probably,
@@ -267,25 +260,37 @@ class qoqa_backend(orm.Model):
 
     def _import_from_date(self, cr, uid, ids, model,
                           from_date_field, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        DT_FMT = DEFAULT_SERVER_DATETIME_FORMAT
-        session = ConnectorSession(cr, uid, context=context)
-        import_start_time = datetime.now().strftime(DT_FMT)
-        for backend in self.browse(cr, uid, ids, context=context):
-            from_date = getattr(backend, from_date_field)
-            if from_date:
-                from_date = datetime.strptime(from_date, DT_FMT)
-            else:
-                from_date = None
-            import_batch_divider(session, model, backend.id,
-                                 from_date=from_date, priority=9)
-            # write in table qoqa.backend.timestamp
-            self.pool['qoqa.backend.timestamp']._update_timestamp(
-                cr, uid, backend,
-                from_date_field, import_start_time,
-                context=context
-            )
+        # Create new cursor for creating job + updating timestamp; if a
+        # concurrency issue arises, it will be logged and rollbacked silently.
+        try:
+            new_cr = pooler.get_db(cr.dbname).cursor()
+            if not hasattr(ids, '__iter__'):
+                ids = [ids]
+            DT_FMT = DEFAULT_SERVER_DATETIME_FORMAT
+            session = ConnectorSession(new_cr, uid, context=context)
+            import_start_time = datetime.now().strftime(DT_FMT)
+            for backend in self.browse(new_cr, uid, ids, context=context):
+                from_date = getattr(backend, from_date_field)
+                if from_date:
+                    from_date = datetime.strptime(from_date, DT_FMT)
+                else:
+                    from_date = None
+                import_batch_divider(session, model, backend.id,
+                                     from_date=from_date, priority=9)
+                # write in table qoqa.backend.timestamp
+                self.pool['qoqa.backend.timestamp']._update_timestamp(
+                    new_cr, uid, backend,
+                    from_date_field, import_start_time,
+                    context=context
+                )
+                new_cr.commit()
+        except psycopg2.OperationalError:
+            _logger.warning("Failed to update timestamps "
+                            "for backend:%s and field:%s",
+                            backend, from_date_field, exc_info=True)
+            new_cr.rollback()
+        finally:
+            new_cr.close()
 
     def import_product_template(self, cr, uid, ids, context=None):
         self._import_from_date(cr, uid, ids, 'qoqa.product.template',

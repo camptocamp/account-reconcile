@@ -25,6 +25,7 @@ Feature: upgrade to 1.1.14
       | name                             |
       | connector_qoqa                   |
       | base_concurrency                 |
+      | specific_fct                     |
     Then my modules should have been installed and models reloaded
 
     Given I execute the SQL commands

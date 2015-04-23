@@ -319,18 +319,18 @@ $gradient-dark:#E82A8C
     .oe_followers
         button.oe_follower.oe_following
             color: white
-            @include vertical-gradient(#f6f6f6, #e3e3e3)
+            background-color: #EA006C
+            background-image: -webkit-linear-gradient(top, $gradient-light, $gradient-dark)
+            background-image:    -moz-linear-gradient(top, $gradient-light, $gradient-dark)
+            background-image:     -ms-linear-gradient(top, $gradient-light, $gradient-dark)
+            background-image:      -o-linear-gradient(top, $gradient-light, $gradient-dark)
+            background-image:         linear-gradient(to bottom, $gradient-light, $gradient-dark)
     // }}}
     
     .oe_list_content
         > tbody
             > tr:nth-child(2n+1)
-                background-color: #efeff8 !important
-                background-image: -webkit-linear-gradient(top, $gradient-light, $gradient-dark)
-                background-image:    -moz-linear-gradient(top, $gradient-light, $gradient-dark)
-                background-image:     -ms-linear-gradient(top, $gradient-light, $gradient-dark)
-                background-image:      -o-linear-gradient(top, $gradient-light, $gradient-dark)
-                background-image:         linear-gradient(to bottom, $gradient-light, $gradient-dark)
+                @include vertical-gradient(#f6f6f6, #e3e3e3)
 
 // Kitten Mode {{{
 // }}}

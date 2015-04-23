@@ -9,6 +9,9 @@
         <field name="attribute_set_id" position="attributes">
           <attribute name="attrs">{'required': [('type', '=', 'product')]}</attribute>
         </field>
+        <field name="product_manager" position="attributes">
+          <attribute name="required">1</attribute>
+        </field>
       </field>
     </record>
 

@@ -10,15 +10,4 @@ Feature: upgrade to 1.1.12
       | name                                       |
     Then my modules should have been installed and models reloaded
 
-    Given I execute the SQL commands
-    """
-    UPDATE attribute_attribute
-    SET qoqa_id = 'capacity' WHERE field_id IN (
-        SELECT id
-        FROM ir_model_fields
-        WHERE model = 'product.template'
-        AND name = 'wine_bottle_id'
-    );
-    """
-
     Given I set the version of the instance to "1.1.12"

@@ -223,3 +223,7 @@ msgstr "Nombre de jour pour lequel un remboursement est possible"
 msgid "Invoice date older than this value cannot be refund"
 msgstr "Une facture avec une date plus vieille que cette valeur ne pourra pas être remboursée"
 
+#. module: specific_fct
+#: view:account.move.line:0
+msgid "Partial Reconciliation Number"
+msgstr "Numéro de lettrage partiel"

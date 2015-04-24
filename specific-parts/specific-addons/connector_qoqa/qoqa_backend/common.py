@@ -20,8 +20,10 @@
 ##############################################################################
 
 import requests
-
+import logging
+import psycopg2
 from datetime import datetime
+from openerp import pooler
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -34,6 +36,56 @@ from ..unit.import_synchronizer import (import_batch,
 from ..accounting_issuance.importer import import_accounting_issuance
 from ..connector import get_environment
 from ..exception import QoQaAPISecurityError, QoQaResponseNotParsable
+
+_logger = logging.getLogger(__name__)
+
+
+class qoqa_backend_timestamp(orm.Model):
+    _name = 'qoqa.backend.timestamp'
+    _description = 'QoQa Backend Import Timestamps'
+
+    _columns = {
+        'backend_id': fields.many2one(
+            'qoqa.backend', 'QoQa Backend', required=True
+        ),
+        'from_date_field': fields.char(
+            'From Date Field', required=True
+        ),
+        'import_start_time': fields.datetime(
+            'Import Start Time', required=True
+        ),
+    }
+
+    def _update_timestamp(self, cr, uid, backend,
+                          from_date_field, import_start_time, context=None):
+        """
+            This method is called to update or create one import timestamp
+            for a qoqa.backend. A concurrency error can arise, but it's
+            handled in _import_from_date.
+        """
+        if backend and from_date_field and import_start_time:
+            cr.execute(
+                """SELECT id FROM qoqa_backend_timestamp
+                   WHERE backend_id=%s
+                   AND from_date_field=%s
+                   FOR UPDATE NOWAIT""",
+                (backend.id, from_date_field)
+            )
+            timestamp_id = cr.fetchone()
+            if timestamp_id:
+                cr.execute(
+                    """UPDATE qoqa_backend_timestamp
+                       SET import_start_time=%s
+                       WHERE id=%s""",
+                    (import_start_time, timestamp_id[0])
+                )
+            else:
+                cr.execute(
+                    """INSERT INTO qoqa_backend_timestamp
+                       (backend_id, from_date_field, import_start_time)
+                       VALUES (%s, %s, %s)""",
+                    (import_start_time, backend.id, from_date_field)
+                )
 
 """
 We'll have 1 ``qoqa.backend`` sharing the connection informations probably,
@@ -55,6 +107,26 @@ class qoqa_backend(orm.Model):
         """
         return [('v1', 'v1'),
                 ]
+
+    def _get_import_date(self, cr, uid, ids, field_names,
+                         args=None, context=None):
+        result = {}
+        for backend_id in ids:
+            result[backend_id] = {}
+            cr.execute("""
+                SELECT from_date_field, import_start_time
+                FROM qoqa_backend_timestamp
+                WHERE backend_id = %s""", (backend_id,))
+            timestamps = dict(cr.fetchall())
+            result[backend_id] = {
+                field_name: timestamps[field_name]
+                if field_name in timestamps
+                else fields.date.context_today(
+                    self, cr, uid, context=context
+                )
+                for field_name in field_names
+            }
+        return result
 
     _columns = {
         # override because the version has no meaning here
@@ -87,22 +159,40 @@ class qoqa_backend(orm.Model):
             'qoqa.promo.type', 'backend_id',
             string='Promo Types'),
 
-        'import_product_template_from_date': fields.datetime(
-            'Import product templates from date', required=True),
-        'import_product_product_from_date': fields.datetime(
-            'Import product variants from date', required=True),
-        'import_res_partner_from_date': fields.datetime(
-            'Import Customers from date', required=True),
-        'import_address_from_date': fields.datetime(
-            'Import Addresses from date', required=True),
-        'import_sale_order_from_date': fields.datetime(
-            'Import Sales Orders from date', required=True),
-        'import_accounting_issuance_from_date': fields.datetime(
-            'Import Accounting Issuances from date', required=True),
-        'import_offer_from_date': fields.datetime(
-            'Import Offer (descriptions) from date', required=True),
-        'import_offer_position_from_date': fields.datetime(
-            'Import Offer Positions (descriptions) from date', required=True),
+        'import_product_template_from_date': fields.function(
+            _get_import_date, string='Import product templates from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_product_product_from_date': fields.function(
+            _get_import_date, string='Import product variants from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_res_partner_from_date': fields.function(
+            _get_import_date, string='Import Customers from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_address_from_date': fields.function(
+            _get_import_date, string='Import Addresses from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_sale_order_from_date': fields.function(
+            _get_import_date, string='Import Sales Orders from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_accounting_issuance_from_date': fields.function(
+            _get_import_date, string='Import Accounting Issuances from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_offer_from_date': fields.function(
+            _get_import_date, string='Import Offer (descriptions) from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+        'import_offer_position_from_date': fields.function(
+            _get_import_date,
+            string='Import Offer Positions (descriptions) from date',
+            type="datetime", multi='import_date', nodrop=True
+        ),
+
         'import_sale_id': fields.char('Sales Order ID'),
         'import_variant_id': fields.char('Variant ID'),
         'import_offer_id': fields.char('Offer ID'),
@@ -123,14 +213,6 @@ class qoqa_backend(orm.Model):
     _defaults = {
         # earlier dates for the imports, nothing existed before
         # we need a start date in order to import them by week
-        'import_product_template_from_date': '2005-12-12 00:00:00',
-        'import_product_product_from_date': '2005-12-12 00:00:00',
-        'import_res_partner_from_date': '2005-12-12 00:00:00',
-        'import_address_from_date': '2005-12-12 00:00:00',
-        'import_sale_order_from_date': '2005-12-12 00:00:00',
-        'import_accounting_issuance_from_date': '2013-11-01 00:00:00',
-        'import_offer_from_date': '2014-06-26 00:00:00',
-        'import_offer_position_from_date': '2014-06-26 00:00:00',
         'date_really_import': '2014-01-01 00:00:00',
         'date_import_inactive': '2012-01-01 00:00:00',
     }
@@ -178,21 +260,37 @@ class qoqa_backend(orm.Model):
 
     def _import_from_date(self, cr, uid, ids, model,
                           from_date_field, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        DT_FMT = DEFAULT_SERVER_DATETIME_FORMAT
-        session = ConnectorSession(cr, uid, context=context)
-        import_start_time = datetime.now().strftime(DT_FMT)
-        for backend in self.browse(cr, uid, ids, context=context):
-            from_date = getattr(backend, from_date_field)
-            if from_date:
-                from_date = datetime.strptime(from_date, DT_FMT)
-            else:
-                from_date = None
-            import_batch_divider(session, model, backend.id,
-                                 from_date=from_date, priority=9)
-        self.write(cr, uid, ids,
-                   {from_date_field: import_start_time})
+        # Create new cursor for creating job + updating timestamp; if a
+        # concurrency issue arises, it will be logged and rollbacked silently.
+        try:
+            new_cr = pooler.get_db(cr.dbname).cursor()
+            if not hasattr(ids, '__iter__'):
+                ids = [ids]
+            DT_FMT = DEFAULT_SERVER_DATETIME_FORMAT
+            session = ConnectorSession(new_cr, uid, context=context)
+            import_start_time = datetime.now().strftime(DT_FMT)
+            for backend in self.browse(new_cr, uid, ids, context=context):
+                from_date = getattr(backend, from_date_field)
+                if from_date:
+                    from_date = datetime.strptime(from_date, DT_FMT)
+                else:
+                    from_date = None
+                import_batch_divider(session, model, backend.id,
+                                     from_date=from_date, priority=9)
+                # write in table qoqa.backend.timestamp
+                self.pool['qoqa.backend.timestamp']._update_timestamp(
+                    new_cr, uid, backend,
+                    from_date_field, import_start_time,
+                    context=context
+                )
+                new_cr.commit()
+        except psycopg2.OperationalError:
+            _logger.warning("Failed to update timestamps "
+                            "for backend:%s and field:%s",
+                            backend, from_date_field, exc_info=True)
+            new_cr.rollback()
+        finally:
+            new_cr.close()
 
     def import_product_template(self, cr, uid, ids, context=None):
         self._import_from_date(cr, uid, ids, 'qoqa.product.template',

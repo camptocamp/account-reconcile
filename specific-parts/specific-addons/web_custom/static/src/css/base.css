@@ -217,6 +217,21 @@
   background-image: -o-linear-gradient(top, #eb5a9d, #e82a8c);
   background-image: linear-gradient(to bottom, #eb5a9d, #e82a8c);
 }
+.openerp .oe_list_content > tbody > tr:nth-child(2n+1) {
+  background-color: #ececec;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#e3e3e3));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #e3e3e3);
+  background-image: -moz-linear-gradient(top, #f6f6f6, #e3e3e3);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #e3e3e3);
+  background-image: -o-linear-gradient(top, #f6f6f6, #e3e3e3);
+  background-image: linear-gradient(to bottom, #f6f6f6, #e3e3e3);
+}
+.openerp .oe_form .oe_form_field_text .oe_form_text_content {
+  word-wrap: break-word;
+}
+.openerp .oe_form .oe_form_field_text {
+  width: 640px;
+}
 
 .ui-menu {
   border: 1px solid #afafb6;
@@ -227,12 +242,4 @@
 
 .openerp_ie .placeholder {
   color: #afafb6 !important;
-}
-
-.openerp .oe_form .oe_form_field_text .oe_form_text_content {
-    word-wrap: break-word;
-}
-
-.openerp .oe_form .oe_form_field_text {
-    width: 640px;
 }

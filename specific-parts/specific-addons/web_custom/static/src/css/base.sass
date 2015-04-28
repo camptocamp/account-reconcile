@@ -331,6 +331,13 @@ $gradient-dark:#E82A8C
         > tbody
             > tr:nth-child(2n+1)
                 @include vertical-gradient(#f6f6f6, #e3e3e3)
+    
+    .oe_form_field_one2many,
+    .oe_form_field_many2many
+        .oe_list_content 
+            > tbody 
+                tr:nth-child(odd)
+                    @include vertical-gradient(#f6f6f6, #e3e3e3)
 
     .oe_form
         .oe_form_field_text

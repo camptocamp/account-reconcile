@@ -12,6 +12,17 @@
           </field>
       </field>
     </record>
+    
+    <record id="purchase_order_form_inline_edit" model="ir.ui.view">
+      <field name="name">purchase.order.form</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase_landed_costs.view_order_form_editable_list"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='order_line']/tree" position="attributes">
+          <attribute name="editable">top</attribute>
+        </xpath>
+      </field>
+    </record>
 
   </data>
 </openerp>

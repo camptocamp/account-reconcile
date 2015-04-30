@@ -106,9 +106,9 @@ def impl(ctx):
     ConnectorSessionHandler = openerp.addons.connector.session.ConnectorSessionHandler
     session_hdl = ConnectorSessionHandler(db_name, 1)
     with session_hdl.session() as session:
-        for product in products:
-            export_record.delay(session, 'qoqa.product.product',
-                                int(product.id), ['wine_bottle_id'])
         for template in templates:
             export_record.delay(session, 'qoqa.product.template',
                                 int(template.id), ['wine_bottle_id'])
+        for product in products:
+            export_record.delay(session, 'qoqa.product.product',
+                                int(product.id), ['wine_bottle_id'])

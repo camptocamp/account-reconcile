@@ -97,7 +97,9 @@ def impl(ctx):
     db_name = ctx.conf['db_name']
 
     Product = model('qoqa.product.product')
+    Template = model('qoqa.product.template')
     products = Product.browse(['wine_bottle_id != False'])
+    templates = Template.browse(['wine_bottle_id != False'])
 
     connector_qoqa = openerp.addons.connector_qoqa
     export_record = connector_qoqa.unit.export_synchronizer.export_record
@@ -107,3 +109,6 @@ def impl(ctx):
         for product in products:
             export_record.delay(session, 'qoqa.product.product',
                                 int(product.id), ['wine_bottle_id'])
+        for template in templates:
+            export_record.delay(session, 'qoqa.product.template',
+                                int(template.id), ['wine_bottle_id'])

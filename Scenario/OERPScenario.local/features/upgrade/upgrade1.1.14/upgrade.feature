@@ -112,4 +112,5 @@ Feature: upgrade to 1.1.14
     AND name != 'QoQa - Import Product Images';
     """
 
+    Given I re-export to QoQa the wine products
     Given I set the version of the instance to "1.1.14"

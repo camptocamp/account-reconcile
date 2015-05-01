@@ -19,5 +19,9 @@ cd parts/e-commerce
 git pull --no-edit origin pull/37/head # Check invoice account for auto workflow
 cd -
 
+cd parts/account-financial-reporting
+git pull --no-edit origin pull/73/head # Add context to account browse() methods (for translation)
+cd -
+
 set +v
 set +e

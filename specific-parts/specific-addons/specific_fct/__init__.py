@@ -13,3 +13,4 @@ from . import account_statement_profile
 from . import api_call
 from . import payment_method
 from . import account_move_line
+from . import purchase

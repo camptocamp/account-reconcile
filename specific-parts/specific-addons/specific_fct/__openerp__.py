@@ -36,6 +36,7 @@
              'connector_qoqa',
              'account_constraints',
              'delivery_carrier_label_dispatch',
+             'purchase_group_hooks',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

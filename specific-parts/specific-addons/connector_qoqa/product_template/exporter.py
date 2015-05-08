@@ -99,6 +99,18 @@ class TemplateExportMapper(ExportMapper):
         return {'product_metas': []}
 
     @mapping
+    def category(self, record):
+        if not record.categ_id:
+            return
+        session = self.session
+        qoqa_value = session.pool['product.category'].name_get(
+            session.cr, session.uid, record.categ_id.id,
+            context={'lang': 'fr_FR'})
+        if len(qoqa_value) > 0:
+            # Result is [(id, value)]
+            return {'category': qoqa_value[0][1]}
+
+    @mapping
     def attributes(self, record):
         """ Map attributes which are not translatables """
         attrs = self.get_connector_unit_for_model(ProductAttribute)

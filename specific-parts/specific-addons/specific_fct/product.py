@@ -59,6 +59,7 @@ class product_template(orm.Model):
     _defaults = {
         'cost_method': 'average',
         'company_id': False,
+        'categ_id': False
     }
 
     def name_search(self, cr, uid, name='', args=None,

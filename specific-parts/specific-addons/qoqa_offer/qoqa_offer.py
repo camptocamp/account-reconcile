@@ -626,3 +626,30 @@ class qoqa_offer(orm.Model):
             'res_model': 'purchase.order',
             'type': 'ir.actions.act_window',
         }
+
+    def check_warning_on_save(self, cr, uid, id, context=None):
+        """
+            @param: int: offer_id
+            @return: string: message that should be displayed to the user
+        """
+        res = []
+
+        offer = self.browse(cr, uid, id, context=context)
+        offer_end_date = (
+            datetime.strptime(
+                offer.date_end,
+                DEFAULT_SERVER_DATE_FORMAT
+                )
+            )
+
+        for position in offer.position_ids:
+            delivery_date = datetime.strptime(position.date_delivery,
+                                              DEFAULT_SERVER_DATE_FORMAT)
+
+            if (delivery_date - offer_end_date).days <= 15:
+                res.append(
+                    _('Position "%s": delivery date in less than 15 days')
+                      % position.product_tmpl_id.name
+                    )
+
+        return '\n'.join(res)

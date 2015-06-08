@@ -648,8 +648,8 @@ class qoqa_offer(orm.Model):
 
             if (delivery_date - offer_end_date).days <= 15:
                 res.append(
-                    _('Position "%s": delivery date in less than 15 days')
-                      % position.product_tmpl_id.name
+                    _('Position "%s": delivery date in less than 15 days') %
+                    position.product_tmpl_id.name
                     )
 
         return '\n'.join(res)

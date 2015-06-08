@@ -13,6 +13,10 @@
             type="object"
             groups="base.group_user"/>
         </button>
+        <button name="print_quotation" class="oe_highlight" position="replace"/>
+        <button name="print_quotation" states="sent,progress,manual" position="replace">
+            <button name="print_quotation" string="Print" type="object" states="" groups="base.group_user"/>
+        </button>
       </field>
     </record>
   </data>

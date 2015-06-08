@@ -369,7 +369,7 @@ td.main_col1 {
         
       <div>  
 	    <p>Contacts logistique QoQa : Serkan Kilinc</p>
-		<p>Téléphone : 021/633.20.83                        </p>                 
+		<p>Téléphone : 021/633.20.83</p>                 
 		<p>e-mail : logistique@qoqa.ch</p>
 		<p>Heures d’ouverture : 8h-12 et 13h30-17h30</p>
 		<p>Hauteur minimum du véhicule pour livraison : 70cm</p>

@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm
+from openerp.osv import orm, fields
 
 
 class PurchaseOrder(orm.Model):
@@ -40,3 +40,14 @@ class PurchaseOrder(orm.Model):
                     (merged_data['origin'] or '') + ' ' + order.origin
                 )
         return merged_data
+
+
+class PurchaseOrderLine(orm.Model):
+    _inherit = 'purchase.order.line'
+
+    _order = 'sequence asc, name asc'
+
+    _columns = {
+        'sequence': fields.integer(
+            string='Sequence'),
+    }

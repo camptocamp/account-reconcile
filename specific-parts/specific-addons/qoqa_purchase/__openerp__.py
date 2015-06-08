@@ -35,9 +35,9 @@ Add this field in purchase view with widget 'handle'.
  'depends': ['purchase',
              ],
  'data': [
-          'purchase_view.xml',
-          'purchase_report.xml',
-          ],
+     'purchase_view.xml',
+     'purchase_report.xml',
+ ],
  'test': [],
  'installable': True,
  'auto_install': False,

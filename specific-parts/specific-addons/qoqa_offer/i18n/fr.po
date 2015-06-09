@@ -1,6 +1,6 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-# 	* qoqa_offer
+#   * qoqa_offer
 #
 msgid ""
 msgstr ""
@@ -1036,3 +1036,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:res_users.field_res_users_qoqa_shop_ids
 msgid "Favorites Shops"
 msgstr "Magasins favoris"
+
+#. module: qoqa_offer
+#: code:addons/qoqa_offer/qoqa_offer.py:652
+#, python-format
+msgid "Position \"%s\": delivery date in less than 15 days"
+msgstr "Position \"%s\" : date de livraison dans moins de 15 jours"

@@ -180,7 +180,7 @@ td.vat {
 }
 .address .recipient {
     font-size: 12px;
-    margin-left: 350px;
+    margin-left: 150px;
     margin-right: 120px;
     float: right;
 }
@@ -260,6 +260,7 @@ td.main_col1 {
                 <tr><td>${part}</td></tr>
             % endif
         %endfor
+        <tr><td>
     </%def>
 
     %for purch in objects :
@@ -366,20 +367,21 @@ td.main_col1 {
         <p style="page-break-after:always"/>
         <br/>
         
-        
+    %if purch.company_id.country_id.code == 'CH':
       <div>  
-	    <p>Contacts logistique QoQa : Serkan Kilinc</p>
-		<p>Téléphone : 021/633.20.83</p>                 
-		<p>e-mail : logistique@qoqa.ch</p>
-		<p>Heures d’ouverture : 8h-12 et 13h30-17h30</p>
-		<p>Hauteur minimum du véhicule pour livraison : 70cm</p>
-		<p>Hauteur max palettes : 220cm "</p>
+        <p>Contacts logistique QoQa : Serkan Kilinc</p>
+        <p>Téléphone : 021/633.20.83</p>
+        <p>e-mail : logistique@qoqa.ch</p>
+        <p>Heures d’ouverture : 8h-12 et 13h30-17h30</p>
+        <p>Hauteur minimum du véhicule pour livraison : 70cm</p>
+        <p>Hauteur max palettes : 220cm "</p>
 
-<p>Plan d'accès :</p>
-<br/>
-${helper.embed_logo_by_name('plan_acces', width=550, company_id=company.id)|n}
-</div>
+        <p>Plan d'accès :</p>
+        <br/>
+        ${helper.embed_logo_by_name('plan_acces', width=550)|n}
+      </div>
+    %endif
         
-	%endfor
+%endfor
 </body>
 </html>

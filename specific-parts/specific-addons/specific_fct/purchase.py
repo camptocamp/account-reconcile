@@ -28,6 +28,18 @@ class PurchaseOrder(orm.Model):
     # redefine one part from purchase order merge: the notes
     # should not be concatenated.
 
+    _columns = {
+        'partner_ref': fields.char(
+            'Supplier Reference',
+            states={'done': [('readonly', True)]},
+            size=64,
+            help="Reference of the sales order or quotation sent by your "
+                 "supplier. It's mainly used to do the matching when you "
+                 "receive the products as this reference is usually written "
+                 "on the delivery order sent by your supplier."
+        )
+    }
+
     def _update_merged_order_data(self, merged_data, order):
         if order.date_order < merged_data['date_order']:
             merged_data['date_order'] = order.date_order

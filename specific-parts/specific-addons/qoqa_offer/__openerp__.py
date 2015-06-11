@@ -42,6 +42,7 @@ when a product has variants, a position may sell several of them.
              'picking_dispatch',  # stock-logistic-flows
              'ecotax',
              'procurement',
+             'web_warning_on_save',
              ],
  'data': ['qoqa_offer_data.xml',
           'sale_order_view.xml',

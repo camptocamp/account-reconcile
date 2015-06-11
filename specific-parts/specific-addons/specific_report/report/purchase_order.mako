@@ -299,7 +299,7 @@ td.main_col1 {
                 <th style="text-align:center">${_("Validated by")}</th>
             </tr>
             <tr>
-                <td>${purch.origin or ''}</td>
+                <td>${purch.name or ''}</td>
                 <td style="text-align:center">${purch.partner_ref or ''}</td>
                 <td class="date">${formatLang(purch.date_order, date=True)}</td>
                 <td style="text-align:center">${purch.validator and purch.validator.name or ''  }</td>
@@ -320,7 +320,13 @@ td.main_col1 {
               </tr>
             </thead>
             <tbody>
+            <%
+              total_qty = 0
+            %>
             %for line in purch.order_line :
+              <%
+                total_qty += line.product_qty
+              %>
               <tr class="list_main_lines">
                 <td class="main_col1">${line.product_id.brand or '' | n}</td>
                 <td class="main_col2">${"%s - %s" % (line.product_id.name or '', line.product_id.variants or '')}</td>
@@ -336,7 +342,14 @@ td.main_col1 {
             </tbody>
 	      <tfoot class="totals">
             <tr class="list_main_footers">
-                <td colspan="7" class="total_empty_cell"/>
+                <td colspan="3" class="total_empty_cell"/>
+              <td style="font-weight:bold; text-align: right">
+                ${_("Quantity :")}
+              </td>
+              <td class="amount total_sum_cell">
+                ${total_qty}
+              </td>
+                <td colspan="2" class="total_empty_cell"/>
               <td style="font-weight:bold; text-align: right">
                 ${_("Net :")}
               </td>
@@ -368,7 +381,8 @@ td.main_col1 {
         <br/>
         
     %if purch.company_id.country_id.code == 'CH':
-      <div>  
+      <div>
+        <p><b>Information pour la livraison</b></p>
         <p>Contacts logistique QoQa : Serkan Kilinc</p>
         <p>Téléphone : 021/633.20.83</p>
         <p>e-mail : logistique@qoqa.ch</p>

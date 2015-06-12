@@ -646,7 +646,7 @@ class qoqa_offer(orm.Model):
             delivery_date = datetime.strptime(position.date_delivery,
                                               DEFAULT_SERVER_DATE_FORMAT)
 
-            if (delivery_date - offer_end_date).days < 14:
+            if (delivery_date - offer_end_date).days < 13:
                 res.append(
                     _('Position "%s": delivery date is '
                       'less than 10 working days!') %

@@ -19,5 +19,9 @@ cd parts/e-commerce
 git pull --no-edit origin pull/37/head # Check invoice account for auto workflow
 cd -
 
+cd parts/web
+git pull --no-edit origin pull/144/head # add module 'web_warning_on_save'
+cd -
+
 set +v
 set +e

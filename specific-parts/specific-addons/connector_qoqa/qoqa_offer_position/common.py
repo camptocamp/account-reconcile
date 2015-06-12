@@ -108,7 +108,7 @@ class qoqa_offer_position(orm.Model):
                     'stock_online_failure_message': message,
                 }
             else:
-                if 'sold' in qoqa_values:
+                if 'sold' in qoqa_values and qoqa_values['sold']:
                     sold = int(qoqa_values['sold'])
                     quantity = values[position.id]['sum_quantity']
                     residual = quantity - sold

@@ -7,9 +7,16 @@
       <field name="model">purchase.order</field>
       <field name="inherit_id" ref="purchase.purchase_order_form"/>
       <field name="arch" type="xml">
+          <button name="print_quotation" class="oe_highlight" position="replace"/>
+          <button name="print_quotation" states="sent" position="replace">
+            <button name="print_quotation" string="Print" type="object" states="" groups="base.group_user"/>
+          </button>
           <field name="minimum_planned_date" position="attributes">
             <attribute name="required">1</attribute>
           </field>
+          <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
+            <field name="sequence" widget="handle"/>
+          </xpath>
       </field>
     </record>
     

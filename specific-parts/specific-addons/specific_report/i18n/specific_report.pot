@@ -19,3 +19,7 @@ msgstr ""
 msgid "Brand"
 msgstr ""
 
+#. module: specific_report
+#: report:addons/specific_report/report/purchase_order.mako:278
+msgid "Invoice address:"
+msgstr ""

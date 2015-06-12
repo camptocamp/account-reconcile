@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm
+from openerp.osv import orm, fields
 
 
 class PurchaseOrder(orm.Model):
@@ -27,6 +27,18 @@ class PurchaseOrder(orm.Model):
     # Use the module "purchase_group_hooks" in order to
     # redefine one part from purchase order merge: the notes
     # should not be concatenated.
+
+    _columns = {
+        'partner_ref': fields.char(
+            'Supplier Reference',
+            states={'done': [('readonly', True)]},
+            size=64,
+            help="Reference of the sales order or quotation sent by your "
+                 "supplier. It's mainly used to do the matching when you "
+                 "receive the products as this reference is usually written "
+                 "on the delivery order sent by your supplier."
+        )
+    }
 
     def _update_merged_order_data(self, merged_data, order):
         if order.date_order < merged_data['date_order']:
@@ -40,3 +52,14 @@ class PurchaseOrder(orm.Model):
                     (merged_data['origin'] or '') + ' ' + order.origin
                 )
         return merged_data
+
+
+class PurchaseOrderLine(orm.Model):
+    _inherit = 'purchase.order.line'
+
+    _order = 'sequence asc, name asc'
+
+    _columns = {
+        'sequence': fields.integer(
+            string='Sequence'),
+    }

@@ -382,13 +382,14 @@ td.main_col1 {
         
     %if purch.company_id.country_id.code == 'CH':
       <div>
+        <br/>
         <p><b>Information pour la livraison</b></p>
         <p>Contacts logistique QoQa : Serkan Kilinc</p>
         <p>Téléphone : 021/633.20.83</p>
         <p>e-mail : logistique@qoqa.ch</p>
-        <p>Heures d’ouverture : 8h-12 et 13h30-17h30</p>
+        <p>Heures d’ouverture : 8h-12h et 13h30-17h30</p>
         <p>Hauteur minimum du véhicule pour livraison : 70cm</p>
-        <p>Hauteur max palettes : 220cm "</p>
+        <p>Hauteur max palettes : 220cm</p>
 
         <p>Plan d'accès :</p>
         <br/>

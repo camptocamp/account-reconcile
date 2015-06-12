@@ -1050,5 +1050,5 @@ msgstr ""
 #. module: qoqa_offer
 #: code:addons/qoqa_offer/qoqa_offer.py:652
 #, python-format
-msgid "Position \"%s\": delivery date in less than 15 days"
+msgid "Position \"%s\": delivery date is less than 10 working days!"
 msgstr ""

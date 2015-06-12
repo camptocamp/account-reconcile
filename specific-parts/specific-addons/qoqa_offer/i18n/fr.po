@@ -1040,5 +1040,5 @@ msgstr "Magasins favoris"
 #. module: qoqa_offer
 #: code:addons/qoqa_offer/qoqa_offer.py:652
 #, python-format
-msgid "Position \"%s\": delivery date in less than 15 days"
-msgstr "Position \"%s\" : date de livraison dans moins de 15 jours"
+msgid "Position \"%s\": delivery date is less than 10 working days!"
+msgstr "Position \"%s\" : la date de livraison est inférieure à 10 jours ouvrables !"

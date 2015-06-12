@@ -8,9 +8,7 @@ Feature: upgrade to 1.1.15
     Given I install the required modules with dependencies:
       | name                             |
       | connector_qoqa                   |
-      | web_warning_on_save              |
       | qoqa_offer                       |
-      | purchase_order_webkit            |
       | specific_report                  |
       | specific_fct                     |
     Then my modules should have been installed and models reloaded

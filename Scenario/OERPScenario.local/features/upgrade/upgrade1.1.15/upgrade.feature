@@ -8,7 +8,6 @@ Feature: upgrade to 1.1.15
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                             |
-      | connector_qoqa                   |
       | qoqa_offer                       |
       | specific_report                  |
       | specific_fct                     |

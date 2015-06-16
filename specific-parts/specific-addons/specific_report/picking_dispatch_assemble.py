@@ -20,8 +20,6 @@
 ##############################################################################
 
 from openerp import pooler
-from openerp.osv import orm
-from openerp.tools.translate import _
 from openerp.addons.base_report_assembler import report_assembler
 
 
@@ -40,5 +38,5 @@ class PickingDispatchPDFReportAssembler(report_assembler.PDFReportAssembler):
         return [r.report_id.id for r in reports]
 
 PickingDispatchPDFReportAssembler('report.picking_dispatch_report_assemblage',
-                          'picking.dispatch',
-                          None)
+                                  'picking.dispatch',
+                                  None)

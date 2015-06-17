@@ -6,7 +6,7 @@ git pull --no-edit origin pull/83/head # New module account_statement_account_pa
 cd -
 
 cd parts/server
-git pull --no-edit origin pull/249/head # Fix for decimal precision in write-off
+git pull --no-edit origin pull/249/head # Make exp_report() signature correspond to the one in web_services
 cd -
 
 cd parts/server-tools

@@ -41,6 +41,8 @@
  'data': ['base_headers_data.xml',
           'reports.xml',
           'stock_report.xml',
+          'picking_dispatch_assemble.xml',
+          'security/ir.model.access.csv',
           ],
  'test': [],
  'installable': True,

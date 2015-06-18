@@ -19,3 +19,4 @@
 #
 ##############################################################################
 from . import stock
+from . import picking_dispatch_assemble

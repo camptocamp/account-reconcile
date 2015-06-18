@@ -23,3 +23,8 @@ msgstr ""
 #: report:addons/specific_report/report/purchase_order.mako:278
 msgid "Invoice address:"
 msgstr ""
+
+#. module: specific_report
+#: model:ir.actions.report.xml,name:specific_report.picking_dispatch_report_assemblage
+msgid "Picking Dispatch"
+msgstr ""

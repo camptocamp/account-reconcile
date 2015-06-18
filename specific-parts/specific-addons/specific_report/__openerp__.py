@@ -37,6 +37,7 @@
  'depends': ['base_headers_webkit',
              'delivery_carrier_label_default_webkit',
              'picking_dispatch',
+             'picking_dispatch_group',
              'purchase_order_webkit',
              'base_report_assembler'],
  'data': ['base_headers_data.xml',

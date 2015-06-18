@@ -35,7 +35,8 @@
             string="Dispatch To Process"
             report_type="webkit"
             header="False"
-            webkit_header="base_headers_webkit.base_minimum_reports_portrait_header" />
+            webkit_header="base_headers_webkit.base_minimum_reports_portrait_header"
+            menu="False"/>
 
     <report id="purchase.report_purchase_order"
             name="purchase.order.webkit"

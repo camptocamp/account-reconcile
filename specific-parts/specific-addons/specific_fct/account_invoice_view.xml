@@ -15,6 +15,9 @@
             type="object"
             string="Agreement validated"/>
         </field>
+        <xpath expr="//button[@name='invoice_open']" position="after">
+          <button name="invoice_print" string="Print" type="object" groups="base.group_user"/>
+        </xpath>
       </field>
     </record>
 

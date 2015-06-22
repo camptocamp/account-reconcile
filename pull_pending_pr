@@ -1,9 +1,0 @@
-set -v
-set -e
-
-cd parts/server
-git pull --no-edit origin pull/249/head # Make exp_report() signature correspond to the one in web_services
-cd -
-
-set +v
-set +e

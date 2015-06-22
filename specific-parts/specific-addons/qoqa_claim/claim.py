@@ -35,5 +35,12 @@ class crm_claim(orm.Model):
             relation='res.company',
             string='Company',
             store=True,
-            readonly=True),
+            readonly=True
+        ),
+        'invoice_id': fields.many2one(
+            'account.invoice',
+            string='Invoice',
+            domain=['|', ('active', '=', False), ('active', '=', True)],
+            help='Related original Customer invoice'
+        ),
     }

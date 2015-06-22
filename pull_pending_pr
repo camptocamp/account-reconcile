@@ -9,10 +9,6 @@ cd parts/server
 git pull --no-edit origin pull/249/head # Make exp_report() signature correspond to the one in web_services
 cd -
 
-cd parts/server-tools
-git pull --no-edit origin pull/144/head # Fix for SQL concurrency
-cd -
-
 cd parts/e-commerce
 git pull --no-edit origin pull/37/head # Check invoice account for auto workflow
 cd -

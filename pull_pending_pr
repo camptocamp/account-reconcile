@@ -5,9 +5,5 @@ cd parts/server
 git pull --no-edit origin pull/249/head # Make exp_report() signature correspond to the one in web_services
 cd -
 
-cd parts/web
-git pull --no-edit origin pull/144/head # add module 'web_warning_on_save'
-cd -
-
 set +v
 set +e

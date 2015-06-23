@@ -30,3 +30,19 @@ class res_partner(orm.Model):
     _defaults = {
         'notification_email_send': 'comment',
     }
+
+    def name_search(self, cr, uid, name, args=None, operator='ilike',
+                    context=None, limit=100):
+        # Re-define name_search in order to put QoQa users first
+        res = []
+        user_args = args + [['user_ids', '!=', False]]
+        users = super(res_partner, self).name_search(cr, uid, name, user_args,
+                                                     operator, context, limit)
+        res = [(id, 'QoQa - ' + username) for (id, username) in users]
+
+        if limit > len(users):
+            non_user_args = args + [['user_ids', '=', False]]
+            new_limit = limit - len(users)
+            res += super(res_partner, self).name_search(
+                cr, uid, name, non_user_args, operator, context, new_limit)
+        return res

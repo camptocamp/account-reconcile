@@ -91,7 +91,7 @@ class product_product(orm.Model):
         if default is None:
             default = {}
         product = self.browse(cr, uid, id, context=context)
-        if product.default_code:
+        if 'default_code' not in default and product.default_code:
             default['default_code'] = product.default_code + _('-copy')
         default['qoqa_bind_ids'] = False
         return super(product_product, self).copy_data(cr, uid, id,

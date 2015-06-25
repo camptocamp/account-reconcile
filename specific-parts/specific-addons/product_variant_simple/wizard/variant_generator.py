@@ -16,6 +16,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
 
 class VariantGenerator(orm.TransientModel):
@@ -50,4 +51,37 @@ class VariantGenerator(orm.TransientModel):
             string='Options',
             domain="[('type_id', '=', third_type_id)]",
         ),
+        'delete_original_product': fields.boolean(
+            'Delete original product'
+        ),
     }
+
+    def generate(self, cr, uid, ids, context):
+        Product = self.pool['product.product']
+
+        for wizard in self.browse(cr, uid, ids, context):
+            product = Product.browse(cr, uid, context['active_id'], context)
+            new_variant_ids = []
+            for option in wizard.first_option_ids:
+                new_data = {
+                    'variants': option.name,
+                    'default_code': product.default_code + option.code,
+                }
+                new_ctx = context.copy()
+                new_ctx['view_is_product_variant'] = True
+                new_variant_ids.append(
+                    Product.copy(cr, uid, product.id, default=new_data,
+                                 context=new_ctx)
+                )
+
+            if wizard.delete_original_product:
+                # product.unlink()
+                # FIXME: should keep the template
+            return {
+                'domain': [('id', 'in', new_variant_ids)],
+                'name': _('Generated variants'),
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'res_model': 'product.product',
+                'type': 'ir.actions.act_window',
+            }

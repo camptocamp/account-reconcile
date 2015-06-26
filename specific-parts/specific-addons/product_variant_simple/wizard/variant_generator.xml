@@ -7,7 +7,11 @@
       <field name="model">variant.generator.wizard</field>
       <field name="arch" type="xml">
         <form string="Generate variants" version="7.0">
-          <field name="delete_original_product"/>
+          <!-- crashes
+          <group>
+            <field name="delete_original_product"/>
+          </group>
+          -->
           <group string="First dimension">
             <field name="first_type_id" />
             <field name="first_option_ids" nolabel="1" colspan="2"

@@ -90,10 +90,15 @@ class VariantGenerator(orm.TransientModel):
                                  context=new_ctx)
                 )
 
-            if wizard.delete_original_product:
-                # product.unlink()
-                # FIXME: should keep the template
-                pass
+            # crashes because for some reason the client asks again the
+            # name_get of the original product
+            # if wizard.delete_original_product:
+            #     Product.unlink(cr, uid, [product.id], context=context)
+            # else:
+            #     new_variant_ids.append(product.id)
+
+            new_variant_ids.append(product.id)
+
             return {
                 'domain': [('id', 'in', new_variant_ids)],
                 'name': _('Generated variants'),

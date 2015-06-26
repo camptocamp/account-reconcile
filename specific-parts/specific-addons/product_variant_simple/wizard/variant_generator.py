@@ -56,8 +56,8 @@ class VariantGenerator(orm.TransientModel):
             string='Options',
             domain="[('type_id', '=', third_type_id)]",
         ),
-        'delete_original_product': fields.boolean(
-            'Delete original product'
+        'disable_original_product': fields.boolean(
+            'Disable the original product'
         ),
     }
 
@@ -90,12 +90,8 @@ class VariantGenerator(orm.TransientModel):
                                  context=new_ctx)
                 )
 
-            # crashes because for some reason the client asks again the
-            # name_get of the original product
-            # if wizard.delete_original_product:
-            #     Product.unlink(cr, uid, [product.id], context=context)
-            # else:
-            #     new_variant_ids.append(product.id)
+            if wizard.disable_original_product:
+                product.write({'active': False})
 
             new_variant_ids.append(product.id)
 

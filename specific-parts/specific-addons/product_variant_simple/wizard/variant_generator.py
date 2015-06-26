@@ -66,11 +66,22 @@ class VariantGenerator(orm.TransientModel):
 
         for wizard in self.browse(cr, uid, ids, context):
             product = Product.browse(cr, uid, context['active_id'], context)
+
+            options = [wizard.first_option_ids]
+            if wizard.second_option_ids:
+                options.append(wizard.second_option_ids)
+            if wizard.third_option_ids:
+                options.append(wizard.third_option_ids)
+
+            combinations = itertools.product(*options)
+
             new_variant_ids = []
-            for option in wizard.first_option_ids:
+            for combination in combinations:
                 new_data = {
-                    'variants': option.name,
-                    'default_code': product.default_code + option.code,
+                    'variants': ' - '.join(o.name for o in combination),
+                    'default_code': ' - '.join(
+                        [product.default_code] + [o.code for o in combination]
+                    ),
                 }
                 new_ctx = context.copy()
                 new_ctx['view_is_product_variant'] = True
@@ -82,6 +93,7 @@ class VariantGenerator(orm.TransientModel):
             if wizard.delete_original_product:
                 # product.unlink()
                 # FIXME: should keep the template
+                pass
             return {
                 'domain': [('id', 'in', new_variant_ids)],
                 'name': _('Generated variants'),

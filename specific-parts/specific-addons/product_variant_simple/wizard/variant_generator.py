@@ -15,6 +15,8 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import itertools
+
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
@@ -30,6 +32,7 @@ class VariantGenerator(orm.TransientModel):
         ),
         'first_option_ids': fields.many2many(
             'product.variant.dimension.option',
+            'first_wizard_option_rel',
             string='Options',
             domain="[('type_id', '=', first_type_id)]",
         ),
@@ -39,6 +42,7 @@ class VariantGenerator(orm.TransientModel):
         ),
         'second_option_ids': fields.many2many(
             'product.variant.dimension.option',
+            'second_wizard_option_rel',
             string='Options',
             domain="[('type_id', '=', second_type_id)]",
         ),
@@ -48,6 +52,7 @@ class VariantGenerator(orm.TransientModel):
         ),
         'third_option_ids': fields.many2many(
             'product.variant.dimension.option',
+            'third_wizard_option_rel',
             string='Options',
             domain="[('type_id', '=', third_type_id)]",
         ),

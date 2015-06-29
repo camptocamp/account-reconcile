@@ -145,6 +145,30 @@ class QoQaDirectBinder(QoQaBinder):
                     {'qoqa_id': str(external_id),
                      self._sync_date_field: now_fmt})
 
+    def unwrap_binding(self, binding_id, browse=False):
+        """ For a binding record, gives the normal record.
+
+        Example: when called with a ``qoqa.product.product`` id,
+        it will return the corresponding ``product.product`` id.
+
+        :param browse: when True, returns a browse_record instance
+                       rather than an ID
+        """
+        if browse:
+            return self.session.browse(self.model._name, binding_id)
+        return binding_id
+
+    def unwrap_model(self):
+        """ For a binding model, gives the name of the normal model.
+
+        Example: when called on a binder for ``qoqa.product.product``,
+        it will return ``product.product``.
+
+        This binder assumes that the normal model lays in ``openerp_id`` since
+        this is the field we use in the ``_inherits`` bindings.
+        """
+        return self.model._name
+
 
 @qoqa
 class QoQaInheritsBinder(QoQaBinder):
@@ -238,6 +262,39 @@ class QoQaInheritsBinder(QoQaBinder):
                 values = {'qoqa_id': str(external_id),
                           self._sync_date_field: now_fmt}
                 self.session.write(self.model._name, binding_id, values)
+
+    def unwrap_binding(self, binding_id, browse=False):
+        """ For a binding record, gives the normal record.
+
+        Example: when called with a ``qoqa.product.product`` id,
+        it will return the corresponding ``product.product`` id.
+
+        :param browse: when True, returns a browse_record instance
+                       rather than an ID
+        """
+        binding = self.session.read(self.model._name, binding_id,
+                                    ['openerp_id'])
+        openerp_id = binding['openerp_id'][0]
+        if browse:
+            return self.session.browse(self.unwrap_model(),
+                                       openerp_id)
+        return openerp_id
+
+    def unwrap_model(self):
+        """ For a binding model, gives the name of the normal model.
+
+        Example: when called on a binder for ``qoqa.product.product``,
+        it will return ``product.product``.
+
+        This binder assumes that the normal model lays in ``openerp_id`` since
+        this is the field we use in the ``_inherits`` bindings.
+        """
+        try:
+            column = self.model._columns['openerp_id']
+        except KeyError:
+            raise ValueError('Cannot unwrap model %s, because it has '
+                             'no openerp_id field' % self.model._name)
+        return column._obj
 
 
 class ByAnyFieldBinder(QoQaBinder):

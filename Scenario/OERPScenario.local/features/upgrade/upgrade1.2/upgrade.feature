@@ -26,6 +26,8 @@ Feature: upgrade to 1.2
       | name                             |
       | base                             |
       | specific_fct                     |
+      | connector                        |
+      | connector_base_product           |
     Then my modules should have been installed and models reloaded
 
     Given I set the version of the instance to "1.2.0"

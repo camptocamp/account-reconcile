@@ -18,7 +18,7 @@ msgstr ""
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Annuler"
 
 #. module: product_variant_simple
 #: view:product.template:0
@@ -46,66 +46,66 @@ msgstr "Produits consommables"
 #: model:ir.model,name:product_variant_simple.model_product_variant_dimension_option
 #, python-format
 msgid "Dimension Option"
-msgstr "Dimension Option"
+msgstr "Option de paramètre"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_type_option_ids
 #: field:product.variant.dimension.type,option_ids:0
 msgid "Dimension Options"
-msgstr "Dimension Options"
+msgstr "Options de paramètre"
 
 #. module: product_variant_simple
 #: code:_description:0
 #: model:ir.model,name:product_variant_simple.model_product_variant_dimension_type
 #, python-format
 msgid "Dimension Type"
-msgstr "Dimension Type"
+msgstr "Type de paramètre"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_type_name
 #: field:product.variant.dimension.type,name:0
 msgid "Dimension Type Name"
-msgstr "Dimension Type Name"
+msgstr "Nom de type"
 
 #. module: product_variant_simple
 #: view:product.variant.dimension.option:0
 msgid "Dimension option"
-msgstr "Dimension option"
+msgstr "Option de paramètre"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_option_type_id
 #: field:product.variant.dimension.option,type_id:0
 #: view:product.variant.dimension.type:0
 msgid "Dimension type"
-msgstr "Dimension type"
+msgstr "Type de paramètre"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_disable_original_product
 #: field:variant.generator.wizard,disable_original_product:0
 msgid "Disable the original product"
-msgstr "Disable the original product"
+msgstr "Désactiver le produit original"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "First dimension"
-msgstr "First dimension"
+msgstr "Premier paramètre"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Generate"
-msgstr "Generate"
+msgstr "Générer"
 
 #. module: product_variant_simple
 #: view:product.product:0
 #: view:variant.generator.wizard:0
 msgid "Generate variants"
-msgstr "Generate variants"
+msgstr "Générer des variantes"
 
 #. module: product_variant_simple
 #: code:addons/product_variant_simple/wizard/variant_generator.py:100
 #, python-format
 msgid "Generated variants"
-msgstr "Generated variants"
+msgstr "Variantes générées"
 
 #. module: product_variant_simple
 #: view:product.product:0
@@ -162,7 +162,7 @@ msgstr "Variantes de produits"
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Second dimension"
-msgstr "Second dimension"
+msgstr "Second paramètre"
 
 #. module: product_variant_simple
 #: view:product.template:0
@@ -177,7 +177,7 @@ msgstr "Modèle d'article"
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Third dimension"
-msgstr "Third dimension"
+msgstr "Troisième paramètre"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_first_type_id
@@ -198,14 +198,14 @@ msgstr "Variante"
 #. module: product_variant_simple
 #: model:ir.actions.act_window,name:product_variant_simple.action_variant_generator
 msgid "Variant generator"
-msgstr "Variant generator"
+msgstr "Générateur de variantes"
 
 #. module: product_variant_simple
 #: code:_description:0
 #: model:ir.model,name:product_variant_simple.model_variant_generator_wizard
 #, python-format
 msgid "Variant generator wizard"
-msgstr "Variant generator wizard"
+msgstr "Assistant générateur de variantes"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_template_variant_ids
@@ -216,5 +216,5 @@ msgstr "Variantes"
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "or"
-msgstr "or"
+msgstr "ou"
 

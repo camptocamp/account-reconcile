@@ -95,11 +95,14 @@ class VariantGenerator(orm.TransientModel):
 
             new_variant_ids.append(product.id)
 
+            ModelData = self.pool['ir.model.data']
+            view_xmlid = ('product', 'product_variant_tree_view')
+            __, view_id = ModelData.get_object_reference(cr, uid, *view_xmlid)
             return {
                 'domain': [('id', 'in', new_variant_ids)],
                 'name': _('Generated variants'),
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'views': [(view_id, 'tree'), (False, 'form')],
                 'res_model': 'product.product',
                 'type': 'ir.actions.act_window',
             }

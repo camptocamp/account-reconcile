@@ -69,6 +69,17 @@
           </field>
         </record>
 
+        <record id="product_variant_tree_view" model="ir.ui.view">
+            <field name="name">product.variant.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_tree_view"/>
+            <field name="arch" type="xml">
+                <tree position="attributes">
+                    <attribute name="editable">top</attribute>
+                </tree>
+            </field>
+        </record>
+
         <record id="product_variant_search_view" model="ir.ui.view">
             <field name="name">product.variant.search</field>
             <field name="model">product.product</field>

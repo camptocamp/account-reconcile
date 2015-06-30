@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-26 14:52+0000\n"
-"PO-Revision-Date: 2015-06-26 14:52+0000\n"
+"POT-Creation-Date: 2015-06-26 14:54+0000\n"
+"PO-Revision-Date: 2015-06-26 14:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,12 +18,12 @@ msgstr ""
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Cancel"
-msgstr "Annuler"
+msgstr "Cancel"
 
 #. module: product_variant_simple
 #: view:product.template:0
 msgid "Category"
-msgstr "Catégorie"
+msgstr "Category"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_option_code
@@ -34,90 +34,90 @@ msgstr "Code"
 #. module: product_variant_simple
 #: view:product.template:0
 msgid "Consumable"
-msgstr "Consommable"
+msgstr "Consumable"
 
 #. module: product_variant_simple
 #: view:product.template:0
 msgid "Consumable products"
-msgstr "Produits consommables"
+msgstr "Consumable products"
 
 #. module: product_variant_simple
 #: code:_description:0
 #: model:ir.model,name:product_variant_simple.model_product_variant_dimension_option
 #, python-format
 msgid "Dimension Option"
-msgstr "Option de paramètre"
+msgstr "Dimension Option"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_type_option_ids
 #: field:product.variant.dimension.type,option_ids:0
 msgid "Dimension Options"
-msgstr "Options de paramètre"
+msgstr "Dimension Options"
 
 #. module: product_variant_simple
 #: code:_description:0
 #: model:ir.model,name:product_variant_simple.model_product_variant_dimension_type
 #, python-format
 msgid "Dimension Type"
-msgstr "Type de paramètre"
+msgstr "Dimension Type"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_type_name
 #: field:product.variant.dimension.type,name:0
 msgid "Dimension Type Name"
-msgstr "Nom de type"
+msgstr "Dimension Type Name"
 
 #. module: product_variant_simple
 #: view:product.variant.dimension.option:0
 msgid "Dimension option"
-msgstr "Option de paramètre"
+msgstr "Dimension option"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_option_type_id
 #: field:product.variant.dimension.option,type_id:0
 #: view:product.variant.dimension.type:0
 msgid "Dimension type"
-msgstr "Type de paramètre"
+msgstr "Dimension type"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_disable_original_product
 #: field:variant.generator.wizard,disable_original_product:0
 msgid "Disable the original product"
-msgstr "Désactiver le produit original"
+msgstr "Disable the original product"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "First dimension"
-msgstr "Premier paramètre"
+msgstr "First dimension"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Generate"
-msgstr "Générer"
+msgstr "Generate"
 
 #. module: product_variant_simple
 #: view:product.product:0
 #: view:variant.generator.wizard:0
 msgid "Generate variants"
-msgstr "Générer des variantes"
+msgstr "Generate variants"
 
 #. module: product_variant_simple
 #: code:addons/product_variant_simple/wizard/variant_generator.py:100
 #, python-format
 msgid "Generated variants"
-msgstr "Variantes générées"
+msgstr "Generated variants"
 
 #. module: product_variant_simple
 #: view:product.product:0
 #: view:product.template:0
 msgid "Group by..."
-msgstr "Regrouper par..."
+msgstr "Gruppierung ..."
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_variant_dimension_option_name
 #: field:product.variant.dimension.option,name:0
 msgid "Name"
-msgstr "Nom"
+msgstr "Bezeichnung"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_first_option_ids
@@ -127,7 +127,7 @@ msgstr "Nom"
 #: field:variant.generator.wizard,second_option_ids:0
 #: field:variant.generator.wizard,third_option_ids:0
 msgid "Options"
-msgstr "Options"
+msgstr "Optionen"
 
 #. module: product_variant_simple
 #: code:_description:0
@@ -136,33 +136,33 @@ msgstr "Options"
 #: view:product.template:0
 #, python-format
 msgid "Product"
-msgstr "Article"
+msgstr "Produkt"
 
 #. module: product_variant_simple
 #: code:_description:0
 #: model:ir.model,name:product_variant_simple.model_product_template
 #, python-format
 msgid "Product Template"
-msgstr "Modèle d'article"
+msgstr "Produktvorlage"
 
 #. module: product_variant_simple
 #: model:ir.actions.act_window,name:product_variant_simple.product_template
 #: model:ir.ui.menu,name:product_variant_simple.menu_template
 #: view:product.template:0
 msgid "Product Templates"
-msgstr "Modèles d'articles"
+msgstr "Produkte Vorlagen"
 
 #. module: product_variant_simple
 #: model:ir.actions.act_window,name:product_variant_simple.product_variant
 #: model:ir.ui.menu,name:product_variant_simple.menu_variant
 #: view:product.product:0
 msgid "Product Variants"
-msgstr "Variantes de produits"
+msgstr "Product Variants"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Second dimension"
-msgstr "Second paramètre"
+msgstr "Second dimension"
 
 #. module: product_variant_simple
 #: view:product.template:0
@@ -172,12 +172,12 @@ msgstr "Services"
 #. module: product_variant_simple
 #: view:product.product:0
 msgid "Template"
-msgstr "Modèle d'article"
+msgstr "Template"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "Third dimension"
-msgstr "Troisième paramètre"
+msgstr "Third dimension"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_first_type_id
@@ -193,28 +193,28 @@ msgstr "Type"
 #. module: product_variant_simple
 #: view:product.product:0
 msgid "Variant"
-msgstr "Variante"
+msgstr "Variant"
 
 #. module: product_variant_simple
 #: model:ir.actions.act_window,name:product_variant_simple.action_variant_generator
 msgid "Variant generator"
-msgstr "Générateur de variantes"
+msgstr "Variant generator"
 
 #. module: product_variant_simple
 #: code:_description:0
 #: model:ir.model,name:product_variant_simple.model_variant_generator_wizard
 #, python-format
 msgid "Variant generator wizard"
-msgstr "Assistant générateur de variantes"
+msgstr "Variant generator wizard"
 
 #. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_product_template_variant_ids
 #: field:product.template,variant_ids:0
 msgid "Variants"
-msgstr "Variantes"
+msgstr "Variants"
 
 #. module: product_variant_simple
 #: view:variant.generator.wizard:0
 msgid "or"
-msgstr "ou"
+msgstr "or"
 

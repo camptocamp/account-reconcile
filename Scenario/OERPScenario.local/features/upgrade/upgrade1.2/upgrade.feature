@@ -10,6 +10,7 @@ Feature: upgrade to 1.2
     Given I install the required modules with dependencies:
       | name                     |
       | stock_orderpoint_creator |
+      | connector                |
       | connector_base_product   |
   Scenario: Clean old stuf from renamed module stock_orderpoint_creator
     Given  I execute the SQL commands
@@ -27,7 +28,6 @@ Feature: upgrade to 1.2
       | name                             |
       | base                             |
       | specific_fct                     |
-      | connector                        |
     Then my modules should have been installed and models reloaded
 
     Given I set the version of the instance to "1.2.0"

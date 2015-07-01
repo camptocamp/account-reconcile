@@ -637,6 +637,9 @@ class qoqa_offer(orm.Model):
         res = []
 
         offer = self.browse(cr, uid, id, context=context)
+        if not offer.date_end:
+            return False
+
         offer_end_date = (
             datetime.strptime(
                 offer.date_end,
@@ -645,6 +648,9 @@ class qoqa_offer(orm.Model):
             )
 
         for position in offer.position_ids:
+            if not position.date_delivery:
+                continue
+
             delivery_date = datetime.strptime(position.date_delivery,
                                               DEFAULT_SERVER_DATE_FORMAT)
 

@@ -9,6 +9,7 @@ Feature: upgrade to 1.3.0
     Given I install the required modules with dependencies:
       | name                             |
       | record_archiver                  |
+      | qoqa_record_archiver             |
     Then my modules should have been installed and models reloaded
 
   Scenario Outline: setup cron to archive old records

@@ -76,6 +76,7 @@ Hide the cancel button action to avoid human mistakes
           'hr_holidays_view.xml',
           'account_view.xml',
           'partner_view.xml',
+          'security/ir.model.access.csv',
           ],
  'installable': True,
  'application': True,

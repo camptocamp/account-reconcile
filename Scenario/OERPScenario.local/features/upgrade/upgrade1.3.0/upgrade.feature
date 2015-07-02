@@ -9,6 +9,10 @@ Feature: upgrade to 1.3.0
     """
     CREATE EXTENSION IF NOT EXISTS pg_trgm;
     """
+    Given I execute the SQL commands
+    """
+    DROP INDEX IF EXISTS res_partner_display_name_index_tmp;
+    """
 
     Given I update the module list
     Given I install the required modules with dependencies:

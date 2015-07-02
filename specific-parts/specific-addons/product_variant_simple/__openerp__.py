@@ -42,6 +42,7 @@ module (generators wizards, ...).
           'security/security.xml',
           'view/dimension_type.xml',
           'view/dimension_option.xml',
+          'security/ir.model.access.csv',
           ],
  'test': [],
  'installable': True,

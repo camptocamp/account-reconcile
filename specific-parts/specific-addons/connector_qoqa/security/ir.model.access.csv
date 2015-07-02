@@ -2,6 +2,8 @@
 "access_qoqa_backend","qoqa_backend connector manager","model_qoqa_backend","connector.group_connector_manager",1,1,1,1
 "access_qoqa_shop","qoqa_shop connector manager","model_qoqa_shop","connector.group_connector_manager",1,1,1,1
 "access_qoqa_backend_user","qoqa_backend user","model_qoqa_backend","base.group_user",1,0,0,0
+"access_qoqa_backend_timestamp_user","qoqa_backend_timestamp user","model_qoqa_backend_timestamp","base.group_user",1,0,0,0
+"access_qoqa_backend_timestamp","qoqa_backend_timestamp connector manager","model_qoqa_backend_timestamp","connector.group_connector_manager",1,1,1,1
 "access_qoqa_shop_user","qoqa_shop user","model_qoqa_shop","base.group_user",1,0,0,0
 "access_qoqa_product_template_user","qoqa.product.template.user","model_qoqa_product_template","base.group_user",1,0,0,0
 "access_qoqa_product_product_user","qoqa.product.product.user","model_qoqa_product_product","base.group_user",1,0,0,0

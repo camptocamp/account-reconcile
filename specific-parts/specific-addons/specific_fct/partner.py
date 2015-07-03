@@ -46,3 +46,19 @@ class res_partner(orm.Model):
             res += super(res_partner, self).name_search(
                 cr, uid, name, non_user_args, operator, context, new_limit)
         return res
+
+    def name_get(self, cr, uid, ids, context=None):
+        """ Custom name get which shows the address next to the name """
+        if context is None:
+            context = {}
+        else:
+            context = context.copy()
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        context['show_address'] = True
+        names = super(res_partner, self).name_get(cr, uid, ids,
+                                                  context=context)
+        res = []
+        for id, name in names:
+            res.append((id, name.replace('\n', ', ')))
+        return res

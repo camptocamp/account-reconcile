@@ -138,5 +138,25 @@
         </field>
       </field>
     </record>
+
+    <record id="view_check_assign_all" model="ir.ui.view">
+      <field name="name">stock.picking.check.assign.all.form</field>
+      <field name="model">stock.picking.check.assign.all</field>
+      <field name="inherit_id" ref="stock_picking_mass_assign.view_check_assign_all"/>
+      <field name="arch" type="xml">
+        <field name="check_availability" position="attributes">
+          <attribute name="groups">specific_fct.group_admin_user</attribute>
+        </field>
+        <field name="force_availability" position="attributes">
+          <attribute name="groups">specific_fct.group_admin_user</attribute>
+        </field>
+        <field name="process_picking" position="attributes">
+          <attribute name="groups">specific_fct.group_admin_user</attribute>
+        </field>
+        <field name="create_invoice" position="attributes">
+          <attribute name="groups">specific_fct.group_admin_user</attribute>
+        </field>
+      </field>
+    </record>
   </data>
 </openerp>

@@ -37,6 +37,7 @@
              'account_constraints',
              'delivery_carrier_label_dispatch',
              'purchase_group_hooks',
+             'product_variant_simple',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

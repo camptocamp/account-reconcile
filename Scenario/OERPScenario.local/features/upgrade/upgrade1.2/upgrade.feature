@@ -23,9 +23,11 @@ Feature: upgrade to 1.2
   @step2
   Scenario: Second step of the upgrade script for release 1.2
     Given I install the required modules with dependencies:
-      | name                     |
-      | base                     |
-      | stock_orderpoint_creator |
+      | name                      |
+      | base                      |
+      | product_variant_simple    |
+      | stock_picking_mass_assign |
+      | stock_orderpoint_creator  |
     Given I execute the SQL commands
     """
     DELETE FROM ir_model_constraint

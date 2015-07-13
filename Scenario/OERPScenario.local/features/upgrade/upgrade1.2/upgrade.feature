@@ -20,13 +20,13 @@ Feature: upgrade to 1.2
       | connector                |
       | connector_base_product   |
 
+  # Manually run
+  # bin/start_openerp --workers=0 -u base --stop-after-init
+
   @step2
   Scenario: Second step of the upgrade script for release 1.2
     Given I install the required modules with dependencies:
       | name                      |
-      | base                      |
-      | product_variant_simple    |
-      | stock_picking_mass_assign |
       | stock_orderpoint_creator  |
     Given I execute the SQL commands
     """

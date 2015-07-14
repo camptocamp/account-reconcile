@@ -123,9 +123,11 @@ msgstr "Nom"
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_first_option_ids
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_second_option_ids
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_third_option_ids
+#: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_fourth_option_ids
 #: field:variant.generator.wizard,first_option_ids:0
 #: field:variant.generator.wizard,second_option_ids:0
 #: field:variant.generator.wizard,third_option_ids:0
+#: field:variant.generator.wizard,fourth_option_ids:0
 msgid "Options"
 msgstr "Options"
 
@@ -180,13 +182,20 @@ msgid "Third dimension"
 msgstr "Troisième paramètre"
 
 #. module: product_variant_simple
+#: view:variant.generator.wizard:0
+msgid "Fourth dimension"
+msgstr "Quatrième paramètre"
+
+#. module: product_variant_simple
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_first_type_id
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_second_type_id
 #: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_third_type_id
+#: model:ir.model.fields,field_description:product_variant_simple.field_variant_generator_wizard_fourth_type_id
 #: view:product.template:0
 #: field:variant.generator.wizard,first_type_id:0
 #: field:variant.generator.wizard,second_type_id:0
 #: field:variant.generator.wizard,third_type_id:0
+#: field:variant.generator.wizard,fourth_type_id:0
 msgid "Type"
 msgstr "Type"
 

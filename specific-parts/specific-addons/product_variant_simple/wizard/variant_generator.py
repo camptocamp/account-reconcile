@@ -56,6 +56,16 @@ class VariantGenerator(orm.TransientModel):
             string='Options',
             domain="[('type_id', '=', third_type_id)]",
         ),
+        'fourth_type_id': fields.many2one(
+            'product.variant.dimension.type',
+            'Type'
+        ),
+        'fourth_option_ids': fields.many2many(
+            'product.variant.dimension.option',
+            'fourth_wizard_option_rel',
+            string='Options',
+            domain="[('type_id', '=', fourth_type_id)]",
+        ),
         'disable_original_product': fields.boolean(
             'Disable the original product'
         ),
@@ -72,6 +82,8 @@ class VariantGenerator(orm.TransientModel):
                 options.append(wizard.second_option_ids)
             if wizard.third_option_ids:
                 options.append(wizard.third_option_ids)
+            if wizard.fourth_option_ids:
+                options.append(wizard.fourth_option_ids)
 
             combinations = itertools.product(*options)
 

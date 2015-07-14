@@ -30,10 +30,14 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.addons.connector.connector import (install_in_connector,
                                                 Environment)
 from openerp.addons.connector.checkpoint import checkpoint
+from openerp.addons.connector import queue
 
 install_in_connector()
 
 QOQA_TZ = pytz.timezone('Europe/Zurich')
+
+
+queue.job.RETRY_INTERVAL = 60  # seconds
 
 
 def iso8601_to_utc_datetime(isodate):

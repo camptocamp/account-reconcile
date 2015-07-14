@@ -1,9 +1,19 @@
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - expect-dev  # provides unbuffer utility
+      - python-lxml # because pip installation is slow
+
 language: python
 
 python:
   - "2.7"
 
 cache:
+  pip: true
+  apt: true
   directories:
     - ${HOME}/.eggs-cache
 

@@ -28,6 +28,12 @@
               attrs="{'invisible': [('third_type_id', '=', False)]}"
               />
           </group>
+          <group string="Fourth dimension">
+            <field name="fourth_type_id" />
+            <field name="fourth_option_ids" nolabel="1" colspan="2"
+              attrs="{'invisible': [('fourth_type_id', '=', False)]}"
+              />
+          </group>
           <footer>
             <button icon="terp-stock_zoom" string="Generate" name="generate" type="object" class="oe_highlight"/>
             or

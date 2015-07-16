@@ -404,7 +404,7 @@ class AddCheckpoint(ConnectorUnit):
                        self.backend_record.id)
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 def import_batch(session, model_name, backend_id, from_date=None,
                  to_date=None):
     """ Prepare a batch import of records from QoQa """
@@ -413,7 +413,7 @@ def import_batch(session, model_name, backend_id, from_date=None,
     importer.run(from_date=from_date, to_date=to_date)
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 def import_batch_divider(session, model_name, backend_id, from_date=None,
                          **kwargs):
     """ Delay an import batch job per week from the date.
@@ -436,7 +436,7 @@ def import_batch_divider(session, model_name, backend_id, from_date=None,
                            **kwargs)
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 def import_record(session, model_name, backend_id, qoqa_id, force=False):
     """ Import a record from QoQa """
     env = get_environment(session, model_name, backend_id)

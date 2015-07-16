@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2013-2015 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -36,7 +36,7 @@ class qoqa_offer(orm.Model):
     _description = 'QoQa Offer'
     _inherit = ['mail.thread']
 
-    _order = 'date_begin'
+    _order = 'date_begin, time_begin'
 
     def _main_position_id(self, cr, uid, ids, fieldnames, args, context=None):
         position_obj = self.pool.get('qoqa.offer.position')
@@ -242,7 +242,7 @@ class qoqa_offer(orm.Model):
     }
 
     _columns = {
-        'ref': fields.char('Offer Reference', required=True),
+        'ref': fields.char('Offer Reference', required=True, select=True),
         'name': fields.function(
             _get_name,
             type='char',
@@ -363,10 +363,12 @@ class qoqa_offer(orm.Model):
         # without consideration of the UTC time
         'date_begin': fields.date(
             'Start Date',
-            required=True),
+            required=True,
+            select=True),
         'time_begin': fields.float(
             'Start Time',
-            required=True),
+            required=True,
+            select=True),
         'date_end': fields.date(
             'End Date',
             required=True),
@@ -635,6 +637,9 @@ class qoqa_offer(orm.Model):
         res = []
 
         offer = self.browse(cr, uid, id, context=context)
+        if not offer.date_end:
+            return False
+
         offer_end_date = (
             datetime.strptime(
                 offer.date_end,
@@ -643,6 +648,9 @@ class qoqa_offer(orm.Model):
             )
 
         for position in offer.position_ids:
+            if not position.date_delivery:
+                continue
+
             delivery_date = datetime.strptime(position.date_delivery,
                                               DEFAULT_SERVER_DATE_FORMAT)
 

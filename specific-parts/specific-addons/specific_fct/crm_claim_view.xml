@@ -24,6 +24,11 @@
                 <field name="action_next" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
+                <field name="partner_id" position="after">
+                    <field name="partner_street"/>
+                    <field name="partner_zip"/>
+                    <field name="partner_city"/>
+                </field>
             </field>
         </record>
 

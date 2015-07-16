@@ -177,3 +177,42 @@ class crm_claim(orm.Model):
         res = super(crm_claim, self).write(
             cr, uid, ids, vals, context=context)
         return res
+
+    def _get_claims_from_partners(self, cr, uid, ids, context=None):
+        claim_obj = self.pool['crm.claim']
+        return claim_obj.search(cr, uid, [('partner_id', 'in', ids)],
+                                context=context)
+
+    _partner_address_store = {
+        'crm.claim': (lambda self, cr, uid, ids, c={}: ids,
+                      ['partner_id'], 10),
+        'res.partner': (_get_claims_from_partners,
+                        ['street', 'zip', 'city'], 10),
+    }
+
+    _columns = {
+        'partner_street': fields.related(
+            'partner_id',
+            'street',
+            type='char',
+            relation='res.partner',
+            string='Partner Street',
+            store=_partner_address_store,
+            readonly=True),
+        'partner_zip': fields.related(
+            'partner_id',
+            'zip',
+            type='char',
+            relation='res.partner',
+            string='Partner ZIP code',
+            store=_partner_address_store,
+            readonly=True),
+        'partner_city': fields.related(
+            'partner_id',
+            'city',
+            type='char',
+            relation='res.partner',
+            string='Partner City',
+            store=_partner_address_store,
+            readonly=True),
+    }

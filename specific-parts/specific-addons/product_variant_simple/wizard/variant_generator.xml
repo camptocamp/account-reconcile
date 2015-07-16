@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_variant_generator" model="ir.ui.view">
+      <field name="name">variant_generator</field>
+      <field name="model">variant.generator.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Generate variants" version="7.0">
+          <group>
+            <field name="disable_original_product"/>
+          </group>
+          <group string="First dimension">
+            <field name="first_type_id" />
+            <field name="first_option_ids" nolabel="1" colspan="2"
+              attrs="{'invisible': [('first_type_id', '=', False)]}"
+              />
+          </group>
+          <group string="Second dimension">
+            <field name="second_type_id" />
+            <field name="second_option_ids" nolabel="1" colspan="2"
+              attrs="{'invisible': [('second_type_id', '=', False)]}"
+              />
+          </group>
+          <group string="Third dimension">
+            <field name="third_type_id" />
+            <field name="third_option_ids" nolabel="1" colspan="2"
+              attrs="{'invisible': [('third_type_id', '=', False)]}"
+              />
+          </group>
+          <group string="Fourth dimension">
+            <field name="fourth_type_id" />
+            <field name="fourth_option_ids" nolabel="1" colspan="2"
+              attrs="{'invisible': [('fourth_type_id', '=', False)]}"
+              />
+          </group>
+          <footer>
+            <button icon="terp-stock_zoom" string="Generate" name="generate" type="object" class="oe_highlight"/>
+            or
+            <button string="Cancel" class="oe_link" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_variant_generator" model="ir.actions.act_window">
+      <field name="name">Variant generator</field>
+      <field name="res_model">variant.generator.wizard</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_variant_generator"/>
+      <field name="target">new</field>
+    </record>
+
+  </data>
+</openerp>

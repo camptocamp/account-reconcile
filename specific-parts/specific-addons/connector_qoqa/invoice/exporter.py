@@ -22,13 +22,14 @@
 from openerp.osv import orm
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round
-from openerp.addons.connector.queue.job import job
+from openerp.addons.connector.queue.job import job, related_action
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 
 from ..connector import get_environment
 from ..backend import qoqa
 from ..sale.payment_id_importer import ImportPaymentId
+from ..related_action import unwrap_binding
 
 
 @qoqa
@@ -85,7 +86,8 @@ class RefundExporter(ExportSynchronizer):
         return _('Refund created with payment id: %s' % payment_id)
 
 
-@job
+@job(default_channel='root.connector_qoqa.fast')
+@related_action(action=unwrap_binding, id_pos=3)
 def create_refund(session, model_name, backend_id, refund_id):
     """ Create a refund """
     env = get_environment(session, model_name, backend_id)
@@ -122,7 +124,8 @@ class CancelRefundExporter(ExportSynchronizer):
         return _('Cancel refund with payment id: %s' % payment_id)
 
 
-@job
+@job(default_channel='root.connector_qoqa.fast')
+@related_action(action=unwrap_binding, id_pos=3)
 def cancel_refund(session, model_name, backend_id, refund_id):
     """ Cancel a refund """
     env = get_environment(session, model_name, backend_id)

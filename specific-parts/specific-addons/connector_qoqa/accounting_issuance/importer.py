@@ -64,7 +64,7 @@ from ..unit.mapper import iso8601_to_utc
 _logger = logging.getLogger(__name__)
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 def import_accounting_issuance(session, model_name, backend_id, qoqa_id,
                                force=False):
     """ Import an accounting issuance group from QoQa """

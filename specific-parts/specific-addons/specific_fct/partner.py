@@ -30,3 +30,35 @@ class res_partner(orm.Model):
     _defaults = {
         'notification_email_send': 'comment',
     }
+
+    def name_search(self, cr, uid, name, args=None, operator='ilike',
+                    context=None, limit=100):
+        # Re-define name_search in order to put QoQa users first
+        res = []
+        user_args = args + [['user_ids', '!=', False]]
+        users = super(res_partner, self).name_search(cr, uid, name, user_args,
+                                                     operator, context, limit)
+        res = [(id, 'QoQa - ' + username) for (id, username) in users]
+
+        if limit > len(users):
+            non_user_args = args + [['user_ids', '=', False]]
+            new_limit = limit - len(users)
+            res += super(res_partner, self).name_search(
+                cr, uid, name, non_user_args, operator, context, new_limit)
+        return res
+
+    def name_get(self, cr, uid, ids, context=None):
+        """ Custom name get which shows the address next to the name """
+        if context is None:
+            context = {}
+        else:
+            context = context.copy()
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        context['show_address'] = True
+        names = super(res_partner, self).name_get(cr, uid, ids,
+                                                  context=context)
+        res = []
+        for partner_id, name in names:
+            res.append((partner_id, name.replace('\n', ', ')))
+        return res

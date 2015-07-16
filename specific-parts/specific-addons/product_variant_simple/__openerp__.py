@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Author: Yannick Vaucher, Leonardo Pistone
+#    Copyright 2013-2015 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
 #
 ##############################################################################
 {'name': 'Simple Product Variants',
- 'version': '1.0',
+ 'version': '2.0',
  'category': '',
  'description': """
 Simple Product Variants
@@ -37,8 +37,12 @@ module (generators wizards, ...).
  'website': 'http://www.camptocamp.com/',
  'depends': ['product',
              ],
- 'data': ['product_view.xml',
+ 'data': ['wizard/variant_generator.xml',
+          'product_view.xml',
           'security/security.xml',
+          'view/dimension_type.xml',
+          'view/dimension_option.xml',
+          'security/ir.model.access.csv',
           ],
  'test': [],
  'installable': True,

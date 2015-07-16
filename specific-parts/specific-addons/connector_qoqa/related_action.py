@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2015 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,27 +19,17 @@
 #
 ##############################################################################
 
-from openerp.tools.translate import _
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.unit.synchronizer import DeleteSynchronizer
-from ..connector import get_environment
+"""
+Related Actions for QoQa:
 
+Related actions are associated with jobs.
+When called on a job, they will return an action to the client.
 
-class QoQaDeleteSynchronizer(DeleteSynchronizer):
-    """ Base deleter for QoQa """
+"""
 
-    def run(self, qoqa_id):
-        """ Run the synchronization, delete the record on QoQa
+import functools
+from openerp.addons.connector import related_action
+from .unit.binder import QoQaBinder
 
-        :param qoqa_id: identifier of the record to delete
-        """
-        self.backend_adapter.delete(qoqa_id)
-        return _('Record %s deleted on QoQa') % qoqa_id
-
-
-@job(default_channel='root.connector_qoqa.normal')
-def export_delete_record(session, model_name, backend_id, qoqa_id):
-    """ Delete a record on QoQa """
-    env = get_environment(session, model_name, backend_id)
-    deleter = env.get_connector_unit(QoQaDeleteSynchronizer)
-    return deleter.run(qoqa_id)
+unwrap_binding = functools.partial(related_action.unwrap_binding,
+                                   binder_class=QoQaBinder)

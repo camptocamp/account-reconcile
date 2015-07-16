@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp.addons.connector.queue.job import job
+from openerp.addons.connector.queue.job import job, related_action
 from openerp.addons.connector.event import on_record_create
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
@@ -27,6 +27,7 @@ from openerp.addons.connector.exception import MappingError
 
 from ..connector import get_environment
 from ..backend import qoqa
+from ..related_action import unwrap_binding
 
 
 @on_record_create(model_names='qoqa.stock.picking')
@@ -101,7 +102,8 @@ class QoQaTrackingExporter(ExportSynchronizer):
         self.session.write(self.model._name, binding_id, {'exported': True})
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
+@related_action(action=unwrap_binding)
 def export_picking_tracking_done(session, model_name, binding_id):
     """ Export trackings of a delivery order. """
     record = session.browse(model_name, binding_id)

@@ -22,10 +22,11 @@
 
 import logging
 from openerp.tools.translate import _
-from openerp.addons.connector.queue.job import job
+from openerp.addons.connector.queue.job import job, related_action
 from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
 from ..connector import get_environment
 from ..backend import qoqa
+from ..related_action import unwrap_binding
 
 _logger = logging.getLogger(__name__)
 
@@ -56,7 +57,8 @@ class SettleSalesOrder(ExportSynchronizer):
         return _('Sales order settled on QoQa')
 
 
-@job
+@job(default_channel='root.connector_qoqa.fast')
+@related_action(action=unwrap_binding)
 def cancel_sales_order(session, model_name, record_id):
     """ Cancel a Sales Order """
     binding = session.browse(model_name, record_id)
@@ -66,7 +68,8 @@ def cancel_sales_order(session, model_name, record_id):
     return canceler.run(record_id)
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
+@related_action(action=unwrap_binding)
 def settle_sales_order(session, model_name, record_id):
     """ Settle a Sales Order """
     binding = session.browse(model_name, record_id)

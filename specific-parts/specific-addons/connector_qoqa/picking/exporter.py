@@ -102,7 +102,7 @@ class QoQaTrackingExporter(ExportSynchronizer):
         self.session.write(self.model._name, binding_id, {'exported': True})
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 @related_action(action=unwrap_binding)
 def export_picking_tracking_done(session, model_name, binding_id):
     """ Export trackings of a delivery order. """

@@ -37,7 +37,7 @@ class QoQaDeleteSynchronizer(DeleteSynchronizer):
         return _('Record %s deleted on QoQa') % qoqa_id
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 def export_delete_record(session, model_name, backend_id, qoqa_id):
     """ Delete a record on QoQa """
     env = get_environment(session, model_name, backend_id)

@@ -57,7 +57,7 @@ class SettleSalesOrder(ExportSynchronizer):
         return _('Sales order settled on QoQa')
 
 
-@job
+@job(default_channel='root.connector_qoqa.fast')
 @related_action(action=unwrap_binding)
 def cancel_sales_order(session, model_name, record_id):
     """ Cancel a Sales Order """
@@ -68,7 +68,7 @@ def cancel_sales_order(session, model_name, record_id):
     return canceler.run(record_id)
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 @related_action(action=unwrap_binding)
 def settle_sales_order(session, model_name, record_id):
     """ Settle a Sales Order """

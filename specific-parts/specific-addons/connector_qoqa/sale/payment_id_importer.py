@@ -93,7 +93,7 @@ class ImportPaymentId(ConnectorUnit):
                 'transaction_id': method[0]['id']}
 
 
-@job
+@job(default_channel='root.connector_qoqa.normal')
 def import_payment_id(session, model_name, backend_id, binding_id):
     """ Fix the missing payment_id on a qoqa sale order """
     env = get_environment(session, model_name, backend_id)

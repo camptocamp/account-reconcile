@@ -434,7 +434,7 @@ class Translations(ConnectorUnit):
         return {'translations': lang_values}
 
 
-@job
+@job(default_channel='root.connector_qoqa.fast')
 @related_action(action=unwrap_binding)
 def export_record(session, model_name, binding_id, fields=None):
     """ Export a record on QoQa """

@@ -36,6 +36,8 @@ from ..exception import (QoQaResponseNotParsable,
 
 _logger = logging.getLogger(__name__)
 
+REQUESTS_TIMEOUT = 5  # seconds
+
 # Add detailed logs
 # import httplib
 # httplib.HTTPConnection.debuglevel = 1
@@ -112,7 +114,7 @@ class QoQaClient(object):
         def with_auth(*args, **kwargs):
             kwargs['auth'] = self._auth
             try:
-                return dispatch(*args, **kwargs)
+                return dispatch(timeout=REQUESTS_TIMEOUT, *args, **kwargs)
             except self.retryable as err:
                 raise NetworkRetryableError(
                     'A network error caused the failure of the job: '

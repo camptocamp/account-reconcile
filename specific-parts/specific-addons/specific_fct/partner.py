@@ -33,6 +33,12 @@ class res_partner(orm.Model):
 
     def name_search(self, cr, uid, name, args=None, operator='ilike',
                     context=None, limit=100):
+        # Since the address is now displayed in the name, it's important
+        # to truncate any name value in order to only use the "base" one.
+        # In order to do this, we truncate at the first comma.
+        if name:
+            name = name.split(',')[0]
+
         # Re-define name_search in order to put QoQa users first
         res = []
         user_args = args + [['user_ids', '!=', False]]
@@ -40,11 +46,16 @@ class res_partner(orm.Model):
                                                      operator, context, limit)
         res = [(id, 'QoQa - ' + username) for (id, username) in users]
 
-        if limit > len(users):
-            non_user_args = args + [['user_ids', '=', False]]
-            new_limit = limit - len(users)
-            res += super(res_partner, self).name_search(
-                cr, uid, name, non_user_args, operator, context, new_limit)
+        new_limit = None
+        if limit is not None:
+            if limit > len(users):
+                new_limit = limit - len(users)
+            else:
+                new_limit = 0
+
+        non_user_args = args + [['user_ids', '=', False]]
+        res += super(res_partner, self).name_search(
+            cr, uid, name, non_user_args, operator, context, new_limit)
         return res
 
     def name_get(self, cr, uid, ids, context=None):

@@ -39,23 +39,25 @@ class res_partner(orm.Model):
         if name:
             name = name.split(',')[0]
 
-        # Re-define name_search in order to put QoQa users first
         res = []
+
+        # limit if unlimited (otherwise, the 2 name_search lead to MemoryError)
+        if limit is None or limit < 1:
+            limit = 100
+
+        # Re-define name_search in order to put QoQa users first
         user_args = args + [['user_ids', '!=', False]]
         users = super(res_partner, self).name_search(cr, uid, name, user_args,
                                                      operator, context, limit)
         res = [(id, 'QoQa - ' + username) for (id, username) in users]
 
-        new_limit = None
-        if limit is not None:
-            if limit > len(users):
-                new_limit = limit - len(users)
-            else:
-                new_limit = 0
+        # search for remaining users (but if limit is 0 or less, avoid search)
+        new_limit = max(limit - len(users), 0)
+        if new_limit > 0:
+            non_user_args = args + [['user_ids', '=', False]]
+            res += super(res_partner, self).name_search(
+                cr, uid, name, non_user_args, operator, context, new_limit)
 
-        non_user_args = args + [['user_ids', '=', False]]
-        res += super(res_partner, self).name_search(
-            cr, uid, name, non_user_args, operator, context, new_limit)
         return res
 
     def name_get(self, cr, uid, ids, context=None):

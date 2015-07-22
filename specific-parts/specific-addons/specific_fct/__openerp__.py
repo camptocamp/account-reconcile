@@ -39,6 +39,7 @@
              'purchase_group_hooks',
              'product_variant_simple',
              'stock_picking_mass_assign',
+             'base_transaction_id',
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

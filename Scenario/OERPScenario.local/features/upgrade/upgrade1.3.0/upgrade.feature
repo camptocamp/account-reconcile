@@ -10,4 +10,13 @@ Feature: upgrade to 1.3.0
       | name                             |
     Then my modules should have been installed and models reloaded
 
+    Given I execute the SQL commands
+    """
+    UPDATE crm_claim
+    SET partner_id = res_partner.parent_id
+    FROM res_partner
+    WHERE crm_claim.partner_id = res_partner.id
+    AND res_partner.parent_id IS NOT NULL;
+    """
+
     Given I set the version of the instance to "1.3.0"

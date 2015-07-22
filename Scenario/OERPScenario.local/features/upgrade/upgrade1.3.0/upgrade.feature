@@ -7,10 +7,6 @@ Feature: upgrade to 1.3.0
     Given I back up the database to "/var/tmp/openerp/before_upgrade_backups"
     Given I execute the SQL commands
     """
-    CREATE EXTENSION IF NOT EXISTS pg_trgm;
-    """
-    Given I execute the SQL commands
-    """
     DROP INDEX IF EXISTS res_partner_display_name_index_tmp;
     """
     Given I execute the SQL commands

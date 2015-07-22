@@ -37,7 +37,16 @@ class PurchaseOrder(orm.Model):
                  "supplier. It's mainly used to do the matching when you "
                  "receive the products as this reference is usually written "
                  "on the delivery order sent by your supplier."
-        )
+        ),
+        'active': fields.boolean(
+            'Active',
+            help="The active field allows you to hide the purchase order "
+                 "without removing it."
+        ),
+    }
+
+    _defaults = {
+        'active': 1,
     }
 
     def _update_merged_order_data(self, merged_data, order):

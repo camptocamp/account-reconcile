@@ -90,6 +90,15 @@ class stock_picking(orm.Model):
                                    'res.partner': (_get_from_partner_fn,
                                                    ['lang'], 20)
                                }),
+        'active': fields.boolean(
+            'Active',
+            help="The active field allows you to hide the picking without "
+                 "removing it."
+        ),
+    }
+
+    _defaults = {
+        'active': 1,
     }
 
     def _generate_postlogistics_label(self, cr, uid, picking,

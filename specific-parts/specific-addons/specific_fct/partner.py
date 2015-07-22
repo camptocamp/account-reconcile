@@ -75,3 +75,15 @@ class res_partner(orm.Model):
         for partner_id, name in names:
             res.append((partner_id, name.replace('\n', ', ')))
         return res
+
+    def init(self, cr):
+        def create_gin_trgm_index(field):
+            index_name = 'res_partner_%s_trgm_index' % field
+            cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
+                       (index_name,))
+            if not cr.fetchone():
+                cr.execute('CREATE INDEX %s '
+                           'ON res_partner '
+                           'USING gin (%s gin_trgm_ops)' % (index_name, field))
+        for field in ('email', 'display_name'):
+            create_gin_trgm_index(field)

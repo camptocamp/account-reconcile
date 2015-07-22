@@ -19,7 +19,25 @@
 #
 ##############################################################################
 
-from openerp.osv import orm
+from openerp.osv import orm, fields
+
+
+class sale_order(orm.Model):
+
+    _inherit = 'sale.order'
+
+    _columns = {
+        # Override transaction_id to add an index
+        # to optimize a query. Could consider adding the index
+        # in base_transaction_id but I could not find from
+        # where the query was issued
+        'transaction_id': fields.char(
+            'Transaction id',
+            size=128,
+            required=False,
+            select=True,
+            help="Transaction id from the financial institute"),
+    }
 
 
 class sale_order_line(orm.Model):

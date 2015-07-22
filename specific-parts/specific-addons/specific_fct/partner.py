@@ -33,18 +33,31 @@ class res_partner(orm.Model):
 
     def name_search(self, cr, uid, name, args=None, operator='ilike',
                     context=None, limit=100):
-        # Re-define name_search in order to put QoQa users first
+        # Since the address is now displayed in the name, it's important
+        # to truncate any name value in order to only use the "base" one.
+        # In order to do this, we truncate at the first comma.
+        if name:
+            name = name.split(',')[0]
+
         res = []
+
+        # limit if unlimited (otherwise, the 2 name_search lead to MemoryError)
+        if limit is None or limit < 1:
+            limit = 100
+
+        # Re-define name_search in order to put QoQa users first
         user_args = args + [['user_ids', '!=', False]]
         users = super(res_partner, self).name_search(cr, uid, name, user_args,
                                                      operator, context, limit)
         res = [(id, 'QoQa - ' + username) for (id, username) in users]
 
-        if limit > len(users):
+        # search for remaining users (but if limit is 0 or less, avoid search)
+        new_limit = max(limit - len(users), 0)
+        if new_limit > 0:
             non_user_args = args + [['user_ids', '=', False]]
-            new_limit = limit - len(users)
             res += super(res_partner, self).name_search(
                 cr, uid, name, non_user_args, operator, context, new_limit)
+
         return res
 
     def name_get(self, cr, uid, ids, context=None):
@@ -62,3 +75,15 @@ class res_partner(orm.Model):
         for partner_id, name in names:
             res.append((partner_id, name.replace('\n', ', ')))
         return res
+
+    def init(self, cr):
+        def create_gin_trgm_index(field):
+            index_name = 'res_partner_%s_trgm_index' % field
+            cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
+                       (index_name,))
+            if not cr.fetchone():
+                cr.execute('CREATE INDEX %s '
+                           'ON res_partner '
+                           'USING gin (%s gin_trgm_ops)' % (index_name, field))
+        for field in ('email', 'display_name'):
+            create_gin_trgm_index(field)

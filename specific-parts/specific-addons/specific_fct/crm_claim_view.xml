@@ -37,6 +37,9 @@
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+                    <attribute name="domain">[('parent_id', '=', False)]</attribute>
+                </field>
                 <field name="invoice_id" position="attributes">
                     <attribute name="context">{'active_test': False}</attribute>
                 </field>

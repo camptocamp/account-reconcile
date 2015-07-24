@@ -32,7 +32,7 @@ class product_category(orm.Model):
     }
 
     _defaults = {
-        'warranty': 0,
+        'warranty': 24,
     }
 
 

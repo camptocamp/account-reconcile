@@ -21,6 +21,21 @@
 from openerp.osv import orm, fields
 
 
+class product_category(orm.Model):
+    """
+    Change default value to average on cost_method
+    """
+    _inherit = 'product.category'
+
+    _columns = {
+        'warranty': fields.float('Warranty'),
+    }
+
+    _defaults = {
+        'warranty': 24,
+    }
+
+
 class product_template(orm.Model):
     """
     Change default value to average on cost_method
@@ -96,6 +111,19 @@ class product_template(orm.Model):
         result = self.name_get(cr, uid, ids, context=context)
         return result
 
+    def onchange_categ_id(self, cr, uid, ids, categ_id, context=None):
+        if context is None:
+            context = {}
+        res = {'value': {}}
+
+        if not categ_id:
+            return res
+
+        category = self.pool.get('product.category').browse(
+            cr, uid, categ_id, context=context)
+        res['value'].update({'warranty': category.warranty})
+        return res
+
 
 class product_product(orm.Model):
     """
@@ -109,3 +137,16 @@ class product_product(orm.Model):
         default = default.copy()
         default.update({'ean13': False})
         return super(product_product, self).copy(cr, uid, id, default, context)
+
+    def onchange_categ_id(self, cr, uid, ids, categ_id, context=None):
+        if context is None:
+            context = {}
+        res = {'value': {}}
+
+        if not categ_id:
+            return res
+
+        category = self.pool.get('product.category').browse(
+            cr, uid, categ_id, context=context)
+        res['value'].update({'warranty': category.warranty})
+        return res

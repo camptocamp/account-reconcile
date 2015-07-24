@@ -43,6 +43,14 @@ Feature: upgrade to 1.3.0
     AND res_partner.parent_id IS NOT NULL;
     """
 
+  Scenario: update warranty for specific categories
+    Given I execute the SQL commands
+    """
+    UPDATE product_category
+    SET warranty = 0
+    WHERE id IN (39, 40, 41, 42, 43, 179, 180, 181, 182, 183, 196, 199, 201, 202);
+    """
+
   Scenario Outline: setup cron to archive old records
     Given I need a "record.lifespan" with oid: scenario.lifespan_<oid>
     And having:

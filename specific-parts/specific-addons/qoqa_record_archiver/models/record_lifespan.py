@@ -39,12 +39,26 @@ class RecordLifespan(orm.Model):
             for idx, args in enumerate(domain):
                 if len(args) == 3 and args[0] == 'state':
                     domain[idx] = ('state', 'in', ('paid', 'cancel'))
-                    break
+                if len(args) == 3 and args[0] == 'write_date':
+                    new_args = ('date_invoice', '<', expiration_date)
+                    domain[idx] = new_args
             return domain
         elif model_name == 'qoqa.offer':
             for idx, args in enumerate(domain):
                 if len(args) == 3 and args[0] == 'state':
                     domain[idx] = ('date_end', '<', expiration_date)
+                    break
+            return domain
+        elif model_name == 'sale.order':
+            for idx, args in enumerate(domain):
+                if len(args) == 3 and args[0] == 'write_date':
+                    domain[idx] = ('date_order', '<', expiration_date)
+                    break
+            return domain
+        elif model_name == 'crm.claim':
+            for idx, args in enumerate(domain):
+                if len(args) == 3 and args[0] == 'write_date':
+                    domain[idx] = ('date', '<', expiration_date)
                     break
             return domain
         return domain

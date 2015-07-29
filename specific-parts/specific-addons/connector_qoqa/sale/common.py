@@ -282,7 +282,7 @@ class sale_order(orm.Model):
             else:
                 # open as tree view, merge all the ids of the refunds
                 # in the domain
-                new_domain = action_res['domain']
+                new_domain = []
                 for field, op, value in action_res['domain']:
                     if field == 'id' and op == 'in':
                         new_domain.append((field, op, refund_ids))

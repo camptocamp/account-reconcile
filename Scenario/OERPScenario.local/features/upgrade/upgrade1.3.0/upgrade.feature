@@ -29,6 +29,7 @@ Feature: upgrade to 1.3.0
       | l10n_ch_payment_slip_base_transaction_id               |
       | l10n_ch_sepa                                           |
       | l10n_ch_zip                                            |
+      | mail_cleanup                                           |
       | specific_fct                                           |
       | record_archiver                                        |
       | qoqa_record_archiver                                   |

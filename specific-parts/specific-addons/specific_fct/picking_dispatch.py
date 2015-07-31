@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-##############################################################################
 #
-#    Author: Joel Grand-Guillaume
-#    Copyright 2013 Camptocamp SA
+#    Author: Yannick Vaucher
+#    Copyright 2015 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,30 +16,20 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
-
 from openerp.osv import orm, fields
 
 
-class crm_claim(orm.Model):
-    """ Crm claim
-    """
-    _inherit = "crm.claim"
+class PickingDispatch(orm.Model):
+    _inherit = 'picking.dispatch'
 
     _columns = {
-        'company_id': fields.related(
-            'warehouse_id',
-            'company_id',
-            type='many2one',
-            relation='res.company',
-            string='Company',
-            store=True,
-            readonly=True
+        'active': fields.boolean(
+            'Active',
+            help="The active field allows you to hide the picking dispatch "
+                 "without removing it."
         ),
-        'invoice_id': fields.many2one(
-            'account.invoice',
-            string='Invoice',
-            domain=['|', ('active', '=', False), ('active', '=', True)],
-            help='Related original Customer invoice'
-        ),
+    }
+
+    _defaults = {
+        'active': 1,
     }

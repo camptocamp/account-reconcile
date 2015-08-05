@@ -406,6 +406,11 @@ class stock_picking_in(orm.Model):
                                   ['move_lines'], 10),
                 'stock.move': (_get_picking, ['product_qty'], 10),
             }),
+        'active': fields.boolean(
+            'Active',
+            help="The active field allows you to hide the picking without "
+                 "removing it."
+        ),
     }
 
 
@@ -467,6 +472,11 @@ class stock_picking_out(orm.Model):
                                    'res.partner': (_get_from_partner_fn,
                                                    ['lang'], 20)
                                }),
+        'active': fields.boolean(
+            'Active',
+            help="The active field allows you to hide the picking without "
+                 "removing it."
+        ),
     }
 
     def do_partial(self, cr, uid, ids, partial_datas, context=None):

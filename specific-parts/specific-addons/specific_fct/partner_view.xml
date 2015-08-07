@@ -13,5 +13,10 @@
         </field>
       </field>
     </record>
+
+    <record id="base.action_partner_supplier_form" model="ir.actions.act_window">
+        <field name="context">{'search_default_supplier': 1,'default_customer': 1,'default_supplier': 1}</field>
+    </record>
+
   </data>
 </openerp>

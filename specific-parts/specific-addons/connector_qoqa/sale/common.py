@@ -326,6 +326,8 @@ class sale_order(orm.Model):
         """
         refund_wiz_obj = self.pool['account.invoice.refund']
         sale_order_line_obj = self.pool.get('sale.order.line')
+        wf_service = netsvc.LocalService('workflow')
+        actions = []
         for sale in self.browse(cr, uid, ids, context=context):
             if sale.state != 'done':
                 raise orm.except_orm(
@@ -335,31 +337,90 @@ class sale_order(orm.Model):
                                       [l.id for l in sale.order_line],
                                       {'state': 'cancel'},
                                       context=context)
-            for invoice in sale.invoice_ids:
-                # create a refund since the payment cannot be
-                # canceled
-                ctx = context.copy()
-                ctx.update({
-                    'active_model': 'account.invoice',
-                    'active_id': invoice.id,
-                    'active_ids': [invoice.id],
-                })
-                wizard_id = refund_wiz_obj.create(
-                    cr, uid,
-                    {
-                        'filter_refund': 'refund',
-                        'description': _('Order Cancellation'),
-                    },
-                    context=ctx)
+            cancel_direct = False
+            if (sale.qoqa_bind_ids and
+                    sale.payment_method_id.payment_cancellable_on_qoqa and
+                    not sale.payment_method_id.payment_settlable_on_qoqa):
+                binding = sale.qoqa_bind_ids[0]
+                # can be canceled only the day of the payment
+                payment_date = datetime.strptime(
+                    binding.qoqa_payment_date, DEFAULT_SERVER_DATE_FORMAT)
+                if payment_date.date() == date.today():
+                    cancel_direct = True
+            if cancel_direct:
+                # Done the same day; remove payments
+                payment_moves = [payment.move_id
+                                 for payment
+                                 in sale.payment_ids]
+                for move in payment_moves:
+                    move.unlink()
+                # Cancel now-reopened invoices
+                for invoice in sale.invoice_ids:
+                    wf_service.trg_validate(uid, 'account.invoice',
+                                            invoice.id, 'invoice_cancel', cr)
+            else:
+                for invoice in sale.invoice_ids:
+                    # create a refund since the payment cannot be
+                    # canceled
+                    ctx = context.copy()
+                    ctx.update({
+                        'active_model': 'account.invoice',
+                        'active_id': invoice.id,
+                        'active_ids': [invoice.id],
+                    })
+                    wizard_id = refund_wiz_obj.create(
+                        cr, uid,
+                        {
+                            'filter_refund': 'refund',
+                            'description': _('Order Cancellation'),
+                        },
+                        context=ctx)
 
-                refund_wiz_obj.invoice_refund(cr, uid, [wizard_id],
-                                              context=ctx)
+                    action = refund_wiz_obj.invoice_refund(
+                        cr, uid, [wizard_id], context=ctx)
+                    actions.append(action)
         self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
         message = _("The sales order was done, but it has been manually "
                     "canceled.")
         self.message_post(cr, uid, ids, body=message, context=context)
+
+        # Return view for refunds
+        action_res = None
+        if actions:
+            # Prepare the returning action.
+            # Done before we call the cancellation on QoQa so if
+            # something fails here, we won't call the QoQa API
+            action_res = actions[0]
+            refund_ids = []
+            for action in actions:
+                for field, op, value in action_res['domain']:
+                    if field == 'id' and op == 'in':
+                        refund_ids += value
+            if len(refund_ids) == 1:
+                # remove the domain, replaced by res_id
+                # the refund will be open in the form view
+                action_res['domain'] = False
+                action_res['res_id'] = refund_ids[0]
+                mod_obj = self.pool['ir.model.data']
+                ref = mod_obj.get_object_reference(cr, uid, 'account',
+                                                   'invoice_form')
+                action_res['views'] = [(ref[1] if ref else False, 'form')]
+            else:
+                # open as tree view, merge all the ids of the refunds
+                # in the domain
+                new_domain = []
+                for field, op, value in action_res['domain']:
+                    if field == 'id' and op == 'in':
+                        new_domain.append((field, op, refund_ids))
+                    else:
+                        new_domain.append((field, op, value))
+                action_res['domain'] = new_domain
+
         self._call_cancel(cr, uid, sale, cancel_direct=False,
                           context=context)
+
+        if action_res:
+            return action_res
 
         return True
 

@@ -356,7 +356,7 @@ class stock_picking(orm.Model):
         for picking_id in ids:
             try:
                 self.action_assign(cr, uid, [picking_id], context)
-                #cr.commit()
+                cr.commit()
             except Exception:
                 # ignore the error, the picking will just stay as confirmed
                 _logger.info('error in action_assign for picking',

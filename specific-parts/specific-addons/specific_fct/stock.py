@@ -23,6 +23,7 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.addons.base.res.res_partner import _lang_get
 import logging
+import pooler
 
 from postlogistics.web_service import PostlogisticsWebServiceQoQa
 
@@ -341,6 +342,8 @@ class stock_picking(orm.Model):
     # in stock_picking_mass_assign, in order to use the
     # new field from qoqa_offer, 'sale_create_date'
     def check_assign_all(self, cr, uid, ids=None, context=None):
+        # create new cursor
+        cr = pooler.get_db(cr.dbname).cursor()
         if isinstance(ids, (int, long)):
             ids = [ids]
         # no ids = cron
@@ -353,12 +356,13 @@ class stock_picking(orm.Model):
         for picking_id in ids:
             try:
                 self.action_assign(cr, uid, [picking_id], context)
+                #cr.commit()
             except Exception:
                 # ignore the error, the picking will just stay as confirmed
-                name = self.read(cr, uid, picking_id, ['name'],
-                                 context=context)['name']
-                _logger.info('error in action_assign for picking %s',
-                             name, exc_info=True)
+                _logger.info('error in action_assign for picking',
+                             exc_info=True)
+                cr.rollback()
+        cr.close()
         return True
 
 

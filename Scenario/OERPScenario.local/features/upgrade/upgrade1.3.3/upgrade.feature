@@ -9,6 +9,7 @@ Feature: upgrade to 1.3.3
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | account                                    |
     Then my modules should have been installed and models reloaded
 
   Scenario: upgrade application version

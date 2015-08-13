@@ -39,7 +39,7 @@
                     <filter
                         string="Favorites Shops"
                         name="favoritesshops"
-                        domain="[('shop_id', 'in', qoqa_shop_ids)]"
+                        domain="[('shop_id', 'in', sale_shop_ids)]"
                         help="My favorites shops. You can change it in your settings"/>
                 </filter>
                 <filter string="Customer" position="after">

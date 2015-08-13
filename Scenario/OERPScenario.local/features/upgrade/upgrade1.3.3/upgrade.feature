@@ -10,6 +10,7 @@ Feature: upgrade to 1.3.3
     Given I install the required modules with dependencies:
       | name                                       |
       | account                                    |
+      | qoqa_offer                                 |
     Then my modules should have been installed and models reloaded
 
   Scenario: upgrade application version

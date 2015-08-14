@@ -40,8 +40,14 @@ class res_users(orm.Model):
         user = self.browse(cr, SUPERUSER_ID, uid, context)
         if user.qoqa_shop_ids:
             result['qoqa_shop_ids'] = [shop.id for shop in user.qoqa_shop_ids]
+            result['sale_shop_ids'] = [shop.openerp_id.id for shop
+                                       in user.qoqa_shop_ids]
         else:
             qoqa_obj = self.pool['qoqa.shop']
             result['qoqa_shop_ids'] = qoqa_obj.search(cr, uid, [],
                                                       context=context)
+            qoqa_shops = qoqa_obj.browse(cr, uid, result['qoqa_shop_ids'],
+                                         context=context)
+            result['sale_shop_ids'] = [shop.openerp_id.id for shop
+                                       in qoqa_shops]
         return result

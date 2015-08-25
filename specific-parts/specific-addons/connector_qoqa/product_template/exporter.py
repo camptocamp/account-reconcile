@@ -111,8 +111,6 @@ class TemplateExportMapper(ExportMapper):
         if len(qoqa_value) > 0:
             # Result is [(id, value)]
             return {'category': qoqa_value[0][1]}
-        else:
-            return
 
     @mapping
     def translations(self, record):

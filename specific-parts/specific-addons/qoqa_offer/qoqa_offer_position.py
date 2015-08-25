@@ -566,9 +566,16 @@ class qoqa_offer_position(orm.Model):
         })
         template = template_obj.browse(cr, uid, product_tmpl_id,
                                        context=context)
+
+        buy_price = \
+            template.seller_ids and \
+            template.seller_ids[0].pricelist_ids and \
+            template.seller_ids[0].pricelist_ids[0].price or \
+            0.0
+
         values = {
             'current_unit_price': template.list_price,
-            'buy_price': template.standard_price,
+            'buy_price': buy_price,
         }
 
         # do not refresh the taxes and variants if the template has not

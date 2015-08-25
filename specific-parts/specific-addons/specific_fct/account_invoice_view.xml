@@ -32,6 +32,9 @@
             invisible="context.get('type') != 'in_invoice'"
             domain="[('validation_agreement', '=', True)]"/>
         </filter>
+        <field name="partner_id" position="attributes">
+          <attribute name="domain">[('is_company', '=', True)]</attribute>
+        </field>
       </field>
     </record>
 

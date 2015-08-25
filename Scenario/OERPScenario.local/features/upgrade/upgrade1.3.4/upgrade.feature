@@ -22,5 +22,8 @@ Feature: upgrade to 1.3.4
          | active     | True                      |
          | email      | loutres@qoqa.com          |
 
+  Scenario: re-export categories
+    Given I re-export to QoQa the product categories
+
   Scenario: upgrade application version
     Given I set the version of the instance to "1.3.4"

@@ -13,5 +13,14 @@ Feature: upgrade to 1.3.4
       | specific_fct                               |
     Then my modules should have been installed and models reloaded
 
+  Scenario: create partner for claim response
+  Given I need a "res.partner" with oid: scenario.loutres_qoqa_ch_fr
+    And having:
+         | key        | value                     |
+         | name       | Loutres                   |
+         | company_id | by oid: base.main_company |
+         | active     | True                      |
+         | email      | loutres@qoqa.com          |
+
   Scenario: upgrade application version
     Given I set the version of the instance to "1.3.4"

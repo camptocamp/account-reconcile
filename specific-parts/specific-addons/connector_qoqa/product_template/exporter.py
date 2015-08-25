@@ -92,11 +92,13 @@ class TemplateExportMapper(ExportMapper):
     def metas(self, record):
         """ QoQa tries to loop on this field
 
-        So it is there only to avoid errors on QoQa.
-        But we don't have any values to send.
+        We add the attributes, but they will not be used
+        (yet) on QoQa.
 
         """
-        return {'product_metas': []}
+        attrs = self.get_connector_unit_for_model(ProductAttribute)
+        return {'product_metas':
+                [attrs.get_values(record, translatable=False)]}
 
     @mapping
     def category(self, record):
@@ -111,12 +113,6 @@ class TemplateExportMapper(ExportMapper):
             return {'category': qoqa_value[0][1]}
         else:
             return
-
-    @mapping
-    def attributes(self, record):
-        """ Map attributes which are not translatables """
-        attrs = self.get_connector_unit_for_model(ProductAttribute)
-        return attrs.get_values(record, translatable=False)
 
     @mapping
     def translations(self, record):

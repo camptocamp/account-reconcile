@@ -84,6 +84,8 @@ class QoQaTrackingExporter(ExportSynchronizer):
                 items.append({'item_id': item_id,
                               'quantity': line.product_qty,
                               })
+            if not number:
+                number = ""
             numbers.append({
                 'number': number,
                 'items': items,

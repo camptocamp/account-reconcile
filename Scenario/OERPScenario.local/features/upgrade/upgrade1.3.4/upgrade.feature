@@ -9,8 +9,12 @@ Feature: upgrade to 1.3.4
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                                       |
+      | account_export_csv                         |
+      | account_financial_report_webkit            |
+      | account_financial_report_webkit_xls        |
       | connector_qoqa                             |
       | specific_fct                               |
+      | specific_report                            |
     Then my modules should have been installed and models reloaded
 
   Scenario: create partner for claim response

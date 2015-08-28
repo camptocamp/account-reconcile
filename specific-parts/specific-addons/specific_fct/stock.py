@@ -343,6 +343,7 @@ class stock_picking(orm.Model):
     # new field from qoqa_offer, 'sale_create_date'
     def check_assign_all(self, cr, uid, ids=None, context=None):
         # create new cursor
+        wf_service = netsvc.LocalService("workflow")
         cr = pooler.get_db(cr.dbname).cursor()
         if isinstance(ids, (int, long)):
             ids = [ids]
@@ -356,6 +357,7 @@ class stock_picking(orm.Model):
         for picking_id in ids:
             try:
                 self.action_assign(cr, uid, [picking_id], context)
+                wf_service.trg_trigger(uid, 'stock.picking', picking_id, cr)
                 cr.commit()
             except Exception:
                 # ignore the error, the picking will just stay as confirmed

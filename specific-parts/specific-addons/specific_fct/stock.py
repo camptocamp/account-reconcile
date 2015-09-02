@@ -70,12 +70,6 @@ class stock_picking(orm.Model):
         return self.pool['stock.picking']._get_from_partner(cr, uid, ids,
                                                             context=context)
 
-    def _default_carrier(self, cr, uid, context=None):
-        # Use default carrier
-        _, carrier_id = self.pool['ir.model.data'].get_object_reference(
-            cr, uid, 'scenario', 'carrier_standard')
-        return carrier_id
-
     _columns = {
         'number_of_products': fields.function(
             _get_number_of_products,
@@ -106,7 +100,6 @@ class stock_picking(orm.Model):
 
     _defaults = {
         'active': 1,
-        'carrier_id': _default_carrier,
     }
 
     def _generate_postlogistics_label(self, cr, uid, picking,

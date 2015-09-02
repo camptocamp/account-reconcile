@@ -45,19 +45,16 @@ class QoQaTrackingExporter(ExportSynchronizer):
         binder = self.get_binder_for_model('qoqa.shipper.service')
         carrier_id = False
         carrier = binding.carrier_id
-        if carrier:
-            carrier_id = carrier.id
+        if not carrier:
+            shipper_service_id = None
         else:
-            # Use default carrier
-            _, carrier_id = sess.pool['ir.model.data'].get_object_reference(
-                sess.cr, sess.uid, 'scenario', 'carrier_standard')
-
-        shipper_service_id = binder.to_backend(carrier_id, wrap=True)
-        if shipper_service_id is None:
-            raise MappingError('The delivery order %s cannot be exported '
-                               'because the shipper service %s does not '
-                               'exist on the QoQa backend' %
-                               (binding.name, carrier.name))
+            binder = self.get_binder_for_model('qoqa.shipper.service')
+            shipper_service_id = binder.to_backend(carrier.id, wrap=True)
+            if shipper_service_id is None:
+                raise MappingError('The delivery order %s cannot be exported '
+                                   'because the shipper service %s does not '
+                                   'exist on the QoQa backend' %
+                                   (binding.name, carrier.name))
 
         # get the id of the sales order on QoQa
         sale = binding.sale_id

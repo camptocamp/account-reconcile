@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm
+from openerp.osv import orm, fields
 
 
 class res_partner(orm.Model):
@@ -26,6 +26,30 @@ class res_partner(orm.Model):
     (for claims)
     """
     _inherit = 'res.partner'
+
+    def _display_name_compute(self, cr, uid, ids, name, args, context=None):
+        return dict(self.name_get(cr, uid, ids, context=context))
+
+    _display_name_store_triggers = {
+        'res.partner': (lambda self, cr, uid, ids, context=None:
+                        self.search(cr, uid, [('id', 'child_of', ids)]),
+                        ['parent_id', 'is_company',
+                         'name', 'firstname', 'lastname',
+                         'street', 'street2', 'zip', 'city',
+                         'state_id', 'country_id'], 10)
+        }
+
+    # indirection to avoid passing a copy of the overridable method
+    # when declaring the function field
+    _display_name = lambda self, *args, **kwargs: \
+        self._display_name_compute(*args, **kwargs)
+
+    _columns = {
+        # extra field to allow ORDER BY to match visible names
+        'display_name': fields.function(_display_name, type='char',
+                                        string='Name',
+                                        store=_display_name_store_triggers),
+        }
 
     _defaults = {
         'notification_email_send': 'comment',

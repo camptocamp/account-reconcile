@@ -36,7 +36,7 @@ class res_partner(orm.Model):
         # Since the address is now displayed in the name, it's important
         # to truncate any name value in order to only use the "base" one.
         # In order to do this, we truncate at the first comma.
-        if name:
+        if name and operator != '=':
             name = name.split(',')[0]
         if args is None:
             args = []

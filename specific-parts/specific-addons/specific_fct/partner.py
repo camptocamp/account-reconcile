@@ -38,6 +38,8 @@ class res_partner(orm.Model):
         # In order to do this, we truncate at the first comma.
         if name:
             name = name.split(',')[0]
+        if args is None:
+            args = []
 
         res = []
 

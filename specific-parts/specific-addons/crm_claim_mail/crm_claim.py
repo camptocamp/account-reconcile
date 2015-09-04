@@ -285,15 +285,14 @@ class crm_claim(orm.Model):
                      type='notification', subtype=None, parent_id=False,
                      attachments=None, context=None,
                      content_subtype='html', **kwargs):
-        partner_obj = self.pool['res.partner']
-        partner_id = partner_obj.search(
-            cr, uid, [('email', '=', 'loutres@qoqa.com')])
-        if partner_id:
-            kwargs['author_id'] = partner_id[0]
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['email_from'] = 'loutres@qoqa.com'
         result = super(crm_claim, self).message_post(
             cr, uid, thread_id, body=body, subject=subject, type=type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
-            context=context, content_subtype=content_subtype, **kwargs)
+            context=ctx, content_subtype=content_subtype, **kwargs)
         if type == 'comment' and subtype:
             self.case_closed(cr, uid, thread_id, context=context)
         return result

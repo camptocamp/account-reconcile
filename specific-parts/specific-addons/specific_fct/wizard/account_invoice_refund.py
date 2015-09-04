@@ -32,6 +32,10 @@ class account_invoice_refund(orm.TransientModel):
         if active_id:
             inv = self.pool.get('account.invoice').browse(cr, uid, active_id,
                                                           context=context)
+            if not (inv and inv.date_invoice):
+                return ("La facture ne possède pas de date de facturation! "
+                        "Veuillez ajouter une date de facturation avant de "
+                        "continuer.")
             inv_date = datetime.strptime(inv.date_invoice,
                                          DEFAULT_SERVER_DATE_FORMAT)
             delta = datetime.now() - inv_date

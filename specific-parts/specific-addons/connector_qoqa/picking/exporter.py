@@ -41,7 +41,6 @@ class QoQaTrackingExporter(ExportSynchronizer):
 
     def _get_tracking_numbers(self, binding):
         # Get the ID of the shipper service on QoQa
-        binder = self.get_binder_for_model('qoqa.shipper.service')
         carrier = binding.carrier_id
         if not carrier:
             shipper_service_id = None

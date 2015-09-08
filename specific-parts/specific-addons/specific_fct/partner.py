@@ -68,15 +68,20 @@ class res_partner(orm.Model):
                           "%(state_code)s %(zip)s\n%(country_name)s")
         args = {
             'state_code': address.state_id and
+            address.state_id.code and
             address.state_id.code.strip() or '',
             'state_name': address.state_id and
+            address.state_id.name and
             address.state_id.name.strip() or '',
             'country_code': address.country_id and
+            address.country_id.code and
             address.country_id.code.strip() or '',
             'country_name': address.country_id and
+            address.country_id.name and
             address.country_id.name.strip() or '',
             'company_name': address.parent_id and
-            address.parent_name or '',
+            address.parent_name and
+            address.parent_name.strip() or '',
             'street': address.street and
             address.street.strip() or '',
             'street2': address.street2 and

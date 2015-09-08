@@ -55,6 +55,46 @@ class res_partner(orm.Model):
         'notification_email_send': 'comment',
     }
 
+    def _display_address(self, cr, uid, address, without_company=False,
+                         context=None):
+        '''
+        Specific code to fix OpenERP behavior: in the view (and the export),
+        every text field is stripped of its spaces, so importing an exported
+        partner name will fail on the equality check.
+        '''
+        address_format = (address.country_id and
+                          address.country_id.address_format or
+                          "%(street)s\n%(street2)s\n%(city)s "
+                          "%(state_code)s %(zip)s\n%(country_name)s")
+        args = {
+            'state_code': address.state_id and
+            address.state_id.code.strip() or '',
+            'state_name': address.state_id and
+            address.state_id.name.strip() or '',
+            'country_code': address.country_id and
+            address.country_id.code.strip() or '',
+            'country_name': address.country_id and
+            address.country_id.name.strip() or '',
+            'company_name': address.parent_id and
+            address.parent_name or '',
+            'street': address.street and
+            address.street.strip() or '',
+            'street2': address.street2 and
+            address.street2.strip() or '',
+            'city': address.city and
+            address.city.strip() or '',
+            'zip': address.zip and
+            address.zip.strip() or '',
+            'state_id': address.state_id or '',
+            'country_id': address.country_id or '',
+        }
+        if without_company:
+            args['company_name'] = ''
+        elif address.parent_id:
+            address_format = '%(company_name)s\n' + address_format
+        print args
+        return address_format % args
+
     def name_search(self, cr, uid, name, args=None, operator='ilike',
                     context=None, limit=100):
         # Since the address is now displayed in the name, it's important

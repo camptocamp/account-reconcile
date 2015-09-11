@@ -36,7 +36,7 @@ from ..exception import (QoQaResponseNotParsable,
 
 _logger = logging.getLogger(__name__)
 
-REQUESTS_TIMEOUT = 5  # seconds
+REQUESTS_TIMEOUT = 30  # seconds
 
 # Add detailed logs
 # import httplib

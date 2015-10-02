@@ -163,16 +163,3 @@ class ResPartnerImportMapper(ImportMapper):
     def is_company(self, record):
         """ partners are companies so we can bind addresses on them """
         return {'is_company': True}
-
-    @only_create
-    @mapping
-    def openerp_id(self, record):
-        """ Will bind the customer on a existing partner
-        with the same email """
-        sess = self.session
-        partner_ids = sess.search('res.partner',
-                                  [('email', '=', record['email']),
-                                   ('customer', '=', True),
-                                   ('is_company', '=', True)])
-        if partner_ids:
-            return {'openerp_id': partner_ids[0]}

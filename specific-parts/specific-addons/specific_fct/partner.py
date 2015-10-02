@@ -97,7 +97,6 @@ class res_partner(orm.Model):
             args['company_name'] = ''
         elif address.parent_id:
             address_format = '%(company_name)s\n' + address_format
-        print args
         return address_format % args
 
     def name_search(self, cr, uid, name, args=None, operator='ilike',

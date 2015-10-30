@@ -367,6 +367,31 @@ class stock_picking(orm.Model):
         cr.close()
         return True
 
+    def test_finished(self, cursor, user, ids):
+        wf_service = netsvc.LocalService("workflow")
+        res = super(stock_picking, self).test_finished(cursor, user, ids)
+        for picking in self.browse(cursor, user, ids):
+            for move in picking.move_lines:
+                if move.state in('done', 'cancel') and move.procurements:
+                    for procurement in move.procurements:
+                        wf_service.trg_validate(user, 'procurement.order',
+                                                procurement.id,
+                                                'button_check', cursor)
+        return res
+
+    def test_cancel(self, cursor, user, ids, context=None):
+        wf_service = netsvc.LocalService("workflow")
+        res = super(stock_picking, self).test_cancel(cursor, user, ids,
+                                                     context=context)
+        for picking in self.browse(cursor, user, ids, context=context):
+            for move in picking.move_lines:
+                if move.state == 'cancel' and move.procurements:
+                    for procurement in move.procurements:
+                        wf_service.trg_validate(user, 'procurement.order',
+                                                procurement.id,
+                                                'button_check', cursor)
+        return res
+
 
 class stock_picking_in(orm.Model):
     """ Add a number of products field to allow search on it.
@@ -668,3 +693,40 @@ class stock_move(orm.Model):
                                             'button_done', cr)
 
         return [move.id for move in complete]
+
+    # Until base upgrade : this calls the correct workflow
+    # on the stock pickings when moves are cancelled
+    # (either transferred or cancelled)
+    def action_cancel(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return True
+        if context is None:
+            context = {}
+        pickings = set()
+        for move in self.browse(cr, uid, ids, context=context):
+            if move.state in ('confirmed', 'waiting', 'assigned', 'draft'):
+                if move.picking_id:
+                    pickings.add(move.picking_id.id)
+            if move.move_dest_id and move.move_dest_id.state == 'waiting':
+                self.write(cr, uid, [move.move_dest_id.id],
+                           {'state': 'confirmed'}, context=context)
+                if context.get('call_unlink', False) and \
+                        move.move_dest_id.picking_id:
+                    wf_service = netsvc.LocalService("workflow")
+                    wf_service.trg_write(uid, 'stock.picking',
+                                         move.move_dest_id.picking_id.id, cr)
+        self.write(cr, uid, ids, {'state': 'cancel', 'move_dest_id': False},
+                   context=context)
+        if not context.get('call_unlink', False):
+            for pick in self.pool.get('stock.picking').browse(
+                    cr, uid, list(pickings), context=context):
+                if all(move.state == 'cancel' for move in pick.move_lines):
+                    self.pool.get('stock.picking').write(cr, uid, [pick.id],
+                                                         {'state': 'cancel'},
+                                                         context=context)
+
+        wf_service = netsvc.LocalService("workflow")
+        if context.get('picking_trg_write', True):
+            for pick_id in pickings:
+                wf_service.trg_write(uid, 'stock.picking', pick_id, cr)
+        return True

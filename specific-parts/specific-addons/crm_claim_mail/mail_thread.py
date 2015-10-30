@@ -24,7 +24,7 @@ import types
 from openerp.addons.mail.mail_thread import decode_header, mail_thread
 
 
-RMA_RE = re.compile(r".*\[(RMA-\d+)].*", re.UNICODE)
+RMA_RE = re.compile(r".*\[(RMA-\d+|SOS-\d+)].*", re.UNICODE)
 
 
 def is_dsn(message):

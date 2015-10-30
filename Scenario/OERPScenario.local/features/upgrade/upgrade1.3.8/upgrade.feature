@@ -12,5 +12,11 @@ Feature: upgrade to 1.3.8
       | specific_fct     |
     Then my modules should have been installed and models reloaded
 
+  Scenario: change sequence from RMA- to SOS-
+    Given I execute the SQL commands
+    """
+    UPDATE ir_sequence SET prefix = 'SOS-' WHERE code = 'crm.claim.rma' AND prefix = 'RMA-';
+    """
+
   Scenario: upgrade application version
     Given I set the version of the instance to "1.3.8"

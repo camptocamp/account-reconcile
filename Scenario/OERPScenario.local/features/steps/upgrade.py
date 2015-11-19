@@ -1,3 +1,4 @@
+from support import *
 
 @given(u'I need to validate all moves from "{date_from}" to "{date_to}" on company "{company_name}"')
 def step_impl(ctx,date_from,date_to,company_name):
@@ -11,9 +12,8 @@ def step_impl(ctx,date_from,date_to,company_name):
         cr = registry.cursor()
     # Get active Cron
     cron_model = model('ir.cron')
-    active_con = cron_model.browse([('active', '=', True)]).id
-    print str(active_con)
-    cron_model.write(active_con,{'active':False})
+    active_cron = cron_model.browse([('active', '=', True)]).id
+    cron_model.write(active_cron,{'active':False})
     res_company_model = model('res.company')
     cp_id = res_company_model.browse([('name','=',company_name)])[0].id
     account_move_model = model('account.move')
@@ -42,12 +42,12 @@ def step_impl(ctx,date_from,date_to,company_name):
             cr.autocommit(True)
             cr.execute(sql)
             cpt += 1
-    # Now we will post all move
-    sql = 'UPDATE account_move set state=\'%s\' where date between \'%s\' and \'%s\';' % ('posted', date_from, date_to)
+    # Now we will post all move_id
+    sql = 'UPDATE account_move set state=\'%s\' where date between \'%s\' and \'%s\' and company_id = %s;' % ('posted', date_from, date_to, cp_id)
     try:
         cr.autocommit(True)
         cr.execute(sql)
         puts(cr.statusmessage)
     finally:
         cr.close()
-    cron_model.write(active_con,{'active':True})
+    cron_model.write(active_cron,{'active':True})

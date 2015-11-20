@@ -12,7 +12,6 @@ Feature: upgrade to 1.4.0
       | name                       |
       | account_default_draft_move |
 
-    Given I update the module list
     Given I install the required modules with dependencies:
       | name                 |
       | account_move_locking |

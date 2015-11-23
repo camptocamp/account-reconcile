@@ -16,6 +16,7 @@ Feature: upgrade to 1.4.0
       | name                 |
       | account_move_locking |
       | account_cancel       |
+      | specific_fct         |
     Then my modules should have been installed and models reloaded
 
   Scenario: change all journal to allow cancelling

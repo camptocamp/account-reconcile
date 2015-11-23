@@ -43,6 +43,17 @@
       </field>
     </record>
 
+
+    <record id="account_payment_populate_statement_filter_view" model="ir.ui.view">
+        <field name="name">Payment Populate statement filtered</field>
+        <field name="model">account.payment.populate.statement</field>
+        <field name="inherit_id" ref="account_payment.account_payment_populate_statement_view"/>
+        <field name="arch" type="xml">
+            <field name="lines" position="attributes">
+                <attribute name="domain">['|', ('order_id.mode', '=', False), ('bank_statement_line_id', '=', False), ('ml_reconcile_id', '=', False), ('ml_state', '=', 'valid')]</attribute>
+            </field>
+        </field>
+    </record>
   </data>
 </openerp>
 

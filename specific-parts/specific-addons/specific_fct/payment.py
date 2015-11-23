@@ -18,7 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm
+from openerp.osv import orm, fields
+from openerp.addons.account_payment.wizard.account_payment_populate_statement \
+    import account_payment_populate_statement as old_payment_wizard
 
 
 class payment_order_create(orm.TransientModel):
@@ -73,3 +75,83 @@ class payment_order_create(orm.TransientModel):
                     'currency': currency_id,
                 }, context=context)
         return {'type': 'ir.actions.act_window_close'}
+
+
+# Temporary, until https://github.com/odoo/odoo/pull/9654 is merged
+class PaymentLine(orm.Model):
+    _inherit = 'payment.line'
+
+    def _get_payment_move_line(self, cr, uid, ids, context=None):
+        payment_line_obj = self.pool.get('payment.line')
+        return payment_line_obj.search(cr, uid,
+                                       [('move_line_id', 'in', ids)],
+                                       context=context)
+
+    def _get_move_line_values(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for payment_line in self.browse(cr, uid, ids):
+            res[payment_line.id] = {'ml_date_created': False,
+                                    'ml_maturity_date': False,
+                                    'ml_inv_ref': False,
+                                    'ml_reconcile_id': False,
+                                    'ml_state': False}
+            if payment_line.move_line_id:
+                move_line = payment_line.move_line_id
+                res[payment_line.id] = {
+                    'ml_date_created': move_line.date_created,
+                    'ml_maturity_date': move_line.date_maturity,
+                    'ml_inv_ref': move_line.invoice
+                    and move_line.invoice.id or False,
+                    'ml_reconcile_id': move_line.reconcile_id
+                    and move_line.reconcile_id.id or False,
+                    'ml_state': move_line.state,
+                }
+        return res
+
+    _move_line_store_condition = {
+        'payment.line': (lambda self, cr, uid, ids, c=None: ids,
+                         ['move_line_id'],
+                         10),
+        'account.move.line': (_get_payment_move_line,
+                              ['date_created', 'date_maturity', 'invoice',
+                               'reconcile_id', 'state'],
+                              10),
+    }
+
+    _columns = {
+        'ml_date_created': fields.function(
+            _get_move_line_values, string="Effective Date", type='date',
+            help="Invoice Effective Date",
+            multi="move_line_values", store=_move_line_store_condition
+        ),
+        'ml_maturity_date': fields.function(
+            _get_move_line_values, type='date', string='Due Date',
+            multi="move_line_values", store=_move_line_store_condition
+        ),
+        'ml_inv_ref': fields.function(
+            _get_move_line_values, type='many2one',
+            relation='account.invoice', string='Invoice Ref.',
+            multi="move_line_values", store=_move_line_store_condition
+        ),
+        'ml_reconcile_id': fields.function(
+            _get_move_line_values, type='many2one',
+            relation='account.move.reconcile', string='Move Line Reconcile',
+            multi="move_line_values", store=_move_line_store_condition
+        ),
+        'ml_state': fields.function(
+            _get_move_line_values, type='selection',
+            selection=[('draft', 'Unbalanced'), ('valid', 'Balanced')],
+            string='Move Line State',
+            multi="move_line_values", store=_move_line_store_condition
+        ),
+    }
+
+
+class AccountPaymentPopulateStatement(orm.TransientModel):
+    _inherit = "account.payment.populate.statement"
+
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form',
+                        context=None, toolbar=False, submenu=False):
+        return super(old_payment_wizard, self).fields_view_get(
+            cr, uid, view_id=view_id, view_type=view_type, context=context,
+            toolbar=toolbar, submenu=False)

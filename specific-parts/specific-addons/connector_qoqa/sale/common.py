@@ -251,6 +251,18 @@ class sale_order(orm.Model):
                     wf_service.trg_validate(uid, 'stock.picking', picking.id,
                                             'button_cancel', cr)
 
+            # cancel the invoices
+            for invoice in order.invoice_ids:
+                # paid invoices were set as opened due to payments
+                # being deleted, or were "detached" previously since
+                # they will be refunded. Draft invoices will be cancelled
+                # by the sale order cancellation.
+
+                if invoice.state not in ('draft', 'cancel', 'paid'):
+                    wf_service.trg_validate(uid, 'account.invoice',
+                                            invoice.id,
+                                            'invoice_cancel', cr)
+
             super(sale_order, self).action_cancel(cr, uid, [order.id],
                                                   context=context)
             if payment_ids:

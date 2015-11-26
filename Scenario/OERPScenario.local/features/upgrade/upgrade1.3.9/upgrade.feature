@@ -24,6 +24,8 @@ Feature: upgrade to 1.4.0
     """
     UPDATE account_journal set update_posted = 't';
     """
+  Scenario: Validate all moves
+    Given I need to validate all moves from "01-01-2015" to "12-31-2015" on company "QoQa Services SA"
 
   Scenario: change automatic workflow
     Given I need a "sale.workflow.process" with oid: sale_automatic_workflow.automatic_validation

@@ -176,6 +176,11 @@ class QoQaAdapter(CRUDAdapter):
                     'base_url': self.client.base_url,
                     }
             raise QoQaAPISecurityError(msg % vals)
+        # Server error : retry later
+        if response.status_code in (500, 502, 504):
+            raise NetworkRetryableError(
+                'A HTTP server error caused the failure of the job: '
+                'HTTP %s %s' % (response.status_code, response.reason))
         response.raise_for_status()
         try:
             parsed = json.loads(response.content)

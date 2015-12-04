@@ -27,12 +27,5 @@ Feature: upgrade to 1.4.0
   Scenario: Validate all moves
     Given I need to validate all moves from "01-01-2015" to "12-31-2015" on company "QoQa Services SA"
 
-  Scenario: change automatic workflow
-    Given I need a "sale.workflow.process" with oid: sale_automatic_workflow.automatic_validation
-    And having:
-    | name              | value            |
-    | invoice_quantity  | order            |
-    | create_invoice_on | on_order_confirm |
-
   Scenario: upgrade application version
     Given I set the version of the instance to "1.4.0"

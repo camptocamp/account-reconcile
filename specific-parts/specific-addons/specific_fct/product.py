@@ -29,10 +29,16 @@ class product_category(orm.Model):
 
     _columns = {
         'warranty': fields.float('Warranty'),
+        'product_type': fields.selection(
+            [('product', 'Stockable Product'),
+             ('consu', 'Consumable'),
+             ('service', 'Service')],
+            'Product Type'),
     }
 
     _defaults = {
         'warranty': 24,
+        'product_type': 'product',
     }
 
 
@@ -121,7 +127,8 @@ class product_template(orm.Model):
 
         category = self.pool.get('product.category').browse(
             cr, uid, categ_id, context=context)
-        res['value'].update({'warranty': category.warranty})
+        res['value'].update({'warranty': category.warranty,
+                             'type': category.product_type})
         return res
 
 
@@ -148,5 +155,6 @@ class product_product(orm.Model):
 
         category = self.pool.get('product.category').browse(
             cr, uid, categ_id, context=context)
-        res['value'].update({'warranty': category.warranty})
+        res['value'].update({'warranty': category.warranty,
+                             'type': category.product_type})
         return res

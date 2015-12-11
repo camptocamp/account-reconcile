@@ -227,3 +227,23 @@ msgstr "Une facture avec une date plus vieille que cette valeur ne pourra pas ê
 #: view:account.move.line:0
 msgid "Partial Reconciliation Number"
 msgstr "Numéro de lettrage partiel"
+
+#. module: specific_fct
+#: field:product.category,product_type:0
+msgid "Product Type"
+msgstr "Type d'article"
+
+#. module: specific_fct
+#: selection:product.category,product_type:0
+msgid "Consumable"
+msgstr "Consommable"
+
+#. module: specific_fct
+#: selection:product.category,product_type:0
+msgid "Service"
+msgstr "Service"
+
+#. module: specific_fct
+#: selection:product.category,product_type:0
+msgid "Stockable Product"
+msgstr "Article stockable"

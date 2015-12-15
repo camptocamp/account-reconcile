@@ -19,6 +19,14 @@ Feature: upgrade to 1.4.0
       | specific_fct         |
     Then my modules should have been installed and models reloaded
 
+  Scenario: set product type "service" on category
+    Given I execute the SQL commands
+    """
+    UPDATE product_category
+    SET product_type = 'service'
+    WHERE id IN (40, 41, 42, 181, 182, 196);
+    """
+
   Scenario: change all journal to allow cancelling
     Given I execute the SQL commands
     """

@@ -21,7 +21,8 @@
       <field name="inherit_id" ref="product.product_category_form_view"/>
       <field name="arch" type="xml">
           <field name="type" position="after">
-              <field name="warranty" colspan="4"/>
+              <field name="warranty" colspan="2"/>
+              <field name="product_type" colspan="2"/>
           </field>
       </field>
   </record>

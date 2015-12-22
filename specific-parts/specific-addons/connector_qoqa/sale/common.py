@@ -102,6 +102,7 @@ class sale_order(orm.Model):
         if default is None:
             default = {}
         default['qoqa_bind_ids'] = False
+        default['canceled_in_backend'] = False
         return super(sale_order, self).copy_data(cr, uid, id,
                                                  default=default,
                                                  context=context)

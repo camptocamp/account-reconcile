@@ -32,7 +32,11 @@ from ..related_action import unwrap_binding
 
 @on_record_create(model_names='qoqa.stock.picking')
 def delay_export(session, model_name, record_id, vals):
-    export_picking_tracking_done.delay(session, model_name, record_id)
+    _, carrier_nojob_id = session.pool['ir.model.data'].get_object_reference(
+        session.cr, session.uid, 'scenario', 'carrier_nojob')
+    record = session.browse(model_name, record_id)
+    if record.carrier_id and record.carrier_id.id != carrier_nojob_id:
+        export_picking_tracking_done.delay(session, model_name, record_id)
 
 
 @qoqa

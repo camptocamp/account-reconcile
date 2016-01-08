@@ -16,3 +16,4 @@ from . import account_move_line
 from . import purchase
 from . import queue_job
 from . import picking_dispatch
+from . import ir_ui_menu

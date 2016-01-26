@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Joel Grand-Guillaume
-#    Copyright 2013 Camptocamp SA
+#    Author: Matthieu Dietrich
+#    Copyright 2016 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,6 +18,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import claim
-from . import company
-from . import wizard
+from openerp.osv import orm, fields
+
+
+class ResCompany(orm.Model):
+    _inherit = "res.company"
+
+    _columns = {
+        'unclaimed_category_id': fields.many2one(
+            'crm.case.categ', 'Default category for unclaimed packages'),
+    }

@@ -9,6 +9,7 @@
                 <form string="Unclaimed Package Return" version="7.0">
                     <group>
                         <field name="track_number" on_change="onchange_package_number(track_number)"/>
+                        <field name="unclaimed_type"/>
                         <field name="claim_name"/>
                         <field name="return_source_location_id"/>
                         <field name="return_dest_location_id"/>

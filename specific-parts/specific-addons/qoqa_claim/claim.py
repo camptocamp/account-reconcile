@@ -43,4 +43,5 @@ class crm_claim(orm.Model):
             domain=['|', ('active', '=', False), ('active', '=', True)],
             help='Related original Customer invoice'
         ),
+        'datatrans_url': fields.char('Datatrans URL', size=256),
     }

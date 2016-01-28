@@ -95,19 +95,22 @@ class CrmClaimUnclaimed(orm.TransientModel):
         claim_obj = self.pool['crm.claim']
         model_data_obj = self.pool['ir.model.data']
 
-        claim_number = claim_obj._get_sequence_number(
-            cr, uid, context=context)
-        sale = wizard.claim_sale_order_id
-        carrier_amount = sale.carrier_id.normal_price or 0.0
-
-        session = ConnectorSession(cr, uid, context=context)
-        qsale = sale.qoqa_bind_ids[0]
-        backend_id = qsale.backend_id.id
-        env = get_environment(session, 'qoqa.sale.order', backend_id)
-        adapter = env.get_connector_unit(BackendAdapter)
-        amount = float_round(carrier_amount * 100, precision_digits=0)
-        pay_by_email_url = adapter.pay_by_email_url(
-            qsale.qoqa_id, claim_number, int(amount))
+        try:
+            claim_number = claim_obj._get_sequence_number(
+                cr, uid, context=context)
+            sale = wizard.claim_sale_order_id
+            carrier_amount = sale.carrier_id.normal_price or 0.0
+            session = ConnectorSession(cr, uid, context=context)
+            qsale = sale.qoqa_bind_ids[0]
+            backend_id = qsale.backend_id.id
+            env = get_environment(session, 'qoqa.sale.order', backend_id)
+            adapter = env.get_connector_unit(BackendAdapter)
+            amount = float_round(carrier_amount * 100, precision_digits=0)
+            pay_by_email_url = adapter.pay_by_email_url(
+                qsale.qoqa_id, claim_number, int(amount))
+        except Exception:
+            raise orm.except_orm(('Error'),
+                                 ('Pay by email not retrieved from BO'))
 
         claim_vals = {
             'name': wizard.claim_name,
@@ -117,7 +120,7 @@ class CrmClaimUnclaimed(orm.TransientModel):
             'section_id': wizard.claim_section_id.id,
             'claim_type': 'customer',
             'categ_id': wizard.claim_categ_id.id,
-            'ref': 'sale.order,%s' % wizard.claim_sale_order_id.id,
+            'ref': 'sale.order,%s' % sale.id,
             'partner_id': wizard.claim_partner_id.id,
             'invoice_id': wizard.claim_invoice_id.id,
             'company_id': wizard.claim_company_id.id

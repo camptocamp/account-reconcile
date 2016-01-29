@@ -55,6 +55,7 @@ This module installs the fr_FR and de_DE languages.
  'website': 'http://www.camptocamp.com',
  'data': ['lang_install.xml',
           'send_mail_on_new_claim.xml',
+          'send_reminder_on_claim.xml',
           'reopen_claim_on_mail.xml',
           'res_company_view.xml',
           'crm_claim_view.xml',

@@ -8,7 +8,9 @@
             <field name="arch" type="xml">
                 <page name="qoqa" position="inside">
                     <group string="Unclaimed Returns">
-                        <field name="unclaimed_category_id"/>
+                        <field name="unclaimed_initial_categ_id"/>
+                        <field name="unclaimed_first_reminder_categ_id"/>
+                        <field name="unclaimed_second_reminder_categ_id"/>
                     </group>
                 </page>
             </field>

@@ -25,6 +25,13 @@ class ResCompany(orm.Model):
     _inherit = "res.company"
 
     _columns = {
-        'unclaimed_category_id': fields.many2one(
-            'crm.case.categ', 'Default category for unclaimed packages'),
+        'unclaimed_initial_categ_id': fields.many2one(
+            'crm.case.categ',
+            'Default category for new unclaimed packages'),
+        'unclaimed_first_reminder_categ_id': fields.many2one(
+            'crm.case.categ',
+            'Default category for unclaimed packages after first reminder'),
+        'unclaimed_second_reminder_categ_id': fields.many2one(
+            'crm.case.categ',
+            'Default category for unclaimed packages after second reminder'),
     }

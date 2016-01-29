@@ -113,14 +113,10 @@
       <field name="body_html"><![CDATA[
           <p>Bonjour,</p>
           <p>Nous avons reçu en retour votre commande, car elle n'a pas été réclamée dans les délais à votre office de Poste.</p>
-          <p>Un montant de CHF XX.-, relatif à l’acheminent de votre colis à nos locaux nous a été facturé.</p>
+          <p>Un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis à nos locaux nous a été facturé.</p>
           <p>QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos QoQasiens.</p>
-          <p>Nous vous prions donc de verser CHF XX .- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici nos coordonnées bancaires :</p>
-          QoQa Services SA</br>
-          1030 Bussigny-Lausanne</br>
-          No de compte postal: 10-780685-6</br>
-          IBAN: CH68 0900 0000 1078 0685 6</br>
-          Communication: renvoi colis + no ${object.number} </br>
+          <p>Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :</p>
+          ${object.pay_by_email_url}<br/><br/>
           <p> Afin de vous éviter ces frais, nous vous proposons deux solutions:</p>
           <p>1. Vous pouvez passer chercher votre colis dans nos locaux  (munissez-vous simplement d'une copie de cet email et d'une carte d'identité.)</p>
           <p>Voici notre adresse: QoQa Services SA, Rue de l'Arc-en-Ciel 14, 1030 Bussigny-Lausanne</p>
@@ -143,14 +139,10 @@
       <field name="value"><![CDATA[
           <p>Bonjour,</p>
           <p>Nous avons reçu en retour votre commande, car elle n'a pas été réclamée dans les délais à votre office de Poste.</p>
-          <p>Un montant de CHF XX.-, relatif à l’acheminent de votre colis à nos locaux nous a été facturé.</p>
+          <p>Un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis à nos locaux nous a été facturé.</p>
           <p>QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos QoQasiens.</p>
-          <p>Nous vous prions donc de verser CHF XX .- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici nos coordonnées bancaires :</p>
-          QoQa Services SA</br>
-          1030 Bussigny-Lausanne</br>
-          No de compte postal: 10-780685-6</br>
-          IBAN: CH68 0900 0000 1078 0685 6</br>
-          Communication: renvoi colis + no ${object.number} </br>
+          <p>Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :</p>
+          ${object.pay_by_email_url}<br/><br/>
           <p> Afin de vous éviter ces frais, nous vous proposons deux solutions:</p>
           <p>1. Vous pouvez passer chercher votre colis dans nos locaux  (munissez-vous simplement d'une copie de cet email et d'une carte d'identité.)</p>
           <p>Voici notre adresse: QoQa Services SA, Rue de l'Arc-en-Ciel 14, 1030 Bussigny-Lausanne</p>
@@ -172,7 +164,7 @@
           <div>
               <p>Guten Tag</p>
               <p>Houston, wir haben ein Problem! Der Pöstler hat uns heute Vormittag den von Ihnen bestellten Artikel zurückgebracht. Anscheinend wurde Ihr Päckli nicht fristgerecht bei Ihrer Poststelle abgeholt.</p>
-              <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF xx.–. Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte antworten Sie auf diese E-Mail mit der ${object.number} und senden Sie uns die Zahlungsbestätigung der Bank oder Post.</p>
+              <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF ${object.unclaimed_price}.–. Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte antworten Sie auf diese E-Mail mit der ${object.number} und senden Sie uns die Zahlungsbestätigung der Bank oder Post.</p>
               <p>Kontodaten:</p>
               <p>QoQa Services AG, 1030 Bussigny-Lausanne</p>
               <p>PC-Konto: 10-780685-6</p>
@@ -199,7 +191,12 @@
               Nous avons reçu votre commande en retour aujourd'hui avec mention<br>
               "Destinataire introuvable à l'adresse indiquée". <br><br>
               Voici ci-dessous l’adresse indiquée lors de votre commande :<br><br>
-              XXXXX<br><br>
+              ${object.delivery_address_id.name}<br>
+              ${object.delivery_address_id.street}<br>
+              % if object.delivery_address_id.street2:
+                  ${object.delivery_address_id.street2}<br>
+              % endif
+              ${object.delivery_address_id.zip} ${object.delivery_address_id.city}<br/><br/>
               Il y a 2 possibilités pour cela : <br><br>
               1) Vous vous êtes caché lorsque le facteur est passé, parce qu’à chaque fois il s’arrête<br>
               boire l’apéro et passe des heures chez vous.<br><br>
@@ -210,18 +207,14 @@
               Pour cette raison, nous vous prions donc de nous faire savoir à quelle adresse nous devons<br>
               vous renvoyer cet achat et vous assurer auprès de votre office de poste qu'il soit<br>
               correctement distribué.<br><br>
-              Un montant de CHF XX.-, relatif à l’acheminent de votre colis à nos locaux nous a été<br>
+              Un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis à nos locaux nous a été<br>
               facturé.<br><br>
               QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste<br>
               commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
-              Nous vous prions donc de verser CHF xx.- sur notre compte postal afin que nous procédions<br>
+              Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions<br>
               à la réexpédition de votre commande.<br><br>
-              Voici nos coordonnées bancaires :<br><br>
-              QoQa Services SA<br>
-              1030 Bussigny-Lausanne<br>
-              No de compte postal: 10-780685-6<br>
-              IBAN: CH68 0900 0000 1078 0685 6<br>
-              Communication: renvoi colis + no ${object.number}<br><br>
+              Voici un lien sécurisé pour effectuer le paiement :<br><br>
+              ${object.pay_by_email_url}<br/><br/>
               IMPORTANT: Veuillez inclure le numéro de ticket de cet e-mail (dans la ligne du sujet)<br>
               lors de tout échange de courrier, mail etc !<br><br>
               Nous vous remercions de votre compréhension et vous souhaitons une excellente journée.<br>
@@ -245,7 +238,12 @@
               Nous avons reçu votre commande en retour aujourd'hui avec mention<br>
               "Destinataire introuvable à l'adresse indiquée". <br><br>
               Voici ci-dessous l’adresse indiquée lors de votre commande :<br><br>
-              XXXXX<br><br>
+              ${object.delivery_address_id.name}<br>
+              ${object.delivery_address_id.street}<br>
+              % if object.delivery_address_id.street2:
+                  ${object.delivery_address_id.street2}<br>
+              % endif
+              ${object.delivery_address_id.zip} ${object.delivery_address_id.city}<br/><br/>
               Il y a 2 possibilités pour cela : <br><br>
               1) Vous vous êtes caché lorsque le facteur est passé, parce qu’à chaque fois il s’arrête<br>
               boire l’apéro et passe des heures chez vous.<br><br>
@@ -256,18 +254,14 @@
               Pour cette raison, nous vous prions donc de nous faire savoir à quelle adresse nous devons<br>
               vous renvoyer cet achat et vous assurer auprès de votre office de poste qu'il soit<br>
               correctement distribué.<br><br>
-              Un montant de CHF XX.-, relatif à l’acheminent de votre colis à nos locaux nous a été<br>
+              Un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis à nos locaux nous a été<br>
               facturé.<br><br>
               QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste<br>
               commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
-              Nous vous prions donc de verser CHF xx.- sur notre compte postal afin que nous procédions<br>
+              Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions<br>
               à la réexpédition de votre commande.<br><br>
-              Voici nos coordonnées bancaires :<br><br>
-              QoQa Services SA<br>
-              1030 Bussigny-Lausanne<br>
-              No de compte postal: 10-780685-6<br>
-              IBAN: CH68 0900 0000 1078 0685 6<br>
-              Communication: renvoi colis + no ${object.number}<br><br>
+              Voici un lien sécurisé pour effectuer le paiement :<br><br>
+              ${object.pay_by_email_url}<br/><br/>
               IMPORTANT: Veuillez inclure le numéro de ticket de cet e-mail (dans la ligne du sujet)<br>
               lors de tout échange de courrier, mail etc !<br><br>
               Nous vous remercions de votre compréhension et vous souhaitons une excellente journée.<br>
@@ -286,13 +280,13 @@
           <div>
               <p>Guten Tag,</p>
               <p>Houston, wir haben ein Problem! Der Pöstler hat uns heute Vormittag den von Ihnen bestellten Artikel zurückgebracht, da der Empfänger unter der von Ihnen angegebenen Adresse nicht ermittelt werden konnte.</p>
-              <p>Ohne eine Nachricht Ihrerseits können wir das Paket kein zweites Mal zustellen. Wir bitten Sie darum DRINGEND, uns per E-Mail (unter der Angabe der RMA-Nr. XX) oder per Telefon unter 044 555 25 05 zu kontaktieren.</p>
-              <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF 11.–. Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte senden Sie uns die Zahlungsbestätigung der Bank oder Post als Antwort auf dieses E-Mail zu.</p>
+              <p>Ohne eine Nachricht Ihrerseits können wir das Paket kein zweites Mal zustellen. Wir bitten Sie darum DRINGEND, uns per E-Mail (unter der Angabe der RMA-Nr. ${object.number}) oder per Telefon unter 044 555 25 05 zu kontaktieren.</p>
+              <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF ${object.unclaimed_price}.– . Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte senden Sie uns die Zahlungsbestätigung der Bank oder Post als Antwort auf dieses E-Mail zu.</p>
               <p>Kontodaten:</p>
               <p>QoQa Services AG, 1030 Bussigny-Lausanne</p>
               <p>PC-Konto: 10-780685-6</p>
               <p>IBAN: CH68 0900 0000 1078 0685 6</p>
-              <p>Mitteilung: Rücksendung Paket  + RMA-Nr. XXX</p>
+              <p>Mitteilung: Rücksendung Paket + RMA-Nr. ${object.number}</p>
               <p>WICHTIG: Bitte führen Sie jegliche Korrespondenz unter der im Betreff erwähnten RMA-Nummer.</p>
               <div>
                   <div>Vielen herzlichen Dank für Ihre Mitarbeit und liebe Grüsse</div>

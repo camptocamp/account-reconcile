@@ -40,16 +40,11 @@ class CrmClaimUnclaimed(orm.TransientModel):
                                                        context=context)
         return section.user_id and section.user_id.id or False
 
-    def _default_company_id(self, cr, uid, context=None):
-        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
-        return user.company_id and user.company_id.id or False
-
     def _default_categ_id(self, cr, uid, context=None):
-        company_id = self._default_company_id(cr, uid, context=context)
-        company = self.pool['res.company'].browse(cr, uid, company_id,
-                                                  context=context)
-        return company.unclaimed_category_id and \
-            company.unclaimed_category_id.id or False
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        return user.company_id and \
+            user.company_id.unclaimed_initial_categ_id and \
+            user.company_id.unclaimed_initial_categ_id.id or False
 
     _columns = {
         'unclaimed_type': fields.selection(
@@ -64,33 +59,37 @@ class CrmClaimUnclaimed(orm.TransientModel):
             'stock.location', 'Source Location', required=True),
         'return_dest_location_id': fields.many2one(
             'stock.location', 'Dest. Location', required=True),
+        'claim_carrier_price': fields.float(
+            'Delivery Carrier Price', required=True),
         'claim_invoice_id': fields.many2one(
             'account.invoice', 'Invoice', required=True),
         'claim_sale_order_id': fields.many2one(
             'sale.order', 'Sale Order', required=True),
         'claim_partner_id': fields.many2one(
             'res.partner', 'Customer', required=True),
+        'claim_delivery_address_id': fields.many2one(
+            'res.partner', 'Delivery Address', required=True),
         'claim_user_id': fields.many2one(
             'res.users', 'Responsible', required=True),
         'claim_section_id': fields.many2one(
             'crm.case.section', 'Sales Team', required=True),
         'claim_categ_id': fields.many2one(
             'crm.case.categ', 'Category', required=True),
-        'claim_company_id': fields.many2one(
-            'res.company', 'Company', required=True),
     }
 
     _defaults = {
         'unclaimed_type': 'unclaimed',
         'claim_section_id': _default_section_id,
         'claim_user_id': _default_user_id,
-        'claim_company_id': _default_company_id,
         'claim_categ_id': _default_categ_id,
     }
 
     def _prepare_claim(self, cr, uid, wizard, context=None):
         """
-            Method to fill claim with values from the wizard
+            Method to fill claim with values from the wizard,
+            onchanges (partner and invoice), and the corresponding
+            template. Also calls the connector to get the URL
+            from Datatrans.
         """
         claim_obj = self.pool['crm.claim']
         model_data_obj = self.pool['ir.model.data']
@@ -98,19 +97,21 @@ class CrmClaimUnclaimed(orm.TransientModel):
         try:
             claim_number = claim_obj._get_sequence_number(
                 cr, uid, context=context)
-            sale = wizard.claim_sale_order_id
-            carrier_amount = sale.carrier_id.normal_price or 0.0
             session = ConnectorSession(cr, uid, context=context)
+            sale = wizard.claim_sale_order_id
             qsale = sale.qoqa_bind_ids[0]
             backend_id = qsale.backend_id.id
             env = get_environment(session, 'qoqa.sale.order', backend_id)
             adapter = env.get_connector_unit(BackendAdapter)
-            amount = float_round(carrier_amount * 100, precision_digits=0)
+            amount = float_round(wizard.claim_carrier_price * 100,
+                                 precision_digits=0)
             pay_by_email_url = adapter.pay_by_email_url(
                 qsale.qoqa_id, claim_number, int(amount))
-        except Exception:
+            if not pay_by_email_url:
+                raise
+        except:
             raise orm.except_orm(('Error'),
-                                 ('Pay by email not retrieved from BO'))
+                                 ('Pay by email not retrieved from BO!'))
 
         claim_vals = {
             'name': wizard.claim_name,
@@ -123,7 +124,7 @@ class CrmClaimUnclaimed(orm.TransientModel):
             'ref': 'sale.order,%s' % sale.id,
             'partner_id': wizard.claim_partner_id.id,
             'invoice_id': wizard.claim_invoice_id.id,
-            'company_id': wizard.claim_company_id.id
+            'unclaimed_price': int(wizard.claim_carrier_price)
         }
 
         # Call on_change functions to retrieve values
@@ -135,13 +136,24 @@ class CrmClaimUnclaimed(orm.TransientModel):
             cr, uid, [], invoice_id=wizard.claim_invoice_id.id,
             warehouse_id=False, claim_type='customer',
             claim_date=fields.datetime.now(),
-            company_id=wizard.claim_company_id.id,
+            company_id=sale.company_id.id,
             lines=False, create_lines=True, context=context)
         claim_vals.update(on_change_invoice_vals['value'])
         # store correctly claim lines
         if 'claim_line_ids' in claim_vals:
+            # Set all lines with the same destination
+            claim_lines = claim_vals['claim_line_ids']
+            for claim_line in claim_lines:
+                claim_line.update({
+                    'location_dest_id': wizard.return_dest_location_id.id
+                })
             claim_vals['claim_line_ids'] = \
-                [(0, 0, line) for line in claim_vals['claim_line_ids']]
+                [(0, 0, line) for line in claim_lines]
+
+        # Set correct delivery address (retrieved from picking)
+        claim_vals.update({
+            'delivery_address_id': wizard.claim_delivery_address_id.id
+        })
 
         # Set correct mail template
         if wizard.unclaimed_type == 'unclaimed':
@@ -164,6 +176,9 @@ class CrmClaimUnclaimed(orm.TransientModel):
         return claim_vals
 
     def _call_return_wizard(self, cr, uid, claim_id, wizard):
+        """
+            Call to product_return wizard
+        """
         claim_obj = self.pool['crm.claim']
         return_wiz_obj = self.pool['claim_make_picking.wizard']
         # Create refund from claim
@@ -194,11 +209,18 @@ class CrmClaimUnclaimed(orm.TransientModel):
 
     def onchange_package_number(self, cr, uid, ids,
                                 track_number, context=None):
+        """
+            Onchange to set all values (or return errors)
+            from the tracking number
+        """
         res = {'value': {'claim_name': False,
+                         'return_source_location_id': False,
                          'return_dest_location_id': False,
                          'claim_invoice_id': False,
                          'claim_sale_order_id': False,
-                         'claim_partner_id': False}}
+                         'claim_partner_id': False,
+                         'claim_delivery_address_id': False,
+                         'claim_carrier_price': False}}
         track_obj = self.pool['stock.tracking']
         if not track_number:
             return res
@@ -209,20 +231,50 @@ class CrmClaimUnclaimed(orm.TransientModel):
         track_ids = track_obj.search(
             cr, uid, [('serial', '=', track_number)], context=context)
         if not track_ids:
-            return res
+            raise orm.except_orm(('Error'),
+                                 ('Not a valid tracking number!'))
 
         track = track_obj.browse(cr, uid, track_ids[0], context=context)
         move = track.move_ids and track.move_ids[0] or False
         if not move:
-            return
+            raise orm.except_orm(
+                ('Error'),
+                ('No stock move associated to this tracking number!')
+            )
         res['value'].update({
             'return_source_location_id': move.location_dest_id.id,
             'return_dest_location_id': move.location_id.id
         })
+
+        carrier = move.picking_id and move.picking_id.carrier_id
+        if not carrier:
+            raise orm.except_orm(
+                ('Error'),
+                ('No delivery carrier associated to this tracking number!')
+            )
+        carrier_price = carrier.normal_price
+        if not carrier_price:
+            raise orm.except_orm(
+                ('Error'),
+                ('No price set on delivery carrier %s!' % carrier.name)
+            )
+        res['value'].update({
+            'claim_delivery_address_id': move.picking_id.partner_id.id,
+            'claim_carrier_price': carrier_price,
+        })
+
         sale = move.sale_line_id and move.sale_line_id.order_id or False
         if not sale:
-            return
+            raise orm.except_orm(
+                ('Error'),
+                ('No sale associated to this tracking number!')
+            )
         invoice = sale.invoice_ids and sale.invoice_ids[0] or False
+        if not invoice:
+            raise orm.except_orm(
+                ('Error'),
+                ('No invoice associated to this tracking number!')
+            )
         res['value'].update({
             'claim_invoice_id': invoice.id,
             'claim_sale_order_id': sale.id,

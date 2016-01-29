@@ -24,7 +24,7 @@
  'category': 'Others',
  'depends': ['crm_claim_rma',
              'crm_claim_mail',
-             'connector_qoqa',
+             'connector_qoqa'
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="email_template_rma_first_reminder" model="email.template">
+            <field name="name">LIVR - NON Récl. Rappel I</field>
+            <field name="email_from">${(object.company_id.email or 'contact@qoqa.com')|safe} </field>
+            <field name="subject">${object.name_get()[0][1]|safe}</field>
+            <field name="email_to">${object.email_from|safe}</field>
+            <field name="model_id" ref="crm_claim.model_crm_claim"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+                <p>Bonjour,</p>
+                <p>
+                    A ce jour nous n’avons pas eu de réponse de votre part au message ci-dessous.<br><br>
+                    Votre colis est à disposition dans nos locaux, merci de suivre la procédure envoyé<br>
+                    précédemment afin d’activer sa réexpédition.<br>
+                </p>
+                <p>${object.mail_signature | safe}</p>
+                ${object.message_quote_for_email | safe}
+            ]]>
+            </field>
+            <field name="lang">${object.partner_id.lang or 'fr_FR'}</field>
+        </record>
+
+        <record model="ir.translation" id="trans_email_template_rma_first_reminder_fr_body_html">
+            <field name="name">email.template,body_html</field>
+            <field name="lang">fr_FR</field>
+            <field name="type">model</field>
+            <field name="res_id" ref="email_template_rma_first_reminder"/>
+            <field name="src"></field>
+            <field name="value"><![CDATA[
+                <p>Bonjour,</p>
+                <p>
+                    A ce jour nous n’avons pas eu de réponse de votre part au message ci-dessous.<br><br>
+                    Votre colis est à disposition dans nos locaux, merci de suivre la procédure envoyé<br>
+                    précédemment afin d’activer sa réexpédition.<br>
+                </p>
+                <p>${object.mail_signature | safe}</p>
+                ${object.message_quote_for_email | safe}
+            ]]></field>
+        </record>
+
+        <record id="email_template_rma_second_reminder" model="email.template">
+            <field name="name">LIVR - NON Récl. Rappel II</field>
+            <field name="email_from">${(object.company_id.email or 'contact@qoqa.com')|safe} </field>
+            <field name="subject">${object.name_get()[0][1]|safe}</field>
+            <field name="email_to">${object.email_from|safe}</field>
+            <field name="model_id" ref="crm_claim.model_crm_claim"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+                <p>Bonjour,</p>
+                <p>Le ${object.create_date|format_date()} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+                Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
+                QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
+                Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
+                ${object.pay_by_email_url}<br/><br/>
+                Nous vous remercions de votre compréhension et vous souhaitons une excellente journée.<br><br>
+                <p>${object.mail_signature | safe}</p>
+                ${object.message_quote_for_email | safe}
+            ]]>
+            </field>
+            <field name="lang">${object.partner_id.lang or 'fr_FR'}</field>
+        </record>
+
+        <record model="ir.translation" id="trans_email_template_rma_second_reminder_fr_body_html">
+            <field name="name">email.template,body_html</field>
+            <field name="lang">fr_FR</field>
+            <field name="type">model</field>
+            <field name="res_id" ref="email_template_rma_second_reminder"/>
+            <field name="src"></field>
+            <field name="value"><![CDATA[
+                <p>Bonjour,</p>
+                <p>Le ${object.create_date|format_date()} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+                Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
+                QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
+                Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
+                ${object.pay_by_email_url}<br/><br/>
+                Nous vous remercions de votre compréhension et vous souhaitons une excellente journée.<br><br>
+                <p>${object.mail_signature | safe}</p>
+                ${object.message_quote_for_email | safe}
+            ]]></field>
+        </record>
+
+        <record id="ir_cron_qoqa_send_claim_reminders" model="ir.cron">
+            <field name="name">Send Unclaimed Reminders</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="scenario.user_ch"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'crm.claim'" name="model"/>
+            <field eval="'_send_unclaimed_reminders'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+    </data>
+</openerp>

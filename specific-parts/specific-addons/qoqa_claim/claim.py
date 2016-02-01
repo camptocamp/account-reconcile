@@ -59,7 +59,7 @@ class crm_claim(orm.Model):
         first_reminder_categ_id = \
             user.company_id.unclaimed_first_reminder_categ_id.id
         second_reminder_categ_id = \
-            user.company_id.unclaimed_first_reminder_categ_id.id
+            user.company_id.unclaimed_second_reminder_categ_id.id
         query = """
             SELECT id
             FROM crm_claim

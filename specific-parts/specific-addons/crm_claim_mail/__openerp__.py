@@ -29,6 +29,7 @@
  'depends': ['crm_claim_rma',  # in lp:openerp-rma
              'crm_claim_merge',  # in lp:openerp-crm
              'qoqa_base_data',
+             'email_template_dateutil',
              ],
  'description': """
 CRM Claim Mail

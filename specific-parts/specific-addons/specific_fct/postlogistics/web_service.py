@@ -26,7 +26,7 @@ import re
 from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
     .postlogistics import web_service
 
-pickpost_match = re.compile(r'^Pick ?Post ?.*|My ?Post ?24 ?.*',
+pickpost_match = re.compile(r'^Pick ?Post ?.*|^My ?Post ?24 ?.*',
                             re.UNICODE | re.IGNORECASE)
 
 

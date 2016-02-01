@@ -45,8 +45,6 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         recipient = super(PostlogisticsWebServiceQoQa, self
                           )._prepare_recipient(picking)
 
-        import pdb; pdb.set_trace()
-
         partner = picking.partner_id
         parent = partner.parent_id
         # We consider an addresse's parent being a unwanted 'company' name

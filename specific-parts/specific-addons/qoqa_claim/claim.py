@@ -20,7 +20,6 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
-import openerp.addons.decimal_precision as dp
 
 
 class crm_claim(orm.Model):
@@ -105,5 +104,3 @@ class crm_claim(orm.Model):
             self.case_close(cr, uid, [claim_id], context=context)
 
         return True
-
-

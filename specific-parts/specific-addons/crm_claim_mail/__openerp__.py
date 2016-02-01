@@ -29,6 +29,7 @@
  'depends': ['crm_claim_rma',  # in lp:openerp-rma
              'crm_claim_merge',  # in lp:openerp-crm
              'qoqa_base_data',
+             'email_template_dateutil',
              ],
  'description': """
 CRM Claim Mail
@@ -55,6 +56,7 @@ This module installs the fr_FR and de_DE languages.
  'website': 'http://www.camptocamp.com',
  'data': ['lang_install.xml',
           'send_mail_on_new_claim.xml',
+          'send_reminder_on_claim.xml',
           'reopen_claim_on_mail.xml',
           'res_company_view.xml',
           'crm_claim_view.xml',

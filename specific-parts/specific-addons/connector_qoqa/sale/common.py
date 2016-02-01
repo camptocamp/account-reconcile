@@ -486,3 +486,17 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    data=json.dumps({'action': 'settled'}),
                                    headers=headers)
         self._handle_response(response)
+
+    def pay_by_email_url(self, id, claim, amount):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'pay_by_email_url',
+                   'params': {'refno': claim,
+                              'amount': amount,
+                              }
+                   }
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        response = self._handle_response(response)
+        return response['data']['url']

@@ -8,6 +8,7 @@ Feature: upgrade to 1.6
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                    |
+      | specific_fct            |
     Then my modules should have been installed and models reloaded
 
   Scenario: upgrade application version

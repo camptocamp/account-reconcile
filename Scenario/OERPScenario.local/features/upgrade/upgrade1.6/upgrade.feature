@@ -12,6 +12,7 @@ Feature: upgrade to 1.6
       | crm_claim_mail          |
       | email_template_dateutil |
       | qoqa_claim              |
+      | specific_fct            |
     Then my modules should have been installed and models reloaded
 
   Scenario: add claim categories to company

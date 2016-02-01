@@ -21,9 +21,13 @@
 
 from openerp.osv import orm
 from openerp.tools.translate import _
+import re
 
 from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
     .postlogistics import web_service
+
+pickpost_match = re.compile(r'^Pick ?Post ?.*|My ?Post ?24 ?.*',
+                            re.UNICODE | re.IGNORECASE)
 
 
 class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
@@ -40,6 +44,8 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         """
         recipient = super(PostlogisticsWebServiceQoQa, self
                           )._prepare_recipient(picking)
+
+        import pdb; pdb.set_trace()
 
         partner = picking.partner_id
         parent = partner.parent_id
@@ -67,6 +73,17 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
             recipient['LabelAddress'] = {
                 'LabelLine': address_lines
             }
+        # Search for PickPost/MyPost24. If present:
+        # - set street as Name2
+        # - set street2 as Street
+        pickpost = re.search(pickpost_match, partner.street)
+        if pickpost:
+            recipient['Name2'] = partner.street
+            if partner.street2:
+                del recipient['AddressSuffix']
+                recipient['Street'] = partner.street2
+            else:
+                del recipient['Street']
         return recipient
 
     def _prepare_attributes(self, picking):

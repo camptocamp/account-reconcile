@@ -100,10 +100,10 @@ class PaymentLine(orm.Model):
                 res[payment_line.id] = {
                     'ml_date_created': move_line.date_created,
                     'ml_maturity_date': move_line.date_maturity,
-                    'ml_inv_ref': move_line.invoice
-                    and move_line.invoice.id or False,
-                    'ml_reconcile_id': move_line.reconcile_id
-                    and move_line.reconcile_id.id or False,
+                    'ml_inv_ref': move_line.invoice and
+                    move_line.invoice.id or False,
+                    'ml_reconcile_id': move_line.reconcile_id and
+                    move_line.reconcile_id.id or False,
                     'ml_state': move_line.state,
                 }
         return res

@@ -23,6 +23,8 @@
  'version': '0.0.2',
  'category': 'Others',
  'depends': ['crm_claim_rma',
+             'crm_claim_mail',
+             'connector_qoqa'
              ],
  'author': 'Camptocamp',
  'license': 'AGPL-3',
@@ -38,6 +40,8 @@ Local claim customizations for QoQa.
  'images': [],
  'demo': [],
  'data': ['claim_view.xml',
+          'company_view.xml',
+          'wizard/crm_claim_unclaimed_view.xml',
           ],
  'installable': True,
  'application': True,

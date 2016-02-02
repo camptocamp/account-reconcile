@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_file_backend_s3_form" model="ir.ui.view">
+            <field name="name">file.backend.s3.form</field>
+            <field name="model">file_import.backend</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="connector_file.view_file_backend_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='File Import Configuration']/group[2]" position="replace">
+                    <group>
+                        <field name="s3_access_key"/>
+                        <field name="s3_secret_access_key" password="True"/>
+                        <field name="s3_bucket_name"/>
+                        <field name="s3_input_folder"/>
+                        <field name="s3_failed_folder"/>
+                        <field name="s3_archive_folder"/>
+                        <field name="delimiter"/>
+                        <field name="quotechar"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

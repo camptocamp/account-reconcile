@@ -71,6 +71,7 @@ class crm_claim(orm.Model):
                 WHERE claim_id IS NOT NULL
                 AND type = 'out'
             )
+            AND pay_by_email_url IS NOT NULL
         """
 
         # Get all claims for first reminder

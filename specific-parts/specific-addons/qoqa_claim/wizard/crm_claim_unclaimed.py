@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 from openerp import netsvc
 from openerp.tools.float_utils import float_round
 from openerp.addons.connector_qoqa.connector import get_environment
@@ -225,38 +226,34 @@ class CrmClaimUnclaimed(orm.TransientModel):
         if not track_number:
             return res
 
-        res['value'].update({
-            'claim_name': 'Unclaimed return of package %s' % track_number
-        })
         track_ids = track_obj.search(
             cr, uid, [('serial', '=', track_number)], context=context)
         if not track_ids:
-            raise orm.except_orm(('Error'),
-                                 ('Not a valid tracking number!'))
+            raise orm.except_orm(_('Error'),
+                                 _('Not a valid tracking number!'))
 
         track = track_obj.browse(cr, uid, track_ids[0], context=context)
         move = track.move_ids and track.move_ids[0] or False
         if not move:
             raise orm.except_orm(
-                ('Error'),
-                ('No stock move associated to this tracking number!')
+                _('Error'),
+                _('No stock move associated to this tracking number!')
             )
         res['value'].update({
-            'return_source_location_id': move.location_dest_id.id,
-            'return_dest_location_id': move.location_id.id
+            'return_source_location_id': move.location_dest_id.id
         })
 
         carrier = move.picking_id and move.picking_id.carrier_id
         if not carrier:
             raise orm.except_orm(
-                ('Error'),
-                ('No delivery carrier associated to this tracking number!')
+                _('Error'),
+                _('No delivery carrier associated to this tracking number!')
             )
         carrier_price = carrier.normal_price
         if not carrier_price:
             raise orm.except_orm(
-                ('Error'),
-                ('No price set on delivery carrier %s!' % carrier.name)
+                _('Error'),
+                _('No price set on delivery carrier %s!') % (carrier.name, )
             )
         res['value'].update({
             'claim_delivery_address_id': move.picking_id.partner_id.id,
@@ -266,16 +263,19 @@ class CrmClaimUnclaimed(orm.TransientModel):
         sale = move.sale_line_id and move.sale_line_id.order_id or False
         if not sale:
             raise orm.except_orm(
-                ('Error'),
-                ('No sale associated to this tracking number!')
+                _('Error'),
+                _('No sale associated to this tracking number!')
             )
         invoice = sale.invoice_ids and sale.invoice_ids[0] or False
         if not invoice:
             raise orm.except_orm(
-                ('Error'),
-                ('No invoice associated to this tracking number!')
+                _('Error'),
+                _('No invoice associated to this tracking number!')
             )
+        claim_name = _('Votre commande numéro %s en retour non-réclamé') \
+            % (sale.name, )
         res['value'].update({
+            'claim_name': claim_name,
             'claim_invoice_id': invoice.id,
             'claim_sale_order_id': sale.id,
             'claim_partner_id': sale.partner_id.id

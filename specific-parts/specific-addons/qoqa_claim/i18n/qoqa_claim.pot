@@ -106,6 +106,17 @@ msgid "Dest. Location"
 msgstr ""
 
 #. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:232
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:239
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:249
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:255
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:266
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:272
+#, python-format
+msgid "Error"
+msgstr ""
+
+#. module: qoqa_claim
 #: selection:crm.claim.unclaimed,unclaimed_type:0
 msgid "Invalid Address"
 msgstr ""
@@ -114,6 +125,42 @@ msgstr ""
 #: field:crm.claim.unclaimed,claim_invoice_id:0
 #: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_invoice_id
 msgid "Invoice"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:250
+#, python-format
+msgid "No delivery carrier associated to this tracking number!"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:273
+#, python-format
+msgid "No invoice associated to this tracking number!"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:256
+#, python-format
+msgid "No price set on delivery carrier %s!"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:267
+#, python-format
+msgid "No sale associated to this tracking number!"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:240
+#, python-format
+msgid "No stock move associated to this tracking number!"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:233
+#, python-format
+msgid "Not a valid tracking number!"
 msgstr ""
 
 #. module: qoqa_claim
@@ -186,6 +233,12 @@ msgstr ""
 #: field:crm.claim.unclaimed,unclaimed_type:0
 #: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_unclaimed_type
 msgid "Unclaimed Type"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:275
+#, python-format
+msgid "Votre commande numéro %s en retour non-réclamé"
 msgstr ""
 
 #. module: qoqa_claim

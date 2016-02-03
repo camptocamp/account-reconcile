@@ -147,6 +147,8 @@ class CrmClaimUnclaimed(orm.TransientModel):
             claim_lines = claim_vals['claim_line_ids']
             for claim_line in claim_lines:
                 claim_line.update({
+                    'warranty_type': 'company',
+                    'warranty_return_partner': sale.company_id.partner_id.id,
                     'location_dest_id': wizard.return_dest_location_id.id
                 })
             claim_vals['claim_line_ids'] = \

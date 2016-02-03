@@ -39,7 +39,7 @@ Local claim customizations for QoQa.
 """,
  'images': [],
  'demo': [],
- 'data': ['claim_view.xml',
+ 'data': ['claim_data.xml',
           'company_view.xml',
           'wizard/crm_claim_unclaimed_view.xml',
           ],

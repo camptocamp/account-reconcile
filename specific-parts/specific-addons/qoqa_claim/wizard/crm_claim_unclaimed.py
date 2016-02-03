@@ -125,7 +125,8 @@ class CrmClaimUnclaimed(orm.TransientModel):
             'ref': 'sale.order,%s' % sale.id,
             'partner_id': wizard.claim_partner_id.id,
             'invoice_id': wizard.claim_invoice_id.id,
-            'unclaimed_price': int(wizard.claim_carrier_price)
+            'unclaimed_price': int(wizard.claim_carrier_price),
+            'shop_id': sale.shop_id.id,
         }
 
         # Call on_change functions to retrieve values

@@ -31,7 +31,8 @@ class claim_make_picking(orm.TransientModel):
         # Get destination for in, and set as source for out
         if context is None:
             context = {}
-        if context.get('picking_type') != 'out' or not context.get('partner_id'):
+        if context.get('picking_type') != 'out' or \
+                not context.get('partner_id'):
             return super(claim_make_picking, self)._get_source_loc(
                 cr, uid, context=context)
 

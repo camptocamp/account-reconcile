@@ -63,7 +63,7 @@ class crm_claim(orm.Model):
             SELECT id
             FROM crm_claim
             WHERE categ_id = %s
-            AND create_date <
+            AND date <
                 (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' - INTERVAL '%s DAYS')
             AND id NOT IN (
                 SELECT claim_id

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data noupdate="1">
+    <data noupdate="0">
 
         <record id="email_template_rma_first_reminder" model="email.template">
             <field name="name">LIVR - NON Récl. Rappel I</field>
@@ -8,7 +8,7 @@
             <field name="subject">${object.name_get()[0][1]|safe}</field>
             <field name="email_to">${object.email_from|safe}</field>
             <field name="model_id" ref="crm_claim.model_crm_claim"/>
-            <field name="auto_delete" eval="True"/>
+            <field name="auto_delete" eval="False"/>
             <field name="body_html"><![CDATA[
                 <p>Bonjour,</p>
                 <p>
@@ -47,7 +47,7 @@
             <field name="subject">${object.name_get()[0][1]|safe}</field>
             <field name="email_to">${object.email_from|safe}</field>
             <field name="model_id" ref="crm_claim.model_crm_claim"/>
-            <field name="auto_delete" eval="True"/>
+            <field name="auto_delete" eval="False"/>
             <field name="body_html"><![CDATA[
                 <p>Bonjour,</p>
                 <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>

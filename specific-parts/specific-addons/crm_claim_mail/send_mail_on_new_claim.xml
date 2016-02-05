@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="1">
+  <data noupdate="0">
 
     <record id="email_template_rma_received" model="email.template">
       <field name="name">Envoi de mail au client lors de création de claim</field>
@@ -109,7 +109,7 @@
       <field name="subject">${object.name_get()[0][1]|safe}</field>
       <field name="email_to">${object.email_from|safe}</field>
       <field name="model_id" ref="crm_claim.model_crm_claim"/>
-      <field name="auto_delete" eval="True"/>
+      <field name="auto_delete" eval="False"/>
       <field name="body_html"><![CDATA[
           <p>Bonjour,</p>
           <p>Nous avons reçu en retour votre commande, car elle n'a pas été réclamée dans les délais à votre office de Poste.</p>
@@ -165,11 +165,7 @@
               <p>Guten Tag</p>
               <p>Houston, wir haben ein Problem! Der Pöstler hat uns heute Vormittag den von Ihnen bestellten Artikel zurückgebracht. Anscheinend wurde Ihr Päckli nicht fristgerecht bei Ihrer Poststelle abgeholt.</p>
               <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF ${object.unclaimed_price}.–. Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte antworten Sie auf diese E-Mail mit der ${object.number} und senden Sie uns die Zahlungsbestätigung der Bank oder Post.</p>
-              <p>Kontodaten:</p>
-              <p>QoQa Services AG, 1030 Bussigny-Lausanne</p>
-              <p>PC-Konto: 10-780685-6</p>
-              <p>IBAN: CH68 0900 0000 1078 0685 6</p>
-              <p>Mitteilung: Rücksendung Paket + ${object.number} Nr.</p>
+              ${object.pay_by_email_url}<br/><br/>
               <p>ICHTIG: Bitte führen Sie jegliche Korrespondenz unter der im Betreff erwähnten ${object.number} Nr.</p>
               <p>Vielen herzlichen Dank für Ihre Mitarbeit und liebe Grüsse</p>
               <p>Ihr QoQa.ch-Team</p>
@@ -183,7 +179,7 @@
       <field name="subject">${object.name_get()[0][1]|safe}</field>
       <field name="email_to">${object.email_from|safe}</field>
       <field name="model_id" ref="crm_claim.model_crm_claim"/>
-      <field name="auto_delete" eval="True"/>
+      <field name="auto_delete" eval="False"/>
       <field name="body_html"><![CDATA[
           <p>Bonjour,</p>
           <p>
@@ -282,11 +278,7 @@
               <p>Houston, wir haben ein Problem! Der Pöstler hat uns heute Vormittag den von Ihnen bestellten Artikel zurückgebracht, da der Empfänger unter der von Ihnen angegebenen Adresse nicht ermittelt werden konnte.</p>
               <p>Ohne eine Nachricht Ihrerseits können wir das Paket kein zweites Mal zustellen. Wir bitten Sie darum DRINGEND, uns per E-Mail (unter der Angabe der RMA-Nr. ${object.number}) oder per Telefon unter 044 555 25 05 zu kontaktieren.</p>
               <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF ${object.unclaimed_price}.– . Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte senden Sie uns die Zahlungsbestätigung der Bank oder Post als Antwort auf dieses E-Mail zu.</p>
-              <p>Kontodaten:</p>
-              <p>QoQa Services AG, 1030 Bussigny-Lausanne</p>
-              <p>PC-Konto: 10-780685-6</p>
-              <p>IBAN: CH68 0900 0000 1078 0685 6</p>
-              <p>Mitteilung: Rücksendung Paket + RMA-Nr. ${object.number}</p>
+              ${object.pay_by_email_url}<br/><br/>
               <p>WICHTIG: Bitte führen Sie jegliche Korrespondenz unter der im Betreff erwähnten RMA-Nummer.</p>
               <div>
                   <div>Vielen herzlichen Dank für Ihre Mitarbeit und liebe Grüsse</div>

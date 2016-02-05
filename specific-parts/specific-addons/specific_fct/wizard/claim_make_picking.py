@@ -27,6 +27,33 @@ class claim_make_picking(orm.TransientModel):
 
     _inherit = 'claim_make_picking.wizard'
 
+    def _get_source_loc(self, cr, uid, context):
+        # Get destination for in, and set as source for out
+        if context is None:
+            context = {}
+        if context.get('picking_type') != 'out' or not context.get('partner_id'):
+            return super(claim_make_picking, self)._get_source_loc(
+                cr, uid, context=context)
+
+        location_list = []
+        # Retrieve used destination location in "IN"
+        line_ids = self._get_claim_lines(cr, uid, context=context)
+        for line in self.pool['claim.line'].browse(cr, uid, line_ids,
+                                                   context=context):
+            if line.move_in_id and line.move_in_id.location_dest_id:
+                dest_location_id = line.move_in_id.location_dest_id.id
+                if dest_location_id not in location_list:
+                    location_list.append(dest_location_id)
+        if len(location_list) == 1:
+            return location_list[0]
+
+        return super(claim_make_picking, self)._get_source_loc(
+            cr, uid, context=context)
+
+    _defaults = {
+        'claim_line_source_location': _get_source_loc,
+    }
+
     """ copy whole method to remove check availability on picking """
     def action_create_picking(self, cr, uid, ids, context=None):
         picking_obj = self.pool['stock.picking']

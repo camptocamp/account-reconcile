@@ -46,26 +46,30 @@ class file_import_s3_backend(orm.Model):
 
     def _get_environment_config_by_name(self, cr, uid, ids, field_names,
                                         arg, context=None):
+        global_section_name = self._name.replace('.', '_')
         values = {}
         for backend in self.browse(cr, uid, ids, context=context):
             values[backend.id] = {}
-            for field_name in field_names:
-                section_name = '.'.join((self._name.replace('.', '_'),
-                                         backend.name))
-                try:
-                    value = serv_config.get(section_name, field_name)
-                    values[backend.id][field_name] = value
-                except:
-                    _logger.exception('error trying to read field %s '
-                                      'in section %s', field_name,
-                                      section_name)
-                    values[backend.id][field_name] = False
+            section_name = '.'.join((global_section_name,
+                                     backend.name))
+
+            if serv_config.has_section(global_section_name):
+                values[backend.id].update(
+                    serv_config.items(global_section_name))
+
+            if serv_config.has_section(section_name):
+                values[backend.id].update(
+                    serv_config.items(section_name))
+
         return values
 
     _columns = {
         'version': fields.selection(_select_versions,
                                     string='Version',
                                     required=True),
+        'bank_statement_profile_id': fields.many2one(
+            'account.statement.profile',
+            string='Bank Statement Profile'),
         's3_access_key': fields.function(
             _get_environment_config_by_name,
             string='Amazon S3 Access Key',

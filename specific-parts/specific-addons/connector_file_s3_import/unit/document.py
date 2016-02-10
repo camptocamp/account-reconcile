@@ -19,9 +19,11 @@
 #
 ##############################################################################
 from openerp.addons.connector_file.unit.document \
-    import FileSynchronizer, DirectFileSynchronizer, AsyncFileSynchronizer
+    import FileSynchronizer, DirectFileSynchronizer, AsyncFileSynchronizer, \
+           FileParser, DirectFileParser, AsyncFileParser
 
 from .s3_policy import S3FileGetterPolicy
+from .statement_csv_policy import StatementCSVParsePolicy
 from ..backend import file_import_s3
 
 
@@ -51,5 +53,35 @@ class DirectS3FileSynchronizer(S3FileSynchronizer, DirectFileSynchronizer):
 class AsyncS3FileSynchronizer(S3FileSynchronizer, AsyncFileSynchronizer):
 
     """File Synchronizer, asynchronous version."""
+
+    pass
+
+
+class S3FileParser(FileParser):
+
+    @property
+    def parse_policy_instance(self):
+        """
+            Return an instance of ``StatementCSVParsePolicy``.
+        """
+        if self._parse_policy_instance is None:
+            self._parse_policy_instance = (
+                self.environment.get_connector_unit(StatementCSVParsePolicy)
+            )
+        return self._parse_policy_instance
+
+
+@file_import_s3
+class DirectS3FileParser(S3FileParser, DirectFileParser):
+
+    """Parser, synchronous version."""
+
+    pass
+
+
+@file_import_s3
+class AsyncS3FileParser(S3FileParser, AsyncFileParser):
+
+    """Parser, asynchronous version."""
 
     pass

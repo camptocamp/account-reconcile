@@ -8,6 +8,9 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="connector_file.view_file_backend_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="bank_statement_profile_id"/>
+                </xpath>
                 <xpath expr="//group[@string='File Import Configuration']/group[2]" position="replace">
                     <group>
                         <field name="s3_access_key"/>

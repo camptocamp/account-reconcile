@@ -22,4 +22,5 @@
 from . import chunk  # noqa
 from . import document  # noqa
 from . import s3_policy  # noqa
+from . import statement_csv_policy  # noqa
 from . import statement_load_policy  # noqa

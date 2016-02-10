@@ -20,7 +20,7 @@
 ##############################################################################
 from openerp.addons.connector_file.unit.document \
     import FileSynchronizer, DirectFileSynchronizer, AsyncFileSynchronizer, \
-           FileParser, DirectFileParser, AsyncFileParser
+    FileParser, DirectFileParser, AsyncFileParser
 
 from .s3_policy import S3FileGetterPolicy
 from .statement_csv_policy import StatementCSVParsePolicy

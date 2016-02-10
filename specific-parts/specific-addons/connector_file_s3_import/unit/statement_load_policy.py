@@ -69,8 +69,8 @@ class StatementLoadPolicy(LoadPolicy):
             )
 
             assert not load_result['ids'] or len(load_result['ids']) <= 1, """
-                One chunk should always generate one bank statement, or an error.
-                More than one should not happen.
+                One chunk should always generate one bank statement, or an
+                error. More than one should not happen.
             """
 
             if load_result['ids']:
@@ -85,7 +85,7 @@ class StatementLoadPolicy(LoadPolicy):
                 chunk_b.write({
                     'load_state': 'failed',
                     'exc_info': (
-                        u'Error during load() of the bank statement.\n{0}'.format(
+                        u'Error : \n{0}'.format(
                             load_result['messages']
                         )
                     )
@@ -114,7 +114,7 @@ class StatementLoadPolicy(LoadPolicy):
                     ),
                     'load_state': 'done',
                 })
-            except Exception as e:
+            except Exception:
                 chunk_b.write({
                     'load_state': 'failed',
                     'exc_info': (u'Error during import of the bank statement.')

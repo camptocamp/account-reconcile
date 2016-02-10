@@ -28,6 +28,18 @@ Feature: upgrade to 1.6
     | delimiter          | ,                                        |
     | quotechar          | "                                        |
 
+  Scenario: add Paypal import profile
+    Given I need a "file_import.backend" with oid: scenario.file_import_backend_paypal
+    And having:
+    | key                       | value                                    |
+    | name                      | Paypal                                   |
+    | version                   | s3_1                                     |
+    | company_id                | by oid: scenario.qoqa_ch                 |
+    | user_id                   | by oid: connector_qoqa.user_connector_ch |
+    | bank_statement_profile_id | by oid: scenario.profile_paypal_ch       |
+    | delimiter                 | ;                                        |
+    | quotechar                 | "                                        |
+
   Scenario: add claim categories to company
     Given I need a "res.company" with oid: scenario.qoqa_ch
     And having:

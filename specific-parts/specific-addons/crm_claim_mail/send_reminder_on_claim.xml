@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
 
         <record id="email_template_rma_first_reminder" model="email.template">
             <field name="name">LIVR - NON Récl. Rappel I</field>
@@ -11,11 +11,12 @@
             <field name="auto_delete" eval="False"/>
             <field name="body_html"><![CDATA[
                 <p>Bonjour,</p>
-                <p>
-                    A ce jour nous n’avons pas eu de réponse de votre part au message ci-dessous.<br><br>
-                    Votre colis est à disposition dans nos locaux, merci de suivre la procédure envoyé<br>
-                    précédemment afin d’activer sa réexpédition.<br>
-                </p>
+                <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+                Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
+                QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
+                Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
+                ${object.pay_by_email_url}<br/><br/>
+                Nous vous remercions de votre compréhension et vous souhaitons une excellente journée.<br><br>
                 <p>${object.mail_signature | safe}</p>
                 ${object.message_quote_for_email | safe}
             ]]>
@@ -31,11 +32,12 @@
             <field name="src"></field>
             <field name="value"><![CDATA[
                 <p>Bonjour,</p>
-                <p>
-                    A ce jour nous n’avons pas eu de réponse de votre part au message ci-dessous.<br><br>
-                    Votre colis est à disposition dans nos locaux, merci de suivre la procédure envoyé<br>
-                    précédemment afin d’activer sa réexpédition.<br>
-                </p>
+                <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+                Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
+                QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
+                Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
+                ${object.pay_by_email_url}<br/><br/>
+                Nous vous remercions de votre compréhension et vous souhaitons une excellente journée.<br><br>
                 <p>${object.mail_signature | safe}</p>
                 ${object.message_quote_for_email | safe}
             ]]></field>
@@ -73,7 +75,7 @@
             <field name="auto_delete" eval="False"/>
             <field name="body_html"><![CDATA[
                 <p>Bonjour,</p>
-                <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+                <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.Puis un rappel vous a été envoyé 30 jours après.<br><br>
                 Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
                 QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
                 Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
@@ -94,7 +96,7 @@
             <field name="src"></field>
             <field name="value"><![CDATA[
                 <p>Bonjour,</p>
-                <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+                <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.Puis un rappel vous a été envoyé 30 jours après.<br><br>
                 Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
                 QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
                 Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>

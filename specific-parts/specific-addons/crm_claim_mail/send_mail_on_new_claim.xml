@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="0">
+  <data noupdate="1">
 
     <record id="email_template_rma_received" model="email.template">
       <field name="name">Envoi de mail au client lors de création de claim</field>
@@ -166,7 +166,7 @@
               <p>Houston, wir haben ein Problem! Der Pöstler hat uns heute Vormittag den von Ihnen bestellten Artikel zurückgebracht. Anscheinend wurde Ihr Päckli nicht fristgerecht bei Ihrer Poststelle abgeholt.</p>
               <p>Die Post verrechnet uns für die Rücksendung des Paketes bei Nichtabholung CHF ${object.unclaimed_price}.–. Wir bitten Sie deshalb, diesen Betrag auf unser Konto zu überweisen. Sobald der Betrag unserem Konto gutgeschrieben ist, senden wir Ihnen das Paket nochmals auf unsere Kosten zu. Bitte antworten Sie auf diese E-Mail mit der ${object.number} und senden Sie uns die Zahlungsbestätigung der Bank oder Post.</p>
               ${object.pay_by_email_url}<br/><br/>
-              <p>ICHTIG: Bitte führen Sie jegliche Korrespondenz unter der im Betreff erwähnten ${object.number} Nr.</p>
+              <p>WICHTIG: Bitte führen Sie jegliche Korrespondenz unter der im Betreff erwähnten ${object.number} Nr.</p>
               <p>Vielen herzlichen Dank für Ihre Mitarbeit und liebe Grüsse</p>
               <p>Ihr QoQa.ch-Team</p>
           </div>

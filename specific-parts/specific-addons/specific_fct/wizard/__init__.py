@@ -22,3 +22,4 @@
 from . import dispatch_apply_carrier
 from . import account_invoice_refund
 from . import check_assign_all
+from . import claim_make_picking

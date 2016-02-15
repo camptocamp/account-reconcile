@@ -41,6 +41,29 @@
             ]]></field>
         </record>
 
+        <record model="ir.translation" id="trans_email_template_rma_first_reminder_de_body_html">
+            <field name="name">email.template,body_html</field>
+            <field name="lang">de_DE</field>
+            <field name="type">model</field>
+            <field name="res_id" ref="email_template_rma_first_reminder"/>
+            <field name="src"></field>
+            <field name="value"><![CDATA[
+                <div>
+                    <p>Ihre QoQa Bestellung ${object.ref and object.ref.name or object.number} – Erinnerung</p>
+                    <p><br/>Guten Tag,</p>
+                    <p>Vor einiger Zeit haben wir Sie betreffend eines von der Post retournierten Paketes kontaktiert. Leider haben wir immer noch nichts von Ihnen gehört – dabei wünscht sich das Päckchen nichts sehnlicher, als endlich im neuen Daheim aufgenommen zu werden.</p>
+                    <p>Zur Erinnerung erläutern wir nochmals kurz den Ablauf:</p>
+                    <p>1. Bitte CHF ${object.unclaimed_price}.– (Kosten Post für eine Retournierung) wie folgt überweisen:</p>
+                    <p>${object.pay_by_email_url}</p>
+                    <p>2. Sobald wir Ihre Zahlung erhalten haben, werden wir das Paket sofort neu verschicken.</p>
+                    <p>3. Warten, bis das Paket ausgeliefert wird.</p>
+                    <p>Wir danken Ihnen jetzt schon für Ihre Mitarbeit.</p>
+                    <p>Freundliche Grüsse</p>
+                    <p>Ihr QoQa.ch-Team</p>
+                    <br/>
+                </div>]]></field>
+        </record>
+
         <record id="email_template_rma_second_reminder" model="email.template">
             <field name="name">LIVR - NON Récl. Rappel II</field>
             <field name="email_from">${(object.company_id.email or 'contact@qoqa.com')|safe} </field>
@@ -81,6 +104,30 @@
                 ${object.message_quote_for_email | safe}
             ]]></field>
         </record>
+
+        <record model="ir.translation" id="trans_email_template_rma_second_reminder_de_body_html">
+            <field name="name">email.template,body_html</field>
+            <field name="lang">de_DE</field>
+            <field name="type">model</field>
+            <field name="res_id" ref="email_template_rma_second_reminder"/>
+            <field name="src"></field>
+            <field name="value"><![CDATA[
+                <div>
+                    <p>Ihre QoQa Bestellung ${object.ref and object.ref.name or object.number} – Erinnerung</p>
+                    <p>Guten Tag,</p>
+                    <p>Im E-Mail vom ${object.create_date|format_date('%d/%m/%Y')} haben wir Sie informiert, dass Ihr Paket von der Post retourniert wurde.</p>
+                    <p>Jede retournierte Sendung ist für QoQa mit Unkosten verbunden (Nachforschung und Zustellkosten). Aus diesem Grund können wir Ihnen das Paket erst wieder zustellen, wenn wir weitere Informationen Ihrerseits erhalten haben.</p>
+                    <p>Durch die Retournierung wurden uns von der Post CHF ${object.unclaimed_price}.– in Rechnung gestellt. Wir bitten Sie, uns diesen Betrag zu überweisen. Gerne übernehmen wir aus Kulanz die Portokosten für den zweiten Versand.</p>
+                    <p>Zur Erinnerung erläutern wir gerne nochmals den Ablauf:</p>
+                    <p>1. Bitte CHF ${object.unclaimed_price}.– (Kosten Post für eine Retournierung) wie folgt überweisen:</p>
+                    <p>${object.pay_by_email_url}</p>
+                    <p>2. Sobald wir Ihre Zahlung erhalten haben, werden wir das Paket sofort neu verschicken.</p>
+                    <p>3. Warten, bis das Paket ausgeliefert wird.</p>
+                    <p>Wir danken Ihnen jetzt schon für Ihre Mitarbeit.</p>
+                    <p>Freundliche Grüsse</p>
+                    <p>Ihr QoQa.ch-Team</p>
+                </div>]]></field>
+            </record>
 
     </data>
 </openerp>

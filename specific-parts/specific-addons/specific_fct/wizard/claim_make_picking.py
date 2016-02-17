@@ -80,6 +80,31 @@ class claim_make_picking(orm.TransientModel):
         wizard = self.browse(cr, uid, ids[0], context=context)
         claim = claim_obj.browse(cr, uid, context['active_id'],
                                  context=context)
+
+        # Retrieve list of unclaimed categories
+        unclaimed_categ_ids = []
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        company = user.company_id
+        if company.unclaimed_initial_categ_id:
+            unclaimed_categ_ids.append(
+                company.unclaimed_initial_categ_id.id)
+        if company.unclaimed_first_reminder_categ_id:
+            unclaimed_categ_ids.append(
+                company.unclaimed_first_reminder_categ_id.id)
+        if company.unclaimed_second_reminder_categ_id:
+            unclaimed_categ_ids.append(
+                company.unclaimed_second_reminder_categ_id.id)
+
+        # If claim has an unclaimed category, set the final one
+        if (claim.categ_id and
+                claim.categ_id.id in unclaimed_categ_ids and
+                company.unclaimed_final_categ_id):
+            claim_obj.write(
+                cr, uid, [claim.id],
+                {'categ_id': company.unclaimed_final_categ_id.id},
+                context=context
+            )
+
         partner_id = claim.delivery_address_id.id
         line_ids = [x.id for x in wizard.claim_line_ids]
         # In case of product return, we don't allow one picking for various

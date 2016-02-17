@@ -183,6 +183,7 @@ class CrmClaimUnclaimed(orm.TransientModel):
         """
             Call to product_return wizard
         """
+        picking_obj = self.pool['stock.picking']
         claim_obj = self.pool['crm.claim']
         return_wiz_obj = self.pool['claim_make_picking.wizard']
         # Create refund from claim
@@ -205,9 +206,15 @@ class CrmClaimUnclaimed(orm.TransientModel):
         )
         wiz_result = return_wiz_obj.action_create_picking(
             cr, uid, [return_wiz_id], context=ctx)
+        picking_id = wiz_result['res_id']
+        # Set stock journal on newly created picking (XML ID from export)
+        _, journal_id = self.pool['ir.model.data'].get_object_reference(
+            cr, uid, '__export__', 'stock_journal_11')
+        picking_obj.write(cr, uid, [picking_id],
+                          {'stock_journal_id': journal_id}, context=ctx)
+        # Set picking as done
         wf_service = netsvc.LocalService("workflow")
-        wf_service.trg_validate(uid, 'stock.picking',
-                                wiz_result['res_id'],
+        wf_service.trg_validate(uid, 'stock.picking', picking_id,
                                 'button_done', cr)
         return wiz_result
 

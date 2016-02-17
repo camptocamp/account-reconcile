@@ -35,6 +35,9 @@
         <field name="partner_id" position="attributes">
           <attribute name="domain">[('is_company', '=', True)]</attribute>
         </field>
+        <field name="period_id" position="after">
+          <field name="refund_description_id"  invisible="context.get('type') != 'out_refund'"/>
+        </field>
       </field>
     </record>
 
@@ -54,10 +57,59 @@
                     icon="gtk-paste-v"/>
           </field>
           <field name="number" position="after">
+            <field name="refund_description_id" invisible="context.get('type') != 'out_refund'"/>
             <field name="supplier_invoice_number" invisible="context.get('type') not in ['in_invoice', 'in_refund']"/>
           </field>
         </data>
       </field>
     </record>
+
+    <record id="invoice_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account_invoice_reference.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="attrs">{'invisible': [('type', '=', 'out_refund')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="refund_description_id"
+                       attrs="{'invisible': [('type', '&lt;&gt;', 'out_refund')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_refund_description_form" model="ir.ui.view">
+        <field name="name">account.refund.description.form</field>
+        <field name="model">account.refund.description</field>
+        <field name="arch" type="xml">
+            <form string="Refund Description">
+                <field name="name"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_refund_description_tree" model="ir.ui.view">
+        <field name="name">account.refund.description.tree</field>
+        <field name="model">account.refund.description</field>
+        <field name="arch" type="xml">
+            <tree string="Refund Description">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_refund_description_form" model="ir.actions.act_window">
+        <field name="name">Refund Descriptions</field>
+        <field name="res_model">account.refund.description</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_refund_description_form"
+              id="menu_action_refund_description_form"
+              parent="account.menu_configuration_misc"
+              sequence="40"/>
+
   </data>
 </openerp>

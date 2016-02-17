@@ -8,6 +8,8 @@ Feature: upgrade to 1.7
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                    |
+      | specific_fct            |
+      | specific_report         |
     Then my modules should have been installed and models reloaded
 
   Scenario Outline: add refund descriptions

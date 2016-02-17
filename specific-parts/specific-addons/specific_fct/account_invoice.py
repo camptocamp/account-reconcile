@@ -22,11 +22,22 @@
 from openerp.osv import orm, fields
 
 
+class AccountRefundDescription(orm.Model):
+    _name = 'account.refund.description'
+
+    _columns = {
+        'name': fields.char('Description', translate=True),
+    }
+
+
 class account_invoice(orm.Model):
     _inherit = 'account.invoice'
 
     _columns = {
         'validation_agreement': fields.boolean('Agreement to validation'),
+        'refund_description_id': fields.many2one(
+            'account.refund.description', 'Description', select=True,
+            readonly=True, states={'draft': [('readonly', False)]}),
     }
 
     def action_move_create(self, cr, uid, ids, context=None):

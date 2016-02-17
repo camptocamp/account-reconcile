@@ -8,6 +8,7 @@ Feature: upgrade to 1.7
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                    |
+      | qoqa_claim              |
       | specific_fct            |
       | specific_report         |
     Then my modules should have been installed and models reloaded

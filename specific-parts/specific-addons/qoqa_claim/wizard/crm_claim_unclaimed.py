@@ -282,8 +282,11 @@ class CrmClaimUnclaimed(orm.TransientModel):
                 _('Error'),
                 _('No invoice associated to this tracking number!')
             )
-        claim_name = _('Votre commande numéro %s en retour non-réclamé') \
-            % (sale.name, )
+        if sale.partner_id and sale.partner_id.lang == 'de_DE':
+            claim_name = _('Ihre Bestellung Nr. %s') % (sale.name, )
+        else:
+            claim_name = _('Votre commande numéro %s en retour non-réclamé') \
+                % (sale.name, )
         res['value'].update({
             'claim_name': claim_name,
             'claim_invoice_id': invoice.id,

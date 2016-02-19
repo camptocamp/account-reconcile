@@ -11,6 +11,7 @@
                         <field name="unclaimed_initial_categ_id"/>
                         <field name="unclaimed_first_reminder_categ_id"/>
                         <field name="unclaimed_second_reminder_categ_id"/>
+                        <field name="unclaimed_final_categ_id"/>
                     </group>
                 </page>
             </field>

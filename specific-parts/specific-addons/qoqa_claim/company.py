@@ -34,4 +34,7 @@ class ResCompany(orm.Model):
         'unclaimed_second_reminder_categ_id': fields.many2one(
             'crm.case.categ',
             'Default category for unclaimed packages after second reminder'),
+        'unclaimed_final_categ_id': fields.many2one(
+            'crm.case.categ',
+            'Default category for sent back unclaimed packages'),
     }

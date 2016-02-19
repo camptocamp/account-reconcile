@@ -71,6 +71,12 @@ msgid "Default category for new unclaimed packages"
 msgstr "Catégorie par défaut pour colis non-réclamés"
 
 #. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_final_categ_id
+#: field:res.company,unclaimed_final_categ_id:0
+msgid "Default category for sent back unclaimed packages"
+msgstr "Catégorie par défaut pour colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
 #: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_first_reminder_categ_id
 #: field:res.company,unclaimed_first_reminder_categ_id:0
 msgid "Default category for unclaimed packages after first reminder"

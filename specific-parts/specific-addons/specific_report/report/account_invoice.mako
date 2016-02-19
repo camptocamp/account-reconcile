@@ -269,9 +269,15 @@ td.vat {
             ${_("Supplier Refund")} ${inv.number or ''}
         %endif
     </h1>
+    %if inv.refund_description_id:
+    <h3  style="clear: both; padding-top: 20px;">
+        ${_("Subject : ")} ${inv.refund_description_id.name or ''}
+    </h3>
+    %else:
     <h3  style="clear: both; padding-top: 20px;">
         ${_("Subject : ")} ${inv.name or ''}
     </h3>
+    %endif
 
     <table class="basic_table" width="100%">
         <tr>

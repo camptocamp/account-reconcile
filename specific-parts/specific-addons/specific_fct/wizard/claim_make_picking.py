@@ -96,7 +96,8 @@ class claim_make_picking(orm.TransientModel):
                 company.unclaimed_second_reminder_categ_id.id)
 
         # If claim has an unclaimed category, set the final one
-        if (claim.categ_id and
+        if (p_type == 'out' and
+                claim.categ_id and
                 claim.categ_id.id in unclaimed_categ_ids and
                 company.unclaimed_final_categ_id):
             claim_obj.write(

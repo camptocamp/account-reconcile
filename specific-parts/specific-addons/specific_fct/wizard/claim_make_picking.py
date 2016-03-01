@@ -55,6 +55,17 @@ class claim_make_picking(orm.TransientModel):
         'claim_line_source_location': _get_source_loc,
     }
 
+    def _prepare_picking_vals(
+            self, cr, uid, claim, p_type, partner_id, wizard, context=None,
+            unclaimed=False):
+        picking_vals = super(claim_make_picking, self)._prepare_picking_vals(
+            cr, uid, claim, p_type, partner_id, wizard, context=context)
+        if unclaimed:
+            _, journal_id = self.pool['ir.model.data'].get_object_reference(
+                cr, uid, '__export__', 'stock_journal_11')
+            picking_vals.update({'stock_journal_id': journal_id})
+        return picking_vals
+
     """ copy whole method to remove check availability on picking """
     def action_create_picking(self, cr, uid, ids, context=None):
         picking_obj = self.pool['stock.picking']
@@ -64,6 +75,7 @@ class claim_make_picking(orm.TransientModel):
             context = {}
         view_obj = self.pool['ir.ui.view']
         name = 'RMA picking out'
+        unclaimed = False
         if context.get('picking_type') == 'out':
             p_type = 'out'
             write_field = 'move_out_id'
@@ -105,6 +117,7 @@ class claim_make_picking(orm.TransientModel):
                 {'categ_id': company.unclaimed_final_categ_id.id},
                 context=context
             )
+            unclaimed = True
 
         partner_id = claim.delivery_address_id.id
         line_ids = [x.id for x in wizard.claim_line_ids]
@@ -132,7 +145,8 @@ class claim_make_picking(orm.TransientModel):
             partner_id = common_dest_partner_id
         # create picking
         picking_vals = self._prepare_picking_vals(
-            cr, uid, claim, p_type, partner_id, wizard, context=context)
+            cr, uid, claim, p_type, partner_id, wizard, context=context,
+            unclaimed=unclaimed)
         picking_id = picking_obj.create(cr, uid, picking_vals, context=context)
         # Create picking lines
         proc_ids = []

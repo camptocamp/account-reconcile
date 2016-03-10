@@ -65,6 +65,12 @@ msgid "Customer"
 msgstr ""
 
 #. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_account_id
+#: field:res.company,unclaimed_invoice_account_id:0
+msgid "Default account for invoices for sent back unclaimed packages"
+msgstr ""
+
+#. module: qoqa_claim
 #: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_initial_categ_id
 #: field:res.company,unclaimed_initial_categ_id:0
 msgid "Default category for new unclaimed packages"
@@ -86,6 +92,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_second_reminder_categ_id
 #: field:res.company,unclaimed_second_reminder_categ_id:0
 msgid "Default category for unclaimed packages after second reminder"
+msgstr ""
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_journal_id
+#: field:res.company,unclaimed_invoice_journal_id:0
+msgid "Default journal for invoices for sent back unclaimed packages"
+msgstr ""
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_product_id
+#: field:res.company,unclaimed_invoice_product_id:0
+msgid "Default product for invoices for sent back unclaimed packages"
 msgstr ""
 
 #. module: qoqa_claim

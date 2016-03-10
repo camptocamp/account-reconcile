@@ -8,6 +8,7 @@ Feature: upgrade to 1.8
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                      |
+      | qoqa_claim                |
       | stock_picking_mass_assign |
       | specific_fct              |
     Then my modules should have been installed and models reloaded
@@ -15,8 +16,11 @@ Feature: upgrade to 1.8
   Scenario: add values to company
     Given I need a "res.company" with oid: scenario.qoqa_ch
     And having:
-      | key                          | value                               |
-      | unclaimed_stock_journal_id   | by name: Non-réclamé - renvoi colis |
+      | key                          | value                                |
+      | unclaimed_stock_journal_id   | by name: Non-réclamé - renvoi colis  |
+      | unclaimed_invoice_journal_id | by oid: __export__.account_journal_2 |
+      | unclaimed_invoice_account_id | by code: 11043                       |
+      | unclaimed_invoice_product_id | by default_code: Refact              |
 
   Scenario: delete claim lines with service products
     Given I execute the SQL commands

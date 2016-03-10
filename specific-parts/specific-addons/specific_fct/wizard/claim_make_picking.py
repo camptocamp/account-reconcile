@@ -55,6 +55,57 @@ class claim_make_picking(orm.TransientModel):
         'claim_line_source_location': _get_source_loc,
     }
 
+    def _create_unclaimed_invoice(self, cr, uid, claim, context=None):
+        model_data_obj = self.pool['ir.model.data']
+        invoice_obj = self.pool['account.invoice']
+        wf_service = netsvc.LocalService('workflow')
+
+        # retrieve values
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        company = user.company_id
+        model, analytic_account_id = model_data_obj.get_object_reference(
+            cr, uid, 'scenario', 'analytic_account_shop_general_ch')
+        inv_account = company.unclaimed_invoice_account_id
+        inv_journal = company.unclaimed_invoice_journal_id
+        product = company.unclaimed_invoice_product_id
+        partner = claim.partner_id
+        fiscal_position = partner.property_account_position and \
+            partner.property_account_position.id or False
+        payment_term = partner.property_payment_term and \
+            partner.property_payment_term.id or False
+
+        # Fill values (taken from on_change on invoice and invoice line)
+        invoice_vals = {
+            'account_id': inv_account.id,
+            'company_id': company.id,
+            'fiscal_position': fiscal_position,
+            'journal_id': inv_journal.id,
+            'partner_id': partner.id,
+            'name': _('Refacturation Frais de renvoi'),
+            'payment_term': payment_term,
+            'reference': claim.number,
+            'transaction_id': claim.number,
+            'type': 'out_invoice',
+            'invoice_line': [
+                (0, 0,
+                 {'account_analytic_id': analytic_account_id,
+                  'account_id': product.property_account_income.id,
+                  'invoice_line_tax_id': [
+                      (6, 0, [tax.id for tax in product.taxes_id])
+                  ],
+                  'name': product.partner_ref,
+                  'product_id': product.id,
+                  'price_unit': claim.unclaimed_price,
+                  'uos_id': product.uom_id.id}
+                 )
+            ]
+        }
+        # create and open/validate invoice
+        invoice_id = invoice_obj.create(
+            cr, uid, invoice_vals, context=context)
+        wf_service.trg_validate(uid, 'account.invoice',
+                                invoice_id, 'invoice_open', cr)
+
     def _prepare_picking_vals(
             self, cr, uid, claim, p_type, partner_id, wizard, context=None,
             unclaimed_out=False):
@@ -166,6 +217,10 @@ class claim_make_picking(orm.TransientModel):
                     cr, uid, wizard, claim, move_id, wizard_line,
                     context=context)
                 proc_ids.append(proc_id)
+
+        if unclaimed_out and claim.unclaimed_price:
+            self._create_unclaimed_invoice(cr, uid, claim, context=context)
+
         wf_service = netsvc.LocalService("workflow")
         if picking_id:
             wf_service.trg_validate(uid, 'stock.picking',

@@ -266,3 +266,9 @@ msgstr "Description d'avoir"
 #: model:ir.ui.menu,name:specific_fct.menu_action_refund_description_form
 msgid "Refund Descriptions"
 msgstr "Descriptions des avoirs"
+
+#. module: specific_fct
+#: code:addons/specific_fct/wizard/claim_make_picking.py:85
+#, python-format
+msgid "Refacturation Frais de renvoi"
+msgstr "Refacturation Frais de renvoi"

@@ -12,5 +12,20 @@ Feature: upgrade to 1.8
       | specific_fct              |
     Then my modules should have been installed and models reloaded
 
+  Scenario: delete claim lines with service products
+    Given I execute the SQL commands
+    """
+    DELETE FROM claim_line
+    WHERE product_id IN (
+        SELECT id
+        FROM product_product
+        WHERE product_tmpl_id IN (
+            SELECT id
+            FROM product_template
+            WHERE type NOT IN ('consu', 'product')
+        )
+    );
+    """
+
   Scenario: upgrade application version
     Given I set the version of the instance to "1.8"

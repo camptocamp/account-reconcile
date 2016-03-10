@@ -89,6 +89,12 @@ msgid "Default category for unclaimed packages after second reminder"
 msgstr "Catégorie par défaut pour colis non-réclamés après deuxième rappel"
 
 #. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_stock_journal_id
+#: field:res.company,unclaimed_stock_journal_id:0
+msgid "Default stock journal for unclaimed packages"
+msgstr "Journal par défaut pour colis non-réclamés"
+
+#. module: qoqa_claim
 #: view:crm.claim.unclaimed.delivery:0
 msgid "Deliver Claims"
 msgstr "Livrer réclamations"

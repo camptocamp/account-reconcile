@@ -57,13 +57,15 @@ class claim_make_picking(orm.TransientModel):
 
     def _prepare_picking_vals(
             self, cr, uid, claim, p_type, partner_id, wizard, context=None,
-            unclaimed=False):
+            unclaimed_out=False):
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        company = user.company_id
         picking_vals = super(claim_make_picking, self)._prepare_picking_vals(
             cr, uid, claim, p_type, partner_id, wizard, context=context)
-        if unclaimed:
-            _, journal_id = self.pool['ir.model.data'].get_object_reference(
-                cr, uid, '__export__', 'stock_journal_11')
-            picking_vals.update({'stock_journal_id': journal_id})
+        if unclaimed_out and company.unclaimed_stock_journal_id:
+            picking_vals.update({
+                'stock_journal_id': company.unclaimed_stock_journal_id.id
+            })
         return picking_vals
 
     """ copy whole method to remove check availability on picking """
@@ -75,7 +77,7 @@ class claim_make_picking(orm.TransientModel):
             context = {}
         view_obj = self.pool['ir.ui.view']
         name = 'RMA picking out'
-        unclaimed = False
+        unclaimed_out = False
         if context.get('picking_type') == 'out':
             p_type = 'out'
             write_field = 'move_out_id'
@@ -117,7 +119,7 @@ class claim_make_picking(orm.TransientModel):
                 {'categ_id': company.unclaimed_final_categ_id.id},
                 context=context
             )
-            unclaimed = True
+            unclaimed_out = True
 
         partner_id = claim.delivery_address_id.id
         line_ids = [x.id for x in wizard.claim_line_ids]
@@ -146,7 +148,7 @@ class claim_make_picking(orm.TransientModel):
         # create picking
         picking_vals = self._prepare_picking_vals(
             cr, uid, claim, p_type, partner_id, wizard, context=context,
-            unclaimed=unclaimed)
+            unclaimed_out=unclaimed_out)
         picking_id = picking_obj.create(cr, uid, picking_vals, context=context)
         # Create picking lines
         proc_ids = []

@@ -37,4 +37,7 @@ class ResCompany(orm.Model):
         'unclaimed_final_categ_id': fields.many2one(
             'crm.case.categ',
             'Default category for sent back unclaimed packages'),
+        'unclaimed_stock_journal_id': fields.many2one(
+            'stock.journal',
+            'Default stock journal for unclaimed packages'),
     }

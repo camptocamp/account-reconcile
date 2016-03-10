@@ -12,6 +12,12 @@ Feature: upgrade to 1.8
       | specific_fct              |
     Then my modules should have been installed and models reloaded
 
+  Scenario: add values to company
+    Given I need a "res.company" with oid: scenario.qoqa_ch
+    And having:
+      | key                          | value                               |
+      | unclaimed_stock_journal_id   | by name: Non-réclamé - renvoi colis |
+
   Scenario: delete claim lines with service products
     Given I execute the SQL commands
     """

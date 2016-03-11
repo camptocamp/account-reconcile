@@ -8,6 +8,7 @@ Feature: upgrade to 1.8
     Given I update the module list
     Given I install the required modules with dependencies:
       | name                      |
+      | picking_dispatch          |
       | qoqa_claim                |
       | stock_picking_mass_assign |
       | specific_fct              |

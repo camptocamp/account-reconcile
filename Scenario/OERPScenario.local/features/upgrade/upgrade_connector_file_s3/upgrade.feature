@@ -14,15 +14,6 @@ Feature: add connector file
       | connector_file_s3_import |
     Then my modules should have been installed and models reloaded
 
-  Scenario: update Postfinance import profile
-    Given I need a "file_import.backend" with oid: scenario.file_import_backend_postfinance
-    And having:
-    | key                | value                                    |
-    | name               | PostFinance CCP                          |
-    | version            | s3_1                                     |
-    | delimiter          | ,                                        |
-    | quotechar          | "                                        |
-
   Scenario: add Paypal import profile
     Given I need a "file_import.backend" with oid: scenario.file_import_backend_paypal
     And having:

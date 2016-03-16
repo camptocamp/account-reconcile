@@ -32,7 +32,7 @@ Feature: add connector file
     | company_id                | by oid: scenario.qoqa_ch                 |
     | user_id                   | by oid: connector_qoqa.user_connector_ch |
     | bank_statement_profile_id | by oid: scenario.profile_paypal_ch       |
-    | delimiter                 | ;                                        |
+    | delimiter                 | ,                                        |
     | quotechar                 | "                                        |
 
   Scenario: add Amex import profile
@@ -44,7 +44,7 @@ Feature: add connector file
     | company_id                | by oid: scenario.qoqa_ch                        |
     | user_id                   | by oid: connector_qoqa.user_connector_ch        |
     | bank_statement_profile_id | by oid: __export__.account_statement_profile_45 |
-    | delimiter                 | ;                                               |
+    | delimiter                 | ,                                               |
     | quotechar                 | "                                               |
 
   Scenario: add Postfinance import profile
@@ -56,7 +56,7 @@ Feature: add connector file
     | company_id                | by oid: scenario.qoqa_ch                        |
     | user_id                   | by oid: connector_qoqa.user_connector_ch        |
     | bank_statement_profile_id | by oid: scenario.profile_import_cb_postfinance  |
-    | delimiter                 | ;                                               |
+    | delimiter                 | ,                                               |
     | quotechar                 | "                                               |
 
   Scenario: add Visa MasterCard import profile
@@ -68,7 +68,7 @@ Feature: add connector file
     | company_id                | by oid: scenario.qoqa_ch                           |
     | user_id                   | by oid: connector_qoqa.user_connector_ch           |
     | bank_statement_profile_id | by oid: scenario.profile_import_visa_mastercard_ch |
-    | delimiter                 | ;                                                  |
+    | delimiter                 | ,                                                  |
     | quotechar                 | "                                                  |
 
   Scenario: add SwissBilling import profile
@@ -80,5 +80,5 @@ Feature: add connector file
     | company_id                | by oid: scenario.qoqa_ch                           |
     | user_id                   | by oid: connector_qoqa.user_connector_ch           |
     | bank_statement_profile_id | by oid: __export__.account_statement_profile_37    |
-    | delimiter                 | ;                                                  |
+    | delimiter                 | ,                                                  |
     | quotechar                 | "                                                  |

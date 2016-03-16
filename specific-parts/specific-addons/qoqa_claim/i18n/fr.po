@@ -1,12 +1,13 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
+#   * qoqa_claim
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-11 15:07+0000\n"
-"PO-Revision-Date: 2013-12-11 15:07+0000\n"
+"POT-Creation-Date: 2016-02-01 11:17+0000\n"
+"PO-Revision-Date: 2016-02-01 11:17+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,7 +16,277 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: qoqa_claim
+#: view:crm.claim.unclaimed:0
+#: view:crm.claim.unclaimed.delivery:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_categ_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_categ_id
+msgid "Category"
+msgstr "Catégorie"
+
+#. module: qoqa_claim
+#: code:_description:0
 #: model:ir.model,name:qoqa_claim.model_crm_claim
+#, python-format
 msgid "Claim"
 msgstr "Réclamation"
 
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_name:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_name
+msgid "Claim Subject"
+msgstr "Sujet de réclamation"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed.delivery,claim_ids:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_delivery_claim_ids
+msgid "Claims to be delivered"
+msgstr "Réclamations à livrer"
+
+#. module: qoqa_claim
+#: code:_description:0
+#: model:ir.model,name:qoqa_claim.model_res_company
+#, python-format
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: qoqa_claim
+#: view:crm.claim.unclaimed:0
+msgid "Create Claim and Return"
+msgstr "Créer réclamation et retour"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_partner_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_partner_id
+msgid "Customer"
+msgstr "Client"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_account_id
+#: field:res.company,unclaimed_invoice_account_id:0
+msgid "Default account for invoices for sent back unclaimed packages"
+msgstr "Compte par défaut pour factures des colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_initial_categ_id
+#: field:res.company,unclaimed_initial_categ_id:0
+msgid "Default category for new unclaimed packages"
+msgstr "Catégorie par défaut pour colis non-réclamés"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_final_categ_id
+#: field:res.company,unclaimed_final_categ_id:0
+msgid "Default category for sent back unclaimed packages"
+msgstr "Catégorie par défaut pour colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_first_reminder_categ_id
+#: field:res.company,unclaimed_first_reminder_categ_id:0
+msgid "Default category for unclaimed packages after first reminder"
+msgstr "Catégorie par défaut pour colis non-réclamés après premier rappel"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_second_reminder_categ_id
+#: field:res.company,unclaimed_second_reminder_categ_id:0
+msgid "Default category for unclaimed packages after second reminder"
+msgstr "Catégorie par défaut pour colis non-réclamés après deuxième rappel"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_journal_id
+#: field:res.company,unclaimed_invoice_journal_id:0
+msgid "Default journal for invoices for sent back unclaimed packages"
+msgstr "Journal par défaut pour factures des colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_product_id
+#: field:res.company,unclaimed_invoice_product_id:0
+msgid "Default product for invoices for sent back unclaimed packages"
+msgstr "Produit par défaut pour factures des colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_stock_journal_id
+#: field:res.company,unclaimed_stock_journal_id:0
+msgid "Default stock journal for unclaimed packages"
+msgstr "Journal par défaut pour colis non-réclamés"
+
+#. module: qoqa_claim
+#: view:crm.claim.unclaimed.delivery:0
+msgid "Deliver Claims"
+msgstr "Livrer réclamations"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_delivery_address_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_delivery_address_id
+msgid "Delivery Address"
+msgstr "Adresse de livraison"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_carrier_price:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_carrier_price
+msgid "Delivery Carrier Price"
+msgstr "Coût de la méthode de livraison"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,return_dest_location_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_return_dest_location_id
+msgid "Dest. Location"
+msgstr "Emplacement de destination"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:232
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:239
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:249
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:255
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:266
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:272
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: qoqa_claim
+#: selection:crm.claim.unclaimed,unclaimed_type:0
+msgid "Invalid Address"
+msgstr "Adresse non-valide"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_invoice_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_invoice_id
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:250
+#, python-format
+msgid "No delivery carrier associated to this tracking number!"
+msgstr "Pas de méthode de livraison associée à ce numéro de colis !"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:273
+#, python-format
+msgid "No invoice associated to this tracking number!"
+msgstr "Pas de facture associée à ce numéro de colis !"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:256
+#, python-format
+msgid "No price set on delivery carrier %s!"
+msgstr "Prix non-défini sur la méthode de livraison %s !"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:267
+#, python-format
+msgid "No sale associated to this tracking number!"
+msgstr "Pas de bon de commande associé à ce numéro de colis !"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:240
+#, python-format
+msgid "No stock move associated to this tracking number!"
+msgstr "Pas de mouvement de stock associé à ce numéro de colis !"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:233
+#, python-format
+msgid "Not a valid tracking number!"
+msgstr "Numéro de colis invalide !"
+
+#. module: qoqa_claim
+#: field:crm.claim,pay_by_email_url:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_pay_by_email_url
+msgid "Pay by e-mail URL"
+msgstr ""
+
+#. module: qoqa_claim
+#: field:crm.claim,unclaimed_price:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_price
+msgid "Price for unclaimed return"
+msgstr "Prix pour retour non-réclamé"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_user_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_user_id
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_sale_order_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_sale_order_id
+msgid "Sale Order"
+msgstr "Bon de commande"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,claim_section_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_section_id
+msgid "Sales Team"
+msgstr "Equipe commerciale"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,return_source_location_id:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_return_source_location_id
+msgid "Source Location"
+msgstr "Emplacement d'origine"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,track_number:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_track_number
+msgid "Tracking Number"
+msgstr "Numéro de suivi"
+
+#. module: qoqa_claim
+#: selection:crm.claim.unclaimed,unclaimed_type:0
+msgid "Unclaimed"
+msgstr "Non-réclamé"
+
+#. module: qoqa_claim
+#: view:crm.claim.unclaimed.delivery:0
+#: model:ir.actions.act_window,name:qoqa_claim.action_crm_claim_unclaimed_delivery
+#: model:ir.ui.menu,name:qoqa_claim.menu_crm_claim_unclaimed_delivery
+msgid "Unclaimed Package Delivery"
+msgstr "Livraison de colis non-réclamé"
+
+#. module: qoqa_claim
+#: view:crm.claim.unclaimed:0
+#: model:ir.actions.act_window,name:qoqa_claim.action_crm_claim_unclaimed
+#: model:ir.ui.menu,name:qoqa_claim.menu_crm_claim_unclaimed
+msgid "Unclaimed Package Return"
+msgstr "Retour de colis non-réclamé"
+
+#. module: qoqa_claim
+#: view:res.company:0
+msgid "Unclaimed Returns"
+msgstr "Retours non-réclamés"
+
+#. module: qoqa_claim
+#: field:crm.claim.unclaimed,unclaimed_type:0
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_unclaimed_type
+msgid "Unclaimed Type"
+msgstr "Type de non-réclamé"
+
+#. module: qoqa_claim
+#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:275
+#, python-format
+msgid "Votre commande numéro %s en retour non-réclamé"
+msgstr "Votre commande numéro %s en retour non-réclamé"
+
+#. module: qoqa_claim
+#: code:_description:0
+#: model:ir.model,name:qoqa_claim.model_crm_claim_unclaimed
+#, python-format
+msgid "crm.claim.unclaimed"
+msgstr ""
+
+#. module: qoqa_claim
+#: code:_description:0
+#: model:ir.model,name:qoqa_claim.model_crm_claim_unclaimed_delivery
+#, python-format
+msgid "crm.claim.unclaimed.delivery"
+msgstr ""
+
+#. module: qoqa_claim
+#: view:crm.claim.unclaimed:0
+#: view:crm.claim.unclaimed.delivery:0
+msgid "or"
+msgstr "ou"

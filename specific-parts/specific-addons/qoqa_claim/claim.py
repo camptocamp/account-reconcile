@@ -43,4 +43,65 @@ class crm_claim(orm.Model):
             domain=['|', ('active', '=', False), ('active', '=', True)],
             help='Related original Customer invoice'
         ),
+        'pay_by_email_url': fields.char('Pay by e-mail URL', size=256),
+        'unclaimed_price': fields.integer('Price for unclaimed return'),
     }
+
+    def _send_unclaimed_reminders(self, cr, uid, context=None):
+        """
+            Cron method to send reminders on unresponded claims
+        """
+        model_data_obj = self.pool['ir.model.data']
+        template_obj = self.pool['email.template']
+        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+        initial_categ_id = user.company_id.unclaimed_initial_categ_id.id
+        first_reminder_categ_id = \
+            user.company_id.unclaimed_first_reminder_categ_id.id
+        second_reminder_categ_id = \
+            user.company_id.unclaimed_second_reminder_categ_id.id
+        query = """
+            SELECT id
+            FROM crm_claim
+            WHERE categ_id = %s
+            AND date <
+                (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' - INTERVAL '%s DAYS')
+            AND id NOT IN (
+                SELECT claim_id
+                FROM stock_picking
+                WHERE claim_id IS NOT NULL
+                AND type = 'out'
+            )
+            AND pay_by_email_url IS NOT NULL
+        """
+
+        # Get all claims for first reminder
+        cr.execute(query, (initial_categ_id, 30))
+        first_remainder_claim_ids = [x[0] for x in cr.fetchall()]
+        for claim_id in first_remainder_claim_ids:
+            """ send e-mail """
+            _, template_id = model_data_obj.get_object_reference(
+                cr, uid, 'crm_claim_mail',
+                'email_template_rma_first_reminder')
+            template_obj.send_mail(cr, uid, template_id,
+                                   claim_id, context=context)
+            self.write(cr, uid, [claim_id],
+                       {'categ_id': first_reminder_categ_id},
+                       context=context)
+            self.case_close(cr, uid, [claim_id], context=context)
+
+        # Get all claims for second reminder
+        cr.execute(query, (first_reminder_categ_id, 60))
+        second_remainder_ids = [x[0] for x in cr.fetchall()]
+        for claim_id in second_remainder_ids:
+            """ send e-mail """
+            _, template_id = model_data_obj.get_object_reference(
+                cr, uid, 'crm_claim_mail',
+                'email_template_rma_second_reminder')
+            template_obj.send_mail(cr, uid, template_id,
+                                   claim_id, context=context)
+            self.write(cr, uid, [claim_id],
+                       {'categ_id': second_reminder_categ_id},
+                       context=context)
+            self.case_close(cr, uid, [claim_id], context=context)
+
+        return True

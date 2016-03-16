@@ -209,3 +209,28 @@ msgstr ""
 #: help:payment.method,refund_min_date:0
 msgid "Invoice date older than this value cannot be refund"
 msgstr ""
+
+#. module: specific_fct
+#: field:account.invoice,refund_description_id:0
+#: field:account.refund.description,name:0
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_refund_description_id
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_name
+msgid "Description"
+msgstr ""
+
+#. module: specific_fct
+#: view:account.refund.description:0
+msgid "Refund Description"
+msgstr ""
+
+#. module: specific_fct
+#: model:ir.actions.act_window,name:specific_fct.action_refund_description_form
+#: model:ir.ui.menu,name:specific_fct.menu_action_refund_description_form
+msgid "Refund Descriptions"
+msgstr ""
+
+#. module: specific_fct
+#: code:addons/specific_fct/wizard/claim_make_picking.py:85
+#, python-format
+msgid "Refacturation Frais de renvoi"
+msgstr ""

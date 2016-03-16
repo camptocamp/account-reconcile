@@ -54,8 +54,8 @@ class PurchaseOrder(orm.Model):
             merged_data['date_order'] = order.date_order
         if order.origin:
             if (
-                order.origin not in merged_data['origin']
-                and merged_data['origin'] not in order.origin
+                order.origin not in merged_data['origin'] and
+                merged_data['origin'] not in order.origin
             ):
                 merged_data['origin'] = (
                     (merged_data['origin'] or '') + ' ' + order.origin

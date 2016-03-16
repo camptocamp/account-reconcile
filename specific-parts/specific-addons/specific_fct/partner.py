@@ -41,8 +41,8 @@ class res_partner(orm.Model):
 
     # indirection to avoid passing a copy of the overridable method
     # when declaring the function field
-    _display_name = lambda self, *args, **kwargs: \
-        self._display_name_compute(*args, **kwargs)
+    def _display_name(self, *args, **kwargs):
+        return self._display_name_compute(*args, **kwargs)
 
     _columns = {
         # extra field to allow ORDER BY to match visible names

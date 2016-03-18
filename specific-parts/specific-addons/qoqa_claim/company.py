@@ -37,4 +37,16 @@ class ResCompany(orm.Model):
         'unclaimed_final_categ_id': fields.many2one(
             'crm.case.categ',
             'Default category for sent back unclaimed packages'),
+        'unclaimed_stock_journal_id': fields.many2one(
+            'stock.journal',
+            'Default stock journal for unclaimed packages'),
+        'unclaimed_invoice_journal_id': fields.many2one(
+            'account.journal',
+            'Default journal for invoices for sent back unclaimed packages'),
+        'unclaimed_invoice_account_id': fields.many2one(
+            'account.account',
+            'Default account for invoices for sent back unclaimed packages'),
+        'unclaimed_invoice_product_id': fields.many2one(
+            'product.product',
+            'Default product for invoices for sent back unclaimed packages'),
     }

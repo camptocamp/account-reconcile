@@ -65,6 +65,12 @@ msgid "Customer"
 msgstr "Client"
 
 #. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_account_id
+#: field:res.company,unclaimed_invoice_account_id:0
+msgid "Default account for invoices for sent back unclaimed packages"
+msgstr "Compte par défaut pour factures des colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
 #: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_initial_categ_id
 #: field:res.company,unclaimed_initial_categ_id:0
 msgid "Default category for new unclaimed packages"
@@ -87,6 +93,24 @@ msgstr "Catégorie par défaut pour colis non-réclamés après premier rappel"
 #: field:res.company,unclaimed_second_reminder_categ_id:0
 msgid "Default category for unclaimed packages after second reminder"
 msgstr "Catégorie par défaut pour colis non-réclamés après deuxième rappel"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_journal_id
+#: field:res.company,unclaimed_invoice_journal_id:0
+msgid "Default journal for invoices for sent back unclaimed packages"
+msgstr "Journal par défaut pour factures des colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_product_id
+#: field:res.company,unclaimed_invoice_product_id:0
+msgid "Default product for invoices for sent back unclaimed packages"
+msgstr "Produit par défaut pour factures des colis non-réclamés après renvoi"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_stock_journal_id
+#: field:res.company,unclaimed_stock_journal_id:0
+msgid "Default stock journal for unclaimed packages"
+msgstr "Journal par défaut pour colis non-réclamés"
 
 #. module: qoqa_claim
 #: view:crm.claim.unclaimed.delivery:0

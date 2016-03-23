@@ -384,7 +384,11 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         # ]
         line = items[0][2]
         partner_id = line['partner_id']
-        if partner_id:
+        company_id = line['company_id']
+        company = self.session.browse('res.company', company_id)
+        if company.voucher_account_id:
+            account_id = company.voucher_account_id.id
+        elif partner_id:
             partner = self.session.browse('res.partner', partner_id)
             account_id = (partner.property_account_receivable.id
                           if line['credit'] > 0

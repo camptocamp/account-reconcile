@@ -364,7 +364,7 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         ref = unicode(record['voucher_id'])
         return journal, ref
 
-    def _counterpart(self, items, values):
+    def _counterpart(self, items, values, options):
         """ Create a counterpart for the credit line given by the API.
 
         The API gives only the credit line, and we create the receivable
@@ -384,7 +384,7 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
         # ]
         line = items[0][2]
         partner_id = line['partner_id']
-        company_id = line['company_id']
+        company_id = options['company_id']
         company = self.session.browse('res.company', company_id)
         if company.voucher_account_id:
             account_id = company.voucher_account_id.id
@@ -423,7 +423,7 @@ class VoucherIssuanceMapper(BaseIssuanceMapper):
                                     'qoqa_voucher_line_ids',
                                     options=options)
         values['qoqa_voucher_line_ids'] = items
-        values['line_id'] = [self._counterpart(items, values)]
+        values['line_id'] = [self._counterpart(items, values, options)]
         return values
 
 

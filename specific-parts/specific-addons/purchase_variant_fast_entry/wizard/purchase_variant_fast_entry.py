@@ -52,7 +52,8 @@ class purchase_variant_fast_entry(orm.TransientModel):
             quantity, False, purchase.partner_id.id,
             date_order=purchase.date_order,
             fiscal_position_id=purchase.fiscal_position.id,
-            date_planned=date_planned, name=False, price_unit=False, context=context)
+            date_planned=date_planned, name=False, price_unit=False,
+            context=context)
         values = onchange['value']
         values['taxes_id'] = [(6, 0, values.get('taxes_id', []))]
         line.update(values)

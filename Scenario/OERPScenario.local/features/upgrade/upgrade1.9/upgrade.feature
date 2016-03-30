@@ -9,6 +9,7 @@ Feature: upgrade to 1.9
     Given I install the required modules with dependencies:
       | name           |
       | connector_qoqa |
+      | specific_fct   |
     Then my modules should have been installed and models reloaded
 
   Scenario: add values to company

@@ -42,5 +42,13 @@
       </field>
     </record>
 
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+      <field name="domain">[('state','in',('draft','sent','confirmed','cancel'))]</field>
+    </record>
+
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+      <field name="domain">[('state','not in',('draft','sent','confirmed','cancel'))]</field>
+    </record>
+
   </data>
 </openerp>

@@ -40,6 +40,8 @@ class purchase_variant_fast_entry(orm.TransientModel):
         line = {
             'product_id': variant.id,
             'product_qty': quantity,
+            'account_analytic_id': purchase.account_analytic_id and
+            purchase.account_analytic_id.id or False
         }
         purchase_line_obj = self.pool['purchase.order.line']
         onchange = purchase_line_obj.onchange_product_id(

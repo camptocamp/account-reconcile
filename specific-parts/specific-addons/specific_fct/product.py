@@ -163,7 +163,7 @@ class product_product(orm.Model):
         # Create default orderpoint for product
         product_id = super(product_product, self).create(cr, uid, vals,
                                                          context=context)
-        if not 'orderpoint_ids' in vals:
+        if 'orderpoint_ids' not in vals:
             product = self.browse(cr, uid, product_id, context=context)
             orderpoint_obj = self.pool['stock.warehouse.orderpoint']
             orderpoint_obj.create(cr, uid,

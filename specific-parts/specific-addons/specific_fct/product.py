@@ -163,13 +163,14 @@ class product_product(orm.Model):
         # Create default orderpoint for product
         product_id = super(product_product, self).create(cr, uid, vals,
                                                          context=context)
-        product = self.browse(cr, uid, product_id, context=context)
-        orderpoint_obj = self.pool['stock.warehouse.orderpoint']
-        orderpoint_obj.create(cr, uid,
-                              {'name': 'Approvisionnement Standard 1/1 U',
-                               'product_id': product_id,
-                               'product_min_qty': 0.0,
-                               'product_max_qty': 0.0,
-                               'product_uom': product.uom_id.id},
-                              context=context)
+        if not 'orderpoint_ids' in vals:
+            product = self.browse(cr, uid, product_id, context=context)
+            orderpoint_obj = self.pool['stock.warehouse.orderpoint']
+            orderpoint_obj.create(cr, uid,
+                                  {'name': 'Approvisionnement Standard 1/1 U',
+                                   'product_id': product_id,
+                                   'product_min_qty': 0.0,
+                                   'product_max_qty': 0.0,
+                                   'product_uom': product.uom_id.id},
+                                  context=context)
         return product_id

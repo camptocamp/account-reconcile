@@ -158,3 +158,17 @@ class product_product(orm.Model):
         res['value'].update({'warranty': category.warranty,
                              'type': category.product_type})
         return res
+
+    def create(self, cr, uid, vals, context=None):
+        # Create default orderpoint for product
+        product_id = super(product_product, self).create(cr, uid, vals,
+                                                         context=context)
+        orderpoint_obj = self.pool['stock.warehouse.orderpoint']
+        orderpoint_obj.create(cr, uid,
+                              {'name': 'Approvisionnement Standard 1/1 U',
+                               'product_id': product_id,
+                               'product_min_qty': 0.0,
+                               'product_max_qty': 0.0,
+                               'product_uom': vals['uom_id']},
+                              context=context)
+        return product_id

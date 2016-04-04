@@ -7,9 +7,10 @@ Feature: upgrade to 1.9
 
     Given I update the module list
     Given I install the required modules with dependencies:
-      | name           |
-      | connector_qoqa |
-      | specific_fct   |
+      | name            |
+      | connector_qoqa  |
+      | specific_fct    |
+      | specific_report |
     Then my modules should have been installed and models reloaded
 
   Scenario: add values to company
@@ -26,6 +27,16 @@ Feature: upgrade to 1.9
        WHERE base = -2
        AND price_version_id IN (4, 8, 14);
     """
+
+  Scenario: add new warehouse
+    Given I need a "stock.warehouse" with oid: scenario.warehouse_poste2
+    And having:
+    | name          | value                               |
+    | name          | Poste Dintikon                      |
+    | lot_input_id  | by oid: stock.stock_location_stock  |
+    | lot_output_id | by oid: stock.stock_location_output |
+    | lot_stock_id  | by oid: stock.stock_location_stock  |
+    | company_id    | by oid: scenario.qoqa_ch            |
 
   Scenario: upgrade application version
     Given I set the version of the instance to "1.9"

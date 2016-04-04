@@ -39,15 +39,21 @@ class purchase_variant_fast_entry(orm.TransientModel):
                       context=None):
         line = {
             'product_id': variant.id,
-            'product_qty': quantity,
+            'product_qty': quantity
         }
+        if purchase.account_analytic_id:
+            line['account_analytic_id'] = purchase.account_analytic_id.id
+        date_planned = False
+        if purchase.minimum_planned_date:
+            date_planned = purchase.minimum_planned_date
         purchase_line_obj = self.pool['purchase.order.line']
         onchange = purchase_line_obj.onchange_product_id(
             cr, uid, [purchase.id], purchase.pricelist_id.id, variant.id,
             quantity, False, purchase.partner_id.id,
             date_order=purchase.date_order,
             fiscal_position_id=purchase.fiscal_position.id,
-            date_planned=False, name=False, price_unit=False, context=context)
+            date_planned=date_planned, name=False, price_unit=False,
+            context=context)
         values = onchange['value']
         values['taxes_id'] = [(6, 0, values.get('taxes_id', []))]
         line.update(values)

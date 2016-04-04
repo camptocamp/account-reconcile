@@ -27,6 +27,7 @@
              'product',
              'product_custom_attributes',
              'purchase',
+             'purchase_analytic_global',
              'crm_claim_rma',
              'delivery_carrier_label_postlogistics_shop_logo',
              'product_variant_simple',

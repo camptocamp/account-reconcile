@@ -96,6 +96,12 @@ class stock_picking(orm.Model):
             help="The active field allows you to hide the picking without "
                  "removing it."
         ),
+        # Redefined on stock.picking to work with stock.picking.in
+        'warehouse_id': fields.related('purchase_id', 'warehouse_id',
+                                       type='many2one',
+                                       relation='stock.warehouse',
+                                       string='Destination Warehouse',
+                                       readonly=True),
     }
 
     _defaults = {

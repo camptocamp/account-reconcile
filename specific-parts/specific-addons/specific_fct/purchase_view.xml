@@ -31,5 +31,24 @@
       </field>
     </record>
 
+    <record id="purchase_order_form_analytic" model="ir.ui.view">
+      <field name="name">purchase.order.form</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase_analytic_global.purchase_order_form"/>
+      <field name="arch" type="xml">
+        <field name="account_analytic_id" position="attributes">
+          <attribute name="required">1</attribute>
+        </field>
+      </field>
+    </record>
+
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+      <field name="domain">[('state','in',('draft','sent','confirmed','cancel'))]</field>
+    </record>
+
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+      <field name="domain">[('state','not in',('draft','sent','confirmed','cancel'))]</field>
+    </record>
+
   </data>
 </openerp>

@@ -21,6 +21,8 @@
 
 import re
 import types
+from lxml import html
+from openerp import tools
 from openerp.addons.mail.mail_thread import decode_header, mail_thread
 
 
@@ -92,6 +94,7 @@ def claim_subject_route(mail_thread, cr, uid, message, custom_values=None,
 # we need to monkey patch message_route because inheriting
 # mail_thread is not applied!
 old_message_route = mail_thread.message_route
+old_message_parse = mail_thread.message_parse
 
 
 def message_route(self, cr, uid, message, model=None, thread_id=None,
@@ -110,3 +113,26 @@ def message_route(self, cr, uid, message, model=None, thread_id=None,
         custom_values=custom_values, context=context)
 
 mail_thread.message_route = types.MethodType(message_route, None, mail_thread)
+
+
+def message_parse(self, cr, uid, message, save_original=False, context=None):
+    msg_dict = old_message_parse(self, cr, uid, message, save_original,
+                                 context=context)
+    # If email_from = 'contact@qoqa.ch', this means that the email comes
+    # from the website ; parse the body to retrieve the real address
+    if 'contact@qoqa.ch' in msg_dict['email_from']:
+        body = html.fromstring(msg_dict['body'])
+        user_email = body.xpath('//b[text()="User :"]/../text()')
+        if user_email:
+            user_email = ', '.join(user_email)
+            email_address = tools.email_split(user_email)[0]
+            if email_address:
+                msg_dict['from'] = email_address
+                msg_dict['email_from'] = email_address
+                partner_id = mail_thread._message_partner_id_by_email(
+                    self, cr, uid, email_address, context=context)
+                msg_dict['author_id'] = partner_id
+
+    return msg_dict
+
+mail_thread.message_parse = types.MethodType(message_parse, None, mail_thread)

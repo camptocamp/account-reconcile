@@ -396,25 +396,27 @@ td.main_col1 {
             <br/>
             ${helper.embed_logo_by_name('plan_acces', width=550)|n}
         %elif purch.warehouse_id.name == 'Poste Daillens':
-            <p>Sylvain Ecoffey<br/>Responsable d’exploitation</p>
+            <p>Merci de contacter Sylvain Ecoffey, Responsable d’exploitation pour les livraisons et informations supplémentaires.</p>
+            <br/>
             <p>Poste CH SA</p>
             <p>PostLogistics</p>
             <p>Centre logistique</p>
             <p>Z.I. Les Graveys</p>
             <p>CH-1306 Daillens</p>
-
-            <p>Portable :  +41 (0)79 606 22 28</p>
+            <br/>
+            <p>Portable : +41 (0)79 606 22 28</p>
             <p>E-Mail : sylvain.ecoffey@poste.ch</p>
             <p>Info logistique team: cld.sav.stockage@post.ch</p>
         %elif purch.warehouse_id.name == 'Poste Dintikon':
-            <p>Sylvain Ecoffey<br/>Responsable d’exploitation</p>
+            <p>Merci de contacter Sylvain Ecoffey, Responsable d’exploitation pour les livraisons et informations supplémentaires.</p>
             <p>Pour la livraison des gros articles de plus de 30 kg (sèche-linge, imprimantes, TV, appareils de fitness,...).</p>
+            <br/>
             <p>PostLogistics SA</p>
             <p>Service de montage</p>
             <p>Lagerstrasse 12</p>
             <p>5606 Dintikon</p>
-
-            <p>Portable :  +41 (0)79 606 22 28</p>
+            <br/>
+            <p>Portable : +41 (0)79 606 22 28</p>
             <p>E-Mail : sylvain.ecoffey@poste.ch</p>
             <p>Info logistique team: cld.sav.stockage@post.ch</p>
         %endif

@@ -14,7 +14,7 @@ table.dispatch td {
 }
 table.pack {
   text-align: left;
-  width: 100%;
+  width: 96%;
   margin-left: 50px;
   margin-top: 30px;
   border-collapse: collapse;
@@ -60,14 +60,14 @@ table.pack td {
       %endif
       %for move in moves:
         <tr align="left">
-          <td>${move.product_id.default_code}</td>
-          <td>${move.product_id.name}</td>
-          <td>${move.product_id.variants if move.product_id.variants else ''}</td>
-          <td>${move.picking_id.note if move.picking_id.note else '' | n}</td>
-          <td>${move.origin if move.origin else ''}</td>
-          <td>${move.product_qty} ${move.product_uom.name}</td>
-          <td>${move.picking_id.stock_journal_id.name if move.picking_id.stock_journal_id else ''}</td>
-          <td>${move.state}</td>
+          <td width="10%">${move.product_id.default_code}</td>
+          <td width="14%">${move.product_id.name}</td>
+          <td width="10%">${move.product_id.variants if move.product_id.variants else ''}</td>
+          <td width="22%">${move.location_id.complete_name if move.location_id else '' | n}</td>
+          <td width="10%">${move.origin if move.origin else ''}</td>
+          <td width="10%">${move.product_qty} ${move.product_uom.name}</td>
+          <td width="14%">${move.picking_id.stock_journal_id.name if move.picking_id.stock_journal_id else ''}</td>
+          <td width="10%">${move.state}</td>
         </tr>
       %endfor
   </table>

@@ -42,6 +42,6 @@ Add a state on the picking dispatches 'Delayed Done'.
           'wizard/dispatch_delayed_done_view.xml',
           ],
  'test': [],
- 'installable': True,
+ 'installable': False,
  'auto_install': False,
  }

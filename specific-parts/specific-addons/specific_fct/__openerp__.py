@@ -82,6 +82,6 @@ Hide the cancel button action to avoid human mistakes
           'partner_view.xml',
           'security/ir.model.access.csv',
           ],
- 'installable': True,
+ 'installable': False,
  'application': True,
  }

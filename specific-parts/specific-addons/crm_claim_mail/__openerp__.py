@@ -62,6 +62,6 @@ This module installs the fr_FR and de_DE languages.
           'crm_claim_view.xml',
           'sale_shop_view.xml',
           ],
- 'installable': True,
+ 'installable': False,
  'auto_install': False,
  }

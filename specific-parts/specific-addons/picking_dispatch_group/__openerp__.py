@@ -42,6 +42,6 @@ Allows to create picking dispatches based on a list of Delivery Orders.
           'report.xml',
           ],
  'test': [],
- 'installable': True,
+ 'installable': False,
  'auto_install': False,
  }

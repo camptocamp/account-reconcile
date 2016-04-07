@@ -45,6 +45,6 @@ as the attribute sets, ...
           'product_category.xml',
           'res_company_view.xml',
           ],
- 'installable': True,
+ 'installable': False,
  'application': True,
  }

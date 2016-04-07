@@ -38,6 +38,6 @@ The tracking template url can be set in the delivery carrier
  'images': [],
  'demo': [],
  'data': ['delivery_carrier_view.xml', 'stock_move_view.xml'],
- 'installable': True,
+ 'installable': False,
  'application': True,
  }

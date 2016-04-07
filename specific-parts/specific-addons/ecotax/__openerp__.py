@@ -32,5 +32,5 @@ Add an "Ecotax" field on taxes to categorize them.
  "data": ['account_view.xml',
           ],
  "auto_install": False,
- "installable": True
+ "installable": False
  }

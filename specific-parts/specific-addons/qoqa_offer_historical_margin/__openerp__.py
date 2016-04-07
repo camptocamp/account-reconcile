@@ -37,7 +37,7 @@ Adds historical margin to *Offer* models.
           'account_invoice_view.xml',
           ],
  'test': [],
- 'installable': True,
+ 'installable': False,
  'auto_install': False,
  'application': False,
  'css': [],

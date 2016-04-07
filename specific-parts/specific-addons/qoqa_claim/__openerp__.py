@@ -43,6 +43,6 @@ Local claim customizations for QoQa.
           'company_view.xml',
           'wizard/crm_claim_unclaimed_view.xml',
           ],
- 'installable': True,
+ 'installable': False,
  'application': True,
  }

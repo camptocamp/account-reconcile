@@ -50,7 +50,7 @@ the report only on products using a 'Wine' attribute set.
      'security/ir.model.access.csv',
      ],
  'test': [],
- 'installable': True,
+ 'installable': False,
  'auto_install': False,
  'application': True,
  'css': [],

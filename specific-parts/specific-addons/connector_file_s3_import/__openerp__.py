@@ -39,5 +39,5 @@ Extension of the connector file import to treat bank statements.
         'view/backend_model_view.xml',
         'view/chunk_view.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

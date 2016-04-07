@@ -41,7 +41,7 @@ for each variant of this template.
           'purchase_view.xml',
           ],
  'test': [],
- 'installable': True,
+ 'installable': False,
  'auto_install': False,
  'application': False,
  }

@@ -37,7 +37,7 @@ Use the environment to change the layout style
  'demo': [],
  'css': ['static/src/css/web_environment.css'],
  'data': [],
- 'installable': True,
+ 'installable': False,
  'application': True,
  'bootstrap': True,
  }

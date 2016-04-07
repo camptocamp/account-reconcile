@@ -18,6 +18,6 @@ QoQa Web customisations
  'css': ['static/src/css/base.css',
          ],
  'data': [],
- 'installable': True,
+ 'installable': False,
  'application': True,
  }

@@ -19,8 +19,8 @@
 #
 ##############################################################################
 from openerp.osv import orm, fields
-from openerp.addons.account_payment.wizard.account_payment_populate_statement \
-    import account_payment_populate_statement as old_payment_wizard
+# from openerp.addons.account_payment.wizard.account_payment_populate_statement \
+#     import account_payment_populate_statement as old_payment_wizard
 
 
 class payment_order_create(orm.TransientModel):
@@ -147,11 +147,11 @@ class PaymentLine(orm.Model):
     }
 
 
-class AccountPaymentPopulateStatement(orm.TransientModel):
-    _inherit = "account.payment.populate.statement"
+#class AccountPaymentPopulateStatement(orm.TransientModel):
+    #_inherit = "account.payment.populate.statement"
 
-    def fields_view_get(self, cr, uid, view_id=None, view_type='form',
-                        context=None, toolbar=False, submenu=False):
-        return super(old_payment_wizard, self).fields_view_get(
-            cr, uid, view_id=view_id, view_type=view_type, context=context,
-            toolbar=toolbar, submenu=False)
+    #def fields_view_get(self, cr, uid, view_id=None, view_type='form',
+                        #context=None, toolbar=False, submenu=False):
+        #return super(old_payment_wizard, self).fields_view_get(
+            #cr, uid, view_id=view_id, view_type=view_type, context=context,
+            #toolbar=toolbar, submenu=False)

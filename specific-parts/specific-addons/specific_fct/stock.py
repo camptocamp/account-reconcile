@@ -23,7 +23,7 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp.addons.base.res.res_partner import _lang_get
 import logging
-import pooler
+# import pooler
 
 from postlogistics.web_service import PostlogisticsWebServiceQoQa
 
@@ -347,31 +347,31 @@ class stock_picking(orm.Model):
     # define domain and better exception catching for cron
     # in stock_picking_mass_assign, in order to use the
     # new field from qoqa_offer, 'sale_create_date'
-    def check_assign_all(self, cr, uid, ids=None, context=None):
-        # create new cursor
-        wf_service = netsvc.LocalService("workflow")
-        cr = pooler.get_db(cr.dbname).cursor()
-        if isinstance(ids, (int, long)):
-            ids = [ids]
-        # no ids = cron
-        if ids is None:
-            ids = self.search(cr, uid,
-                              [('type', '=', 'out'),
-                               ('state', '=', 'confirmed')],
-                              order='sale_create_date',
-                              context=context)
-        for picking_id in ids:
-            try:
-                self.action_assign(cr, uid, [picking_id], context)
-                wf_service.trg_trigger(uid, 'stock.picking', picking_id, cr)
-                cr.commit()
-            except Exception:
-                # ignore the error, the picking will just stay as confirmed
-                _logger.info('error in action_assign for picking',
-                             exc_info=True)
-                cr.rollback()
-        cr.close()
-        return True
+    #def check_assign_all(self, cr, uid, ids=None, context=None):
+        ## create new cursor
+        #wf_service = netsvc.LocalService("workflow")
+        #cr = pooler.get_db(cr.dbname).cursor()
+        #if isinstance(ids, (int, long)):
+            #ids = [ids]
+        ## no ids = cron
+        #if ids is None:
+            #ids = self.search(cr, uid,
+                              #[('type', '=', 'out'),
+                               #('state', '=', 'confirmed')],
+                              #order='sale_create_date',
+                              #context=context)
+        #for picking_id in ids:
+            #try:
+                #self.action_assign(cr, uid, [picking_id], context)
+                #wf_service.trg_trigger(uid, 'stock.picking', picking_id, cr)
+                #cr.commit()
+            #except Exception:
+                ## ignore the error, the picking will just stay as confirmed
+                #_logger.info('error in action_assign for picking',
+                             #exc_info=True)
+                #cr.rollback()
+        #cr.close()
+        #return True
 
     def test_finished(self, cursor, user, ids):
         wf_service = netsvc.LocalService("workflow")

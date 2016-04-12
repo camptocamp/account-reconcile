@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
-        <record id="view_qoqa_backend_oauth_form" model="ir.ui.view">
-            <field name="name">qoqa.backend.oauth.form</field>
-            <field name="model">qoqa.backend.oauth</field>
-            <field name="arch" type="xml">
-                <form string="QoQa OAuth" version="7.0">
-                    <separator string="Authenticate with OAuth"/>
-                    <field name="backend_id" invisible="1"/>
-                    <group attrs="{'invisible': [('authorize_url', '!=', False)]}">
-                        <field name="client_key"/>
-                        <field name="client_secret"/>
-                    </group>
-                    <group attrs="{'invisible': [('authorize_url', '=', False)]}">
-                        <label string="Open the link below in a new tab and copy the PIN."
-                            colspan="4"/>
-                        <field name="authorize_url" string="Get the PIN on this page"
-                            widget="url" />
-                        <field name="pin"/>
-                    </group>
-                    <footer>
-                        <button name="request_token"
-                            attrs="{'invisible': [('authorize_url', '!=', False)]}"
-                            string="Request a token"
-                            type="object" class="oe_highlight"/>
-                        <button name="access_token"
-                            attrs="{'invisible': [('authorize_url', '=', False)]}"
-                            string="Confirm"
-                            type="object" class="oe_highlight"/>
-                        or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
+  <record id="view_qoqa_backend_oauth_form" model="ir.ui.view">
+    <field name="name">qoqa.backend.oauth.form</field>
+    <field name="model">qoqa.backend.oauth</field>
+    <field name="arch" type="xml">
+      <form string="QoQa OAuth" version="7.0">
+        <separator string="Authenticate with OAuth"/>
+        <field name="backend_id" invisible="1"/>
+        <group attrs="{'invisible': [('authorize_url', '!=', False)]}">
+          <field name="client_key"/>
+          <field name="client_secret"/>
+        </group>
+        <group attrs="{'invisible': [('authorize_url', '=', False)]}">
+          <label string="Open the link below in a new tab and copy the PIN."
+            colspan="4"/>
+          <field name="authorize_url" string="Get the PIN on this page"
+            widget="url" />
+          <field name="pin"/>
+        </group>
+        <footer>
+          <button name="request_token"
+            attrs="{'invisible': [('authorize_url', '!=', False)]}"
+            string="Request a token"
+            type="object" class="oe_highlight"/>
+          <button name="access_token"
+            attrs="{'invisible': [('authorize_url', '=', False)]}"
+            string="Confirm"
+            type="object" class="oe_highlight"/>
+          or
+          <button string="Cancel" class="oe_link" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
 
-        <record id="action_qoqa_backend_oauth" model="ir.actions.act_window">
-            <field name="name">QoQa Oauth</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">qoqa.backend.oauth</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="view_qoqa_backend_oauth_form"/>
-            <field name="target">new</field>
-        </record>
+  <record id="action_qoqa_backend_oauth" model="ir.actions.act_window">
+    <field name="name">QoQa Oauth</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">qoqa.backend.oauth</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_qoqa_backend_oauth_form"/>
+    <field name="target">new</field>
+  </record>
 
-    </data>
-</openerp>
-
+</odoo>

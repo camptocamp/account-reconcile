@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: '{"locale": "fr", "product_attribute_category": {"translations_attributes":
+      [{"locale": "en", "name": "Color"}, {"locale": "fr", "name": "Color"}, {"locale":
+      "de", "name": "Color"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['182']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/product_attribute_categories/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 13}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 25 Apr 2016 14:15:00 GMT']
+      etag: [W/"3833bf8785388393dbbcf819c4058c43"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [10754d84-320d-4a63-9750-61b2c1971fa7]
+      x-runtime: ['0.064682']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "product_attribute": {"product_attribute_category_id":
+      "13", "translations_attributes": [{"locale": "en", "name": "Red"}, {"locale":
+      "fr", "name": "Red"}, {"locale": "de", "name": "Red"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['206']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/product_attributes/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 19}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 25 Apr 2016 14:15:00 GMT']
+      etag: [W/"f52cbec6d9a11fe6104fceeffb396600"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [cf8a0f26-7b88-45c1-87c9-e0dbe65ac7c2]
+      x-runtime: ['0.056889']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

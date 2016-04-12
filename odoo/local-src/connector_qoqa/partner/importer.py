@@ -1,23 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
 
@@ -26,16 +9,14 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   )
 from ..backend import qoqa
-from ..unit.import_synchronizer import (DelayedBatchImport,
-                                        QoQaImportSynchronizer,
-                                        )
-from ..unit.mapper import iso8601_to_utc
+from ..unit.importer import DelayedBatchImporter, QoQaImporter
+from ..unit.mapper import FromAttributes, iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
 
 @qoqa
-class ResPartnerBatchImport(DelayedBatchImport):
+class ResPartnerBatchImporter(DelayedBatchImporter):
     """ Import the QoQa Users.
 
     For every id in in the list of users, a delayed job is created.
@@ -45,52 +26,20 @@ class ResPartnerBatchImport(DelayedBatchImport):
 
 
 @qoqa
-class ResPartnerImport(QoQaImportSynchronizer):
+class ResPartnerImport(QoQaImporter):
     _model_name = 'qoqa.res.partner'
-
-    def __init__(self, environment):
-        super(ResPartnerImport, self).__init__(environment)
-        self.should_create_addresses = None
-
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
-        assert self.qoqa_record
-        rec = self.qoqa_record
-        if rec['customer'] and rec['customer']['origin_shop_id']:
-            self._import_dependency(rec['customer']['origin_shop_id'],
-                                    'qoqa.shop')
-
-    def _get_binding_id(self):
-        """Return the binding id from the qoqa id"""
-        binding_id = super(ResPartnerImport, self)._get_binding_id()
-        if binding_id is None:
-            # Create the addresses from the record only on creation
-            # of the customer. Especially useful when importing
-            # historical sales orders so we can avoid calls for
-            # the addresses, by cons, less useful later as we'll
-            # need to import separately the modified addresses anyway.
-            self.should_create_addresses = True
-        return binding_id
-
-    def _after_import(self, binding_id):
-        if self.should_create_addresses:
-            for address in self.qoqa_record['addresses']:
-                importer = self.get_connector_unit_for_model(
-                    QoQaImportSynchronizer, 'qoqa.address')
-                importer.run(address['id'], record=address)
 
 
 @qoqa
-class ResPartnerImportMapper(ImportMapper):
+class ResPartnerImportMapper(ImportMapper, FromAttributes):
     _model_name = 'qoqa.res.partner'
 
-    direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('updated_at'), 'updated_at'),
-              ('suspicious', 'suspicious'),
-              ('is_active', 'qoqa_active'),
-              ('email', 'email'),
-              ('name', 'qoqa_name'),
-              ]
+    from_attributes = [
+        ('email', 'email'),
+        ('pseudo', 'qoqa_name'),
+        (iso8601_to_utc('created_at'), 'created_at'),
+        (iso8601_to_utc('updated_at'), 'updated_at'),
+    ]
 
     @mapping
     @only_create
@@ -100,12 +49,9 @@ class ResPartnerImportMapper(ImportMapper):
 
     @mapping
     def name(self, record):
-        """ The 'firstname' and 'lastname' fields are wrong in QoQa and
-        should not be used, instead, we take the login if existing and
-        email.
-        """
-        login = record.get('name')
-        email = record['email']
+        attrs = record['data'].get('attributes', {})
+        login = attrs.get('pseudo')
+        email = attrs['email']
         if login:
             name = "%s (%s)" % (login, email)
         else:
@@ -119,7 +65,7 @@ class ResPartnerImportMapper(ImportMapper):
     @only_create
     @mapping
     def type(self, record):
-        return {'type': 'default'}
+        return {'type': 'contact'}
 
     @only_create
     @mapping
@@ -129,34 +75,14 @@ class ResPartnerImportMapper(ImportMapper):
     @only_create
     @mapping
     def language(self, record):
-        if not record['customer']:
+        attrs = record['data'].get('attributes', {})
+        qoqa_lang = attrs.get('locale')
+        if not qoqa_lang:
             return {'lang': 'fr_FR'}
         else:
-            qlang_id = record['customer']['language_id']
-            binder = self.get_binder_for_model('res.lang')
-            lang_id = binder.to_openerp(qlang_id)
-            lang = self.session.browse('res.lang', lang_id)
+            binder = self.binder_for('res.lang')
+            lang = binder.to_openerp(qoqa_lang)
             return {'lang': lang.code}
-
-    @mapping
-    def customer_status(self, record):
-        if not record['customer']:
-            return
-        qstatus_id = record['customer']['status_id']
-        binder = self.get_binder_for_model('qoqa.customer.status')
-        status = binder.to_openerp(qstatus_id)
-        return {'qoqa_status': status}
-
-    @mapping
-    def origin_shop(self, record):
-        if not record['customer']:
-            return
-        qshop_id = record['customer']['origin_shop_id']
-        if not qshop_id:
-            return
-        binder = self.get_binder_for_model('qoqa.shop')
-        shop_id = binder.to_openerp(qshop_id)
-        return {'origin_shop_id': shop_id}
 
     @only_create
     @mapping

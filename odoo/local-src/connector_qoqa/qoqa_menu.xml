@@ -15,6 +15,6 @@
   <menuitem id="menu_qoqa_shop"
     name="Shops"
     parent="menu_qoqa_root"
-    action="action_qoqa_shop"/>
+    action="qoqa_offer.action_qoqa_shop"/>
 
 </odoo>

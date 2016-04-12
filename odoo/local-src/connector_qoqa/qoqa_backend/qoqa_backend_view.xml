@@ -12,7 +12,7 @@
             type="object"
             class="oe_highlight"
             string="Synchronize Metadata"/>
-          <button name="%(action_qoqa_backend_oauth)d"
+          <button name="%(action_qoqa_backend_auth)d"
             type="action"
             string="Get Authentication Tokens"/>
           <button name="check_connection"
@@ -111,7 +111,7 @@
               </group>
               <group>
                 <div>
-                  <label string="Import offers descriptions since"
+                  <label string="Import offers since"
                     class="oe_inline"/>
                   <field name="import_offer_from_date"
                     class="oe_inline"
@@ -124,26 +124,13 @@
               </group>
               <group>
                 <div>
-                  <label string="Import offer positions descriptions since"
+                  <label string="Import product images since"
                     class="oe_inline"/>
-                  <field name="import_offer_position_from_date"
+                  <field name="import_product_template_image_from_date"
                     class="oe_inline"
                     nolabel="1"/>
                 </div>
-                <button name="import_offer_position"
-                  type="object"
-                  class="oe_highlight"
-                  string="Import in background"/>
-              </group>
-              <group>
-                <div>
-                  <label string="Import product variants since"
-                    class="oe_inline"/>
-                  <field name="import_product_product_from_date"
-                    class="oe_inline"
-                    nolabel="1"/>
-                </div>
-                <button name="import_product_product"
+                <button name="import_product_template_image"
                   type="object"
                   class="oe_highlight"
                   string="Import in background"/>
@@ -206,19 +193,6 @@
               </group>
               <group>
                 <div>
-                  <label string="Import 1 offer position"
-                    class="oe_inline"/>
-                  <field name="import_offer_position_id"
-                    class="oe_inline"
-                    nolabel="1"/>
-                </div>
-                <button name="import_one_offer_position"
-                  type="object"
-                  class="oe_highlight"
-                  string="Import"/>
-              </group>
-              <group>
-                <div>
                   <label string="Import 1 accounting issuance group"
                     class="oe_inline"/>
                   <field name="import_accounting_issuance_id"
@@ -242,42 +216,6 @@
                   type="object"
                   class="oe_highlight"
                   string="Import"/>
-              </group>
-            </page>
-            <page name="initial_import" string="Initial Imports">
-              <p class="oe_grey oe_inline">
-                By clicking on the buttons,
-                you will initiate the synchronizations
-                with QoQa.
-                Note that the import or exports
-                won't be done directly,
-                they will create 'Jobs'
-                executed as soon as possible.
-              </p>
-              <p class="oe_grey oe_inline">
-                Once imported,
-                some types of records,
-                like the products or categories,
-                need a manual review.
-                You will find the list
-                of the new records to review
-                in the menu 'Connectors > Checkpoint'.
-              </p>
-              <group>
-                <field name="date_really_import"/>
-              </group>
-              <group>
-                <div>
-                  <label string="Import product templates since"
-                    class="oe_inline"/>
-                  <field name="import_product_template_from_date"
-                    class="oe_inline"
-                    nolabel="1"/>
-                </div>
-                <button name="import_product_template"
-                  type="object"
-                  class="oe_highlight"
-                  string="Import in background"/>
               </group>
             </page>
           </notebook>

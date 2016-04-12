@@ -5,17 +5,14 @@
     <field name="model">qoqa.offer</field>
     <field name="inherit_id" ref="qoqa_offer.view_qoqa_offer_form"/>
     <field name="arch" type="xml">
-      <field name="description" position="after">
+      <group name="base" position="inside">
         <field name="qoqa_link" widget="url" />
-      </field>
-      <field name="tax_id" position="attributes">
-        <attribute name="domain">[('qoqa_id', '!=', False)]</attribute>
-      </field>
-      <button name="action_view_sale_order" position="after">
+      </group>
+      <div name="buttons" position="inside">
         <button name="button_edit_offer_content"
           string="Edit Offer Content" type="object"
           />
-      </button>
+      </div>
     </field>
   </record>
 </odoo>

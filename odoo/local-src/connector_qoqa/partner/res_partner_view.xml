@@ -24,16 +24,12 @@
     <field name="name">qoqa.res.partner.form</field>
     <field name="model">qoqa.res.partner</field>
     <field name="arch" type="xml">
-      <form string="QoQa User" create="false"
-        delete="false" version="7.0">
+      <form string="QoQa User" create="false" delete="false">
         <group>
           <field name="backend_id"/>
           <field name="qoqa_id"/>
           <field name="qoqa_name"/>
           <field name="qoqa_active"/>
-          <field name="suspicious"/>
-          <field name="origin_shop_id"/>
-          <field name="qoqa_status"/>
           <field name="created_at"/>
           <field name="updated_at"/>
         </group>
@@ -45,8 +41,7 @@
     <field name="name">qoqa.res.partner.tree</field>
     <field name="model">qoqa.res.partner</field>
     <field name="arch" type="xml">
-      <tree string="QoQa Partner" create="false"
-        delete="false" version="7.0">
+      <tree string="QoQa Partner" create="false" delete="false">
         <field name="backend_id"/>
         <field name="qoqa_id"/>
       </tree>

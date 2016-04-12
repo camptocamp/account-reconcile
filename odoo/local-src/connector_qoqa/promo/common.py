@@ -1,25 +1,8 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.osv import orm, fields
+from openerp import models, fields
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..unit.binder import QoQaDirectBinder
@@ -32,7 +15,7 @@ class QoQaPromo(QoQaAdapter):
     _endpoint = 'promo'
 
 
-class qoqa_promo_type(orm.Model):
+class QoqaPromoType(models.Model):
     """ Promo types on QoQa.
 
     Allow to configure the accounting journals and products for
@@ -46,29 +29,23 @@ class qoqa_promo_type(orm.Model):
         4 Staff
         5 Mailing
 
-    On the backend:
-
-        http://admin.test02.qoqa.com/promoType
-
     """
     _name = 'qoqa.promo.type'
     _inherit = 'qoqa.binding'
     _description = 'QoQa Promo Type'
 
-    _columns = {
-        'name': fields.char('Name'),
-        'property_journal_id': fields.property(
-            'account.journal',
-            type='many2one',
-            relation='account.journal',
-            view_load=True,
-            string='Journal',
-            domain="[('type', '=', 'general')]"),
-        'product_id': fields.many2one(
-            'product.product',
-            string='Product',
-            required=True),
-    }
+    name = fields.Char()
+    property_journal_id = fields.Many2one(
+        comodel_name='account.journal',
+        string='Journal',
+        domain="[('type', '=', 'general')]",
+        company_dependent=True,
+    )
+    product_id = fields.Many2one(
+        comodel_name='product.product',
+        string='Product',
+        required=True,
+    )
 
 
 @qoqa

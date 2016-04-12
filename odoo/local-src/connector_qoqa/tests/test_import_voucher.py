@@ -22,7 +22,7 @@ import unittest2
 
 from .common import mock_api_responses, QoQaTransactionCase
 from .data_voucher import qoqa_voucher
-from ..unit.import_synchronizer import import_record
+from ..unit.importer import import_record
 
 
 @unittest2.skip("Not implemented yet")

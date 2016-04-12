@@ -19,4 +19,4 @@
 #
 ##############################################################################
 
-from . import qoqa_backend_oauth
+from . import qoqa_backend_auth

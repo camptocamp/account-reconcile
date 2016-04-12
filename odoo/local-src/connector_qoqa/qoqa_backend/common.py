@@ -1,91 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-import requests
-import logging
-import psycopg2
-from datetime import datetime
-from openerp import pooler
-from openerp.osv import orm, fields
-from openerp.tools.translate import _
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from openerp.addons.connector.session import ConnectorSession
-from ..unit.backend_adapter import QoQaAdapter
-from ..unit.import_synchronizer import (import_batch,
-                                        import_batch_divider,
-                                        import_record,
-                                        )
-from ..accounting_issuance.importer import import_accounting_issuance
-from ..connector import get_environment
-from ..exception import QoQaAPISecurityError, QoQaResponseNotParsable
-
-_logger = logging.getLogger(__name__)
-
-
-class qoqa_backend_timestamp(orm.Model):
-    _name = 'qoqa.backend.timestamp'
-    _description = 'QoQa Backend Import Timestamps'
-
-    _columns = {
-        'backend_id': fields.many2one(
-            'qoqa.backend', 'QoQa Backend', required=True
-        ),
-        'from_date_field': fields.char(
-            'From Date Field', required=True
-        ),
-        'import_start_time': fields.datetime(
-            'Import Start Time', required=True
-        ),
-    }
-
-    def _update_timestamp(self, cr, uid, backend,
-                          from_date_field, import_start_time, context=None):
-        """
-            This method is called to update or create one import timestamp
-            for a qoqa.backend. A concurrency error can arise, but it's
-            handled in _import_from_date.
-        """
-        if backend and from_date_field and import_start_time:
-            cr.execute(
-                """SELECT id FROM qoqa_backend_timestamp
-                   WHERE backend_id=%s
-                   AND from_date_field=%s
-                   FOR UPDATE NOWAIT""",
-                (backend.id, from_date_field)
-            )
-            timestamp_id = cr.fetchone()
-            if timestamp_id:
-                cr.execute(
-                    """UPDATE qoqa_backend_timestamp
-                       SET import_start_time=%s
-                       WHERE id=%s""",
-                    (import_start_time, timestamp_id[0])
-                )
-            else:
-                cr.execute(
-                    """INSERT INTO qoqa_backend_timestamp
-                       (backend_id, from_date_field, import_start_time)
-                       VALUES (%s, %s, %s)""",
-                    (import_start_time, backend.id, from_date_field)
-                )
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
 We'll have 1 ``qoqa.backend`` sharing the connection informations probably,
@@ -93,14 +8,37 @@ linked to several ``qoqa.shop``.
 
 """
 
+import json
+import logging
 
-class qoqa_backend(orm.Model):
+from datetime import datetime, timedelta
+
+import requests
+import psycopg2
+
+from openerp import models, fields, api, exceptions, _
+
+from openerp.addons.connector.session import ConnectorSession
+from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
+from ..unit.importer import import_batch, import_batch_divider, import_record
+from ..accounting_issuance.importer import import_accounting_issuance
+from ..backend import qoqa
+from ..connector import get_environment
+from ..exception import QoQaAPIAuthError
+
+_logger = logging.getLogger(__name__)
+
+IMPORT_DELTA = 10  # seconds
+
+
+class QoqaBackend(models.Model):
     _name = 'qoqa.backend'
     _description = 'QoQa Backend'
     _inherit = 'connector.backend'
     _backend_type = 'qoqa'
 
-    def _select_versions(self, cr, uid, context=None):
+    @api.model
+    def _select_versions(self):
         """ Available versions
 
         Can be inherited to add custom versions.
@@ -108,310 +46,389 @@ class qoqa_backend(orm.Model):
         return [('v1', 'v1'),
                 ]
 
-    def _get_import_date(self, cr, uid, ids, field_names,
-                         args=None, context=None):
-        result = {}
-        for backend_id in ids:
-            result[backend_id] = {}
-            cr.execute("""
+    # override because the version has no meaning here
+    version = fields.Selection(
+        selection=_select_versions,
+        string='API Version',
+        required=True,
+    )
+    default_lang_id = fields.Many2one(
+        comodel_name='res.lang',
+        string='Default Language',
+        required=True,
+        help="If a default language is selected, the records "
+             "will be imported in the translation of this language.\n"
+             "Note that a similar configuration exists for each shop.",
+    )
+    url = fields.Char(string='URL', required=True)
+    token = fields.Char('Token')
+    debug = fields.Boolean('Debug')
+
+    property_voucher_journal_id = fields.Many2one(
+        comodel_name='account.journal',
+        string='Journal for Vouchers',
+        domain="[('type', '=', 'general')]",
+        company_dependent=True,
+    )
+    promo_type_ids = fields.One2many(
+        comodel_name='qoqa.promo.type',
+        inverse_name='backend_id',
+        string='Promo Types',
+    )
+
+    import_res_partner_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_res_partner_from_date',
+        string='Import Customers from date',
+    )
+    import_address_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_address_from_date',
+        string='Import Addresses from date',
+    )
+    import_sale_order_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_sale_order_from_date',
+        string='Import Sales Orders from date',
+    )
+    import_accounting_issuance_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_account_issuance_from_date',
+        string='Import Accounting Issuances from date',
+    )
+    import_offer_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_offer_from_date',
+        string='Import Offer (descriptions) from date',
+    )
+    import_product_template_image_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_product_template_image_from_date',
+        string='Import Product Images from date',
+    )
+
+    import_sale_id = fields.Char(string='Sales Order ID')
+    import_variant_id = fields.Char(string='Variant ID')
+    import_offer_id = fields.Char(string='Offer ID')
+    import_accounting_issuance_id = fields.Char(
+        string='Accounting Issuance ID'
+    )
+    import_address_id = fields.Char(string='Address ID')
+
+    @api.multi
+    @api.depends()
+    def _compute_last_import_date(self):
+        for backend in self:
+            self.env.cr.execute("""
                 SELECT from_date_field, import_start_time
                 FROM qoqa_backend_timestamp
-                WHERE backend_id = %s""", (backend_id,))
-            timestamps = dict(cr.fetchall())
-            result[backend_id] = {
-                field_name: timestamps[field_name]
-                if field_name in timestamps
-                else fields.date.context_today(
-                    self, cr, uid, context=context
-                )
-                for field_name in field_names
-            }
-        return result
+                WHERE backend_id = %s""", (backend.id,))
+            rows = self.env.cr.dictfetchall()
+            for row in rows:
+                field = row['from_date_field']
+                timestamp = row['import_start_time']
+                if field in self._fields:
+                    backend[field] = timestamp
 
-    _columns = {
-        # override because the version has no meaning here
-        'version': fields.selection(
-            _select_versions,
-            string='API Version',
-            required=True),
-        'default_lang_id': fields.many2one(
-            'res.lang',
-            'Default Language',
-            required=True,
-            help="If a default language is selected, the records "
-                 "will be imported in the translation of this language.\n"
-                 "Note that a similar configuration exists for each shop."),
-        'url': fields.char('URL', required=True),
-        'client_key': fields.char('Client Key'),
-        'client_secret': fields.char('Client Secret'),
-        'access_token': fields.char('OAuth Token'),
-        'access_token_secret': fields.char('OAuth Token Secret'),
-        'debug': fields.boolean('Debug'),
+    @api.multi
+    def _inverse_date_fields(self, field_name):
+        for rec in self:
+            timestamp_id = self._lock_timestamp(field_name)
+            self._update_timestamp(timestamp_id, field_name,
+                                   getattr(rec, field_name))
 
-        'property_voucher_journal_id': fields.property(
-            'account.journal',
-            type='many2one',
-            relation='account.journal',
-            view_load=True,
-            string='Journal for Vouchers',
-            domain="[('type', '=', 'general')]"),
-        'promo_type_ids': fields.one2many(
-            'qoqa.promo.type', 'backend_id',
-            string='Promo Types'),
+    @api.multi
+    def _inverse_import_res_partner_from_date(self):
+        ts_field = 'import_res_partner_from_date'
+        self._inverse_date_fields(ts_field)
 
-        'import_product_template_from_date': fields.function(
-            _get_import_date, string='Import product templates from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_product_product_from_date': fields.function(
-            _get_import_date, string='Import product variants from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_res_partner_from_date': fields.function(
-            _get_import_date, string='Import Customers from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_address_from_date': fields.function(
-            _get_import_date, string='Import Addresses from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_sale_order_from_date': fields.function(
-            _get_import_date, string='Import Sales Orders from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_accounting_issuance_from_date': fields.function(
-            _get_import_date, string='Import Accounting Issuances from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_offer_from_date': fields.function(
-            _get_import_date, string='Import Offer (descriptions) from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
-        'import_offer_position_from_date': fields.function(
-            _get_import_date,
-            string='Import Offer Positions (descriptions) from date',
-            type="datetime", multi='import_date', nodrop=True
-        ),
+    @api.multi
+    def _inverse_import_address_from_date(self):
+        ts_field = 'import_address_from_date'
+        self._inverse_date_fields(ts_field)
 
-        'import_sale_id': fields.char('Sales Order ID'),
-        'import_variant_id': fields.char('Variant ID'),
-        'import_offer_id': fields.char('Offer ID'),
-        'import_offer_position_id': fields.char('Offer Position ID'),
-        'import_accounting_issuance_id': fields.char('Accounting Issuance ID'),
-        'import_address_id': fields.char('Address ID'),
+    @api.multi
+    def _inverse_import_sale_order_from_date(self):
+        ts_field = 'import_sale_order_from_date'
+        self._inverse_date_fields(ts_field)
 
-        'date_really_import': fields.datetime(
-            'Import historic only until', required=True,
-            help="Before this date, the sales order will be imported "
-                 "without accounting entries."),
-        'date_import_inactive': fields.datetime(
-            'Sales Orders Inactive before', required=True,
-            help="Before this date, the sales order will be imported "
-                 "as inactive"),
-    }
+    @api.multi
+    def _inverse_import_accounting_issuance_from_date(self):
+        ts_field = 'import_accounting_issuance_from_date'
+        self._inverse_date_fields(ts_field)
 
-    _defaults = {
-        # earlier dates for the imports, nothing existed before
-        # we need a start date in order to import them by week
-        'date_really_import': '2014-01-01 00:00:00',
-        'date_import_inactive': '2012-01-01 00:00:00',
-    }
+    @api.multi
+    def _inverse_import_offer_from_date(self):
+        ts_field = 'import_offer_from_date'
+        self._inverse_date_fields(ts_field)
 
-    def check_connection(self, cr, uid, ids, context=None):
-        if isinstance(ids, (list, tuple)):
-            assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
-            ids = ids[0]
-        session = ConnectorSession(cr, uid, context=context)
-        env = get_environment(session, 'qoqa.shop', ids)
-        adapter = env.get_connector_unit(QoQaAdapter)
-        try:
-            adapter.search()
-        except QoQaAPISecurityError as err:
-            raise orm.except_orm(_('Security Error'), err)
-        except QoQaResponseNotParsable:
-            # when the OAuth is not valid, QoQa redirect to the login
-            # page, thus, we get an unparseable HTML login page
-            raise orm.except_orm(
-                _('Authentification Error'),
-                _('The authentification failed. Use the '
-                  '"Get Authentication Tokens" button to request access'))
-        except requests.exceptions.HTTPError as err:
-            raise orm.except_orm(_('Error'), err)
-        raise orm.except_orm('Ok', 'Connection is successful.')
+    @api.multi
+    def _inverse_import_product_template_image_from_date(self):
+        ts_field = 'import_product_template_image_from_date'
+        self._inverse_date_fields(ts_field)
 
-    def synchronize_metadata(self, cr, uid, ids, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        session = ConnectorSession(cr, uid, context=context)
-        for backend_id in ids:
+    @api.multi
+    def check_connection(self):
+        self.ensure_one()
+        session = ConnectorSession.from_env(self.env)
+        with get_environment(session, 'qoqa.shop', self.id) as connector_env:
+            adapter = connector_env.get_connector_unit(QoQaAdapter)
+            try:
+                adapter.search()
+            except QoQaAPIAuthError as err:
+                raise exceptions.UserError(
+                    _('The authentication failed. Use the '
+                      '"Get Authentication Tokens" button to request access.'))
+            except requests.exceptions.HTTPError as err:
+                raise exceptions.UserError(err)
+            raise exceptions.UserError('Connection is successful.')
+
+    @api.multi
+    def synchronize_metadata(self):
+        session = ConnectorSession.from_env(self.env)
+        for backend in self:
             # import directly, do not delay because this
             # is a fast operation, a direct return is fine
             # and it is simpler to import them sequentially
-            import_batch(session, 'qoqa.shop', backend_id)
+            with api_handle_errors():
+                import_batch(session, 'qoqa.shop', backend.id)
         return True
 
-    def create(self, cr, uid, vals, context=None):
-        existing_ids = self.search(cr, uid, [], context=context)
-        if existing_ids:
-            raise orm.except_orm(
-                _('Error'),
-                _('Only 1 QoQa configuration is allowed.'))
-        return super(qoqa_backend, self).create(cr, uid, vals, context=context)
+    @api.model
+    def get_singleton(self):
+        return self.env.ref('connector_qoqa.qoqa_backend_config')
 
-    def _import_from_date(self, cr, uid, ids, model,
-                          from_date_field, context=None):
-        # Create new cursor for creating job + updating timestamp; if a
-        # concurrency issue arises, it will be logged and rollbacked silently.
+    @api.model
+    def create(self, vals):
+        existing = self.search([])
+        if existing:
+            raise exceptions.UserError(
+                _('Only 1 QoQa configuration is allowed.')
+            )
+        return super(QoqaBackend, self).create(vals)
+
+    @api.multi
+    def _lock_timestamp(self, from_date_field):
+        """ Update the timestamp for a synchro
+
+        thus, we prevent 2 synchros to be launched at the same time.
+        The lock is released at the commit of the transaction.
+
+        Return the id of the timestamp if the lock could be acquired.
+        """
+        assert from_date_field
+        self.ensure_one()
+        query = """
+               SELECT id FROM qoqa_backend_timestamp
+               WHERE backend_id=%s
+               AND from_date_field=%s
+               FOR UPDATE NOWAIT
+            """
         try:
-            new_cr = pooler.get_db(cr.dbname).cursor()
-            if not hasattr(ids, '__iter__'):
-                ids = [ids]
-            DT_FMT = DEFAULT_SERVER_DATETIME_FORMAT
-            session = ConnectorSession(new_cr, uid, context=context)
-            import_start_time = datetime.now().strftime(DT_FMT)
-            for backend in self.browse(new_cr, uid, ids, context=context):
-                from_date = getattr(backend, from_date_field)
-                if from_date:
-                    from_date = datetime.strptime(from_date, DT_FMT)
-                else:
-                    from_date = None
-                import_batch_divider(session, model, backend.id,
-                                     from_date=from_date, priority=9)
-                # write in table qoqa.backend.timestamp
-                self.pool['qoqa.backend.timestamp']._update_timestamp(
-                    new_cr, uid, backend,
-                    from_date_field, import_start_time,
-                    context=context
-                )
-                new_cr.commit()
+            self.env.cr.execute(
+                query, (self.id, from_date_field)
+            )
         except psycopg2.OperationalError:
-            _logger.warning("Failed to update timestamps "
-                            "for backend:%s and field:%s",
-                            backend, from_date_field, exc_info=True)
-            new_cr.rollback()
-        finally:
-            new_cr.close()
+            raise exceptions.UserError(
+                _("The synchronization timestamp %s is currently locked, "
+                  "probably due to an ongoing synchronization." %
+                  from_date_field)
+            )
+        row = self.env.cr.fetchone()
+        return row[0] if row else None
 
-    def import_product_template(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.product.template',
-                               'import_product_template_from_date',
-                               context=context)
+    @api.multi
+    def _update_timestamp(self, timestamp_id,
+                          from_date_field, import_start_time):
+        """ Update import timestamp for a synchro
+
+        This method is called to update or create one import timestamp
+        for a qoqa.backend. A concurrency error can arise, but it's
+        handled in _import_from_date.
+        """
+        self.ensure_one()
+        if not import_start_time:
+            return
+        if timestamp_id:
+            self.env.cr.execute(
+                """UPDATE qoqa_backend_timestamp
+                   SET import_start_time=%s
+                   WHERE id=%s""",
+                (import_start_time, timestamp_id)
+            )
+        else:
+            self.env.cr.execute(
+                """INSERT INTO qoqa_backend_timestamp
+                   (backend_id, from_date_field, import_start_time)
+                   VALUES (%s, %s, %s)""",
+                (self.id, from_date_field, import_start_time)
+            )
+
+    @api.multi
+    def _import_from_date(self, model, from_date_field):
+        """ Import records from a date
+
+        Create jobs and update the sync timestamp in a savepoint; if a
+        concurrency issue arises, it will be logged and rollbacked silently.
+        """
+        self.ensure_one()
+        with self.env.cr.savepoint():
+            session = ConnectorSession.from_env(self.env)
+            import_start_time = datetime.now()
+            try:
+                self._lock_timestamp(from_date_field)
+            except exceptions.UserError:
+                # lock could not be acquired, it is already running and
+                # locked by another transaction
+                _logger.warning("Failed to update timestamps "
+                                "for backend: %s and field: %s",
+                                self, from_date_field, exc_info=True)
+                return
+            from_date = getattr(self, from_date_field)
+            if from_date:
+                from_date = fields.Datetime.from_string(from_date)
+            else:
+                from_date = None
+            import_batch_divider(session, model, self.id,
+                                 from_date=from_date,
+                                 to_date=import_start_time,
+                                 priority=9)
+
+            # reimport next records a small delta before the last import date
+            # in case of small lag between servers or transaction committed
+            # after the last import but with a date before the last import
+            next_time = import_start_time - timedelta(seconds=IMPORT_DELTA)
+            next_time = fields.Datetime.to_string(next_time)
+            setattr(self, from_date_field, next_time)
+
+    @api.multi
+    def import_res_partner(self):
+        self._import_from_date('qoqa.res.partner',
+                               'import_res_partner_from_date')
         return True
 
-    def import_product_product(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.product.product',
-                               'import_product_product_from_date',
-                               context=context)
+    @api.multi
+    def import_address(self):
+        self._import_from_date('qoqa.address', 'import_address_from_date')
         return True
 
-    def import_res_partner(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.res.partner',
-                               'import_res_partner_from_date',
-                               context=context)
+    @api.multi
+    def import_sale_order(self):
+        self._import_from_date('qoqa.sale.order',
+                               'import_sale_order_from_date')
         return True
 
-    def import_address(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.address',
-                               'import_address_from_date',
-                               context=context)
+    @api.multi
+    def import_accounting_issuance(self):
+        self._import_from_date('qoqa.accounting.issuance',
+                               'import_accounting_issuance_from_date')
         return True
 
-    def import_sale_order(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.sale.order',
-                               'import_sale_order_from_date',
-                               context=context)
+    @api.multi
+    def import_offer(self):
+        self._import_from_date('qoqa.offer', 'import_offer_from_date')
         return True
 
-    def import_accounting_issuance(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.accounting.issuance',
-                               'import_accounting_issuance_from_date',
-                               context=context)
+    @api.multi
+    def import_product_template_image(self):
+        self._import_from_date('qoqa.offer',
+                               'import_product_template_image_from_date')
         return True
 
-    def import_offer(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.offer',
-                               'import_offer_from_date',
-                               context=context)
-        return True
-
-    def import_offer_position(self, cr, uid, ids, context=None):
-        self._import_from_date(cr, uid, ids, 'qoqa.offer.position',
-                               'import_offer_position_from_date',
-                               context=context)
-        return True
-
-    def _import_one(self, cr, uid, ids, model, field,
-                    import_func=None, context=None):
+    @api.multi
+    def _import_one(self, model, field, import_func=None):
         if import_func is None:
             import_func = import_record
-        session = ConnectorSession(cr, uid, context=context)
-        for backend in self.browse(cr, uid, ids, context=context):
-            record_id = backend[field]
-            if not record_id:
+        session = ConnectorSession.from_env(self.env)
+        for backend in self:
+            qoqa_record_id = getattr(backend, field)
+            if not qoqa_record_id:
                 continue
             import_func(session, model, backend.id,
-                        record_id, force=True)
+                        qoqa_record_id, force=True)
 
-    def import_one_sale_order(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.sale.order',
-                         'import_sale_id', context=context)
+    @api.multi
+    def import_one_sale_order(self):
+        self._import_one('qoqa.sale.order', 'import_sale_id')
         return True
 
-    def import_one_variant(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.product.product',
-                         'import_variant_id', context=context)
+    @api.multi
+    def import_one_variant(self):
+        self._import_one('qoqa.product.product', 'import_variant_id')
         return True
 
-    def import_one_offer(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.offer',
-                         'import_offer_id', context=context)
+    @api.multi
+    def import_one_offer(self):
+        self._import_one('qoqa.offer', 'import_offer_id')
         return True
 
-    def import_one_offer_position(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.offer.position',
-                         'import_offer_position_id', context=context)
-        return True
-
-    def import_one_accounting_issuance(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.accounting.issuance',
+    @api.multi
+    def import_one_accounting_issuance(self):
+        self._import_one('qoqa.accounting.issuance',
                          'import_accounting_issuance_id',
-                         import_func=import_accounting_issuance,
-                         context=context)
+                         import_func=import_accounting_issuance)
         return True
 
-    def import_one_address(self, cr, uid, ids, context=None):
-        self._import_one(cr, uid, ids, 'qoqa.address',
-                         'import_address_id', context=context)
+    @api.multi
+    def import_one_address(self):
+        self._import_one('qoqa.address', 'import_address_id')
         return True
 
-    def _exec_scheduler_callback(self, cr, uid, callback, context=None):
-        ids = self.search(cr, uid, [], context=context)
-        callback(cr, uid, ids, context=context)
+    @api.model
+    def _scheduler_import_sale_order(self):
+        self.import_sale_order(self.search([]))
 
-    def _scheduler_import_sale_order(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_sale_order,
-                                      context=context)
+    @api.model
+    def _scheduler_import_res_partner(self):
+        self.import_res_partner(self.search([]))
 
-    def _scheduler_import_res_partner(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_res_partner,
-                                      context=context)
+    @api.model
+    def _scheduler_import_address(self):
+        self.import_address(self.search([]))
 
-    def _scheduler_import_address(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_address,
-                                      context=context)
+    @api.model
+    def _scheduler_accounting_issuance(self):
+        self.import_accounting_issuance(self.search([]))
 
-    def _scheduler_accounting_issuance(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_accounting_issuance,
-                                      context=context)
+    @api.model
+    def _scheduler_import_offer(self):
+        self.import_offer(self.search([]))
 
-    def _scheduler_import_offer(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_offer,
-                                      context=context)
+    @api.model
+    def _scheduler_import_product_template_image(self):
+        self.import_product_template_image(self.search([]))
 
-    def _scheduler_import_offer_position(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_offer_position,
-                                      context=context)
 
-    def _scheduler_import_product_product(self, cr, uid, context=None):
-        self._exec_scheduler_callback(cr, uid, self.import_product_product,
-                                      context=context)
+class QoqaBackendTimestamp(models.Model):
+    _name = 'qoqa.backend.timestamp'
+    _description = 'QoQa Backend Import Timestamps'
+
+    backend_id = fields.Many2one(
+        comodel_name='qoqa.backend',
+        string='QoQa Backend',
+        required=True,
+    )
+    from_date_field = fields.Char(
+        string='From Date Field',
+        required=True,
+    )
+    import_start_time = fields.Datetime(
+        string='Import Start Time',
+        required=True,
+    )
+
+
+@qoqa
+class AuthAdapter(QoQaAdapter):
+    _model_name = 'qoqa.backend'
+    _endpoint = 'auth'
+
+    def authenticate(self, login, password):
+        url = self.url()
+        vals = {'user': {'login': login,
+                         'password': password},
+                'device': {'identifier': 'Odoo'}
+                }
+        response = self.client.post(url, data=json.dumps(vals))
+        result = self._handle_response(response)
+        return result.get('data', {}).get('attributes', {}).get('token')

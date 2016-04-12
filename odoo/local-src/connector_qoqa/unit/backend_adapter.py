@@ -1,36 +1,17 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
 import logging
 import requests
 from requests.exceptions import HTTPError, RequestException, ConnectionError
 from contextlib import contextmanager
-from requests_oauthlib import OAuth1
-from openerp.osv import orm
-from openerp.tools.translate import _
+from openerp import exceptions, _
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 from openerp.addons.connector.exception import NetworkRetryableError
 from ..exception import (QoQaResponseNotParsable,
-                         QoQaAPISecurityError,
+                         QoQaAPIAuthError,
                          QoQaResponseError,
                          )
 
@@ -47,31 +28,42 @@ REQUESTS_TIMEOUT = 30  # seconds
 
 
 @contextmanager
-def api_handle_errors(message):
+def api_handle_errors(message=''):
     """ Handle error when calling the API
 
     It is meant to be used when a model does a direct
     call to a job using the API (not using job.delay()).
     Avoid to have unhandled errors raising on front of the user,
-    instead, they are presented as ``orm.except_orm``.
+    instead, they are presented as :class:`openerp.exceptions.UserError`.
     """
+    if message:
+        message = message + '\n\n'
     try:
         yield
     except NetworkRetryableError as err:
-        raise orm.except_orm(_('Network Error'), (message + '\n\n%s') % err)
+        raise exceptions.UserError(
+            _('{}Network Error:\n\n{}').format(message, err)
+        )
     except (HTTPError, RequestException, ConnectionError) as err:
-        raise orm.except_orm(_('API / Network Error'),
-                             (message + '\n\n%s') % err)
-    except QoQaAPISecurityError as err:
-        raise orm.except_orm(_('Authentication Error'),
-                             (message + '\n\n%s') % err)
+        raise exceptions.UserError(
+            _('{}API / Network Error:\n\n{}').format(message, err)
+        )
+    except QoQaAPIAuthError as err:
+        raise exceptions.UserError(
+            _('{}Authentication Error:\n\n{}').format(message, err)
+        )
     except QoQaResponseError as err:
-        raise orm.except_orm(_('Error(s) returned by QoQa'), unicode(err))
+        raise exceptions.UserError(
+            _('{}Error(s) returned by QoQa:\n\n{}').format(message,
+                                                           unicode(err))
+        )
     except QoQaResponseNotParsable:
         # The response from the backend cannot be parsed, not a
         # JSON.  So we don't know what the error is.
         _logger.exception(message)
-        raise orm.except_orm(_('Unknown Error'), message)
+        raise exceptions.UserError(
+                _('{}Unknown Error').format(message)
+        )
 
 
 class QoQaClient(object):
@@ -80,22 +72,28 @@ class QoQaClient(object):
                  requests.exceptions.ConnectionError,
                  )
 
-    def __init__(self, base_url, client_key, client_secret,
-                 access_token, access_token_secret, debug=False):
+    def __init__(self, base_url, token=False, debug=False):
         if not base_url.endswith('/'):
             base_url += '/'
         self.base_url = base_url
         self.debug = debug
-        self._client_key = client_key
-        self._client_secret = client_secret
-        self._access_token = access_token
-        self._access_token_secret = access_token_secret
-        self._session = None
-        self._auth = OAuth1(
-            self._client_key,
-            client_secret=self._client_secret,
-            resource_owner_key=self._access_token,
-            resource_owner_secret=self._access_token_secret)
+        self._session = requests.Session()
+        self._session.headers['Content-Type'] = 'application/json'
+        self.token = token
+
+    @property
+    def token(self):
+        return self._token
+
+    @token.setter  # noqa: ignore=W806 (wrong pyflakes warning)
+    def token(self, value):
+        if value:
+            self._session.headers['Authorization'] = (
+                'Token token="{}"'.format(value)
+            )
+        else:
+            self._session.headers['Authorization'] = None
+        self._token = value
 
     def __getattr__(self, attr):
         """ Forward attributes to ``requests``.
@@ -103,16 +101,16 @@ class QoQaClient(object):
         This allows to call a ``post`` or ``get`` directly
         on a ``QoQaClient`` instance.
 
-        It automatically adds the ``auth`` keyword argument
-        to the request with the OAuth1 tokens.
+        It automatically adds the token in the Authorization header to
+        all the requests.
 
         When the debug mode is activated, it disables the check
-        on the SSL certificat.
+        on the SSL certificate.
         """
-        dispatch = getattr(requests, attr)
+        dispatch = getattr(self._session, attr)
 
-        def with_auth(*args, **kwargs):
-            kwargs['auth'] = self._auth
+        def do_call(*args, **kwargs):
+            kwargs.setdefault('allow_redirects', False)
             try:
                 return dispatch(timeout=REQUESTS_TIMEOUT, *args, **kwargs)
             except self.retryable as err:
@@ -122,15 +120,26 @@ class QoQaClient(object):
         if self.debug:
             def with_debug(*args, **kwargs):
                 kwargs['verify'] = False
-                return with_auth(*args, **kwargs)
+                return do_call(*args, **kwargs)
             return with_debug
-        return with_auth
+        return do_call
 
 
 class QoQaAdapter(CRUDAdapter):
-    """ External Records Adapter for QoQa """
+    """ External Records Adapter for QoQa
 
-    _endpoint = None  # to define in subclasses
+    The ``_endpoint`` and the ``_resource` are to define in the subclasses.
+    They represent the following things in a call:
+    ```
+    POST https://baseurl/v1/<<_endpoint>>
+     {"locale": "fr",
+      "<<_resource>>": {"id": null, "name": "xyz"}}
+    ```
+    An example of endpoint is ``addresses` and of resource is ``address``.
+    """
+
+    _endpoint = None  # to define in subclasses, part of the url for a resource
+    _resource = None  # to define in subclasses, name of the resource
 
     def __init__(self, environment):
         """
@@ -140,47 +149,49 @@ class QoQaAdapter(CRUDAdapter):
         """
         assert self._endpoint, "_endpoint needs to be defined"
         super(QoQaAdapter, self).__init__(environment)
-        # XXX: cache the connection informations
         backend = self.backend_record
-        args = (backend.url,
-                backend.client_key or '',
-                backend.client_secret or '',
-                backend.access_token or '',
-                backend.access_token_secret or '')
-        self.client = QoQaClient(*args, debug=backend.debug)
+        self.client = QoQaClient(backend.url,
+                                 token=backend.token,
+                                 debug=backend.debug)
         self.version = self.backend_record.version
-        self.lang = self.session.context['lang'][:2]
+        self.lang = self.env.context['lang'][:2]
 
-    def url(self, with_lang=False):
+    def url(self):
         values = {'url': self.client.base_url,
                   'version': self.version,
-                  'lang': '',
                   'endpoint': self._endpoint,
                   }
-        if with_lang:
-            values['lang'] = '/' + self.lang
-        return "{url}api/{version}{lang}/{endpoint}/".format(**values)
+        return "{url}{version}/{endpoint}/".format(**values)
 
     def _handle_response(self, response):
         _logger.debug("%s %s returned %s %s", response.request.method,
                       response.url, response.status_code, response.reason)
         if response.request.method == 'POST':
             _logger.debug("The POST body was: %s", response.request.body)
-        if response.status_code == 403:
+        if response.status_code in (401, 403):
             msg = ("The call '%(method)s %(url)s' could not be completed "
-                   "due to: %(reason)s. Check the OAuth tokens and "
-                   "the permissions on %(base_url)spermission/")
+                   "due to: %(reason)s. Check the Auth token.")
             vals = {'method': response.request.method,
                     'url': response.url,
                     'reason': response.reason,
                     'base_url': self.client.base_url,
                     }
-            raise QoQaAPISecurityError(msg % vals)
+            raise QoQaAPIAuthError(msg % vals)
         # Server error : retry later
         if response.status_code in (500, 502, 504):
             raise NetworkRetryableError(
                 'A HTTP server error caused the failure of the job: '
                 'HTTP %s %s' % (response.status_code, response.reason))
+
+        # When we request a new token with auth and the login/password is
+        # wrong, the API returns a 302 redirect
+        if response.is_redirect:
+            msg = ("The call '%(method)s %(url)s' could not be completed "
+                   "because it was not authenticated.")
+            vals = {'method': response.request.method,
+                    'url': response.url,
+                    }
+            raise QoQaAPIAuthError(msg % vals)
         response.raise_for_status()
         try:
             parsed = json.loads(response.content)
@@ -205,37 +216,42 @@ class QoQaAdapter(CRUDAdapter):
                           response.content)
             errors = []
             for err in parsed['errors']:
-                message = err['message']
+                message = err['title']
+                # TODO: check if we still have 'extras'
+                # TODO: we can raise 'no record found' when the code is 2
+                # (check if the code is always 2 for every methods)
                 if err.get('extras'):
                     message += err['extras']
-                errors.append((err['type'], err['code'], message))
+                errors.append((err['code'], message))
             raise QoQaResponseError(errors)
         return parsed
 
     def create(self, vals):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        vals = {self._endpoint: vals}
-        response = self.client.post(url, data=json.dumps(vals),
-                                    headers=headers)
+        assert self._resource, "_resource needs to be defined"
+        url = self.url()
+        vals = {self._resource: vals,
+                # TODO not sure about the locale: to check
+                'locale': self.lang}
+        response = self.client.post(url, data=json.dumps(vals))
         result = self._handle_response(response)
         assert result['data']['id']
         return result['data']['id']
 
     def write(self, id, vals):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        vals = {self._endpoint: vals}
+        assert self._resource, "_resource needs to be defined"
+        url = self.url()
+        vals = {self._resource: vals,
+                # TODO not sure about the locale: to check
+                'locale': self.lang}
         response = self.client.put(url + str(id),
-                                   data=json.dumps(vals),
-                                   headers=headers)
+                                   data=json.dumps(vals))
         self._handle_response(response)
 
     def read(self, id):
         url = "{0}{1}".format(self.url(), id)
         response = self.client.get(url)
         result = self._handle_response(response)
-        return result['data']
+        return result
 
     def search(self, filters=None, from_date=None, to_date=None):
         url = self.url()

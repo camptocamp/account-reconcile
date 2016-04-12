@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: '{"device": {"identifier": "Odoo"}, "user": {"login": "xxxxxx", "password":
+      "xxxxxx"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['97']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/auth/
+  response:
+    body: {string: !!python/unicode '<html><body>You are being <a href="https://api-sprint.qoqa.com/users/sign_in">redirected</a>.</body></html>'}
+    headers:
+      cache-control: [no-cache]
+      connection: [close]
+      content-type: [text/html; charset=utf-8]
+      date: ['Mon, 18 Apr 2016 10:38:47 GMT']
+      location: ['https://api-sprint.qoqa.com/users/sign_in']
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [ae505d88-5824-4798-9c73-d7a613e61ebf]
+      x-runtime: ['2.459331']
+      x-xss-protection: [1; mode=block]
+    status: {code: 302, message: Found}
+version: 1

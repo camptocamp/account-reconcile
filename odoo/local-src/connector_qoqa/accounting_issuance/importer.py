@@ -56,9 +56,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
 from ..exception import QoQaError
 from ..connector import get_environment, iso8601_to_utc_datetime
 from ..backend import qoqa
-from ..unit.import_synchronizer import (DelayedBatchImport,
-                                        QoQaImportSynchronizer,
-                                        )
+from ..unit.importer import DelayedBatchImporter, QoQaImporter
 from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
@@ -74,7 +72,7 @@ def import_accounting_issuance(session, model_name, backend_id, qoqa_id,
 
 
 @qoqa
-class AccountingIssuanceBatchImporter(DelayedBatchImport):
+class AccountingIssuanceBatchImporter(DelayedBatchImporter):
     """ Import the QoQa Accounting Issuances.
 
     For every id in in the list of moves, a delayed job is created.
@@ -135,7 +133,7 @@ class AccountingIssuanceDispatcher(ConnectorUnit):
         return importer.run(qoqa_id, force=force, record=self.qoqa_record)
 
 
-class BaseIssuanceImporter(QoQaImportSynchronizer):
+class BaseIssuanceImporter(QoQaImporter):
 
     def _import(self, binding_id):
         company_binder = self.get_binder_for_model('res.company')

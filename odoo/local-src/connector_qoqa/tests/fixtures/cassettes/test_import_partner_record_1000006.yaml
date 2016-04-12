@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/users/1000006
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
+        "2016-04-19T14:02:11.000+02:00", "pseudo": "QoQasien", "language_id": 1, "updated_at":
+        "2016-04-19T14:02:11.000+02:00", "avatar_url": null, "email": "qoqasien@qoqa.com"},
+        "type": "user", "id": "1000006"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 19 Apr 2016 12:56:18 GMT']
+      etag: [W/"404819903cdee903b4af7766a2c43c33"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [0f76da1f-c732-49b4-833e-ac8adc8a6e5c]
+      x-runtime: ['0.070110']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

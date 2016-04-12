@@ -8,6 +8,7 @@
     <field name="arch" type="xml">
       <field name="partner_id" position="after">
         <field name="offer_id"/>
+        <field name="qoqa_shop_id"/>
       </field>
     </field>
   </record>
@@ -19,6 +20,7 @@
     <field name="arch" type="xml">
       <field name="name" position="after">
         <field name="offer_id"/>
+        <field name="qoqa_shop_id"/>
       </field>
       <field name="state" position="after">
         <field name="create_date" string="Created date in OpenERP"/>
@@ -33,6 +35,7 @@
     <field name="arch" type="xml">
       <field name="name" position="after">
         <field name="offer_id"/>
+        <field name="qoqa_shop_id"/>
       </field>
       <filter name="message_needaction" position="before">
         <filter

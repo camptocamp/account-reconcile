@@ -1,29 +1,12 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
 import logging
-from openerp.tools.translate import _
+from openerp import _
 from openerp.addons.connector.queue.job import job, related_action
-from openerp.addons.connector.unit.synchronizer import ExportSynchronizer
+from openerp.addons.connector.unit.synchronizer import Exporter
 from ..connector import get_environment
 from ..backend import qoqa
 from ..related_action import unwrap_binding
@@ -32,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 
 @qoqa
-class CancelSalesOrder(ExportSynchronizer):
+class CancelSalesOrder(Exporter):
     _model_name = 'qoqa.sale.order'
 
     def run(self, binding_id):
@@ -45,7 +28,7 @@ class CancelSalesOrder(ExportSynchronizer):
 
 
 @qoqa
-class SettleSalesOrder(ExportSynchronizer):
+class SettleSalesOrder(Exporter):
     _model_name = 'qoqa.sale.order'
 
     def run(self, binding_id):
@@ -61,19 +44,19 @@ class SettleSalesOrder(ExportSynchronizer):
 @related_action(action=unwrap_binding)
 def cancel_sales_order(session, model_name, record_id):
     """ Cancel a Sales Order """
-    binding = session.browse(model_name, record_id)
+    binding = session.env[model_name].browse(record_id)
     backend_id = binding.backend_id.id
-    env = get_environment(session, model_name, backend_id)
-    canceler = env.get_connector_unit(CancelSalesOrder)
-    return canceler.run(record_id)
+    with get_environment(session, model_name, backend_id) as connector_env:
+        canceler = connector_env.get_connector_unit(CancelSalesOrder)
+        return canceler.run(record_id)
 
 
 @job(default_channel='root.connector_qoqa.normal')
 @related_action(action=unwrap_binding)
 def settle_sales_order(session, model_name, record_id):
     """ Settle a Sales Order """
-    binding = session.browse(model_name, record_id)
+    binding = session.env[model_name].browse(record_id)
     backend_id = binding.backend_id.id
-    env = get_environment(session, model_name, backend_id)
-    settler = env.get_connector_unit(SettleSalesOrder)
-    return settler.run(record_id)
+    with get_environment(session, model_name, backend_id) as connector_env:
+        settler = connector_env.get_connector_unit(SettleSalesOrder)
+        return settler.run(record_id)

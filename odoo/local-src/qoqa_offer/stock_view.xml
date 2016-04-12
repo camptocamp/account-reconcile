@@ -24,7 +24,10 @@
         <field name="offer_id" invisible="1"/>
       </field>
       <field name="partner_id" position="after">
-        <field name="sale_create_date"/>
+        <field name="sale_create_date" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+      </field>
+      <field name="date" position="attributes">
+        <attribute name="attrs">{'invisible': [('picking_type_code', '=', 'outgoing')]}</attribute>
       </field>
     </field>
   </record>

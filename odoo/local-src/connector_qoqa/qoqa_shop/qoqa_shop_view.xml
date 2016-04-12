@@ -1,45 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <!-- shops -->
   <record id="view_qoqa_shop_form" model="ir.ui.view">
-    <field name="name">qoqa.shop.form</field>
+    <field name="name">qoqa.shop</field>
     <field name="model">qoqa.shop</field>
+    <field name="inherit_id" ref="qoqa_offer.view_qoqa_shop_form"/>
     <field name="arch" type="xml">
-      <form string="QoQa Shop" version="7.0" create="0" delete="0">
-        <header>
-        </header>
-        <sheet>
-          <label for="name" class="oe_edit_only"/>
-          <h1>
-            <field name="name"/>
-          </h1>
-          <group string="Informations">
-            <field name="backend_id" widget="selection"/>
-            <field name="openerp_id"/>
-          </group>
-          <group string="Options">
-          </group>
-        </sheet>
-      </form>
+      <group name="shop">
+        <group string="Informations" name="info">
+          <field name="backend_id" widget="selection"/>
+        </group>
+      </group>
     </field>
-  </record>
-
-  <record id="view_qoqa_shop_tree" model="ir.ui.view">
-    <field name="name">qoqa.shop.tree</field>
-    <field name="model">qoqa.shop</field>
-    <field name="arch" type="xml">
-      <tree string="QoQa Shop" version="7.0" create="0" delete="0">
-        <field name="name"/>
-      </tree>
-    </field>
-  </record>
-
-  <record id="action_qoqa_shop" model="ir.actions.act_window">
-    <field name="name">QoQa Shops</field>
-    <field name="res_model">qoqa.shop</field>
-    <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
   </record>
 
 </odoo>

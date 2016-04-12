@@ -1,114 +1,73 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from __future__ import division
+import base64
+from cStringIO import StringIO
 
-import logging
+import requests
 
-from openerp.addons.connector.unit.mapper import (mapping,
-                                                  ImportMapper,
-                                                  )
+from PIL import Image
+
+from openerp.addons.connector.connector import ConnectorUnit
+from openerp.addons.connector.queue.job import job
+
+from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
-from ..unit.import_synchronizer import (DelayedBatchImport,
-                                        QoQaImportSynchronizer,
-                                        TranslationImporter,
-                                        )
-from ..unit.mapper import iso8601_to_utc
-
-_logger = logging.getLogger(__name__)
+from ..connector import get_environment
 
 
 @qoqa
-class TemplateBatchImport(DelayedBatchImport):
-    """ Import the QoQa Product Templates.
-
-    For every product in the list, a delayed job is created.
-    Import from a date
-    """
-    _model_name = ['qoqa.product.template']
-
-
-@qoqa
-class TemplateImport(QoQaImportSynchronizer):
-    _model_name = ['qoqa.product.template']
-
-    def _after_import(self, binding_id):
-        """ Hook called at the end of the import """
-        translation_importer = self.get_connector_unit_for_model(
-            TranslationImporter)
-        translation_importer.run(self.qoqa_record, binding_id,
-                                 mapper=TemplateImportMapper)
-
-    @property
-    def mapper(self):
-        if self._mapper is None:
-            env = self.environment
-            self._mapper = env.get_connector_unit(TemplateImportMapper)
-        return self._mapper
-
-
-@qoqa
-class TemplateVariantImportMapper(ImportMapper):
-    """ Some mappings are duplicated on templates and variants.
-
-    Otherwise, OpenERP reset the template values when a variant
-    is imported.
-
-    """
-    _model_name = ['qoqa.product.template',
-                   'qoqa.product.product',
-                   ]
-
-
-@qoqa
-class TemplateImportMapper(ImportMapper):
+class QoQaProductImageImporter(ConnectorUnit):
     _model_name = 'qoqa.product.template'
 
-    translatable_fields = [
-    ]
+    def read_image(self, url):
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+        image = response.content
+        try:
+            # just check if we really have an image
+            Image.open(StringIO(image))
+        except IOError:
+            # not an image
+            return
+        return base64.b64encode(image)
 
-    direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('updated_at'), 'updated_at'),
-              ]
+    def run(self, qoqa_id):
+        binder = self.binder_for()
+        binding = binder.to_openerp(qoqa_id)
+        if not binding.exists():
+            return  # ignore, record deleted in Odoo
 
-    @mapping
-    def from_translations(self, record):
-        """ The translatable fields are only provided in
-        a 'translations' dict, we take the translation
-        for the main record in OpenERP.
-        """
-        binder = self.get_binder_for_model('res.lang')
-        lang = self.options.lang or self.backend_record.default_lang_id
-        qoqa_lang_id = binder.to_backend(lang.id, wrap=True)
-        main = next((tr for tr in record['translations']
-                     if str(tr['language_id']) == str(qoqa_lang_id)), {})
-        values = {}
-        for source, target in self.translatable_fields:
-            values[target] = self._map_direct(main, source, target)
-        return values
+        adapter = self.unit_for(QoQaAdapter)
+        values = adapter.read(qoqa_id)
 
-    @mapping
-    def common_with_variant(self, record):
-        """ Share some mappings with the variants """
-        mapper = self.get_connector_unit_for_model(
-            TemplateVariantImportMapper)
-        map_record = mapper.map_record(record)
-        return map_record.values(**self.options)
+        # get template image
+        template_url = values['data']['attributes'].get('image_file_url')
+        if template_url:
+            template_image = self.read_image(template_url)
+            if template_image:
+                binding.image = template_image
+
+        # get variant images
+        variant_binder = self.binder_for('qoqa.product.product')
+        for variant_values in values['included']:
+            variant_id = variant_values['id']
+            variant_binding = variant_binder.to_openerp(variant_id)
+            if not variant_binding:
+                continue
+
+            variant_url = variant_values['attributes'].get('big_picture_url')
+            if not variant_url:
+                continue
+
+            variant_image = self.read_image(variant_url)
+            if variant_image:
+                variant_binding.image = variant_image
+
+
+@job(default_channel='root.connector_qoqa.normal')
+def import_product_images(session, model_name, backend_id, qoqa_id):
+    with get_environment(session, model_name, backend_id) as connector_env:
+        importer = connector_env.get_connector_unit(QoQaProductImageImporter)
+        importer.run(qoqa_id)

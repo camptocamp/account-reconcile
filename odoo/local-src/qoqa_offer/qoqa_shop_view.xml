@@ -7,8 +7,6 @@
     <field name="arch" type="xml">
       <form string="QoQa Shop" create="false" delete="false">
         <label for="name" class="oe_edit_only"/>
-        <field name="kanban_image" widget="image"
-          class="oe_avatar oe_left"/>
         <h1><field name="name"/></h1>
         <group name="shop">
           <group>

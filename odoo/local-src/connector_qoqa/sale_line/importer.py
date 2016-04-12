@@ -1,23 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from __future__ import division
 import logging
@@ -27,29 +10,20 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   ImportMapChild,
                                                   )
-from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
-                                                     SpecialOrderLineBuilder,
-                                                     )
+# from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
+#                                                      SpecialOrderLineBuilder,
+#                                                      )
 from ..backend import qoqa
-from ..unit.mapper import iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
-# http://admin.test02.qoqa.com/orderItemStatus
-QOQA_STATUS_PENDING = 1
-QOQA_STATUS_DONE = 2
-QOQA_STATUS_CANCELLED = 3
 
-# http://admin.test02.qoqa.com/orderItemType
-QOQA_TYPE_SOLD = 1
-QOQA_TYPE_PURCHASED = 2
-QOQA_TYPE_RETURNED = 3
-
-# http://admin.test02.qoqa.com/itemType
-QOQA_ITEM_PRODUCT = 1
-QOQA_ITEM_SHIPPING = 2
-QOQA_ITEM_DISCOUNT = 3
-QOQA_ITEM_SERVICE = 4
+class QoQaLineCategory(object):
+    product = 'product'
+    # TODO: check
+    discount = 'discount'
+    shipping = 'shipping'
+    service = 'service'
 
 
 @qoqa
@@ -63,91 +37,80 @@ class SaleOrderLineImportMapper(ImportMapper):
     """
     _model_name = 'qoqa.sale.order.line'
 
-    direct = [(iso8601_to_utc('created_at'), 'created_at'),
-              (iso8601_to_utc('updated_at'), 'updated_at'),
-              ('quantity', 'qoqa_quantity'),  # original quantity, without lot
-              ('item_id', 'qoqa_id'),
+    # TODO discount_id
+    # TODO: set delay as (delivery_date - date.today()).days
+
+    direct = [('lot_quantity', 'qoqa_quantity'),  # original quantity on lot
+              ('id', 'qoqa_id'),
               ]
 
     def finalize(self, map_record, values):
         """ complete the values values from the 'item' sub-record """
         line = map_record.source
-        item = map_record.source['item']
-        values['custom_text'] = item['custom_text']
-        type_id = item['type_id']
-        if type_id == QOQA_ITEM_PRODUCT:
+        category = line['category']
+        if category == QoQaLineCategory.product:
             values.update(self._item_product(line))
 
-        if type_id == QOQA_ITEM_SHIPPING:
+        if category == QoQaLineCategory.shipping:
             values.update(self._item_shipping(line, map_record.parent))
 
-        elif type_id == QOQA_ITEM_DISCOUNT:
+        elif category == QoQaLineCategory.discount:
             values.update(self._item_discount(line,
                                               map_record.source['promo']))
 
         return values
 
     def _item_product(self, line):
-        # get id of qoqa.offer.position
-        item = line['item']
-        q_position_id = item['offer_id']
-        binder = self.get_binder_for_model('qoqa.offer.position')
-        position_id = binder.to_openerp(q_position_id)
-        if position_id is None:
-            raise MappingError("Offer Position with ID '%s' on QoQa has "
-                               "not been imported, should have been imported "
-                               "in _import_dependencies()." % q_position_id)
-        # get id of product.product
-        binder = self.get_binder_for_model('qoqa.product.product')
-        product_id = binder.to_openerp(item['variation_id'], unwrap=True)
-        values = {'offer_position_id': position_id,
-                  'product_id': product_id,
-                  }
-        return values
+        qoqa_variant_id = line['offer_variation_id']
+        binder = self.binder_for('qoqa.product.product')
+        product = binder.to_openerp(qoqa_variant_id, unwrap=True)
+        if not product:
+            raise MappingError('product variant with QoQa Id %s does not '
+                               'exist in Odoo' % qoqa_variant_id)
+        return {'product_id': product.id}
 
+    # TODO: ask if lines of type shipping still exist
     def _item_shipping(self, line, parent):
         # find carrier_id from parent record (sales order)
-        binder = self.get_binder_for_model('qoqa.offer')
-        qdeal_id = parent.source['deal_id']
-        offer_id = binder.to_openerp(qdeal_id, unwrap=True)
-        if offer_id is None:
-            raise MappingError("Offer with ID '%s' on QoQa has "
-                               "not been imported, should have been imported "
-                               "in _import_dependencies()." % qdeal_id)
-        offer = self.session.browse('qoqa.offer', offer_id)
+        binder = self.binder_for('qoqa.shipper.rate')
+        qoqa_fee_id = parent.source['data']['attributes']['shipping_fee_id']
+        fee = binder.to_openerp(qoqa_fee_id, unwrap=True)
+        if fee:
+            raise MappingError("Shipping fee with id %s "
+                               "does not exist. Please create it." %
+                               qoqa_fee_id)
         # line builder
-        builder = self.get_connector_unit_for_model(QoQaShippingLineBuilder)
+        builder = self.unit_for(QoQaShippingLineBuilder)
         builder.price_unit = 0
-        builder.quantity = line['quantity']
-        if offer.shipper_rate_id:
-            # this is the delivery carrier having the rates
-            builder.carrier = offer.shipper_rate_id
+        builder.quantity = line['lot_quantity']
+        # this is the delivery carrier having the rates
+        builder.carrier = fee
         values = builder.get_line()
-        del values['price_unit']  # keep the price of the direct mapping
+        del values['price_unit']  # keep the price of the mapping
         return values
 
     def _promo_type(self, promo):
         qpromo_type_id = promo['promo_type_id']
-        promo_binder = self.get_binder_for_model('qoqa.promo.type')
-        promo_type_id = promo_binder.to_openerp(qpromo_type_id)
-        if promo_type_id is None:
+        promo_binder = self.binder_for('qoqa.promo.type')
+        promo_type = promo_binder.to_openerp(qpromo_type_id)
+        if not promo_type:
             raise MappingError("Type of promo '%s' is not supported." %
                                qpromo_type_id)
-        return self.session.browse('qoqa.promo.type', promo_type_id)
+        return promo_type
 
     def _item_discount(self, line, promo):
         # line builder
-        item = line['item']
-        builder = self.get_connector_unit_for_model(QoQaPromoLineBuilder)
+        builder = self.unit_for(QoQaPromoLineBuilder)
         promo_type = self._promo_type(promo)
         builder.price_unit = 0
         # choose product according to the promo type
         builder.product = promo_type.product_id
-        builder.code = item['promo_id']
+        builder.code = line['promo_id']
         values = builder.get_line()
-        del values['price_unit']  # keep the price of the direct mapping
+        del values['price_unit']  # keep the price of the mapping
         return values
 
+    # TODO: check if quantity is still as units or as lots
     @mapping
     def quantity(self, record):
         """ Return the quantity and the unit price
@@ -162,9 +125,9 @@ class SaleOrderLineImportMapper(ImportMapper):
         should be 3 digits to ensure we do not lose precision.
 
         """
-        lot_size = record['item']['lot_size'] or 1
-        quantity = record['quantity']
-        price = record['unit_price'] / 100
+        lot_size = record['lot_size'] or 1
+        quantity = record['lot_quantity']
+        price = float(record['unit_price'])
         if lot_size > 1:
             price /= lot_size
         values = {'product_uos_qty': quantity,
@@ -179,16 +142,16 @@ class LineMapChild(ImportMapChild):
 
     def skip_item(self, map_record):
         record = map_record.source
-        if not record['quantity']:
+        if not record['lot_quantity']:
             return True
 
     def get_item_values(self, map_record, to_attr, options):
         values = map_record.values(**options)
-        binder = self.get_binder_for_model()
-        binding_id = binder.to_openerp(map_record.source['item_id'])
-        if binding_id is not None:
+        binder = self.binder_for()
+        binding = binder.to_openerp(map_record.source['id'])
+        if binding:
             # already exists, keeps the id
-            values['id'] = binding_id
+            values['id'] = binding.id
         return values
 
     def format_items(self, items_values):
@@ -206,34 +169,34 @@ class LineMapChild(ImportMapChild):
         return items
 
 
-@qoqa
-class QoQaShippingLineBuilder(ShippingLineBuilder):
-    _model_name = 'qoqa.sale.order.line'
+# @qoqa
+# class QoQaShippingLineBuilder(ShippingLineBuilder):
+#     _model_name = 'qoqa.sale.order.line'
 
-    def __init__(self, environment):
-        super(QoQaShippingLineBuilder, self).__init__(environment)
-        self.carrier = None
+#     def __init__(self, environment):
+#         super(QoQaShippingLineBuilder, self).__init__(environment)
+#         self.carrier = None
 
-    def get_line(self):
-        line = super(QoQaShippingLineBuilder, self).get_line()
-        if self.carrier:
-            line['product_id'] = self.carrier.product_id.id
-            line['name'] = self.carrier.name
-        return line
+#     def get_line(self):
+#         line = super(QoQaShippingLineBuilder, self).get_line()
+#         if self.carrier:
+#             line['product_id'] = self.carrier.product_id.id
+#             line['name'] = self.carrier.name
+#         return line
 
 
-@qoqa
-class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
-    _model_name = 'qoqa.sale.order.line'
+# @qoqa
+# class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
+#     _model_name = 'qoqa.sale.order.line'
 
-    def __init__(self, environment):
-        super(QoQaPromoLineBuilder, self).__init__(environment)
-        # the sign is 1 because the API already provides a negative
-        self.sign = 1
-        self.code = None
+#     def __init__(self, environment):
+#         super(QoQaPromoLineBuilder, self).__init__(environment)
+#         # the sign is 1 because the API already provides a negative
+#         self.sign = 1
+#         self.code = None
 
-    def get_line(self):
-        line = super(QoQaPromoLineBuilder, self).get_line()
-        if self.code:
-            line['name'] = "%s (%s)" % (line['name'], self.code)
-        return line
+#     def get_line(self):
+#         line = super(QoQaPromoLineBuilder, self).get_line()
+#         if self.code:
+#             line['name'] = "%s (%s)" % (line['name'], self.code)
+#         return line

@@ -31,8 +31,8 @@ class QoQaAPIError(QoQaError):
     """ Error with the QoQa API. """
 
 
-class QoQaAPISecurityError(QoQaAPIError):
-    """ Security error with the QoQa API. """
+class QoQaAPIAuthError(QoQaAPIError):
+    """ Authentication error with the QoQa API. """
 
 
 class QoQaResponseNotParsable(QoQaAPIError):

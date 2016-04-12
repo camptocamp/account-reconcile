@@ -5,8 +5,7 @@
     <field name="name">qoqa.address.form</field>
     <field name="model">qoqa.address</field>
     <field name="arch" type="xml">
-      <form string="QoQa Address" create="false"
-        delete="false" version="7.0">
+      <form string="QoQa Address" create="false" delete="false">
         <group>
           <field name="backend_id"/>
           <field name="qoqa_id"/>
@@ -21,8 +20,7 @@
     <field name="name">qoqa.address.tree</field>
     <field name="model">qoqa.address</field>
     <field name="arch" type="xml">
-      <tree string="QoQa Address" create="false"
-        delete="false" version="7.0">
+      <tree string="QoQa Address" create="false" delete="false">
         <field name="backend_id"/>
         <field name="qoqa_id"/>
       </tree>

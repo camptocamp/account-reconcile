@@ -17,10 +17,10 @@ class AccountInvoice(models.Model):
     )
 
     @api.model
-    def _prepare_refund(self, invoice, date=None, period_id=None,
+    def _prepare_refund(self, invoice, date_invoice=None, date=None,
                         description=None, journal_id=None):
         result = super(AccountInvoice, self)._prepare_refund(
-            invoice, date=date, period_id=period_id,
+            invoice, date_invoice=date_invoice, date=date,
             description=description, journal_id=journal_id)
         if invoice.offer_id:
             result['offer_id'] = invoice.offer_id.id

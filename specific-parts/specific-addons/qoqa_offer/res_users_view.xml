@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
-        <record id="res_users_preferences_form_qoqa" model="ir.ui.view">
-            <field name="name">res.users.preferences.form</field>
-            <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
-            <field name="arch" type="xml">
-                <field name="company_id" position="after">
-                    <field name="qoqa_shop_ids" widget="many2many_tags"/>
-                </field>
-            </field>
-        </record>
+  <record id="res_users_preferences_form_qoqa" model="ir.ui.view">
+    <field name="name">res.users.preferences.form</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+    <field name="arch" type="xml">
+      <field name="company_id" position="after">
+        <field name="qoqa_shop_ids" widget="many2many_tags"/>
+      </field>
+    </field>
+  </record>
 
-    </data>
-</openerp>
+</odoo>

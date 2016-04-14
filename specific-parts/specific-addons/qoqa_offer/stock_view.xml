@@ -1,101 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
-        <record id="view_picking_out_search_add_offer" model="ir.ui.view">
-            <field name="name">stock.picking.out.search.add.offer</field>
-            <field name="model">stock.picking.out</field>
-            <field name="inherit_id" ref="stock.view_picking_out_search"/>
-            <field name="arch" type="xml">
-                <field name="name" position="after">
-                    <field name="offer_id"/>
-                </field>
-                <filter string="Status" position="after">
-                    <filter string="Offer" domain="[]" context="{'group_by':'offer_id'}"/>
-                </filter>
-            </field>
-        </record>
+  <record id="view_picking_out_search_add_offer" model="ir.ui.view">
+    <field name="name">stock.picking.out.search.add.offer</field>
+    <field name="model">stock.picking.out</field>
+    <field name="inherit_id" ref="stock.view_picking_out_search"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="offer_id"/>
+      </field>
+      <filter string="Status" position="after">
+        <filter string="Offer" domain="[]" context="{'group_by':'offer_id'}"/>
+      </filter>
+    </field>
+  </record>
 
-        <record id="view_picking_out_tree_add_offer" model="ir.ui.view">
-            <field name="name">stock.picking.out.tree.add.offer</field>
-            <field name="model">stock.picking.out</field>
-            <field name="inherit_id" ref="stock.view_picking_out_tree"/>
-            <field name="arch" type="xml">
-                <field name="name" position="after">
-                    <field name="offer_id" invisible="1"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_picking_out_tree_add_offer" model="ir.ui.view">
+    <field name="name">stock.picking.out.tree.add.offer</field>
+    <field name="model">stock.picking.out</field>
+    <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="offer_id" invisible="1"/>
+      </field>
+    </field>
+  </record>
 
-        <record id="view_picking_out_form_add_offer" model="ir.ui.view">
-            <field name="name">stock.picking.out.form.add.offer</field>
-            <field name="model">stock.picking.out</field>
-            <field name="inherit_id" ref="stock.view_picking_out_form"/>
-            <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-                    <field name="offer_id"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_picking_out_form_add_offer" model="ir.ui.view">
+    <field name="name">stock.picking.out.form.add.offer</field>
+    <field name="model">stock.picking.out</field>
+    <field name="inherit_id" ref="stock.view_picking_out_form"/>
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="offer_id"/>
+      </field>
+    </field>
+  </record>
 
-        <record id="view_picking_out_tree" model="ir.ui.view">
-            <field name="name">stock.picking.out.view</field>
-            <field name="model">stock.picking.out</field>
-            <field name="inherit_id" ref="stock.view_picking_out_tree"/>
-            <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-                    <field name="sale_create_date"/>
-                </field>
-                <field name="date" position="replace">
-                    <field name="date" invisible="1"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_picking_out_tree" model="ir.ui.view">
+    <field name="name">stock.picking.out.view</field>
+    <field name="model">stock.picking.out</field>
+    <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="sale_create_date"/>
+      </field>
+      <field name="date" position="replace">
+        <field name="date" invisible="1"/>
+      </field>
+    </field>
+  </record>
 
-        <act_window name="Create Picking Dispatch"
-                    res_model="picking.dispatch.creator"
-                    src_model="stock.picking.out"
-                    view_mode="form"
-                    target="new"
-                    key2="client_action_multi"
-                    id="picking_dispatch_create_act_window"/>
+  <act_window name="Create Picking Dispatch"
+    res_model="picking.dispatch.creator"
+    src_model="stock.picking.out"
+    view_mode="form"
+    target="new"
+    key2="client_action_multi"
+    id="picking_dispatch_create_act_window"/>
 
-        <record id="view_move_search" model="ir.ui.view">
-            <field name="name">stock.move.search</field>
-            <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_move_search"/>
-            <field name="arch" type="xml">
-                <field name="product_id" position="after">
-                    <field name="offer_id"/>
-                </field>
-                <filter name="groupby_date" position="after">
-                    <filter string="Offer" name="groupby_offer_id" icon="terp-accessories-archiver"
-                        domain="[]" context="{'group_by':'offer_id'}"/>
-                </filter>
-            </field>
-        </record>
+  <record id="view_move_search" model="ir.ui.view">
+    <field name="name">stock.move.search</field>
+    <field name="model">stock.move</field>
+    <field name="inherit_id" ref="stock.view_move_search"/>
+    <field name="arch" type="xml">
+      <field name="product_id" position="after">
+        <field name="offer_id"/>
+      </field>
+      <filter name="groupby_date" position="after">
+        <filter string="Offer" name="groupby_offer_id" icon="terp-accessories-archiver"
+          domain="[]" context="{'group_by':'offer_id'}"/>
+      </filter>
+    </field>
+  </record>
 
-        <record id="view_move_tree_reception_picking" model="ir.ui.view">
-            <field name="name">stock.move.tree2</field>
-            <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_move_tree_reception_picking"/>
-            <field name="arch" type="xml">
-                <field name="origin" position="after">
-                    <field name="offer_id"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_move_tree_reception_picking" model="ir.ui.view">
+    <field name="name">stock.move.tree2</field>
+    <field name="model">stock.move</field>
+    <field name="inherit_id" ref="stock.view_move_tree_reception_picking"/>
+    <field name="arch" type="xml">
+      <field name="origin" position="after">
+        <field name="offer_id"/>
+      </field>
+    </field>
+  </record>
 
-        <record id="view_move_form" model="ir.ui.view">
-            <field name="name">stock.move.form</field>
-            <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_move_form"/>
-            <field name="arch" type="xml">
-                <field name="origin" position="after">
-                    <field name="offer_id"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_move_form" model="ir.ui.view">
+    <field name="name">stock.move.form</field>
+    <field name="model">stock.move</field>
+    <field name="inherit_id" ref="stock.view_move_form"/>
+    <field name="arch" type="xml">
+      <field name="origin" position="after">
+        <field name="offer_id"/>
+      </field>
+    </field>
+  </record>
 
-    </data>
-</openerp>
+</odoo>

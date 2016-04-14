@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-  <data noupdate="0">
-    <record id="procurement_tree_view" model="ir.ui.view">
-      <field name="name">procurement.order.tree</field>
-      <field name="model">procurement.order</field>
-      <field name="inherit_id" ref="procurement.procurement_tree_view"/>
-      <field name="arch" type="xml">
-        <field name="origin" position="after">
-          <field name="offer_id"/>
-        </field>
+<odoo>
+  <record id="procurement_tree_view" model="ir.ui.view">
+    <field name="name">procurement.order.tree</field>
+    <field name="model">procurement.order</field>
+    <field name="inherit_id" ref="procurement.procurement_tree_view"/>
+    <field name="arch" type="xml">
+      <field name="origin" position="after">
+        <field name="offer_id"/>
       </field>
-    </record>
+    </field>
+  </record>
 
-    <record id="procurement_form_view" model="ir.ui.view">
-      <field name="name">procurement.order.form</field>
-      <field name="model">procurement.order</field>
-      <field name="inherit_id" ref="procurement.procurement_form_view"/>
-      <field name="arch" type="xml">
-        <xpath expr="//notebook/page[1]/group[1]" position="inside">
-          <field name="offer_id"/>
-        </xpath>
+  <record id="procurement_form_view" model="ir.ui.view">
+    <field name="name">procurement.order.form</field>
+    <field name="model">procurement.order</field>
+    <field name="inherit_id" ref="procurement.procurement_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//notebook/page[1]/group[1]" position="inside">
+        <field name="offer_id"/>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="view_procurement_filter" model="ir.ui.view">
+    <field name="name">procurement.order.select</field>
+    <field name="model">procurement.order</field>
+    <field name="inherit_id" ref="procurement.view_procurement_filter"/>
+    <field name="arch" type="xml">
+      <field name="product_id" position="after">
+        <field name="offer_id"/>
       </field>
-    </record>
+      <xpath expr="/search/group[1]" position="inside">
+        <filter string="Offer" name="group_offer_id"
+          domain="[]" context="{'group_by': 'offer_id'}"/>
+      </xpath>
 
-    <record id="view_procurement_filter" model="ir.ui.view">
-      <field name="name">procurement.order.select</field>
-      <field name="model">procurement.order</field>
-      <field name="inherit_id" ref="procurement.view_procurement_filter"/>
-      <field name="arch" type="xml">
-        <field name="product_id" position="after">
-          <field name="offer_id"/>
-        </field>
-        <xpath expr="/search/group[1]" position="inside">
-          <filter string="Offer" name="group_offer_id"
-             domain="[]" context="{'group_by': 'offer_id'}"/>
-        </xpath>
-
-      </field>
-    </record>
-  </data>
-</openerp>
+    </field>
+  </record>
+</odoo>

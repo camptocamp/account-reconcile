@@ -6,11 +6,9 @@
       <field name="model">account.tax</field>
       <field name="inherit_id" ref="account.view_tax_form"/>
       <field name="arch" type="xml">
-        <data>
-          <field name="child_depend" position="after">
-            <field name="ecotax"/>
-          </field>
-        </data>
+        <field name="include_base_amount" position="after">
+          <field name="ecotax"/>
+        </field>
       </field>
     </record>
   </data>

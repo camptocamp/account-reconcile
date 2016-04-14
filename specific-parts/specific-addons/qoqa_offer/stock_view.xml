@@ -2,34 +2,40 @@
 <odoo>
 
   <record id="view_picking_out_search_add_offer" model="ir.ui.view">
-    <field name="name">stock.picking.out.search.add.offer</field>
-    <field name="model">stock.picking.out</field>
-    <field name="inherit_id" ref="stock.view_picking_out_search"/>
+    <field name="name">stock.picking.search.add.offer</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_internal_search"/>
     <field name="arch" type="xml">
       <field name="name" position="after">
         <field name="offer_id"/>
       </field>
-      <filter string="Status" position="after">
+      <xpath expr="/search/group[1]" position="inside">
         <filter string="Offer" domain="[]" context="{'group_by':'offer_id'}"/>
-      </filter>
+      </xpath>
     </field>
   </record>
 
   <record id="view_picking_out_tree_add_offer" model="ir.ui.view">
-    <field name="name">stock.picking.out.tree.add.offer</field>
-    <field name="model">stock.picking.out</field>
-    <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+    <field name="name">stock.picking.tree.add.offer</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.vpicktree"/>
     <field name="arch" type="xml">
       <field name="name" position="after">
         <field name="offer_id" invisible="1"/>
+      </field>
+      <field name="partner_id" position="after">
+        <field name="sale_create_date" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+      </field>
+      <field name="date" position="attributes">
+        <attribute name="attrs">{'invisible': [('picking_type_code', '=', 'outgoing')]}</attribute>
       </field>
     </field>
   </record>
 
   <record id="view_picking_out_form_add_offer" model="ir.ui.view">
-    <field name="name">stock.picking.out.form.add.offer</field>
-    <field name="model">stock.picking.out</field>
-    <field name="inherit_id" ref="stock.view_picking_out_form"/>
+    <field name="name">stock.picking.form.add.offer</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
       <field name="partner_id" position="after">
         <field name="offer_id"/>
@@ -37,27 +43,16 @@
     </field>
   </record>
 
-  <record id="view_picking_out_tree" model="ir.ui.view">
-    <field name="name">stock.picking.out.view</field>
-    <field name="model">stock.picking.out</field>
-    <field name="inherit_id" ref="stock.view_picking_out_tree"/>
-    <field name="arch" type="xml">
-      <field name="partner_id" position="after">
-        <field name="sale_create_date"/>
-      </field>
-      <field name="date" position="replace">
-        <field name="date" invisible="1"/>
-      </field>
-    </field>
-  </record>
-
+  <!-- TODO: enable -->
+  <!--
   <act_window name="Create Picking Dispatch"
     res_model="picking.dispatch.creator"
-    src_model="stock.picking.out"
+    src_model="stock.picking"
     view_mode="form"
     target="new"
     key2="client_action_multi"
     id="picking_dispatch_create_act_window"/>
+  -->
 
   <record id="view_move_search" model="ir.ui.view">
     <field name="name">stock.move.search</field>
@@ -77,7 +72,7 @@
   <record id="view_move_tree_reception_picking" model="ir.ui.view">
     <field name="name">stock.move.tree2</field>
     <field name="model">stock.move</field>
-    <field name="inherit_id" ref="stock.view_move_tree_reception_picking"/>
+    <field name="inherit_id" ref="stock.view_move_tree_receipt_picking"/>
     <field name="arch" type="xml">
       <field name="origin" position="after">
         <field name="offer_id"/>

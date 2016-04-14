@@ -16,7 +16,7 @@
     <field name="name">qoqa.buyphrase.form</field>
     <field name="model">qoqa.buyphrase</field>
     <field name="arch" type="xml">
-      <form string="QoQa Buyphrase" version="7.0">
+      <form string="QoQa Buyphrase">
         <group>
           <field name="name"/>
           <field name="qoqa_shop_id"/>

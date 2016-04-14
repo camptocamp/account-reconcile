@@ -1,45 +1,23 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.osv import orm, fields
+from openerp import models, fields
 
 
-class qoqa_buyphrase(orm.Model):
+# TODO: check but I think buyphrase should be removed
+class QoqaBuyphrase(models.Model):
     _name = 'qoqa.buyphrase'
     _description = 'QoQa Buyphrase'
 
-    _columns = {
-        'name': fields.char('Phrase',
-                            required=True,
-                            translate=True),
-        'description': fields.html('Description', translate=True),
-        'active': fields.boolean('Active'),
-        'qoqa_shop_id': fields.many2one(
-            'qoqa.shop',
-            string='Shop',
-            required=True),
-        'action': fields.integer('Action'),
-    }
-
-    _defaults = {
-        'active': True,
-        'action': 1,
-    }
+    name = fields.Char(string='Phrase',
+                       required=True,
+                       translate=True)
+    description = fields.Html('Description', translate=True)
+    active = fields.Boolean('Active', default=True)
+    qoqa_shop_id = fields.Many2one(
+        comodel_name='qoqa.shop',
+        string='Shop',
+        required=True,
+    )
+    action = fields.Integer('Action', default=1)

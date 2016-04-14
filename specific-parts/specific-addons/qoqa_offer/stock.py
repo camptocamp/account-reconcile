@@ -1,86 +1,54 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api
 
 
-class stock_picking(orm.Model):
+class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    _columns = {
-        'offer_id': fields.many2one(
-            'qoqa.offer',
-            string='Offer',
-            readonly=True,
-            select=True,
-            ondelete='restrict'),
+    offer_id = fields.Many2one(
+        comodel_name='qoqa.offer',
+        string='Offer',
+        readonly=True,
+        index=True,
+        ondelete='restrict',
+    )
+    sale_create_date = fields.Datetime(
+        related='sale_id.create_date',
+        string='Sale Create Date',
+        store=True,
+        readonly=True,
+    )
 
-        'sale_create_date': fields.related(
-            'sale_id',
-            'create_date',
-            type='datetime',
-            string='Sale Create Date',
-            store=True,
-            readonly=True),
-    }
-
-    def _prepare_invoice(self, cr, uid, picking, partner, inv_type,
-                         journal_id, context=None):
-        vals = super(stock_picking, self)._prepare_invoice(
-            cr, uid, picking, partner, inv_type, journal_id, context=context)
-        if picking.offer_id:
-            vals['offer_id'] = picking.offer_id.id
-        return vals
+    # TODO: no longer invoice from pickings?
+    # def _prepare_invoice(self, cr, uid, picking, partner, inv_type,
+    #                      journal_id, context=None):
+    #     vals = super(stock_picking, self)._prepare_invoice(
+    #         cr, uid, picking, partner, inv_type, journal_id, context=context)
+    #     if picking.offer_id:
+    #         vals['offer_id'] = picking.offer_id.id
+    #     return vals
 
 
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
-
-    _columns = {
-        'offer_id': fields.many2one(
-            'qoqa.offer',
-            string='Offer',
-            select=True,
-            readonly=True),
-
-        'sale_create_date': fields.related(
-            'sale_id',
-            'create_date',
-            type='datetime',
-            string='Sale Create Date',
-            store=True,
-            readonly=True),
-    }
-
-
-class stock_move(orm.Model):
+class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    _columns = {
-        'offer_id': fields.related(
-            'picking_id', 'offer_id',
-            type='many2one',
-            relation='qoqa.offer',
-            readonly=True,
-            store=True,
-            select=True,
-            string='Offer'),
-    }
+    offer_id = fields.Many2one(
+        related='picking_id.offer_id',
+        readonly=True,
+        store=True,
+        index=True,
+    )
+
+    @api.model
+    def _prepare_picking_assign(self, move):
+        """ Prepares a new picking for this move as it could not be assigned to
+        another picking. This method is designed to be inherited.
+        """
+        values = super(StockMove, self)._prepare_picking_assign(move)
+        if move.procurement_id.sale_line_id:
+            sale = move.procurement_id.sale_line_id.order_id
+            values['offer_id'] = sale.offer_id.id
+        return values

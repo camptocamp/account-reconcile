@@ -25,6 +25,8 @@ from openerp.osv import orm
 from openerp import netsvc
 
 
+# TODO: see if still required, migrate
+
 class stock_warehouse_orderpoint(orm.Model):
     _inherit = 'stock.warehouse.orderpoint'
 

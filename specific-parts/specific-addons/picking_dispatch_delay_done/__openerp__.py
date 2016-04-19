@@ -37,8 +37,8 @@ Add a state on the picking dispatches 'Delayed Done'.
 
 """,
  'website': 'http://www.camptocamp.com',
- 'data': ['picking_dispatch_view.xml',
-          'cron_data.xml',
+ 'data': ['data/cron.xml',
+          'views/picking_dispatch.xml',
           'wizard/dispatch_delayed_done_view.xml',
           ],
  'test': [],

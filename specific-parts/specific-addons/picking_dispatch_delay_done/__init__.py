@@ -19,5 +19,5 @@
 #
 ##############################################################################
 
-from . import picking_dispatch
+from . import models
 from . import wizard

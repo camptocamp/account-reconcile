@@ -1,63 +1,39 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2014 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2014-2016 Guewen Baconnier, Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from openerp.osv import orm
+from openerp import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
 
-class picking_dispatch(orm.Model):
+class PickingDispatch(models.Model):
     _inherit = 'picking.dispatch'
 
-    def __init__(self, pool, cr):
-        super(picking_dispatch, self).__init__(pool, cr)
-        state = self._columns['state']
-        selection = state.selection
-        if not any('delayed_done' == choice[0] for choice in selection):
-            selection.append(('delayed_done', 'Delayed Done'))
+    state = fields.Selection(
+        selection_add=[('delayed_done', 'Delayed Done')]
+    )
 
-    def action_delayed_done(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'delayed_done'}, context=context)
-        return True
+    @api.multi
+    def action_delayed_done(self):
+        self.write({'state': 'delayed_done'})
 
-    def _scheduler_delayed_done(self, cr, uid, context=None):
+    @api.model
+    def _scheduler_delayed_done(self):
         """ Called from the Scheduled Actions.
 
         Warning: it commits after each dispatch so it should not be
         called outside of the scheduled actions
         """
-        partial_move_obj = self.pool["stock.partial.move"]
-        dispatch_ids = self.search(cr, uid, [('state', '=', 'delayed_done')],
-                                   context=context)
-        for dispatch_id in dispatch_ids:
+        dispatches = self.search([('state', '=', 'delayed_done')])
+        for dispatch in dispatches:
             try:
-                action = self.action_done(cr, uid, [dispatch_id],
-                                          context=context)
-                partial_id = action['res_id']
-                partial_move_obj.do_partial(cr, uid, [partial_id],
-                                            context=context)
-                cr.commit()
+                dispatch.action_done()
+                self.env.cr.commit()
             except:
-                cr.rollback()
+                self.env.cr.rollback()
                 _logger.exception(
                     'Could not set picking with ID %s as done',
-                    dispatch_id)
+                    dispatch
+                )

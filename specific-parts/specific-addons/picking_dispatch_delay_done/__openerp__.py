@@ -20,13 +20,14 @@
 ##############################################################################
 
 {'name': 'Picking Dispatch Delay Done',
- 'version': '1.0',
+ 'version': '9.0.1.0.0',
  'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'license': 'AGPL-3',
  'category': 'Warehouse Management',
- 'depends': ['picking_dispatch',  # stock-logistics-workflow
-             ],
+ 'depends': [
+     'stock_picking_dispatch',  # stock-logistics-workflow
+ ],
  'description': """
 Picking Dispatch Delay Done
 ===========================
@@ -37,11 +38,12 @@ Add a state on the picking dispatches 'Delayed Done'.
 
 """,
  'website': 'http://www.camptocamp.com',
- 'data': ['data/cron.xml',
-          'views/picking_dispatch.xml',
-          'wizard/dispatch_delayed_done_view.xml',
-          ],
+ 'data': [
+     'data/cron.xml',
+     'views/picking_dispatch.xml',
+     'wizard/dispatch_delayed_done_view.xml',
+ ],
  'test': [],
- 'installable': False,
+ 'installable': True,
  'auto_install': False,
  }

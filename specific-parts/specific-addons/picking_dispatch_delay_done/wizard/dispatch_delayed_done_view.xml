@@ -5,7 +5,7 @@
       <field name="name">picking.dispatch.delayed.done.form</field>
       <field name="model">picking.dispatch.delayed.done</field>
       <field name="arch" type="xml">
-        <form string="Delayed Done" version="7.0">
+        <form string="Delayed Done">
           <footer>
             <button name="delayed_done" string="Delayed Done" type="object" class="oe_highlight"/>
             or

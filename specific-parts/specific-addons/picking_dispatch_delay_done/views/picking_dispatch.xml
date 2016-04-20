@@ -4,7 +4,7 @@
     <record model="ir.ui.view" id="picking_dispatch_form">
       <field name="name">picking.dispatch.form</field>
       <field name="model">picking.dispatch</field>
-      <field name="inherit_id" ref="picking_dispatch.picking_dispatch_form"/>
+      <field name="inherit_id" ref="stock_picking_dispatch.picking_dispatch_form"/>
       <field name="arch" type="xml">
         <button name="action_done" position="attributes">
           <attribute name="states">progress,delayed_done</attribute>

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
 ##############################################################################
 #
 # Author: Tristan Rouiller
 # Copyright 2014 QoQa Services SA
+# Author: Yannick Vaucher
+# Copyright 2016 Camptocamp SA
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -27,16 +28,9 @@ from openerp.addons.web import http
 
 
 class HomeEnv(main.Home):
-    _cp_path = '/'
 
-    @http.httprequest
-    def index(self, req, s_action=None, db=None, **kw):
-        html_template = super(HomeEnv, self).index(req, s_action=s_action,
-                                                   db=db, **kw)
-        environment_name = config['running_env']
-
-        body_replace = "<body env='%(environment_name)s'" % {
-            'environment_name': environment_name,
-        }
-
-        return html_template.replace(r"<body", body_replace)
+    @http.route('/web', type='http', auth="none")
+    def web_client(self, s_action=None, **kw):
+        response = super(HomeEnv, self).web_client(s_action=s_action, **kw)
+        response.qcontext['env'] = config['running_env']
+        return response

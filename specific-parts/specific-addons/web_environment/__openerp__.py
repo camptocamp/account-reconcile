@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
 ##############################################################################
 #
 # Author: Tristan Rouiller
 # Copyright 2014 QoQa Services SA
+# Author: Yannick Vaucher
+# Copyright 2016 Camptocamp SA
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -21,7 +22,7 @@
 ##############################################################################
 
 {'name': 'Web environnment',
- 'version': '1.0',
+ 'version': '9.0.1.0',
  'category': 'Others',
  'depends': ['web',
              'server_environment',
@@ -32,12 +33,14 @@
  'description': """
 Use the environment to change the layout style
 ==============================================
+
+We add a variable `env` in qweb context that we use
+to define later the style to use.
 """,
  'images': [],
  'demo': [],
- 'css': ['static/src/css/web_environment.css'],
- 'data': [],
- 'installable': False,
+ 'data': ['views/web_environment_template.xml'],
+ 'installable': True,
  'application': True,
  'bootstrap': True,
  }

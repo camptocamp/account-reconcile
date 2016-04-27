@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="assets_backend" name="web_environment assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+      <link rel="stylesheet" href="/web_environment/static/src/css/web_environment.css"/>
+    </xpath>
+  </template>
+
+  <template id="webclient_bootstrap" name="web_environment bootstrap" inherit_id="web.webclient_bootstrap">
+    <xpath expr="//body" position="attributes">
+      <attribute name="t-att-env">env</attribute>
+    </xpath>
+  </template>
+</odoo>

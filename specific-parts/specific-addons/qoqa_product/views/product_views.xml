@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="product_template_form_view" model="ir.ui.view">
+    <field name="name">product.template.common.form</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_form_view"/>
+    <field name="arch" type="xml">
+      <div name="options" position="inside">
+        <div>
+          <field name="is_wine"/>
+          <label for="is_wine"/>
+        </div>
+        <div>
+          <field name="is_liquor"/>
+          <label for="is_liquor"/>
+        </div>
+      </div>
+      <xpath expr="//notebook" position="inside">
+        <page string="Wine / Liquor" name="wine_liquor"
+          attrs="{'invisible': [('is_wine', '=', False), ('is_liquor', '=', False)]}">
+
+          <group string="General">
+            <field name="winemaker_id" attrs="{'required': ['|', ('is_wine', '=', True), ('is_liquor', '=', True)]}"/>
+            <field name="appellation" attrs="{'required': ['|', ('is_wine', '=', True), ('is_liquor', '=', True)]}"/>
+            <field name="millesime"/>
+            <field name="country_id" attrs="{'required': ['|', ('is_wine', '=', True), ('is_liquor', '=', True)]}"/>
+            <field name="wine_bottle_id" attrs="{'required': ['|', ('is_wine', '=', True), ('is_liquor', '=', True)]}"/>
+          </group>
+
+          <group attrs="{'invisible': [('is_wine', '=', False)]}" string="Wine">
+            <field name="wine_short_name"/>
+            <field name="wine_region"/>
+            <field name="wine_type_id" attrs="{'required': [('is_wine', '=', True)]}"/>
+            <field name="wine_class_id" attrs="{'required': [('is_wine', '=', True)]}"/>
+          </group>
+
+          <group attrs="{'invisible': [('is_liquor', '=', False)]}" string="Liquor">
+            <field name="ageing"/>
+            <field name="abv"/>
+          </group>
+
+        </page>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="product_template_search_view" model="ir.ui.view">
+    <field name="name">product.template.search</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_search_view"/>
+    <field name="arch" type="xml">
+      <filter name="filter_to_sell" position="after">
+        <filter string="Wine" name="is_wine" domain="[('is_wine', '=', True)]"/>
+        <filter string="Liquor" name="is_liquor" domain="[('is_liquor', '=', True)]"/>
+      </filter>
+    </field>
+  </record>
+
+</odoo>

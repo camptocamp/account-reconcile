@@ -38,7 +38,6 @@ when a product has variants, a position may sell several of them.
  'depends': ['sale',
              'sale_stock',
              'delivery',
-             'product_variant_simple',  # specific-addons
              'picking_dispatch',  # stock-logistic-flows
              'ecotax',
              'procurement',

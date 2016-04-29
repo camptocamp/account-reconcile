@@ -16,6 +16,7 @@
  'data': [
      'data/wine_data.xml',
      'views/product_views.xml',
+     'views/product_attribute_views.xml',
      'views/wine_views.xml',
  ],
  'installable': True,

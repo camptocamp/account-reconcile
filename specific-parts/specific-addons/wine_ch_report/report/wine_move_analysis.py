@@ -102,6 +102,7 @@ class report_wine_move_analysis(orm.Model):
             'stock.journal',
             'Stock Journal',
             select=True),
+        # TODO: replace by a domain in product_template.is_wine
         'attribute_set_id': fields.many2one(
             'attribute.set',
             'Attribute Set',

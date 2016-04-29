@@ -54,6 +54,7 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         with the other Wine CH report, that only displays positive stocks.
         """
         cr = self.cursor
+        # TODO: x_wine_type is now wine_type_id
         cr.execute("SELECT c.code, t.x_wine_type,"
                    "       SUM(GREATEST((CASE WHEN q1.qty_in IS NULL THEN 0 "
                    "            ELSE q1.qty_in END"
@@ -177,6 +178,7 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         return class_obj.browse(self.cr, self.uid, class_ids)
 
     def _get_wine_types(self):
+        # TODO: model types are now stored in wine_type
         option_obj = self.pool.get('attribute.option')
         option_ids = option_obj.search(
             self.cr, self.uid,
@@ -187,6 +189,7 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         """
         Search for the wine attribute set
         """
+        # TODO: replace by a domain on product_template.is_wine
         model_obj = self.pool.get('attribute.set')
         return model_obj.search(self.cr, self.uid,
                                 ['|',

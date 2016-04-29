@@ -9,6 +9,9 @@ from openerp import fields, models, api
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    # TODO: in connector_qoqa: ensure that when we have at least one 'qoqa_id'
+    # in variants, the automatic generation of variants should raise an error
+
     is_wine = fields.Boolean(string='Wine')
     is_liquor = fields.Boolean(string='Liquor')
 

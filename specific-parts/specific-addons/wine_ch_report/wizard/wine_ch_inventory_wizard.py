@@ -34,6 +34,7 @@ class WineCHInventoryWizard(orm.TransientModel):
         'inventory_date': fields.date('Inventory date'),
         'location_ids': fields.many2many('stock.location',
                                          string='Filter on locations'),
+        # TODO replace attribute set by a domain on product_template.is_wine
         'attribute_set_id': fields.many2one('attribute.set',
                                             'Wine attribute set'),
     }

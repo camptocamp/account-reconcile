@@ -219,6 +219,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         return class_obj.browse(self.cr, self.uid, class_ids)
 
     def _get_wine_types(self):
+        # TODO: now in wine_type
         option_obj = self.pool.get('attribute.option')
         option_ids = option_obj.search(
             self.cr, self.uid,
@@ -229,6 +230,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         """
         Search for the wine attribute set
         """
+        # TODO replace by a domain on product_template.is_wine
         model_obj = self.pool.get('attribute.set')
         return model_obj.search(self.cr, self.uid,
                                 ['|',

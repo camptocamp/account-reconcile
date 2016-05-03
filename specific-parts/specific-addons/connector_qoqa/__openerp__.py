@@ -27,6 +27,7 @@
              'sale_stock',
              'qoqa_offer',
              'qoqa_base_data',
+             'qoqa_product',
              ],
  'external_dependencies': {
      'python': ['requests',

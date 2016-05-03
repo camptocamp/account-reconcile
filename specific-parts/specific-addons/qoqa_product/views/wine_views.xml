@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_wine_winemaker_tree" model="ir.ui.view">
+    <field name="name">wine.winemaker.tree</field>
+    <field name="model">wine.winemaker</field>
+    <field name="arch" type="xml">
+      <tree editable="bottom">
+        <field name="name"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_wine_winemaker" model="ir.actions.act_window">
+    <field name="name">Wine Classes</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">wine.winemaker</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">
+        Click to create a new wine class.
+      </p>
+    </field>
+  </record>
+
+  <record id="view_wine_type_tree" model="ir.ui.view">
+    <field name="name">wine.type.tree</field>
+    <field name="model">wine.type</field>
+    <field name="arch" type="xml">
+      <tree editable="bottom">
+        <field name="name"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_wine_type" model="ir.actions.act_window">
+    <field name="name">Wine Classes</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">wine.type</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">
+        Click to create a new wine class.
+      </p>
+    </field>
+  </record>
+
+  <record id="view_wine_class_tree" model="ir.ui.view">
+    <field name="name">wine.class.tree</field>
+    <field name="model">wine.class</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="code"/>
+        <field name="complete_name"/>
+        <field name="parent_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_wine_class_form" model="ir.ui.view">
+    <field name="name">wine.class.form</field>
+    <field name="model">wine.class</field>
+    <field name="arch" type="xml">
+      <form string="Wine Classes">
+        <group>
+          <field name="code"/>
+          <field name="name"/>
+          <field name="parent_id"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_wine_class" model="ir.actions.act_window">
+    <field name="name">Wine Classes</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">wine.class</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">
+        Click to create a new wine class.
+      </p>
+    </field>
+  </record>
+
+  <record id="view_wine_bottle_tree" model="ir.ui.view">
+    <field name="name">wine.bottle.tree</field>
+    <field name="model">wine.bottle</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="code"/>
+        <field name="complete_name"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_wine_bottle_form" model="ir.ui.view">
+    <field name="name">wine.bottle.form</field>
+    <field name="model">wine.bottle</field>
+    <field name="arch" type="xml">
+      <form string="Wine bottles">
+        <group>
+          <field name="name"/>
+          <field name="code"/>
+          <field name="volume"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_wine_bottle" model="ir.actions.act_window">
+    <field name="name">Wine Bottles</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">wine.bottle</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">
+        Click to create a new wine class.
+      </p>
+    </field>
+  </record>
+
+  <menuitem
+    id="wine_config_main" name="Wine"
+    parent="product.prod_config_main"
+    sequence="3"/>
+
+  <menuitem
+    id="menu_wine_winemaker"
+    name="Wine Winemakers"
+    parent="wine_config_main"
+    sequence="10" action="action_wine_winemaker"/>
+  <menuitem
+    id="menu_wine_type"
+    name="Wine Types"
+    parent="wine_config_main"
+    sequence="10" action="action_wine_type"/>
+  <menuitem
+    id="menu_wine_class"
+    name="Wine Classes"
+    parent="wine_config_main"
+    sequence="10" action="action_wine_class"/>
+  <menuitem
+    id="menu_wine_bottle"
+    name="Wine Bottles"
+    parent="wine_config_main"
+    sequence="10" action="action_wine_bottle"/>
+</odoo>

@@ -81,7 +81,7 @@ Feature: Parameter the new database
         | l10n_ch_payment_slip                            |
         | l10n_ch_zip                                     |
         #---- OCA/product-attributes ---------------------#
-        #| product_custom_attributes                       |
+        | product_brand                                   |
         #---- OCA/purchase-workflow ----------------------#
         | purchase_discount                               |
         #| purchase_landed_costs                           |
@@ -108,13 +108,13 @@ Feature: Parameter the new database
         #| ecotax                                          |
         | picking_dispatch_delay_done                     |
         #| picking_dispatch_group                          |
-        #| product_variant_simple                          |
         #| purchase_variant_fast_entry                     |
         #| qoqa_base_data                                  |
         #| qoqa_claim                                      |
         #| qoqa_label_dispatch_pack_split                  |
         #| qoqa_offer                                      |
         #| qoqa_offer_historical_margin                    |
+        | qoqa_product                          |
         | qoqa_record_archiver                            |
         #| server_env_connector_qoqa                       |
         #| specific_fct                                    |

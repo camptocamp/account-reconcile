@@ -1,38 +1,20 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.osv import orm, fields
+from openerp import models, fields
 
 
-class qoqa_shop(orm.Model):
+class QoqaShop(models.Model):
     _name = 'qoqa.shop'
     _description = 'QoQa Shop'
-    # called 'openerp_id' to ease integration with connector
-    _inherits = {'sale.shop': 'openerp_id'}
 
-    _columns = {
-        'openerp_id': fields.many2one(
-            'sale.shop',
-            string='Sale Shop',
-            required=True,
-            readonly=True,
-            ondelete='cascade'),
-    }
+    name = fields.Char(required=True)
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        string='Company',
+    )
+
+    kanban_image = fields.Binary(
+        'Kanban Image',
+        help="Image displayed on the Kanban views for this shop")

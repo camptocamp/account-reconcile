@@ -1,44 +1,27 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api
 
 
-class account_invoice(orm.Model):
+class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    _columns = {
-        'offer_id': fields.many2one(
-            'qoqa.offer',
-            string='Offer',
-            readonly=True,
-            select=True,
-            ondelete='restrict'),
-    }
+    offer_id = fields.Many2one(
+        comodel_name='qoqa.offer',
+        string='Offer',
+        readonly=True,
+        index=True,
+        ondelete='restrict',
+    )
 
-    def _prepare_refund(self, cr, uid, invoice, date=None, period_id=None,
-                        description=None, journal_id=None, context=None):
-        result = super(account_invoice, self)._prepare_refund(
-            cr, uid, invoice, date=date, period_id=period_id,
-            description=description, journal_id=journal_id, context=context)
+    @api.model
+    def _prepare_refund(self, invoice, date=None, period_id=None,
+                        description=None, journal_id=None):
+        result = super(AccountInvoice, self)._prepare_refund(
+            invoice, date=date, period_id=period_id,
+            description=description, journal_id=journal_id)
         if invoice.offer_id:
             result['offer_id'] = invoice.offer_id.id
         return result

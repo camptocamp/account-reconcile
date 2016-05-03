@@ -1,93 +1,56 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from datetime import datetime, date
-from openerp.osv import orm, fields
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+from datetime import date
+
+from openerp import models, fields, api
 
 
-class sale_shop(orm.Model):
-    _inherit = 'sale.shop'
-
-    _columns = {
-        'kanban_image': fields.binary(
-            'Kanban Image',
-            help="Image displayed on the Kanban views for this shop"),
-    }
-
-
-class sale_order(orm.Model):
+class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    _columns = {
-        'offer_id': fields.many2one(
-            'qoqa.offer',
-            string='Offer',
-            readonly=True,
-            select=True,
-            ondelete='restrict'),
-    }
+    offer_id = fields.Many2one(
+        comodel_name='qoqa.offer',
+        string='Offer',
+        readonly=True,
+        index=True,
+        ondelete='restrict',
+    )
+    qoqa_shop_id = fields.Many2one(
+        comodel_name='qoqa.shop',
+        string='QoQa Shop',
+        ondelete='restrict',
+    )
 
-    def _prepare_invoice(self, cr, uid, order, lines, context=None):
-        vals = super(sale_order, self)._prepare_invoice(
-            cr, uid, order, lines, context=context)
-        if order.offer_id:
-            vals['offer_id'] = order.offer_id.id
+    @api.multi
+    def _prepare_invoice(self):
+        vals = super(SaleOrder, self)._prepare_invoice()
+        vals['offer_id'] = self.offer_id.id
         return vals
 
-    def _prepare_order_picking(self, cr, uid, order, context=None):
-        vals = super(sale_order, self)._prepare_order_picking(
-            cr, uid, order, context=context)
-        if order.offer_id:
-            vals['offer_id'] = order.offer_id.id
-        return vals
 
-    def _prepare_order_line_procurement(self, cr, uid, order, line,
-                                        move_id, date_planned, context=None):
-        values = super(sale_order, self)._prepare_order_line_procurement(
-            cr, uid, order, line,
-            move_id, date_planned, context=context
-        )
-        values['offer_id'] = order.offer_id.id
-        return values
-
-
-class sale_order_line(orm.Model):
+class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    _columns = {
-        'qoqa_bind_ids': fields.one2many(
-            'qoqa.sale.order.line',
-            'openerp_id',
-            string='QBindings'),
-        'offer_position_id': fields.many2one(
-            'qoqa.offer.position',
-            string='Offer Position',
-            readonly=True,
-            select=True,
-            ondelete='restrict'),
-    }
+    offer_position_id = fields.Many2one(
+        comodel_name='qoqa.offer.position',
+        string='Offer Position',
+        readonly=True,
+        index=True,
+        ondelete='restrict',
+    )
 
-    def onchange_offer_position_id(self, cr, uid, ids, position_id,
-                                   context=None):
+    @api.multi
+    def _prepare_order_line_procurement(self, group_id=False):
+        _super = super(SaleOrderLine, self)
+        vals = _super._prepare_order_line_procurement(group_id=group_id)
+        vals['offer_id'] = self.order_id.offer_id.id
+        return vals
+
+    # TODO: call in connector_qoqa with new API
+    @api.onchange('position_id')
+    def onchange_offer_position_id(self):
         """ Set the delivery delay of the line according to the offer position
 
         If a position has a delivery date, it is used to compute the
@@ -97,15 +60,12 @@ class sale_order_line(orm.Model):
         This onchange is not used on the view actually, but is called
         in the connector_qoqa when calling the onchanges chain.
         """
-        if not position_id:
-            return {}
-        position_obj = self.pool['qoqa.offer.position']
-        position = position_obj.browse(cr, uid, position_id, context=context)
+        if not self.offer_position_id:
+            return
+        position = self.offer_position_id
         delivery_date = position.date_delivery
         if not delivery_date:
-            return {}
-        delivery_date = datetime.strptime(delivery_date,
-                                          DEFAULT_SERVER_DATE_FORMAT).date()
+            return
+        delivery_date = fields.Date.from_string(delivery_date)
         today = date.today()
-        delay = (delivery_date - today).days
-        return {'value': {'delay': delay}}
+        self.delay = (delivery_date - today).days

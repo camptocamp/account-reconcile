@@ -1,69 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
-        <record id="view_order_form_add_offer" model="ir.ui.view">
-            <field name="name">sale.order.form.add.offer</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-                    <field name="offer_id"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_order_form_add_offer" model="ir.ui.view">
+    <field name="name">sale.order.form.add.offer</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="offer_id"/>
+      </field>
+    </field>
+  </record>
 
-        <record id="view_order_tree" model="ir.ui.view">
-            <field name="name">sale.order.tree</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_tree"/>
-            <field name="arch" type="xml">
-                <field name="name" position="after">
-                    <field name="offer_id"/>
-                </field>
-                <field name="state" position="after">
-                    <field name="create_date" string="Created date in OpenERP"/>
-                </field>
-            </field>
-        </record>
+  <record id="view_order_tree" model="ir.ui.view">
+    <field name="name">sale.order.tree</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_tree"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="offer_id"/>
+      </field>
+      <field name="state" position="after">
+        <field name="create_date" string="Created date in OpenERP"/>
+      </field>
+    </field>
+  </record>
 
-        <record id="view_sales_order_filter" model="ir.ui.view">
-            <field name="name">sale.order.list.select</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
-            <field name="arch" type="xml">
-                <field name="name" position="after">
-                    <field name="offer_id"/>
-                </field>
-                <filter name="message_unread" position="before">
-                    <filter
-                        string="Favorites Shops"
-                        name="favoritesshops"
-                        domain="[('shop_id', 'in', sale_shop_ids)]"
-                        help="My favorites shops. You can change it in your settings"/>
-                </filter>
-                <filter string="Customer" position="after">
-                  <filter string="Shop" domain="[]" context="{'group_by':'shop_id'}"/>
-                  <filter string="Offer" icon="terp-personal" domain="[]" context="{'group_by':'offer_id'}"/>
-               </filter>
-            </field>
-        </record>
+  <record id="view_sales_order_filter" model="ir.ui.view">
+    <field name="name">sale.order.list.select</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="offer_id"/>
+      </field>
+      <filter name="message_needaction" position="before">
+        <filter
+          string="Favorites Shops"
+          name="favoritesshops"
+          domain="[('qoqa_shop_id', 'in', qoqa_shop_ids)]"
+          help="My favorites shops. You can change it in your settings"/>
+        <separator/>
+      </filter>
+      <xpath expr="/search/group[1]" position="inside">
+        <filter string="QoQa Shop" domain="[]" context="{'group_by':'qoqa_shop_id'}"/>
+        <filter string="Offer" icon="terp-personal" domain="[]" context="{'group_by':'offer_id'}"/>
+      </xpath>
+    </field>
+  </record>
 
-        <record id="view_shop_form" model="ir.ui.view">
-            <field name="name">sale.shop</field>
-            <field name="model">sale.shop</field>
-            <field name="inherit_id" ref="sale.view_shop_form"/>
-            <field name="arch" type="xml">
-                <label for="name" position="before">
-                  <field name="kanban_image" widget="image"
-                    class="oe_avatar oe_left"/>
-                </label>
-           </field>
-        </record>
+  <record id="sale.action_orders" model="ir.actions.act_window">
+    <field name="context">{'search_default_favoritesshops': 1}</field>
+  </record>
 
-        <record id="sale.action_orders" model="ir.actions.act_window">
-            <field name="context">{'search_default_favoritesshops': 1}</field>
-        </record>
-
-    </data>
-</openerp>
+</odoo>

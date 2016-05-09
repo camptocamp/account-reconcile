@@ -1,33 +1,18 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Yannick Vaucher
-#    Copyright 2014 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {'name': 'Swiss Post - PP Frankling',
- 'version': '1.0',
+ 'version': '9.0.1.0.0',
  'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
- 'category': 'version',
+ 'category': 'Delivery',
  'complexity': 'normal',
  'depends': [
+     'report',
      'base_delivery_carrier_label',
-     'report_webkit',
      'configuration_helper',
+     'crm_claim_rma',
+     'qoqa_offer',
      ],
  'description': """
 This print a basic label using webkit library inserting a pp franking image
@@ -44,13 +29,13 @@ Contributors
  """,
  'website': 'http://www.camptocamp.com/',
  'data': [
-     'base_headers_data.xml',
-     'reports.xml',
-     'sale_view.xml',
-     'res_config_view.xml',
+     'data/paperformat.xml',
+     'views/sale.xml',
+     'views/res_config.xml',
+     'views/report_shipping_label.xml',
      ],
  'tests': [],
- 'installable': False,
+ 'installable': True,
  'auto_install': False,
  'license': 'AGPL-3',
  'application': True}

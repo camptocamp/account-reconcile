@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+  <record id="label_report_paper_format" model="report.paperformat">
+    <field name="name">Labels Header A7</field>
+    <field name="format">A7</field>
+    <field name="orientation">Landscape</field>
+    <field eval="0.01" name="margin_top"/>
+    <field eval="0.01" name="margin_bottom"/>
+  </record>
+</odoo>

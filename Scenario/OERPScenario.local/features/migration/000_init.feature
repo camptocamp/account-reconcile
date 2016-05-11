@@ -82,7 +82,8 @@ Feature: Parameter the new database
         | purchase_discount                               |
         #| purchase_landed_costs                           |
         #---- OCA/rma ------------------------------------#
-        #| crm_claim_rma                                   |
+        | crm_claim_rma                                   |
+        | crm_rma_stock_location                          |
         #| crm_rma_by_shop                                 |
         #---- OCA/sale-reporting -------------------------#
         #| sale_order_webkit                               |

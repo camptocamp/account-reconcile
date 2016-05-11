@@ -88,7 +88,6 @@ Feature: Parameter the new database
         #---- OCA/rma ------------------------------------#
         | crm_claim_rma                                   |
         | crm_rma_stock_location                          |
-        #| crm_rma_by_shop                                 |
         #---- OCA/sale-reporting -------------------------#
         #| sale_order_webkit                               |
         #| sale_jit_on_services                            |
@@ -107,6 +106,7 @@ Feature: Parameter the new database
         #| connector_file_s3_import                        |
         #| connector_qoqa                                  |
         #| crm_claim_mail                                  |
+        | crm_rma_by_shop                                  |
         #| delivery_carrier_label_swiss_pp                 |
         #| delivery_carrier_url                            |
         #| ecotax                                          |

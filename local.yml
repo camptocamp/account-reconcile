@@ -1,0 +1,12 @@
+# When you want to test an image locally, but do not want your containers
+# to be always restarted
+# This file should be called with
+# docker-compose -f test.yml -f local.yml up
+odoo:
+  restart: "no"
+
+db:
+  restart: "no"
+
+nginx:
+  restart: "no"

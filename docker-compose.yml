@@ -34,7 +34,7 @@ db:
     - POSTGRES_PASSWORD=odoo
   volumes_from:
     - datadb
-  expose:
+  ports:
     - 5432
 
 # can be useful for dev when longpolling is required

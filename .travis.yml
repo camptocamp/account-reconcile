@@ -15,7 +15,7 @@ env:
     - DOCKER_COMPOSE_VERSION="1.6.0"
     - TESTS="0" LINT_CHECK="0"
     - ADDONS_DIR=${TRAVIS_BUILD_DIR}/odoo/local-src
-    - COMPOSE_PROJECT_NAME=alcyon
+    - COMPOSE_PROJECT_NAME=qoqa
 
 before_install:
   - sudo apt-get update

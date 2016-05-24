@@ -18,6 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
+# TODO migration: remove 'noqa'
+# flake8: noqa
+
 from openerp import netsvc
 from openerp.osv import orm, fields
 from openerp.tools.translate import _

@@ -8,7 +8,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-bin/
 build/
 develop-eggs/
 dist/
@@ -50,19 +49,3 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
-
-# project specific
-Scenario/OERPScenario
-sandbox
-parts/*
-src/*
-Makefile
-etc/*
-openerp-command/*
-upgrade.py
-docs-connector/*
-buildout.cfg
-auto-run/
-
-# Aptana project settings
-.settings/*

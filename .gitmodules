@@ -1,0 +1,90 @@
+[submodule "odoo/src"]
+	path = odoo/src
+	url = git@github.com:oca/OCB
+[submodule "odoo/external-src/enterprise"]
+	path = odoo/external-src/enterprise
+	url = git@github.com:odoo/enterprise
+[submodule "odoo/external-src/l10n-switzerland"]
+	path = odoo/external-src/l10n-switzerland
+	url = git@github.com:camptocamp/l10n-switzerland
+[submodule "odoo/external-src/account-analytic"]
+	path = odoo/external-src/account-analytic
+	url = git@github.com:oca/account-analytic
+[submodule "odoo/external-src/account-financial-reporting"]
+	path = odoo/external-src/account-financial-reporting
+	url = git@github.com:oca/account-financial-reporting
+[submodule "odoo/external-src/account-financial-tools"]
+	path = odoo/external-src/account-financial-tools
+	url = git@github.com:oca/account-financial-tools
+[submodule "odoo/external-src/account-fiscal-rule"]
+	path = odoo/external-src/account-fiscal-rule
+	url = git@github.com:oca/account-fiscal-rule
+[submodule "odoo/external-src/account-invoice-reporting"]
+	path = odoo/external-src/account-invoice-reporting
+	url = git@github.com:oca/account-invoice-reporting
+[submodule "odoo/external-src/account-invoicing"]
+	path = odoo/external-src/account-invoicing
+	url = git@github.com:oca/account-invoicing
+[submodule "odoo/external-src/bank-payment"]
+	path = odoo/external-src/bank-payment
+	url = git@github.com:camptocamp/bank-payment
+[submodule "odoo/external-src/bank-statement-reconcile"]
+	path = odoo/external-src/bank-statement-reconcile
+	url = git@github.com:camptocamp/bank-statement-reconcile
+[submodule "odoo/external-src/carrier-delivery"]
+	path = odoo/external-src/carrier-delivery
+	url = git@github.com:camptocamp/carrier-delivery
+[submodule "odoo/external-src/connector"]
+	path = odoo/external-src/connector
+	url = git@github.com:oca/connector
+[submodule "odoo/external-src/connector-ecommerce"]
+	path = odoo/external-src/connector-ecommerce
+	url = git@github.com:oca/connector-ecommerce
+[submodule "odoo/external-src/crm"]
+	path = odoo/external-src/crm
+	url = git@github.com:camptocamp/crm
+[submodule "odoo/external-src/e-commerce"]
+	path = odoo/external-src/e-commerce
+	url = git@github.com:oca/e-commerce
+[submodule "odoo/external-src/margin-analysis"]
+	path = odoo/external-src/margin-analysis
+	url = git@github.com:oca/margin-analysis
+[submodule "odoo/external-src/multi-company"]
+	path = odoo/external-src/multi-company
+	url = git@github.com:oca/multi-company
+[submodule "odoo/external-src/partner-contact"]
+	path = odoo/external-src/partner-contact
+	url = git@github.com:camptocamp/partner-contact
+[submodule "odoo/external-src/product-attribute"]
+	path = odoo/external-src/product-attribute
+	url = git@github.com:oca/product-attribute
+[submodule "odoo/external-src/purchase-workflow"]
+	path = odoo/external-src/purchase-workflow
+	url = git@github.com:camptocamp/purchase-workflow
+[submodule "odoo/external-src/purchase-reporting"]
+	path = odoo/external-src/purchase-reporting
+	url = git@github.com:oca/purchase-reporting
+[submodule "odoo/external-src/reporting-engine"]
+	path = odoo/external-src/reporting-engine
+	url = git@github.com:oca/reporting-engine
+[submodule "odoo/external-src/rma"]
+	path = odoo/external-src/rma
+	url = git@github.com:camptocamp/rma
+[submodule "odoo/external-src/sale-workflow"]
+	path = odoo/external-src/sale-workflow
+	url = git@github.com:oca/sale-workflow
+[submodule "odoo/external-src/server-tools"]
+	path = odoo/external-src/server-tools
+	url = git@github.com:camptocamp/server-tools
+[submodule "odoo/external-src/stock-logistics-warehouse"]
+	path = odoo/external-src/stock-logistics-warehouse
+	url = git@github.com:camptocamp/stock-logistics-warehouse
+[submodule "odoo/external-src/stock-logistics-reporting"]
+	path = odoo/external-src/stock-logistics-reporting
+	url = git@github.com:oca/stock-logistics-reporting
+[submodule "odoo/external-src/stock-logistics-workflow"]
+	path = odoo/external-src/stock-logistics-workflow
+	url = git@github.com:camptocamp/stock-logistics-workflow
+[submodule "odoo/external-src/web"]
+	path = odoo/external-src/web
+	url = git@github.com:oca/web

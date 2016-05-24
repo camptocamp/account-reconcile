@@ -1,0 +1,58 @@
+odoo:
+  tty: true
+  stdin_open: true
+  build: ./odoo/
+  command: ""
+  ports:
+    - 8069
+    - 8072
+  links:
+    - db:db
+  volumes:
+    # for dev only (todo: add configuration files per env)
+    - "./odoo/src:/opt/odoo/src"
+    - "./odoo/local-src:/opt/odoo/local-src"
+    - "./odoo/external-src:/opt/odoo/external-src"
+    - "./odoo/features:/opt/odoo/features"
+    - "./odoo/data:/opt/odoo/data"
+    - "./odoo/etc/openerp.cfg.tmpl:/opt/odoo/etc/openerp.cfg.tmpl"
+  volumes_from:
+    - dataodoo
+  environment:
+    - SCENARIO_MAIN_TAG=qoqa
+    - DB_USER=odoo
+    - DB_PASSWORD=odoo
+    - DB_NAME=odoodb
+    - ADMIN_PASSWD=mijaebohb8Thae1g
+    - LIMIT_TIME_CPU=5000
+    - LIMIT_TIME_REAL=5000
+
+db:
+  image: postgres:9.5
+  environment:
+    - POSTGRES_USER=odoo
+    - POSTGRES_PASSWORD=odoo
+  volumes_from:
+    - datadb
+  ports:
+    - 5432
+
+# can be useful for dev when longpolling is required
+nginx:
+  image: camptocamp/odoo-nginx:9.0
+  ports:
+    - 80:80
+  links:
+    - odoo:odoo
+
+dataodoo:
+  image: debian:jessie
+  volumes:
+    - /data/odoo
+  command: "true"
+
+datadb:
+  image: debian:jessie
+  volumes:
+    - /var/lib/postgresql
+  command: "true"

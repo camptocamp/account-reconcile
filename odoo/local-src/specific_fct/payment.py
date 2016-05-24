@@ -18,6 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
+# TODO migration: remove 'noqa'
+# flake8: noqa
+
 from openerp.osv import orm, fields
 # from openerp.addons.account_payment.wizard.account_payment_populate_statement \
 #     import account_payment_populate_statement as old_payment_wizard

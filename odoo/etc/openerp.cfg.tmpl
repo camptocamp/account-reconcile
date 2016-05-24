@@ -51,6 +51,7 @@ workers = {{ default .Env.WORKERS "4" }}
 ; We can activate proxy_mode even if we are not behind a proxy, because
 ; it is used only if HTTP_X_FORWARDED_HOST is set in environ
 proxy_mode = True
+running_env = {{ default .Env.RUNNING_ENV "dev" }}
 ; csv_internal_sep = ,
 ; db_template = template1
 ; debug_mode = False

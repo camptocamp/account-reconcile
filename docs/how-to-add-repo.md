@@ -1,7 +1,7 @@
 # How to add a new addons repository
 
-
-External addons repositories such as the OCA ones are integrated in the project using git submodules.
+External addons repositories such as the OCA ones are integrated in
+the project using git submodules.
 
 To add a new one, you only have to add the submodule:
 

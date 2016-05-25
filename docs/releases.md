@@ -5,15 +5,26 @@
 In the following order, at the end of a sprint, the release master will do:
 
 * merge all pending pull requests when possible
-* do the needed verifications (migration scripts, ...)
-* once all seems well, the release master adds a tag according to the [versioning pattern] (#Versioning pattern) using:
+* Generate the new 'pending-merge' branches with a name corresponding to the tag (`pending-merge-<project-id>-<version>`):
 
-```
-git tag -a x.y.z
-git push --tags
-```
+  ```bash
+  cd odoo
+  vi pending-merges.yml  # change target name
+  gitaggregator -c pending-merges.yml -p
+  git checkout -- pending-merges.yml
+  # revert the target name in odoo/pending-merges.yml, we don't want to write
+  # to those stable branches again
+  ```
 
-When the tags is pushed on GitHub, Travis will build a new Docker image (as
+* do the verifications: migration scripts, changelog
+* once all seems well, the release master adds a tag according to
+  the [versioning pattern] (#Versioning pattern) using:
+
+  ```
+  git tag -a x.y.z
+  git push --tags
+  ```
+When the tag is pushed on GitHub, Travis will build a new Docker image (as
 long as the build is green!) and push it on the registry as `camptocamp/qoqa_openerp:x.y.z`
 
 ## Versioning pattern

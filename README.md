@@ -2,6 +2,8 @@
 
 # QoQa Odoo
 
+**Our internal id for this project is: 1151.**
+
 This project uses Docker.
 Travis builds a new image for each change on the branches and for each new tag.
 

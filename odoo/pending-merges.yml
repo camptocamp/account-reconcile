@@ -1,0 +1,119 @@
+# file used with gitaggregator: https://github.com/acsone/git-aggregator
+# please see docs in docs/how-to-integrate-pull-request.md
+./external-src/bank-payment:
+  remotes:
+    oca: https://github.com/OCA/bank-payment.git
+    camptocamp: https://github.com/camptocamp/bank-payment.git
+  merges:
+    - oca 9.0
+      # add module accounte_invoice_bank_selection
+    - oca refs/pull/236/head
+  target: &default_target camptocamp merge-branch-1151-master
+./external-src/bank-statement-reconcile:
+  remotes:
+    oca: https://github.com/OCA/bank-statement-reconcile.git
+    camptocamp: https://github.com/camptocamp/bank-statement-reconcile.git
+  merges:
+    - oca 9.0
+    # port account_mass_reconcile
+    - oca refs/pull/136/head
+    # port of account_statement_base_import
+    - oca refs/pull/137/head
+  target: *default_target
+./external-src/carrier-delivery:
+  remotes:
+    oca: https://github.com/OCA/carrier-delivery.git
+    camptocamp: https://github.com/camptocamp/carrier-delivery.git
+  merges:
+    - oca 9.0
+    # port base_delivery_carrier_label
+    - oca refs/pull/72/head
+    # port delivery_carrier_label_postlogistics
+    - oca refs/pull/73/head
+  target: *default_target
+./external-src/crm:
+  remotes:
+    oca: https://github.com/OCA/crm.git
+    camptocamp: https://github.com/camptocamp/crm.git
+  merges:
+    - oca 9.0
+    # port crm_claim_code
+    - oca refs/pull/90/head
+    # port crm_claim_type
+    - oca refs/pull/92/head
+  target: *default_target
+./external-src/l10n-switzerland:
+  remotes:
+    oca: https://github.com/OCA/l10n-switzerland.git
+    camptocamp: https://github.com/camptocamp/l10n-switzerland.git
+  merges:
+    - oca 9.0
+    # port l10n_ch_payment_slip
+    - oca refs/pull/176/head
+  target: *default_target
+./external-src/partner-contact:
+  remotes:
+    oca: https://github.com/OCA/partner-contact.git
+    camptocamp: https://github.com/camptocamp/partner-contact.git
+  merges:
+    - oca 9.0
+    # fix partner_firstname for user form
+    - oca refs/pull/249/head
+  target: *default_target
+./external-src/rma:
+  remotes:
+    oca: https://github.com/OCA/rma.git
+    camptocamp: https://github.com/camptocamp/rma.git
+  merges:
+    - oca 9.0
+    # port crm_claim_rma_code
+    - oca refs/pull/85/head
+    # port crm_claim_rma
+    - oca refs/pull/86/head
+    # port crm_rma_stock_location
+    - oca refs/pull/87/head
+  target: *default_target
+./external-src/sale-workflow:
+  remotes:
+    oca: https://github.com/OCA/sale-workflow.git
+    camptocamp: https://github.com/camptocamp/sale-workflow.git
+  merges:
+    - oca 9.0
+    # sale_automatic_workflow
+    - oca refs/pull/291/head
+    # sale_automatic_workflow_payment_mode
+    - oca refs/pull/297/head
+  target: *default_target
+./external-src/server-tools:
+  remotes:
+    oca: https://github.com/OCA/server-tools.git
+    camptocamp: https://github.com/camptocamp/server-tools.git
+  merges:
+    - oca 9.0
+    # 9.0 record_archiver
+    - oca refs/pull/409/head
+    # 9.0 mail cleanup
+    - oca refs/pull/410/head
+    # port configuration helper
+    - oca refs/pull/411/head
+  target: *default_target
+./external-src/stock-logistics-warehouse:
+  remotes:
+    oca: https://github.com/OCA/stock-logistics-warehouse.git
+    camptocamp: https://github.com/camptocamp/stock-logistics-warehouse.git
+  merges:
+    - oca 9.0
+    # Merge stock_available V8 -> V9
+    - oca refs/pull/147/head
+  target: *default_target
+./external-src/stock-logistics-workflow:
+  remotes:
+    oca: https://github.com/OCA/stock-logistics-workflow.git
+    camptocamp: https://github.com/camptocamp/stock-logistics-workflow.git
+  merges:
+    - oca 9.0
+    # port stock_split_picking
+    - oca refs/pull/201/head
+    # port stock_picking_dispatch
+    - oca refs/pull/223/head
+  target: *default_target

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-  docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
 
   if [ "$TRAVIS_BRANCH" == "master" ]; then
     echo "Deploying image to docker hub for master (latest)"

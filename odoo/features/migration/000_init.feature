@@ -49,8 +49,8 @@ Feature: Parameter the new database
         #| invoice_webkit [DEPRECATED]                     |
         #---- OCA/bank-statement-reconcile ---------------#
         | account_mass_reconcile                          |
-        | account_statement_base_import                   |
-        | account_statement_transactionid_import          |
+        | account_move_base_import                        |
+        | account_move_transactionid_import               |
         | base_transaction_id                             |
         #| invoicing_voucher_killer [DEPRECATED]           |
         #| statement_voucher_killer [DEPRECATED]           |

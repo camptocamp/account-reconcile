@@ -10,7 +10,7 @@ In the following order, at the end of a sprint, the release master will do:
   ```bash
   cd odoo
   vi pending-merges.yml  # change target name
-  gitaggregator -c pending-merges.yml -p
+  gitaggregate -c pending-merges.yml -p
   git checkout -- pending-merges.yml
   # revert the target name in odoo/pending-merges.yml, we don't want to write
   # to those stable branches again

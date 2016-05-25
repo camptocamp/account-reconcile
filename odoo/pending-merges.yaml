@@ -1,9 +1,9 @@
-# file used with gitaggregator: https://github.com/acsone/git-aggregator
+# file used with gitaggregator: git@github.com:acsone/git-aggregator
 # please see docs in docs/how-to-integrate-pull-request.md
 ./external-src/bank-payment:
   remotes:
-    oca: https://github.com/OCA/bank-payment.git
-    camptocamp: https://github.com/camptocamp/bank-payment.git
+    oca: git@github.com:OCA/bank-payment.git
+    camptocamp: git@github.com:camptocamp/bank-payment.git
   merges:
     - oca 9.0
       # add module accounte_invoice_bank_selection
@@ -11,8 +11,8 @@
   target: &default_target camptocamp merge-branch-1151-master
 ./external-src/bank-statement-reconcile:
   remotes:
-    oca: https://github.com/OCA/bank-statement-reconcile.git
-    camptocamp: https://github.com/camptocamp/bank-statement-reconcile.git
+    oca: git@github.com:OCA/bank-statement-reconcile.git
+    camptocamp: git@github.com:camptocamp/bank-statement-reconcile.git
   merges:
     - oca 9.0
     # port account_mass_reconcile
@@ -22,8 +22,8 @@
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:
-    oca: https://github.com/OCA/carrier-delivery.git
-    camptocamp: https://github.com/camptocamp/carrier-delivery.git
+    oca: git@github.com:OCA/carrier-delivery.git
+    camptocamp: git@github.com:camptocamp/carrier-delivery.git
   merges:
     - oca 9.0
     # port base_delivery_carrier_label
@@ -33,8 +33,8 @@
   target: *default_target
 ./external-src/crm:
   remotes:
-    oca: https://github.com/OCA/crm.git
-    camptocamp: https://github.com/camptocamp/crm.git
+    oca: git@github.com:OCA/crm.git
+    camptocamp: git@github.com:camptocamp/crm.git
   merges:
     - oca 9.0
     # port crm_claim_code
@@ -44,8 +44,8 @@
   target: *default_target
 ./external-src/l10n-switzerland:
   remotes:
-    oca: https://github.com/OCA/l10n-switzerland.git
-    camptocamp: https://github.com/camptocamp/l10n-switzerland.git
+    oca: git@github.com:OCA/l10n-switzerland.git
+    camptocamp: git@github.com:camptocamp/l10n-switzerland.git
   merges:
     - oca 9.0
     # port l10n_ch_payment_slip
@@ -53,8 +53,8 @@
   target: *default_target
 ./external-src/partner-contact:
   remotes:
-    oca: https://github.com/OCA/partner-contact.git
-    camptocamp: https://github.com/camptocamp/partner-contact.git
+    oca: git@github.com:OCA/partner-contact.git
+    camptocamp: git@github.com:camptocamp/partner-contact.git
   merges:
     - oca 9.0
     # fix partner_firstname for user form
@@ -62,8 +62,8 @@
   target: *default_target
 ./external-src/rma:
   remotes:
-    oca: https://github.com/OCA/rma.git
-    camptocamp: https://github.com/camptocamp/rma.git
+    oca: git@github.com:OCA/rma.git
+    camptocamp: git@github.com:camptocamp/rma.git
   merges:
     - oca 9.0
     # port crm_claim_rma_code
@@ -75,8 +75,8 @@
   target: *default_target
 ./external-src/sale-workflow:
   remotes:
-    oca: https://github.com/OCA/sale-workflow.git
-    camptocamp: https://github.com/camptocamp/sale-workflow.git
+    oca: git@github.com:OCA/sale-workflow.git
+    camptocamp: git@github.com:camptocamp/sale-workflow.git
   merges:
     - oca 9.0
     # sale_automatic_workflow
@@ -86,8 +86,8 @@
   target: *default_target
 ./external-src/server-tools:
   remotes:
-    oca: https://github.com/OCA/server-tools.git
-    camptocamp: https://github.com/camptocamp/server-tools.git
+    oca: git@github.com:OCA/server-tools.git
+    camptocamp: git@github.com:camptocamp/server-tools.git
   merges:
     - oca 9.0
     # 9.0 record_archiver
@@ -99,8 +99,8 @@
   target: *default_target
 ./external-src/stock-logistics-warehouse:
   remotes:
-    oca: https://github.com/OCA/stock-logistics-warehouse.git
-    camptocamp: https://github.com/camptocamp/stock-logistics-warehouse.git
+    oca: git@github.com:OCA/stock-logistics-warehouse.git
+    camptocamp: git@github.com:camptocamp/stock-logistics-warehouse.git
   merges:
     - oca 9.0
     # Merge stock_available V8 -> V9
@@ -108,8 +108,8 @@
   target: *default_target
 ./external-src/stock-logistics-workflow:
   remotes:
-    oca: https://github.com/OCA/stock-logistics-workflow.git
-    camptocamp: https://github.com/camptocamp/stock-logistics-workflow.git
+    oca: git@github.com:OCA/stock-logistics-workflow.git
+    camptocamp: git@github.com:camptocamp/stock-logistics-workflow.git
   merges:
     - oca 9.0
     # port stock_split_picking

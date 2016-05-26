@@ -2,7 +2,7 @@
 
 ## Pre-requisite
 
-Be sure to [install Docker and docker-compose](prerequisite.md) before going any further.
+Be sure to [install Docker and docker-compose](prerequisites.md) before going any further.
 
 ## Starting, git submodules
 
@@ -72,10 +72,10 @@ Will run the services (postgres, odoo, nginx) in background.
 When it is running in background, you can show the logs of one service or all of them (mixed):
 
 ```bash
-docker-compose odoo      # show logs of odoo
-docker-compose postgres  # show logs of postgres
-docker-compose nginx     # show logs of nginx
-docker-compose logs      # show all logs
+docker-compose logs odoo      # show logs of odoo
+docker-compose logs postgres  # show logs of postgres
+docker-compose logs nginx     # show logs of nginx
+docker-compose logs           # show all logs
 ```
 
 And you can see the details of the running services with:

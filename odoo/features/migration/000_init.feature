@@ -48,6 +48,9 @@ Feature: Parameter the new database
         #| account_fiscal_position_rule_sale               |
         #---- OCA/account-invoice-reporting --------------#
         #| invoice_webkit [DEPRECATED]                     |
+        #---- OCA/bank-payment ---------------------------#
+        | account_payment_mode                            |
+        | account_payment_sale                            |
         #---- OCA/bank-statement-reconcile ---------------#
         | account_mass_reconcile                          |
         | account_move_base_import                        |
@@ -91,6 +94,7 @@ Feature: Parameter the new database
         #| sale_jit_on_services                            |
         #---- OCA/sale-workflow  -------------------------#
         | sale_automatic_workflow                         |
+        | sale_automatic_workflow_payment_mode            |
         #---- OCA/server-tools ---------------------------#
         | mail_cleanup                                    |
         | mail_environment                                |

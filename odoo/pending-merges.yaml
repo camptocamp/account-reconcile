@@ -6,10 +6,10 @@
     camptocamp: git@github.com:camptocamp/bank-payment.git
   merges:
     - oca 9.0
-      # add module accounte_invoice_bank_selection
+    # add module accounte_invoice_bank_selection
     - oca refs/pull/236/head
-      # add module account_payment_mode
-    - oca refs/pull/274/head
+    # [2nd revolution] port to v9 with several improvements (sorrento code sprint)
+    - oca refs/pull/270/head
   target: &default_target camptocamp merge-branch-1151-master
 ./external-src/bank-statement-reconcile:
   remotes:

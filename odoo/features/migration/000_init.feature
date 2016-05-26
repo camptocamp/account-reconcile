@@ -40,6 +40,7 @@ Feature: Parameter the new database
         #---- OCA/account-financial-tools ----------------#
         #| account_constraints                             |
         #| account_default_draft_move                      |
+        | account_permanent_lock_move                     |
         #| account_reversal                                |
         #| currency_rate_update                            |
         #---- OCA/account-fiscal-rule --------------------#

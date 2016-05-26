@@ -88,6 +88,8 @@ Feature: Parameter the new database
         #---- OCA/sale-reporting -------------------------#
         #| sale_order_webkit                               |
         #| sale_jit_on_services                            |
+        #---- OCA/sale-workflow  -------------------------#
+        | sale_automatic_workflow                         |
         #---- OCA/server-tools ---------------------------#
         | mail_cleanup                                    |
         | mail_environment                                |

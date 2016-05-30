@@ -10,9 +10,10 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   ImportMapChild,
                                                   )
-# from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
-#                                                      SpecialOrderLineBuilder,
-#                                                      )
+from openerp.addons.connector_ecommerce.unit.line_builder import (
+    ShippingLineBuilder,
+    SpecialOrderLineBuilder,
+    )
 from ..backend import qoqa
 
 _logger = logging.getLogger(__name__)
@@ -169,34 +170,34 @@ class LineMapChild(ImportMapChild):
         return items
 
 
-# @qoqa
-# class QoQaShippingLineBuilder(ShippingLineBuilder):
-#     _model_name = 'qoqa.sale.order.line'
+@qoqa
+class QoQaShippingLineBuilder(ShippingLineBuilder):
+    _model_name = 'qoqa.sale.order.line'
 
-#     def __init__(self, environment):
-#         super(QoQaShippingLineBuilder, self).__init__(environment)
-#         self.carrier = None
+    def __init__(self, environment):
+        super(QoQaShippingLineBuilder, self).__init__(environment)
+        self.carrier = None
 
-#     def get_line(self):
-#         line = super(QoQaShippingLineBuilder, self).get_line()
-#         if self.carrier:
-#             line['product_id'] = self.carrier.product_id.id
-#             line['name'] = self.carrier.name
-#         return line
+    def get_line(self):
+        line = super(QoQaShippingLineBuilder, self).get_line()
+        if self.carrier:
+            line['product_id'] = self.carrier.product_id.id
+            line['name'] = self.carrier.name
+        return line
 
 
-# @qoqa
-# class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
-#     _model_name = 'qoqa.sale.order.line'
+@qoqa
+class QoQaPromoLineBuilder(SpecialOrderLineBuilder):
+    _model_name = 'qoqa.sale.order.line'
 
-#     def __init__(self, environment):
-#         super(QoQaPromoLineBuilder, self).__init__(environment)
-#         # the sign is 1 because the API already provides a negative
-#         self.sign = 1
-#         self.code = None
+    def __init__(self, environment):
+        super(QoQaPromoLineBuilder, self).__init__(environment)
+        # the sign is 1 because the API already provides a negative
+        self.sign = 1
+        self.code = None
 
-#     def get_line(self):
-#         line = super(QoQaPromoLineBuilder, self).get_line()
-#         if self.code:
-#             line['name'] = "%s (%s)" % (line['name'], self.code)
-#         return line
+    def get_line(self):
+        line = super(QoQaPromoLineBuilder, self).get_line()
+        if self.code:
+            line['name'] = "%s (%s)" % (line['name'], self.code)
+        return line

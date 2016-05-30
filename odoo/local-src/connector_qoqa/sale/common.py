@@ -66,9 +66,6 @@ class SaleOrder(models.Model):
         string='QBindings',
     )
     active = fields.Boolean(string='Active', default=True)
-    # TODO: activate when connector_ecommerce is up
-    # ensure that 'copy=False' is set in connector_ecommerce
-    canceled_in_backend = fields.Boolean(copy=False)
 
     @api.model
     def _prepare_invoice(self):
@@ -164,7 +161,7 @@ class SaleOrder(models.Model):
                 # payments
                 order.action_invoice_create(grouped=False)
                 invoices = order.invoice_ids
-                invoices.invoice_validate()
+                invoices.signal_workflow('invoice_open')
                 for invoice in invoices:
                     # create a refund since the payment cannot be
                     # canceled
@@ -203,7 +200,7 @@ class SaleOrder(models.Model):
                 # they will be refunded. Draft invoices will be cancelled
                 # by the sale order cancellation.
                 if invoice.state not in ('draft', 'cancel', 'paid'):
-                    invoice.action_cancel()
+                    invoice.signal_workflow('invoice_cancel')
 
             super(SaleOrder, order).action_cancel()
             if payment_ids:
@@ -281,7 +278,7 @@ class SaleOrder(models.Model):
                 #     move.unlink()
                 # Cancel now-reopened invoices
                 for invoice in sale.invoice_ids:
-                    invoice.action_cancel()
+                    invoice.signal_workflow('invoice_cancel')
             else:
                 actions = self._refund_all_invoices()
 

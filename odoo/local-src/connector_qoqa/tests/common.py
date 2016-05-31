@@ -137,6 +137,7 @@ class QoQaTransactionCase(common.TransactionCase):
         assert len(expected_records) > 0, "must have > 0 expected record"
         fields = expected_records[0]._fields
         not_found = []
+        equals = []
         for expected in expected_records:
             for record in records:
                 for field, value in expected._asdict().iteritems():
@@ -144,10 +145,20 @@ class QoQaTransactionCase(common.TransactionCase):
                         break
                 else:
                     records.remove(record)
+                    equals.append(record)
                     break
             else:
                 not_found.append(expected)
         message = []
+        for record in equals:
+            # same records
+            message.append(
+                ' ✓ {}({})'.format(
+                    model_name,
+                    ', '.join('%s: %s' % (field, getattr(record, field)) for
+                              field in fields)
+                )
+            )
         for expected in not_found:
             # missing records
             message.append(
@@ -166,7 +177,7 @@ class QoQaTransactionCase(common.TransactionCase):
                               field in fields)
                 )
             )
-        if message:
+        if not_found or records:
             raise AssertionError('Records do not match:\n\n{}'.format(
                 '\n'.join(message)
             ))

@@ -4,7 +4,7 @@
 
 import json
 from openerp import models, fields
-from openerp.addons.connector_ecommerce.event import on_picking_out_done
+from openerp.addons.connector_ecommerce.models.event import on_picking_out_done
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
 

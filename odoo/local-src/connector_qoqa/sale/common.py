@@ -131,7 +131,7 @@ class SaleOrder(models.Model):
                 payment_date = fields.Date.from_string(
                     binding.qoqa_payment_date
                 )
-                if payment_date.date() == date.today():
+                if payment_date == date.today():
                     cancel_direct = True
             # For SwissBilling: if the SO is not done yet, cancel directly.
             # Otherwise, refund.
@@ -140,7 +140,7 @@ class SaleOrder(models.Model):
                 cancel_direct = True
             payment_ids = None
             invoices = self.env['account.invoice'].browse()
-            if cancel_direct:
+            # if cancel_direct:
                 # If the order can be canceled on QoQa, the payment is
                 # canceled as well on QoQa so the internal payments
                 # can just be withdrawn.
@@ -150,12 +150,12 @@ class SaleOrder(models.Model):
                 # not just payments (account.move.line)
 
                 # TODO: not sure we'll still have order.payment_ids
-                payment_moves = [payment.move_id
-                                 for payment
-                                 in order.payment_ids]
-                for move in payment_moves:
-                    move.unlink()
-            elif order.amount_total:
+                # payment_moves = [payment.move_id
+                #                  for payment
+                #                  in order.payment_ids]
+                # for move in payment_moves:
+                #     move.unlink()
+            if not cancel_direct and order.amount_total:
                 # create the invoice, open it because we need the move
                 # lines so we'll be able to reconcile them with the
                 # payments
@@ -203,7 +203,8 @@ class SaleOrder(models.Model):
                     invoice.signal_workflow('invoice_cancel')
 
             super(SaleOrder, order).action_cancel()
-            if payment_ids:
+            # if invoices or payment_ids:
+            if invoices:
                 # TODO: see if we get rid of payments or not
                 # payment_commands = [(4, pay_id) for pay_id in payment_ids]
                 invoice_commands = [(4, inv.id) for inv in invoices]
@@ -237,6 +238,7 @@ class SaleOrder(models.Model):
                                              binding.id, priority=1)
         return res
 
+    # TODO: still needed?
     @api.multi
     def action_force_cancel(self):
         """ Force cancellation of a done sales order.
@@ -266,7 +268,7 @@ class SaleOrder(models.Model):
                 payment_date = fields.Date.from_string(
                     binding.qoqa_payment_date
                 )
-                if payment_date.date() == date.today():
+                if payment_date == date.today():
                     cancel_direct = True
             if cancel_direct:
                 # Done the same day; remove payments
@@ -355,11 +357,9 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
     _resource = 'order'
 
     def cancel(self, id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url + str(id),
-                                   data=json.dumps({'action': 'cancel'}),
-                                   headers=headers)
+        url = self.url()
+        response = self.client.put(url + str(id) + '/cancel',
+                                   data=json.dumps({'cancelled': True}))
         self._handle_response(response)
 
     def refund(self, id, payment_id, amount):

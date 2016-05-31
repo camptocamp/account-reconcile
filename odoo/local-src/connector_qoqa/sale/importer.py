@@ -398,28 +398,6 @@ class SaleOrderImportMapper(ImportMapper, FromAttributes):
         """ Lines are read in the invoice of the sales order """
         invoice = find_sale_invoice(valid_invoices(map_record.source))
         lines = invoice['relationships']['invoice_items']['data']
-        # TODO: check what should be kept
-        # lines = []
-        # for invoice_detail in invoice_details:
-        #     detail_id = invoice_detail['id']
-        #     item = invoice_detail['item']
-        #     type_id = item['type_id']
-
-        #     if type_id in (QoQaLineCategory.product,
-        #                    QoQaLineCategory.shipping):
-        #         lines.append(details_by_id.pop(detail_id))
-
-        #     elif type_id == QoQaLineCategory.discount:
-        #         adapter = self.get_connector_unit_for_model(QoQaAdapter,
-        #                                                     'qoqa.promo')
-        #         promo_values = adapter.read(item['promo_id'])
-        #         line = details_by_id.pop(detail_id)
-        #         line['promo'] = promo_values
-        #         lines.append(line)
-
-        #     elif type_id == QoQaLineCategory.service:
-        #         raise MappingError("Items of type 'Service' are not "
-        #                            "supported.")
         return lines
 
 

@@ -1,0 +1,215 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/orders/2
+  response:
+    body: {string: !!python/unicode '{"included": [{"attributes": {"created_at": "2016-05-31T09:38:52.000+02:00",
+        "variation_id": 100001, "unit_price": "333.0", "updated_at": "2016-05-31T09:38:52.000+02:00",
+        "lot_size": 1, "lot_quantity": 2}, "type": "order_item", "id": "3"}, {"attributes":
+        {"created_at": "2016-05-31T09:38:52.000+02:00", "variation_id": 100002, "unit_price":
+        "333.0", "updated_at": "2016-05-31T09:38:52.000+02:00", "lot_size": 1, "lot_quantity":
+        1}, "type": "order_item", "id": "14"}, {"relationships": {"invoice_items":
+        {"data": [{"category": "product", "invoice_id": 2, "created_at": "2016-05-31T09:38:53.000+02:00",
+        "updated_at": "2016-05-31T09:38:53.000+02:00", "unit_price": "333.0", "ignore_credit":
+        false, "discount_id": null, "vat_id": 6, "months_warranty": null, "lot_size":
+        1, "offer_variation_id": 1, "lot_quantity": 2, "id": 3}, {"category": "product",
+        "invoice_id": 2, "created_at": "2016-05-31T09:38:53.000+02:00", "updated_at":
+        "2016-05-31T09:38:53.000+02:00", "unit_price": "333.0", "ignore_credit": false,
+        "discount_id": null, "vat_id": 6, "months_warranty": null, "lot_size": 1,
+        "offer_variation_id": 2, "lot_quantity": 1, "id": 14}, {"category": "shipping",
+        "invoice_id": 2, "created_at": "2016-05-31T09:38:53.000+02:00", "updated_at":
+        "2016-05-31T09:38:53.000+02:00", "unit_price": "12.0", "ignore_credit": false,
+        "discount_id": null, "vat_id": 6, "months_warranty": null, "lot_size": 1,
+        "offer_variation_id": null, "lot_quantity": 1, "id": 15}]}}, "attributes":
+        {"status": "confirmed", "kind": "standard", "created_at": "2015-04-14T10:19:07.000+02:00",
+        "reference": "ABCD2", "updated_at": "2016-05-31T09:38:47.000+02:00"}, "type":
+        "invoice", "id": "2"}], "data": {"relationships": {"billing_address": {"data":
+        {"type": "address", "id": "100000001"}}, "invoices": {"data": [{"type": "invoice",
+        "id": "2"}]}, "order_items": {"data": [{"type": "order_item", "id": "3"},
+        {"type": "order_item", "id": "14"}]}, "discount": {"data": null}, "payments":
+        {"data": []}, "shipping_address": {"data": {"type": "address", "id": "100000001"}},
+        "user": {"data": {"type": "user", "id": "1000001"}}}, "attributes": {"status":
+        "confirmed", "offer_id": 1, "website_id": 3, "updated_at": "2015-04-14T10:19:07.000+02:00",
+        "currency": "chf", "shipping_carrier_id": 1, "total": "1011.0", "subtotal":
+        "999.0", "created_at": "2015-04-14T10:19:07.000+02:00", "shipping_fee_id":
+        1000001}, "type": "order", "id": "2"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 11:31:52 GMT']
+      etag: [W/"23ea8b15bedb903e24b7e2c5fe7e09d1"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [8e4a6941-776f-495b-96e1-f92115de8390]
+      x-runtime: ['0.078279']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/offers/1
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"created_at": "2016-05-31T09:38:43.000+02:00",
+        "website_id": 3, "name": "Apple iPhone 6 / 64GB", "updated_at": "2016-05-31T09:38:43.000+02:00"},
+        "type": "offer", "id": "1"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 11:31:52 GMT']
+      etag: [W/"8c5fc4889562ddc7567fe888846028de"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [662be5d4-2bc8-47ec-ab09-70f37a30844f]
+      x-runtime: ['0.070419']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/users/1000001
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
+        "2016-05-31T09:38:42.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
+        "2016-05-31T11:03:30.524+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1464680319",
+        "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"}, "jsonapi": {"version":
+        "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 11:31:52 GMT']
+      etag: [W/"800d15150a852292057d9bb4aed00beb"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [e956c2bd-6d2a-4a67-99f6-20329b052c19]
+      x-runtime: ['0.040241']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
+        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "zip": "2068",
+        "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
+        1, "service_client_number": null, "updated_at": "2016-05-31T09:38:42.000+02:00",
+        "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
+        "gender": 1, "country": "Suisse", "digicode": null, "created_at": "2016-05-31T09:38:42.000+02:00"},
+        "type": "address", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 11:31:53 GMT']
+      etag: [W/"4c3c4bdc4847757ae9618caeda64f7b0"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [9a3fb060-b697-4506-9dc3-aca9895b75f5]
+      x-runtime: ['0.057692']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/users/1000003
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "de", "created_at":
+        "2016-05-31T09:38:42.000+02:00", "pseudo": "Hans", "language_id": 2, "updated_at":
+        "2016-01-01T11:00:00.000+01:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/003/thumb/cat_boobs.jpg?1464680319",
+        "email": "de@qoqa.com"}, "type": "user", "id": "1000003"}, "jsonapi": {"version":
+        "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 11:31:53 GMT']
+      etag: [W/"6ab7b0a213bef2995ec05161e956c470"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [99e0ce68-5da0-4e83-a05d-ea8248f73074]
+      x-runtime: ['0.026643']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
+        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "zip": "2068",
+        "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
+        1, "service_client_number": null, "updated_at": "2016-05-31T09:38:42.000+02:00",
+        "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
+        "gender": 1, "country": "Suisse", "digicode": null, "created_at": "2016-05-31T09:38:42.000+02:00"},
+        "type": "address", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 11:31:54 GMT']
+      etag: [W/"4c3c4bdc4847757ae9618caeda64f7b0"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [1fc45e3e-5235-4911-a8d4-3fc0773effa1]
+      x-runtime: ['0.037353']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

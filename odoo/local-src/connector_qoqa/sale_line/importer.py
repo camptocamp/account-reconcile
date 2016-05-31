@@ -77,7 +77,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         binder = self.binder_for('qoqa.shipper.rate')
         qoqa_fee_id = parent.source['data']['attributes']['shipping_fee_id']
         fee = binder.to_openerp(qoqa_fee_id, unwrap=True)
-        if fee:
+        if not fee:
             raise MappingError("Shipping fee with id %s "
                                "does not exist. Please create it." %
                                qoqa_fee_id)
@@ -87,6 +87,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         builder.quantity = line['lot_quantity']
         # this is the delivery carrier having the rates
         builder.carrier = fee
+        builder.product = fee.product_id
         values = builder.get_line()
         del values['price_unit']  # keep the price of the mapping
         return values

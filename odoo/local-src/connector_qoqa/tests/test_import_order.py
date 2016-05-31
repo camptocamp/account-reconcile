@@ -33,11 +33,22 @@ class TestImportOrder(QoQaTransactionCase):
         self.Order = self.env['sale.order']
         self.setup_company()
         self.sync_metadata()
+        self.setup_order_dependencies()
 
         # ship_ref = 'connector_ecommerce.product_product_shipping'
         # self.ship_product = self.env.ref(ship_ref)
         # marketing_ref = 'qoqa_base_data.product_product_marketing_coupon'
         # self.marketing_product = self.env.ref(marketing_ref)
+
+    def setup_order_dependencies(self):
+        method = self.env.ref('account.account_payment_method_manual_in')
+        self.payment_mode = self.env['account.payment.mode'].create({
+            'name': 'Paypal',
+            'payment_method_id': method.id,
+            'company_id': self.env.ref('base.main_company').id,
+            'bank_account_link': 'variable',
+            'qoqa_id': '1',
+        })
 
     @freeze_time('2016-04-28 00:00:00')
     def test_import_sale_order_batch(self):
@@ -99,14 +110,19 @@ class TestImportOrder(QoQaTransactionCase):
         # expected relations
         domain = [('qoqa_id', '=', '1000001')]
         partner = self.env['qoqa.res.partner'].search(domain)
+        partner.ensure_one()
         domain = [('qoqa_id', '=', '100000001')]
         shipping_address = self.env['qoqa.address'].search(domain)
+        shipping_address.ensure_one()
         domain = [('qoqa_id', '=', '100000001')]
         invoice_address = self.env['qoqa.address'].search(domain)
+        invoice_address.ensure_one()
         domain = [('qoqa_id', '=', '3')]
         shop = self.env['qoqa.shop'].search(domain)
+        shop.ensure_one()
         domain = [('qoqa_id', '=', '5')]
         offer = self.env['qoqa.offer'].search(domain)
+        offer.ensure_one()
 
         # check order
         expected = [

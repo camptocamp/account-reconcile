@@ -33,33 +33,33 @@ _logger = logging.getLogger(__name__)
 
 class QoQaOrderStatus(object):
     paid = 'paid'
-    cancelled = 'cancelled'  # TODO: check
+    cancelled = 'cancelled'
     # other status should never be given by the API
 
 
-# TODO: check
 class QoQaInvoiceStatus(object):
     requested = 'requested'
     confirmed = 'confirmed'
     cancelled = 'cancelled'
-    accounted = 'accounted'
 
 
 class QoQaInvoiceKind(object):
     invoice = 'standard'
-    refund = 'refund'  # TODO check
+    credit_note = 'credit_note'
 
 
-class QoQaPayStatus(object):
+class QoQaPaymentStatus(object):
     success = 'success'
+    requested = 'requested'
     confirmed = 'confirmed'
+    cancelled = 'cancelled'
     failed = 'failed'
 
-# http://admin.test02.qoqa.com/invoiceType
-QOQA_INVOICE_TYPE_ISSUED = 1
-QOQA_INVOICE_TYPE_RECEIVED = 2
-QOQA_INVOICE_TYPE_ISSUED_CN = 3
-QOQA_INVOICE_TYPE_RECEIVED_CN = 4
+
+class QoQaPaymentKind(object):
+    payment = 'standard'
+    credit_note = 'credit_note'
+
 
 DAYS_BEFORE_CANCEL = 30
 
@@ -165,7 +165,7 @@ class SaleOrderImporter(QoQaImporter):
             # if payments exist, we are force updating a sales
             # and the payments have already been generated
             return
-        payments = get_payments(self.qoqa_record)
+        payments = get_payments(self, self.qoqa_record)
         for payment in payments:
             # TODO:review _get_payment_mode
             method = _get_payment_mode(self, payment, sale.company_id)
@@ -189,15 +189,16 @@ class SaleOrderImporter(QoQaImporter):
 
 def get_payments(connector_unit, record):
     payments = [item for item in
-                record['included']['relationships']
+                record['included']
                 if item['type'] == 'payment'
+                # TODO add filter on kind and status
                 ]
     return payments
 
 
 def _get_payment_mode(connector_unit, payment, company):
-    # TODO: check what states are valid
-    valid_states = (QoQaPayStatus.success, QoQaPayStatus.confirmed)
+    valid_states = (QoQaPaymentStatus.success,
+                    QoQaPaymentStatus.confirmed)
     if payment['attributes']['status'] not in valid_states:
         return
     qmethod_id = payment['relationships']['payment_method']['data']['id']
@@ -221,10 +222,9 @@ def _get_payment_mode(connector_unit, payment, company):
 
 
 def _get_payment_date(payment_record):
-    # TODO: what is the payment date?
-    # payment_date = (payment_record['trx_date'] or
-    #                 payment_record['created_at'])
-    payment_date = payment_record['created_at']
+    # TODO: payment_date is missing
+    # payment_date = payment_record['created_at']
+    payment_date = '2016-06-01 00:00:00'
     payment_date = iso8601_to_local_date(payment_date)
     return fields.Date.to_string(payment_date)
 
@@ -236,10 +236,9 @@ def valid_invoices(sale_record):
     Return a list of valid invoices
 
     """
-    valid_status = (QoQaInvoiceStatus.confirmed, QoQaInvoiceStatus.accounted)
+    valid_status = (QoQaInvoiceStatus.confirmed)
     invoices = [item for item in sale_record['included']
                 if item['type'] == 'invoice' and
-                # TODO: check valid status
                 item['attributes']['status'] in valid_status and
                 item['attributes']['kind'] == QoQaInvoiceKind.invoice]
     return invoices
@@ -248,7 +247,6 @@ def valid_invoices(sale_record):
 def find_sale_invoice(invoices):
     """ Find and return the invoice used for the sale from the invoices.
 
-    TODO: still true?
     Several invoices can be there, but only 1 is the invoice that
     interest us. (others are refund, ...)
 
@@ -316,16 +314,16 @@ class SaleOrderImportMapper(ImportMapper, FromAttributes):
             values['partner_invoice_id'] = billing.id
         return values
 
-    # TODO
-    # @mapping
+    @mapping
     def payment_mode(self, record):
         # Retrieve methods, to ensure that we don't have
         # only cancelled payments
         qoqa_shop_binder = self.binder_for('qoqa.shop')
-        qoqa_shop = qoqa_shop_binder.to_openerp(record['shop_id'])
+        website_id = record['data']['attributes']['website_id']
+        qoqa_shop = qoqa_shop_binder.to_openerp(website_id)
         company = qoqa_shop.company_id
 
-        qpayments = get_payments(record)
+        qpayments = get_payments(self, record)
         methods = ((payment,
                     _get_payment_mode(self, payment, company))
                    for payment in qpayments)
@@ -347,7 +345,7 @@ class SaleOrderImportMapper(ImportMapper, FromAttributes):
                 return {'workflow_process_id': auto_wkf.id}
             return
         method = methods[0]
-        # TODO: check name of field
+        # TODO: field is transaction_id, not yet there
         transaction_id = method[0]['attributes']['sign']
         payment_date = _get_payment_date(method[0])
         return {'payment_mode_id': method[1].id,

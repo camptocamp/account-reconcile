@@ -62,6 +62,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         return values
 
     def _item_product(self, line):
+        # TODO: not the right field, should be variation_id I guess
         qoqa_variant_id = line['offer_variation_id']
         binder = self.binder_for('qoqa.product.product')
         product = binder.to_openerp(qoqa_variant_id, unwrap=True)

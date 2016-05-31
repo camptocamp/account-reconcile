@@ -11,8 +11,8 @@
              'connector_base_product',
              'account_payment_mode',  # oca/bank-payment
              'account_payment_sale',  # oca/bank-payment
-             # 'connector_ecommerce',
-             'sale_exception',
+             'connector_ecommerce',   # oca/connector-ecommerce
+             'sale_exception',        # oca/sale-workflow
              'sale_stock',
              'qoqa_offer',
              'qoqa_product',

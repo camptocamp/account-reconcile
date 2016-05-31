@@ -8,6 +8,10 @@ from openerp.addons.connector.event import (on_record_create,
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 
+from ..product_product.exporter import (
+    delay_export_all_bindings as product_delay_export
+)
+
 from ..unit.exporter import QoQaExporter, Translations
 from .. import consumer
 from ..backend import qoqa
@@ -21,8 +25,20 @@ def delay_export(session, model_name, record_id, vals):
 
 @on_record_write(model_names='product.template')
 def delay_export_all_bindings(session, model_name, record_id, vals):
-    consumer.delay_export_all_bindings(session, model_name,
-                                       record_id, vals)
+    if 'warranty' in vals:
+        warranty = vals.pop('warranty')
+        # the warranty should be exported on the variant, not the
+        # template
+        templates = session.env[model_name].browse(record_id)
+        for product in templates.product_variant_ids:
+            product_delay_export(session, 'product.product',
+                                 product.id, {'warranty': warranty})
+
+    if not vals:
+        # nothing to export on the template
+        return
+
+    consumer.delay_export_all_bindings(session, model_name, record_id, vals)
 
 
 @qoqa

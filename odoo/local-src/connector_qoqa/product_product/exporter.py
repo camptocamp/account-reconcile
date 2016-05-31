@@ -2,12 +2,12 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.addons.connector.unit.mapper import (mapping,
-                                                  ExportMapper,
-                                                  )
-from openerp.addons.connector.event import (on_record_create,
-                                            on_record_write,
-                                            )
+from openerp.addons.connector.unit.mapper import (
+    convert, mapping, ExportMapper,
+)
+from openerp.addons.connector.event import (
+    on_record_create, on_record_write,
+)
 
 from ..unit.exporter import QoQaExporter
 
@@ -52,6 +52,7 @@ class ProductExportMapper(ExportMapper):
 
     direct = [
         ('default_code', 'sku'),
+        (convert('warranty', int), 'months_warranty')
     ]
 
     def _get_template_qoqa_id(self, record):
@@ -63,6 +64,16 @@ class ProductExportMapper(ExportMapper):
     @mapping
     def template(self, record):
         return {'product_id': self._get_template_qoqa_id(record)}
+
+    @mapping
+    def wine_bottle(self, record):
+        result = {}
+
+        volume = record.wine_bottle_id.volume
+        if volume:
+            result['liters_capacity'] = volume
+
+        return result
 
     @mapping
     def attribute_values(self, record):
@@ -79,10 +90,9 @@ class ProductExportMapper(ExportMapper):
             attributes.append({
                 'product_attribute_id': value_qoqa_id,
                 'product_category_attributes': {
-                  'product_attribute_category_id': attr_qoqa_id,
-                  'product_id': template_qoqa_id,
+                    'product_attribute_category_id': attr_qoqa_id,
+                    'product_id': template_qoqa_id,
                 }
-              }
-            )
+            })
 
         return {'product_attribute_variations_attributes': attributes}

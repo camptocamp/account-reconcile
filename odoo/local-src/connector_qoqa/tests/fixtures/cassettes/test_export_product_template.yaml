@@ -1,32 +1,32 @@
 interactions:
 - request:
-    body: '{"locale": "fr", "product": {"sku": false, "translations_attributes": [{"locale":
-      "en", "brand": false, "name": "MRSAFE"}, {"locale": "fr", "brand": false, "name":
+    body: '{"locale": "fr", "product": {"translations_attributes": [{"locale": "en",
+      "brand": false, "name": "MRSAFE"}, {"locale": "fr", "brand": false, "name":
       "MRSAFE"}, {"locale": "de", "brand": false, "name": "MRSAFE"}]}}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['228']
+      Content-Length: ['214']
       Content-Type: [application/json]
-      User-Agent: [python-requests/2.9.1]
+      User-Agent: [python-requests/2.10.0]
     method: POST
     uri: https://api-sprint.qoqa.com/v1/admin/products/
   response:
-    body: {string: !!python/unicode '{"data": {"id": 1000006}}'}
+    body: {string: !!python/unicode '{"data": {"id": 1000018}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 20 Apr 2016 07:39:42 GMT']
-      etag: [W/"78882d7c8216afa361d554f3fec66409"]
+      date: ['Tue, 31 May 2016 12:02:20 GMT']
+      etag: [W/"12cce197fdfb8018bc1403de07603a41"]
       server: [Cowboy]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [d903908e-32d6-475d-9ab3-7ab2b0615967]
-      x-runtime: ['0.142026']
+      x-request-id: [1e6a08c0-1327-4502-8e39-80136f7813cb]
+      x-runtime: ['0.069929']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1

@@ -23,6 +23,8 @@ class QoqaSaleOrderLine(models.Model):
                                     ondelete='cascade',
                                     index=True)
     qoqa_quantity = fields.Integer(string='Quantity')
+    discount_code_name = fields.Char()
+    discount_description = fields.Char()
 
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',

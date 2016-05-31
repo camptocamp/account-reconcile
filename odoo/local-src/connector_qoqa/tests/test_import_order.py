@@ -205,3 +205,37 @@ class TestImportOrder(QoQaTransactionCase):
             ),
         ]
         self.assert_records(expected, order.order_line)
+
+    @freeze_time('2016-04-28 00:00:00')
+    @recorder.use_cassette()
+    def test_import_sale_order_with_discount(self):
+        promo = self.env.ref('connector_qoqa.promo_type_marketing')
+        import_record(self.session, 'qoqa.sale.order',
+                      self.backend_record.id, 16)
+        domain = [('qoqa_id', '=', '16')]
+        order = self.env['qoqa.sale.order'].search(domain)
+        order.ensure_one()
+        # check lines
+        expected = [
+            ExpectedOrderLine(
+                product_id=self.product_1_binding.openerp_id,
+                price_unit=333,
+                product_uom_qty=2,
+            ),
+            ExpectedOrderLine(
+                product_id=self.drone_product,
+                price_unit=9,
+                product_uom_qty=1,
+            ),
+            ExpectedOrderLine(
+                product_id=promo.product_id,
+                price_unit=-9,
+                product_uom_qty=1,
+            ),
+            ExpectedOrderLine(
+                product_id=promo.product_id,
+                price_unit=-499,
+                product_uom_qty=1,
+            ),
+        ]
+        self.assert_records(expected, order.order_line)

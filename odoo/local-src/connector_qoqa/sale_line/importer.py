@@ -38,7 +38,6 @@ class SaleOrderLineImportMapper(ImportMapper):
     """
     _model_name = 'qoqa.sale.order.line'
 
-    # TODO discount_id
     # TODO: set delay as (delivery_date - date.today()).days
 
     direct = [('lot_quantity', 'qoqa_quantity'),  # original quantity on lot
@@ -56,10 +55,20 @@ class SaleOrderLineImportMapper(ImportMapper):
             values.update(self._item_shipping(line, map_record.parent))
 
         elif category == QoQaLineCategory.discount:
-            values.update(self._item_discount(line,
-                                              map_record.source['promo']))
+            discount_id = map_record.source['discount_id']
+            discount = self._find_discount(map_record, discount_id)
+            values.update(self._item_discount(line, discount))
 
         return values
+
+    def _find_discount(self, map_record, discount_id):
+        order_included = map_record.parent.source['included']
+        discounts = [item for item in order_included
+                     if item['type'] == 'discount' and
+                     item['id'] == str(discount_id)]
+        if not discounts:
+            raise MappingError('Missing data for discount %s' % discount_id)
+        return discounts[0]
 
     def _item_product(self, line):
         # TODO: not the right field, should be variation_id I guess
@@ -71,7 +80,6 @@ class SaleOrderLineImportMapper(ImportMapper):
                                'exist in Odoo' % qoqa_variant_id)
         return {'product_id': product.id}
 
-    # TODO: ask if lines of type shipping still exist
     def _item_shipping(self, line, parent):
         # find carrier_id from parent record (sales order)
         binder = self.binder_for('qoqa.shipper.rate')
@@ -92,25 +100,29 @@ class SaleOrderLineImportMapper(ImportMapper):
         del values['price_unit']  # keep the price of the mapping
         return values
 
-    def _promo_type(self, promo):
-        qpromo_type_id = promo['promo_type_id']
+    def _discount_type(self, discount):
+        attrs = discount['attributes']
+        sub_type = attrs['sub_type']
         promo_binder = self.binder_for('qoqa.promo.type')
-        promo_type = promo_binder.to_openerp(qpromo_type_id)
+        promo_type = promo_binder.to_openerp(sub_type)
         if not promo_type:
-            raise MappingError("Type of promo '%s' is not supported." %
-                               qpromo_type_id)
+            raise MappingError("Type of discount '%s' is not supported." %
+                               sub_type)
         return promo_type
 
-    def _item_discount(self, line, promo):
+    def _item_discount(self, line, discount):
         # line builder
         builder = self.unit_for(QoQaPromoLineBuilder)
-        promo_type = self._promo_type(promo)
-        builder.price_unit = 0
+        promo_type = self._discount_type(discount)
+        builder.price_unit = -float(line['unit_price'])
         # choose product according to the promo type
         builder.product = promo_type.product_id
-        builder.code = line['promo_id']
+        builder.code = discount['attributes']['code_name']
         values = builder.get_line()
-        del values['price_unit']  # keep the price of the mapping
+        values.update({
+            'discount_code_name': discount['attributes']['code_name'],
+            'discount_description': discount['attributes']['description'],
+        })
         return values
 
     # TODO: check if quantity is still as units or as lots
@@ -133,8 +145,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         price = float(record['unit_price'])
         if lot_size > 1:
             price /= lot_size
-        values = {'product_uos_qty': quantity,
-                  'product_uom_qty': quantity,
+        values = {'product_uom_qty': quantity,
                   'price_unit': price}
         return values
 

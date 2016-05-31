@@ -30,15 +30,34 @@ class TestExportProduct(QoQaTransactionCase):
         patched = 'openerp.addons.connector_qoqa.consumer.export_record'
         # mock.patch prevents to create the job
         with mock.patch(patched) as export_record_mock:
+            self.assertEqual(
+                0, self.env['qoqa.product.product'].search_count([])
+            )
+
             binding = self.env['qoqa.product.template'].create({
                 'backend_id': self.backend_record.id,
                 'openerp_id': self.product_template.id,
             })
+
+            binding_product = self.env['qoqa.product.product'].search([])
+            self.assertEqual(1, len(binding_product))
+            self.assertEqual(
+                self.product_variant, binding_product.openerp_id
+            )
+            self.assertEqual(
+                self.product_template, binding_product.product_tmpl_id
+            )
+
             export_record_mock.delay.assert_has_calls([
-                mock.call(mock.ANY, 'qoqa.product.template', binding.id,
-                          fields=['backend_id', 'openerp_id']),
-                mock.call(mock.ANY, 'qoqa.product.product', binding.id,
-                          fields=['backend_id', 'openerp_id'], priority=12),
+                mock.call(
+                    mock.ANY, 'qoqa.product.template', binding.id,
+                    fields=['backend_id', 'openerp_id']
+                ),
+                mock.call(
+                    mock.ANY, 'qoqa.product.product', binding_product.id,
+                    fields=['backend_id', 'openerp_id'], priority=12
+                ),
+            ])
             ])
 
     def test_export_product_template(self):

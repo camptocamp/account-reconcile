@@ -138,23 +138,23 @@ class SaleOrder(models.Model):
             if (order.qoqa_bind_ids and
                     order.payment_mode_id.payment_settlable_on_qoqa):
                 cancel_direct = True
-            payment_ids = None
+            # payment_ids = None
             invoices = self.env['account.invoice'].browse()
             # if cancel_direct:
-                # If the order can be canceled on QoQa, the payment is
-                # canceled as well on QoQa so the internal payments
-                # can just be withdrawn.
-                # Otherwise, we have to keep them, they will be
-                # reconciled with the invoice
-                # WARNING! Delete account.move,
-                # not just payments (account.move.line)
+            #     If the order can be canceled on QoQa, the payment is
+            #     canceled as well on QoQa so the internal payments
+            #     can just be withdrawn.
+            #     Otherwise, we have to keep them, they will be
+            #     reconciled with the invoice
+            #     WARNING! Delete account.move,
+            #     not just payments (account.move.line)
 
-                # TODO: not sure we'll still have order.payment_ids
-                # payment_moves = [payment.move_id
-                #                  for payment
-                #                  in order.payment_ids]
-                # for move in payment_moves:
-                #     move.unlink()
+            #     TODO: not sure we'll still have order.payment_ids
+            #     payment_moves = [payment.move_id
+            #                      for payment
+            #                      in order.payment_ids]
+            #     for move in payment_moves:
+            #         move.unlink()
             if not cancel_direct and order.amount_total:
                 # create the invoice, open it because we need the move
                 # lines so we'll be able to reconcile them with the

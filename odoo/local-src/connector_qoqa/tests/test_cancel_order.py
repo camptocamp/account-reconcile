@@ -9,7 +9,6 @@ from datetime import date, timedelta
 import mock
 
 from openerp import fields
-from openerp.addons.connector.tests.common import mock_job_delay_to_direct
 
 from .common import recorder, QoQaTransactionCase
 

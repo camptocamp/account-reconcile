@@ -39,7 +39,7 @@
 	url = git@github.com:oca/connector
 [submodule "odoo/external-src/connector-ecommerce"]
 	path = odoo/external-src/connector-ecommerce
-	url = git@github.com:oca/connector-ecommerce
+	url = git@github.com:camptocamp/connector-ecommerce
 [submodule "odoo/external-src/crm"]
 	path = odoo/external-src/crm
 	url = git@github.com:camptocamp/crm

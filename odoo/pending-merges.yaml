@@ -33,6 +33,15 @@
     # port delivery_carrier_label_postlogistics
     - oca refs/pull/73/head
   target: *default_target
+./external-src/connector-ecommerce:
+  remotes:
+    oca: git@github.com:OCA/connector-ecommerce.git
+    camptocamp: git@github.com:camptocamp/connector-ecommerce.git
+  merges:
+    - oca 9.0
+    # port connector_ecommerce
+    - oca refs/pull/32/head
+  target: *default_target
 ./external-src/crm:
   remotes:
     oca: git@github.com:OCA/crm.git

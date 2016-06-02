@@ -18,6 +18,9 @@ Adds *Offer* models.
  'website': 'http://www.camptocamp.com/',
  'depends': ['sale',
              'sale_stock',
+             # Need to depend on sale_exception and disable all exceptions
+             # in tests to avoid tests dependency problem.
+             'sale_exception',
              'delivery',
              'ecotax',
              'procurement',

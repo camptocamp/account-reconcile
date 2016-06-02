@@ -128,3 +128,13 @@
     # port stock_picking_dispatch
     - oca refs/pull/223/head
   target: *default_target
+./external-src/web:
+  remotes:
+    oca: git@github.com:OCA/web.git
+    camptocamp: git@github.com:camptocamp/web.git
+  merges:
+    - oca 9.0
+    # port module web_send_message_popup
+    - oca refs/pull/369/head
+  target: *default_target
+

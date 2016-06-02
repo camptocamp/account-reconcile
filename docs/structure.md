@@ -11,12 +11,6 @@ The implementation of odoo is in the [subfolder odoo](../odoo) which is broken d
 The Dockerfile used to build the Odoo custom image for this project.
 It can be customized to [install dependencies](./how-to-add-dependency.md)
 
-**[etc/openerp.cfg.tmpl](../odoo/etc/openerp.cfg.tmpl)**
-
-The Odoo configuration file is generated each time a container is started from this template.
-It can be customized, but most of the values are set from the environment variables.
-When a new addons repository is added, [it should be added to the `addons_path` of this file](how-to-add-repo.md)
-
 **[data/](../odoo/data)**
 
 Directory used to hold files that'll be used by scenario / upgrade scripts to load data in Odoo. It might be images, CSV files, ... The files concerning the installation go in `setup`, the ones used for loading demo data go in `story`.
@@ -34,9 +28,8 @@ That's a git submodule.
 **[external-src/](../odoo/external-src)**
 
 This is where external addons repositories (such as OCA's ones) are added using
-git submodules. Each new repository must be added to the `etc/openerp.cfg.tmpl`
-configuration file, see [How to add a new addons
-repository](./docs/how-to-add-repo.md).
+git submodules. Each new repository must be added to the `Dockerfile` , see
+[How to add a new addons repository](./docs/how-to-add-repo.md).
 
 **[local-src/](../odoo/local-src)**
 

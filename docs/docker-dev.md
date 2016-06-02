@@ -37,8 +37,10 @@ environment we share the local (source code) folders with the container using
 Building the image is required when:
 
 * you start to work on the project
-* the base image (`camptocamp/odoo-project:9.0`) has been updated and you need the new version
-* the local Dockerfile has been modified
+* the base image (`camptocamp/odoo-project:9.0`) has been updated and you need
+  the new version
+* the local Dockerfile has been modified (for example when dependency or addons
+  repository is added)
 
 Building the image is a simple command:
 

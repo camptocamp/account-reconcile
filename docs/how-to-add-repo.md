@@ -11,4 +11,6 @@ git add odoo/external-src/sale-workflow
 git commit -m"..."
 ```
 
-And to add it in the `addons_path` option of the [Odoo's configuration file template](../odoo/etc/openerp.cfg.tmpl).
+And to add it in the `ADDONS_PATH` environment variable of the
+[Dockerfile](../odoo/Dockerfile). As the `Dockerfile` is modified, a rebuild is
+required.

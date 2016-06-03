@@ -64,6 +64,8 @@ Feature: Parameter the new database
         | delivery_carrier_label_postlogistics_shop_logo  |
         #---- OCA/connector-ecommerce --------------------#
         #| connector_ecommerce                             |
+        #---- OCA/crm ------------------------------------#
+        | crm_claim_merge                                 |
         #---- OCA/margin-analysis ------------------------#
         #| product_cost_incl_bom                           |
         #| product_cost_incl_bom_price_history             |

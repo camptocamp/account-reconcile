@@ -64,6 +64,8 @@ Feature: Parameter the new database
         | delivery_carrier_label_postlogistics_shop_logo  |
         #---- OCA/connector-ecommerce --------------------#
         #| connector_ecommerce                             |
+        #---- OCA/crm ------------------------------------#
+        | crm_claim_merge                                 |
         #---- OCA/margin-analysis ------------------------#
         #| product_cost_incl_bom                           |
         #| product_cost_incl_bom_price_history             |
@@ -106,7 +108,7 @@ Feature: Parameter the new database
         #| base_stock_picking_pack_split                   |
         #| connector_file_s3_import                        |
         #| connector_qoqa                                  |
-        #| crm_claim_mail                                  |
+        | crm_claim_mail                                  |
         #| delivery_carrier_label_swiss_pp                 |
         #| delivery_carrier_url                            |
         #| ecotax                                          |
@@ -114,17 +116,18 @@ Feature: Parameter the new database
         #| picking_dispatch_group                          |
         #| purchase_variant_fast_entry                     |
         #| qoqa_base_data                                  |
-        #| qoqa_claim                                      |
+        | qoqa_claim                                      |
+        #| qoqa_claim_unclaimed_process                    |
         #| qoqa_label_dispatch_pack_split                  |
         #| qoqa_offer                                      |
         #| qoqa_offer_historical_margin                    |
-        | qoqa_product                          |
+        | qoqa_product                                    |
         | qoqa_record_archiver                            |
         #| server_env_connector_qoqa                       |
         #| specific_fct                                    |
         #| specific_report                                 |
         #| web_custom                                      |
-        | web_environment |
+        | web_environment                                 |
         #| wine_ch_report                                  |
     Then my modules should have been installed and models reloaded
 

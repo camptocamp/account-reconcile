@@ -19,7 +19,7 @@
                         <field name="claim_delivery_address_id" invisible="1"/>
                         <field name="claim_partner_id" invisible="1"/>
                         <field name="claim_user_id"/>
-                        <field name="claim_section_id" readonly="1"/>
+                        <field name="claim_team_id" readonly="1"/>
                         <field name="claim_categ_id" readonly="1"/>
                     </group>
                     <footer>

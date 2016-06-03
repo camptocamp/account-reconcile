@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="crm_stage_claim_state_form" model="ir.ui.view">
+        <field name="name">crm.claim.stage.state.form</field>
+        <field name="model">crm.claim.stage</field>
+        <field name="inherit_id" ref="crm_claim_type.crm_stage_claim_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='claim_type']" position="after">
+                <newline/>
+                <field name="state" required="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_stage_claim_state_tree" model="ir.ui.view">
+        <field name="name">crm.claim.stage.state.tree</field>
+        <field name="model">crm.claim.stage</field>
+        <field name="inherit_id" ref="crm_claim_type.crm_stage_claim_type_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='claim_type']" position="after">
+                <field name="state" required="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

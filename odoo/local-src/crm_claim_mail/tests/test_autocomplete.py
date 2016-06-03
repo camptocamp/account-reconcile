@@ -1,25 +1,7 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2014 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-from openerp.addons.mail.tests.test_mail_base import TestMailBase
+# © 2014-2016 Camptocamp SA (Guewen Baconnier, Matthieu Dietrich)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+from openerp.addons.mail.tests.common import TestMail
 
 MAIL_TEMPLATE = """Return-Path: <whatever-2a840@postmaster.twitter.com>
 To: {to}
@@ -69,7 +51,7 @@ Content-Transfer-Encoding: quoted-printable
 """
 
 
-class TestMailAutocomplete(TestMailBase):
+class TestMailAutocomplete(TestMail):
 
     @staticmethod
     def format(template, to='Claims <claims@example.com>',
@@ -92,11 +74,7 @@ class TestMailAutocomplete(TestMailBase):
         vals = {
             'name': number,
             'partner_id': self.ref('base.res_partner_3'),
-            'shop_id': self.ref('sale.sale_shop_1'),
         }
-        vals.update(
-            self.Sale.onchange_shop_id(cr, uid, [], vals['shop_id'])['value']
-        )
         vals.update(
             self.Sale.onchange_partner_id(cr, uid, [],
                                           vals['partner_id'])['value']

@@ -1,0 +1,16 @@
+<odoo>
+    <record model="crm.claim.stage" id="crm_claim.stage_claim1">
+        <field name="state">draft</field>
+    </record>
+    <record model="crm.claim.stage" id="crm_claim.stage_claim5">
+        <field name="state">open</field>
+    </record>
+    <record model="crm.claim.stage" id="crm_claim.stage_claim2">
+        <field name="state">done</field>
+        <field name="claim_common" eval="True"/>
+    </record>
+    <record model="crm.claim.stage" id="crm_claim.stage_claim3">
+        <field name="state">cancel</field>
+        <field name="claim_common" eval="True"/>
+    </record>
+</odoo>

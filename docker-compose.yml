@@ -2,7 +2,7 @@ odoo:
   tty: true
   stdin_open: true
   build: ./odoo/
-  command: ""
+  command: "odoo.py --load=web,connector"
   ports:
     - 8069
     - 8072
@@ -25,6 +25,7 @@ odoo:
     - ADMIN_PASSWD=mijaebohb8Thae1g
     - RUNNING_ENV=dev
     - DEMO=odoo
+    - ODOO_CONNECTOR_CHANNELS=root:4
 
 db:
   image: camptocamp/postgresql:pg9.5-latest

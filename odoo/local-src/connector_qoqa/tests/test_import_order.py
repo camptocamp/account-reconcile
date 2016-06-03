@@ -140,7 +140,6 @@ class TestImportOrder(QoQaTransactionCase):
         ]
         self.assert_records(expected, order.order_line)
 
-
     # def test_import_order(self):
     #     """ Import a sales order """
     #     cr, uid = self.cr, self.uid

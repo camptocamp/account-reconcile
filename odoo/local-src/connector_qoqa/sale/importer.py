@@ -20,16 +20,13 @@ from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from ..backend import qoqa
 from ..exception import QoQaError
-from ..unit.backend_adapter import QoQaAdapter
 from ..unit.importer import DelayedBatchImporter, QoQaImporter
 from ..unit.mapper import (iso8601_to_utc,
-                           strformat,
                            iso8601_local_date,
                            FromAttributes,
                            backend_to_m2o,
                            )
 from ..connector import iso8601_to_local_date
-from ..sale_line.importer import QoQaLineCategory
 
 _logger = logging.getLogger(__name__)
 

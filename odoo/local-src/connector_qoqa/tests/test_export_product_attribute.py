@@ -4,7 +4,7 @@
 
 import mock
 
-from openerp.addons.connector_qoqa.unit.exporter import  export_record
+from openerp.addons.connector_qoqa.unit.exporter import export_record
 from .common import recorder, QoQaTransactionCase
 
 

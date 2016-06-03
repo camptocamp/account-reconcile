@@ -5,8 +5,8 @@
     <field name="model">delivery.carrier</field>
     <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
     <field name="arch" type="xml">
-      <field name="active" position="after">
-        <group name="connector" string="Connector" colspan="4">
+      <notebook position="inside">
+        <page name="connector" string="Connector">
           <field name="qoqa_bind_service_ids" attrs="{'invisible': [('qoqa_type', '!=', 'service')]}">
             <tree string="Services">
               <field name="qoqa_id"/>
@@ -23,8 +23,8 @@
               <field name="qoqa_id"/>
             </form>
           </field>
-        </group>
-      </field>
+        </page>
+      </notebook>
     </field>
   </record>
 </odoo>

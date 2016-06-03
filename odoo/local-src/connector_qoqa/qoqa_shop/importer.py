@@ -48,16 +48,18 @@ class ShopImportMapper(ImportMapper):
 
     @mapping
     def attrs(self, record):
+        attrs = record['data']['attributes']
         return {
-            'name': record['attributes']['name'],
-            'identifier': record['attributes']['identifier'],
-            'domain': record['attributes']['domain'],
+            'name': attrs['name'],
+            'identifier': attrs['identifier'],
+            'domain': attrs['domain'],
         }
 
     @mapping
     @only_create
     def company(self, record):
-        relationships = record['relationships']
+        data = record['data']
+        relationships = data['relationships']
         qoqa_company_id = relationships['company']['data']['id']
         binder = self.binder_for('res.company')
         binding = binder.to_openerp(qoqa_company_id)

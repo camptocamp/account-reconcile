@@ -4,10 +4,10 @@
 from openerp.osv import _, api, fields, models
 from openerp.exceptions import UserError
 from openerp import netsvc
-from openerp.tools.float_utils import float_round
-from openerp.addons.connector_qoqa.connector import get_environment
-from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.unit.backend_adapter import BackendAdapter
+#from openerp.tools.float_utils import float_round
+#from openerp.addons.connector_qoqa.connector import get_environment
+#from openerp.addons.connector.session import ConnectorSession
+#from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 
 
 class CrmClaimUnclaimed(models.TransientModel):
@@ -112,20 +112,20 @@ class CrmClaimUnclaimed(models.TransientModel):
         sale = self.claim_sale_order_id
         pay_by_email_url = False
         #try:
-            #session = ConnectorSession()
-            #qsale = sale.qoqa_bind_ids[0]
-            #backend_id = qsale.backend_id.id
-            #env = get_environment(session, 'qoqa.sale.order', backend_id)
-            #adapter = env.get_connector_unit(BackendAdapter)
-            #amount = float_round(self.claim_carrier_price * 100,
-                                 #precision_digits=0)
-            #pay_by_email_url = adapter.pay_by_email_url(
-                #qsale.qoqa_id, claim_number, int(amount))
-            #if not pay_by_email_url:
-                #raise
+        #    session = ConnectorSession()
+        #    qsale = sale.qoqa_bind_ids[0]
+        #    backend_id = qsale.backend_id.id
+        #    env = get_environment(session, 'qoqa.sale.order', backend_id)
+        #    adapter = env.get_connector_unit(BackendAdapter)
+        #    amount = float_round(self.claim_carrier_price * 100,
+        #                         precision_digits=0)
+        #    pay_by_email_url = adapter.pay_by_email_url(
+        #        qsale.qoqa_id, claim_number, int(amount))
+        #    if not pay_by_email_url:
+        #        raise
         #except:
-            #raise UserError(('Error'),
-                            #('Pay by email not retrieved from BO!'))
+        #    raise UserError(('Error'),
+        #                    ('Pay by email not retrieved from BO!'))
 
         claim_vals = {
             'name': self.claim_name,

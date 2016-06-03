@@ -21,7 +21,8 @@ class CrmClaim(models.Model):
         company = self.env.user.company_id
         initial_categ_id = company.unclaimed_initial_categ_id.id
         first_reminder_categ_id = company.unclaimed_first_reminder_categ_id.id
-        second_reminder_categ_id = company.unclaimed_second_reminder_categ_id.id
+        second_reminder_categ_id = \
+            company.unclaimed_second_reminder_categ_id.id
         query = """
             SELECT id
             FROM crm_claim

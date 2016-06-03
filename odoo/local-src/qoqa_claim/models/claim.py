@@ -122,7 +122,7 @@ class CrmClaim(models.Model):
     @api.multi
     def write(self, vals):
         for claim in self:
-        # Remove previous partner
+            # Remove previous partner
             if vals.get('partner_id'):
                 # If the partner selected differ from the partner
                 # previously selected:

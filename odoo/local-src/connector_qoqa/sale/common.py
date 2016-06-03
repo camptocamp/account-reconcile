@@ -386,6 +386,17 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
         response = self._handle_response(response)
         return response['data']['url']
 
+    def add_trackings(self, qoqa_id, packages):
+        """ Synchronize picking packages.
+        """
+        url = "%s%s/shipping_packages" % (self.url(), qoqa_id)
+
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.post(url,
+                                    data=json.dumps(packages),
+                                    headers=headers)
+        self._handle_response(response)
+
 
 @qoqa
 class QoQaPaymentAdapter(QoQaAdapter):

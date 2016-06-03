@@ -3,6 +3,7 @@
 from . import test_auth
 from . import test_cancel_order
 from . import test_company_binder
+from . import test_export_picking
 from . import test_export_product
 from . import test_export_product_attribute
 from . import test_export_refund

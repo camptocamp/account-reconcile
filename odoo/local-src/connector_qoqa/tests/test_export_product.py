@@ -14,7 +14,6 @@ class TestExportProduct(QoQaTransactionCase):
     def setUp(self):
         super(TestExportProduct, self).setUp()
         self._create_products()
-        recorder.register_matcher('product_body', self.check_product_body)
 
     def _create_products(self):
         self.brand = self.env['product.brand'].create({
@@ -38,21 +37,16 @@ class TestExportProduct(QoQaTransactionCase):
             'wine_bottle_id': wine_bottle.id,
         })
 
-    def check_product_body(self, req1, req2):
+    def _check_product_body(self, path, query_json, saved_json):
         """ We check real request datas in addition to compare with cassette.
         """
-        if req1.path != req2.path:
-            return False
-
-        body1 = json.loads(req1.body)
-        body2 = json.loads(req2.body)
-
-        if req1.path == '/v1/admin/products/':
-            return body1 == body2
-
-        elif req1.path == '/v1/admin/variations/':
-            test_product = json.loads(req1.body)['variation']
-            saved_product = json.loads(req2.body)['variation']
+        if path != '/v1/admin/variations/':
+            return super(TestExportProduct, self)._check_json_body(
+                path, query_json, saved_json
+            )
+        else:
+            test_product = query_json['variation']
+            saved_product = saved_json['variation']
 
             if sorted(test_product.keys()) != sorted(saved_product.keys()):
                 return False
@@ -182,7 +176,7 @@ class TestExportProduct(QoQaTransactionCase):
         })
 
         vcr_name = 'test_export_product_product'
-        match_on = recorder.match_on + ('product_body',)
+        match_on = recorder.match_on + ('json_body',)
         with recorder.use_cassette(vcr_name, match_on=match_on) as cassette:
             export_record(self.session, 'qoqa.product.product', binding.id)
             # 1 request for template creation, 1 for variant creation

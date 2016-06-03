@@ -92,8 +92,34 @@ class QoQaTransactionCase(common.TransactionCase):
         self.backend_record.write(vals)
         self.setup_bindings()
 
+        recorder.register_matcher('json_body', self.check_json_body)
+
     def setup_bindings(self):
         self.env.ref('base.ch').qoqa_id = 1
+
+    def check_json_body(self, req1, req2):
+        """ Check real request datas in addition to compare with cassette.
+
+        By default, this matcher is only registered as 'json_body'.
+        Need be added to recorder.match_on to be called.
+        e.g:
+            match_on = recorder.match_on + ('json_body',)
+            with recorder.use_cassette(vcr_name, match_on=match_on):
+               [....]
+        """
+        if req1.path != req2.path:
+            return False
+
+        return self._check_json_body(
+            req1.path,
+            json.loads(req1.body),
+            json.loads(req2.body)
+        )
+
+    def _check_json_body(self, path, query_json, saved_json):
+        """ Can be override.
+        """
+        return query_json == saved_json
 
     def assert_records(self, expected_records, records):
         """ Assert that a recordset matches with expected values.

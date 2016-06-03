@@ -56,22 +56,8 @@ def picking_done_create_binding(session, model_name, record_id,
         return  # does not comes from QoQa
 
     for sale_binding in sale.qoqa_bind_ids:
-        session.create('qoqa.stock.picking',
-                       {'backend_id': sale_binding.backend_id.id,
-                        'openerp_id': picking.id,
-                        'qoqa_sale_binding_id': sale_binding.id,
-                        'picking_method': picking_method})
-
-
-@qoqa
-class QoQaPickingLabelAdapter(QoQaAdapter):
-    _model_name = 'qoqa.picking.label'
-    _endpoint = 'label'
-
-    def add_trackings(self, vals):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.post(url + 'generate_shippments',
-                                    data=json.dumps(vals),
-                                    headers=headers)
-        self._handle_response(response)
+        session.env['qoqa.stock.picking'].create({
+            'backend_id': sale_binding.backend_id.id,
+            'openerp_id': picking.id,
+            'qoqa_sale_binding_id': sale_binding.id,
+        })

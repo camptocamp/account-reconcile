@@ -103,6 +103,7 @@ Feature: Parameter the new database
         #---- OCA/stock-logistics-workflow ---------------#
         #| picking_dispatch                                |
         #---- OCA/web ------------------------------------#
+        | web_send_message_popup                          |
         #| web_translate_dialog                            |
         #---- QoQa specifics -----------------------------#
         #| base_stock_picking_pack_split                   |

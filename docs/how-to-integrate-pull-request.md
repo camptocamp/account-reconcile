@@ -51,7 +51,7 @@ Note: we always want the same `target` for all the repositories, so you can use 
 You can try to create the consolidated branch locally:
 
 ```bash
-gitaggregate -c pending-merges.yaml -d sale-workflow
+gitaggregate -c pending-merges.yaml -d "*sale-workflow"
 ```
 
 And if you are happy with that, create a new Pull Request for the modification of the `pending-merges.yaml` file.
@@ -73,7 +73,7 @@ This type of change is not done with a pull request:
 2. rebuild and push the consolidation branch for the modified branch:
 
   ```
-  gitaggregate -c pending-merges.yaml -d sale-workflow -p
+  gitaggregate -c pending-merges.yaml -d "*sale-workflow" -p
   ```
 
 3. commit the git submodule change and push it on the `master` branch

@@ -16,9 +16,7 @@ class StockPicking(models.Model):
         ondelete='restrict',
     )
     sale_create_date = fields.Datetime(
-        related='sale_id.create_date',
         string='Sale Create Date',
-        store=True,
         readonly=True,
     )
 
@@ -50,5 +48,8 @@ class StockMove(models.Model):
         values = super(StockMove, self)._prepare_picking_assign(move)
         if move.procurement_id.sale_line_id:
             sale = move.procurement_id.sale_line_id.order_id
-            values['offer_id'] = sale.offer_id.id
+            values.update({
+                'offer_id': sale.offer_id.id,
+                'sale_create_date': sale.create_date
+            })
         return values

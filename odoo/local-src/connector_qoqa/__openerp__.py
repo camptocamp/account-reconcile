@@ -42,6 +42,7 @@ Synchronize OpenERP with the different QoQa Stores
           'qoqa_backend/qoqa_backend_view.xml',
           'qoqa_shop/qoqa_shop_view.xml',
           'qoqa_offer/offer_view.xml',
+          'sale/sale_view.xml',
           'qoqa_menu.xml',
           'product_product/product_view.xml',
           'product_template/product_template_view.xml',

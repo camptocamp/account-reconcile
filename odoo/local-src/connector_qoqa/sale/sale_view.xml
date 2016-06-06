@@ -5,10 +5,12 @@
     <field name="model">sale.order</field>
     <field name="inherit_id" ref="sale.view_order_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
-        <label for="custom_text"/>
-        <field name="custom_text"/>
-      </xpath>
+      <button name="action_cancel" position="after">
+        <button name="action_force_cancel"
+          states="done" string="Cancel Order"
+          type="object"
+          groups="base.group_user"/>
+      </button>
     </field>
   </record>
 </odoo>

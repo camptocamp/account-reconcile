@@ -54,7 +54,7 @@
 	url = git@github.com:oca/multi-company
 [submodule "odoo/external-src/partner-contact"]
 	path = odoo/external-src/partner-contact
-	url = git@github.com:camptocamp/partner-contact
+	url = git@github.com:oca/partner-contact
 [submodule "odoo/external-src/product-attribute"]
 	path = odoo/external-src/product-attribute
 	url = git@github.com:oca/product-attribute
@@ -78,7 +78,7 @@
 	url = git@github.com:camptocamp/server-tools
 [submodule "odoo/external-src/stock-logistics-warehouse"]
 	path = odoo/external-src/stock-logistics-warehouse
-	url = git@github.com:camptocamp/stock-logistics-warehouse
+	url = git@github.com:oca/stock-logistics-warehouse
 [submodule "odoo/external-src/stock-logistics-reporting"]
 	path = odoo/external-src/stock-logistics-reporting
 	url = git@github.com:oca/stock-logistics-reporting

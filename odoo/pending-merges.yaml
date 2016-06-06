@@ -21,6 +21,8 @@
     - oca refs/pull/136/head
     # port of account_statement_base_import
     - oca refs/pull/137/head
+    # account mass reconcile extension
+    - oca refs/pull/139/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:
@@ -32,6 +34,9 @@
     - oca refs/pull/72/head
     # port delivery_carrier_label_postlogistics
     - oca refs/pull/73/head
+    # port base_delivery_carrier_label
+    # TODO: conflict
+    # - oca refs/pull/84/head
   target: *default_target
 ./external-src/connector-ecommerce:
   remotes:
@@ -63,15 +68,6 @@
     - oca 9.0
     # port l10n_ch_payment_slip
     - oca refs/pull/176/head
-  target: *default_target
-./external-src/partner-contact:
-  remotes:
-    oca: git@github.com:OCA/partner-contact.git
-    camptocamp: git@github.com:camptocamp/partner-contact.git
-  merges:
-    - oca 9.0
-    # fix partner_firstname for user form
-    - oca refs/pull/249/head
   target: *default_target
 ./external-src/rma:
   remotes:
@@ -107,17 +103,6 @@
     - oca refs/pull/409/head
     # 9.0 mail cleanup
     - oca refs/pull/410/head
-    # port configuration helper
-    - oca refs/pull/411/head
-  target: *default_target
-./external-src/stock-logistics-warehouse:
-  remotes:
-    oca: git@github.com:OCA/stock-logistics-warehouse.git
-    camptocamp: git@github.com:camptocamp/stock-logistics-warehouse.git
-  merges:
-    - oca 9.0
-    # Merge stock_available V8 -> V9
-    - oca refs/pull/147/head
   target: *default_target
 ./external-src/stock-logistics-workflow:
   remotes:

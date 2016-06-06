@@ -112,23 +112,16 @@ class CrmClaim(models.Model):
         if not invoices:
             return message, None
         invoice = invoices[0]
-        values = {'invoice_id': invoice.id}
-        res = self.onchange_invoice_id(
-            invoice.id,
-            values.get('warehouse_id'),
-            'customer',
-            fields.Datetime.now(),
-            company.id,
-            [],
-            create_lines=True)
-        if res.get('value'):
-            values.update(res['value'])
-        values['claim_line_ids'] = [(0, 0, line) for line
-                                    in values['claim_line_ids']
-                                    ]
+        values = {'invoice_id': invoice.id,
+                  'date': fields.Datetime.now(),
+                  'company_id': company.id}
         partner = invoice.partner_id.commercial_partner_id
         values.setdefault('partner_id', partner.id)
         values.setdefault('partner_phone', partner.phone)
+        # create temp claim to have onchange values
+        temp_claim = self.with_context(create_lines=True).new(values)
+        temp_claim._onchange_invoice_warehouse_type_date()
+        values = temp_claim._convert_to_write(temp_claim._cache)
 
         return message, values
 
@@ -149,7 +142,6 @@ class CrmClaim(models.Model):
         msg, values = self._complete_from_sale(msg)
         if values:
             custom_values.update(values)
-
         desc = html2plaintext(msg.get('body')) if msg.get('body') else ''
         desc = re.sub(r'(\n){3,}', '\n\n', desc)
         custom_values['description'] = desc
@@ -231,6 +223,8 @@ class CrmClaim(models.Model):
     def message_post(self, body='', subject=None, message_type='notification',
                      subtype=None, parent_id=False, attachments=None,
                      content_subtype='html', **kwargs):
+        # change author to partner with address 'loutres@qoqa.com'
+        kwargs.pop('author_id', None)
         authors = self.env['res.partner'].search(
             [('email', '=', 'loutres@qoqa.com')])
         if authors:

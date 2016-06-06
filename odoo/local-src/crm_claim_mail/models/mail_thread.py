@@ -65,7 +65,8 @@ def claim_subject_route(mail_thread, message, custom_values=None):
                 "WHERE merged_numbers ~ %s", (pattern,))
             claim_ids = [row[0] for row in cursor.fetchall()]
         if claim_ids:
-            return [('crm.claim', claim_id, custom_values, mail_thread._uid)
+            return [('crm.claim', claim_id, custom_values,
+                     mail_thread._uid, None)
                     for claim_id in claim_ids]
 
 
@@ -87,7 +88,7 @@ def message_route(self, message, message_dict, model=None, thread_id=None,
         if routes:
             return routes
     return old_message_route(
-        self, message, model=model, thread_id=thread_id,
+        self, message, message_dict, model=model, thread_id=thread_id,
         custom_values=custom_values)
 
 MailThread.message_route = types.MethodType(message_route, None, MailThread)

@@ -78,7 +78,7 @@
 	url = git@github.com:camptocamp/server-tools
 [submodule "odoo/external-src/stock-logistics-warehouse"]
 	path = odoo/external-src/stock-logistics-warehouse
-	url = git@github.com:oca/stock-logistics-warehouse
+	url = git@github.com:camptocamp/stock-logistics-warehouse
 [submodule "odoo/external-src/stock-logistics-reporting"]
 	path = odoo/external-src/stock-logistics-reporting
 	url = git@github.com:oca/stock-logistics-reporting

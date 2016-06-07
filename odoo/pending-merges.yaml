@@ -104,6 +104,15 @@
     # 9.0 mail cleanup
     - oca refs/pull/410/head
   target: *default_target
+./external-src/stock-logistics-warehouse:
+  remotes:
+    oca: git@github.com:OCA/stock-logistics-warehouse.git
+    camptocamp: git@github.com:camptocamp/stock-logistics-warehouse.git
+  merges:
+    - oca 9.0
+    # port stock_orderpoint_generator
+    - oca refs/pull/170/head
+  target: *default_target
 ./external-src/stock-logistics-workflow:
   remotes:
     oca: git@github.com:OCA/stock-logistics-workflow.git

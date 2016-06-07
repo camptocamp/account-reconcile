@@ -345,14 +345,17 @@ class SaleOrderImportMapper(ImportMapper, FromAttributes):
                 return {'workflow_process_id': auto_wkf.id}
             return
         method = methods[0]
+        payment_attrs = method[0]['attributes']
         # TODO: field is transaction_id, not yet there
-        transaction_id = method[0]['attributes']['sign']
+        transaction_id = payment_attrs['sign']
+        payment_amount = payment_attrs['amount']
         payment_date = _get_payment_date(method[0])
         return {'payment_mode_id': method[1].id,
                 'qoqa_transaction': transaction_id,
                 # keep as payment's reference
                 'qoqa_payment_id': method[0]['id'],
                 'qoqa_payment_date': payment_date,
+                'qoqa_payment_amount': payment_amount,
                 # used for the reconciliation (transfered to invoice)
                 'transaction_id': method[0]['id']}
 

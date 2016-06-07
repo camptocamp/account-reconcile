@@ -16,6 +16,7 @@
              'sale_stock',
              'qoqa_offer',
              'qoqa_product',
+             'base_transaction_id',   # oca/bank-statement-reconcile
              ],
  'external_dependencies': {
      'python': ['requests',

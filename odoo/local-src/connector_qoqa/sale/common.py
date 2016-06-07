@@ -50,6 +50,11 @@ class QoqaSaleOrder(models.Model):
                                     help="Local date of the payment, "
                                          "used to know if it can be "
                                          "canceled.")
+    qoqa_payment_amount = fields.Float(
+        string='Amount paid on QoQa',
+        digits_compute=dp.get_precision('Account'),
+        readonly=True,
+    )
     # field with name 'transaction' in the main payment
     qoqa_transaction = fields.Char(string='Transaction number of the payment '
                                           'on QoQa',
@@ -367,34 +372,6 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    data=json.dumps({'cancelled': True}))
         self._handle_response(response)
 
-    def refund(self, id, payment_id, amount):
-        """ Create a refund on the QoQa backend, return the payment id """
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        payload = {'action': 'credit',
-                   'params': {'refno': payment_id,
-                              'amount': amount,
-                              }
-                   }
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(payload),
-                                   headers=headers)
-        response = self._handle_response(response)
-        return response['data']['id']
-
-    def cancel_refund(self, id, payment_id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        payload = {'action': 'cancel_refund',
-                   'params': {'refno': payment_id,
-                              }
-                   }
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(payload),
-                                   headers=headers)
-        response = self._handle_response(response)
-        return True
-
     def settle(self, id):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
@@ -416,3 +393,30 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    headers=headers)
         response = self._handle_response(response)
         return response['data']['url']
+
+
+@qoqa
+class QoQaPaymentAdapter(QoQaAdapter):
+    _model_name = 'qoqa.payment'  # virtual model
+    _endpoint = 'admin/payments'
+    _resource = 'payment'
+
+    def refund(self, id, amount):
+        """ Create a credit note on the QoQa backend, return the payment id """
+        url = "{}{}/credit_notes".format(self.url(), id)
+        response = self.client.post(url, data=json.dumps({'amount': amount}))
+        return self._handle_response(response)
+
+    # TODO: not documented yet
+    def cancel_refund(self, id, payment_id):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'cancel_refund',
+                   'params': {'refno': payment_id,
+                              }
+                   }
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        response = self._handle_response(response)
+        return True

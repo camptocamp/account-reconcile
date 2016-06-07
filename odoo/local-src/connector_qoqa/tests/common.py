@@ -245,3 +245,16 @@ class QoQaTransactionCase(common.TransactionCase):
         #         }
         # PaymentMethod = self.registry('payment.method')
         # self.payment_method_id = PaymentMethod.create(cr, uid, vals)
+
+    def create_bindind_no_export(self, model_name, openerp_id, qoqa_id=None,
+                                 **cols):
+        values = {
+            'backend_id': self.backend_record.id,
+            'openerp_id': openerp_id,
+            'qoqa_id': qoqa_id,
+        }
+        if cols:
+            values.update(cols)
+        return self.env[model_name].with_context(
+            connector_no_export=True
+        ).create(values)

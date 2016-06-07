@@ -2,17 +2,6 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-"""
-Add an ``active`` field on the invoice so we can import historic
-invoice as inactive.
-
-The creation of the imported invoices is handled by
-``sale/importer.py``.
-
-Add a link between the refunds and the invoices that generated it.
-
-"""
-
 from openerp import models, fields, api, _
 from openerp.addons.connector.session import ConnectorSession
 from .exporter import create_refund, cancel_refund
@@ -33,13 +22,17 @@ class AccountInvoice(models.Model):
         inverse_name='refund_from_invoice_id',
         string='Refund generated from invoice',
     )
-    # TODO: I doubt it works because the comodel's field is computed.
-    # Check if it is not already declared elsewhere
     sale_order_ids = fields.Many2many(
         comodel_name='sale.order',
+        compute='_compute_sale_order_ids',
         string='Sale Orders',
-        readonly=True,
     )
+
+    @api.depends('invoice_line_ids.sale_line_ids.order_id')
+    def _compute_sale_order_ids(self):
+        for invoice in self:
+            sales = invoice.invoice_line_ids.mapped('sale_line_ids.order_id')
+            invoice.sale_order_ids = sales.ids
 
     @api.model
     def _prepare_refund(self, invoice, date_invoice=None, date=None,

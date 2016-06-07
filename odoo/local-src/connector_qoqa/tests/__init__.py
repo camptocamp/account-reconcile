@@ -5,6 +5,7 @@ from . import test_cancel_order
 from . import test_company_binder
 from . import test_export_product
 from . import test_export_product_attribute
+from . import test_export_refund
 from . import test_import_metadata
 from . import test_import_partner
 from . import test_import_product_images

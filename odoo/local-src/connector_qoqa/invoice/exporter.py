@@ -2,15 +2,13 @@
 # © 2014-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import exceptions, _
-from openerp.tools.float_utils import float_round
+from openerp import _, exceptions
 from openerp.addons.connector.queue.job import job, related_action
 from openerp.addons.connector.unit.synchronizer import Exporter
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
 
 from ..connector import get_environment
 from ..backend import qoqa
-# from ..sale.payment_id_importer import ImportPaymentId
 from ..related_action import unwrap_binding
 
 
@@ -31,25 +29,17 @@ class RefundExporter(Exporter):
             return _('Not a sale from the QoQa backend')
         qsale = sales[0].qoqa_bind_ids[0]
         origin_payment_id = qsale.qoqa_payment_id
-        # TODO: see if it still happens in 2016...
-        # if not origin_payment_id:
-        #     # the payment_id has not been imported during the historic
-        #     # import, retrieve it using a special importer
-        #     importer = self.unit_for(ImportPaymentId, 'qoqa.sale.order')
-        #     importer.get_payment_id(qsale.id)
-        #     origin_payment_id = qsale.qoqa_payment_id
         if not origin_payment_id:
             raise exceptions.UserError(
                 _('Cannot be refund on the QoQa backend because '
                   'no payment ID could be retrieved for the sales order %s') %
                 qsale.name)
-        adapter = self.unit_for(BackendAdapter, 'qoqa.sale.order')
+        adapter = self.unit_for(BackendAdapter, 'qoqa.payment')
         # qoqa uses 2 digits, expressed in integers
-        amount = float_round(refund.amount_total * 100, precision_digits=0)
-        payment_id = adapter.refund(qsale.qoqa_id,
-                                    origin_payment_id,
-                                    int(amount))
-        refund.write({'transaction_id': payment_id})
+        payment = adapter.refund(origin_payment_id,
+                                 refund.amount_total)
+        transaction_id = payment['data']['attributes']['transaction_id']
+        refund.write({'transaction_id': transaction_id})
         # We search move_line to write transaction_ref
         move_lines = self.env['account.move.line'].search(
             [('move_id', '=', refund.move_id.id),
@@ -58,20 +48,21 @@ class RefundExporter(Exporter):
         # TODO: check if we still have account_constraint
         # We deactive the account_constraint check by updating the context
         move_lines.with_context(from_parent_object=True).write(
-            {'transaction_ref': payment_id}
+            {'transaction_ref': transaction_id}
         )
-        return _('Refund created with payment id: %s' % payment_id)
+        return _('Refund created with transaction_id: %s' % transaction_id)
 
 
 @job(default_channel='root.connector_qoqa.fast')
 @related_action(action=unwrap_binding, id_pos=3)
 def create_refund(session, model_name, backend_id, refund_id):
     """ Create a refund """
-    env = get_environment(session, model_name, backend_id)
-    exporter = env.get_connector_unit(RefundExporter)
-    return exporter.run(refund_id)
+    with get_environment(session, model_name, backend_id) as conn_env:
+        exporter = conn_env.get_connector_unit(RefundExporter)
+        return exporter.run(refund_id)
 
 
+# TODO: cancel of refund does not exist yet in the qoqa API
 @qoqa
 class CancelRefundExporter(Exporter):
     _model_name = 'account.invoice'
@@ -90,12 +81,12 @@ class CancelRefundExporter(Exporter):
 
         if not origin_payment_id:
             raise exceptions.UserError(
-                _('Cannot be cancel on the QoQa backend because '
+                _('Cannot be canceled on the QoQa backend because '
                   'no payment ID could be retrieved for the sales order %s') %
                 qsale.name)
-        adapter = self.unit_for(BackendAdapter, 'qoqa.sale.order')
+        adapter = self.unit_for(BackendAdapter, 'qoqa.payment')
 
-        payment_id = adapter.cancel_refund(qsale.qoqa_id, origin_payment_id)
+        payment_id = adapter.cancel_refund(origin_payment_id)
         return _('Cancel refund with payment id: %s' % payment_id)
 
 
@@ -103,6 +94,6 @@ class CancelRefundExporter(Exporter):
 @related_action(action=unwrap_binding, id_pos=3)
 def cancel_refund(session, model_name, backend_id, refund_id):
     """ Cancel a refund """
-    env = get_environment(session, model_name, backend_id)
-    exporter = env.get_connector_unit(CancelRefundExporter)
-    return exporter.run(refund_id)
+    with get_environment(session, model_name, backend_id) as conn_env:
+        exporter = conn_env.get_connector_unit(CancelRefundExporter)
+        return exporter.run(refund_id)

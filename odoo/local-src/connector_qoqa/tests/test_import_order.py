@@ -17,7 +17,8 @@ from .common import recorder, QoQaTransactionCase
 ExpectedOrder = namedtuple(
     'ExpectedOrder',
     'name partner_id partner_invoice_id partner_shipping_id invoice_ref '
-    'client_order_ref qoqa_amount_total qoqa_shop_id offer_id carrier_id'
+    'client_order_ref qoqa_amount_total qoqa_shop_id offer_id carrier_id '
+    'qoqa_payment_amount'
 )
 ExpectedOrderLine = namedtuple(
     'ExpectedOrderLine',
@@ -159,6 +160,7 @@ class TestImportOrder(QoQaTransactionCase):
                 qoqa_shop_id=shop,
                 offer_id=offer,
                 carrier_id=self.carrier_binding.openerp_id,
+                qoqa_payment_amount=6900,
             ),
         ]
         self.assert_records(expected, order)

@@ -22,14 +22,16 @@ class ShopBatchImporter(DirectBatchImporter):
     """
     _model_name = 'qoqa.shop'
 
-    def _import_record(self, record_id):
+    def _import_record(self, record):
         """ Import the record directly.
 
         For the shops, the import does only 1 call to the
         API, it returns the data from all the shops.
         """
         importer = self.unit_for(ShopImporter)
-        importer.run(record_id['id'], record=record_id)
+        # We put the record in 'data' to be consistent with the API
+        # admin/websites/3 that returns it in 'data'
+        importer.run(record['id'], record={'data': record})
 
 
 @qoqa

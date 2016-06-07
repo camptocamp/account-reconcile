@@ -3,7 +3,7 @@
   <record id="view_order_form" model="ir.ui.view">
     <field name="name">sale.order.form</field>
     <field name="model">sale.order</field>
-    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="inherit_id" ref="connector_ecommerce.view_order_connector_form"/>
     <field name="arch" type="xml">
       <button name="action_cancel" position="after">
         <button name="action_force_cancel"
@@ -11,6 +11,50 @@
           type="object"
           groups="base.group_user"/>
       </button>
+      <page name="connector" position="attributes">
+        <attribute name="invisible">0</attribute>
+        <attribute name="groups">connector.group_connector_manager</attribute>
+      </page>
+      <page name="connector" position="inside">
+        <group string="QBindings">
+          <field name="qoqa_bind_ids" nolabel="1"/>
+        </group>
+      </page>
+    </field>
+  </record>
+
+  <!-- binding -->
+  <record id="view_qoqa_sale_order_form" model="ir.ui.view">
+    <field name="name">qoqa.sale.order.form</field>
+    <field name="model">qoqa.sale.order</field>
+    <field name="arch" type="xml">
+      <form string="QoQa Sale">
+        <group>
+          <field name="backend_id"/>
+          <field name="qoqa_id"/>
+        </group>
+        <group>
+          <field name="qoqa_amount_total"/>
+        </group>
+        <group>
+          <field name="invoice_ref"/>
+          <field name="qoqa_payment_id"/>
+          <field name="qoqa_payment_date"/>
+          <field name="qoqa_transaction"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_qoqa_sale_order_tree" model="ir.ui.view">
+    <field name="name">qoqa.sale.order.tree</field>
+    <field name="model">qoqa.sale.order</field>
+    <field name="arch" type="xml">
+      <tree string="QoQa Sale">
+        <field name="backend_id"/>
+        <field name="qoqa_id"/>
+        <field name="qoqa_amount_total"/>
+      </tree>
     </field>
   </record>
 </odoo>

@@ -28,27 +28,32 @@ class QoqaSaleOrder(models.Model):
                                  required=True,
                                  index=True,
                                  ondelete='restrict')
-    created_at = fields.Datetime(string='Created At (on QoQa)')
-    updated_at = fields.Datetime(string='Updated At (on QoQa)')
+    created_at = fields.Datetime(string='Created At (on QoQa)', readonly=True)
+    updated_at = fields.Datetime(string='Updated At (on QoQa)', readonly=True)
     qoqa_order_line_ids = fields.One2many(
         comodel_name='qoqa.sale.order.line',
         inverse_name='qoqa_order_id',
         string='QoQa Order Lines',
+        readonly=True,
     )
     qoqa_amount_total = fields.Float(
         string='Total amount on QoQa',
         digits_compute=dp.get_precision('Account'),
+        readonly=True,
     )
-    invoice_ref = fields.Char(string='Invoice Ref. on QoQa')
+    invoice_ref = fields.Char(string='Invoice Ref. on QoQa', readonly=True)
     # id of the main payment on qoqa, used as key for reconciliation
-    qoqa_payment_id = fields.Char(string='ID of the payment on QoQa')
+    qoqa_payment_id = fields.Char(string='ID of the payment on QoQa',
+                                  readonly=True)
     qoqa_payment_date = fields.Date(string='Date of the payment',
+                                    readonly=True,
                                     help="Local date of the payment, "
                                          "used to know if it can be "
                                          "canceled.")
     # field with name 'transaction' in the main payment
     qoqa_transaction = fields.Char(string='Transaction number of the payment '
-                                          'on QoQa')
+                                          'on QoQa',
+                                   readonly=True)
 
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',

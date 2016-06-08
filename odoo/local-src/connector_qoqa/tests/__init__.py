@@ -12,6 +12,7 @@ from . import test_import_product_images
 from . import test_import_offer
 from . import test_import_order
 from . import test_iso8601
+from . import test_settle_order
 
 # import test_product_attribute_exporter
 # import test_import_voucher

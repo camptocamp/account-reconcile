@@ -372,14 +372,6 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    data=json.dumps({'cancelled': True}))
         self._handle_response(response)
 
-    def settle(self, id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url + str(id),
-                                   data=json.dumps({'action': 'settled'}),
-                                   headers=headers)
-        self._handle_response(response)
-
     def pay_by_email_url(self, id, claim, amount):
         url = self.url(with_lang=False)
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
@@ -400,6 +392,11 @@ class QoQaPaymentAdapter(QoQaAdapter):
     _model_name = 'qoqa.payment'  # virtual model
     _endpoint = 'admin/payments'
     _resource = 'payment'
+
+    def settle(self, id):
+        url = "{}{}/settle".format(self.url(), id)
+        response = self.client.post(url)
+        self._handle_response(response)
 
     def refund(self, id, amount):
         """ Create a credit note on the QoQa backend, return the payment id """

@@ -6,7 +6,7 @@
 import logging
 from openerp import _
 from openerp.addons.connector.queue.job import job, related_action
-from openerp.addons.connector.unit.synchronizer import Exporter
+from openerp.addons.connector.unit.synchronizer import Exporter, BackendAdapter
 from ..connector import get_environment
 from ..backend import qoqa
 from ..related_action import unwrap_binding
@@ -36,7 +36,8 @@ class SettleSalesOrder(Exporter):
         qoqa_id = self.binder.to_backend(binding_id)
         if not qoqa_id:
             return _('Sales order does not exist on QoQa')
-        self.backend_adapter.settle(qoqa_id)
+        adapter = self.unit_for(BackendAdapter, model='qoqa.payment')
+        adapter.settle(qoqa_id)
         return _('Sales order settled on QoQa')
 
 

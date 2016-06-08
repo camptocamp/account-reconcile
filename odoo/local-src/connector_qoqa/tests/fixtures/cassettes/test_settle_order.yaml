@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/payments/6/settle
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 6}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Fri, 24 Jun 2016 12:37:08 GMT']
+      etag: [W/"e1598e2783a3e76a2aaf39a9b0d43d64"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [aa91b5a1-9f05-4f49-a899-4e60206ff0e5]
+      x-runtime: ['0.139135']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

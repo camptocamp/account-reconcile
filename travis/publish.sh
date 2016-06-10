@@ -18,7 +18,7 @@ function deploy {
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
 
-  if [ "$TRAVIS_BRANCH" == "master" ]; then
+  if [ "$TRAVIS_BRANCH" == "9.0" ]; then
     echo "Deploying image to docker hub for master (latest)"
     docker tag qoqa_odoo camptocamp/qoqa_openerp:latest
     docker push "camptocamp/qoqa_openerp:latest"

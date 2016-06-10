@@ -18,6 +18,7 @@ env:
     - COMPOSE_PROJECT_NAME=qoqa
 
 before_install:
+  - openssl aes-256-cbc -K $encrypted_deb6d4f0542c_key -iv $encrypted_deb6d4f0542c_iv -in .rancher.env.enc -out .rancher.env -d
   - sudo apt-get update
   - sudo DEBIAN_FRONTEND=noninteractive apt-get install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" docker-engine --yes --force-yes
   - sudo rm /usr/local/bin/docker-compose
@@ -27,7 +28,6 @@ before_install:
   - git config --global user.name "TravisCI"
   - git config --global user.email "travis@camptocamp.com"
   - if [ "$LINT_CHECK" == "1" ] ; then pip install --user -q flake8 ; fi
-
 install:
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule init ; fi
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule update ; fi

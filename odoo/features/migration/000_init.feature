@@ -1,23 +1,42 @@
 # -*- coding: utf-8 -*-
-###############################################################################
-#
-#    OERPScenario, OpenERP Functional Tests
-#    Copyright 2016 Camptocamp SA
-#
-##############################################################################
-
-# Features Generic tags (none for all)
-##############################################################################
-# Branch      # Module       # Processes     # System
-@migration @9.0
+@migration @9.0 @qoqa
 
 Feature: Parameter the new database
   In order to have a coherent installation
   I've automated the manual steps.
 
-  @no_login
-  Scenario: CREATE DATABASE
-    Given I find or create database from config file
+  @clean
+  Scenario: when we receive the database from the migration service, addons are 'to upgrade', set them to uninstalled.
+    Given I execute the SQL commands
+    """
+    UPDATE ir_module_module set state = 'uninstalled' where state IN ('to install', 'to upgrade');
+    """
+
+  @clean
+  Scenario: remove the 'retry missing' flag on cron to avoid having them running again and again
+    Given I execute the SQL commands
+    """
+    UPDATE ir_cron SET doall = false WHERE doall = true;
+    """
+
+  @clean
+  Scenario: clean the stuff of old modules
+    Given I delete all the ir.ui.view records created by uninstalled modules
+    And I delete all the assembled.report records created by uninstalled modules
+    And I delete all the ir.actions.act_window records created by uninstalled modules
+    And I delete all the ir.actions.act_window.view records created by uninstalled modules
+    And I delete all the ir.actions.client records created by uninstalled modules
+    And I delete all the ir.actions.report.xml records created by uninstalled modules
+    And I delete all the ir.actions.server records created by uninstalled modules
+    And I delete all the ir.cron records created by uninstalled modules
+    And I delete all the ir.rule records created by uninstalled modules
+    And I delete all the ir.ui.menu records created by uninstalled modules
+    And I delete all the ir.values records created by uninstalled modules
+    And I delete the broken ir.values
+
+  @update_module_list
+  Scenario: Update module list before updating to avoid draging old dependancies
+  Given I update the module list
 
   @modules
   Scenario: install modules

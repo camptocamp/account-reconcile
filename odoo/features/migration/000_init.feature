@@ -34,6 +34,15 @@ Feature: Parameter the new database
     And I delete all the ir.values records created by uninstalled modules
     And I delete the broken ir.values
 
+  @move_wine_xmlid
+  Scenario: Move wine_ch_report xmlids to qoqa_product
+    Given I execute the SQL commands
+    """
+    UPDATE ir_model_data SET module = 'qoqa_product'
+    WHERE module = 'wine_ch_report'
+    AND model in ('wine.class', 'wine.bottle')
+    """
+
   @update_module_list
   Scenario: Update module list before updating to avoid draging old dependancies
   Given I update the module list

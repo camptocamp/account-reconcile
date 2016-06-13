@@ -354,3 +354,34 @@ Feature: Parameter the new database
     """
     UPDATE product_template SET wine_region = x_wine_region WHERE x_wine_region IS NOT NULL
     """
+
+  @sale_shop
+  Scenario: migrate sale.shop to qoqa.shop
+    # TODO: add fields that do not exist yet
+    Given I execute the SQL commands
+    """
+    UPDATE qoqa_shop q
+    SET name = s.name,
+        kanban_image = s.kanban_image,
+        company_id = s.company_id
+    -- TODO:
+    -- postlogistics_logo, swiss_pp_logo, mail_signature_template
+    FROM sale_shop s
+    WHERE s.id = q.openerp_id
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE crm_claim c
+    SET qoqa_shop_id = q.id
+    FROM qoqa_shop q
+    WHERE q.openerp_id = c.shop_id
+    AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE sale_order c
+    SET qoqa_shop_id = q.id
+    FROM qoqa_shop q
+    WHERE q.openerp_id = c.shop_id
+    AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
+    """

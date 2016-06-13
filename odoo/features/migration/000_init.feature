@@ -437,7 +437,6 @@ Feature: Parameter the new database
     """
     UPDATE qoqa_shop q
     SET name = s.name,
-        kanban_image = s.kanban_image,
         company_id = s.company_id
     -- TODO:
     -- postlogistics_logo, swiss_pp_logo, mail_signature_template
@@ -469,4 +468,38 @@ Feature: Parameter the new database
     SET prefix = 'SOS-'
     WHERE code = 'crm.claim.rma.customer'
     """
-    ANd I copy the sequence next number from "crm.claim.rma" to "crm.claim.rma.customer"
+    And I copy the sequence next number from "crm.claim.rma" to "crm.claim.rma.customer"
+
+  @payment_method
+  Scenario: migrate payment.method → account.payement.mode
+    Given I execute the SQL commands
+    """
+    INSERT INTO account_payment_mode (
+      create_uid, write_uid, create_date, write_date,
+      name, company_id, active, bank_account_link,
+      fixed_journal_id, payment_method_id, workflow_process_id,
+      days_before_cancel, import_rule, sequence,
+      payment_cancellable_on_qoqa, qoqa_id,
+      gift_card, payment_settlable_on_qoqa
+      )
+      SELECT
+      create_uid, write_uid, create_date, write_date,
+      name, COALESCE(company_id, 3), active, 'fixed',
+      journal_id, 1, workflow_process_id,
+      days_before_cancel, import_rule, sequence,
+      payment_cancellable_on_qoqa, qoqa_id,
+      gift_card, payment_settlable_on_qoqa
+      FROM payment_method
+      WHERE NOT EXISTS (SELECT id FROM account_payment_mode WHERE name = payment_method.name)
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE sale_order s
+    SET payment_mode_id = m.id
+    FROM account_payment_mode m
+    INNER JOIN payment_method p
+    ON p.name = m.name
+    WHERE p.id = s.payment_method_id
+    AND s.payment_method_id IS NOT NULL AND s.payment_mode_id IS NULL
+    """
+    And I recompute the function fields of the payment modes

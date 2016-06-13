@@ -9,4 +9,4 @@ from openerp import fields, models
 class CrmClaim(models.Model):
     _inherit = "crm.claim"
 
-    shop_id = fields.Many2one('qoqa.shop', 'Shop', index=True)
+    qoqa_shop_id = fields.Many2one('qoqa.shop', 'Shop', index=True)

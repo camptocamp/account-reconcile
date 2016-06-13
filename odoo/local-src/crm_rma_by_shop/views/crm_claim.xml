@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="crm_claim.crm_case_claims_tree_view"/>
         <field name="arch" type="xml">
             <field name="user_id" position="before">
-                <field name="shop_id"/>
+                <field name="qoqa_shop_id"/>
             </field>
         </field>
     </record>
@@ -19,7 +19,7 @@
         <field name="inherit_id" ref="crm_claim.crm_case_claims_form_view"/>
         <field name="arch" type="xml">
             <field name="team_id" position="before">
-                <field name="shop_id"/>
+                <field name="qoqa_shop_id"/>
             </field>
         </field>
     </record>
@@ -31,7 +31,7 @@
         <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//group/filter" position="before">
-                <filter string="Shop" domain="[]" context="{'group_by':'shop_id'}"/>
+                <filter string="Shop" domain="[]" context="{'group_by':'qoqa_shop_id'}"/>
             </xpath>
         </field>
     </record>

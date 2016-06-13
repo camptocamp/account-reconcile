@@ -200,9 +200,9 @@ Feature: Parameter the new database
          | currency_id               | by name: CHF |
     Given the company has the "images/logo_qoqa_ch.png" logo
 
-  @product_attributes
+  @product_attribute_variants
   Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
-    Given I migrate the product attributes
+    Given I migrate the product attribute variants
 
   @product_brand
   Scenario: migrate char field 'brand' to product_brand addon
@@ -218,4 +218,139 @@ Feature: Parameter the new database
     UPDATE product_template
     SET product_brand_id = (SELECT id FROM product_brand WHERE name = product_template.brand)
     WHERE brand IS NOT NULL and product_brand_id IS NULL
+    """
+
+  @product_attributes
+  Scenario: migrate product dynamic attributes to regular fields
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET is_wine = True
+    WHERE attribute_set_id = (
+      SELECT id FROM attribute_set
+      WHERE id = (
+        SELECT res_id FROM ir_model_data
+        WHERE model = 'attribute.set'
+        AND name = 'set_wine'
+      )
+    )
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET is_liquor = True
+    WHERE attribute_set_id = (
+      SELECT id FROM attribute_set
+      WHERE id = (
+        SELECT res_id FROM ir_model_data
+        WHERE model = 'attribute.set'
+        AND name = 'set_liquor'
+      )
+    )
+    """
+    Given I execute the SQL commands
+    """
+    INSERT INTO wine_winemaker (name, create_date, write_date, create_uid, write_uid)
+    SELECT TRIM(o.name),
+           MIN(o.create_date),
+           MIN(o.write_date),
+           MIN(o.create_uid),
+           MIN(o.write_uid)
+      FROM product_template t
+      INNER JOIN attribute_option o
+      ON o.id = t.x_winemaker
+      AND o.attribute_id = (
+        SELECT id
+        FROM attribute_attribute
+        WHERE field_id = (
+          SELECT id FROM ir_model_fields
+          WHERE name = 'x_winemaker' AND model = 'product.template'
+        )
+      )
+      WHERE t.x_winemaker IS NOT NULL
+      AND NOT EXISTS (SELECT id FROM wine_winemaker WHERE name = TRIM(o.name))
+      GROUP BY TRIM(o.name)
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template t
+    SET winemaker_id = (
+      SELECT w.id
+      FROM wine_winemaker w
+      INNER JOIN attribute_option o
+      ON TRIM(o.name) = w.name
+      INNER JOIN attribute_attribute a
+      ON a.id = o.attribute_id
+      INNER JOIN ir_model_fields f
+      ON f.id = a.field_id
+      AND f.name = 'x_winemaker' AND f.model = 'product.template'
+      WHERE o.id = t.x_winemaker
+    )
+    WHERE x_winemaker IS NOT NULL AND winemaker_id IS NULL;
+    """
+    Given I execute the SQL commands
+    """
+    INSERT INTO wine_type (name, create_date, write_date, create_uid, write_uid)
+    SELECT TRIM(o.name),
+           MIN(o.create_date),
+           MIN(o.write_date),
+           MIN(o.create_uid),
+           MIN(o.write_uid)
+      FROM product_template t
+      INNER JOIN attribute_option o
+      ON o.id = t.x_wine_type
+      AND o.attribute_id = (
+        SELECT id
+        FROM attribute_attribute
+        WHERE field_id = (
+          SELECT id FROM ir_model_fields
+          WHERE name = 'x_wine_type' AND model = 'product.template'
+        )
+      )
+      WHERE t.x_wine_type IS NOT NULL
+      AND NOT EXISTS (SELECT id FROM wine_type WHERE name = TRIM(o.name))
+      GROUP BY TRIM(o.name)
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template t
+    SET wine_type_id = (
+      SELECT w.id
+      FROM wine_type w
+      INNER JOIN attribute_option o
+      ON TRIM(o.name) = w.name
+      INNER JOIN attribute_attribute a
+      ON a.id = o.attribute_id
+      INNER JOIN ir_model_fields f
+      ON f.id = a.field_id
+      AND f.name = 'x_wine_type' AND f.model = 'product.template'
+      WHERE o.id = t.x_wine_type
+    )
+    WHERE x_wine_type IS NOT NULL AND wine_type_id IS NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET appellation = x_appellation WHERE x_appellation IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET millesime = x_millesime WHERE x_millesime IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET country_id = x_country_id WHERE x_country_id IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET ageing = x_ageing WHERE x_ageing IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET abv = x_abv WHERE x_abv IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET wine_short_name = x_wine_short_name WHERE x_wine_short_name IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET wine_region = x_wine_region WHERE x_wine_region IS NOT NULL
     """

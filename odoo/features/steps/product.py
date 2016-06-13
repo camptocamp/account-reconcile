@@ -60,7 +60,7 @@ def newcr(ctx):
             cr.commit()
 
 
-@given('I migrate the product attributes')
+@given('I migrate the product attribute variants')
 def impl(ctx):
     with newcr(ctx) as cr:
         cr.execute("SELECT * FROM product_variant_dimension_type")

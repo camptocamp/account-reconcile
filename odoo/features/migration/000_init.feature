@@ -194,3 +194,19 @@ Feature: Parameter the new database
   @product_attributes
   Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
     Given I migrate the product attributes
+
+  @product_brand
+  Scenario: migrate char field 'brand' to product_brand addon
+    Given I execute the SQL commands
+    """
+    INSERT INTO product_brand (name)
+    SELECT distinct brand FROM product_template t
+    WHERE NOT EXISTS (SELECT id FROM product_brand WHERE name = t.brand)
+    AND brand IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template
+    SET product_brand_id = (SELECT id FROM product_brand WHERE name = product_template.brand)
+    WHERE brand IS NOT NULL and product_brand_id IS NULL
+    """

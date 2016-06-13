@@ -190,3 +190,7 @@ Feature: Parameter the new database
          | name                      | QoQa Holding |
          | currency_id               | by name: CHF |
     Given the company has the "images/logo_qoqa_ch.png" logo
+
+  @product_attributes
+  Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
+    Given I migrate the product attributes

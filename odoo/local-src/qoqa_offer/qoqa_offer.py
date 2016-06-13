@@ -24,7 +24,7 @@ class QoqaOffer(models.Model):
     @api.multi
     def action_view_sale_order(self):
         action = self.env.ref('sale.action_orders')
-        action = action.read()
+        action = action.read()[0]
         action['domain'] = str([('offer_id', 'in', self.ids)])
         return action
 

@@ -17,6 +17,12 @@
       type: "password"
       required: true
       default: "odoo"
+    - variable: "DB_PORT"
+      label: "Port of database"
+      description: "Port to use when connecting to DB"
+      type: "integer"
+      required: true
+      default: "5432"
     - variable: "DB_NAME"
       label: "Database name"
       description: "name of database to create for odoo"

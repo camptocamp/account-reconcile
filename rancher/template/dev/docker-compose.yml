@@ -9,6 +9,7 @@ odoo:
     - DB_USER=${DB_USER}
     - DB_PASSWORD=${DB_PASSWORD}
     - DB_NAME=${DB_NAME}
+    - DB_PORT=${DB_PORT}
     - ADMIN_PASSWD=${ADMIN_PASSWD}
 
 # TODO replace this to use external service

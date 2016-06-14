@@ -13,7 +13,7 @@ odoo:
 
 # TODO replace this to use external service
 db:
-  image: camptocamp/postgresql:9.5
+  image: camptocamp/postgresql:pg9.5-latest
   environment:
     - POSTGRES_USER=${DB_USER}
     - POSTGRES_PASSWORD=${DB_PASSWORD}

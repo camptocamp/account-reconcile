@@ -1,23 +1,51 @@
 # -*- coding: utf-8 -*-
-###############################################################################
-#
-#    OERPScenario, OpenERP Functional Tests
-#    Copyright 2016 Camptocamp SA
-#
-##############################################################################
-
-# Features Generic tags (none for all)
-##############################################################################
-# Branch      # Module       # Processes     # System
-@migration @9.0
+@migration @9.0 @qoqa
 
 Feature: Parameter the new database
   In order to have a coherent installation
   I've automated the manual steps.
 
-  @no_login
-  Scenario: CREATE DATABASE
-    Given I find or create database from config file
+  @clean
+  Scenario: when we receive the database from the migration service, addons are 'to upgrade', set them to uninstalled.
+    Given I execute the SQL commands
+    """
+    UPDATE ir_module_module set state = 'uninstalled' where state IN ('to install', 'to upgrade');
+    """
+
+  @clean
+  Scenario: remove the 'retry missing' flag on cron to avoid having them running again and again
+    Given I execute the SQL commands
+    """
+    UPDATE ir_cron SET doall = false WHERE doall = true;
+    """
+
+  @clean
+  Scenario: clean the stuff of old modules
+    Given I delete all the ir.ui.view records created by uninstalled modules
+    And I delete all the assembled.report records created by uninstalled modules
+    And I delete all the ir.actions.act_window records created by uninstalled modules
+    And I delete all the ir.actions.act_window.view records created by uninstalled modules
+    And I delete all the ir.actions.client records created by uninstalled modules
+    And I delete all the ir.actions.report.xml records created by uninstalled modules
+    And I delete all the ir.actions.server records created by uninstalled modules
+    And I delete all the ir.cron records created by uninstalled modules
+    And I delete all the ir.rule records created by uninstalled modules
+    And I delete all the ir.ui.menu records created by uninstalled modules
+    And I delete all the ir.values records created by uninstalled modules
+    And I delete the broken ir.values
+
+  @move_wine_xmlid
+  Scenario: Move wine_ch_report xmlids to qoqa_product
+    Given I execute the SQL commands
+    """
+    UPDATE ir_model_data SET module = 'qoqa_product'
+    WHERE module = 'wine_ch_report'
+    AND model in ('wine.class', 'wine.bottle')
+    """
+
+  @update_module_list
+  Scenario: Update module list before updating to avoid draging old dependancies
+  Given I update the module list
 
   @modules
   Scenario: install modules
@@ -99,6 +127,8 @@ Feature: Parameter the new database
         #---- OCA/server-tools ---------------------------#
         | mail_cleanup                                    |
         | mail_environment                                |
+        #---- OCA/stock-logistics-warehouse --------------#
+        | stock_orderpoint_generator                      |
         #---- OCA/stock-logistics-workflow ---------------#
         #| picking_dispatch                                |
         #---- OCA/web ------------------------------------#
@@ -170,3 +200,189 @@ Feature: Parameter the new database
          | name                      | QoQa Holding |
          | currency_id               | by name: CHF |
     Given the company has the "images/logo_qoqa_ch.png" logo
+
+  @product_attribute_variants
+  Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
+    Given I migrate the product attribute variants
+
+  @product_brand
+  Scenario: migrate char field 'brand' to product_brand addon
+    Given I execute the SQL commands
+    """
+    INSERT INTO product_brand (name)
+    SELECT distinct brand FROM product_template t
+    WHERE NOT EXISTS (SELECT id FROM product_brand WHERE name = t.brand)
+    AND brand IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template
+    SET product_brand_id = (SELECT id FROM product_brand WHERE name = product_template.brand)
+    WHERE brand IS NOT NULL and product_brand_id IS NULL
+    """
+
+  @product_attributes
+  Scenario: migrate product dynamic attributes to regular fields
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET is_wine = True
+    WHERE attribute_set_id = (
+      SELECT id FROM attribute_set
+      WHERE id = (
+        SELECT res_id FROM ir_model_data
+        WHERE model = 'attribute.set'
+        AND name = 'set_wine'
+      )
+    )
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET is_liquor = True
+    WHERE attribute_set_id = (
+      SELECT id FROM attribute_set
+      WHERE id = (
+        SELECT res_id FROM ir_model_data
+        WHERE model = 'attribute.set'
+        AND name = 'set_liquor'
+      )
+    )
+    """
+    Given I execute the SQL commands
+    """
+    INSERT INTO wine_winemaker (name, create_date, write_date, create_uid, write_uid)
+    SELECT TRIM(o.name),
+           MIN(o.create_date),
+           MIN(o.write_date),
+           MIN(o.create_uid),
+           MIN(o.write_uid)
+      FROM product_template t
+      INNER JOIN attribute_option o
+      ON o.id = t.x_winemaker
+      AND o.attribute_id = (
+        SELECT id
+        FROM attribute_attribute
+        WHERE field_id = (
+          SELECT id FROM ir_model_fields
+          WHERE name = 'x_winemaker' AND model = 'product.template'
+        )
+      )
+      WHERE t.x_winemaker IS NOT NULL
+      AND NOT EXISTS (SELECT id FROM wine_winemaker WHERE name = TRIM(o.name))
+      GROUP BY TRIM(o.name)
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template t
+    SET winemaker_id = (
+      SELECT w.id
+      FROM wine_winemaker w
+      INNER JOIN attribute_option o
+      ON TRIM(o.name) = w.name
+      INNER JOIN attribute_attribute a
+      ON a.id = o.attribute_id
+      INNER JOIN ir_model_fields f
+      ON f.id = a.field_id
+      AND f.name = 'x_winemaker' AND f.model = 'product.template'
+      WHERE o.id = t.x_winemaker
+    )
+    WHERE x_winemaker IS NOT NULL AND winemaker_id IS NULL;
+    """
+    Given I execute the SQL commands
+    """
+    INSERT INTO wine_type (name, create_date, write_date, create_uid, write_uid)
+    SELECT TRIM(o.name),
+           MIN(o.create_date),
+           MIN(o.write_date),
+           MIN(o.create_uid),
+           MIN(o.write_uid)
+      FROM product_template t
+      INNER JOIN attribute_option o
+      ON o.id = t.x_wine_type
+      AND o.attribute_id = (
+        SELECT id
+        FROM attribute_attribute
+        WHERE field_id = (
+          SELECT id FROM ir_model_fields
+          WHERE name = 'x_wine_type' AND model = 'product.template'
+        )
+      )
+      WHERE t.x_wine_type IS NOT NULL
+      AND NOT EXISTS (SELECT id FROM wine_type WHERE name = TRIM(o.name))
+      GROUP BY TRIM(o.name)
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template t
+    SET wine_type_id = (
+      SELECT w.id
+      FROM wine_type w
+      INNER JOIN attribute_option o
+      ON TRIM(o.name) = w.name
+      INNER JOIN attribute_attribute a
+      ON a.id = o.attribute_id
+      INNER JOIN ir_model_fields f
+      ON f.id = a.field_id
+      AND f.name = 'x_wine_type' AND f.model = 'product.template'
+      WHERE o.id = t.x_wine_type
+    )
+    WHERE x_wine_type IS NOT NULL AND wine_type_id IS NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET appellation = x_appellation WHERE x_appellation IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET millesime = x_millesime WHERE x_millesime IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET country_id = x_country_id WHERE x_country_id IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET ageing = x_ageing WHERE x_ageing IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET abv = x_abv WHERE x_abv IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET wine_short_name = x_wine_short_name WHERE x_wine_short_name IS NOT NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE product_template SET wine_region = x_wine_region WHERE x_wine_region IS NOT NULL
+    """
+
+  @sale_shop
+  Scenario: migrate sale.shop to qoqa.shop
+    # TODO: add fields that do not exist yet
+    Given I execute the SQL commands
+    """
+    UPDATE qoqa_shop q
+    SET name = s.name,
+        kanban_image = s.kanban_image,
+        company_id = s.company_id
+    -- TODO:
+    -- postlogistics_logo, swiss_pp_logo, mail_signature_template
+    FROM sale_shop s
+    WHERE s.id = q.openerp_id
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE crm_claim c
+    SET qoqa_shop_id = q.id
+    FROM qoqa_shop q
+    WHERE q.openerp_id = c.shop_id
+    AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE sale_order c
+    SET qoqa_shop_id = q.id
+    FROM qoqa_shop q
+    WHERE q.openerp_id = c.shop_id
+    AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
+    """

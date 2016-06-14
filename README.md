@@ -36,5 +36,6 @@ You'll find a [Docker guide for the development](./docs/docker-dev.md) and on fo
 * [How to integrate an open pull request of an external repository](./docs/how-to-integrate-pull-request.md)
 * [How to connect to psql in Docker](./docs/how-to-connect-to-docker-psql.md)
 * [How to change Odoo configuration values](./docs/how-to-set-odoo-configuration-values.md)
+* [How to backup and restore volumes](./docs/how-to-backup-and-restore-volumes.md)
 
 The changelog is in [HISTORY.rst](HISTORY.rst).

@@ -55,5 +55,5 @@ dataodoo:
 datadb:
   image: debian:jessie
   volumes:
-    - /var/lib/postgresql
+    - /var/lib/postgresql/data
   command: "true"

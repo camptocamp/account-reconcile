@@ -96,6 +96,7 @@ class WineClass(models.Model):
     parent_id = fields.Many2one(
         comodel_name='wine.class',
         string='Parent class',
+        ondelete='cascade',
     )
     child_ids = fields.One2many(
         comodel_name='wine.class',

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-from support import *
 import logging
+
+from contextlib import closing, contextmanager
+from support import *
 from support.tools import model
 
 logger = logging.getLogger('openerp.behave')
@@ -40,3 +42,69 @@ def impl(ctx):
     products = [variant for tmpl in templates for variant in tmpl.variant_ids]
     for product in products:
         product.write({'standard_price': product.standard_price})
+
+
+@contextmanager
+def newcr(ctx):
+    openerp = ctx.conf['server']
+    db_name = ctx.conf['db_name']
+
+    registry = openerp.modules.registry.RegistryManager.new(db_name)
+    with closing(registry.cursor()) as cr:
+        try:
+            yield cr
+        except:
+            cr.rollback()
+            raise
+        else:
+            cr.commit()
+
+
+@given('I migrate the product attribute variants')
+def impl(ctx):
+    with newcr(ctx) as cr:
+        cr.execute("SELECT * FROM product_variant_dimension_type")
+        for dimension_type in cr.dictfetchall():
+            cr.execute(
+                'SELECT id FROM product_attribute '
+                'WHERE name = %s ',
+                (dimension_type['name'],)
+            )
+            row = cr.fetchone()
+            if row:
+                attribute_id = row[0]
+            else:
+                cr.execute(
+                    'INSERT INTO product_attribute '
+                    '(name, create_date, write_date, create_uid, write_uid) '
+                    'VALUES (%s, %s, %s, %s, %s) '
+                    'RETURNING id',
+                    (dimension_type['name'],
+                     dimension_type['create_date'],
+                     dimension_type['write_date'],
+                     dimension_type['create_uid'],
+                     dimension_type['write_uid'])
+                )
+                attribute_id = cr.fetchone()[0]
+            cr.execute('SELECT * from product_variant_dimension_option '
+                       'WHERE type_id = %s', (dimension_type['id'],))
+            for option in cr.dictfetchall():
+                    cr.execute(
+                        'SELECT id FROM product_attribute_value '
+                        'WHERE attribute_id = %s '
+                        'AND name = %s ',
+                        (attribute_id, option['name'])
+                    )
+                    if not cr.fetchone():
+                        cr.execute(
+                            'INSERT INTO product_attribute_value '
+                            '(attribute_id, name, create_date, write_date, '
+                            ' create_uid, write_uid) '
+                            'VALUES (%s, %s, %s, %s, %s, %s) ',
+                            (attribute_id,
+                             option['name'],
+                             option['create_date'],
+                             option['write_date'],
+                             option['create_uid'],
+                             option['write_uid'])
+                        )

@@ -156,6 +156,7 @@ Feature: Parameter the new database
         #| server_env_connector_qoqa                       |
         #| specific_fct                                    |
         #| specific_report                                 |
+        | speedy_views                                    |
         #| web_custom                                      |
         | web_environment |
         #| wine_ch_report                                  |

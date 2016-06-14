@@ -1,0 +1,55 @@
+.catalog:
+  name: "QoQa Odoo"
+  version: "v9.0.0.1"
+  description: "Odoo"
+  uuid: qoqa-odoo-int-9001
+  minimum_rancher_version: v0.44.0
+  question:
+    - variable: "DB_USER"
+      label: "Login of database"
+      description: "Username to use when connecting to DB"
+      type: "string"
+      required: true
+      default: "odoo"
+    - variable: "DB_PASSWORD"
+      label: "Password of database"
+      description: "Password for odoo dedicated database (default: odoo)"
+      type: "password"
+      required: true
+      default: "odoo"
+    - variable: "DB_PORT"
+      label: "Port of database"
+      description: "Port to use when connecting to DB"
+      type: "integer"
+      required: true
+      default: "5432"
+    - variable: "DB_NAME"
+      label: "Database name"
+      description: "name of database to create for odoo"
+      type: "string"
+      required: true
+      default: "odoo"
+    - variable: "SCENARIO_MAIN_TAG"
+      label: "Scenario tag"
+      description: "Tag used in scenarii for this project e.g. c2c"
+      required: true
+    - variable: "ADMIN_PASSWD"
+      label: "admin_passwd"
+      description: "Master password for database management"
+      type: "password"
+      required: false
+    - variable: "RUNNING_ENV"
+      label: "running_env"
+      description: "Server environment (test, prod, ...). (server_environment_files addon)"
+      type: "string"
+      required: true
+
+nginx:
+  scale: 1
+db:
+  scale: 1
+odoo:
+  scale: 1
+
+external-db:
+  hostname: odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com

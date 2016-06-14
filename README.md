@@ -28,6 +28,7 @@ You'll find a [Docker guide for the development](./docs/docker-dev.md) and on fo
 * [Releases and versioning](./docs/releases.md)
 * [Pull Requests](./docs/pull-requests.md)
 * [Upgrade scripts](./docs/upgrade-scripts.md)
+* [Automated rancher build](./docs/rancher.md)
 
 ## How-to
 

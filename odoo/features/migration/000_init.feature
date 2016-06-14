@@ -437,7 +437,8 @@ Feature: Parameter the new database
     """
     UPDATE qoqa_shop q
     SET name = s.name,
-        company_id = s.company_id
+        company_id = s.company_id,
+        analytic_account_id = s.project_id
     -- TODO:
     -- postlogistics_logo, swiss_pp_logo, mail_signature_template
     FROM sale_shop s
@@ -503,3 +504,12 @@ Feature: Parameter the new database
     AND s.payment_method_id IS NOT NULL AND s.payment_mode_id IS NULL
     """
     And I recompute the function fields of the payment modes
+
+  @connector_qoqa
+  Scenario: migrate connector's stuff
+  Given I execute the SQL commands
+  """
+  UPDATE qoqa_backend_timestamp
+  SET from_date_field = 'import_discount_accounting_from_date'
+  WHERE from_date_field = 'import_accounting_issuance_from_date'
+  """

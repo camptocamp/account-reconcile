@@ -21,7 +21,6 @@ from openerp import models, fields, api, exceptions, _
 from openerp.addons.connector.session import ConnectorSession
 from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
 from ..unit.importer import import_batch, import_batch_divider, import_record
-from ..accounting_issuance.importer import import_accounting_issuance
 from ..backend import qoqa
 from ..connector import get_environment
 from ..exception import QoQaAPIAuthError
@@ -91,10 +90,10 @@ class QoqaBackend(models.Model):
         inverse='_inverse_import_sale_order_from_date',
         string='Import Sales Orders from date',
     )
-    import_accounting_issuance_from_date = fields.Datetime(
+    import_discount_accounting_from_date = fields.Datetime(
         compute='_compute_last_import_date',
-        inverse='_inverse_import_account_issuance_from_date',
-        string='Import Accounting Issuances from date',
+        inverse='_inverse_import_discount_accounting_from_date',
+        string='Import Discount Accounting from date',
     )
     import_offer_from_date = fields.Datetime(
         compute='_compute_last_import_date',
@@ -110,8 +109,8 @@ class QoqaBackend(models.Model):
     import_sale_id = fields.Char(string='Sales Order ID')
     import_variant_id = fields.Char(string='Variant ID')
     import_offer_id = fields.Char(string='Offer ID')
-    import_accounting_issuance_id = fields.Char(
-        string='Accounting Issuance ID'
+    import_discount_accounting_id = fields.Char(
+        string='Discount Accounting Group ID'
     )
     import_address_id = fields.Char(string='Address ID')
 
@@ -153,8 +152,8 @@ class QoqaBackend(models.Model):
         self._inverse_date_fields(ts_field)
 
     @api.multi
-    def _inverse_import_accounting_issuance_from_date(self):
-        ts_field = 'import_accounting_issuance_from_date'
+    def _inverse_import_discount_accounting_from_date(self):
+        ts_field = 'import_discount_accounting_from_date'
         self._inverse_date_fields(ts_field)
 
     @api.multi
@@ -319,9 +318,9 @@ class QoqaBackend(models.Model):
         return True
 
     @api.multi
-    def import_accounting_issuance(self):
-        self._import_from_date('qoqa.accounting.issuance',
-                               'import_accounting_issuance_from_date')
+    def import_discount_accounting(self):
+        self._import_from_date('qoqa.discount.accounting',
+                               'import_discount_accounting_from_date')
         return True
 
     @api.multi
@@ -363,10 +362,9 @@ class QoqaBackend(models.Model):
         return True
 
     @api.multi
-    def import_one_accounting_issuance(self):
-        self._import_one('qoqa.accounting.issuance',
-                         'import_accounting_issuance_id',
-                         import_func=import_accounting_issuance)
+    def import_one_discount_accounting(self):
+        self._import_one('qoqa.discount.accounting',
+                         'import_discount_accounting_id')
         return True
 
     @api.multi
@@ -387,8 +385,8 @@ class QoqaBackend(models.Model):
         self.import_address(self.search([]))
 
     @api.model
-    def _scheduler_accounting_issuance(self):
-        self.import_accounting_issuance(self.search([]))
+    def _scheduler_discount_accounting(self):
+        self.import_discount_accounting(self.search([]))
 
     @api.model
     def _scheduler_import_offer(self):

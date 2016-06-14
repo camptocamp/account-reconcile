@@ -16,3 +16,17 @@ class ResCurrency(models.Model):
 @qoqa
 class CurrencyBinder(QoQaDirectBinder):
     _model_name = 'res.currency'
+
+    def to_openerp(self, external_id, unwrap=False):
+        # find by id
+        _super = super(CurrencyBinder, self)
+        bindings = _super.to_openerp(external_id, unwrap=unwrap)
+        if not bindings:
+            # find by name ('chf')
+            bindings = self.model.with_context(active_test=False).search(
+                [('name', '=ilike', str(external_id))]
+            )
+            if not bindings:
+                return self.model.browse()
+            bindings.ensure_one()
+        return bindings

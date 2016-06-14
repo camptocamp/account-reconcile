@@ -149,7 +149,6 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.address',
                    'qoqa.sale.order',
                    'qoqa.sale.order.line',
-                   'qoqa.accounting.issuance',
-                   'qoqa.promo.issuance.line',
-                   'qoqa.voucher.issuance.line',
+                   'qoqa.discount.accounting',
+                   'qoqa.discount.accounting.line',
                    ]

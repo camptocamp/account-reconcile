@@ -50,7 +50,6 @@ class QoQaOfferImport(QoQaImporter):
         shop_binder = self.binder_for('qoqa.shop')
         qoqa_shop_id = self.qoqa_record['data']['attributes']['website_id']
         shop_binding = shop_binder.to_openerp(qoqa_shop_id)
-        shop_binding = self.env['qoqa.shop'].search([], limit=1)
         user = shop_binding.company_id.connector_user_id
         if not user:
             raise QoQaError('No connector user configured for company %s' %

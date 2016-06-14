@@ -1,0 +1,490 @@
+# -*- coding: utf-8 -*-
+# Copyright 2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+
+
+from ..backend import qoqa
+
+from openerp.addons.connector.exception import MappingError
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  ImportMapper,
+                                                  ImportMapChild)
+from openerp import fields
+from ..connector import iso8601_to_utc_datetime
+from ..unit.importer import QoQaImporter, DelayedBatchImporter
+from ..unit.mapper import FromAttributes
+from ..exception import QoQaError
+from ..unit.mapper import iso8601_to_utc
+
+
+def _extract_lines_from_group(record):
+    lines = [item for item in record.source['included']
+             if item['type'] == 'discount_accounting_line']
+    return lines
+
+
+@qoqa
+class DiscountAccountingBatchImporter(DelayedBatchImporter):
+    """ Import the QoQa Discount Accounting.
+
+    For every discount's id in the list, a delayed job is created.
+    Import from a date
+    """
+    _model_name = 'qoqa.discount.accounting'
+
+
+@qoqa
+class QoQaDiscountAccountingImporter(QoQaImporter):
+    _model_name = 'qoqa.discount.accounting'
+
+    def _import(self, binding_id):
+        """ Use the user from the shop's company for the import
+
+        Allowing the records rules to be applied.
+
+        """
+        company_binder = self.binder_for('res.company')
+        data = self.qoqa_record['data']
+        qoqa_company_id = data['attributes']['company_id']
+        company_binding = company_binder.to_openerp(qoqa_company_id)
+        user = company_binding.company_id.connector_user_id
+        if not user:
+            raise QoQaError('No connector user configured for company %s' %
+                            company_binding.name)
+        with self.session.change_user(user.id):
+            super(QoQaDiscountAccountingImporter, self)._import(binding_id)
+
+    def _is_uptodate(self, binding_id):
+        # already imported, skip it (unless if `force` is used)
+        assert self.qoqa_record
+        if self.binder.to_openerp(self.qoqa_id):
+            return True
+
+    def _map_data(self):
+        """ Returns an instance of
+        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+
+        """
+        lines = _extract_lines_from_group(self.qoqa_record)
+        if len(lines) == 1:  # voucher
+            mapper_cls = VoucherDiscountAccountingMapper
+        else:  # promo
+            mapper_cls = PromoDiscountAccountingMapper
+        return self.unit_for(mapper_cls).map_record(self.qoqa_record)
+
+    def _import_dependencies(self):
+        """ Import the dependencies for the record """
+        assert self.qoqa_record
+        rec = self.qoqa_record
+        user_id = rec['data']['attributes']['discount_discount_user_id']
+        self._import_dependency(user_id, 'qoqa.res.partner')
+
+
+class BaseAccountingImportMapper(ImportMapper, FromAttributes):
+    _model_name = None
+
+    direct = []
+
+    def _specific_move_values(self, record):
+        """ Values of the moves which depend on the promo / vouchers
+
+        :return: browse_record of journal, ref
+
+        """
+        raise NotImplementedError
+
+    @mapping
+    def move_values(self, record):
+        journal, ref = self._specific_move_values(record)
+        parsed = iso8601_to_utc_datetime(record['created_at'])
+        date = fields.Date.from_string(parsed)
+        company = self._company(record)
+        vals = {
+            'journal_id': journal.id,
+            'company_id': company.id,
+            'date': date,
+            'ref': ref,
+        }
+        return vals
+
+    def _company(self, record):
+        company_binder = self.binder_for('res.company')
+        qoqa_company_id = record['data']['attributes']['company_id']
+        company = company_binder.to_openerp(qoqa_company_id)
+        assert company
+        return company
+
+    def _partner(self, map_record):
+        # Partner can be empty; if that's the case, return False
+        attributes = map_record.source['data']['attributes']
+        qoqa_user_id = attributes['discount_discount_user_id']
+        if not qoqa_user_id:
+            return self.env['res.partner'].browse()
+        else:
+            binder = self.binder_for('qoqa.res.partner')
+            partner = binder.to_openerp(qoqa_user_id, unwrap=True)
+            assert partner, \
+                "discount_discount_user_id should have been " \
+                "imported in import_dependencies"
+            return partner
+
+    def _currency(self, map_record, company_id):
+        company = self.env['res.company'].browse(company_id)
+        binder = self.binder_for('res.currency')
+        data = map_record.source.get('data', {})
+        qoqa_currency_id = data['attributes']['currency_id']
+        currency = binder.to_openerp(qoqa_currency_id)
+        assert currency
+        if currency != company.currency_id:
+            return currency
+
+    def _analytic_account(self, map_record):
+        data = map_record.source.get('data', {})
+        qoqa_website_id = data['attributes']['accounting_website_id']
+        binder = self.binder_for('qoqa.shop')
+        shop = binder.to_openerp(qoqa_website_id, unwrap=True)
+        assert shop, "Unknow shop_id, refresh the Backend's metadata"
+        return shop.analytic_account_id
+
+    def _line_options(self, map_record, values):
+        options = self.options.copy()
+        company = self._company(map_record.source)
+        # journal_id = values['journal_id']
+        options.update({
+            # 'journal': self.session.browse('account.journal', journal_id),
+            'partner': self._partner(map_record),
+            'company': company,
+            'date': values['date'],
+            'analytic_account': self._analytic_account(map_record),
+        })
+        currency = self._currency(map_record, company)
+        if currency:
+            options['currency'] = currency
+        return options
+
+
+@qoqa
+class PromoDiscountAccountingMapper(BaseAccountingImportMapper):
+    _model_name = 'qoqa.discount.accounting'
+
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
+              ]
+
+    def _get_map_child_unit(self, model_name):
+        return self.unit_for(PromoDiscountAccountingLineMapChild)
+
+    def _specific_move_values(self, record):
+        """ Values of the moves which depend on the promo / vouchers
+
+        :return: browse_record of journal, ref
+
+        """
+        # TODO: promo type is missing
+        # promo_type = self._promo_type(record)
+        promo_type = self.env.ref('connector_qoqa.promo_type_marketing')
+        journal = promo_type.property_journal_id
+        if not journal:
+            user = self.env.user
+            raise MappingError('No journal defined for the promo type "%s" '
+                               'for company "%s".\n'
+                               'Please configure it on the QoQa backend.' %
+                               (promo_type.name, user.company_id.name))
+        # TODO: missing discount_id
+        # ref = unicode(record['promo_id'])
+        ref = '999'
+        return journal, ref
+
+    def _promo_type(self, record):
+        promo_binder = self.binder_for('qoqa.promo.type')
+        qpromo_type_id = record['promo_type_id']
+        return promo_binder.to_openerp(qpromo_type_id)
+
+    def _product(self, map_record):
+        promo_type = self._promo_type(map_record.source)
+        return promo_type.product_id
+
+    def finalize(self, map_record, values):
+        lines = _extract_lines_from_group(map_record.source)
+        map_child = self._get_map_child_unit('qoqa.discount.accounting.line')
+        options = self._line_options(map_record, values)
+        options['product'] = self._product(map_record)
+        items = map_child.get_items(lines, map_record,
+                                    'qoqa_discount_accounting_line_ids',
+                                    options=options)
+        values['qoqa_discount_accounting_line_ids'] = items
+        return values
+
+    def _line_options(self, map_record, values):
+        # Use the VAT line (always linked to the expense line)
+        # to determine if the retrieved item is an issuance
+        # or a cancellation.
+        # Also, store in options the highest absolute amount,
+        # to recompute tax amounts with higher precision.
+        options = super(PromoDiscountAccountingMapper, self)._line_options(
+            map_record, values)
+        lines = _extract_lines_from_group(map_record.source)
+        for line in lines:
+            if line['is_vat']:
+                options.update({
+                    'is_cancellation': float(line['amount']) < 0
+                })
+                break
+        if not options['is_cancellation']:
+            options.update({
+                'taxed_amount': min([float(line['amount']) for line in lines])
+            })
+        else:
+            options.update({
+                'taxed_amount': max([float(line['amount']) for line in lines])
+            })
+        return options
+
+
+@qoqa
+class VoucherDiscountAccountingMapper(BaseAccountingImportMapper):
+    _model_name = 'qoqa.discount.accounting'
+
+    def _get_map_child_unit(self, model_name):
+        return self.unit_for(VoucherDiscountAccountingLineMapChild)
+
+
+@qoqa
+class PromoDiscountAccountingLineMapChild(ImportMapChild):
+    _model_name = 'qoqa.discount.accounting.line'
+
+    def _child_mapper(self):
+        return self.unit_for(PromoDiscountAccountingLineMapper)
+
+    def skip_item(self, map_record):
+        """ Skip VAT entries since they are generated by Odoo """
+        record = map_record.source
+        if record['is_vat']:
+            return True
+        if not float(record['amount']):
+            return True
+
+
+@qoqa
+class VoucherDiscountAccountingLineMapChild(ImportMapChild):
+    _model_name = 'qoqa.discount.accounting.line'
+
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
+              ]
+
+    def _child_mapper(self):
+        return self.unit_for(VoucherDiscountAccountingLineMapper)
+
+    def _specific_move_values(self, record):
+        """ Values of the moves which depend on the promo / vouchers
+
+        :return: browse_record of journal, ref
+
+        """
+        # read the backend record in the company's context
+        backend = self.env['qoqa.backend'].browse(self.backend_record.id)
+        journal = backend.property_voucher_journal_id
+        if not journal:
+            user = self.env.user
+            raise MappingError('No journal defined for the vouchers for '
+                               'company %s.\n'
+                               'Please configure it on the QoQa backend.' %
+                               user.company_id.name)
+        # TODO: discount_id is missing:
+        # ref = unicode(record['voucher_id'])
+        ref = '888'
+        return journal, ref
+
+    def _counterpart(self, items, values, options):
+        """ Create a counterpart for the credit line given by the API.
+
+        The API gives only the credit line, and we create the receivable
+        line.
+
+        """
+        assert len(items) == 1
+        # items is something like: [
+        # (0, 0, {'account_id': 1460,
+        #         'account_tax_id': 3,
+        #         'created_at': '2013-12-19 15:47:28',
+        #         'credit': 11.0,
+        #         'date': '2013-12-19 15:47:28',
+        #         'name': u'Vente bons cadeaux',
+        #         'partner_id': 124381,
+        #         'updated_at': '2013-12-19 15:47:28'})
+        # ]
+        line = items[0][2]
+        partner_id = line['partner_id']
+        company_id = options['company_id']
+        company = self.env['res.company'].browse(company_id)
+        if company.voucher_account_id:
+            account_id = company.voucher_account_id.id
+        elif partner_id:
+            partner = self.env['res.partner'].browse(partner_id)
+            account_id = (partner.property_account_receivable.id
+                          if line['credit'] > 0
+                          else partner.property_account_payable.id)
+        else:
+            property_model = self.env['ir.property']
+            account_id = property_model.get(
+                'property_account_receivable'
+                if line['credit'] > 0
+                else 'property_account_payable',
+                'res.partner').id
+        move_line = {
+            'journal_id': line['journal_id'],
+            'name': line['name'],
+            'account_id': account_id,
+            'partner_id': partner_id,
+            'credit': line['debit'] > 0 and line['debit'] or 0,
+            'debit': line['credit'] > 0 and line['credit'] or 0,
+            'date': line['date'],
+        }
+        if line.get('currency_id'):
+            move_line['currency_id'] = line['currency_id']
+        return (0, 0, move_line)
+
+    def finalize(self, map_record, values):
+        lines = _extract_lines_from_group(map_record.source)
+        map_child = self._get_map_child_unit('qoqa.discount.accounting.line')
+        options = self._line_options(map_record, values)
+        items = map_child.get_items(lines, map_record,
+                                    'qoqa_discount_accounting_line_ids',
+                                    options=options)
+        values['qoqa_discount_accounting_line_ids'] = items
+        values['line_id'] = [self._counterpart(items, values, options)]
+        return values
+
+
+class BaseLineMapper(ImportMapper):
+
+    direct = [(iso8601_to_utc('created_at'), 'created_at'),
+              (iso8601_to_utc('updated_at'), 'updated_at'),
+              ('label', 'name'),
+              ('id', 'qoqa_id'),
+              ]
+
+    @mapping
+    def date(self, record):
+        return {'date': self.options.date}
+
+    @mapping
+    def partner(self, record):
+        return {'partner_id': self.options.partner.id}
+
+    @mapping
+    def journal(self, record):
+        return {'journal_id': self.options.journal.id}
+
+    @mapping
+    def currency(self, record):
+        if self.options.currency_id:
+            return {'currency_id': self.options.currency.id}
+
+
+@qoqa
+class PromoDiscountAccountingLineMapper(BaseLineMapper):
+    _model_name = 'qoqa.discount.accounting.line'
+
+    # Method to determine if the line is the
+    # "main" emission/cancellation line.
+    def is_main_line(self, amount, is_cancellation):
+        if amount < 0 and not is_cancellation:
+            return True
+        if amount > 0 and is_cancellation:
+            return True
+        return False
+
+    @mapping
+    def amount(self, record):
+        amount = float(record['amount'])
+        if (not self.is_main_line(amount, self.options.is_cancellation) and
+                self.options.taxed_amount):
+            # Put inverse amount of emission/cancellation in expense.
+            amount = -self.options.taxed_amount
+        values = {
+            'debit': amount if amount > 0 else 0,
+            'credit': -amount if amount < 0 else 0,
+        }
+        return values
+
+    @mapping
+    def account(self, record):
+        """ Return line's account.
+
+        The account for credit is the product income account.
+        The account for debit comes from the journal.
+
+        """
+        amount = float(record['amount'])
+        assert amount, \
+            "lines without amount should be filtered " \
+            "in DiscountAccountingLineMapChild"
+
+        if self.is_main_line(amount, self.options.is_cancellation):
+            # emission/cancellation line
+            account = self.options.product.property_account_income
+        else:
+            # expense line
+            account = self.options.journal.default_debit_account_id
+            if not account:
+                journal = self.options.journal
+                raise MappingError('No Default Debit Account configured '
+                                   'on journal [%s] %s' %
+                                   (journal.code, journal.name))
+
+        vals = {'account_id': account.id}
+        if account.user_type.analytic_policy != 'never':
+            vals['analytic_account_id'] = self.options.analytic_account.id
+        return vals
+
+    @mapping
+    def taxes(self, record):
+        """ Return the tax used by QoQa.
+
+        QoQa provides a VAT also on the emission/cancellation line,
+        but we want it only on the expense line. We also use the
+        tax code to recompute the expense line's amount.
+
+        """
+
+        amount = float(record['amount'])
+        if self.is_main_line(amount, self.options.is_cancellation):
+            return
+        binder = self.binder_for('account.tax')
+        tax = binder.to_openerp(record['vat_id'])
+        if not tax:
+            raise MappingError('No known tax for qoqa vat_id: %s '
+                               (record['vat_id'],))
+        result = {'account_tax_id': tax.id}
+        return result
+
+
+@qoqa
+class VoucherDiscountAccountingLineMapper(BaseLineMapper):
+    _model_name = 'qoqa.discount.accounting.line'
+
+    @mapping
+    def credit(self, record):
+        amount = float(record['amount'])
+        if amount > 0:
+            return {'credit': 0,
+                    'debit': amount}
+        else:
+            return {'credit': -amount,
+                    'debit': 0}
+
+    @mapping
+    def credit_account(self, record):
+        journal_id = self.options.journal.id
+        journal = self.env['account.journal'].browse(journal_id)
+        if float(record['amount']) > 0:
+            account = journal.default_debit_account_id
+        else:
+            account = journal.default_credit_account_id
+        if not account:
+            raise MappingError('No Default Credit/Debit Account configured on '
+                               'journal [%s] %s' %
+                               (journal.code, journal.name))
+        return {'account_id': account.id}

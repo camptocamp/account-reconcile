@@ -98,13 +98,13 @@
               </group>
               <group>
                 <div>
-                  <label string="Import accounting issuances since"
+                  <label string="Import discount accounting since"
                     class="oe_inline"/>
-                  <field name="import_accounting_issuance_from_date"
+                  <field name="import_discount_accounting_from_date"
                     class="oe_inline"
                     nolabel="1"/>
                 </div>
-                <button name="import_accounting_issuance"
+                <button name="import_discount_accounting"
                   type="object"
                   class="oe_highlight"
                   string="Import in background"/>
@@ -193,13 +193,13 @@
               </group>
               <group>
                 <div>
-                  <label string="Import 1 accounting issuance group"
+                  <label string="Import 1 discount accounting group"
                     class="oe_inline"/>
-                  <field name="import_accounting_issuance_id"
+                  <field name="import_discount_accounting_id"
                     class="oe_inline"
                     nolabel="1"/>
                 </div>
-                <button name="import_one_accounting_issuance"
+                <button name="import_one_discount_accounting"
                   type="object"
                   class="oe_highlight"
                   string="Import"/>

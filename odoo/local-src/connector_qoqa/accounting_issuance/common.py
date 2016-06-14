@@ -2,6 +2,8 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+# TODO: deprecated, replaced by discount accounting and ?
+
 """
 
 On the QoQa backend are generated vouchers and promo.
@@ -12,17 +14,6 @@ and as negative lines for promos.
 
 We have to create move lines for the issuance of theses goods, as they
 are created on the QoQa backend and should be accounted.
-
-From a technical viewpoint, we have 1 API entry point:
-``api/v1/promo_accounting``.
-
-Both promo and vouchers are mixed. So we have 1 virtual model on QoQa,
-but we split them in 2 models in OpenERP.
-
-Each line returned by the API is mapped with an account.move.line but
-also has a reference to either a 'voucher_id' either a 'promo_id'.
-
-So we we also bind the voucher_id and promo_id with the account.move
 
 """
 
@@ -45,9 +36,6 @@ class QoqaAccountingIssuance(models.Model):
                                  ondelete='cascade')
     created_at = fields.Datetime(string='Created At (on QoQa)')
     updated_at = fields.Datetime(string='Updated At (on QoQa)')
-    # either promo, either voucher
-    voucher_id = fields.Float(string='QoQa Voucher ID')
-    promo_id = fields.Float(string='QoQa Promo ID')
     qoqa_promo_line_ids = fields.One2many(
         comodel_name='qoqa.promo.issuance.line',
         inverse_name='qoqa_issuance_id',

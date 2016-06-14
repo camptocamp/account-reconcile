@@ -11,9 +11,9 @@ function deploy {
     TEMPLATE_DIR="${PWD}/rancher/template/${version}"
     openssl aes-256-cbc -K $encrypted_deb6d4f0542c_key -iv $encrypted_deb6d4f0542c_iv -in .rancher.env.enc -out "$HOME/.rancher.env" -d
     (. "$HOME/.rancher.env" ; cd "${TEMPLATE_DIR}" && \
-     ${RANCHER_COMPOSE} -p "${RANCHER_PROJECT_NAME}" rm --force && \
+     ${RANCHER_COMPOSE} -p "${RANCHER_STACK_NAME}" rm --force && \
      sleep 30 && \
-     ${RANCHER_COMPOSE} -p "${RANCHER_PROJECT_NAME}" up --pull --recreate --force-recreate --confirm-upgrade -d)
+     ${RANCHER_COMPOSE} -p "${RANCHER_STACK_NAME}" up --pull --recreate --force-recreate --confirm-upgrade -d)
 }
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then

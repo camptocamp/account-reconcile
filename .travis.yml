@@ -16,7 +16,7 @@ env:
     - TESTS="0" LINT_CHECK="0"
     - ADDONS_DIR=${TRAVIS_BUILD_DIR}/odoo/local-src
     - COMPOSE_PROJECT_NAME=qoqa
-    - RANCHER_PROJECT_NAME=qoqa-int
+    - RANCHER_STACK_NAME=qoqa-odoo-test
 
 before_install:
   - sudo apt-get update

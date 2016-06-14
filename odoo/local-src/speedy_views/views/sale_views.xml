@@ -1,0 +1,8 @@
+<odoo>
+
+  <record model="ir.ui.menu" id="sales_team.menu_sales_team_act">
+    <field name="sequence">50</field>
+  </record>
+
+</odoo>
+

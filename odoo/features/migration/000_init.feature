@@ -43,6 +43,30 @@ Feature: Parameter the new database
     AND model in ('wine.class', 'wine.bottle')
     """
 
+  @fix_claim_line_origin
+  Scenario: a required field 'claim_origin' has been added and is empty
+    Given I execute the SQL commands
+    """
+    ALTER TABLE claim_line ADD COLUMN claim_origin varchar
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE claim_line SET claim_origin = claim_origine
+    WHERE claim_origine IS NOT NULL AND claim_origin IS NULL
+    """
+
+  @fix_claim_rma_update
+  Scenario: lines in a wizard make the upgrade fail
+    Given I execute the SQL commands
+    """
+    DELETE FROM claim_make_picking_wizard
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE ir_model_data SET name = 'team_after_sales_service'
+    WHERE name = 'section_after_sales_service' AND model = 'crm.team';
+    """
+
   @update_module_list
   Scenario: Update module list before updating to avoid draging old dependancies
   Given I update the module list

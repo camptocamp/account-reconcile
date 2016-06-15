@@ -20,7 +20,7 @@
     - variable: "DB_PORT"
       label: "Port of database"
       description: "Port to use when connecting to DB"
-      type: "integer"
+      type: "int"
       required: true
       default: "5432"
     - variable: "DB_NAME"
@@ -43,6 +43,83 @@
       description: "Server environment (test, prod, ...). (server_environment_files addon)"
       type: "string"
       required: true
+    - variable: "DEMO"
+      label: "demo"
+      description: "Load demo data"
+      type: "enum"
+      default: "none"
+      required: true
+      options:
+        - none
+        - odoo
+        - scenario
+        - all
+    - variable: "WORKERS"
+      label: "workers"
+      description: "Number of workers"
+      type: "int"
+      required: false
+      default: 4
+    - variable: "MAX_CRON_THREADS"
+      label: "max_cron_threads"
+      description: "Max. cron threads"
+      type: "int"
+      required: false
+      default: 2
+    - variable: "LOG_HANDLER"
+      label: "log_handler"
+      description: "Log handler (e.g. ':INFO')"
+      type: "char"
+      required: false
+      default: "':INFO'"
+    - variable: "LOG_LEVEL"
+      label: "log_level"
+      description: "Log level (e.g. 'info')"
+      type: "char"
+      required: false
+      default: "info"
+    - variable: "LOG_DB"
+      label: "log_db"
+      description: "Log in database (True or False)"
+      type: "char"
+      required: false
+      default: "False"
+    - variable: "DB_MAXCONN"
+      label: "db_maxconn"
+      description: "Database max connections"
+      type: "int"
+      required: false
+      default: 64
+    - variable: "LIMIT_MEMORY_SOFT"
+      label: "limit_memory_soft"
+      description: "Soft memory limit"
+      type: "int"
+      required: false
+      default: 2147483648
+    - variable: "LIMIT_MEMORY_HARD"
+      label: "limit_memory_hard"
+      description: "Hard memory limit"
+      type: "int"
+      required: false
+      default: 2684354560
+    - variable: "LIMIT_REQUEST"
+      label: "limit_request"
+      description: "Limit requests"
+      type: "int"
+      required: false
+      default: 8192
+    - variable: "LIMIT_TIME_CPU"
+      label: "limit_time_cpu"
+      description: "Limit CPU time"
+      type: "int"
+      required: false
+      default: 86400
+    - variable: "LIMIT_TIME_REAL"
+      label: "limit_time_real"
+      description: "Limit real time"
+      type: "int"
+      required: false
+      default: 86400
 
 nginx:
   scale: 1

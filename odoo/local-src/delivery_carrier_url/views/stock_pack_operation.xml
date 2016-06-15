@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_pack_operation_details_form" model="ir.ui.view">
+    <field name="name">stock.pack.operation.form</field>
+    <field name="model">stock.pack.operation</field>
+    <field name="inherit_id" ref="stock.view_pack_operation_details_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='result_package_id']/.." position="after">
+        <group string="Traceability">
+          <field attrs="{'invisible': [('tracking_url','==',False)]}" name="tracking_url" widget="url"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- add button in inner operation tree view in picking form -->
+  <record id="view_picking_form" model="ir.ui.view">
+    <field name="name">stock.picking.form</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+      <button name="split_lot" position="after">
+        <field name="tracking_url" invisible="1"/>
+        <button name="open_tracking_url" string="View tracking details" type="object"
+          attrs="{'invisible': [('tracking_url','=',False)]}"
+          icon="terp-stock_zoom"/>
+      </button>
+    </field>
+  </record>
+
+</odoo>

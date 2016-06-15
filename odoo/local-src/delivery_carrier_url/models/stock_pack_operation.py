@@ -3,6 +3,7 @@
 #
 #    Author: Tristan Rouiller
 #    Copyright 2014 QoQa Services SA
+#    Copyright 2016 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,57 +20,44 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
-from openerp.tools.translate import _
+from openerp import _, api, exceptions, fields, models
 
 
-class stock_move(orm.Model):
-    _inherit = 'stock.move'
+class StockPackOperation(models.Model):
+    _inherit = 'stock.pack.operation'
 
-    def _get_tracking_url(self, cr, uid, ids, name, args, context=None):
-        stock_moves = self.browse(cr, uid, ids, context=context)
-        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
+    def _get_tracking_url(self):
+        user = self.env.user
 
         if user.lang:
             lang = user.lang.split('_')[0]
         else:
             lang = 'fr'
 
-        tracking_urls = {}
-        for sm in stock_moves:
-            if not sm.picking_id or not sm.picking_id.carrier_id.url_template:
-                tracking_urls[sm.id] = False
+        for op in self:
+            if not op.picking_id or not op.picking_id.carrier_id.url_template:
                 continue
-            tracking_number = False
-            if sm.tracking_id:
-                tracking_number = sm.tracking_id.serial
+            tracking_number = op.package_id.parcel_tracking
             if not tracking_number:
-                tracking_number = sm.picking_id.carrier_tracking_ref
+                tracking_number = op.picking_id.carrier_tracking_ref
             if not tracking_number:
-                tracking_urls[sm.id] = False
                 continue
-            tracking_urls[sm.id] = sm.picking_id.carrier_id.url_template % {
+            op.tracking_url = op.picking_id.carrier_id.url_template % {
                 'tracking_number': tracking_number,
                 'lang': lang,
             }
-        return tracking_urls
 
-    _columns = {
-        'tracking_url': fields.function(_get_tracking_url, type='char',
-                                        string='Tracking url'),
-    }
+    tracking_url = fields.Char(compute=_get_tracking_url,
+                               string='Tracking url')
 
-    def open_tracking_url(self, cr, uid, ids, context=None):
+    @api.multi
+    def open_tracking_url(self):
+        self.ensure_one()
 
-        assert len(ids) == 1, "One id expected"
-        stock_moves = self.browse(cr, uid, ids, context=context)
-        sm = stock_moves[0]
-
-        if not sm.tracking_url:
-            raise orm.except_orm(
-                _('Error'),
+        if not self.tracking_url:
+            raise exceptions.UserError(
                 _('No tracking url exist'))
 
         return {'type': 'ir.actions.act_url',
                 'target': 'new',
-                'url': sm.tracking_url}
+                'url': self.tracking_url}

@@ -3,6 +3,7 @@
 #
 #    Author: Tristan Rouiller
 #    Copyright 2014 QoQa Services SA
+#    Copyright 2016 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -22,22 +23,15 @@
 {'name': 'Delivery Carrier URL',
  'version': '0.0.1',
  'category': 'Others',
- 'depends': ['delivery'
+ 'depends': ['delivery',
+             'base_delivery_carrier_label'
              ],
  'author': 'QoQa Services SA',
  'license': 'AGPL-3',
  'website': 'http://www.qoqa.ch',
- 'description': """
-Delivery carrier url
-===================
-
-Display the tracking url on the stock_picking_out object
-The tracking template url can be set in the delivery carrier
-
-""",
  'images': [],
  'demo': [],
- 'data': ['delivery_carrier_view.xml', 'stock_move_view.xml'],
- 'installable': False,
+ 'data': ['views/delivery_carrier.xml', 'views/stock_pack_operation.xml'],
+ 'installable': True,
  'application': True,
  }

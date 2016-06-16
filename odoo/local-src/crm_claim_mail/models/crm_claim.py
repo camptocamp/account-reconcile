@@ -74,6 +74,8 @@ class CrmClaim(models.Model):
         string='Confirmation Mail Sent',
         default=True
     )
+    last_message_date = fields.Datetime(
+        string='Date of last message sent or received')
 
     @api.multi
     def _complete_from_sale(self, message):
@@ -131,13 +133,14 @@ class CrmClaim(models.Model):
 
         This set the confirmation_email_sent to False so an automatic email
         can be sent.
-
+        Also write the field "last_message_date".
         """
         if custom_values is None:
             custom_values = {}
         else:
             custom_values = custom_values.copy()
         custom_values.setdefault('confirmation_email_sent', False)
+        custom_values.setdefault('last_message_date', fields.Datetime.now())
         msg, values = self._complete_from_sale(msg)
         if values:
             custom_values.update(values)
@@ -233,6 +236,8 @@ class CrmClaim(models.Model):
             body=body, subject=subject, message_type=message_type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
             content_subtype=content_subtype, author_id=author.id, **kwargs)
+        # Also write the field "last_message_date".
+        self.write({'last_message_date': fields.datetime.now()})
         # Subtype with sequence 0 : 'Discussions' (emails)
         if result.subtype_id and result.subtype_id.sequence == 0:
             self.case_close()

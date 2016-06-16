@@ -44,10 +44,9 @@ class CrmClaim(models.Model):
     # should always be readonly since it is used to match
     # incoming emails
     number = fields.Char(
-        string='Number',
         readonly=True,
         required=True,
-        select=True,
+        index=True,
         help="Company internal claim unique number"
     )
     # field used to keep track of the claims merged into this one,
@@ -100,17 +99,17 @@ class CrmClaim(models.Model):
         # for an exact match (eg it does not comes from the QoQa backend)
         # or padded (it comes from the QoQa backend).
         pad_number = '{0:08d}'.format(int(number))
-        sales = sale_obj.search(
-            ['|', ('name', '=', number), ('name', '=', pad_number)])
-        if not sales:
+        sale = sale_obj.search(
+            ['|', ('name', '=', number), ('name', '=', pad_number)],
+            limit=1)
+        if not sale:
             return message, None
-        sale = sales[0]
         invoices = (invoice for invoice in sale.invoice_ids
                     if invoice.state != 'cancel')
-        invoices = sorted(invoices, key=attrgetter('date_invoice'),
-                          reverse=True)
         if not invoices:
             return message, None
+        invoices = sorted(invoices, key=attrgetter('date_invoice'),
+                          reverse=True)
         invoice = invoices[0]
         values = {'invoice_id': invoice.id,
                   'date': fields.Datetime.now(),
@@ -198,8 +197,7 @@ class CrmClaim(models.Model):
             lang = self.env.user.lang
             if not lang:
                 lang = 'en_US'
-            langs = lang_obj.search([('code', '=', lang)])
-            lang = langs[0]
+            lang = lang_obj.search([('code', '=', lang)], limit=1)
             date_fmt = lang.date_format or DEFAULT_SERVER_DATE_FORMAT
             time_fmt = lang.time_format or DEFAULT_SERVER_TIME_FORMAT
             body = []
@@ -225,16 +223,16 @@ class CrmClaim(models.Model):
                      content_subtype='html', **kwargs):
         # change author to partner with address 'loutres@qoqa.com'
         kwargs.pop('author_id', None)
-        authors = self.env['res.partner'].search(
-            [('email', '=', 'loutres@qoqa.com')])
-        if authors:
-            author_id = authors[0].id
-        else:
+        author = self.env['res.partner'].search(
+            [('email', '=', 'loutres@qoqa.com')],
+            limit=1)
+        if not author:
             raise UserError(_('No partner set with email "loutres@qoqa.com"'))
+
         result = super(CrmClaim, self).message_post(
             body=body, subject=subject, message_type=message_type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
-            content_subtype=content_subtype, author_id=author_id, **kwargs)
+            content_subtype=content_subtype, author_id=author.id, **kwargs)
         # Subtype with sequence 0 : 'Discussions' (emails)
         if result.subtype_id and result.subtype_id.sequence == 0:
             self.case_close()

@@ -12,7 +12,6 @@
                         <field name="unclaimed_first_reminder_categ_id"/>
                         <field name="unclaimed_second_reminder_categ_id"/>
                         <field name="unclaimed_final_categ_id"/>
-                        <field name="unclaimed_stock_journal_id"/>
                         <field name="unclaimed_invoice_journal_id"/>
                         <field name="unclaimed_invoice_account_id"/>
                         <field name="unclaimed_invoice_product_id"/>

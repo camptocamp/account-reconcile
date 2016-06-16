@@ -193,7 +193,7 @@
         <field name="auto_delete" eval="False"/>
         <field name="body_html"><![CDATA[
             <p>Bonjour,</p>
-            <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+            <p>Le ${object.formatted_create_date} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
             Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
             QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
             Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
@@ -213,7 +213,7 @@
         <field name="src"></field>
         <field name="value"><![CDATA[
             <p>Bonjour,</p>
-            <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
+            <p>Le ${object.formatted_create_date} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.<br><br>
             Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
             QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
             Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
@@ -256,7 +256,7 @@
         <field name="auto_delete" eval="False"/>
         <field name="body_html"><![CDATA[
             <p>Bonjour,</p>
-            <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.Puis un rappel vous a été envoyé 30 jours après.<br><br>
+            <p>Le ${object.formatted_create_date} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.Puis un rappel vous a été envoyé 30 jours après.<br><br>
             Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
             QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
             Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
@@ -276,7 +276,7 @@
         <field name="src"></field>
         <field name="value"><![CDATA[
             <p>Bonjour,</p>
-            <p>Le ${object.create_date|format_date('%d/%m/%Y')} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.Puis un rappel vous a été envoyé 30 jours après.<br><br>
+            <p>Le ${object.formatted_create_date} nous vous avons envoyé un e-mail concernant votre colis qui nous a été retourné par la Poste, car il n'a pas été réclamé dans les délais.Puis un rappel vous a été envoyé 30 jours après.<br><br>
             Nous vous rappelons qu’un montant de CHF ${object.unclaimed_price}.-, relatif à l’acheminent de votre colis vers nos locaux nous a été facturé.<br>
             QoQa offre volontiers les frais de retour jusqu'à votre domicile à titre de geste commercial, toutefois les frais mentionnés ci-dessus sont à la charge de nos clients.<br><br>
             Nous vous prions donc de verser CHF ${object.unclaimed_price}.- sur notre compte postal afin que nous procédions à la réexpédition de votre commande. Voici un lien sécurisé pour effectuer le paiement :<br>
@@ -297,7 +297,7 @@
             <div>
                 <p>Ihre QoQa Bestellung ${object.ref and object.ref.name or object.number} – Erinnerung</p>
                 <p>Guten Tag,</p>
-                <p>Im E-Mail vom ${object.create_date|format_date('%d/%m/%Y')} haben wir Sie informiert, dass Ihr Paket von der Post retourniert wurde.</p>
+                <p>Im E-Mail vom ${object.formatted_create_date} haben wir Sie informiert, dass Ihr Paket von der Post retourniert wurde.</p>
                 <p>Jede retournierte Sendung ist für QoQa mit Unkosten verbunden (Nachforschung und Zustellkosten). Aus diesem Grund können wir Ihnen das Paket erst wieder zustellen, wenn wir weitere Informationen Ihrerseits erhalten haben.</p>
                 <p>Durch die Retournierung wurden uns von der Post CHF ${object.unclaimed_price}.– in Rechnung gestellt. Wir bitten Sie, uns diesen Betrag zu überweisen. Gerne übernehmen wir aus Kulanz die Portokosten für den zweiten Versand.</p>
                 <p>Zur Erinnerung erläutern wir gerne nochmals den Ablauf:</p>

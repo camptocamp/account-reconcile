@@ -7,28 +7,20 @@
     'category': 'Others',
     'depends': [
         'crm_claim_mail',
-        'connector_qoqa',
-        'email_template_dateutil'
+        # TODO import connector_qoqa when pay_by_email API is available
+        #'connector_qoqa'
     ],
     'author': 'Camptocamp',
     'license': 'AGPL-3',
     'website': 'http://www.camptocamp.com',
-    'description': """
-        QoQa Claim Unclaimed Process
-        ============================
-
-        Specific processed for unclaimed packages returns,
-        reminders and new deliveries.
-
-        """,
     'images': [],
     'demo': [],
     'data': [
         'data/claim_data.xml',
-        'data/email_template.xml',
+        'data/mail_template.xml',
         'views/company_view.xml',
         'wizard/crm_claim_unclaimed_view.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': True,
 }

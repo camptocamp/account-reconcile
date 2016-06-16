@@ -10,8 +10,17 @@ class CrmClaim(models.Model):
     """
     _inherit = "crm.claim"
 
-    pay_by_email_url = fields.Char('Pay by e-mail URL'),
+    @api.multi
+    def _get_formatted_create_date(self):
+        for claim in self:
+            claim.formatted_create_date = \
+                claim.create_date.strftime('%d/%m/%Y')
+
+    pay_by_email_url = fields.Char('Pay by e-mail URL')
     unclaimed_price = fields.Integer('Price for unclaimed return')
+    formatted_create_date = fields.Char(
+        compute=_get_formatted_create_date,
+        store=False)
 
     @api.model
     def _send_unclaimed_reminders(self):

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # © 2016 Camptocamp SA (Matthieu Dietrich)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
-from openerp.osv import _, api, fields, models
+from openerp import _, api, fields, models
 from openerp.exceptions import UserError
-from openerp import netsvc
 # from openerp.tools.float_utils import float_round
 # from openerp.addons.connector_qoqa.connector import get_environment
 # from openerp.addons.connector.session import ConnectorSession
@@ -15,19 +14,18 @@ class CrmClaimUnclaimed(models.TransientModel):
 
     @api.multi
     def _default_team_id(self):
-        return self.env.ref('scenario.team_sale_team_livr')
+        return self.env.ref('scenario.section_sale_team_livr')
 
     @api.multi
     def _default_user_id(self):
-        team_id = self._default_team_id()
-        team = self.env['crm.team'].browse(team_id)
-        return team.user_id and team.user_id.id or False
+        team = self._default_team_id()
+        return team.user_id or self.env['crm.team']
 
     @api.multi
     def _default_categ_id(self):
         company = self.env.user.company_id
-        return company.unclaimed_initial_categ_id and \
-            company.unclaimed_initial_categ_id.id or False
+        return company.unclaimed_initial_categ_id or \
+            self.env['crm.claim.category']
 
     unclaimed_type = fields.Selection(
         [('invalid_address', 'Invalid Address'),
@@ -90,7 +88,7 @@ class CrmClaimUnclaimed(models.TransientModel):
         required=True
     )
     claim_categ_id = fields.Many2one(
-        comodel_name='crm.case.categ',
+        comodel_name='crm.claim.category',
         string='Category',
         default=_default_categ_id,
         required=True
@@ -106,9 +104,10 @@ class CrmClaimUnclaimed(models.TransientModel):
         """
         self.ensure_one()
         claim_obj = self.env['crm.claim']
+        customer_type = self.env.ref('crm_claim_type.crm_claim_type_customer')
 
         # TODO after API is decided
-        claim_number = claim_obj._get_sequence_number()
+        claim_number = claim_obj._get_sequence_number(customer_type.id)
         sale = self.claim_sale_order_id
         pay_by_email_url = False
         # try:
@@ -133,7 +132,7 @@ class CrmClaimUnclaimed(models.TransientModel):
             'pay_by_email_url': pay_by_email_url,
             'user_id': self.claim_user_id.id,
             'team_id': self.claim_team_id.id,
-            'claim_type': 'customer',
+            'claim_type': customer_type.id,
             'categ_id': self.claim_categ_id.id,
             'ref': 'sale.order,%s' % sale.id,
             'partner_id': self.claim_partner_id.id,
@@ -146,25 +145,15 @@ class CrmClaimUnclaimed(models.TransientModel):
             self.claim_partner_id.id)
         claim_vals.update(on_change_partner_vals['value'])
 
-        on_change_invoice_vals = claim_obj.onchange_invoice_id(
-            invoice_id=self.claim_invoice_id.id,
-            warehouse_id=False, claim_type='customer',
-            claim_date=fields.Datetime.now(),
-            company_id=sale.company_id.id,
-            lines=False, create_lines=True)
-        claim_vals.update(on_change_invoice_vals['value'])
-        # store correctly claim lines
-        if 'claim_line_ids' in claim_vals:
-            # Set all lines with the same destination
-            claim_lines = claim_vals['claim_line_ids']
-            for claim_line in claim_lines:
-                claim_line.update({
-                    'warranty_type': 'company',
-                    'warranty_return_partner': sale.company_id.partner_id.id,
-                    'location_dest_id': self.return_dest_location_id.id
-                })
-            claim_vals['claim_line_ids'] = \
-                [(0, 0, line) for line in claim_lines]
+        # Create memory object to use other on_change
+        temp_claim = claim_obj.with_context(create_lines=True).new(claim_vals)
+        temp_claim._onchange_invoice_warehouse_type_date()
+        # Add values to claim lines
+        for claim_line in temp_claim.claim_line_ids:
+            claim_line.warranty_type = 'company'
+            claim_line.warranty_return_partner = sale.company_id.partner_id.id
+            claim_line.location_dest_id = self.return_dest_location_id.id
+        claim_vals = temp_claim._convert_to_write(temp_claim._cache)
 
         # Set correct delivery address (retrieved from picking)
         claim_vals.update({
@@ -173,15 +162,15 @@ class CrmClaimUnclaimed(models.TransientModel):
 
         # Set correct mail template
         if self.unclaimed_type == 'unclaimed':
-            template_id = self.env.ref(
+            template = self.env.ref(
                 'crm_claim_mail.email_template_rma_unclaimed')
         elif self.unclaimed_type == 'invalid_address':
-            template_id = self.env.ref(
+            template = self.env.ref(
                 'crm_claim_mail.email_template_rma_invalid_address')
 
         claim_vals.update({
             'confirmation_email_sent': False,
-            'confirmation_email_template': template_id
+            'confirmation_email_template': template.id
         })
 
         return claim_vals
@@ -193,7 +182,6 @@ class CrmClaimUnclaimed(models.TransientModel):
         """
         picking_obj = self.env['stock.picking']
         return_wiz_obj = self.env['claim_make_picking.wizard']
-        company = self.env.user.company_id
         # Create refund from claim
         ctx = {
             'active_id': claim.id,
@@ -203,100 +191,73 @@ class CrmClaimUnclaimed(models.TransientModel):
             'product_return': True
         }
         return_wiz = return_wiz_obj.with_context(ctx).create(
-            {'claim_line_source_location':
-                self.return_source_location_id.id,
-                'claim_line_dest_location':
-                self.return_dest_location_id.id
+            {'claim_line_source_location_id':
+             self.return_source_location_id.id,
+             'claim_line_dest_location_id':
+             self.return_dest_location_id.id
              })
         wiz_result = return_wiz.action_create_picking()
-        picking = picking_obj.with_context(ctx).browse(wiz_result['res_id'])
-        # Set stock journal on newly created picking
-        if company.unclaimed_stock_journal_id:
-            journal_id = company.unclaimed_stock_journal_id.id
-            picking.write({'stock_journal_id': journal_id})
-        # Set picking as done
-        wf_service = netsvc.LocalService("workflow")
-        wf_service.trg_validate(self.env.user, 'stock.picking', picking.id,
-                                'button_done', self.env.cr)
+        picking = picking_obj.browse(wiz_result['res_id'])
+        picking.signal_workflow('button_done')
         return wiz_result
 
-    @api.multi
-    @api.depends('track_number')
+    @api.onchange('track_number')
     def onchange_package_number(self):
         """
             Onchange to set all values (or return errors)
             from the tracking number
         """
-        res = {'value': {'claim_name': False,
-                         'return_source_location_id': False,
-                         'return_dest_location_id': False,
-                         'claim_invoice_id': False,
-                         'claim_sale_order_id': False,
-                         'claim_partner_id': False,
-                         'claim_delivery_address_id': False,
-                         'claim_carrier_price': False}}
-        track_obj = self.env['stock.tracking']
-        if not self.track_number:
-            return res
+        for claim in self:
+            claim.ensure_one()
+            claim.claim_name = False
+            claim.return_source_location_id = False
+            claim.return_dest_location_id = False
+            claim.claim_invoice_id = False
+            claim.claim_sale_order_id = False
+            claim.claim_partner_id = False
+            claim.claim_delivery_address_id = False
+            claim.claim_carrier_price = False
+            pack_obj = self.env['stock.quant.package']
+            if not claim.track_number:
+                return
 
-        track_ids = track_obj.search([('serial', '=', self.track_number)])
-        if not track_ids:
-            raise UserError(_('Error'),
-                            _('Not a valid tracking number!'))
-        move = track_ids[0].move_ids and track_ids[0].move_ids[0] or False
-        if not move:
-            raise UserError(
-                _('Error'),
-                _('No stock move associated to this tracking number!')
-            )
-        res['value'].update({
-            'return_source_location_id': move.location_dest_id.id
-        })
+            pack = pack_obj.search([('name', '=', claim.track_number)],
+                                   limit=1)
+            if not pack:
+                raise UserError(_('Not a valid tracking number!'))
+            picking = pack.picking_ids and pack.picking_ids[0] or False
+            if not picking:
+                raise UserError(_('Delivery order not found '
+                                  'for this tracking number!'))
+            claim.return_source_location_id = picking.location_dest_id.id
+            claim.claim_delivery_address_id = picking.partner_id.id
+            claim.claim_carrier_price = picking.carrier_price
 
-        carrier = move.picking_id and move.picking_id.carrier_id
-        if not carrier:
-            raise UserError(
-                _('Error'),
-                _('No delivery carrier associated to this tracking number!')
-            )
-        carrier_price = carrier.normal_price
-        if not carrier_price:
-            raise UserError(
-                _('Error'),
-                _('No price set on delivery carrier %s!') % (carrier.name, )
-            )
-        res['value'].update({
-            'claim_delivery_address_id': move.picking_id.partner_id.id,
-            'claim_carrier_price': carrier_price,
-        })
-
-        sale = move.sale_line_id and move.sale_line_id.order_id or False
-        if not sale:
-            raise UserError(
-                _('Error'),
-                _('No sale associated to this tracking number!')
-            )
-        invoice = sale.invoice_ids and sale.invoice_ids[0] or False
-        if not invoice:
-            raise UserError(
-                _('Error'),
-                _('No invoice associated to this tracking number!')
-            )
-        if sale.partner_id and sale.partner_id.lang == 'de_DE':
-            claim_name = _('Ihre Bestellung Nr. %s') % (sale.name, )
-        else:
-            claim_name = _('Votre commande numéro %s en retour non-réclamé') \
-                % (sale.name, )
-        res['value'].update({
-            'claim_name': claim_name,
-            'claim_invoice_id': invoice.id,
-            'claim_sale_order_id': sale.id,
-            'claim_partner_id': sale.partner_id.id
-        })
-        return res
+            # TODO when migration is done correctly
+            # sale = picking.sale_id or False
+            sale = self.env['sale.order'].search(
+                [('name', '=', picking.origin)], limit=1)
+            if not sale:
+                raise UserError(
+                    _('No sale associated to this tracking number!')
+                )
+            invoice = sale.invoice_ids and sale.invoice_ids[0] or False
+            if not invoice:
+                raise UserError(
+                    _('No invoice associated to this tracking number!')
+                )
+            if sale.partner_id and sale.partner_id.lang == 'de_DE':
+                claim_name = _('Ihre Bestellung Nr. %s') % (sale.name, )
+            else:
+                claim_name = _('Votre commande numéro %s en '
+                               'retour non-réclamé') % (sale.name, )
+            claim.claim_name = claim_name
+            claim.claim_invoice_id = invoice.id
+            claim.claim_sale_order_id = sale.id
+            claim.claim_partner_id = sale.partner_id.id
 
     @api.multi
-    def create_claim(self, cr, uid, ids, context=None):
+    def create_claim(self):
         # Function to create claim and return with given parameters
         self.ensure_one()
         claim_obj = self.env['crm.claim']

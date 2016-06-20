@@ -23,8 +23,6 @@ odoo:
     - DB_PASSWORD=odoo
     - DB_NAME=odoodb
     - ADMIN_PASSWD=mijaebohb8Thae1g
-    - LIMIT_TIME_CPU=5000
-    - LIMIT_TIME_REAL=5000
     - RUNNING_ENV=dev
     - DEMO=odoo
 

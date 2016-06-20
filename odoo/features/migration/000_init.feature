@@ -151,6 +151,7 @@ Feature: Parameter the new database
         #---- OCA/server-tools ---------------------------#
         | mail_cleanup                                    |
         | mail_environment                                |
+        | base_technical_features                         |
         #---- OCA/stock-logistics-warehouse --------------#
         | stock_orderpoint_generator                      |
         #---- OCA/stock-logistics-workflow ---------------#

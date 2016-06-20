@@ -12,6 +12,8 @@ unreleased (unknown)
 
 **Build**
 
+* Use camptocamp/postgresql:pg9.5-latest in the dev composition
+
 **Documentation**
 
 .. Template:

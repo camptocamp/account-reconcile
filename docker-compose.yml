@@ -29,10 +29,14 @@ odoo:
     - DEMO=odoo
 
 db:
-  image: postgres:9.5
+  image: camptocamp/postgresql:pg9.5-latest
   environment:
     - POSTGRES_USER=odoo
     - POSTGRES_PASSWORD=odoo
+    - PG_SYSTEM_SHARED_BUFFERS=256MB
+    - PG_SYSTEM_MAINTENANCE_WORK_MEM=256MB
+    - PG_SYSTEM_WAL_BUFFERS=8MB
+    - PG_SYSTEM_EFFECTIVE_CACHE_SIZE=1024MB
   volumes_from:
     - datadb
   ports:

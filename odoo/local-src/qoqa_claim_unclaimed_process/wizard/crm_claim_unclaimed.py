@@ -139,7 +139,6 @@ class CrmClaimUnclaimed(models.TransientModel):
             'invoice_id': self.claim_invoice_id.id,
             'unclaimed_price': int(self.claim_carrier_price)
         }
-
         # Call on_change functions to retrieve values
         on_change_partner_vals = claim_obj.onchange_partner_id(
             self.claim_partner_id.id)
@@ -150,6 +149,7 @@ class CrmClaimUnclaimed(models.TransientModel):
         temp_claim._onchange_invoice_warehouse_type_date()
         # Add values to claim lines
         for claim_line in temp_claim.claim_line_ids:
+            claim_line.warning = 'not_define'
             claim_line.warranty_type = 'company'
             claim_line.warranty_return_partner = sale.company_id.partner_id.id
             claim_line.location_dest_id = self.return_dest_location_id.id
@@ -180,8 +180,8 @@ class CrmClaimUnclaimed(models.TransientModel):
         """
             Call to product_return wizard
         """
-        picking_obj = self.env['stock.picking']
         return_wiz_obj = self.env['claim_make_picking.wizard']
+        valid_wiz_obj = self.env['stock.immediate.transfer']
         # Create refund from claim
         ctx = {
             'active_id': claim.id,
@@ -197,8 +197,8 @@ class CrmClaimUnclaimed(models.TransientModel):
              self.return_dest_location_id.id
              })
         wiz_result = return_wiz.action_create_picking()
-        picking = picking_obj.browse(wiz_result['res_id'])
-        picking.signal_workflow('button_done')
+        wiz_valid = valid_wiz_obj.create({'pick_id': wiz_result['res_id']})
+        wiz_valid.process()
         return wiz_result
 
     @api.onchange('track_number')

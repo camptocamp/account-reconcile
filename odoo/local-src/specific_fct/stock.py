@@ -1,40 +1,18 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-# TODO migration: remove 'noqa'
-# flake8: noqa
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from openerp import netsvc
-from openerp.osv import orm, fields
-from openerp.tools.translate import _
+from openerp import _, api, fields, models
 from openerp.addons.base.res.res_partner import _lang_get
 import logging
-# import pooler
 
 from postlogistics.web_service import PostlogisticsWebServiceQoQa
 
 _logger = logging.getLogger(__name__)
 
 
-class stock_picking(orm.Model):
+class StockPicking(models.Model):
     """ Add a number of products field to allow search on it.
 
     This in order to group picking of a single offer to set other
@@ -44,84 +22,46 @@ class stock_picking(orm.Model):
     sending two pair of shoes will be in a big pack and we want to
     change the shipping label options of all those pack. Thus we want
     a filter that allows us to do that.
-
     """
     _inherit = "stock.picking"
 
-    def _get_number_of_products(self, cr, uid, ids, field_names,
-                                arg=None, context=None):
-        result = {}
-        for picking in self.browse(cr, uid, ids, context=context):
-            number_of_products = 0
-            for line in picking.move_lines:
-                number_of_products += line.product_qty
-            result[picking.id] = number_of_products
-        return result
+    number_of_products = fields.Integer(
+        compute='_compute_number_of_products',
+        string='Number of products',
+        store=True
+    )
 
-    def _get_picking(self, cr, uid, ids, context=None):
-        result = set()
-        move_obj = self.pool.get('stock.move')
-        for line in move_obj.browse(cr, uid, ids, context=context):
-            result.add(line.picking_id.id)
-        return list(result)
+    lang = fields.Selection(
+        related='partner_id.lang',
+        string='Language',
+        selection=_lang_get,
+        readonly=True,
+        store=True
+    )
 
-    def _get_from_partner(self, cr, uid, ids, context=None):
-        return self.search(cr, uid, [('partner_id', 'in', ids)],
-                           context=context)
+    active = fields.Boolean(
+        'Active', default=True,
+        help="The active field allows you to hide the picking without "
+             "removing it."
+    )
 
-    def _get_from_partner_fn(self, cr, uid, ids, context=None):
-        """ Do not modify. Let `_get_from_partner` be inheritable. """
-        return self.pool['stock.picking']._get_from_partner(cr, uid, ids,
-                                                            context=context)
+    @api.depends('move_lines', 'move_lines.product_qty')
+    def _compute_number_of_products(self):
+        for picking in self:
+            picking.number_of_products = sum(
+                picking.mapped('move_lines.product_qty')
+            )
 
-    _columns = {
-        'number_of_products': fields.function(
-            _get_number_of_products,
-            type='integer', string='Number of products',
-            store={
-                'stock.picking': (lambda self, cr, uid, ids, c=None: ids,
-                                  ['move_lines'], 10),
-                'stock.move': (_get_picking, ['product_qty'], 10),
-            }),
-        'lang': fields.related('partner_id', 'lang',
-                               string='Language',
-                               type='selection',
-                               selection=_lang_get,
-                               readonly=True,
-                               store={
-                                   'stock.picking': (
-                                       lambda self, cr, uid, ids, c=None: ids,
-                                       ['partner_id'], 20),
-                                   'res.partner': (_get_from_partner_fn,
-                                                   ['lang'], 20)
-                               }),
-        'active': fields.boolean(
-            'Active',
-            help="The active field allows you to hide the picking without "
-                 "removing it."
-        ),
-        # Redefined on stock.picking to work with stock.picking.in
-        'warehouse_id': fields.related('purchase_id', 'warehouse_id',
-                                       type='many2one',
-                                       relation='stock.warehouse',
-                                       string='Destination Warehouse',
-                                       readonly=True),
-    }
-
-    _defaults = {
-        'active': 1,
-    }
-
-    def _generate_postlogistics_label(self, cr, uid, picking,
-                                      webservice_class=None,
-                                      tracking_ids=None, context=None):
+    def _generate_postlogistics_label(self, webservice_class=None,
+                                      package_ids=None):
         """ Generate post label using QoQa specific to hide parent name in  """
-        return super(stock_picking, self)._generate_postlogistics_label(
-            cr, uid, picking,
-            webservice_class=PostlogisticsWebServiceQoQa,
-            tracking_ids=tracking_ids,
-            context=context)
 
+        return super(StockPicking, self)._generate_postlogistics_label(
+            webservice_class=PostlogisticsWebServiceQoQa,
+            package_ids=package_ids
+        )
+
+    # TODO: Et en V9 :) ?
     def do_partial(self, cr, uid, ids, partial_datas, context=None):
         # Wonderful overwrite of big mega hyper monolithic method do_partial
         # we want here that partial delivery keeps packs in case no product
@@ -348,35 +288,7 @@ class stock_picking(orm.Model):
 
         return res
 
-    # define domain and better exception catching for cron
-    # in stock_picking_mass_assign, in order to use the
-    # new field from qoqa_offer, 'sale_create_date'
-    #def check_assign_all(self, cr, uid, ids=None, context=None):
-        ## create new cursor
-        #wf_service = netsvc.LocalService("workflow")
-        #cr = pooler.get_db(cr.dbname).cursor()
-        #if isinstance(ids, (int, long)):
-            #ids = [ids]
-        ## no ids = cron
-        #if ids is None:
-            #ids = self.search(cr, uid,
-                              #[('type', '=', 'out'),
-                               #('state', '=', 'confirmed')],
-                              #order='sale_create_date',
-                              #context=context)
-        #for picking_id in ids:
-            #try:
-                #self.action_assign(cr, uid, [picking_id], context)
-                #wf_service.trg_trigger(uid, 'stock.picking', picking_id, cr)
-                #cr.commit()
-            #except Exception:
-                ## ignore the error, the picking will just stay as confirmed
-                #_logger.info('error in action_assign for picking',
-                             #exc_info=True)
-                #cr.rollback()
-        #cr.close()
-        #return True
-
+    # TODO: plus de workflow, a reproduire ?
     def test_finished(self, cursor, user, ids):
         wf_service = netsvc.LocalService("workflow")
         res = super(stock_picking, self).test_finished(cursor, user, ids)
@@ -403,132 +315,11 @@ class stock_picking(orm.Model):
         return res
 
 
-class stock_picking_in(orm.Model):
-    """ Add a number of products field to allow search on it.
-
-    This in order to group picking of a single offer to set other
-    shipping options.
-
-    For exemple: Sending a pair of shoes will be in a small pack and
-    sending two pair of shoes will be in a big pack and we want to
-    change the shipping label options of all those pack. Thus we want
-    a filter that allows us to do that.
-
-    """
-    _inherit = "stock.picking.in"
-
-    def _get_number_of_products(self, cr, uid, ids, field_names,
-                                arg=None, context=None):
-        result = {}
-        for picking in self.browse(cr, uid, ids, context=context):
-            number_of_products = 0
-            for line in picking.move_lines:
-                number_of_products += line.product_qty
-            result[picking.id] = number_of_products
-        return result
-
-    def _get_picking(self, cr, uid, ids, context=None):
-        result = set()
-        move_obj = self.pool.get('stock.move')
-        for line in move_obj.browse(cr, uid, ids, context=context):
-            result.add(line.picking_id.id)
-        return list(result)
-
-    def do_partial(self, cr, uid, ids, partial_datas, context=None):
-        return self.pool['stock.picking'].do_partial(
-            cr, uid, ids, partial_datas, context=context)
-
-    _columns = {
-        'number_of_products': fields.function(
-            _get_number_of_products,
-            type='integer', string='Number of products',
-            store={
-                'stock.picking': (lambda self, cr, uid, ids, c=None: ids,
-                                  ['move_lines'], 10),
-                'stock.move': (_get_picking, ['product_qty'], 10),
-            }),
-        'active': fields.boolean(
-            'Active',
-            help="The active field allows you to hide the picking without "
-                 "removing it."
-        ),
-    }
-
-
-class stock_picking_out(orm.Model):
-    """ Add a number of products field to allow search on it.
-
-    This in order to group picking of a single offer to set other
-    shipping options.
-
-    For exemple: Sending a pair of shoes will be in a small pack and
-    sending two pair of shoes will be in a big pack and we want to
-    change the shipping label options of all those pack. Thus we want
-    a filter that allows us to do that.
-
-    """
-    _inherit = "stock.picking.out"
-
-    def _get_number_of_products(self, cr, uid, ids, field_names,
-                                arg=None, context=None):
-        result = {}
-        for picking in self.browse(cr, uid, ids, context=context):
-            number_of_products = 0
-            for line in picking.move_lines:
-                number_of_products += line.product_qty
-            result[picking.id] = number_of_products
-        return result
-
-    def _get_picking(self, cr, uid, ids, context=None):
-        result = set()
-        move_obj = self.pool.get('stock.move')
-        for line in move_obj.browse(cr, uid, ids, context=context):
-            result.add(line.picking_id.id)
-        return list(result)
-
-    def _get_from_partner_fn(self, cr, uid, ids, context=None):
-        """ Do not modify. Let `stock_picking._get_from_partner` be
-        inheritable. """
-        return self.pool['stock.picking']._get_from_partner(cr, uid, ids,
-                                                            context=context)
-
-    _columns = {
-        'number_of_products': fields.function(
-            _get_number_of_products,
-            type='integer', string='Number of products',
-            store={
-                'stock.picking': (lambda self, cr, uid, ids, c=None: ids,
-                                  ['move_lines'], 10),
-                'stock.move': (_get_picking, ['product_qty'], 10),
-            }),
-        'lang': fields.related('partner_id', 'lang',
-                               string='Language',
-                               type='selection',
-                               selection=_lang_get,
-                               readonly=True,
-                               store={
-                                   'stock.picking.out': (
-                                       lambda self, cr, uid, ids, c=None: ids,
-                                       ['partner_id'], 20),
-                                   'res.partner': (_get_from_partner_fn,
-                                                   ['lang'], 20)
-                               }),
-        'active': fields.boolean(
-            'Active',
-            help="The active field allows you to hide the picking without "
-                 "removing it."
-        ),
-    }
-
-    def do_partial(self, cr, uid, ids, partial_datas, context=None):
-        return self.pool['stock.picking'].do_partial(
-            cr, uid, ids, partial_datas, context=context)
-
-
-class stock_move(orm.Model):
+class StockMove(models.Model):
 
     _inherit = 'stock.move'
 
+    # TODO: ?
     def do_partial(self, cr, uid, ids, partial_datas, context=None):
         # Wonderful overwrite of big mega hyper monolithic method do_partial
         # we want here that partial delivery keeps packs in case no product
@@ -704,6 +495,7 @@ class stock_move(orm.Model):
 
         return [move.id for move in complete]
 
+    # TODO: ?
     # Until base upgrade : this calls the correct workflow
     # on the stock pickings when moves are cancelled
     # (either transferred or cancelled)

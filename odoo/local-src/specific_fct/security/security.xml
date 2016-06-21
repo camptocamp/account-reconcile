@@ -1,59 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data noupdate="1">
+<odoo noupdate="1">
 
-        <!-- Activate the following options:
+    <!-- Activate the following options:
 
-        Sales:
-            * Use pricelists to adapt your price per customers
-            * Allow a different address for delivery and invoicing
-            * Allow setting a discount on the sales order lines
-            * Manage multiple shops
+    Sales:
+        * Use pricelists to adapt your price per customers
+        * Allow a different address for delivery and invoicing
+        * Allow setting a discount on the sales order lines
+        * Manage multiple shops
 
-        Purchases:
-            *
+    Purchases:
+        *
 
-        Warehouse:
-            * Manage multiple locations and warehouses
-            * Product: packaging
+    Warehouse:
+        * Manage multiple locations and warehouses
+        * Product: packaging
 
-        Accounting:
-            * Allow multi currencies
+    Accounting:
+        * Allow multi currencies
 
-        General Settings:
-            *
-        -->
-        <record model="res.groups" id="base.group_user">
-            <field name="implied_ids"
-                eval="[(4, ref('product.group_sale_pricelist')),
+    General Settings:
+        *
+    -->
+    <record model="res.groups" id="base.group_user">
+        <field name="implied_ids"
+               eval="[(4, ref('product.group_sale_pricelist')),
                        (4, ref('sale.group_delivery_invoice_address')),
                        (4, ref('sale.group_discount_per_so_line')),
                        (4, ref('stock.group_locations')),
                        (4, ref('base.group_multi_currency')),
                        (4, ref('product.group_stock_packaging')),
                        ]"/>
-        </record>
-
-        <!--
-            Specific group for admin users; used to hide certain actions
-        -->
-        <record model="res.groups" id="group_admin_user">
-            <field name="name">Admin Users</field>
-        </record>
-</data>
-        <!-- Change pricelist rules for multi-company  -->
-<data>
-
-    <record model="ir.rule" id="product.product_pricelist_version_comp_rule">
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]</field>
     </record>
+
+    <!--
+        Specific group for admin users; used to hide certain actions
+    -->
+    <record model="res.groups" id="group_admin_user">
+        <field name="name">Admin Users</field>
+    </record>
+
+    <!-- Change pricelist rules for multi-company  -->
     <record model="ir.rule" id="product.product_pricelist_item_comp_rule">
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]</field>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
+        </field>
     </record>
     <record model="ir.rule" id="product.product_pricelist_comp_rule">
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]</field>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
+        </field>
     </record>
- 
-
-    </data>
-</openerp>
+</odoo>

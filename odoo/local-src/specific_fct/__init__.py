@@ -5,14 +5,12 @@ from . import stock
 from . import partner
 from . import postlogistics
 from . import account_invoice
-from . import payment
+# TODO: account_payment does not exists anymore.
+# from . import payment
 from . import wizard
 from . import account_bank_statement
-from . import account_statement_profile
-from . import api_call
-from . import payment_method
-from . import account_move_line
+# TODO
+# from . import payment_method
 from . import purchase
-from . import queue_job
 from . import picking_dispatch
 from . import ir_ui_menu

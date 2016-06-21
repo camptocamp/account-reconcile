@@ -69,6 +69,15 @@
     # port l10n_ch_payment_slip
     - oca refs/pull/176/head
   target: *default_target
+./external-src/purchase-workflow:
+  remotes:
+      oca: git@github.com:OCA/purchase-workflow.git
+      camptocamp: git@github.com:camptocamp/purchase-workflow.git
+  merges:
+    - oca 9.0
+    # port  purchase_analytic_global
+    - oca refs/pull/228/head
+  target: *default_target
 ./external-src/rma:
   remotes:
     oca: git@github.com:OCA/rma.git

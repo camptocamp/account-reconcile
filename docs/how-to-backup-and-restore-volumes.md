@@ -1,6 +1,6 @@
 # Backup and restore Docker Volumes
 
-## Backup the db and filestore
+## Backup the db and filestore (as volumes)
 
 ```bash
 $ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backups
@@ -11,7 +11,7 @@ $ docker run --rm --volumes-from $DATAODOO_CONTAINER -v $HOST_BACKUPS:/backup de
 $ docker run --rm --volumes-from $DATADB_CONTAINER -v $HOST_BACKUPS:/backup debian tar cvf /backup/backup-datadb.tar /var/lib/postgresql/data
 ```
 
-## Restore the db and filestore
+## Restore the db and filestore (as volumes)
 
 ```bash
 $ docker-compose create
@@ -22,4 +22,19 @@ $ export DATADB_CONTAINER=project_datadb_1  # Exact name to find with docker-com
 
 $ docker run --rm --volumes-from $DATAODOO_CONTAINER -v $HOST_BACKUPS:/backup debian bash -c "tar xvf /backup/backup-dataodoo.tar"
 $ docker run --rm --volumes-from $DATADB_CONTAINER -v $HOST_BACKUPS:/backup debian bash -c "tar xvf /backup/backup-datadb.tar"
+```
+
+## Backup the db in a pg dump
+
+If you have the same `pg_dump` version on your computer than the one used in the
+db container (9.5 at time of writing), you can just use your local `pg_dump`
+directly on the outgoing port of the db container. But if you have another
+version, `pgdump` will refuse to make a dump, here is how you can do this with
+a `postgres:9.5` one-off container:
+
+```bash
+$ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backups
+$ export DB_CONTAINER=project_db_1  # Exact name to find with docker-compose ps
+
+$ docker run --rm --link $DB_CONTAINER:db -e PGPASSWORD=odoo -v $HOST_BACKUPS:/backup postgres:9.5 pg_dump -Uodoo --file /backup/db.pg --format=c odoodb -h db
 ```

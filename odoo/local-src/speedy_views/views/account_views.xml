@@ -1,0 +1,19 @@
+<odoo>
+
+
+  <!-- The following view is slow as hell, remove the 'Balance in GL'
+       amount which is not so useful.
+  -->
+  <record id="account_journal_dashboard_kanban_view" model="ir.ui.view">
+    <field name="name">account.journal.dashboard.kanban</field>
+    <field name="model">account.journal</field>
+    <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//t[@t-esc='dashboard.account_balance']//ancestor::div[@class='row']" position="replace">
+      </xpath>
+      <xpath expr="//div[@class='o_kanban_graph_section']" position="replace">
+      </xpath>
+    </field>
+  </record>
+
+</odoo>

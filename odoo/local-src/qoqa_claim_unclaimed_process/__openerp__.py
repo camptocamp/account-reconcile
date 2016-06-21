@@ -8,7 +8,7 @@
     'depends': [
         'crm_claim_mail',
         # TODO import connector_qoqa when pay_by_email API is available
-        #'connector_qoqa'
+        # 'connector_qoqa'
     ],
     'author': 'Camptocamp',
     'license': 'AGPL-3',

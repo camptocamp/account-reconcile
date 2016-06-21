@@ -161,7 +161,7 @@ Feature: Parameter the new database
         #| web_translate_dialog                            |
         #---- QoQa specifics -----------------------------#
         #| base_stock_picking_pack_split                   |
-        #| connector_file_s3_import                        |
+        | account_s3_move_import                          |
         #| connector_qoqa                                  |
         #| crm_claim_mail                                  |
         | crm_rma_by_shop                                  |

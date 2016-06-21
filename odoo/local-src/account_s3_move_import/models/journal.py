@@ -1,32 +1,13 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Matthieu Dietrich
-#    Copyright 2016 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-"""Backend Model for Amazon S3.
-"""
+# © 2016 Camptocamp SA (Matthieu Dietrich)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 import os
 import base64
 from boto.s3.connection import S3Connection
 from openerp import api, fields, models
 try:
-    from server_environment import serv_config
+    from openerp.addons.server_environment import serv_config
 except ImportError:
     logging.getLogger('openerp.module').warning(
         'server_environment not available in addons path. '
@@ -85,32 +66,35 @@ class AccountJournal(models.Model):
         string='Amazon S3 Archive folder')
 
     @api.multi
-    def _s3_multi_move_import(self):
-        for journal in self.filtered(lambda journal: journal.s3_import):
+    def s3_multi_move_import(self):
+        journals = self.search([('s3_import', '=', True)])
+        for journal in journals:
             s3 = S3Connection(
                 aws_access_key_id=journal.s3_access_key,
                 aws_secret_access_key=journal.s3_secret_access_key
             )
-        s3_bucket = s3.get_bucket(journal.s3_bucket_name)
-        for s3_key in s3_bucket.list(journal.s3_input_folder):
-            destination_folder = journal.s3_archive_folder
-            try:
-                file_name = s3_key.name
-                data = s3_key.get_contents_as_string()
-                __, ftype = os.path.splitext(file_name)
-                encoded_data = base64.b64encode(data)
-                journal.with_context(
-                    file_name=s3_key.name
-                ).multi_move_import(encoded_data, ftype.replace('.', ''))
-            except Exception as exc:
-                # Move file to "failed"
-                destination_folder = journal.s3_failed_folder
-                _logger.exception(exc)
-            finally:
-                # Copy object in new folder + remove old object
-                new_file_name = file_name.replace(journal.s3_input_folder,
-                                                  destination_folder)
-                s3_bucket.copy_key(new_file_name,
-                                   journal.s3_bucket_name,
-                                   file_name)
-                s3_bucket.delete_key(s3_key)
+            s3_bucket = s3.get_bucket(journal.s3_bucket_name)
+            for s3_key in s3_bucket.list(journal.s3_input_folder):
+                destination_folder = journal.s3_archive_folder
+                try:
+                    file_name = s3_key.name
+                    data = s3_key.get_contents_as_string()
+                    # Only get file name, not path, for reference
+                    __, small_file_name = os.path.split(file_name)
+                    __, ftype = os.path.splitext(small_file_name)
+                    encoded_data = base64.b64encode(data)
+                    journal.with_context(
+                        file_name=small_file_name
+                    ).multi_move_import(encoded_data, ftype.replace('.', ''))
+                except Exception as exc:
+                    # Move file to "failed"
+                    destination_folder = journal.s3_failed_folder
+                    _logger.exception(exc)
+                finally:
+                    # Copy object in new folder + remove old object
+                    new_file_name = file_name.replace(journal.s3_input_folder,
+                                                      destination_folder)
+                    s3_bucket.copy_key(new_file_name,
+                                       journal.s3_bucket_name,
+                                       file_name)
+                    s3_bucket.delete_key(s3_key)

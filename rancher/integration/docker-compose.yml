@@ -32,3 +32,15 @@ nginx:
     - 80:80
   links:
     - odoo:odoo
+
+# Load balanced used only to setup SSL easily
+lb:
+  ports:
+  - 443:80
+  labels:
+    io.rancher.loadbalancer.ssl.ports: '443'
+  tty: true
+  image: rancher/load-balancer-service
+  links:
+  - nginx:nginx
+  stdin_open: true

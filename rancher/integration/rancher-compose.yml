@@ -128,5 +128,17 @@ db:
 odoo:
   scale: 1
 
+lb:
+  scale: 1
+  load_balancer_config:
+    haproxy_config: {}
+  default_cert: '*.qoqa.com'
+  health_check:
+    port: 42
+    interval: 2000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    response_timeout: 2000
+
 external-db:
   hostname: odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com

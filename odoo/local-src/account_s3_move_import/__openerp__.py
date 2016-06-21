@@ -18,8 +18,24 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-"""Bank statement file import with the OpenERP Connector."""
-from . import connector  # noqa
-from . import backend  # noqa
-from . import model  # noqa
-from . import unit  # noqa
+
+{
+    'name': 'S3 move import',
+    'version': '9.0.1.0.0',
+    'category': 'Finance',
+    'author': 'Camptocamp SA',
+    'website': 'http://www.camptocamp.com',
+    'license': 'AGPL-3',
+    'depends': [
+        'account_move_base_import',
+        'server_environment',
+        'server_environment_files',
+    ],
+    'data': [
+        "views/journal_view.xml",
+    ],
+    'external_dependencies': {
+        'python': ['boto'],
+    },
+    'installable': True,
+}

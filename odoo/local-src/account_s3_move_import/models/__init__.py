@@ -18,26 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-{
-    'name': 'Connector for importing S3 files',
-    'version': '0.1',
-    'category': 'Connector',
-    'author': 'Camptocamp SA',
-    'website': 'http://www.camptocamp.com',
-    'license': 'AGPL-3',
-    'description': """
-Extension of the connector file import to treat bank statements.
-""",
-    'depends': [
-        'connector_file',
-    ],
-    'external_dependencies': {
-        'python': ['boto'],
-    },
-    'update_xml': [
-        'view/backend_model_view.xml',
-        'view/chunk_view.xml',
-    ],
-    'installable': False,
-}
+"""OpenERP models."""
+from . import journal  # noqa

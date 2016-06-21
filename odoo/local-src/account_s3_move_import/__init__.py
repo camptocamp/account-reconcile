@@ -18,17 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
-
-
-class file_chunk_binding(orm.Model):
-
-    """File Chunk Binding."""
-
-    _inherit = 'file.chunk.binding'
-
-    _columns = {
-        'statement_id': fields.many2one(
-            'account.bank.statement',
-            'Bank Statement'),
-    }
+"""Bank statement file import with the OpenERP Connector."""
+from . import models  # noqa

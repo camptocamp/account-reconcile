@@ -149,6 +149,7 @@ Feature: Parameter the new database
         | sale_automatic_workflow                         |
         | sale_automatic_workflow_payment_mode            |
         #---- OCA/server-tools ---------------------------#
+        | mass_editing                                    |
         | mail_cleanup                                    |
         | mail_environment                                |
         | base_technical_features                         |

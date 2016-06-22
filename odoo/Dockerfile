@@ -43,4 +43,8 @@ ENV ADDONS_PATH="/opt/odoo/external-src/enterprise, \
   /opt/odoo/external-src/stock-logistics-warehouse, \
   /opt/odoo/external-src/stock-logistics-reporting, \
   /opt/odoo/external-src/stock-logistics-workflow, \
-  /opt/odoo/external-src/web"
+  /opt/odoo/external-src/web" \
+  LIMIT_TIME_CPU=86400 \
+  LIMIT_TIME_REAL=86400 \
+  LIMIT_MEMORY_SOFT=1342177280 \
+  LIMIT_MEMORY_HARD=1610612736

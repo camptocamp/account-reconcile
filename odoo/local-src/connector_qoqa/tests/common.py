@@ -153,32 +153,32 @@ class QoQaTransactionCase(common.TransactionCase):
         for record in equals:
             # same records
             message.append(
-                ' ✓ {}({})'.format(
+                u' ✓ {}({})'.format(
                     model_name,
-                    ', '.join('%s: %s' % (field, getattr(record, field)) for
-                              field in fields)
+                    u', '.join(u'%s: %s' % (field, getattr(record, field)) for
+                               field in fields)
                 )
             )
         for expected in not_found:
             # missing records
             message.append(
-                ' - {}({})'.format(
+                u' - {}({})'.format(
                     model_name,
-                    ', '.join('%s: %s' % (k, v) for
-                              k, v in expected._asdict().iteritems())
+                    u', '.join(u'%s: %s' % (k, v) for
+                               k, v in expected._asdict().iteritems())
                 )
             )
         for record in records:
             # extra records
             message.append(
-                ' + {}({})'.format(
+                u' + {}({})'.format(
                     model_name,
-                    ', '.join('%s: %s' % (field, getattr(record, field)) for
-                              field in fields)
+                    u', '.join(u'%s: %s' % (field, getattr(record, field)) for
+                               field in fields)
                 )
             )
         if not_found or records:
-            raise AssertionError('Records do not match:\n\n{}'.format(
+            raise AssertionError(u'Records do not match:\n\n{}'.format(
                 '\n'.join(message)
             ))
 
@@ -199,7 +199,7 @@ class QoQaTransactionCase(common.TransactionCase):
         Here is the boilerplate to create the company, assign
         the user, create a pricelist and a payment method.
 
-        This helpr can be called in the tests if needed
+        This helper can be called in the tests if needed
 
         """
 
@@ -209,12 +209,14 @@ class QoQaTransactionCase(common.TransactionCase):
         connector_user_fr = self.env.ref('connector_qoqa.user_connector_fr')
 
         self.company_ch = self.env.ref('base.main_company')
+        self.company_ch.currency_id = self.env.ref('base.CHF')
         vals = {'name': 'QoQa CH',
                 'qoqa_id': 1,
                 'connector_user_id': connector_user_ch.id}
         self.company_ch.write(vals)
         vals = {'name': 'QoQa FR',
                 'qoqa_id': 2,
+                'currency_id': self.env.ref('base.EUR').id,
                 'connector_user_id': connector_user_fr.id}
         self.company_fr = Company.create(vals)
 

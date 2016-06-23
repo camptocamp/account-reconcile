@@ -26,6 +26,10 @@ class QoqaDiscountAccounting(models.Model):
         inverse_name='qoqa_discount_accounting_id',
         string='QoQa Discount Accounting Line',
     )
+    discount_type = fields.Selection(
+        selection=[('promo', 'Promo'), ('voucher', 'Voucher')],
+        string='Discount Type',
+    )
 
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',

@@ -179,12 +179,17 @@ class QoQaImporter(Importer):
             else:
                 raise
 
+    def _create_context(self):
+        return {
+            'connector_no_export': True
+        }
+
     def _create(self, data):
         """ Create the Odoo record """
         # special check on data before import
         self._validate_data(data)
         with self._retry_unique_violation():
-            model_ctx = self.model.with_context(connector_no_export=True)
+            model_ctx = self.model.with_context(**self._create_context())
             binding = model_ctx.create(data)
 
         _logger.debug('%s created from QoQa %s',

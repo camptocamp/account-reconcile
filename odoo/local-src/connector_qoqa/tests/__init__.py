@@ -6,14 +6,11 @@ from . import test_company_binder
 from . import test_export_product
 from . import test_export_product_attribute
 from . import test_export_refund
+from . import test_import_discount_accounting
 from . import test_import_metadata
-from . import test_import_partner
-from . import test_import_product_images
 from . import test_import_offer
 from . import test_import_order
+from . import test_import_partner
+from . import test_import_product_images
 from . import test_iso8601
 from . import test_settle_order
-
-# import test_product_attribute_exporter
-# import test_import_voucher
-# import test_import_promo

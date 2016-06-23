@@ -1,0 +1,110 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/?timestamp_to=2016-06-08+00%3A00%3A00&timestamp_from=2016-06-01+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 23 Jun 2016 11:56:22 GMT']
+      etag: [W/"e0234245cb00aa260ccfa99a9a0b235e"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [4451f38c-9d68-4ec8-b578-8c28bdea8de9]
+      x-runtime: ['0.050901']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/?timestamp_to=2016-06-15+00%3A00%3A00&timestamp_from=2016-06-08+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 23 Jun 2016 11:56:25 GMT']
+      etag: [W/"e0234245cb00aa260ccfa99a9a0b235e"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [8d6df635-cabd-4e2a-8f35-1491f72b2a42]
+      x-runtime: ['0.038677']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/?timestamp_to=2016-06-22+00%3A00%3A00&timestamp_from=2016-06-15+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 23 Jun 2016 11:56:34 GMT']
+      etag: [W/"e0234245cb00aa260ccfa99a9a0b235e"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [d1deb2ad-bfca-4204-b2f0-1990f501910d]
+      x-runtime: ['0.030605']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/?timestamp_to=2016-06-23+00%3A00%3A00&timestamp_from=2016-06-22+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[{"id":"100000001"},{"id":"100000002"}]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 23 Jun 2016 11:56:43 GMT']
+      etag: [W/"5442fe0511225a0b73ddb8ea52b2b6b7"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [a13363ac-bdfa-4b1b-b048-d378db8aa1cc]
+      x-runtime: ['0.102286']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

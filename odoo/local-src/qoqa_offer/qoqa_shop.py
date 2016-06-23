@@ -15,6 +15,7 @@ class QoqaShop(models.Model):
         string='Company',
     )
     analytic_account_id = fields.Many2one(
-        comodel_name='account_analytic_account',
+        comodel_name='account.analytic.account',
         string='Analytic Account',
+        ondelete='restrict',
     )

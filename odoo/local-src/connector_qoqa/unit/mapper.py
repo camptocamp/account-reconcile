@@ -18,13 +18,25 @@ from ..connector import (iso8601_to_utc_datetime,
 _logger = logging.getLogger(__name__)
 
 
+class FromDataAttributes(mapper.Mapper):
+
+    @mapper.mapping
+    def values_from_attributes(self, record):
+        values = {}
+        attribute_fields = getattr(self, 'from_data_attributes', [])
+        attributes = record.get('data', {}).get('attributes', {})
+        for source, target in attribute_fields:
+            values[target] = self._map_direct(attributes, source, target)
+        return values
+
+
 class FromAttributes(mapper.Mapper):
 
     @mapper.mapping
     def values_from_attributes(self, record):
         values = {}
         attribute_fields = getattr(self, 'from_attributes', [])
-        attributes = record.get('data', {}).get('attributes', {})
+        attributes = record.get('attributes', {})
         for source, target in attribute_fields:
             values[target] = self._map_direct(attributes, source, target)
         return values

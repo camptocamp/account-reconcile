@@ -8,7 +8,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper)
 from ..backend import qoqa
 from ..unit.importer import QoQaImporter, DelayedBatchImporter
-from ..unit.mapper import FromAttributes
+from ..unit.mapper import FromDataAttributes
 from ..exception import QoQaError
 
 
@@ -59,12 +59,12 @@ class QoQaOfferImport(QoQaImporter):
 
 
 @qoqa
-class QoQaOfferImportMapper(ImportMapper, FromAttributes):
+class QoQaOfferImportMapper(ImportMapper, FromDataAttributes):
     _model_name = 'qoqa.offer'
 
     direct = []
 
-    from_attributes = [
+    from_data_attributes = [
         ('name', 'name'),
     ]
 

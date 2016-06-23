@@ -10,7 +10,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   )
 from ..backend import qoqa
 from ..unit.importer import DelayedBatchImporter, QoQaImporter
-from ..unit.mapper import FromAttributes, iso8601_to_utc
+from ..unit.mapper import FromDataAttributes, iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -31,10 +31,10 @@ class ResPartnerImport(QoQaImporter):
 
 
 @qoqa
-class ResPartnerImportMapper(ImportMapper, FromAttributes):
+class ResPartnerImportMapper(ImportMapper, FromDataAttributes):
     _model_name = 'qoqa.res.partner'
 
-    from_attributes = [
+    from_data_attributes = [
         ('email', 'email'),
         ('pseudo', 'qoqa_name'),
         (iso8601_to_utc('created_at'), 'created_at'),

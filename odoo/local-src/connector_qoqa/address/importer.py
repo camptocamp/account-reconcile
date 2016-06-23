@@ -10,7 +10,7 @@ from openerp.addons.connector.unit.mapper import (mapping,
                                                   )
 from ..backend import qoqa
 from ..unit.importer import DelayedBatchImporter, QoQaImporter
-from ..unit.mapper import FromAttributes, iso8601_to_utc
+from ..unit.mapper import FromDataAttributes, iso8601_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -38,12 +38,12 @@ class AddressImport(QoQaImporter):
 
 
 @qoqa
-class AddressImportMapper(ImportMapper, FromAttributes):
+class AddressImportMapper(ImportMapper, FromDataAttributes):
     _model_name = 'qoqa.address'
 
     direct = []
 
-    from_attributes = [
+    from_data_attributes = [
         ('street', 'street'),
         ('street2', 'street2'),
         ('zip', 'zip'),

@@ -17,6 +17,7 @@
              'qoqa_offer',
              'qoqa_product',
              'base_transaction_id',   # oca/bank-statement-reconcile
+             'account_analytic_required',  # oca/account-analytic
              ],
  'external_dependencies': {
      'python': ['requests',

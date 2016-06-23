@@ -9,7 +9,7 @@
 	url = git@github.com:camptocamp/l10n-switzerland
 [submodule "odoo/external-src/account-analytic"]
 	path = odoo/external-src/account-analytic
-	url = git@github.com:oca/account-analytic
+	url = git@github.com:camptocamp/account-analytic
 [submodule "odoo/external-src/account-financial-reporting"]
 	path = odoo/external-src/account-financial-reporting
 	url = git@github.com:oca/account-financial-reporting

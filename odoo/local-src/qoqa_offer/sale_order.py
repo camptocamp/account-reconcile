@@ -2,8 +2,6 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from datetime import date
-
 from openerp import models, fields, api
 
 
@@ -32,14 +30,6 @@ class SaleOrder(models.Model):
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
-
-    offer_position_id = fields.Many2one(
-        comodel_name='qoqa.offer.position',
-        string='Offer Position',
-        readonly=True,
-        index=True,
-        ondelete='restrict',
-    )
 
     @api.multi
     def _prepare_order_line_procurement(self, group_id=False):

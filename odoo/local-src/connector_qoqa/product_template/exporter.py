@@ -25,14 +25,24 @@ def delay_export(session, model_name, record_id, vals):
 
 @on_record_write(model_names='product.template')
 def delay_export_all_bindings(session, model_name, record_id, vals):
-    if 'warranty' in vals:
-        warranty = vals.pop('warranty')
-        # the warranty should be exported on the variant, not the
-        # template
+    fields_exported_from_variants = {'warranty', 'wine_bottle_id'}
+    variant_export = set()
+    for field in fields_exported_from_variants:
+        if field in vals:
+            variant_export.add(field)
+
+    vals = vals.copy()
+    if variant_export:
+        variant_vals = {}
+        for field in variant_export:
+            variant_vals[field] = vals.pop(field)
+
+        # those fields hould be exported on the variant, not the
+        # template, but are stored on the template on Odoo
         templates = session.env[model_name].browse(record_id)
         for product in templates.product_variant_ids:
             product_delay_export(session, 'product.product',
-                                 product.id, {'warranty': warranty})
+                                 product.id, variant_vals)
 
     if not vals:
         # nothing to export on the template

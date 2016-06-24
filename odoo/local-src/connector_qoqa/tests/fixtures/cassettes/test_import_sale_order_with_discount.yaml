@@ -10,219 +10,34 @@ interactions:
     method: GET
     uri: https://api-sprint.qoqa.com/v1/admin/orders/16
   response:
-    body: {string: !!python/unicode '{"included": [{"relationships": {"websites":
-        {"data": []}}, "attributes": {"free_shipping": true, "start_at": "2016-05-31T02:00:00.000+02:00",
-        "description": "Promo admin 6", "stop_at": "2016-07-01T02:00:00.000+02:00",
-        "amount": "499.0", "code_name": "L58147485N", "main_type": "promo", "sub_type":
-        "marketing"}, "type": "discount", "id": "11"}, {"attributes": {"created_at":
-        "2016-05-31T09:38:52.000+02:00", "variation_id": 100001, "unit_price": "333.0",
-        "updated_at": "2016-05-31T09:38:52.000+02:00", "lot_size": 1, "lot_quantity":
-        2}, "type": "order_item", "id": "19"}, {"relationships": {"payment_method":
-        {"data": {"updated_at": "2016-05-31T09:38:49.000+02:00", "created_at": "2016-05-31T09:38:49.000+02:00",
-        "id": 1, "name": "visa"}}, "discount": {"data": null}, "payment_provider":
-        {"data": {"updated_at": "2016-05-31T09:38:47.000+02:00", "created_at": "2016-05-31T09:38:47.000+02:00",
-        "id": 7, "name": "Datatrans"}}}, "attributes": {"status": "confirmed", "amount":
-        "167.0", "merchant_id": 1100004506, "sign": "43ca7751c5a742b8285f7b493106934a"},
-        "type": "payment", "id": "2"}, {"relationships": {"invoice_items": {"data":
-        [{"category": "product", "invoice_id": 15, "created_at": "2016-05-31T09:38:53.000+02:00",
-        "updated_at": "2016-05-31T09:38:53.000+02:00", "unit_price": "333.0", "ignore_credit":
-        false, "discount_id": null, "vat_id": 6, "months_warranty": null, "lot_size":
-        1, "offer_variation_id": 1, "lot_quantity": 2, "id": 24}, {"category": "shipping",
-        "invoice_id": 15, "created_at": "2016-05-31T09:38:53.000+02:00", "updated_at":
-        "2016-05-31T09:38:53.000+02:00", "unit_price": "9.0", "ignore_credit": false,
-        "discount_id": null, "vat_id": 6, "months_warranty": null, "lot_size": 1,
-        "offer_variation_id": null, "lot_quantity": 1, "id": 25}, {"category": "discount",
-        "invoice_id": 15, "created_at": "2016-05-31T09:38:53.000+02:00", "updated_at":
-        "2016-05-31T09:38:53.000+02:00", "unit_price": "9.0", "ignore_credit": true,
-        "discount_id": 11, "vat_id": 6, "months_warranty": null, "lot_size": 1, "offer_variation_id":
-        null, "lot_quantity": 1, "id": 26}, {"category": "discount", "invoice_id":
-        15, "created_at": "2016-05-31T09:38:53.000+02:00", "updated_at": "2016-05-31T09:38:53.000+02:00",
-        "unit_price": "499.0", "ignore_credit": false, "discount_id": 11, "vat_id":
-        6, "months_warranty": null, "lot_size": 1, "offer_variation_id": null, "lot_quantity":
-        1, "id": 27}]}}, "attributes": {"status": "confirmed", "kind": "standard",
-        "created_at": "2016-05-31T03:00:00.000+02:00", "reference": "Q8ZUIQJY6T",
-        "updated_at": "2016-05-31T09:38:47.000+02:00"}, "type": "invoice", "id": "15"}],
-        "data": {"relationships": {"billing_address": {"data": {"type": "address",
-        "id": "100000001"}}, "invoices": {"data": [{"type": "invoice", "id": "15"}]},
-        "order_items": {"data": [{"type": "order_item", "id": "19"}]}, "discount":
-        {"data": {"type": "discount", "id": "11"}}, "payments": {"data": [{"type":
-        "payment", "id": "2"}]}, "shipping_address": {"data": {"type": "address",
-        "id": "100000001"}}, "user": {"data": {"type": "user", "id": "1000001"}}},
-        "attributes": {"status": "confirmed", "offer_id": 1, "website_id": 3, "updated_at":
-        "2016-05-31T03:00:00.000+02:00", "currency": "chf", "shipping_carrier_id":
-        1, "total": "167.0", "subtotal": "666.0", "created_at": "2016-05-31T03:00:00.000+02:00",
-        "shipping_fee_id": 1000001}, "type": "order", "id": "16"}, "jsonapi": {"version":
-        "1.0"}}'}
+    body: {string: !!python/unicode "<!DOCTYPE html>\n<html>\n<head>\n  <title>We're
+        sorry, but something went wrong (500)</title>\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n
+        \ <style>\n  body {\n    background-color: #EFEFEF;\n    color: #2E2F30;\n
+        \   text-align: center;\n    font-family: arial, sans-serif;\n    margin:
+        0;\n  }\n\n  div.dialog {\n    width: 95%;\n    max-width: 33em;\n    margin:
+        4em auto 0;\n  }\n\n  div.dialog > div {\n    border: 1px solid #CCC;\n    border-right-color:
+        #999;\n    border-left-color: #999;\n    border-bottom-color: #BBB;\n    border-top:
+        #B00100 solid 4px;\n    border-top-left-radius: 9px;\n    border-top-right-radius:
+        9px;\n    background-color: white;\n    padding: 7px 12% 0;\n    box-shadow:
+        0 3px 8px rgba(50, 50, 50, 0.17);\n  }\n\n  h1 {\n    font-size: 100%;\n    color:
+        #730E15;\n    line-height: 1.5em;\n  }\n\n  div.dialog > p {\n    margin:
+        0 0 1em;\n    padding: 1em;\n    background-color: #F7F7F7;\n    border: 1px
+        solid #CCC;\n    border-right-color: #999;\n    border-left-color: #999;\n
+        \   border-bottom-color: #999;\n    border-bottom-left-radius: 4px;\n    border-bottom-right-radius:
+        4px;\n    border-top-color: #DADADA;\n    color: #666;\n    box-shadow: 0
+        3px 8px rgba(50, 50, 50, 0.17);\n  }\n  </style>\n</head>\n\n<body>\n  <!--
+        This file lives in public/500.html -->\n  <div class=\"dialog\">\n    <div>\n
+        \     <h1>We're sorry, but something went wrong.</h1>\n    </div>\n    <p>If
+        you are the application owner check the logs for more information.</p>\n  </div>\n</body>\n</html>\n"}
     headers:
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [close]
-      content-type: [application/json; charset=utf-8]
-      date: ['Tue, 31 May 2016 13:21:45 GMT']
-      etag: [W/"cfc79470d1607830a2d9ec5cc763dfed"]
+      connection: [keep-alive]
+      content-length: ['1477']
+      content-type: [text/html; charset=utf-8]
+      date: ['Fri, 24 Jun 2016 13:33:34 GMT']
       server: [Cowboy]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
-      x-content-type-options: [nosniff]
-      x-frame-options: [SAMEORIGIN]
-      x-request-id: [70265b32-58be-4a63-98e7-46358996fad6]
-      x-runtime: ['0.084253']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      User-Agent: [python-requests/2.9.1]
-    method: GET
-    uri: https://api-sprint.qoqa.com/v1/admin/offers/1
-  response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"created_at": "2016-05-31T09:38:43.000+02:00",
-        "website_id": 3, "name": "Apple iPhone 6 / 64GB", "updated_at": "2016-05-31T09:38:43.000+02:00"},
-        "type": "offer", "id": "1"}, "jsonapi": {"version": "1.0"}}'}
-    headers:
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [close]
-      content-type: [application/json; charset=utf-8]
-      date: ['Tue, 31 May 2016 13:21:45 GMT']
-      etag: [W/"8c5fc4889562ddc7567fe888846028de"]
-      server: [Cowboy]
-      strict-transport-security: [max-age=31536000]
-      via: [1.1 vegur]
-      x-content-type-options: [nosniff]
-      x-frame-options: [SAMEORIGIN]
-      x-request-id: [8054e919-efbe-4b69-ba1c-552479233b2d]
-      x-runtime: ['0.032137']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      User-Agent: [python-requests/2.9.1]
-    method: GET
-    uri: https://api-sprint.qoqa.com/v1/admin/users/1000001
-  response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
-        "2016-05-31T09:38:42.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
-        "2016-05-31T14:47:55.749+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1464680319",
-        "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"}, "jsonapi": {"version":
-        "1.0"}}'}
-    headers:
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [close]
-      content-type: [application/json; charset=utf-8]
-      date: ['Tue, 31 May 2016 13:21:45 GMT']
-      etag: [W/"c21c7bbace8e19f32627fb1ae5fc658a"]
-      server: [Cowboy]
-      strict-transport-security: [max-age=31536000]
-      via: [1.1 vegur]
-      x-content-type-options: [nosniff]
-      x-frame-options: [SAMEORIGIN]
-      x-request-id: [e5dadfb0-40a8-4d9b-859a-36a3341a2474]
-      x-runtime: ['0.042184']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      User-Agent: [python-requests/2.9.1]
-    method: GET
-    uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
-  response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
-        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "zip": "2068",
-        "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
-        1, "service_client_number": null, "updated_at": "2016-05-31T09:38:42.000+02:00",
-        "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
-        "gender": 1, "country": "Suisse", "digicode": null, "created_at": "2016-05-31T09:38:42.000+02:00"},
-        "type": "address", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
-    headers:
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [close]
-      content-type: [application/json; charset=utf-8]
-      date: ['Tue, 31 May 2016 13:21:46 GMT']
-      etag: [W/"4c3c4bdc4847757ae9618caeda64f7b0"]
-      server: [Cowboy]
-      strict-transport-security: [max-age=31536000]
-      via: [1.1 vegur]
-      x-content-type-options: [nosniff]
-      x-frame-options: [SAMEORIGIN]
-      x-request-id: [bb3287e5-9cf5-4f5c-a53e-6f16d4a1635a]
-      x-runtime: ['0.023966']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      User-Agent: [python-requests/2.9.1]
-    method: GET
-    uri: https://api-sprint.qoqa.com/v1/admin/users/1000003
-  response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "de", "created_at":
-        "2016-05-31T09:38:42.000+02:00", "pseudo": "Hans", "language_id": 2, "updated_at":
-        "2016-01-01T11:00:00.000+01:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/003/thumb/cat_boobs.jpg?1464680319",
-        "email": "de@qoqa.com"}, "type": "user", "id": "1000003"}, "jsonapi": {"version":
-        "1.0"}}'}
-    headers:
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [close]
-      content-type: [application/json; charset=utf-8]
-      date: ['Tue, 31 May 2016 13:21:46 GMT']
-      etag: [W/"6ab7b0a213bef2995ec05161e956c470"]
-      server: [Cowboy]
-      strict-transport-security: [max-age=31536000]
-      via: [1.1 vegur]
-      x-content-type-options: [nosniff]
-      x-frame-options: [SAMEORIGIN]
-      x-request-id: [08a843d9-0b89-407e-a774-63affaf78e5c]
-      x-runtime: ['0.024316']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      User-Agent: [python-requests/2.9.1]
-    method: GET
-    uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
-  response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
-        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "zip": "2068",
-        "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
-        1, "service_client_number": null, "updated_at": "2016-05-31T09:38:42.000+02:00",
-        "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
-        "gender": 1, "country": "Suisse", "digicode": null, "created_at": "2016-05-31T09:38:42.000+02:00"},
-        "type": "address", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
-    headers:
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [close]
-      content-type: [application/json; charset=utf-8]
-      date: ['Tue, 31 May 2016 13:21:47 GMT']
-      etag: [W/"4c3c4bdc4847757ae9618caeda64f7b0"]
-      server: [Cowboy]
-      strict-transport-security: [max-age=31536000]
-      via: [1.1 vegur]
-      x-content-type-options: [nosniff]
-      x-frame-options: [SAMEORIGIN]
-      x-request-id: [e2e3008f-2ed6-41a7-8286-65e1ee79348c]
-      x-runtime: ['0.020857']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
+      x-request-id: [705bc680-0325-449a-b80d-e642f713d390]
+      x-runtime: ['0.187906']
+    status: {code: 500, message: Internal Server Error}
 version: 1

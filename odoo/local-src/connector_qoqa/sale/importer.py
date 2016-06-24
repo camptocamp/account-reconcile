@@ -158,40 +158,12 @@ class SaleOrderImporter(QoQaImporter):
         with self.session.change_user(user.id):
             super(SaleOrderImporter, self)._import(binding_id)
 
-    def _create_payments(self, binding):
-        sale = binding.openerp_id
-        # TODO: see what to do with payments
-        if sale.payment_ids:
-            # if payments exist, we are force updating a sales
-            # and the payments have already been generated
-            return
-        payments = get_payments(self, self.qoqa_record)
-        for payment in payments:
-            # TODO:review _get_payment_mode
-            method = _get_payment_mode(self, payment, sale.company_id)
-            if method is None:
-                continue
-            journal = method.journal_id
-            if not journal:
-                continue
-            amount = float(payment['amount'])
-            payment_date = _get_payment_date(payment)
-            # TODO: review add payment
-            _logger.info('here it should add the payment of %s on %s',
-                         amount, payment_date)
-            # sale._add_payment(sale, journal, amount, payment_date)
-
-    def _after_import(self, binding):
-        # TODO:
-        # self._create_payments(binding)
-        pass
-
 
 def get_payments(connector_unit, record):
     payments = [item for item in
                 record['included']
-                if item['type'] == 'payment'
-                # TODO add filter on kind and status
+                if item['type'] == 'payment' and
+                item['attributes']['kind'] == QoQaPaymentKind.payment
                 ]
     return payments
 
@@ -201,7 +173,7 @@ def _get_payment_mode(connector_unit, payment, company):
                     QoQaPaymentStatus.confirmed)
     if payment['attributes']['status'] not in valid_states:
         return
-    qmethod_id = payment['relationships']['payment_method']['data']['id']
+    qmethod_id = payment['attributes']['payment_method_id']
     if not qmethod_id:
         raise MappingError("Payment method missing for payment %s" %
                            payment['id'])
@@ -222,9 +194,7 @@ def _get_payment_mode(connector_unit, payment, company):
 
 
 def _get_payment_date(payment_record):
-    # TODO: payment_date is missing
-    # payment_date = payment_record['created_at']
-    payment_date = '2016-06-01 00:00:00'
+    payment_date = payment_record['attributes']['created_at']
     payment_date = iso8601_to_local_date(payment_date)
     return fields.Date.to_string(payment_date)
 
@@ -272,10 +242,6 @@ def find_sale_invoice(invoices):
 @qoqa
 class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
     _model_name = 'qoqa.sale.order'
-
-    # TODO:
-    # miss in API:
-    # - delivery date
 
     from_data_attributes = [
         (iso8601_to_utc('created_at'), 'created_at'),
@@ -346,8 +312,7 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
             return
         method = methods[0]
         payment_attrs = method[0]['attributes']
-        # TODO: field is transaction_id, not yet there
-        transaction_id = payment_attrs['sign']
+        transaction_id = payment_attrs['transaction_id']
         payment_amount = payment_attrs['amount']
         payment_date = _get_payment_date(method[0])
         return {'payment_mode_id': method[1].id,
@@ -382,9 +347,6 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
                   }
         return values
 
-    # TODO
-    # pricelist ?
-
     def finalize(self, map_record, values):
         lines = self.extract_lines(map_record)
         map_child = self.unit_for(self._map_child_class,
@@ -400,7 +362,12 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
     def extract_lines(self, map_record):
         """ Lines are read in the invoice of the sales order """
         invoice = find_sale_invoice(valid_invoices(map_record.source))
-        lines = invoice['relationships']['invoice_items']['data']
+        line_ids = [item['id'] for item
+                    in invoice['relationships']['invoice_items']['data']
+                    ]
+        lines = [item for item in map_record.source['included']
+                 if item['type'] == 'invoice_item' and
+                 item['id'] in line_ids]
         return lines
 
 

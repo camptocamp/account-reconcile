@@ -170,3 +170,62 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
             ),
         ]
         self.assert_records(expected_lines, move_lines)
+
+    @freeze_time('2016-04-23 00:00:00')
+    @recorder.use_cassette()
+    def test_import_discount_accounting_voucher(self):
+        """ Import a discount accounting of type voucher """
+        import_record(self.session, 'qoqa.discount.accounting',
+                      self.backend_record.id, 100000002)
+        domain = [('qoqa_id', '=', '100000002')]
+        discount_accounting = self.DiscountAccounting.search(domain)
+        discount_accounting.ensure_one()
+
+        expected_partner = self.env['qoqa.res.partner'].search(
+            [('backend_id', '=', self.backend_record.id),
+             ('qoqa_id', '=', '1000001')],
+        ).openerp_id
+        expected = [
+            ExpectedDiscountAccounting(
+                discount_type='promo',
+                ref='888',  # FIXME: hardcoded in mapper
+                amount=100,
+                company_id=self.company_ch,
+                create_uid=self.company_ch.connector_user_id,
+                date='2016-06-24',
+                journal_id=self.journal,
+                partner_id=expected_partner,
+                qoqa_id='100000001',
+            ),
+        ]
+        self.assert_records(expected, discount_accounting)
+
+        move_lines = discount_accounting.line_ids
+
+        expected_lines = [
+            ExpectedDiscountAccountingLine(
+                debit=0,
+                credit=100,
+                account_id=self.coupon_account,
+                analytic_account_id=self.analytic_account,
+                name=u'Emission du bons de rabais SAV',
+                tax_ids=self.env['account.tax'],
+            ),
+            ExpectedDiscountAccountingLine(
+                debit=92.59,
+                credit=0,
+                account_id=self.debit_account,
+                analytic_account_id=self.analytic_account,
+                name=u'Frais service clientèle net',
+                tax_ids=self.tax_8,
+            ),
+            ExpectedDiscountAccountingLine(
+                debit=7.41,
+                credit=0,
+                account_id=self.tax_account,
+                analytic_account_id=self.env['account.analytic.account'],
+                name=u'Frais service clientèle net 8.0%',
+                tax_ids=self.env['account.tax'],
+            ),
+        ]
+        self.assert_records(expected_lines, move_lines)

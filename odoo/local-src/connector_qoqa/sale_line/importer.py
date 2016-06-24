@@ -5,6 +5,9 @@
 from __future__ import division
 import logging
 
+from datetime import date
+
+from openerp import fields
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
@@ -15,20 +18,21 @@ from openerp.addons.connector_ecommerce.unit.line_builder import (
     SpecialOrderLineBuilder,
     )
 from ..backend import qoqa
+from ..connector import iso8601_to_local_date
+from ..unit.mapper import FromAttributes
 
 _logger = logging.getLogger(__name__)
 
 
 class QoQaLineCategory(object):
     product = 'product'
-    # TODO: check
     discount = 'discount'
     shipping = 'shipping'
     service = 'service'
 
 
 @qoqa
-class SaleOrderLineImportMapper(ImportMapper):
+class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
     """ Convert 'order_items' and 'items' into sales order lines.
 
     The 2 dicts are merged, then passed to this Mapper.
@@ -38,16 +42,15 @@ class SaleOrderLineImportMapper(ImportMapper):
     """
     _model_name = 'qoqa.sale.order.line'
 
-    # TODO: set delay as (delivery_date - date.today()).days
-
-    direct = [('lot_quantity', 'qoqa_quantity'),  # original quantity on lot
-              ('id', 'qoqa_id'),
-              ]
+    from_attributes = [
+        ('lot_quantity', 'qoqa_quantity'),  # original quantity on lot
+        ('id', 'qoqa_id'),
+    ]
 
     def finalize(self, map_record, values):
         """ complete the values values from the 'item' sub-record """
         line = map_record.source
-        category = line['category']
+        category = line['attributes']['category']
         if category == QoQaLineCategory.product:
             values.update(self._item_product(line))
 
@@ -55,9 +58,17 @@ class SaleOrderLineImportMapper(ImportMapper):
             values.update(self._item_shipping(line, map_record.parent))
 
         elif category == QoQaLineCategory.discount:
-            discount_id = map_record.source['discount_id']
+            discount_id = map_record.source['attributes']['discount_id']
             discount = self._find_discount(map_record, discount_id)
             values.update(self._item_discount(line, discount))
+
+        order = map_record.parent.source
+        date_delivery = order['data']['attributes']['delivery_on']
+        if date_delivery:
+            date_delivery = iso8601_to_local_date(date_delivery)
+            delivery_date = fields.Date.from_string(date_delivery)
+            today = date.today()
+            values['delay'] = (delivery_date - today).days
 
         return values
 
@@ -71,8 +82,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         return discounts[0]
 
     def _item_product(self, line):
-        # TODO: not the right field, should be variation_id I guess
-        qoqa_variant_id = line['offer_variation_id']
+        qoqa_variant_id = line['attributes']['variation_id']
         binder = self.binder_for('qoqa.product.product')
         product = binder.to_openerp(qoqa_variant_id, unwrap=True)
         if not product:
@@ -92,7 +102,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         # line builder
         builder = self.unit_for(QoQaShippingLineBuilder)
         builder.price_unit = 0
-        builder.quantity = line['lot_quantity']
+        builder.quantity = line['attributes']['lot_quantity']
         # this is the delivery carrier having the rates
         builder.carrier = fee
         builder.product = fee.product_id
@@ -114,7 +124,7 @@ class SaleOrderLineImportMapper(ImportMapper):
         # line builder
         builder = self.unit_for(QoQaPromoLineBuilder)
         promo_type = self._discount_type(discount)
-        builder.price_unit = -float(line['unit_price'])
+        builder.price_unit = -float(line['attributes']['unit_price'])
         # choose product according to the promo type
         builder.product = promo_type.product_id
         builder.code = discount['attributes']['code_name']
@@ -125,7 +135,6 @@ class SaleOrderLineImportMapper(ImportMapper):
         })
         return values
 
-    # TODO: check if quantity is still as units or as lots
     @mapping
     def quantity(self, record):
         """ Return the quantity and the unit price
@@ -140,9 +149,10 @@ class SaleOrderLineImportMapper(ImportMapper):
         should be 3 digits to ensure we do not lose precision.
 
         """
-        lot_size = record['lot_size'] or 1
-        quantity = record['lot_quantity']
-        price = float(record['unit_price'])
+        attributes = record['attributes']
+        lot_size = attributes['lot_size'] or 1
+        quantity = attributes['lot_quantity']
+        price = float(attributes['unit_price'])
         if lot_size > 1:
             price /= lot_size
         values = {'product_uom_qty': quantity,
@@ -156,7 +166,7 @@ class LineMapChild(ImportMapChild):
 
     def skip_item(self, map_record):
         record = map_record.source
-        if not record['lot_quantity']:
+        if not record['attributes']['lot_quantity']:
             return True
 
     def get_item_values(self, map_record, to_attr, options):

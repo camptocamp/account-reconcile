@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/100000002
+  response:
+    body: {string: "{\"errors\":[{\"code\":3,\"title\":\"Acc\xE8s refus\xE9\",\"detail\":\"Mauvais
+        token\",\"meta\":{}}]}"}
+    headers:
+      cache-control: [no-cache]
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Fri, 24 Jun 2016 12:34:04 GMT']
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      www-authenticate: [Token realm="Application"]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [7996b1be-1ef8-4cb0-a86a-ceb15fef76b4]
+      x-runtime: ['0.052362']
+      x-xss-protection: [1; mode=block]
+    status: {code: 401, message: Unauthorized}
+version: 1

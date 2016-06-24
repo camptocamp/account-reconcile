@@ -74,25 +74,25 @@ class TestImportOrder(QoQaTransactionCase):
         })
         self.product_1_binding = self.env['qoqa.product.product'].create({
             'backend_id': self.backend_record.id,
-            'qoqa_id': '1',
+            'qoqa_id': '100001',
             'name': 'Product 1',
             'default_code': 'product_1',
         })
         self.product_2_binding = self.env['qoqa.product.product'].create({
             'backend_id': self.backend_record.id,
-            'qoqa_id': '2',
+            'qoqa_id': '100002',
             'name': 'Product 2',
             'default_code': 'product_2',
         })
         self.product_9_binding = self.env['qoqa.product.product'].create({
             'backend_id': self.backend_record.id,
-            'qoqa_id': '9',
+            'qoqa_id': '100009',
             'name': 'Product 9',
             'default_code': 'product_9',
         })
         self.product_11_binding = self.env['qoqa.product.product'].create({
             'backend_id': self.backend_record.id,
-            'qoqa_id': '11',
+            'qoqa_id': '100011',
             'name': 'Product 11',
             'default_code': 'product_11',
         })
@@ -143,7 +143,7 @@ class TestImportOrder(QoQaTransactionCase):
         domain = [('qoqa_id', '=', '3')]
         shop = self.env['qoqa.shop'].search(domain)
         shop.ensure_one()
-        domain = [('qoqa_id', '=', '5')]
+        domain = [('qoqa_id', '=', '1000005')]
         offer = self.env['qoqa.offer'].search(domain)
         offer.ensure_one()
 

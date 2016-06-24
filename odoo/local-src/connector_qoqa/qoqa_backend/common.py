@@ -59,7 +59,7 @@ class QoqaBackend(models.Model):
              "will be imported in the translation of this language.\n"
              "Note that a similar configuration exists for each shop.",
     )
-    url = fields.Char(string='URL', required=True)
+    url = fields.Char(string='URL')
     token = fields.Char('Token')
     debug = fields.Boolean('Debug')
 

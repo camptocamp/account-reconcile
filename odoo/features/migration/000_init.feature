@@ -227,7 +227,7 @@ Feature: Parameter the new database
         #| qoqa_offer_historical_margin                    |
         | qoqa_product                                    |
         | qoqa_record_archiver                            |
-        #| server_env_connector_qoqa                       |
+        | server_env_connector_qoqa                       |
         #| specific_fct                                    |
         #| specific_report                                 |
         | speedy_views                                    |

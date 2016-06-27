@@ -151,4 +151,5 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.sale.order.line',
                    'qoqa.discount.accounting',
                    'qoqa.discount.accounting.line',
+                   'qoqa.crm.claim',
                    ]

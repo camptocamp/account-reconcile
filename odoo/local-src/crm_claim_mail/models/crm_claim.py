@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 import re
 from datetime import datetime
-from operator import attrgetter
 from openerp import _, api, fields, models
 from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            DEFAULT_SERVER_TIME_FORMAT,
@@ -100,13 +99,9 @@ class CrmClaim(models.Model):
             limit=1)
         if not sale:
             return message, None
-        invoices = (invoice for invoice in sale.invoice_ids
-                    if invoice.state != 'cancel')
-        if not invoices:
+        invoice = sale._last_invoice()
+        if not invoice:
             return message, None
-        invoices = sorted(invoices, key=attrgetter('date_invoice'),
-                          reverse=True)
-        invoice = invoices[0]
         values = {'invoice_id': invoice.id,
                   'date': fields.Datetime.now(),
                   'company_id': company.id}

@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/claims/4
+  response:
+    body: {string: !!python/unicode '{"included": [{"attributes": {"created_at": "2016-06-27T14:27:59.000+02:00",
+        "file_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/cs/claim_media/files/000/000/002/original/iphone-5s-front.jpg?1467030479",
+        "updated_at": "2016-06-27T14:27:59.000+02:00"}, "type": "cs_claim_medium",
+        "id": "2"}], "data": {"relationships": {"media": {"data": [{"type": "cs_claim_medium",
+        "id": "2"}]}}, "attributes": {"category_id": 1, "user_id": 1000001, "main_category":
+        null, "order_id": 2, "created_at": "2016-06-27T14:28:00.000+02:00", "updated_at":
+        "2016-06-27T14:28:00.000+02:00", "phone": null, "message": "Bonjour, J''ai
+        enfin re\u00e7u mon iPhone. Mais il \u00e9tait cass\u00e9 dans sa boite. Vous
+        pouvez voir les cassures dans la photo envoy\u00e9. Comme tout \u00e7a \u00e0
+        pas l''air tr\u00e8s solide je vais reprendre mon 3310 merci\n", "identifier":
+        "test.qoqa", "email": "dev@qoqa.com", "subject": "Admin - Order <150414-C8TBCI>"},
+        "type": "cs_claim", "id": "4"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 28 Jun 2016 08:20:47 GMT']
+      etag: [W/"419bb01ef550dbbb2ee2881f2a996dea"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [7a717ff2-607d-4eb3-82fd-7b753052c967]
+      x-runtime: ['0.163186']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/users/1000001
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
+        "2016-06-27T14:28:00.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
+        "2016-06-28T09:47:17.823+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1467030479",
+        "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"}, "jsonapi": {"version":
+        "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 28 Jun 2016 08:20:47 GMT']
+      etag: [W/"800db4c6e351ce74dcad52a6f8a13f0f"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [3fd9a7a2-dead-4473-8203-94f2097d7d10]
+      x-runtime: ['0.053553']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

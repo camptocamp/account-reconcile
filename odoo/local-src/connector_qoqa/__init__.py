@@ -7,6 +7,7 @@ from . import account_tax
 from . import address
 from . import backend
 from . import connector
+from . import crm_claim
 from . import delivery_carrier
 from . import invoice
 from . import ir_translation

@@ -105,6 +105,11 @@ class QoqaBackend(models.Model):
         inverse='_inverse_import_product_template_image_from_date',
         string='Import Product Images from date',
     )
+    import_crm_claim_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_crm_claim_from_date',
+        string='Import Claims from date',
+    )
 
     import_sale_id = fields.Char(string='Sales Order ID')
     import_variant_id = fields.Char(string='Variant ID')
@@ -164,6 +169,11 @@ class QoqaBackend(models.Model):
     @api.multi
     def _inverse_import_product_template_image_from_date(self):
         ts_field = 'import_product_template_image_from_date'
+        self._inverse_date_fields(ts_field)
+
+    @api.multi
+    def _inverse_import_crm_claim_from_date(self):
+        ts_field = 'import_crm_claim_from_date'
         self._inverse_date_fields(ts_field)
 
     @api.multi
@@ -335,6 +345,11 @@ class QoqaBackend(models.Model):
         return True
 
     @api.multi
+    def import_crm_claim(self):
+        self._import_from_date('qoqa.crm.claim', 'import_crm_claim_from_date')
+        return True
+
+    @api.multi
     def _import_one(self, model, field, import_func=None):
         if import_func is None:
             import_func = import_record
@@ -395,6 +410,10 @@ class QoqaBackend(models.Model):
     @api.model
     def _scheduler_import_product_template_image(self):
         self.import_product_template_image(self.search([]))
+
+    @api.model
+    def _scheduler_import_crm_claim(self):
+        self.import_crm_claim(self.search([]))
 
 
 class QoqaBackendTimestamp(models.Model):

@@ -6,7 +6,11 @@
  'version': '9.0.2.0.0',
  'category': 'Connector',
  'depends': ['connector',
+             'crm_claim',
+             'crm_claim_rma',
+             'crm_rma_by_shop',
              'qoqa_base_data',
+             'qoqa_claim',
              'delivery',
              'connector_base_product',
              'account_payment_mode',  # oca/bank-payment

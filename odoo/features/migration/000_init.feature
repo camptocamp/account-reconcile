@@ -517,3 +517,13 @@ Feature: Parameter the new database
   SET from_date_field = 'import_discount_accounting_from_date'
   WHERE from_date_field = 'import_accounting_issuance_from_date'
   """
+  Given I execute the SQL commands
+  """
+  INSERT INTO qoqa_backend_timestamp (backend_id, from_date_field, import_start_time)
+  SELECT 1, 'import_crm_claim_from_date', '2016-06-15 00:00:00'
+  WHERE NOT EXISTS (
+    SELECT id FROM qoqa_backend_timestamp
+    WHERE backend_id = 1
+    AND from_date_field = 'import_crm_claim_from_date'
+  )
+  """

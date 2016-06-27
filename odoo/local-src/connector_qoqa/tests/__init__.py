@@ -6,6 +6,7 @@ from . import test_company_binder
 from . import test_export_product
 from . import test_export_product_attribute
 from . import test_export_refund
+from . import test_import_crm_claim
 from . import test_import_discount_accounting
 from . import test_import_metadata
 from . import test_import_offer

@@ -1,25 +1,7 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2014 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-from openerp.addons.mail.tests.test_mail_base import TestMailBase
+# © 2014-2016 Camptocamp SA (Guewen Baconnier, Matthieu Dietrich)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+from openerp.addons.mail.tests.common import TestMail
 
 MAIL_TEMPLATE = """Return-Path: <whatever-2a840@postmaster.twitter.com>
 To: {to}
@@ -69,7 +51,7 @@ Content-Transfer-Encoding: quoted-printable
 """
 
 
-class TestMailAutocomplete(TestMailBase):
+class TestMailAutocomplete(TestMail):
 
     @staticmethod
     def format(template, to='Claims <claims@example.com>',
@@ -83,66 +65,46 @@ class TestMailAutocomplete(TestMailBase):
 
     def setUp(self):
         super(TestMailAutocomplete, self).setUp()
-        self.Claim = self.registry('crm.claim')
-        self.Sale = self.registry('sale.order')
-        self.SaleLine = self.registry('sale.order.line')
+        self.Claim = self.env['crm.claim']
+        self.Sale = self.env['sale.order']
+        self.SaleLine = self.env['sale.order.line']
+        product = self.browse_ref('product.product_product_7')
+        product.write({'invoice_policy': 'order'})
+        partner = self.browse_ref('base.res_partner_4')
+        partner.write({'email': 'loutres@qoqa.com'})
 
     def _create_sale_order(self, number):
-        cr, uid = self.cr, self.uid
         vals = {
             'name': number,
             'partner_id': self.ref('base.res_partner_3'),
-            'shop_id': self.ref('sale.sale_shop_1'),
         }
-        vals.update(
-            self.Sale.onchange_shop_id(cr, uid, [], vals['shop_id'])['value']
-        )
-        vals.update(
-            self.Sale.onchange_partner_id(cr, uid, [],
-                                          vals['partner_id'])['value']
-        )
 
         line1 = {
             'product_id': self.ref('product.product_product_7'),
             'price_unit': 35.,
             'product_uom_qty': 10,
         }
-        line1.update(
-            self.SaleLine.product_id_change(
-                cr, uid, [], vals['pricelist_id'],
-                line1['product_id'],
-                qty=line1['product_uom_qty'],
-                partner_id=vals['partner_id'])['value']
-        )
         vals['order_line'] = [(0, 0, line1)]
-        sale_id = self.Sale.create(cr, uid, vals)
-        sale = self.Sale.browse(cr, uid, sale_id)
+        sale = self.Sale.create(vals)
         self.assertEqual(sale.name, number)
-        return sale_id
+        return sale
 
-    def _confirm_sale_order(self, sale_id):
-        cr, uid = self.cr, self.uid
-        self.Sale.action_button_confirm(cr, uid, [sale_id])
-        sale = self.Sale.browse(cr, uid, sale_id)
-        self.assertEqual(sale.state, 'manual')
+    def _confirm_sale_order(self, sale):
+        sale.action_confirm()
+        self.assertEqual(sale.state, 'sale')
 
-    def _create_invoice(self, sale_id):
-        cr, uid = self.cr, self.uid
-        self.Sale.action_invoice_create(cr, uid, [sale_id])
-        sale = self.Sale.browse(cr, uid, sale_id)
+    def _create_invoice(self, sale):
+        sale.action_invoice_create()
         self.assertTrue(sale.invoice_ids)
 
     def test_autocomplete(self):
         """ Autocomplete from sales / invoice """
-        cr, uid = self.cr, self.uid
-        sale_id = self._create_sale_order('7531902')
-        self._confirm_sale_order(sale_id)
-        self._create_invoice(sale_id)
-        sale = self.Sale.browse(cr, uid, sale_id)
+        sale = self._create_sale_order('7531902')
+        self._confirm_sale_order(sale)
+        self._create_invoice(sale)
         invoice = sale.invoice_ids[0]
 
-        User = self.registry('res.users')
-        company = User.browse(cr, uid, uid).company_id
+        company = self.env.user.company_id
         company.write({
             'claim_sale_order_regexp':
             u'\*\*\* sale order number: (\d+) \*\*\*'}
@@ -153,8 +115,8 @@ class TestMailAutocomplete(TestMailBase):
                             sale_number='7531902')
         # when processed, it should find the SO from the number, and
         # autocomplete the claim with the last invoice of the SO
-        claim_id = self.Claim.message_process(cr, uid, self.Claim._name, email)
-        claim = self.Claim.browse(cr, uid, claim_id)
+        claim_id = self.Claim.message_process(self.Claim._name, email)
+        claim = self.Claim.browse(claim_id)
         self.assertEqual(claim.invoice_id.id, invoice.id)
         self.assertEqual(len(claim.claim_line_ids), 1)
         lines = claim.claim_line_ids

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_crm_claim_unclaimed" model="ir.ui.view">
+            <field name="name">crm.claim.unclaimed.form</field>
+            <field name="model">crm.claim.unclaimed</field>
+            <field name="arch" type="xml">
+                <form string="Unclaimed Package Return" version="7.0">
+                    <group>
+                        <field name="track_number"/>
+                        <field name="unclaimed_type"/>
+                        <field name="claim_name"/>
+                        <field name="return_source_location_id"/>
+                        <field name="return_dest_location_id"/>
+                        <field name="claim_invoice_id" invisible="1"/>
+                        <field name="claim_sale_order_id" invisible="1"/>
+                        <field name="claim_carrier_price" invisible="1"/>
+                        <field name="claim_delivery_address_id" invisible="1"/>
+                        <field name="claim_partner_id" invisible="1"/>
+                        <field name="claim_user_id"/>
+                        <field name="claim_team_id" readonly="1"/>
+                        <field name="claim_categ_id" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button string='Create Claim and Return' name="create_claim" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_crm_claim_unclaimed" model="ir.actions.act_window">
+            <field name="name">Unclaimed Package Return</field>
+            <field name="res_model">crm.claim.unclaimed</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_crm_claim_unclaimed"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Unclaimed Package Return" id="menu_crm_claim_unclaimed"
+                  parent="base.menu_aftersale" action="action_crm_claim_unclaimed" sequence="3"/>
+
+        <record id="view_crm_claim_unclaimed_delivery" model="ir.ui.view">
+            <field name="name">crm.claim.unclaimed.delivery.form</field>
+            <field name="model">crm.claim.unclaimed.delivery</field>
+            <field name="arch" type="xml">
+                <form string="Unclaimed Package Delivery" version="7.0">
+                    <group>
+                        <field name="claim_ids"/>
+                    </group>
+                    <footer>
+                        <button string='Deliver Claims' name="deliver_claim" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_crm_claim_unclaimed_delivery" model="ir.actions.act_window">
+            <field name="name">Unclaimed Package Delivery</field>
+            <field name="res_model">crm.claim.unclaimed.delivery</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_crm_claim_unclaimed_delivery"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Unclaimed Package Delivery" id="menu_crm_claim_unclaimed_delivery"
+                  parent="base.menu_aftersale" action="action_crm_claim_unclaimed_delivery" sequence="4"/>
+
+    </data>
+</openerp>

@@ -59,9 +59,7 @@ msgstr ""
 
 #. module: crm_claim_mail
 #: model:ir.model.fields,field_description:crm_claim_mail.field_res_company_mail_signature_template
-#: model:ir.model.fields,field_description:crm_claim_mail.field_sale_shop_mail_signature_template
 #: field:res.company,mail_signature_template:0
-#: field:sale.shop,mail_signature_template:0
 msgid "Mail signature template"
 msgstr ""
 
@@ -111,19 +109,12 @@ msgid "Response Received"
 msgstr "Réponse reçue"
 
 #. module: crm_claim_mail
-#: code:_description:0 model:ir.model,name:crm_claim_mail.model_sale_shop
-#, python-format
-msgid "Sales Shop"
-msgstr "Magasin"
-
-#. module: crm_claim_mail
 #: model:ir.actions.server,name:crm_claim_mail.send_claim_mail
 msgid "Send an email when a claim is created"
 msgstr "Envoi d'e-mail lors de création de réclamation"
 
 #. module: crm_claim_mail
 #: help:res.company,mail_signature_template:0
-#: help:sale.shop,mail_signature_template:0
 msgid ""
 "This is the mail signature template. You can add some variables :"
 "$user_signature : the current user signature$user_email : the current user "

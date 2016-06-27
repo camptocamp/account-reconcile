@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_crm_case_claims_filter" model="ir.ui.view">
+            <field name="name">crm.claim.filter</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="description"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="crm_case_claims_tree_view" model="ir.ui.view">
+            <field name="name">CRM - Claims Tree</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim.crm_case_claims_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="action_next" position="after">
+                    <field name="write_date"/>
+                </field>
+                <field name="action_next" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="partner_street"/>
+                    <field name="partner_zip"/>
+                    <field name="partner_city"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="crm_claim_rma_form_view" model="ir.ui.view">
+            <field name="name">crm.claim.rma.filter</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+                    <attribute name="domain">[('parent_id', '=', False)]</attribute>
+                </field>
+                <field name="partner_phone" position="attributes">
+                    <attribute name="required">0</attribute>
+                </field>
+                <field name="invoice_id" position="attributes">
+                    <attribute name="context">{'active_test': False}</attribute>
+                </field>
+                <button name="%(account.action_account_invoice_refund)d" position="attributes">
+                    <attribute name="context">{'invoice_ids': [invoice_id], 'description': name, 'claim_id': id}</attribute>
+                </button>
+            </field>
+        </record>
+
+
+        <record id="sales_team_form_view_in_crm-notify" model="ir.ui.view">
+            <field name="name">crm.team.form.notify</field>
+            <field name="model">crm.team</field>
+            <field name="inherit_id" ref="crm.sales_team_form_view_in_crm"/>
+            <field name="arch" type="xml">
+                <field name="active" position="after">
+                    <field name="notify"/>
+                </field>
+            </field>
+        </record>
+
+
+     </data>
+</openerp>

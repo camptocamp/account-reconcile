@@ -164,8 +164,8 @@ Feature: Parameter the new database
         #| base_stock_picking_pack_split                   |
         #| connector_file_s3_import                        |
         #| connector_qoqa                                  |
-        #| crm_claim_mail                                  |
-        | crm_rma_by_shop                                  |
+        | crm_claim_mail                                  |
+        | crm_rma_by_shop                                 |
         #| delivery_carrier_label_swiss_pp                 |
         #| delivery_carrier_url                            |
         #| ecotax                                          |
@@ -173,18 +173,19 @@ Feature: Parameter the new database
         #| picking_dispatch_group                          |
         #| purchase_variant_fast_entry                     |
         #| qoqa_base_data                                  |
-        #| qoqa_claim                                      |
+        | qoqa_claim                                      |
+        #| qoqa_claim_unclaimed_process                    |
         #| qoqa_label_dispatch_pack_split                  |
         #| qoqa_offer                                      |
         #| qoqa_offer_historical_margin                    |
-        | qoqa_product                          |
+        | qoqa_product                                    |
         | qoqa_record_archiver                            |
         #| server_env_connector_qoqa                       |
         #| specific_fct                                    |
         #| specific_report                                 |
         | speedy_views                                    |
         #| web_custom                                      |
-        | web_environment |
+        | web_environment                                 |
         #| wine_ch_report                                  |
     Then my modules should have been installed and models reloaded
 

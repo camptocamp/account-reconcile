@@ -62,10 +62,13 @@ class ShopImportMapper(ImportMapper):
     def company(self, record):
         data = record['data']
         relationships = data['relationships']
-        qoqa_company_id = relationships['company']['data']['id']
-        binder = self.binder_for('res.company')
-        binding = binder.to_openerp(qoqa_company_id)
-        return {'company_id': binding.id}
+        qoqa_company = relationships['company']['data']
+        if not qoqa_company:
+            return {'company_id': self.env.ref('base.main_company').id}
+        else:
+            binder = self.binder_for('res.company')
+            binding = binder.to_openerp(qoqa_company['id'])
+            return {'company_id': binding.id}
 
     @mapping
     def backend_id(self, record):

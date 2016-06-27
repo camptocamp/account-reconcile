@@ -9,6 +9,7 @@
  'category': 'Misc',
  'depends': ['account',
              'sale_stock',
+             'purchase',
              ],
  'website': 'http://www.camptocamp.com',
  'data': [

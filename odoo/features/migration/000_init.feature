@@ -294,6 +294,10 @@ Feature: Parameter the new database
     SET product_brand_id = (SELECT id FROM product_brand WHERE name = product_template.brand)
     WHERE brand IS NOT NULL and product_brand_id IS NULL
     """
+    Given I execute the SQL commands
+    """
+    ALTER TABLE product_template DROP COLUMN brand;
+    """
 
   @product_attributes
   Scenario: migrate product dynamic attributes to regular fields

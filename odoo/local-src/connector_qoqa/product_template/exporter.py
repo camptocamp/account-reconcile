@@ -101,7 +101,7 @@ class TemplateExportMapper(ExportMapper):
 
     translatable_fields = [
         ('name', 'name'),
-        # TODO: brand
+        # brand is not translatable in Odoo but it is on the qoqa API
         ('brand', 'brand'),
     ]
 

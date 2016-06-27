@@ -24,6 +24,7 @@ Adds *Offer* models.
              'delivery',
              'ecotax',
              'procurement',
+             'product_brand',  # oca/product-attribute
              # TODO: activate
              # 'picking_dispatch',  # stock-logistic-flows
              ],

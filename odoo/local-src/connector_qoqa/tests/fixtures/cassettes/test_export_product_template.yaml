@@ -1,8 +1,8 @@
 interactions:
 - request:
     body: '{"locale": "fr", "product": {"translations_attributes": [{"locale": "en",
-      "brand": false, "name": "MRSAFE"}, {"locale": "fr", "brand": false, "name":
-      "MRSAFE"}, {"locale": "de", "brand": false, "name": "MRSAFE"}]}}'
+      "brand": "Things", "name": "MRSAFE"}, {"locale": "fr", "brand": "Things", "name":
+      "MRSAFE"}, {"locale": "de", "brand": "Things", "name": "MRSAFE"}]}}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']

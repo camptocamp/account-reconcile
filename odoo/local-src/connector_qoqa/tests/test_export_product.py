@@ -17,11 +17,15 @@ class TestExportProduct(QoQaTransactionCase):
         recorder.register_matcher('product_body', self.check_product_body)
 
     def _create_products(self):
+        self.brand = self.env['product.brand'].create({
+            'name': 'Things',
+        })
         self.product_template = self.env['product.template'].with_context(
             create_product_product=False,
         ).create({
             'name': 'MRSAFE',
             'warranty': 12,
+            'product_brand_id': self.brand.id,
         })
 
         wine_bottle = self.env['wine.bottle'].create({

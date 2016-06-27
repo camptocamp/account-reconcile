@@ -16,7 +16,6 @@
     ],
     'website': 'http://www.camptocamp.com',
     'data': [
-        'data/lang_install.xml',
         'data/reopen_claim_on_mail.xml',
         'data/send_mail_on_new_claim.xml',
         'views/res_company_view.xml',

@@ -10,21 +10,64 @@ interactions:
     method: GET
     uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/100000002
   response:
-    body: {string: "{\"errors\":[{\"code\":3,\"title\":\"Acc\xE8s refus\xE9\",\"detail\":\"Mauvais
-        token\",\"meta\":{}}]}"}
+    body: {string: !!python/unicode '{"included": [{"attributes": {"free_shipping":
+        false, "description": "Voucher admin 1", "created_at": "2016-06-27T13:42:58.000+02:00",
+        "company_id": 1, "updated_at": "2016-06-27T13:42:58.000+02:00", "currency":
+        "chf", "amount": "69.0", "accounting_website_id": 3, "main_type": "voucher",
+        "sub_type": "marketing"}, "type": "discount", "id": "10000007"}, {"attributes":
+        {"discount_accounting_group_id": 100000002, "created_at": "2016-06-27T13:42:58.000+02:00",
+        "updated_at": "2016-06-27T13:42:58.000+02:00", "label": "Vente bons cadeaux",
+        "vat_id": 6, "amount": "-100.0", "is_vat": false}, "type": "discount_accounting_line",
+        "id": "100000004"}], "data": {"relationships": {"discount": {"data": {"type":
+        "discount", "id": "10000007"}}, "discount_accounting_lines": {"data": [{"type":
+        "discount_accounting_line", "id": "100000004"}]}}, "attributes": {"date":
+        "2016-06-27", "created_at": "2016-06-27T13:42:58.000+02:00", "user_id": 1000001,
+        "updated_at": "2016-06-27T13:42:58.000+02:00"}, "type": "discount_accounting_group",
+        "id": "100000002"}, "jsonapi": {"version": "1.0"}}'}
     headers:
-      cache-control: [no-cache]
+      cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 12:34:04 GMT']
+      date: ['Mon, 27 Jun 2016 12:15:35 GMT']
+      etag: [W/"f252b550e9f528d38e0c0d28ae72f857"]
       server: [Cowboy]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
-      www-authenticate: [Token realm="Application"]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [7996b1be-1ef8-4cb0-a86a-ceb15fef76b4]
-      x-runtime: ['0.052362']
+      x-request-id: [4b006fc3-b199-4251-a9fa-f7d95cfb85c9]
+      x-runtime: ['0.053331']
       x-xss-protection: [1; mode=block]
-    status: {code: 401, message: Unauthorized}
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/users/1000001
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
+        "2016-06-27T13:42:59.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
+        "2016-06-27T13:52:32.108+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1467027778",
+        "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"}, "jsonapi": {"version":
+        "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Jun 2016 12:15:35 GMT']
+      etag: [W/"702a3a9218d5d603512c1b9eba38003c"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [3edb861f-16ae-4ddd-8297-c0aaf55ce6e2]
+      x-runtime: ['0.033542']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
 version: 1

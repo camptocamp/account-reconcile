@@ -10,37 +10,41 @@ interactions:
     method: GET
     uri: https://api-sprint.qoqa.com/v1/admin/discount_accountings/100000001
   response:
-    body: {string: !!python/unicode '{"included": [{"attributes": {"discount_accounting_group_id":
-        100000001, "created_at": "2016-06-22T17:15:46.000+02:00", "updated_at": "2016-06-22T17:15:46.000+02:00",
-        "label": "Emission du bons de rabais SAV", "vat_id": 6, "amount": "-100.0",
-        "is_vat": false}, "type": "discount_accounting_line", "id": "100000001"},
-        {"attributes": {"discount_accounting_group_id": 100000001, "created_at": "2016-06-22T17:15:46.000+02:00",
-        "updated_at": "2016-06-22T17:15:46.000+02:00", "label": "Frais service client\u00e8le
-        net", "vat_id": 6, "amount": "92.6", "is_vat": false}, "type": "discount_accounting_line",
-        "id": "100000002"}, {"attributes": {"discount_accounting_group_id": 100000001,
-        "created_at": "2016-06-22T17:15:46.000+02:00", "updated_at": "2016-06-22T17:15:46.000+02:00",
-        "label": "TVA due pour bons de rabais SAV", "vat_id": 6, "amount": "7.4",
-        "is_vat": true}, "type": "discount_accounting_line", "id": "100000003"}],
-        "data": {"relationships": {"discount_accounting_lines": {"data": [{"type":
+    body: {string: !!python/unicode '{"included": [{"attributes": {"free_shipping":
+        false, "description": "Promo admin 1", "created_at": "2016-06-27T13:42:58.000+02:00",
+        "company_id": 1, "updated_at": "2016-06-27T13:42:58.000+02:00", "currency":
+        "chf", "amount": "100.0", "accounting_website_id": 3, "main_type": "promo",
+        "sub_type": "marketing"}, "type": "discount", "id": "10000001"}, {"attributes":
+        {"discount_accounting_group_id": 100000001, "created_at": "2016-06-27T13:42:58.000+02:00",
+        "updated_at": "2016-06-27T13:42:58.000+02:00", "label": "Emission du bons
+        de rabais SAV", "vat_id": 6, "amount": "-100.0", "is_vat": false}, "type":
+        "discount_accounting_line", "id": "100000001"}, {"attributes": {"discount_accounting_group_id":
+        100000001, "created_at": "2016-06-27T13:42:58.000+02:00", "updated_at": "2016-06-27T13:42:58.000+02:00",
+        "label": "Frais service client\u00e8le net", "vat_id": 6, "amount": "92.6",
+        "is_vat": false}, "type": "discount_accounting_line", "id": "100000002"},
+        {"attributes": {"discount_accounting_group_id": 100000001, "created_at": "2016-06-27T13:42:58.000+02:00",
+        "updated_at": "2016-06-27T13:42:58.000+02:00", "label": "TVA due pour bons
+        de rabais SAV", "vat_id": 6, "amount": "7.4", "is_vat": true}, "type": "discount_accounting_line",
+        "id": "100000003"}], "data": {"relationships": {"discount": {"data": {"type":
+        "discount", "id": "10000001"}}, "discount_accounting_lines": {"data": [{"type":
         "discount_accounting_line", "id": "100000001"}, {"type": "discount_accounting_line",
         "id": "100000002"}, {"type": "discount_accounting_line", "id": "100000003"}]}},
-        "attributes": {"user_id": 1000001, "created_at": "2016-06-22T17:15:46.000+02:00",
-        "updated_at": "2016-06-22T17:15:46.000+02:00", "company_id": 1, "currency":
-        "chf", "date": "2016-06-22", "accounting_website_id": 3}, "type": "discount_accounting_group",
-        "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
+        "attributes": {"date": "2016-06-27", "created_at": "2016-06-27T13:42:58.000+02:00",
+        "user_id": 1000001, "updated_at": "2016-06-27T13:42:58.000+02:00"}, "type":
+        "discount_accounting_group", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Thu, 23 Jun 2016 12:00:10 GMT']
-      etag: [W/"454340ddc16dfd478b2e67f06da7465e"]
+      date: ['Mon, 27 Jun 2016 12:15:33 GMT']
+      etag: [W/"c9270584fcc74850d70ad00e8841f5a1"]
       server: [Cowboy]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [130ffed1-8789-4fb9-ab92-ddee7d2f632b]
-      x-runtime: ['0.057921']
+      x-request-id: [65eac403-0fd0-463f-871b-7a8edba2fea2]
+      x-runtime: ['0.094468']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -55,23 +59,23 @@ interactions:
     uri: https://api-sprint.qoqa.com/v1/admin/users/1000001
   response:
     body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
-        "2016-06-22T17:15:47.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
-        "2016-06-23T13:46:08.362+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1466608546",
+        "2016-06-27T13:42:59.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
+        "2016-06-27T13:52:32.108+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1467027778",
         "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"}, "jsonapi": {"version":
         "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Thu, 23 Jun 2016 12:00:12 GMT']
-      etag: [W/"39c2c215f4ec3f95787b58a366f19654"]
+      date: ['Mon, 27 Jun 2016 12:15:33 GMT']
+      etag: [W/"702a3a9218d5d603512c1b9eba38003c"]
       server: [Cowboy]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [7f46d1b2-d8fb-4a3c-b829-7d2883700e0a]
-      x-runtime: ['0.052973']
+      x-request-id: [1bd4d668-e326-4d9e-a3ac-d3f660bdc76c]
+      x-runtime: ['0.049799']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1

@@ -39,14 +39,33 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
             'code': 'TEST',
             'type': 'general'})
         income_type = self.env.ref('account.data_account_type_revenue')
+        expense_type = self.env.ref('account.data_account_type_expenses')
+        receivable_type = self.env.ref('account.data_account_type_receivable')
         self.debit_account = self.env['account.account'].create({
             'company_id': self.company_ch.id,
             'code': 'DB',
             'name': 'Debit Account',
-            'type': 'other',
             'user_type_id': income_type.id,
             'reconcile': False,
         })
+        self.credit_account = self.env['account.account'].create({
+            'company_id': self.company_ch.id,
+            'code': 'CR',
+            'name': 'Credit Account',
+            'user_type_id': expense_type.id,
+            'reconcile': False,
+        })
+        self.receivable_account = self.env['account.account'].create({
+            'company_id': self.company_ch.id,
+            'code': 'RA',
+            'name': 'Receivable Account',
+            'user_type_id': receivable_type.id,
+            'reconcile': True,
+        })
+        self.env['ir.property'].search(
+            [('name', '=', 'property_account_receivable_id'),
+             ('res_id', '=', False)]
+        ).value_reference = "account.account,%s" % self.receivable_account.id
         liabilities_account = self.env.ref(
             'account.data_account_type_current_liabilities'
         )
@@ -54,7 +73,6 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
             'company_id': self.company_ch.id,
             'code': 'tax',
             'name': 'Tax Account',
-            'type': 'other',
             'user_type_id': liabilities_account.id,
             'reconcile': False,
         })
@@ -77,7 +95,6 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
             'company_id': self.company_ch.id,
             'code': 'MK',
             'name': 'Marketing Charges Account',
-            'type': 'other',
             'user_type_id': income_type.id,
             'reconcile': False,
         })
@@ -129,11 +146,11 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
         expected = [
             ExpectedDiscountAccounting(
                 discount_type='promo',
-                ref='999',  # FIXME: hardcoded in mapper
+                ref='10000001',
                 amount=100,
                 company_id=self.company_ch,
                 create_uid=self.company_ch.connector_user_id,
-                date='2016-06-22',
+                date='2016-06-27',
                 journal_id=self.journal,
                 partner_id=expected_partner,
                 qoqa_id='100000001',
@@ -175,6 +192,15 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
     @recorder.use_cassette()
     def test_import_discount_accounting_voucher(self):
         """ Import a discount accounting of type voucher """
+        voucher_journal = self.env['account.journal'].create({
+            'name': 'Voucher journal',
+            'code': 'VC',
+            'type': 'general',
+        })
+        voucher_journal.default_debit_account_id = self.debit_account.id
+        voucher_journal.default_credit_account_id = self.credit_account.id
+        self.backend_record.property_voucher_journal_id = voucher_journal
+
         import_record(self.session, 'qoqa.discount.accounting',
                       self.backend_record.id, 100000002)
         domain = [('qoqa_id', '=', '100000002')]
@@ -187,15 +213,15 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
         ).openerp_id
         expected = [
             ExpectedDiscountAccounting(
-                discount_type='promo',
-                ref='888',  # FIXME: hardcoded in mapper
+                discount_type='voucher',
+                ref='10000007',
                 amount=100,
                 company_id=self.company_ch,
                 create_uid=self.company_ch.connector_user_id,
-                date='2016-06-24',
-                journal_id=self.journal,
+                date='2016-06-27',
+                journal_id=voucher_journal,
                 partner_id=expected_partner,
-                qoqa_id='100000001',
+                qoqa_id='100000002',
             ),
         ]
         self.assert_records(expected, discount_accounting)
@@ -206,25 +232,18 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
             ExpectedDiscountAccountingLine(
                 debit=0,
                 credit=100,
-                account_id=self.coupon_account,
-                analytic_account_id=self.analytic_account,
-                name=u'Emission du bons de rabais SAV',
+                account_id=self.credit_account,
+                analytic_account_id=self.env['account.analytic.account'],
+                name=u'Vente bons cadeaux',
                 tax_ids=self.env['account.tax'],
             ),
             ExpectedDiscountAccountingLine(
-                debit=92.59,
+                debit=100.0,
                 credit=0,
-                account_id=self.debit_account,
-                analytic_account_id=self.analytic_account,
-                name=u'Frais service clientèle net',
-                tax_ids=self.tax_8,
-            ),
-            ExpectedDiscountAccountingLine(
-                debit=7.41,
-                credit=0,
-                account_id=self.tax_account,
+                # Account Receivable
+                account_id=self.receivable_account,
                 analytic_account_id=self.env['account.analytic.account'],
-                name=u'Frais service clientèle net 8.0%',
+                name=u'Vente bons cadeaux',
                 tax_ids=self.env['account.tax'],
             ),
         ]

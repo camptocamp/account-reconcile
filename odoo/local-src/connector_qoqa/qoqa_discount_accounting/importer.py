@@ -23,6 +23,13 @@ def _extract_lines_from_group(record):
     return lines
 
 
+def _extract_discount_from_group(record):
+    lines = [item for item in record['included']
+             if item['type'] == 'discount']
+    assert len(lines) == 1
+    return lines[0]
+
+
 @qoqa
 class DiscountAccountingBatchImporter(DelayedBatchImporter):
     """ Import the QoQa Discount Accounting.
@@ -44,8 +51,8 @@ class QoQaDiscountAccountingImporter(QoQaImporter):
 
         """
         company_binder = self.binder_for('res.company')
-        data = self.qoqa_record['data']
-        qoqa_company_id = data['attributes']['company_id']
+        discount = _extract_discount_from_group(self.qoqa_record)
+        qoqa_company_id = discount['attributes']['company_id']
         company_binding = company_binder.to_openerp(qoqa_company_id)
         user = company_binding.connector_user_id
         if not user:
@@ -118,7 +125,8 @@ class BaseAccountingImportMapper(ImportMapper, FromDataAttributes):
 
     def _company(self, record):
         company_binder = self.binder_for('res.company')
-        qoqa_company_id = record['data']['attributes']['company_id']
+        discount = _extract_discount_from_group(record)
+        qoqa_company_id = discount['attributes']['company_id']
         company = company_binder.to_openerp(qoqa_company_id)
         assert company
         return company
@@ -139,16 +147,16 @@ class BaseAccountingImportMapper(ImportMapper, FromDataAttributes):
 
     def _currency(self, map_record, company):
         binder = self.binder_for('res.currency')
-        data = map_record.source.get('data', {})
-        qoqa_currency_id = data['attributes']['currency']
+        discount = _extract_discount_from_group(map_record.source)
+        qoqa_currency_id = discount['attributes']['currency']
         currency = binder.to_openerp(qoqa_currency_id)
         assert currency
         if currency != company.currency_id:
             return currency
 
     def _analytic_account(self, map_record):
-        data = map_record.source.get('data', {})
-        qoqa_website_id = data['attributes']['accounting_website_id']
+        discount = _extract_discount_from_group(map_record.source)
+        qoqa_website_id = discount['attributes']['accounting_website_id']
         binder = self.binder_for('qoqa.shop')
         shop = binder.to_openerp(qoqa_website_id, unwrap=True)
         assert shop, "Unknow shop_id, refresh the Backend's metadata"
@@ -190,9 +198,8 @@ class PromoDiscountAccountingMapper(BaseAccountingImportMapper):
         :return: browse_record of journal, ref
 
         """
-        # TODO: promo type is missing
-        # promo_type = self._promo_type(record)
-        promo_type = self.env.ref('connector_qoqa.promo_type_marketing')
+        discount = _extract_discount_from_group(record)
+        promo_type = self._promo_type(discount)
         journal = promo_type.property_journal_id
         if not journal:
             user = self.env.user
@@ -200,24 +207,22 @@ class PromoDiscountAccountingMapper(BaseAccountingImportMapper):
                                'for company "%s".\n'
                                'Please configure it on the QoQa backend.' %
                                (promo_type.name, user.company_id.name))
-        # TODO: missing discount_id
-        # ref = unicode(record['promo_id'])
-        ref = '999'
+        ref = unicode(discount['id'])
         return journal, ref
 
-    # TODO
-    def _promo_type(self, record):
+    def _promo_type(self, discount):
         promo_binder = self.binder_for('qoqa.promo.type')
-        qpromo_type_id = record['promo_type_id']
-        return promo_binder.to_openerp(qpromo_type_id)
+        qpromo_type_id = discount['attributes']['sub_type']
+        promo_type = promo_binder.to_openerp(qpromo_type_id)
+        if not promo_type:
+            raise MappingError("Type of promo %s is unknown. " %
+                               (qpromo_type_id,))
+        return promo_type
 
     def _product(self, map_record):
-        # TODO
-        # promo_type = self._promo_type(map_record.source)
-        # return promo_type.product_id
-        return self.env.ref(
-            'qoqa_base_data.product_product_marketing_coupon'
-        )
+        discount = _extract_discount_from_group(map_record.source)
+        promo_type = self._promo_type(discount)
+        return promo_type.product_id
 
     @mapping
     def discount_type(self, record):
@@ -294,9 +299,8 @@ class VoucherDiscountAccountingMapper(BaseAccountingImportMapper):
                                'company %s.\n'
                                'Please configure it on the QoQa backend.' %
                                user.company_id.name)
-        # TODO: discount_id is missing:
-        # ref = unicode(record['voucher_id'])
-        ref = '888'
+        discount = _extract_discount_from_group(record)
+        ref = unicode(discount['id'])
         return journal, ref
 
     def _counterpart(self, items, values, options):
@@ -319,30 +323,31 @@ class VoucherDiscountAccountingMapper(BaseAccountingImportMapper):
         # ]
         line = items[0][2]
         partner_id = line['partner_id']
-        company_id = options['company_id']
-        company = self.env['res.company'].browse(company_id)
+        company = options['company']
         if company.voucher_account_id:
             account_id = company.voucher_account_id.id
         elif partner_id:
             partner = self.env['res.partner'].browse(partner_id)
-            account_id = (partner.property_account_receivable.id
+            account_id = (partner.property_account_receivable_id.id
                           if line['credit'] > 0
-                          else partner.property_account_payable.id)
+                          else partner.property_account_payable_id.id)
         else:
             property_model = self.env['ir.property']
             account_id = property_model.get(
-                'property_account_receivable'
+                'property_account_receivable_id'
                 if line['credit'] > 0
-                else 'property_account_payable',
+                else 'property_account_payable_id',
                 'res.partner').id
         move_line = {
-            'journal_id': line['journal_id'],
             'name': line['name'],
             'account_id': account_id,
             'partner_id': partner_id,
             'credit': line['debit'] > 0 and line['debit'] or 0,
             'debit': line['credit'] > 0 and line['credit'] or 0,
             'date': line['date'],
+            # virtual id for the counterpart as it doesn't exist on
+            # the QoQa BO
+            'qoqa_id': 'v_counterpart_%s' % line['qoqa_id'],
         }
         if line.get('currency_id'):
             move_line['currency_id'] = line['currency_id']
@@ -355,8 +360,8 @@ class VoucherDiscountAccountingMapper(BaseAccountingImportMapper):
         items = map_child.get_items(lines, map_record,
                                     'qoqa_discount_accounting_line_ids',
                                     options=options)
+        items.append(self._counterpart(items, values, options))
         values['qoqa_discount_accounting_line_ids'] = items
-        values['line_id'] = [self._counterpart(items, values, options)]
         return values
 
 

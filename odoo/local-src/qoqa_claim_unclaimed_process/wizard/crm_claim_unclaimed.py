@@ -128,7 +128,7 @@ class CrmClaimUnclaimed(models.TransientModel):
 
         claim_vals = {
             'name': self.claim_name,
-            'number': claim_number,
+            'code': claim_number,
             'pay_by_email_url': pay_by_email_url,
             'user_id': self.claim_user_id.id,
             'team_id': self.claim_team_id.id,

@@ -28,7 +28,7 @@ class TestMailThread(TestMail):
         # force the number to be in the format used by QoQa,
         # it must match with a regular expression to be found
         # in the mail routing
-        self.claim.write({'number': 'RMA-123456'})
+        self.claim.write({'code': 'RMA-123456'})
         self.claim.refresh()
         for message in sorted(claim.message_ids, key=lambda msg: msg.id):
             if message.subtype_id.name == 'Discussions':
@@ -59,7 +59,7 @@ class TestMailThread(TestMail):
         """ Link with parent using number of the claim """
 
         msg_id = '<1198923581.41972151344608186760.JavaMail.2@agrolait.com>'
-        subject = "Re: [%s] 1" % self.claim.number
+        subject = "Re: [%s] 1" % self.claim.code
         reply_msg = self.format(MAIL_TEMPLATE, to='erroneous@example.com',
                                 subject=subject,
                                 msg_id=msg_id)

@@ -55,7 +55,7 @@ def claim_subject_route(mail_thread, message, custom_values=None):
         claim_number = match.group(1)
         claim_obj = mail_thread.env['crm.claim']
         claim_ids = claim_obj.with_context(
-            active_test=False).search([('number', '=', claim_number)]).ids
+            active_test=False).search([('code', '=', claim_number)]).ids
         if not claim_ids:
             cursor = mail_thread.env.cr
             # search also in merged claims

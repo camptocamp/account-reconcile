@@ -55,6 +55,53 @@ Feature: Parameter the new database
     WHERE claim_origine IS NOT NULL AND claim_origin IS NULL
     """
 
+  @claim_rma
+  Scenario: crm_claim.number has been renamed to crm_claim.code
+    Given I execute the SQL commands
+    """
+    ALTER TABLE crm_claim ADD COLUMN code varchar
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE crm_claim SET code = number
+    WHERE number IS NOT NULL AND code != number
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE mail_template
+    SET body_html = REPLACE(body_html, 'object.number', 'object.code')
+    WHERE model_id = (SELECT id FROM ir_model where model = 'crm.claim')
+    AND body_html like '%object.number%';
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE ir_translation
+    SET value = REPLACE(value, 'object.number', 'object.code')
+    WHERE name IN ('mail.template,body_html', 'mail.template,subject')
+    AND value like '%object.number%'
+    AND res_id IN (
+      SELECT id FROM mail_template
+      WHERE model_id = (SELECT id FROM ir_model where model = 'crm.claim')
+    )
+    """
+    Given I execute the SQL commands
+    """
+    -- this fields has been renamed to 'code' in 'crm_claim_rma' but the
+    -- field with the old name is still present...
+    DELETE FROM ir_model_fields
+    WHERE id = (
+      SELECT res_id FROM ir_model_data
+      WHERE model = 'ir.model.fields'
+      AND name = 'field_crm_claim_number'
+    )
+    """
+    Given I execute the SQL commands
+    """
+    DELETE FROM ir_model_data
+    WHERE model = 'ir.model.fields'
+    AND name = 'field_crm_claim_number'
+    """
+
   @fix_claim_rma_update
   Scenario: lines in a wizard make the upgrade fail
     Given I execute the SQL commands

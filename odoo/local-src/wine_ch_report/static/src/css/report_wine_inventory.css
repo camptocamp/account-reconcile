@@ -1,0 +1,98 @@
+/* Official */
+.inventory .act_as_table {
+  display: table;
+}
+.inventory .act_as_thead {
+  display: table-header-group;
+}
+.inventory .act_as_tbody {
+  display: table-row-group;
+}
+.inventory .act_as_tfoot {
+  display: table-footer-group;
+}
+.inventory .act_as_row {
+  display:table-row;
+}
+.inventory .act_as_cell {
+  display: table-cell;
+  border-left: 1px solid grey;
+  padding-bottom: 7px;
+}
+.inventory .list_table, .inventory .data_table {
+  table-layout: fixed
+}
+.inventory .title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+}
+.inventory .title2 {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+  padding-left: 14px;
+}
+.inventory .title3 {
+  text-align: left;
+  padding-left: 21px;
+}
+.inventory .winemaker {
+    text-align: left;
+    padding-left: 7px;
+    font-style: italic;
+}
+.inventory .amount {
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 14px;
+}
+/***********/
+.inventory .labels {
+  background-color: #EEEEEE;
+  font-weight:bold;
+  padding-right:3px;
+  padding-left:3px;
+  white-space:nowrap;
+  background-clip:border-box;
+}
+.inventory .list_table.act_as_cell {
+  text-align:left;
+  font-size:12;
+  padding-right:3px;
+  padding-left:3px;
+  padding-top:3px;
+  padding-bottom:3px;
+  white-space:nowrap;
+  display:table-cell;
+}
+
+.inventory .total_empty_cell {
+  border: 0;
+  border-top: 1px solid grey;
+}
+.inventory .total_sum_label_cell {
+  border: 0;
+  border-top: 1px solid grey;
+  padding-top: 10px;
+}
+.inventory .total_sum_cell {
+  border: 0;
+  border-top: 3px solid grey;
+  padding-top: 10px;
+}
+.inventory .sub_total_col {
+  border-left: 2px solid grey;
+}
+.inventory .sub_total_cell {
+  border-bottom: 2px solid grey;
+}
+.inventory .line_grp1 {
+  background-color: lightGrey;
+}
+.inventory .line_grp2 {
+  background-color: white;
+}
+.inventory .nobreak {
+    page-break-inside: avoid;
+}

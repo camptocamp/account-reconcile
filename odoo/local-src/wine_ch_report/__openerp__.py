@@ -28,6 +28,7 @@ the report only on products using a 'Wine' attribute set.
      'report/wine_move_analysis_view.xml',
      'report.xml',
      'views/report_wine_cscv_form.xml',
+     'views/report_wine_inventory.xml',
      'security/ir.model.access.csv',
      ],
  'test': [],

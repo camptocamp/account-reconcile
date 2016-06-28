@@ -39,10 +39,15 @@ class CrmClaimImporter(QoQaImporter):
 
     def _after_import(self, binding):
         medium_importer = self.unit_for(QoQaImporter, 'qoqa.crm.claim.medium')
-        media = [item for item in self.qoqa_record['included']
-                 if item['type'] == 'cs_claim_medium']
-        for item in media:
-            medium_importer.run(item['id'], record=item, claim_binding=binding)
+        if self.qoqa_record.get('included'):
+            media = [item for item in self.qoqa_record['included']
+                     if item['type'] == 'cs_claim_medium']
+            for item in media:
+                medium_importer.run(
+                    item['id'],
+                    record=item,
+                    claim_binding=binding
+                )
 
 
 @qoqa

@@ -1,6 +1,2 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-access_wine_class_employee,wine_class employee,model_wine_class,base.group_user,1,0,0,0
-access_wine_class_sale_manager,wine_class salemanager,model_wine_class,base.group_sale_manager,1,1,1,1
-access_wine_bottle_employee,wine_bottle employee,model_wine_bottle,base.group_user,1,0,0,0
-access_wine_bottle_sale_manager,wine_bottle salemanager,model_wine_bottle,base.group_sale_manager,1,1,1,1
 access_report_wine_move_analysis,report_wine_move_analysis user,model_report_wine_move_analysis,stock.group_stock_user,1,1,1,1

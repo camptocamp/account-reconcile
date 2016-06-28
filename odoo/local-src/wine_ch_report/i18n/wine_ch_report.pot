@@ -196,12 +196,6 @@ msgid "In Qty"
 msgstr ""
 
 #. module: wine_ch_report
-#: model:ir.model.fields,field_description:wine_ch_report.field_wine_ch_inventory_wizard_attribute_set_id
-#: field:wine.ch.inventory.wizard,attribute_set_id:0
-msgid "Wine attribute set"
-msgstr ""
-
-#. module: wine_ch_report
 #: selection:report.wine.move.analysis,month:0
 msgid "July"
 msgstr ""

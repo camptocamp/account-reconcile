@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-  <data>
+<odoo>
 
-    <record id="wine_ch_inventory_wizard_view" model="ir.ui.view">
-      <field name="name">Wine CH Inventory</field>
-      <field name="model">wine.ch.inventory.wizard</field>
-      <field name="arch" type="xml">
-        <form string="Wine CH Report" version="7.0">
-          <group>
-            <field name="inventory_date"/>
-            <field name="location_ids"/>
-            <field name="attribute_set_id"/>
-          </group>
-          <footer>
-            <button name="print_inventory_report" string="Print Inventory" type="object" default_focus="1" class="oe_highlight"/>
-            <button name="print_cscv_form_report" string="Print CSCV Form" type="object" default_focus="1" class="oe_highlight"/>
-            or
-            <button string="Cancel" class="oe_link" special="cancel" />
-          </footer>
-        </form>
-      </field>
-    </record>
+<record id="wine_ch_inventory_wizard_view" model="ir.ui.view">
+  <field name="name">Wine CH Inventory</field>
+  <field name="model">wine.ch.inventory.wizard</field>
+  <field name="arch" type="xml">
+    <form string="Wine CH Report" version="7.0">
+      <group>
+        <field name="inventory_date"/>
+        <field name="location_ids"/>
+        <field name="beverage_type"/>
+      </group>
+      <footer>
+        <button name="print_inventory_report" string="Print Inventory" type="object" default_focus="1" class="oe_highlight"/>
+        <button name="print_cscv_form_report" string="Print CSCV Form" type="object" default_focus="1" class="oe_highlight"/>
+        <button string="Cancel" class="oe_link" special="cancel" />
+      </footer>
+    </form>
+  </field>
+</record>
 
-
-  </data>
-</openerp>
+</odoo>

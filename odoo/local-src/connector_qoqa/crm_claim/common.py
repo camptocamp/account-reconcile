@@ -33,6 +33,21 @@ class CrmClaim(models.Model):
         string='QBindings')
 
 
+class QoQaClaimMedium(models.Model):
+    _name = 'qoqa.crm.claim.medium'
+    _inherit = 'qoqa.binding'
+    _inherits = {'ir.attachment': 'openerp_id'}
+    _description = 'QoQa Claim Medium'
+
+    openerp_id = fields.Many2one(comodel_name='ir.attachment',
+                                 string='Attachment',
+                                 required=True,
+                                 index=True,
+                                 ondelete='restrict')
+    created_at = fields.Datetime(string='Created At (on QoQa)')
+    updated_at = fields.Datetime(string='Updated At (on QoQa)')
+
+
 @qoqa
 class CrmClaimAdapter(QoQaAdapter):
     _model_name = 'qoqa.crm.claim'

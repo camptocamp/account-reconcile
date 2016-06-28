@@ -152,4 +152,5 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.discount.accounting',
                    'qoqa.discount.accounting.line',
                    'qoqa.crm.claim',
+                   'qoqa.crm.claim.medium',
                    ]

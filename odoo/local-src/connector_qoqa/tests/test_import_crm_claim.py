@@ -19,6 +19,11 @@ ExpectedClaim = namedtuple(
     'partner_id email_from partner_phone invoice_id'
 )
 
+ExpectedMedium = namedtuple(
+    'ExpectedMedium',
+    'name type url'
+)
+
 
 class TestImportClaim(QoQaTransactionCase):
     """ Test the import of Claims from QoQa.  """
@@ -147,3 +152,20 @@ class TestImportClaim(QoQaTransactionCase):
 
         self.assert_records(expected, claim_binding)
         self.assertEquals(lines, claim_binding.claim_line_ids)
+
+        attachment = self.env['ir.attachment'].search(
+            [('res_id', '=', claim_binding.openerp_id.id),
+             ('res_model', '=', 'crm.claim')],
+        )
+        self.assertEquals(len(attachment), 1)
+        url = ('https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/'
+               'cs/claim_media/files/000/000/002/original/'
+               'iphone-5s-front.jpg?1467030479')
+        expected = [
+            ExpectedMedium(
+                name=u'iphone-5s-front.jpg?1467030479',
+                url=url,
+                type='url',
+            )
+        ]
+        self.assert_records(expected, attachment)

@@ -37,6 +37,13 @@ class CrmClaimImporter(QoQaImporter):
         qoqa_user_id = rec['data']['attributes']['user_id']
         self._import_dependency(qoqa_user_id, 'qoqa.res.partner')
 
+    def _after_import(self, binding):
+        medium_importer = self.unit_for(QoQaImporter, 'qoqa.crm.claim.medium')
+        media = [item for item in self.qoqa_record['included']
+                 if item['type'] == 'cs_claim_medium']
+        for item in media:
+            medium_importer.run(item['id'], record=item, claim_binding=binding)
+
 
 @qoqa
 class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
@@ -103,4 +110,45 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
             values = virtual_claim._convert_to_write(virtual_claim._cache)
         return values
 
-    # TODO media files (links to S3)
+
+@qoqa
+class CrmClaimMediumImporter(QoQaImporter):
+    _model_name = 'qoqa.crm.claim.medium'
+
+    def run(self, qoqa_id, force=False, record=None, claim_binding=None):
+        self.claim_binding = claim_binding
+        _super = super(CrmClaimMediumImporter, self)
+        return _super.run(qoqa_id, force=force, record=record)
+
+    def _update_data(self, map_record, **kwargs):
+        """ Get the data to pass to :py:meth:`_update` """
+        _super = super(CrmClaimMediumImporter, self)
+        return _super._update_data(map_record,
+                                   claim_binding=self.claim_binding,
+                                   **kwargs)
+
+    def _create_data(self, map_record, **kwargs):
+        """ Get the data to pass to :py:meth:`_create` """
+        _super = super(CrmClaimMediumImporter, self)
+        return _super._create_data(map_record,
+                                   claim_binding=self.claim_binding,
+                                   **kwargs)
+
+
+@qoqa
+class CrmClaimMediumImportMapper(ImportMapper):
+    _model_name = 'qoqa.crm.claim.medium'
+
+    @mapping
+    def all_values(self, record):
+        attrs = record['attributes']
+        url = attrs['file_url']
+        values = {
+            # TODO: at the moment, no name in API, improve that
+            'name': url.split('/')[-1],
+            'type': 'url',
+            'url': url,
+            'res_id': self.options.claim_binding.openerp_id.id,
+            'res_model': 'crm.claim',
+        }
+        return values

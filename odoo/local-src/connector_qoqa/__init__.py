@@ -17,6 +17,7 @@ from . import product_product
 from . import product_template
 from . import product_attribute
 from . import product_attribute_value
+from . import product_packaging
 from . import promo
 from . import qoqa_backend
 from . import qoqa_discount_accounting

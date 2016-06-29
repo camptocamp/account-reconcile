@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: '{"shipping_packages": [{"tracking_number": "PKG_1", "shipping_package_type_id":
+      "7", "shipping_package_items_attributes": [{"variation_id": "100011", "quantity":
+      5.0}]}]}'
+    headers:
+      Accept: [text/plain]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['170']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/orders/10/shipping_packages
+  response:
+    body: {string: !!python/unicode '{"data":[{"id":"10"}]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Wed, 29 Jun 2016 09:35:11 GMT']
+      etag: [W/"f8e692fe4539900a4224a3cf5072add4"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [615c7155-0eef-4ba3-8718-7a2df44c4221]
+      x-runtime: ['0.150535']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

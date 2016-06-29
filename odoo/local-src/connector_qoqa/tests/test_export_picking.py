@@ -41,7 +41,7 @@ class TestExportPicking(QoQaTransactionCase):
             'name': 'Unittest P1'
         })
         self.create_bindind_no_export(
-            'qoqa.product.product', self.product_1.id, '11'
+            'qoqa.product.product', self.product_1.id, '100011'
         )
 
         self.sale = self.env['sale.order'].create({
@@ -55,6 +55,11 @@ class TestExportPicking(QoQaTransactionCase):
                 'product_uom': self.product_1.uom_id.id,
             })],
             'pricelist_id': self.env.ref('product.list0').id,
+        })
+
+        self.packacking = self.env['product.packaging'].create({
+            'name': 'colis < 1kg',
+            'qoqa_id': 7,
         })
 
         procurement = self.env['procurement.order'].create({
@@ -91,13 +96,16 @@ class TestExportPicking(QoQaTransactionCase):
         packages = query_json['shipping_packages']
         self.assertEqual(1, len(packages))
 
-        self.assertEqual({
+        expected = {
             'tracking_number': 'PKG_1',
+            'shipping_package_type_id': '7',
             'shipping_package_items_attributes': [{
-                'variation_id': '11',
-                'lot_quantity': 5,
+                'variation_id': '100011',
+                'quantity': 5,
             }]
-        }, packages[0])
+        }
+        self.assertEqual(expected, packages[0])
+        return True
 
     def create_bindind_no_export(self, model_name, openerp_id, qoqa_id=None):
         return self.env[model_name].with_context(
@@ -117,6 +125,7 @@ class TestExportPicking(QoQaTransactionCase):
             package_id = self.picking.put_in_pack()
             package = self.env['stock.quant.package'].browse(package_id)
             package.name = package_ref
+            package.packaging_id = self.packacking.id
 
         self.picking.do_transfer()
         picking_binding = self.env['qoqa.stock.picking'].search([

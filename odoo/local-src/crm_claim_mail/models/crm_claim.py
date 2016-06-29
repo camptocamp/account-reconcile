@@ -189,7 +189,7 @@ class CrmClaim(models.Model):
         messages = message_obj.search(
             [('res_id', '=', self.id),
              ('model', '=', self._name),
-             ('type', 'in', ('email', 'comment')),
+             ('message_type', 'in', ('email', 'comment')),
              ('subtype_id', '!=', False),
              ],
             order='date asc',

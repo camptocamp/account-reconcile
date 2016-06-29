@@ -127,10 +127,10 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         builder.price_unit = -float(line['attributes']['unit_price'])
         # choose product according to the promo type
         builder.product = promo_type.product_id
-        builder.code = discount['attributes']['code_name']
+        builder.code = discount['id']
         values = builder.get_line()
         values.update({
-            'discount_code_name': discount['attributes']['code_name'],
+            'discount_code_name': discount['id'],
             'discount_description': discount['attributes']['description'],
         })
         return values

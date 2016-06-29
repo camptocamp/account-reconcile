@@ -36,11 +36,6 @@ class TestImportOrder(QoQaTransactionCase):
         self.sync_metadata()
         self.setup_order_dependencies()
 
-        # ship_ref = 'connector_ecommerce.product_product_shipping'
-        # self.ship_product = self.env.ref(ship_ref)
-        # marketing_ref = 'qoqa_base_data.product_product_marketing_coupon'
-        # self.marketing_product = self.env.ref(marketing_ref)
-
     def setup_order_dependencies(self):
         method = self.env.ref('account.account_payment_method_manual_in')
         self.payment_mode = self.env['account.payment.mode'].create({

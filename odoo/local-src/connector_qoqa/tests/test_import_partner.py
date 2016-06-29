@@ -1,123 +1,146 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+
+from collections import namedtuple
+
 import mock
-from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
-from .data_metadata import qoqa_shops
-from .data_partner import qoqa_user, qoqa_address
-from ..unit.import_synchronizer import import_record
+
+from freezegun import freeze_time
+
+from openerp.addons.connector.tests.common import mock_job_delay_to_direct
+from openerp.addons.connector_qoqa.unit.importer import import_record
+
+from .common import recorder, QoQaTransactionCase
+
+ExpectedPartner = namedtuple(
+    'ExpectedPartner',
+    'name qoqa_name email created_at updated_at lang'
+)
+ExpectedAddress = namedtuple(
+    'ExpectedAddress',
+    'name street street2 city zip country_id lang parent_id '
+    'phone digicode created_at updated_at'
+)
 
 
-@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
-class test_import_partner(QoQaTransactionCase):
+class TestImportPartner(QoQaTransactionCase):
     """ Test the import of partner from QoQa.  """
+
     def setUp(self):
-        super(test_import_partner, self).setUp()
-        self.QPartner = self.registry('qoqa.res.partner')
-        self.Partner = self.registry('res.partner')
-        self.QAddress = self.registry('qoqa.address')
-        self.setUpCompany()
+        super(TestImportPartner, self).setUp()
+        self.QoqaPartner = self.env['qoqa.res.partner']
+        self.Partner = self.env['res.partner']
+        self.QoqaAddress = self.env['qoqa.address']
+        self.setup_company()
+        self.sync_metadata()
 
-    def test_import_partner(self):
-        """ Import a partner (QoQa user) """
-        cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_user, qoqa_shops):
+    @freeze_time('2016-04-20 00:00:00')
+    def test_import_partner_batch(self):
+        from_date = '2016-04-01 00:00:00'
+        self.backend_record.import_res_partner_from_date = from_date
+        batch_job_path = ('openerp.addons.connector_qoqa.unit'
+                          '.importer.import_batch')
+        record_job_path = ('openerp.addons.connector_qoqa.unit'
+                           '.importer.import_record')
+        # execute the batch job directly and replace the record import
+        # by a mock (individual import is tested elsewhere)
+        with recorder.use_cassette('test_import_partner_batch') as cassette, \
+                mock_job_delay_to_direct(batch_job_path), \
+                mock.patch(record_job_path) as import_record_mock:
+            self.backend_record.import_res_partner()
+
+            self.assertEqual(len(cassette.requests), 3)
+            self.assertEqual(import_record_mock.delay.call_count, 8)
+
+    @freeze_time('2016-04-20 00:00:00')
+    def test_import_partner_record(self):
+        """ Import a batch of partners (QoQa users) """
+        with recorder.use_cassette('test_import_partner_record_1000006'):
             import_record(self.session, 'qoqa.res.partner',
-                          self.backend_id, 99999999)
-        domain = [('qoqa_id', '=', '99999999')]
-        qpartner_ids = self.QPartner.search(cr, uid, domain)
-        self.assertEquals(len(qpartner_ids), 1)
-        qpartner = self.QPartner.browse(cr, uid, qpartner_ids[0])
-        self.assertEquals(qpartner.name,
-                          'Mykonos (christos.k@bluewin.ch-test)')
-        self.assertEquals(qpartner.qoqa_name, 'Mykonos')
-        self.assertEquals(qpartner.email, 'christos.k@bluewin.ch-test')
-        self.assertTrue(qpartner.is_company)
-        self.assertEquals(qpartner.created_at, '2008-06-02 15:40:17')
-        self.assertEquals(qpartner.updated_at, '2013-11-19 09:39:52')
-        self.assertEquals(qpartner.origin_shop_id.name, 'Qtest.ch')
-        self.assertEquals(qpartner.lang, 'fr_FR')
-        self.assertEquals(qpartner.qoqa_status, 'active')
-        # addresses are imported at the same time for the first import
-        # of the customer
-        addresses = qpartner.child_ids
-        # 4 addresses are active
-        self.assertEquals(len(addresses), 4)
+                          self.backend_record.id, 1000006)
+        domain = [('qoqa_id', '=', '1000006')]
+        partner_bindings = self.QoqaPartner.search(domain)
+        partner_bindings.ensure_one()
 
-    def test_import_twice(self):
+        expected = [
+            ExpectedPartner(
+                name='QoQasien (qoqasien@qoqa.com)',
+                qoqa_name='QoQasien',
+                email='qoqasien@qoqa.com',
+                created_at='2016-04-19 12:02:11',
+                updated_at='2016-04-19 12:02:11',
+                lang='fr_FR'
+            )]
+
+        self.assert_records(expected, partner_bindings)
+
+    @freeze_time('2016-04-20 00:00:00')
+    def test_import_partner_twice(self):
         """ Import a partner twice, the second import is skipped"""
-        cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_user, qoqa_shops):
+        with recorder.use_cassette('test_import_partner_record_1000006'):
             import_record(self.session, 'qoqa.res.partner',
-                          self.backend_id, 99999999)
-        domain = [('qoqa_id', '=', '99999999')]
-        qpartner_ids = self.QPartner.search(cr, uid, domain)
-        self.assertEquals(len(qpartner_ids), 1)
-        qpartner = self.QPartner.browse(cr, uid, qpartner_ids[0])
-        with mock_api_responses(qoqa_user, qoqa_shops):
+                          self.backend_record.id, 1000006)
+        domain = [('qoqa_id', '=', '1000006')]
+        partner_binding = self.QoqaPartner.search(domain)
+        partner_binding.ensure_one()
+        sync_date1 = partner_binding.sync_date
+
+        with recorder.use_cassette('test_import_partner_record_1000006'):
             import_record(self.session, 'qoqa.res.partner',
-                          self.backend_id, 99999999)
-        qpartner2_ids = self.QPartner.search(cr, uid, domain)
-        qpartner2 = self.QPartner.browse(cr, uid, qpartner2_ids[0])
-        self.assertEquals(qpartner_ids, qpartner2_ids)
-        self.assertEquals(qpartner.sync_date, qpartner2.sync_date)
+                          self.backend_record.id, 1000006)
 
-    def test_import_address(self):
-        """ Import an address (with dependencies) """
-        cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_address, qoqa_shops):
-            import_record(self.session, 'qoqa.address',
-                          self.backend_id, 999999991)
-        domain = [('qoqa_id', '=', '999999991')]
-        qaddr_ids = self.QAddress.search(cr, uid, domain)
-        self.assertEquals(len(qaddr_ids), 1)
-        qaddr = self.QAddress.browse(cr, uid, qaddr_ids[0])
-        self.assertEquals(qaddr.name, 'Guewen Baconnier')
-        self.assertEquals(qaddr.street, 'Grand Rue 3')
-        self.assertEquals(qaddr.street2, '--')
-        self.assertEquals(qaddr.city, 'Orbe')
-        self.assertEquals(qaddr.zip, '1350')
-        self.assertEquals(qaddr.country_id.id, self.ref('base.ch'))
-        self.assertEquals(qaddr.created_at, '2013-06-10 07:54:15')
-        self.assertEquals(qaddr.updated_at, '2013-06-10 07:54:15')
-        partner = qaddr.parent_id
-        self.assertTrue(partner.is_company)
+        partner_binding2 = self.QoqaPartner.search(domain)
+        sync_date2 = partner_binding2.sync_date
+        self.assertEquals(partner_binding, partner_binding2)
+        self.assertEquals(sync_date1, sync_date2)
 
-    def test_import_on_existing(self):
-        """ Import a partner, should bind on an existing with same email """
-        cr, uid = self.cr, self.uid
-        p_id = self.Partner.create(cr, uid,
-                                   {'name': 'Guewen',
-                                    'email': 'guewen@gmail.com-test',
-                                    'is_company': True})
-        self.Partner.create(cr, uid,
-                            {'name': 'Guewen address 1',
-                             'parent_id': p_id})
-        with mock_api_responses(qoqa_address, qoqa_shops):
+    @freeze_time('2016-04-20 00:00:00')
+    def test_import_address_batch(self):
+        from_date = '2016-04-01 00:00:00'
+        self.backend_record.import_address_from_date = from_date
+        batch_job_path = ('openerp.addons.connector_qoqa.unit'
+                          '.importer.import_batch')
+        record_job_path = ('openerp.addons.connector_qoqa.unit'
+                           '.importer.import_record')
+        # execute the batch job directly and replace the record import
+        # by a mock (individual import is tested elsewhere)
+        with recorder.use_cassette('test_import_address_batch') as cassette, \
+                mock_job_delay_to_direct(batch_job_path), \
+                mock.patch(record_job_path) as import_record_mock:
+            self.backend_record.import_address()
+
+            self.assertEqual(len(cassette.requests), 3)
+            self.assertEqual(import_record_mock.delay.call_count, 10)
+
+    @freeze_time('2016-04-20 00:00:00')
+    def test_import_address_record(self):
+        """ Import an address """
+        with recorder.use_cassette('test_import_address_record'):
             import_record(self.session, 'qoqa.address',
-                          self.backend_id, 999999991)
-        domain = [('qoqa_id', '=', '999999991')]
-        qaddr_ids = self.QAddress.search(cr, uid, domain)
-        self.assertEquals(len(qaddr_ids), 1)
-        qaddr = self.QAddress.browse(cr, uid, qaddr_ids[0])
-        partner = qaddr.parent_id
-        self.assertEquals(partner.id, p_id)
-        # filter on active addresses only
-        self.assertEquals(len(partner.child_ids), 2)
+                          self.backend_record.id, 100000001)
+        domain = [('qoqa_id', '=', '100000001')]
+        address_binding = self.QoqaAddress.search(domain)
+        address_binding.ensure_one()
+
+        partner_domain = [('qoqa_id', '=', '1000003')]
+        partner_binding = self.QoqaPartner.search(partner_domain)
+        partner_binding.ensure_one()
+
+        expected = [
+            ExpectedAddress(
+                name='John Doe',
+                street='Chemin du bois 17',
+                street2=False,
+                city='Hauterive',
+                zip='2068',
+                country_id=self.env.ref('base.ch'),
+                lang='de_DE',
+                parent_id=partner_binding.openerp_id,
+                phone='0781733455',
+                digicode=False,
+                created_at='2016-05-11 09:44:21',
+                updated_at='2016-05-11 09:44:21',
+            ),
+        ]
+        self.assert_records(expected, address_binding)

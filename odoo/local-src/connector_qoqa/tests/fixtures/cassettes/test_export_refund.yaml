@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: '{"amount": 5.0}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['15']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/payments/1/credit_notes
+  response:
+    body: {string: !!python/unicode '{"data": {"relationships": {"invoice": {"data":
+        null}}, "attributes": {"status": "requested", "kind": "credit_note", "created_at":
+        "2016-06-07T11:48:03.223+02:00", "payment_provider_id": 7, "updated_at": "2016-06-07T11:48:03.223+02:00",
+        "parent_id": 1, "amount": "5.0", "transaction_id": null, "payment_method_id":
+        1}, "type": "payment", "id": "7"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 07 Jun 2016 09:48:05 GMT']
+      etag: [W/"187f61cd02cef6bb275dacf10b49896a"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [7aaa3b68-a0dd-41f6-a3d1-b00bbd90e235]
+      x-runtime: ['2.845044']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

@@ -13,7 +13,9 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     # used in custom attributes
-    brand = fields.Char(string='Brand', translate=True)
+    brand = fields.Char(string='Brand',
+                        related='product_brand_id.name',
+                        readonly=True)
 
     # TODO: seems related to historical margin, see how to adapt as
     # _read_flat is gone

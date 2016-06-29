@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/offers/1
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"created_at": "2016-04-25T17:25:00.000+02:00",
+        "website_id": 3, "name": "Apple iPhone 6 / 64GB", "updated_at": "2016-04-25T17:25:00.000+02:00"},
+        "type": "offer", "id": "1"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 25 Apr 2016 15:31:08 GMT']
+      etag: [W/"ea11fd5955d34689e8b52f555b678134"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [a8986750-e81f-4bb1-8ac5-2b794a1559b6]
+      x-runtime: ['0.385086']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

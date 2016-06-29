@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data noupdate="0">
+<odoo>
 
-        <record id="view_partner_form" model="ir.ui.view">
-            <field name="name">res.partner.form</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="connector.view_partner_connector_form" />
-            <field name="arch" type="xml">
-                <page name="connector" position="attributes">
-                    <attribute name="invisible">0</attribute>
-                </page>
-                <page name="connector" position="inside">
-                    <group string="QBindings">
-                        <field name="qoqa_bind_ids" nolabel="1"/>
-                    </group>
-                    <group string="QBindings for Adresses">
-                        <field name="qoqa_address_bind_ids" nolabel="1"/>
-                    </group>
-                </page>
-            </field>
-        </record>
+  <record id="view_partner_form" model="ir.ui.view">
+    <field name="name">res.partner.form</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="connector.view_partner_connector_form" />
+    <field name="arch" type="xml">
+      <page name="connector" position="attributes">
+        <attribute name="invisible">0</attribute>
+      </page>
+      <page name="connector" position="inside">
+        <group string="QBindings">
+          <field name="qoqa_bind_ids" nolabel="1"/>
+        </group>
+        <group string="QBindings for Adresses">
+          <field name="qoqa_address_bind_ids" nolabel="1"/>
+        </group>
+      </page>
+    </field>
+  </record>
 
-        <record id="view_qoqa_res_partner_form" model="ir.ui.view">
-            <field name="name">qoqa.res.partner.form</field>
-            <field name="model">qoqa.res.partner</field>
-            <field name="arch" type="xml">
-                <form string="QoQa User" create="false"
-                       delete="false" version="7.0">
-                    <group>
-                        <field name="backend_id"/>
-                        <field name="qoqa_id"/>
-                        <field name="qoqa_name"/>
-                        <field name="qoqa_active"/>
-                        <field name="suspicious"/>
-                        <field name="origin_shop_id"/>
-                        <field name="qoqa_status"/>
-                        <field name="created_at"/>
-                        <field name="updated_at"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+  <record id="view_qoqa_res_partner_form" model="ir.ui.view">
+    <field name="name">qoqa.res.partner.form</field>
+    <field name="model">qoqa.res.partner</field>
+    <field name="arch" type="xml">
+      <form string="QoQa User" create="false" delete="false">
+        <group>
+          <field name="backend_id"/>
+          <field name="qoqa_id"/>
+          <field name="qoqa_name"/>
+          <field name="qoqa_active"/>
+          <field name="created_at"/>
+          <field name="updated_at"/>
+        </group>
+      </form>
+    </field>
+  </record>
 
-        <record id="view_qoqa_res_partner_tree" model="ir.ui.view">
-            <field name="name">qoqa.res.partner.tree</field>
-            <field name="model">qoqa.res.partner</field>
-            <field name="arch" type="xml">
-                <tree string="QoQa Partner" create="false"
-                       delete="false" version="7.0">
-                    <field name="backend_id"/>
-                    <field name="qoqa_id"/>
-                </tree>
-            </field>
-        </record>
-    </data>
-</openerp>
+  <record id="view_qoqa_res_partner_tree" model="ir.ui.view">
+    <field name="name">qoqa.res.partner.tree</field>
+    <field name="model">qoqa.res.partner</field>
+    <field name="arch" type="xml">
+      <tree string="QoQa Partner" create="false" delete="false">
+        <field name="backend_id"/>
+        <field name="qoqa_id"/>
+      </tree>
+    </field>
+  </record>
+
+</odoo>

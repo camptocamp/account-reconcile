@@ -47,7 +47,7 @@ class account_invoice(orm.Model):
             for line in invoice.invoice_line:
                 # ensure that there is no analytic accounts on lines
                 # when the policy is never
-                if (line.account_id.user_type.analytic_policy == 'never' and
+                if (line.account_id.user_type_id.analytic_policy == 'never' and
                         line.account_analytic_id):
                     line.write({'account_analytic_id': False})
         return super(account_invoice, self).action_move_create(

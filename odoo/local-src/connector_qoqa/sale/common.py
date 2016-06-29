@@ -1,32 +1,12 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
 import logging
-from datetime import datetime, date
-from openerp import netsvc
-from openerp.osv import orm, fields
+from datetime import date
+from openerp import models, fields, api, exceptions, _
 import openerp.addons.decimal_precision as dp
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
-from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
 
 from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
@@ -37,99 +17,91 @@ from .exporter import cancel_sales_order, settle_sales_order
 _logger = logging.getLogger(__name__)
 
 
-class qoqa_sale_order(orm.Model):
+class QoqaSaleOrder(models.Model):
     _name = 'qoqa.sale.order'
     _inherit = 'qoqa.binding'
     _inherits = {'sale.order': 'openerp_id'}
-    _description = 'QoQa User'
+    _description = 'QoQa Sale Order'
 
-    _columns = {
-        'openerp_id': fields.many2one('sale.order',
-                                      string='Sales Order',
-                                      required=True,
-                                      select=True,
-                                      ondelete='restrict'),
-        'created_at': fields.datetime('Created At (on QoQa)'),
-        'updated_at': fields.datetime('Updated At (on QoQa)'),
-        'qoqa_shop_id': fields.many2one(
-            'qoqa.shop',
-            string='QoQa Shop',
-            required=True,
-            readonly=True),
-        'qoqa_order_line_ids': fields.one2many('qoqa.sale.order.line',
-                                               'qoqa_order_id',
-                                               'QoQa Order Lines'),
-        'qoqa_amount_total': fields.float(
-            'Total amount on QoQa',
-            digits_compute=dp.get_precision('Account')),
-        'invoice_ref': fields.char('Invoice Ref. on QoQa'),
-        # id of the main payment on qoqa, used as key for reconciliation
-        'qoqa_payment_id': fields.char('ID of the payment on QoQa'),
-        'qoqa_payment_date': fields.date('Date of the payment',
-                                         help="Local date of the payment, "
-                                              "used to know if it can be "
-                                              "canceled."),
-        # field with name 'transaction' in the main payment
-        'qoqa_transaction': fields.char('Transaction number of the payment '
-                                        'on QoQa'),
-    }
+    openerp_id = fields.Many2one(comodel_name='sale.order',
+                                 string='Sales Order',
+                                 required=True,
+                                 index=True,
+                                 ondelete='restrict')
+    created_at = fields.Datetime(string='Created At (on QoQa)', readonly=True)
+    updated_at = fields.Datetime(string='Updated At (on QoQa)', readonly=True)
+    qoqa_order_line_ids = fields.One2many(
+        comodel_name='qoqa.sale.order.line',
+        inverse_name='qoqa_order_id',
+        string='QoQa Order Lines',
+        readonly=True,
+    )
+    qoqa_amount_total = fields.Float(
+        string='Total amount on QoQa',
+        digits_compute=dp.get_precision('Account'),
+        readonly=True,
+    )
+    invoice_ref = fields.Char(string='Invoice Ref. on QoQa', readonly=True)
+    # id of the main payment on qoqa, used as key for reconciliation
+    qoqa_payment_id = fields.Char(string='ID of the payment on QoQa',
+                                  readonly=True)
+    qoqa_payment_date = fields.Date(string='Date of the payment',
+                                    readonly=True,
+                                    help="Local date of the payment, "
+                                         "used to know if it can be "
+                                         "canceled.")
+    qoqa_payment_amount = fields.Float(
+        string='Amount paid on QoQa',
+        digits_compute=dp.get_precision('Account'),
+        readonly=True,
+    )
+    # field with name 'transaction' in the main payment
+    qoqa_transaction = fields.Char(string='Transaction number of the payment '
+                                          'on QoQa',
+                                   readonly=True)
 
     _sql_constraints = [
-        ('qoqa_uniq', 'unique(backend_id, qoqa_id)',
-         "A sales order with the same ID on QoQa already exists"),
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A sales order can be exported only once on the same backend"),
 
     ]
 
 
-class sale_order(orm.Model):
+class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    _columns = {
-        'qoqa_bind_ids': fields.one2many(
-            'qoqa.sale.order',
-            'openerp_id',
-            string='QBindings'),
-        'active': fields.boolean('Active'),
-    }
+    qoqa_bind_ids = fields.One2many(
+        comodel_name='qoqa.sale.order',
+        inverse_name='openerp_id',
+        string='QBindings',
+    )
+    active = fields.Boolean(string='Active', default=True)
 
-    _defaults = {
-        'active': True,
-    }
-
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        default['qoqa_bind_ids'] = False
-        default['canceled_in_backend'] = False
-        return super(sale_order, self).copy_data(cr, uid, id,
-                                                 default=default,
-                                                 context=context)
-
-    def _prepare_invoice(self, cr, uid, order, lines, context=None):
-        values = super(sale_order, self)._prepare_invoice(
-            cr, uid, order, lines, context=context)
-        if order.qoqa_bind_ids:
-            binding = order.qoqa_bind_ids[0]
+    @api.model
+    def _prepare_invoice(self):
+        values = super(SaleOrder, self)._prepare_invoice()
+        if self.qoqa_bind_ids:
+            # qoqa_bind_ids is unique, there is a constraint
+            binding = self.qoqa_bind_ids
             # keep only the issued invoice from the qoqa backend
             values.update({
                 'name': binding.invoice_ref,
                 # restore order's name, don't want the concatenated
                 # invoices numbers
-                'reference': order.name,
+                'reference': self.name,
             })
         return values
 
-    def _call_cancel(self, cr, uid, sale, cancel_direct=False, context=None):
+    @api.multi
+    def _call_cancel(self, cancel_direct=False):
+        self.ensure_one()
         # only cancel on qoqa if all the cancellations succeeded
         # canceled_in_backend means already canceled on QoQa
-        if not sale.canceled_in_backend:
-            session = ConnectorSession(cr, uid, context=context)
-            for binding in sale.qoqa_bind_ids:
-                # should be called at the very end of the method
-                # so we won't call 'cancel' on qoqa if something
-                # failed before
+        if not self.canceled_in_backend:
+            session = ConnectorSession.from_env(self.env)
+            for binding in self.qoqa_bind_ids:
+                # should be called at the very end of the 'cancel' method so we
+                # won't call 'cancel' on qoqa if something failed before
                 if cancel_direct:
                     # we want to do a direct call to the API when the payment
                     # can be canceled before midnight because the job may take
@@ -149,84 +121,61 @@ class sale_order(orm.Model):
                     cancel_sales_order.delay(session, binding._model._name,
                                              binding.id, priority=1)
 
-    def action_cancel(self, cr, uid, ids, context=None):
+    @api.multi
+    def action_cancel(self):
         """ Automatically cancel a sales orders and related documents.
 
         If the sales order has been created and canceled the same day, a
         direct call to the QoQa API will cancel the order, which will
         cancel the payment as well (excepted for Paypal, handled
-        manually, hence the ``payment_method_id.payment_cancellable_on_qoqa``
+        manually, hence the ``payment_mode_id.payment_cancellable_on_qoqa``
         field). Otherwise, a refund will be created.
         """
-        if context is None:
-            context = {}
-        if isinstance(ids, (int, long)):
-            ids = [ids]
-        wf_service = netsvc.LocalService('workflow')
-        refund_wiz_obj = self.pool['account.invoice.refund']
         actions = []
-        for order in self.browse(cr, uid, ids, context=context):
+        for order in self:
             cancel_direct = False
             if (order.qoqa_bind_ids and
-                    order.payment_method_id.payment_cancellable_on_qoqa):
+                    order.payment_mode_id.payment_cancellable_on_qoqa):
                 binding = order.qoqa_bind_ids[0]
                 # can be canceled only the day of the payment
-                payment_date = datetime.strptime(binding.qoqa_payment_date,
-                                                 DEFAULT_SERVER_DATE_FORMAT)
-                if payment_date.date() == date.today():
+                payment_date = fields.Date.from_string(
+                    binding.qoqa_payment_date
+                )
+                if payment_date == date.today():
                     cancel_direct = True
             # For SwissBilling: if the SO is not done yet, cancel directly.
             # Otherwise, refund.
             if (order.qoqa_bind_ids and
-                    order.payment_method_id.payment_settlable_on_qoqa):
+                    order.payment_mode_id.payment_settlable_on_qoqa):
                 cancel_direct = True
-            payment_ids = None
-            invoice_ids = None
-            if cancel_direct:
-                # If the order can be canceled on QoQa, the payment is
-                # canceled as well on QoQa so the internal payments
-                # can just be withdrawn.
-                # Otherwise, we have to keep them, they will be
-                # reconciled with the invoice
-                # WARNING! Delete account.move,
-                # not just payments (account.move.line)
-                payment_moves = [payment.move_id
-                                 for payment
-                                 in order.payment_ids]
-                for move in payment_moves:
-                    move.unlink()
-            elif order.amount_total:
+            # payment_ids = None
+            invoices = self.env['account.invoice'].browse()
+            # if cancel_direct:
+            #     If the order can be canceled on QoQa, the payment is
+            #     canceled as well on QoQa so the internal payments
+            #     can just be withdrawn.
+            #     Otherwise, we have to keep them, they will be
+            #     reconciled with the invoice
+            #     WARNING! Delete account.move,
+            #     not just payments (account.move.line)
+
+            #     TODO: not sure we'll still have order.payment_ids
+            #     payment_moves = [payment.move_id
+            #                      for payment
+            #                      in order.payment_ids]
+            #     for move in payment_moves:
+            #         move.unlink()
+            if not cancel_direct and order.amount_total:
                 # create the invoice, open it because we need the move
                 # lines so we'll be able to reconcile them with the
                 # payments
-                order.action_invoice_create(grouped=False,
-                                            states=['confirmed', 'done',
-                                                    'exception', 'draft'])
-                order.refresh()
+                order.action_invoice_create(grouped=False)
                 invoices = order.invoice_ids
-                invoice_ids = [invoice.id for invoice in invoices]
+                invoices.signal_workflow('invoice_open')
                 for invoice in invoices:
-                    wf_service.trg_validate(uid, 'account.invoice',
-                                            invoice.id, 'invoice_open', cr)
                     # create a refund since the payment cannot be
                     # canceled
-                    ctx = context.copy()
-                    ctx.update({
-                        'active_model': 'account.invoice',
-                        'active_id': invoice.id,
-                        'active_ids': [invoice.id],
-                    })
-                    wizard_id = refund_wiz_obj.create(
-                        cr, uid,
-                        {'filter_refund': 'refund',
-                         'description': _('Order Cancellation'),
-                         },
-                        context=ctx)
-
-                    action = refund_wiz_obj.invoice_refund(cr, uid,
-                                                           [wizard_id],
-                                                           context=ctx)
-                    actions.append(action)
+                    actions = self._refund_all_invoices()
 
                 # We can't cancel an order with open invoices, but
                 # we still want to do that, because we need the move lines
@@ -235,91 +184,63 @@ class sale_order(orm.Model):
                 # invoices then link them again after the cancellation.
                 # We have the same issue with the automatic payments so
                 # we use the same trick
-                payments = order.payment_ids
-                payment_ids = [payment.id for payment in payments]
-                payment_commands = [(3, pay_id) for pay_id in payment_ids]
-                invoice_commands = [(3, inv_id) for inv_id in invoice_ids]
-                order.write({'payment_ids': payment_commands,
-                             'invoice_ids': invoice_commands})
+
+                # TODO: see if we get rid of order.payment_ids or not
+                # payments = order.payment_ids
+                # payment_ids = [payment.id for payment in payments]
+                # payment_commands = [(3, pay_id) for pay_id in payment_ids]
+
+                invoice_commands = [(3, inv.id) for inv in invoices]
+                # order.write({'payment_ids': payment_commands,
+                #              'invoice_ids': invoice_commands})
+                order.write({'invoice_ids': invoice_commands})
 
             # cancel the pickings
             for picking in order.picking_ids:
                 # draft pickings are already canceled by the cancellation
                 # of the sale order so we don't need to take care of
                 # them.
-
                 if picking.state not in ('draft', 'cancel', 'done'):
-                    wf_service.trg_validate(uid, 'stock.picking', picking.id,
-                                            'button_cancel', cr)
+                    picking.action_cancel()
 
             # cancel the invoices
-            for invoice in order.invoice_ids:
+            for invoice in invoices:
                 # paid invoices were set as opened due to payments
                 # being deleted, or were "detached" previously since
                 # they will be refunded. Draft invoices will be cancelled
                 # by the sale order cancellation.
-
                 if invoice.state not in ('draft', 'cancel', 'paid'):
-                    wf_service.trg_validate(uid, 'account.invoice',
-                                            invoice.id,
-                                            'invoice_cancel', cr)
+                    invoice.signal_workflow('invoice_cancel')
 
-            super(sale_order, self).action_cancel(cr, uid, [order.id],
-                                                  context=context)
-            if payment_ids:
-                payment_commands = [(4, pay_id) for pay_id in payment_ids]
-                invoice_commands = [(4, inv_id) for inv_id in invoice_ids]
-                order.write({'payment_ids': payment_commands,
-                             'invoice_ids': invoice_commands})
+            super(SaleOrder, order).action_cancel()
+            # if invoices or payment_ids:
+            if invoices:
+                # TODO: see if we get rid of payments or not
+                # payment_commands = [(4, pay_id) for pay_id in payment_ids]
+                invoice_commands = [(4, inv.id) for inv in invoices]
+                # order.write({'payment_ids': payment_commands,
+                #              'invoice_ids': invoice_commands})
+                order.write({'invoice_ids': invoice_commands})
 
         action_res = None
         if actions:
-            # Prepare the returning action.
-            # Done before we call the cancellation on QoQa so if
-            # something fails here, we won't call the QoQa API
-            action_res = actions[0]
-            refund_ids = []
-            for action in actions:
-                for field, op, value in action_res['domain']:
-                    if field == 'id' and op == 'in':
-                        refund_ids += value
-            if len(refund_ids) == 1:
-                # remove the domain, replaced by res_id
-                # the refund will be open in the form view
-                action_res['domain'] = False
-                action_res['res_id'] = refund_ids[0]
-                mod_obj = self.pool['ir.model.data']
-                ref = mod_obj.get_object_reference(cr, uid, 'account',
-                                                   'invoice_form')
-                action_res['views'] = [(ref[1] if ref else False, 'form')]
-            else:
-                # open as tree view, merge all the ids of the refunds
-                # in the domain
-                new_domain = []
-                for field, op, value in action_res['domain']:
-                    if field == 'id' and op == 'in':
-                        new_domain.append((field, op, refund_ids))
-                    else:
-                        new_domain.append((field, op, value))
-                action_res['domain'] = new_domain
+            action_res = self.action_res = self._parse_refund_action(actions)
 
-        self._call_cancel(cr, uid, order, cancel_direct=cancel_direct,
-                          context=context)
+        self._call_cancel(cancel_direct=cancel_direct)
 
         if action_res:
             return action_res
 
         return True
 
-    def action_done(self, cr, uid, ids, context=None):
-        res = super(sale_order, self).action_done(
-            cr, uid, ids, context=context
-        )
+    @api.multi
+    def action_done(self):
+        res = super(SaleOrder, self).action_done()
         # Browse orders to send 'settled' to BO
-        for order in self.browse(cr, uid, ids, context=context):
+        for order in self:
             if (order.qoqa_bind_ids and
-                    order.payment_method_id.payment_settlable_on_qoqa):
-                session = ConnectorSession(cr, uid, context=context)
+                    order.payment_mode_id.payment_settlable_on_qoqa):
+                session = ConnectorSession.from_env(self.env)
                 for binding in order.qoqa_bind_ids:
                     _logger.info("Settle order %s later (job) on QoQa",
                                  binding.name)
@@ -327,7 +248,9 @@ class sale_order(orm.Model):
                                              binding.id, priority=1)
         return res
 
-    def action_force_cancel(self, cr, uid, ids, context=None):
+    # TODO: still needed?
+    @api.multi
+    def action_force_cancel(self):
         """ Force cancellation of a done sales order.
 
         Only usable on done sales orders (so in the final state of the
@@ -337,154 +260,116 @@ class sale_order(orm.Model):
         afterwards. In that case, even if the sales order is done, they need
         to set it as canceled on OpenERP and on the backend.
         """
-        refund_wiz_obj = self.pool['account.invoice.refund']
-        sale_order_line_obj = self.pool.get('sale.order.line')
-        wf_service = netsvc.LocalService('workflow')
         actions = []
-        for sale in self.browse(cr, uid, ids, context=context):
+        for sale in self:
             if sale.state != 'done':
-                raise orm.except_orm(
-                    _('Cannot cancel this sales order!'),
-                    _('Only done sales orders can be forced to be canceled.'))
-            sale_order_line_obj.write(cr, uid,
-                                      [l.id for l in sale.order_line],
-                                      {'state': 'cancel'},
-                                      context=context)
+                raise exceptions.UserError(
+                    _('Only done sales orders can be forced to be canceled.')
+                )
+
+            sale.order_line.write({'state': 'cancel'})
+
             cancel_direct = False
             if (sale.qoqa_bind_ids and
-                    sale.payment_method_id.payment_cancellable_on_qoqa and
-                    not sale.payment_method_id.payment_settlable_on_qoqa):
+                    sale.payment_mode_id.payment_cancellable_on_qoqa and
+                    not sale.payment_mode_id.payment_settlable_on_qoqa):
                 binding = sale.qoqa_bind_ids[0]
                 # can be canceled only the day of the payment
-                payment_date = datetime.strptime(
-                    binding.qoqa_payment_date, DEFAULT_SERVER_DATE_FORMAT)
-                if payment_date.date() == date.today():
+                payment_date = fields.Date.from_string(
+                    binding.qoqa_payment_date
+                )
+                if payment_date == date.today():
                     cancel_direct = True
             if cancel_direct:
                 # Done the same day; remove payments
-                payment_moves = [payment.move_id
-                                 for payment
-                                 in sale.payment_ids]
-                for move in payment_moves:
-                    move.unlink()
+                # TODO: not sure we'll still have order.payment_ids
+                # payment_moves = [payment.move_id
+                #                  for payment
+                #                  in sale.payment_ids]
+                # for move in payment_moves:
+                #     move.unlink()
                 # Cancel now-reopened invoices
                 for invoice in sale.invoice_ids:
-                    wf_service.trg_validate(uid, 'account.invoice',
-                                            invoice.id, 'invoice_cancel', cr)
+                    invoice.signal_workflow('invoice_cancel')
             else:
-                for invoice in sale.invoice_ids:
-                    # create a refund since the payment cannot be
-                    # canceled
-                    ctx = context.copy()
-                    ctx.update({
-                        'active_model': 'account.invoice',
-                        'active_id': invoice.id,
-                        'active_ids': [invoice.id],
-                    })
-                    wizard_id = refund_wiz_obj.create(
-                        cr, uid,
-                        {
-                            'filter_refund': 'refund',
-                            'description': _('Order Cancellation'),
-                        },
-                        context=ctx)
+                actions = self._refund_all_invoices()
 
-                    action = refund_wiz_obj.invoice_refund(
-                        cr, uid, [wizard_id], context=ctx)
-                    actions.append(action)
-        self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
+        self.write({'state': 'cancel'})
         message = _("The sales order was done, but it has been manually "
                     "canceled.")
-        self.message_post(cr, uid, ids, body=message, context=context)
+        self.message_post(body=message)
 
         # Return view for refunds
         action_res = None
         if actions:
-            # Prepare the returning action.
-            # Done before we call the cancellation on QoQa so if
-            # something fails here, we won't call the QoQa API
-            action_res = actions[0]
-            refund_ids = []
-            for action in actions:
-                for field, op, value in action_res['domain']:
-                    if field == 'id' and op == 'in':
-                        refund_ids += value
-            if len(refund_ids) == 1:
-                # remove the domain, replaced by res_id
-                # the refund will be open in the form view
-                action_res['domain'] = False
-                action_res['res_id'] = refund_ids[0]
-                mod_obj = self.pool['ir.model.data']
-                ref = mod_obj.get_object_reference(cr, uid, 'account',
-                                                   'invoice_form')
-                action_res['views'] = [(ref[1] if ref else False, 'form')]
-            else:
-                # open as tree view, merge all the ids of the refunds
-                # in the domain
-                new_domain = []
-                for field, op, value in action_res['domain']:
-                    if field == 'id' and op == 'in':
-                        new_domain.append((field, op, refund_ids))
-                    else:
-                        new_domain.append((field, op, value))
-                action_res['domain'] = new_domain
+            action_res = self.action_res = self._parse_refund_action(actions)
 
-        self._call_cancel(cr, uid, sale, cancel_direct=False,
-                          context=context)
+        self._call_cancel(cancel_direct=cancel_direct)
 
         if action_res:
             return action_res
 
         return True
 
+    def _refund_all_invoices(self):
+        refund_model = self.env['account.invoice.refund']
+        actions = []
+        for order in self:
+            for invoice in order.invoice_ids:
+                # create a refund since the payment cannot be
+                # canceled
+                action = refund_model.with_context(
+                    active_model='account.invoice',
+                    active_id=invoice.id,
+                    active_ids=invoice.ids,
+                ).create(
+                    {'filter_refund': 'refund',
+                     'description': _('Order Cancellation')}
+                ).invoice_refund()
+
+                actions.append(action)
+        return actions
+
+    def _parse_refund_action(self, actions):
+        # Prepare the returning action.
+        # Done before we call the cancellation on QoQa so if
+        # something fails here, we won't call the QoQa API
+        action_res = actions[0]
+        refund_ids = []
+        for action in actions:
+            for field, op, value in action_res['domain']:
+                if field == 'id' and op == 'in':
+                    refund_ids += value
+        if len(refund_ids) == 1:
+            # remove the domain, replaced by res_id
+            # the refund will be open in the form view
+            action_res['domain'] = False
+            action_res['res_id'] = refund_ids[0]
+            view = self.env.ref('account.invoice_form')
+            action_res['views'] = [(view.id, 'form')]
+        else:
+            # open as tree view, merge all the ids of the refunds
+            # in the domain
+            new_domain = []
+            for field, op, value in action_res['domain']:
+                if field == 'id' and op == 'in':
+                    new_domain.append((field, op, refund_ids))
+                else:
+                    new_domain.append((field, op, value))
+            action_res['domain'] = new_domain
+        return action_res
+
 
 @qoqa
 class QoQaSaleOrderAdapter(QoQaAdapter):
     _model_name = 'qoqa.sale.order'
-    _endpoint = 'order'
+    _endpoint = 'admin/orders'
+    _resource = 'order'
 
     def cancel(self, id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url + str(id),
-                                   data=json.dumps({'action': 'cancel'}),
-                                   headers=headers)
-        self._handle_response(response)
-
-    def refund(self, id, payment_id, amount):
-        """ Create a refund on the QoQa backend, return the payment id """
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        payload = {'action': 'credit',
-                   'params': {'refno': payment_id,
-                              'amount': amount,
-                              }
-                   }
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(payload),
-                                   headers=headers)
-        response = self._handle_response(response)
-        return response['data']['id']
-
-    def cancel_refund(self, id, payment_id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        payload = {'action': 'cancel_refund',
-                   'params': {'refno': payment_id,
-                              }
-                   }
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(payload),
-                                   headers=headers)
-        response = self._handle_response(response)
-        return True
-
-    def settle(self, id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.put(url + str(id),
-                                   data=json.dumps({'action': 'settled'}),
-                                   headers=headers)
+        url = self.url()
+        response = self.client.put(url + str(id) + '/cancel',
+                                   data=json.dumps({'cancelled': True}))
         self._handle_response(response)
 
     def pay_by_email_url(self, id, claim, amount):
@@ -500,3 +385,46 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    headers=headers)
         response = self._handle_response(response)
         return response['data']['url']
+
+    def add_trackings(self, qoqa_id, packages):
+        """ Synchronize picking packages.
+        """
+        url = "%s%s/shipping_packages" % (self.url(), qoqa_id)
+
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.post(url,
+                                    data=json.dumps(packages),
+                                    headers=headers)
+        self._handle_response(response)
+
+
+@qoqa
+class QoQaPaymentAdapter(QoQaAdapter):
+    _model_name = 'qoqa.payment'  # virtual model
+    _endpoint = 'admin/payments'
+    _resource = 'payment'
+
+    def settle(self, id):
+        url = "{}{}/settle".format(self.url(), id)
+        response = self.client.post(url)
+        self._handle_response(response)
+
+    def refund(self, id, amount):
+        """ Create a credit note on the QoQa backend, return the payment id """
+        url = "{}{}/credit_notes".format(self.url(), id)
+        response = self.client.post(url, data=json.dumps({'amount': amount}))
+        return self._handle_response(response)
+
+    # TODO: not documented yet
+    def cancel_refund(self, id, payment_id):
+        url = self.url(with_lang=False)
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        payload = {'action': 'cancel_refund',
+                   'params': {'refno': payment_id,
+                              }
+                   }
+        response = self.client.put(url + str(id),
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        response = self._handle_response(response)
+        return True

@@ -1,39 +1,34 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 {'name': 'QoQa Connector',
- 'version': '0.0.1',
+ 'version': '9.0.2.0.0',
  'category': 'Connector',
  'depends': ['connector',
-             'connector_ecommerce',
+             'crm_claim',
+             'crm_claim_rma',
+             'crm_rma_by_shop',
+             'qoqa_base_data',
+             'qoqa_claim',
+             'delivery',
+             'connector_base_product',
+             'account_payment_mode',  # oca/bank-payment
+             'account_payment_sale',  # oca/bank-payment
+             'connector_ecommerce',   # oca/connector-ecommerce
+             'sale_exception',        # oca/sale-workflow
              'sale_stock',
              'qoqa_offer',
-             'qoqa_base_data',
              'qoqa_product',
+             'base_transaction_id',   # oca/bank-statement-reconcile
+             'account_analytic_required',  # oca/account-analytic
              ],
  'external_dependencies': {
      'python': ['requests',
                 'dateutil',
                 ],
  },
+ 'pre_init_hook': 'pre_init_hook',
  'author': 'Camptocamp',
  'license': 'AGPL-3',
  'website': 'http://www.camptocamp.com',
@@ -47,28 +42,27 @@ Synchronize OpenERP with the different QoQa Stores
 """,
  'images': [],
  'demo': [],
- 'data': ['data.xml',
-          'wizard/qoqa_backend_oauth_view.xml',
+ 'data': [
+          'data.xml',
+          'wizard/qoqa_backend_auth_view.xml',
           'qoqa_backend/qoqa_backend_view.xml',
           'qoqa_shop/qoqa_shop_view.xml',
           'qoqa_offer/offer_view.xml',
+          'sale/sale_view.xml',
           'qoqa_menu.xml',
-          'product/product_view.xml',
+          'product_product/product_view.xml',
+          'product_template/product_template_view.xml',
           'partner/res_partner_view.xml',
           'address/res_partner_view.xml',
-          'sale/sale_view.xml',
-          'static_binding/res_company_view.xml',
-          'static_binding/account_tax_view.xml',
-          'static_binding/res_lang_view.xml',
-          'static_binding/res_country_view.xml',
-          'static_binding/res_currency_view.xml',
-          'static_binding/payment_method_view.xml',
-          'static_binding/delivery_carrier_view.xml',
-          'qoqa_buyphrase/qoqa_buyphrase_view.xml',
-          'product_attribute/product_attribute_view.xml',
+          'res_company/res_company_view.xml',
+          'account_tax/account_tax_view.xml',
+          'res_country/res_country_view.xml',
+          'res_currency/res_currency_view.xml',
+          'account_payment_mode/account_payment_mode_views.xml',
+          'delivery_carrier/delivery_carrier_view.xml',
+          'product_packaging/product_packaging_views.xml',
           'security/ir.model.access.csv',
-          'company_view.xml',
           ],
- 'installable': False,
+ 'installable': True,
  'application': True,
  }

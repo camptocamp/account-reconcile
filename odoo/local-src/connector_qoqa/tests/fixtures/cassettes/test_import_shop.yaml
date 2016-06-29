@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/websites/
+  response:
+    body: {string: !!python/unicode '{"data":[{"id":"3","type":"website","attributes":{"name":"QoQa","domain":"wwwqoqach-sprint.qoqa.com","identifier":"wwwqoqach","logo_file_name":"logo_qoqach.png","currency":"chf"},"relationships":{"company":{"data":{"id":1,"name":"QoQa
+        Services SA","created_at":"2016-04-19T14:02:09.000+02:00","updated_at":"2016-04-19T14:02:09.000+02:00","default_shipping_vat_id":6}},"website_languages":{"data":[{"id":1,"website_id":3,"language_id":1,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"},{"id":2,"website_id":3,"language_id":2,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"}]}}},{"id":"5","type":"website","attributes":{"name":"Qwine","domain":"qwineqoqach-sprint.qoqa.com","identifier":"qwineqoqach","logo_file_name":"logo_qwinech.png","currency":"chf"},"relationships":{"company":{"data":{"id":1,"name":"QoQa
+        Services SA","created_at":"2016-04-19T14:02:09.000+02:00","updated_at":"2016-04-19T14:02:09.000+02:00","default_shipping_vat_id":6}},"website_languages":{"data":[{"id":3,"website_id":5,"language_id":1,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"},{"id":4,"website_id":5,"language_id":2,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"}]}}},{"id":"4","type":"website","attributes":{"name":"QoQa
+        France","domain":"wwwqoqafr-sprint.qoqa.com","identifier":"wwwqoqafr","logo_file_name":"logo_qoqafr.png","currency":"eur"},"relationships":{"company":{"data":{"id":2,"name":"QoQa
+        Services France","created_at":"2016-04-19T14:02:09.000+02:00","updated_at":"2016-04-19T14:02:09.000+02:00","default_shipping_vat_id":11}},"website_languages":{"data":[{"id":5,"website_id":4,"language_id":1,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"}]}}},{"id":"11","type":"website","attributes":{"name":"Qooking","domain":"qookingqoqach-sprint.qoqa.com","identifier":"qookingqoqach","logo_file_name":"logo_qooking_ch.png","currency":"chf"},"relationships":{"company":{"data":{"id":1,"name":"QoQa
+        Services SA","created_at":"2016-04-19T14:02:09.000+02:00","updated_at":"2016-04-19T14:02:09.000+02:00","default_shipping_vat_id":6}},"website_languages":{"data":[{"id":844955017,"website_id":11,"language_id":1,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"},{"id":62462670,"website_id":11,"language_id":2,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"}]}}},{"id":"8","type":"website","attributes":{"name":"QSport","domain":"qsportqoqach-sprint.qoqa.com","identifier":"qsportqoqach","logo_file_name":"logo_qsport_ch.png","currency":"chf"},"relationships":{"company":{"data":{"id":1,"name":"QoQa
+        Services SA","created_at":"2016-04-19T14:02:09.000+02:00","updated_at":"2016-04-19T14:02:09.000+02:00","default_shipping_vat_id":6}},"website_languages":{"data":[{"id":288725664,"website_id":8,"language_id":1,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"},{"id":550534619,"website_id":8,"language_id":2,"created_at":"2016-04-19T14:02:11.000+02:00","updated_at":"2016-04-19T14:02:11.000+02:00"}]}}}],"jsonapi":{"version":"1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 19 Apr 2016 12:56:12 GMT']
+      etag: [W/"2e506125e0752538ce65c6cfda344312"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [eafcaa7e-1cae-47b7-a53d-9c9b1f279df2]
+      x-runtime: ['0.981171']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

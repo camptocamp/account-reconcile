@@ -1,78 +1,70 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+
+from collections import namedtuple
 
 import mock
-from .common import mock_api_responses, QoQaTransactionCase, MockResponseImage
-from .data_offer import qoqa_offer
-from .data_metadata import qoqa_shops
-from .data_product import qoqa_product
-from ..unit.import_synchronizer import import_record
+
+from freezegun import freeze_time
+
+from openerp.addons.connector.tests.common import mock_job_delay_to_direct
+
+from openerp.addons.connector_qoqa.unit.importer import import_record
+
+from .common import recorder, QoQaTransactionCase
+
+ExpectedOffer = namedtuple(
+    'ExpectedOffer',
+    'name qoqa_link qoqa_edit_link'
+)
 
 
-@mock.patch('urllib2.urlopen', mock.Mock(return_value=MockResponseImage('')))
-class test_import_offer(QoQaTransactionCase):
+class TestImportOffer(QoQaTransactionCase):
     """ Test the import of offers from QoQa """
-    def setUp(self):
-        super(test_import_offer, self).setUp()
-        self.Offer = self.registry('qoqa.offer')
-        self.OfferPos = self.registry('qoqa.offer.position')
-        self.setUpCompany()
 
+    def setUp(self):
+        super(TestImportOffer, self).setUp()
+        self.Offer = self.env['qoqa.offer']
+        self.setup_company()
+        self.sync_metadata()
+
+    @freeze_time('2016-04-20 00:00:00')
+    def test_import_offer_batch(self):
+        from_date = '2016-04-01 00:00:00'
+        self.backend_record.import_offer_from_date = from_date
+        batch_job_path = ('openerp.addons.connector_qoqa.unit'
+                          '.importer.import_batch')
+        record_job_path = ('openerp.addons.connector_qoqa.unit'
+                           '.importer.import_record')
+        # execute the batch job directly and replace the record import
+        # by a mock (individual import is tested elsewhere)
+        with recorder.use_cassette('test_import_offer_batch') as cassette, \
+                mock_job_delay_to_direct(batch_job_path), \
+                mock.patch(record_job_path) as import_record_mock:
+            self.backend_record.import_offer()
+
+            self.assertEqual(len(cassette.requests), 3)
+            self.assertEqual(import_record_mock.delay.call_count, 9)
+
+    @freeze_time('2016-04-20 00:00:00')
+    @recorder.use_cassette()
     def test_import_offer(self):
         """ Import an Offer """
-        cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_offer, qoqa_shops):
-            import_record(self.session, 'qoqa.offer',
-                          self.backend_id, 99999999)
-        domain = [('qoqa_id', '=', '99999999')]
-        offer_ids = self.Offer.search(cr, uid, domain)
-        self.assertEquals(len(offer_ids), 1)
-        offer = self.Offer.browse(cr, uid, offer_ids[0])
-        self.assertEquals(offer.qoqa_shop_id.qoqa_id, '100')
-        self.assertEquals(offer.pricelist_id.id, self.pricelist_id)
-        self.assertEquals(offer.title, 'title')
-        self.assertEquals(offer.description, '<p>content</p>')
-        self.assertEquals(offer.note, '<p>Sav Schumf -Astavel</p>')
-        self.assertEquals(offer.date_begin, '2013-10-14')
-        self.assertEquals(offer.time_begin, 12)
-        self.assertEquals(offer.date_end, '2013-10-16')
-        self.assertEquals(offer.time_end, 12)
+        import_record(self.session, 'qoqa.offer',
+                      self.backend_record.id, 1)
+        domain = [('qoqa_id', '=', '1')]
+        offer = self.Offer.search(domain)
+        offer.ensure_one()
 
-    def test_import_offer_position(self):
-        """ Import an offer position """
-        cr, uid = self.cr, self.uid
-        with mock_api_responses(qoqa_offer, qoqa_shops, qoqa_product):
-            import_record(self.session, 'qoqa.offer.position',
-                          self.backend_id, 99999999)
-        domain = [('qoqa_id', '=', '99999999')]
-        pos_ids = self.OfferPos.search(cr, uid, domain)
-        self.assertEquals(len(pos_ids), 1)
-        pos = self.OfferPos.browse(cr, uid, pos_ids[0])
-        self.assertEquals(pos.offer_id.qoqa_id, '99999999')
-        self.assertEquals(pos.regular_price_type, 'normal')
-        self.assertEquals(pos.product_tmpl_id.qoqa_bind_ids[0].qoqa_id,
-                          '99999999')
-
-        self.assertEquals(len(pos.variant_ids), 1)
-        pos_var = pos.variant_ids[0]
-        self.assertEquals(pos_var.product_id.qoqa_bind_ids[0].qoqa_id,
-                          '99999999')
-        self.assertEquals(pos_var.quantity, 100)
+        url = ('http://wwwqoqach-sprint.qoqa.com/'
+               'fr/offer/view/1?show_banner=False')
+        edit_url = self.backend_record.url + '/dot/edit/1'
+        expected = [
+            ExpectedOffer(
+                name='Apple iPhone 6 / 64GB',
+                qoqa_link=url,
+                qoqa_edit_link=edit_url,
+            ),
+        ]
+        self.assert_records(expected, offer)

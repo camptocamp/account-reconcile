@@ -1,0 +1,83 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/addresses/?timestamp_to=2016-04-08+00%3A00%3A00&timestamp_from=2016-04-01+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 19 Apr 2016 13:07:09 GMT']
+      etag: [W/"e0234245cb00aa260ccfa99a9a0b235e"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [811c01fa-b378-48d8-b0a6-8f4b535c18ce]
+      x-runtime: ['0.020896']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/addresses/?timestamp_to=2016-04-15+00%3A00%3A00&timestamp_from=2016-04-08+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 19 Apr 2016 13:07:10 GMT']
+      etag: [W/"e0234245cb00aa260ccfa99a9a0b235e"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [4d8cc2e5-6b61-4223-b0e1-b471ccea3299]
+      x-runtime: ['0.027693']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/addresses/?timestamp_to=2016-04-20+00%3A00%3A00&timestamp_from=2016-04-15+00%3A00%3A00
+  response:
+    body: {string: !!python/unicode '{"data":[{"id":1},{"id":3},{"id":4},{"id":5},{"id":6},{"id":7},{"id":8},{"id":9},{"id":10},{"id":11}]}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 19 Apr 2016 13:07:10 GMT']
+      etag: [W/"f1707f8c7d777e895f35dea6858d4eb9"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [ca885c8a-3a61-4592-a68a-0c6e3a776047]
+      x-runtime: ['0.060657']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

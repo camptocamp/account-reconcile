@@ -14,7 +14,8 @@ class QoqaShop(models.Model):
         comodel_name='res.company',
         string='Company',
     )
-
-    kanban_image = fields.Binary(
-        'Kanban Image',
-        help="Image displayed on the Kanban views for this shop")
+    analytic_account_id = fields.Many2one(
+        comodel_name='account.analytic.account',
+        string='Analytic Account',
+        ondelete='restrict',
+    )

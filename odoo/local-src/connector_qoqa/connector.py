@@ -1,41 +1,19 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import pytz
+from contextlib import contextmanager
 from datetime import datetime
 from dateutil import parser
-from collections import namedtuple
 from itertools import tee, izip
 
-from openerp.osv import orm, fields
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from openerp.addons.connector.connector import (install_in_connector,
-                                                Environment)
+from openerp import models, fields, api, exceptions, _
+from openerp.addons.connector.connector import ConnectorEnvironment
 from openerp.addons.connector.checkpoint import checkpoint
 from openerp.addons.connector import queue
 
-install_in_connector()
-
 QOQA_TZ = pytz.timezone('Europe/Zurich')
-
 
 queue.job.RETRY_INTERVAL = 60  # seconds
 
@@ -77,36 +55,20 @@ def iso8601_to_local_date(isodate):
     return datetime.strptime(local_date, '%Y-%m-%d').date()
 
 
+@contextmanager
 def get_environment(session, model_name, backend_id):
     """ Create an environment to work with.  """
-    backend_record = session.browse('qoqa.backend', backend_id)
-    env = Environment(backend_record, session, model_name)
+    backend_record = session.env['qoqa.backend'].browse(backend_id)
     lang = backend_record.default_lang_id
     lang_code = lang.code if lang else 'en_US'
-    env.set_lang(code=lang_code)
-    return env
+    with session.change_context(lang=lang_code):
+        # browse in the new odoo Env
+        backend_record = session.env['qoqa.backend'].browse(backend_id)
+        conn_env = ConnectorEnvironment(backend_record, session, model_name)
+        yield conn_env
 
 
-HistoricInfo = namedtuple('HistoricInfo',
-                          ['historic',  # historic data, bypass workflows, ...
-                           'active',  # records imported inactive
-                           ])
-
-
-def historic_import(connector_unit, record):
-    order_date = iso8601_to_utc_datetime(record['created_at'])
-    until_str = connector_unit.backend_record.date_really_import
-    inactive_until_str = connector_unit.backend_record.date_import_inactive
-    historic_until = datetime.strptime(until_str,
-                                       DEFAULT_SERVER_DATETIME_FORMAT)
-    inactive_until = datetime.strptime(inactive_until_str,
-                                       DEFAULT_SERVER_DATETIME_FORMAT)
-    info = HistoricInfo(historic=order_date < historic_until,
-                        active=order_date >= inactive_until)
-    return info
-
-
-class qoqa_binding(orm.AbstractModel):
+class QoqaBinding(models.AbstractModel):
     """ Abstract Model for the Bindings.
 
     All the models used as bindings between QoQa and OpenERP
@@ -116,32 +78,34 @@ class qoqa_binding(orm.AbstractModel):
     _inherit = 'external.binding'
     _description = 'QoQa Binding (abstract)'
 
-    _columns = {
-        # 'openerp_id': openerp-side id must be declared in concrete model
-        'backend_id': fields.many2one(
-            'qoqa.backend',
-            'QoQa Backend',
-            required=True,
-            readonly=True,
-            ondelete='restrict'),
-        'qoqa_id': fields.char('ID on QoQa', select=True),
-    }
+    # openerp-side id must be declared in concrete model
+    # openerp_id = fields.Many2one(...)
+    backend_id = fields.Many2one(
+        comodel_name='qoqa.backend',
+        string='QoQa Backend',
+        required=True,
+        readonly=True,
+        ondelete='restrict',
+        default=lambda self: self._default_backend_id(),
+    )
+    qoqa_id = fields.Char(string='ID on QoQa', index=True)
 
-    def _get_default_backend_id(self, cr, uid, context=None):
-        data_obj = self.pool.get('ir.model.data')
-        try:
-            xmlid = ('connector_qoqa', 'qoqa_backend_config')
-            __, backend_id = data_obj.get_object_reference(cr, uid, *xmlid)
-        except ValueError:
-            return False
-        return backend_id
+    @api.model
+    def _default_backend_id(self):
+        return self.env['qoqa.backend'].get_singleton()
 
-    _defaults = {
-        'backend_id': _get_default_backend_id,
-    }
+    _sql_constraints = [
+        ('qoqa_binding_uniq', 'unique(backend_id, qoqa_id)',
+         "A binding already exists for this QoQa record"),
+    ]
 
-    # the _sql_contraints cannot be there due to this bug:
-    # https://bugs.launchpad.net/openobject-server/+bug/1151703
+    @api.multi
+    def unlink(self):
+        if any(self.mapped('qoqa_id')):
+            raise exceptions.UserError(
+                _('Exported binding cannot be deleted.')
+            )
+        return super(QoqaBinding, self).unlink()
 
 
 def add_checkpoint(session, model_name, record_id, backend_id):

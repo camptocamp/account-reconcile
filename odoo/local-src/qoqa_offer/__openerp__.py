@@ -24,6 +24,7 @@ Adds *Offer* models.
              'delivery',
              'ecotax',
              'procurement',
+             'product_brand',  # oca/product-attribute
              # TODO: activate
              # 'picking_dispatch',  # stock-logistic-flows
              ],
@@ -32,7 +33,6 @@ Adds *Offer* models.
           'account_invoice_view.xml',
           'stock_view.xml',
           'qoqa_offer_view.xml',
-          'qoqa_buyphrase_view.xml',
           'delivery_carrier_view.xml',
           'procurement_view.xml',
           'security/ir.model.access.csv',

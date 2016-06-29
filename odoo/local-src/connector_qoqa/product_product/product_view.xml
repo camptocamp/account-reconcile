@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_qoqa_product_form" model="ir.ui.view">
+    <field name="name">qoqa.product.product.form</field>
+    <field name="model">qoqa.product.product</field>
+    <field name="arch" type="xml">
+      <form string="QoQa Variant">
+        <group>
+          <field name="backend_id"/>
+          <field name="qoqa_id"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_qoqa_product_tree" model="ir.ui.view">
+    <field name="name">qoqa.product.product.tree</field>
+    <field name="model">qoqa.product.product</field>
+    <field name="arch" type="xml">
+      <tree string="QoQa Variant">
+        <field name="backend_id"/>
+        <field name="qoqa_id"/>
+      </tree>
+    </field>
+  </record>
+
+</odoo>

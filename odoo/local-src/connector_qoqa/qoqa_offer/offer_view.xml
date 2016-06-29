@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data noupdate="0">
-        <record id="view_qoqa_offer_form" model="ir.ui.view">
-            <field name="name">qoqa.offer.form</field>
-            <field name="model">qoqa.offer</field>
-            <field name="inherit_id" ref="qoqa_offer.view_qoqa_offer_form"/>
-            <field name="arch" type="xml">
-                <field name="description" position="after">
-                    <field name="qoqa_link" widget="url" />
-                </field>
-                <field name="tax_id" position="attributes">
-                  <attribute name="domain">[('qoqa_id', '!=', False)]</attribute>
-                </field>
-                <button name="action_view_sale_order" position="after">
-                        <button name="button_edit_offer_content"
-                            string="Edit Offer Content" type="object"
-                            />
-                </button>
-            </field>
-        </record>
-    </data>
-</openerp>
+<odoo>
+  <record id="view_qoqa_offer_form" model="ir.ui.view">
+    <field name="name">qoqa.offer.form</field>
+    <field name="model">qoqa.offer</field>
+    <field name="inherit_id" ref="qoqa_offer.view_qoqa_offer_form"/>
+    <field name="arch" type="xml">
+      <group name="base" position="inside">
+        <field name="qoqa_link" widget="url" />
+      </group>
+      <div name="buttons" position="inside">
+        <button name="button_edit_offer_content"
+          string="Edit Offer Content" type="object"
+          />
+      </div>
+    </field>
+  </record>
+</odoo>

@@ -1,23 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from openerp.addons.connector.event import (on_record_create,
                                             on_record_write,
@@ -25,11 +8,11 @@ from openerp.addons.connector.event import (on_record_create,
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ExportMapper)
 
-from ..product_attribute.exporter import ProductAttribute
-from ..product.exporter import (
+from ..product_product.exporter import (
     delay_export_all_bindings as product_delay_export
 )
-from ..unit.export_synchronizer import QoQaExporter, Translations
+
+from ..unit.exporter import QoQaExporter, Translations
 from .. import consumer
 from ..backend import qoqa
 
@@ -42,84 +25,93 @@ def delay_export(session, model_name, record_id, vals):
 
 @on_record_write(model_names='product.template')
 def delay_export_all_bindings(session, model_name, record_id, vals):
-    if 'warranty' in vals:
-        # the warranty should be exported on the variant, not the
-        # template
-        for product in session.browse(model_name, record_id).variant_ids:
+    fields_exported_from_variants = {'warranty', 'wine_bottle_id'}
+    variant_export = set()
+    for field in fields_exported_from_variants:
+        if field in vals:
+            variant_export.add(field)
+
+    vals = vals.copy()
+    if variant_export:
+        variant_vals = {}
+        for field in variant_export:
+            variant_vals[field] = vals.pop(field)
+
+        # those fields hould be exported on the variant, not the
+        # template, but are stored on the template on Odoo
+        templates = session.env[model_name].browse(record_id)
+        for product in templates.product_variant_ids:
             product_delay_export(session, 'product.product',
-                                 product.id, {'warranty': vals['warranty']})
-        if vals.keys() == ['warranty']:
-            # nothing to export on the template
-            return
-    consumer.delay_export_all_bindings(session, model_name,
-                                       record_id, vals)
+                                 product.id, variant_vals)
+
+    if not vals:
+        # nothing to export on the template
+        return
+
+    consumer.delay_export_all_bindings(session, model_name, record_id, vals)
 
 
 @qoqa
 class TemplateExporter(QoQaExporter):
     _model_name = ['qoqa.product.template']
 
+    def _export_dependencies(self):
+        """ Export the dependencies for the record"""
+        assert self.binding_record
+        for attr_line in self.binding_record.attribute_line_ids:
+            self._export_dependency(
+                attr_line.attribute_id,
+                'qoqa.product.attribute',
+            )
+
 
 @qoqa
 class TemplateExportMapper(ExportMapper):
-    """ Example of expected JSON to create a template:
+    """ Example of message:
 
-        {"product":
-            {"translations":
-                [{"language_id": 1,
-                  "brand": "Brando",
-                  "name": "ZZZ",
-                  "highlights": "blabl loerm",
-                  "description": "lorefjusdhdfujhsdifgh hfduihsi"},
-                 {"language_id": 2,
-                  "brand": "Brandette",
-                  "name": "XXX",
-                  "highlights": "el blablo loerm",
-                  "description": "d hfduihsi"}
-                 ]
-            }
+    ::
+
+        POST /v1/admin/products
+        {
+          "product": {
+            "translations_attributes": [
+              {
+                "locale": "fr",
+                "name": "Product name FR",
+                "brand": "Brand test FR"
+              },
+              {
+                "locale": "de",
+                "name": "Product name DE",
+                "brand": "Brand test DE"
+              }
+            ]
+          }
         }
+        200
+        {
+          "data": {
+            "id": 1000005
+          }
+        }
+
+
     """
     _model_name = 'qoqa.product.template'
 
-    direct = []
-
     translatable_fields = [
         ('name', 'name'),
+        # brand is not translatable in Odoo but it is on the qoqa API
+        ('brand', 'brand'),
     ]
-
-    @mapping
-    def metas(self, record):
-        """ QoQa tries to loop on this field
-
-        We add the attributes, but they will not be used
-        (yet) on QoQa.
-
-        """
-        attrs = self.get_connector_unit_for_model(ProductAttribute)
-        return {'product_metas':
-                [attrs.get_values(record, translatable=False)]}
-
-    @mapping
-    def category(self, record):
-        if not record.categ_id:
-            return
-        session = self.session
-        qoqa_value = session.pool['product.category'].name_get(
-            session.cr, session.uid, record.categ_id.id,
-            context={'lang': 'fr_FR'})
-        if len(qoqa_value) > 0:
-            # Result is [(id, value)]
-            return {'category': qoqa_value[0][1]}
 
     @mapping
     def translations(self, record):
         """ Map all the translatable values, including the attributes
 
-        Translatable fields for QoQa are sent in a ``translations``
+        Translatable fields for QoQa are sent in a ``translations_attributes``
         key and are not sent in the main record.
         """
-        fields = self.translatable_fields  # not including attributes
-        trans = self.get_connector_unit_for_model(Translations)
-        return trans.get_translations(record, normal_fields=fields,
-                                      attributes_unit=ProductAttribute)
+        trans = self.unit_for(Translations)
+        return trans.get_translations(record,
+                                      normal_fields=self.translatable_fields)

@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: '{"device": {"identifier": "Odoo"}, "user": {"login": "xxxxxx", "password":
+      "xxxxxx"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/auth/
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"token": "xxxxxx"},
+        "type": "user-token", "id": "3"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 18 Apr 2016 09:51:22 GMT']
+      etag: [W/"57018765b16815e249c738247e38a571"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [f50ecc08-cf8f-47a8-bf19-000f16265089]
+      x-runtime: ['0.133090']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

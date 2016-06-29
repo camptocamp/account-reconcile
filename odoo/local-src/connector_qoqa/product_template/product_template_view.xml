@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- applies to both template and variants -->
+  <record id="product_template_form_view" model="ir.ui.view">
+    <field name="name">product.template.form</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="connector_base_product.product_template_common_form"/>
+    <field name="arch" type="xml">
+      <page name="connector" position="attributes">
+        <attribute name="invisible">0</attribute>
+      </page>
+      <page name="connector" position="inside">
+        <group string="QBindings">
+          <field name="qoqa_bind_ids" nolabel="1"/>
+        </group>
+      </page>
+    </field>
+  </record>
+
+  <!-- applies only to template -->
+  <record id="product_template_only_form_view" model="ir.ui.view">
+    <field name="name">product.template.product.form</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="arch" type="xml">
+
+      <button name="toggle_active" position="after">
+        <button name="toggle_qoqa_exportable" type="object"
+          class="oe_stat_button" icon="fa-refresh">
+          <span class="o_stat_text">QoQa</span>
+          <field name="qoqa_exportable" widget="boolean_button"/>
+        </button>
+      </button>
+
+    </field>
+  </record>
+
+  <!-- binding -->
+  <record id="view_qoqa_product_template_form" model="ir.ui.view">
+    <field name="name">qoqa.product.template.form</field>
+    <field name="model">qoqa.product.template</field>
+    <field name="arch" type="xml">
+      <form string="QoQa Product">
+        <group>
+          <field name="backend_id"/>
+          <field name="qoqa_id"/>
+          <button name="import_images"
+            string="Get images from BO"
+            type="object"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_qoqa_product_template_tree" model="ir.ui.view">
+    <field name="name">qoqa.product.template.tree</field>
+    <field name="model">qoqa.product.template</field>
+    <field name="arch" type="xml">
+      <tree string="QoQa Product">
+        <field name="backend_id"/>
+        <field name="qoqa_id"/>
+      </tree>
+    </field>
+  </record>
+
+</odoo>
+

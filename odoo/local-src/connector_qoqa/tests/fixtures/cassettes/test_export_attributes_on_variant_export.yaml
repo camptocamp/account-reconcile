@@ -1,0 +1,184 @@
+interactions:
+- request:
+    body: '{"locale": "fr", "product_attribute_category": {"translations_attributes":
+      [{"locale": "en", "name": "Color"}, {"locale": "fr", "name": "Color"}, {"locale":
+      "de", "name": "Color"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['182']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/product_attribute_categories/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 5}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 26 Apr 2016 12:42:39 GMT']
+      etag: [W/"9bc5fff3b233c2c8c699119c58c780ce"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [76e3d759-e628-4d4e-9442-0de488364681]
+      x-runtime: ['3.737989']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "product_attribute_category": {"translations_attributes":
+      [{"locale": "en", "name": "Size"}, {"locale": "fr", "name": "Size"}, {"locale":
+      "de", "name": "Size"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['179']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/product_attribute_categories/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 6}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 26 Apr 2016 12:42:39 GMT']
+      etag: [W/"e1598e2783a3e76a2aaf39a9b0d43d64"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [a056b08a-4b11-4acb-93ae-3281c8e5cd7d]
+      x-runtime: ['0.046602']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "product": {"translations_attributes": [{"locale": "en",
+      "brand": false, "name": "Geelee"}, {"locale": "fr", "brand": false, "name":
+      "Geelee"}, {"locale": "de", "brand": false, "name": "Geelee"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['214']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/products/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 1000005}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 26 Apr 2016 12:42:41 GMT']
+      etag: [W/"67c6b5c3e60ef7dde9394d88f92f8c46"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [c8a02c0a-2e8f-4274-a191-461c607bcdc1]
+      x-runtime: ['1.177487']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "product_attribute": {"product_attribute_category_id":
+      "5", "translations_attributes": [{"locale": "en", "name": "Red"}, {"locale":
+      "fr", "name": "Red"}, {"locale": "de", "name": "Red"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['205']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/product_attributes/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 19}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 26 Apr 2016 12:42:41 GMT']
+      etag: [W/"f52cbec6d9a11fe6104fceeffb396600"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [4b33ec3a-0b32-4024-9048-6d6af34b6221]
+      x-runtime: ['0.075103']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "product_attribute": {"product_attribute_category_id":
+      "6", "translations_attributes": [{"locale": "en", "name": "M"}, {"locale": "fr",
+      "name": "M"}, {"locale": "de", "name": "M"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['199']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/product_attributes/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 20}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 26 Apr 2016 12:42:41 GMT']
+      etag: [W/"2c1180d182ba630e5cd2100114667dee"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [ff8d08d7-4b97-487c-8245-5b1f51e51432]
+      x-runtime: ['0.051201']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "variation": {"sku": "Geelee-Red-M", "product_attribute_variations_attributes":
+      [{"product_attribute_id": "19", "product_category_attributes": {"product_attribute_category_id":
+      "5", "product_id": "1000005"}}, {"product_attribute_id": "20", "product_category_attributes":
+      {"product_attribute_category_id": "6", "product_id": "1000005"}}], "product_id":
+      "1000005"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['380']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/variations/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 14}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 26 Apr 2016 12:42:42 GMT']
+      etag: [W/"a988765356782d75905c35e99b2d9b3f"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [1fb7fac7-93fd-472b-92c3-4e3b75181411]
+      x-runtime: ['0.117833']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

@@ -227,7 +227,7 @@ Feature: Parameter the new database
         #| qoqa_offer_historical_margin                    |
         | qoqa_product                                    |
         | qoqa_record_archiver                            |
-        #| server_env_connector_qoqa                       |
+        | server_env_connector_qoqa                       |
         #| specific_fct                                    |
         #| specific_report                                 |
         | speedy_views                                    |
@@ -293,6 +293,10 @@ Feature: Parameter the new database
     UPDATE product_template
     SET product_brand_id = (SELECT id FROM product_brand WHERE name = product_template.brand)
     WHERE brand IS NOT NULL and product_brand_id IS NULL
+    """
+    Given I execute the SQL commands
+    """
+    ALTER TABLE product_template DROP COLUMN brand;
     """
 
   @product_attributes
@@ -437,8 +441,8 @@ Feature: Parameter the new database
     """
     UPDATE qoqa_shop q
     SET name = s.name,
-        kanban_image = s.kanban_image,
-        company_id = s.company_id
+        company_id = s.company_id,
+        analytic_account_id = s.project_id
     -- TODO:
     -- postlogistics_logo, swiss_pp_logo, mail_signature_template
     FROM sale_shop s
@@ -469,4 +473,62 @@ Feature: Parameter the new database
     SET prefix = 'SOS-'
     WHERE code = 'crm.claim.rma.customer'
     """
-    ANd I copy the sequence next number from "crm.claim.rma" to "crm.claim.rma.customer"
+    And I copy the sequence next number from "crm.claim.rma" to "crm.claim.rma.customer"
+
+  @payment_method
+  Scenario: migrate payment.method → account.payement.mode
+    Given I execute the SQL commands
+    """
+    INSERT INTO account_payment_mode (
+      create_uid, write_uid, create_date, write_date,
+      name, company_id, active, bank_account_link,
+      fixed_journal_id, payment_method_id, workflow_process_id,
+      days_before_cancel, import_rule, sequence,
+      payment_cancellable_on_qoqa, qoqa_id,
+      gift_card, payment_settlable_on_qoqa
+      )
+      SELECT
+      create_uid, write_uid, create_date, write_date,
+      name, COALESCE(company_id, 3), active, 'fixed',
+      journal_id, 1, workflow_process_id,
+      days_before_cancel, import_rule, sequence,
+      payment_cancellable_on_qoqa, qoqa_id,
+      gift_card, payment_settlable_on_qoqa
+      FROM payment_method
+      WHERE NOT EXISTS (SELECT id FROM account_payment_mode WHERE name = payment_method.name)
+    """
+    Given I execute the SQL commands
+    """
+    UPDATE sale_order s
+    SET payment_mode_id = m.id
+    FROM account_payment_mode m
+    INNER JOIN payment_method p
+    ON p.name = m.name
+    WHERE p.id = s.payment_method_id
+    AND s.payment_method_id IS NOT NULL AND s.payment_mode_id IS NULL
+    """
+    And I recompute the function fields of the payment modes
+
+  @connector_qoqa
+  Scenario: migrate connector's stuff
+  Given I execute the SQL commands
+  """
+  UPDATE qoqa_backend_timestamp
+  SET from_date_field = 'import_discount_accounting_from_date'
+  WHERE from_date_field = 'import_accounting_issuance_from_date'
+  """
+
+  Given I execute the SQL commands
+  """
+  INSERT INTO qoqa_backend_timestamp (backend_id, from_date_field, import_start_time)
+  SELECT 1, 'import_crm_claim_from_date', '2016-06-15 00:00:00'
+  WHERE NOT EXISTS (
+    SELECT id FROM qoqa_backend_timestamp
+    WHERE backend_id = 1
+    AND from_date_field = 'import_crm_claim_from_date'
+  )
+  """
+
+  @mail_alias
+  Scenario: rename 'shop_id' field in aliases' default values
+    Given I correct the alias default values for shop_id

@@ -1,6 +1,6 @@
 # Structure
 
-At the root level, there are mainly files related to docker-compose, Travis and the project documentation.
+At the root level, there are mainly files related to docker-compose, Travis, Rancher and the project documentation.
 
 When we build a Docker image, all the things below are copied *inside* the image. When developing, they are shared with volumes so we can work without having to make a new build every time we modify one file.
 

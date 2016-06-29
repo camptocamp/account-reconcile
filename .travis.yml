@@ -16,6 +16,7 @@ env:
     - TESTS="0" LINT_CHECK="0"
     - ADDONS_DIR=${TRAVIS_BUILD_DIR}/odoo/local-src
     - COMPOSE_PROJECT_NAME=qoqa
+    - RANCHER_STACK_NAME=qoqa-odoo-test
 
 before_install:
   - sudo apt-get update
@@ -27,7 +28,6 @@ before_install:
   - git config --global user.name "TravisCI"
   - git config --global user.email "travis@camptocamp.com"
   - if [ "$LINT_CHECK" == "1" ] ; then pip install --user -q flake8 ; fi
-
 install:
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule init ; fi
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule update ; fi

@@ -1,0 +1,29 @@
+odoo:
+  image: camptocamp/qoqa_openerp:latest
+  links:
+    - db:db
+  volumes:
+    - dataodoo:/data/odoo
+  environment:
+    - SCENARIO_MAIN_TAG=${SCENARIO_MAIN_TAG}
+    - DB_USER=${DB_USER}
+    - DB_PASSWORD=${DB_PASSWORD}
+    - DB_NAME=${DB_NAME}
+    - DB_PORT=${DB_PORT}
+    - ADMIN_PASSWD=${ADMIN_PASSWD}
+
+# TODO replace this to use external service
+db:
+  image: camptocamp/postgresql:pg9.5-latest
+  environment:
+    - POSTGRES_USER=${DB_USER}
+    - POSTGRES_PASSWORD=${DB_PASSWORD}
+  volumes:
+    - datadb:/var/lib/postgresql
+
+nginx:
+  image: camptocamp/odoo-nginx:9.0
+  ports:
+    - 8080:80
+  links:
+    - odoo:odoo

@@ -41,14 +41,8 @@ class CrmClaim(models.Model):
                                   user_email=user.email)
             claim.mail_signature = t
 
-    # should always be readonly since it is used to match
-    # incoming emails
-    number = fields.Char(
-        readonly=True,
-        required=True,
-        index=True,
-        help="Company internal claim unique number"
-    )
+    # extends field from crm_claim_code to add index
+    code = fields.Char(index=True)
     # field used to keep track of the claims merged into this one,
     # so a the failsafe method that link emails from the number
     # can keep working based on the old numbers
@@ -155,7 +149,7 @@ class CrmClaim(models.Model):
         result = super(CrmClaim, self)._merge_data(oldest, fields)
         numbers = oldest.merged_numbers or []
         for claim in self:
-            numbers.append(claim.number)
+            numbers.append(claim.code)
             if claim.merged_numbers:
                 numbers += claim.merged_numbers
         result['merged_numbers'] = numbers

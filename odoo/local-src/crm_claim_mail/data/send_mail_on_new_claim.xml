@@ -18,7 +18,7 @@
             répondre directement au message concerné en laissant le
             numéro de ticket dans le sujet.</div>
           <div><br></div>
-          <div><b>Votre numéro de ticket est : [${object.number}]</b></div>
+          <div><b>Votre numéro de ticket est : [${object.code}]</b></div>
           <div><br></div>
           <div>Merci d'indiquer ce numéro également si vous devez nous
             contacter par téléphone au sujet de votre demande. Cela nous
@@ -52,7 +52,7 @@
             répondre directement au message concerné en laissant le
             numéro de ticket dans le sujet.</div>
           <div><br></div>
-          <div><b>Votre numéro de ticket est : ${object.number}</b></div>
+          <div><b>Votre numéro de ticket est : ${object.code}</b></div>
           <div><br></div>
           <div>Merci d'indiquer ce numéro également si vous devez nous
             contacter par téléphone au sujet de votre demande. Cela nous
@@ -90,7 +90,7 @@
           den gleichen Fall benutzen. Sie werden somit besser und
           schneller bedient.</div>
         <div><br></div>
-        <div><b>Ihre Ticket-Nummer lautet: ${object.number}</b></div>
+        <div><b>Ihre Ticket-Nummer lautet: ${object.code}</b></div>
         <div><br></div><div>Hier unten eine Übersicht von Ihrer Anfrage :</div>
         <div><b><pre>${object.description or '' | trim}</pre></b></div>
         <div><br></div>

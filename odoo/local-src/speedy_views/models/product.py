@@ -9,6 +9,10 @@ from openerp import models, api
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
+    # TODO: those queries do not respect multi-company,
+    # nor the 'personal access' rule vs 'all access' rules
+    # according to the ir.rule
+
     @api.multi
     def _sales_count(self):
         # the original method uses the 'sale_report' view

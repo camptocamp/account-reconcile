@@ -69,8 +69,8 @@ class ClaimMakePicking(models.TransientModel):
             'partner_id': partner.id,
             'name': _('Refacturation Frais de renvoi'),
             'payment_term': payment_term,
-            'reference': claim.number,
-            'transaction_id': claim.number,
+            'reference': claim.code,
+            'transaction_id': claim.code,
             'type': 'out_invoice',
             'invoice_line': [
                 (0, 0,

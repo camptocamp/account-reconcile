@@ -4,8 +4,6 @@
 
 from mock import patch, ANY, MagicMock
 
-from openerp.addons.connector.exception import MappingError
-
 from ..picking.exporter import export_picking_tracking_done
 from .common import recorder, QoQaTransactionCase
 

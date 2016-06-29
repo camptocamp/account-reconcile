@@ -88,12 +88,12 @@ class QoQaTrackingExporter(Exporter):
         """ Export the tracking numbers to QoQa """
         picking_binding = self.model.browse(binding_id)
         data = self._get_shipping_packages(picking_binding)
-        
+
         adapter = self.unit_for(BackendAdapter, 'qoqa.sale.order')
         adapter.add_trackings(
             self._get_qoqa_id('qoqa.sale.order', picking_binding.sale_id.id),
             data
-      )
+        )
 
         picking_binding.write({'exported': True})
 

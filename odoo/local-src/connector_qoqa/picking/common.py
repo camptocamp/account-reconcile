@@ -2,11 +2,8 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import json
 from openerp import models, fields
 from openerp.addons.connector_ecommerce.models.event import on_picking_out_done
-from ..unit.backend_adapter import QoQaAdapter
-from ..backend import qoqa
 
 
 class QoqaStockPicking(models.Model):

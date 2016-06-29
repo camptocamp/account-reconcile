@@ -3,6 +3,7 @@
 #
 #    Author: Tristan Rouiller
 #    Copyright 2014 QoQa Services SA
+#    Copyright 2016 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,16 +20,14 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import fields, models
 
 
-class delivery_carrier(orm.Model):
+class DeliveryCarrier(models.Model):
     _inherit = 'delivery.carrier'
 
-    _columns = {
-        'url_template': fields.char(
-            string='Url template',
-            help="The '%(tracking_number)s' sequence will be replaced by the "
-                 "tracking number and the '%(lang)s' sequence will be replaced"
-                 " by the language code (en, fr, de)")
-    }
+    url_template = fields.Char(
+        string='Url template',
+        help="The '%(tracking_number)s' sequence will be replaced by the "
+             "tracking number and the '%(lang)s' sequence will be replaced"
+             " by the language code (en, fr, de)")

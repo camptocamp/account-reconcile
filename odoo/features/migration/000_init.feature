@@ -214,7 +214,7 @@ Feature: Parameter the new database
         | crm_claim_mail                                  |
         | crm_rma_by_shop                                 |
         #| delivery_carrier_label_swiss_pp                 |
-        #| delivery_carrier_url                            |
+        | delivery_carrier_url                            |
         #| ecotax                                          |
         | picking_dispatch_delay_done                     |
         #| picking_dispatch_group                          |

@@ -122,10 +122,11 @@ class TestImportClaim(QoQaTransactionCase):
         claim_binding.ensure_one()
 
         expected_description = (
-            u"Bonjour, J'ai enfin reçu mon iPhone. Mais il était cassé dans "
+            u"<pre>Bonjour, J'ai enfin reçu mon iPhone. "
+            u"Mais il était cassé dans "
             u"sa boite. Vous pouvez voir les cassures dans la photo envoyé. "
             u"Comme tout ça à pas l'air très solide je vais reprendre "
-            u"mon 3310 merci\n"
+            u"mon 3310 merci\n</pre>"
         )
         expected = [
             ExpectedClaim(

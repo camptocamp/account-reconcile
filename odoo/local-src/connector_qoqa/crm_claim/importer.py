@@ -56,11 +56,15 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
 
     from_data_attributes = [
         ('subject', 'name'),
-        ('message', 'description'),
         ('email', 'email_from'),
         ('phone', 'partner_phone'),
         (iso8601_to_utc('created_at'), 'date'),
     ]
+
+    @mapping
+    def message(self, record):
+        message = record['data']['attributes']['message']
+        return {'description': '<pre>%s</pre>' % message}
 
     @mapping
     def partner_id(self, record):

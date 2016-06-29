@@ -1,7 +1,10 @@
+external-db:
+  image: rancher/external-service
+
 odoo:
   image: camptocamp/qoqa_openerp:latest
   links:
-    - db:db
+  - external-db:db
   volumes:
     - dataodoo:/data/odoo
   environment:
@@ -23,17 +26,21 @@ odoo:
     - LIMIT_TIME_CPU=${LIMIT_TIME_CPU}
     - LIMIT_TIME_REAL=${LIMIT_TIME_REAL}
 
-db:
-  image: camptocamp/postgresql:pg9.5-latest
-  environment:
-    - POSTGRES_USER=${DB_USER}
-    - POSTGRES_PASSWORD=${DB_PASSWORD}
-  volumes:
-    - datadb:/var/lib/postgresql
-
 nginx:
   image: camptocamp/odoo-nginx:9.0
   ports:
-    - 8080:80
+    - 80:80
   links:
     - odoo:odoo
+
+# Load balanced used only to setup SSL easily
+lb:
+  ports:
+  - 443:80
+  labels:
+    io.rancher.loadbalancer.ssl.ports: '443'
+  tty: true
+  image: rancher/load-balancer-service
+  links:
+  - nginx:nginx
+  stdin_open: true

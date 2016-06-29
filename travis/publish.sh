@@ -8,7 +8,7 @@ function deploy {
     wget -O - http://releases.rancher.com/compose/beta/v0.7.2/rancher-compose-linux-amd64-v0.7.2.tar.gz |\
         tar -x -z -C ${HOME} && mv ${HOME}/rancher-compose*/rancher-compose ${HOME}/ || exit $?
     RANCHER_COMPOSE="${HOME}/rancher-compose"
-    TEMPLATE_DIR="${PWD}/rancher/template/${version}"
+    TEMPLATE_DIR="${PWD}/rancher/${version}"
     openssl aes-256-cbc -K $encrypted_deb6d4f0542c_key -iv $encrypted_deb6d4f0542c_iv -in .rancher.env.enc -out "$HOME/.rancher.env" -d
     (. "$HOME/.rancher.env" ; cd "${TEMPLATE_DIR}" && \
      ${RANCHER_COMPOSE} -p "${RANCHER_STACK_NAME}" rm --force && \
@@ -24,7 +24,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     docker tag qoqa_odoo camptocamp/qoqa_openerp:latest
     docker push "camptocamp/qoqa_openerp:latest"
     echo "Building test server"
-    deploy dev
+    deploy latest
   elif [ ! -z "$TRAVIS_TAG" ]; then
     echo "Deploying image to docker hub for tag ${TRAVIS_TAG}"
     docker tag qoqa_odoo camptocamp/qoqa_openerp:${TRAVIS_TAG}

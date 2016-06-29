@@ -460,3 +460,13 @@ Feature: Parameter the new database
     WHERE q.openerp_id = c.shop_id
     AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
     """
+
+  @sequence
+  Scenario: Adapt sequences
+    Given I execute the SQL commands
+    """
+    UPDATE ir_sequence
+    SET prefix = 'SOS-'
+    WHERE code = 'crm.claim.rma.customer'
+    """
+    ANd I copy the sequence next number from "crm.claim.rma" to "crm.claim.rma.customer"

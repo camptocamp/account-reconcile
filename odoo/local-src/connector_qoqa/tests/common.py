@@ -72,7 +72,6 @@ recorder = VCR(
 )
 
 
-# TODO: see if SavepointCase speeds the tests
 class QoQaTransactionCase(common.TransactionCase):
     """ Base class for Tests with the QoQa backend """
 
@@ -265,14 +264,6 @@ class QoQaTransactionCase(common.TransactionCase):
                 'base': 'list_price',
                 }
         PricelistItem.create(vals)
-
-        # TODO:
-        # vals = {'company_id': self.company_id,
-        #         'name': 'test',
-        #         'qoqa_id': 99999999,
-        #         }
-        # PaymentMethod = self.registry('payment.method')
-        # self.payment_method_id = PaymentMethod.create(cr, uid, vals)
 
     def create_bindind_no_export(self, model_name, openerp_id, qoqa_id=None,
                                  **cols):

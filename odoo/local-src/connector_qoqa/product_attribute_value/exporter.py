@@ -12,8 +12,6 @@ from ..backend import qoqa
 from ..unit.exporter import QoQaExporter, Translations
 from .. import consumer
 
-# TODO: export wine values?
-
 
 @on_record_create(model_names='qoqa.product.attribute.value')
 @on_record_write(model_names='qoqa.product.attribute.value')

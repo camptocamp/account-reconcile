@@ -35,8 +35,6 @@ class ProductProduct(models.Model):
         string='QoQa Bindings',
         copy=False,
     )
-    # TODO: add a generator
-    # default_code = fields.Char(required=True)
 
     _sql_constraints = [
         ('default_code_uniq', 'unique(default_code)',

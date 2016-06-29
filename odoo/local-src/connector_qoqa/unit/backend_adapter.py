@@ -216,13 +216,7 @@ class QoQaAdapter(CRUDAdapter):
                           response.content)
             errors = []
             for err in parsed['errors']:
-                message = err['title']
-                # TODO: check if we still have 'extras'
-                # TODO: we can raise 'no record found' when the code is 2
-                # (check if the code is always 2 for every methods)
-                if err.get('extras'):
-                    message += err['extras']
-                errors.append((err['code'], message))
+                errors.append((err['code'], err['title']))
             raise QoQaResponseError(errors)
         return parsed
 
@@ -230,7 +224,6 @@ class QoQaAdapter(CRUDAdapter):
         assert self._resource, "_resource needs to be defined"
         url = self.url()
         vals = {self._resource: vals,
-                # TODO not sure about the locale: to check
                 'locale': self.lang}
         response = self.client.post(url, data=json.dumps(vals))
         result = self._handle_response(response)
@@ -241,7 +234,6 @@ class QoQaAdapter(CRUDAdapter):
         assert self._resource, "_resource needs to be defined"
         url = self.url()
         vals = {self._resource: vals,
-                # TODO not sure about the locale: to check
                 'locale': self.lang}
         response = self.client.put(url + str(id),
                                    data=json.dumps(vals))

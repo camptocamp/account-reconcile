@@ -11,8 +11,6 @@ from ..backend import qoqa
 from ..unit.exporter import QoQaExporter, Translations
 from .. import consumer
 
-# TODO: export wine values?
-
 
 @on_record_create(model_names='qoqa.product.attribute')
 @on_record_write(model_names='qoqa.product.attribute')
@@ -37,7 +35,7 @@ class ProductAttributeExportMapper(ExportMapper):
 
     translatable_fields = [
         ('name', 'name'),
-        # we have no 'description field
+        # TODO: we have no 'description' field, check if needed
         # ('description', 'description'),
     ]
 

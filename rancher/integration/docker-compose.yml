@@ -2,7 +2,7 @@ external-db:
   image: rancher/external-service
 
 odoo:
-  image: camptocamp/qoqa_openerp:latest
+  image: camptocamp/qoqa_openerp:9.1.0
   links:
   - external-db:db
   volumes:

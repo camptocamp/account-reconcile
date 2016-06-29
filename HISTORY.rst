@@ -1,26 +1,5 @@
 .. :changelog:
 
-Release History
----------------
-
-unreleased (unknown)
-++++++++++++++++++++
-
-**Features and Improvements**
-
-**Bugfixes**
-
-* Slow accounting dashboard: had to override
-  account.account_journal_dashboard methods to change a few
-  ORM calls by direct SQL and to totally remove one slow computation (account
-  balance) and the graphs
-
-**Build**
-
-* Use camptocamp/postgresql:pg9.5-latest in the dev composition
-
-**Documentation**
-
 .. Template:
 
 .. 0.0.1 (2016-05-09)
@@ -34,4 +13,59 @@ unreleased (unknown)
 
 .. **Documentation**
 
-.. Template:
+Release History
+---------------
+
+latest (unreleased)
++++++++++++++++++++
+
+**Data Migration**
+
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+9.1.0 (2016-06-29)
+++++++++++++++++++
+
+First tagged version of the migration.
+The code and data migration are far to be ready, but things become testable
+now.
+
+**Data Migration**
+
+* Migrate Claims Sequences
+* Migrate Sales Shop data to QoQa Shop
+* Migrate product attributes and brand
+* And a handful of other fixes to the data
+
+**Features and Improvements**
+
+* First working version of `connector_qoqa` for QoQa4. Still a few API calls
+  missing and edges a bit rough but good enough for the first tests.
+* Most of the CRM and Claims addons are migrated
+* A lot of addons migrated
+
+**Bugfixes**
+
+* Slow accounting dashboard: had to override
+  account.account_journal_dashboard methods to change a few
+  ORM calls by direct SQL and to totally remove one slow computation (account
+  balance) and the graphs
+* Speed up loading of the product view, when counting number of sales and
+  purchases, the fix is naive though and needs improvements (doesn't consider
+  company_id and user_id rules)
+
+**Build**
+
+* Use camptocamp/postgresql:pg9.5-latest in the dev composition
+* Travis builds the test server on Rancher with the latest image on each commit
+* Added Rancher composition for the integration server
+
+**Documentation**
+
+* Added Docker and Rancher documentation

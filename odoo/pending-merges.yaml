@@ -71,6 +71,8 @@
     - oca refs/pull/92/head
     # port crm_claim_merge
     - oca refs/pull/93/head
+    # correction in crm_claim_code
+    - oca refs/pull/102/head
   target: *default_target
 ./external-src/l10n-switzerland:
   remotes:

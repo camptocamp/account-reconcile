@@ -11,7 +11,7 @@
           <field name="year" invisible="1" />
           <field name="month" invisible="1"/>
           <field name="day" invisible="1"/>
-          <field name="type" invisible="1"/>
+          <field name="stock_picking_type_id" invisible="1"/>
           <field name="company_id" invisible="1"/>
           <field name="partner_id" invisible="1" context="{'contact_display':'partner'}" />
           <field name="picking_id" invisible="1"/>
@@ -19,9 +19,9 @@
           <field name="location_dest_id" invisible="1"/>
           <field name="product_id" invisible="1"/>
           <field name="categ_id" invisible="1"/>
-          <field name="stock_journal" invisible="1"/>
           <field name="state" invisible="1"/>
-          <field name="attribute_set_id" invisible="1"/>
+          <field name="is_wine" invisible="1"/>
+          <field name="is_liquor" invisible="1"/>
           <field name="wine_bottle_id" invisible="1"/>
           <field name="product_qty" sum="Total quantity"/>
           <field name="product_qty_in" sum="Total incoming quantity" />
@@ -52,10 +52,13 @@
           <filter string="Done" name="done" icon="terp-dialog-close" domain="[('state','=','done')]" help = "Completed Stock-Moves"/>
           <filter string="Todo" icon="terp-gtk-go-back-rtl" domain="[('state','in',('assigned','waiting','confirmed'))]" help = "Future Stock-Moves"/>
           <separator/>
-          <filter icon="terp-go-home" name="in" string="Incoming" domain="[('type','=','in')]"/>
-          <filter icon="terp-go-home" name="internal" string="Internal" domain="[('type','=','internal')]"/>
-          <filter icon="terp-go-home" name="out" string="Outgoing" domain="[('type','=','out')]"/>
-          <field name="attribute_set_id" default_focus="1"/>
+          <filter icon="terp-go-home" name="in" string="Incoming" domain="[('stock_picking_type_id.code','=','incoming')]"/>
+          <filter icon="terp-go-home" name="internal" string="Internal" domain="[('stock_picking_type_id.code','=','internal')]"/>
+          <filter icon="terp-go-home" name="out" string="Outgoing" domain="[('stock_picking_type_id.code','=','outgoing')]"/>
+          <separator/>
+          <filter name="is_wine" string="Wine" domain="[('is_wine', '=', True)]"/>
+          <filter name="is_liquor" string="Liquor" domain="[('is_liquor', '=', True)]"/>
+          <separator/>
           <field name="product_id"/>
           <field name="wine_bottle_id"/>
           <field name="partner_id" context="{'contact_display':'partner'}"/>
@@ -63,7 +66,6 @@
             <field name="location_id" />
             <field name="location_dest_id" />
             <field name="categ_id"/>
-            <field name="stock_journal"/>
             <field name="company_id" groups="base.group_multi_company"/>
             <field name="date"/>
           </group>
@@ -74,12 +76,11 @@
             <filter name="group_picking" string="Shipment" icon="terp-accessories-archiver" context="{'group_by':'picking_id'}"/>
             <filter name="src_location" string="Source Location" icon="terp-gtk-jump-to-rtl" context="{'group_by':'location_id'}"/>
             <filter name="dest_location" string="Dest. Location" icon="terp-gtk-jump-to-ltr"  context="{'group_by':'location_dest_id'}"/>
-            <filter name="group_type" string="Type" icon="terp-stock_symbol-selection" context="{'group_by':'type'}" help="Shipping type specify, goods coming in or going out"/>
+            <filter name="group_type" string="Type" icon="terp-stock_symbol-selection" context="{'group_by':'stock_picking_type_id'}" help="Shipping type specify, goods coming in or going out"/>
             <filter name="group_state" string="Status" icon="terp-stock_effects-object-colorize" context="{'group_by':'state'}"/>
-            <filter name="group_stock_journal" string="Stock journal" icon="terp-folder-orange" context="{'group_by':'stock_journal'}"/>
             <filter name="group_state" string="Company" icon="terp-go-home" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
             <filter name="group_day" string="Day" icon="terp-go-today" context="{'group_by':'day'}" help="Day Planned"/>
-            <filter name="group_month" string="Month" icon="terp-go-month" context="{'group_by':'date'}" help="Month Planned"/>
+            <filter name="group_month" string="Month" icon="terp-go-month" context="{'group_by':'month'}" help="Month Planned"/>
             <filter name="group_year" string="Year" icon="terp-go-year" context="{'group_by':'year'}"  help="Year Planned"/>
           </group>
         </search>

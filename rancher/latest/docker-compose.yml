@@ -11,8 +11,18 @@ odoo:
     - DB_NAME=${DB_NAME}
     - DB_PORT=${DB_PORT}
     - ADMIN_PASSWD=${ADMIN_PASSWD}
+    - RUNNING_ENV=${RUNNING_ENV}
+    - DEMO=${DEMO}
+    - WORKERS=${WORKERS}
+    - MAX_CRON_THREADS=${MAX_CRON_THREADS}
+    - LOG_LEVEL=${LOG_LEVEL}
+    - LOG_HANDLER=${LOG_HANDLER}
+    - DB_MAXCONN=${DB_MAXCONN}
+    - LIMIT_MEMORY_SOFT=${LIMIT_MEMORY_SOFT}
+    - LIMIT_MEMORY_HARD=${LIMIT_MEMORY_HARD}
+    - LIMIT_TIME_CPU=${LIMIT_TIME_CPU}
+    - LIMIT_TIME_REAL=${LIMIT_TIME_REAL}
 
-# TODO replace this to use external service
 db:
   image: camptocamp/postgresql:pg9.5-latest
   environment:

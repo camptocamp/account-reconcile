@@ -89,5 +89,5 @@ Assuming you already have a pg dump:
    
 8. Once loaded, start the services
 ```
-rancher-compose -p qoqa-odoo-integration up -d
+rancher-compose -p qoqa-odoo-integration up --pull --recreate --force-recreate --confirm-upgrade -d
 ```

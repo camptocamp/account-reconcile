@@ -61,9 +61,3 @@ msgstr ""
 #: view:purchase.variant.fast.entry:0
 msgid "Cancel"
 msgstr ""
-
-#. module: purchase_variant_fast_entry
-#: view:purchase.variant.fast.entry:0
-msgid "or"
-msgstr ""
-

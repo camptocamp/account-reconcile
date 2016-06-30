@@ -1,84 +1,53 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2014 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Copyright 2014-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 import openerp.addons.decimal_precision as dp
 
 
-class purchase_variant_fast_entry(orm.TransientModel):
+class PurchaseVariantFastEntry(models.TransientModel):
     _name = 'purchase.variant.fast.entry'
     _description = 'Fast entry of variants in purchase orders'
-    _columns = {
-        'product_tmpl_id': fields.many2one('product.template',
-                                           string='Product Template',
-                                           required=True),
-        'quantity': fields.float(
-            'Default quantity',
-            digits_compute=dp.get_precision('Product Unit of Measure')),
-    }
 
-    def _prepare_line(self, cr, uid, purchase, variant, quantity,
-                      context=None):
-        line = {
+    product_tmpl_id = fields.Many2one(comodel_name='product.template',
+                                      string='Product Template',
+                                      required=True)
+    quantity = fields.Float(
+        string='Default quantity',
+        digits_compute=dp.get_precision('Product Unit of Measure')
+    )
+
+    @api.multi
+    def _prepare_line(self, purchase, variant):
+        purchase_line_model = self.env['purchase.order.line']
+        line = purchase_line_model.new({
+            'order_id': purchase.id,
             'product_id': variant.id,
-            'product_qty': quantity
-        }
+            'product_qty': self.quantity,
+        })
+        line.onchange_product_id()
         if purchase.account_analytic_id:
-            line['account_analytic_id'] = purchase.account_analytic_id.id
-        date_planned = False
-        if purchase.minimum_planned_date:
-            date_planned = purchase.minimum_planned_date
-        purchase_line_obj = self.pool['purchase.order.line']
-        onchange = purchase_line_obj.onchange_product_id(
-            cr, uid, [purchase.id], purchase.pricelist_id.id, variant.id,
-            quantity, False, purchase.partner_id.id,
-            date_order=purchase.date_order,
-            fiscal_position_id=purchase.fiscal_position.id,
-            date_planned=date_planned, name=False, price_unit=False,
-            context=context)
-        values = onchange['value']
-        values['taxes_id'] = [(6, 0, values.get('taxes_id', []))]
-        line.update(values)
+            line.account_analytic_id = purchase.account_analytic_id.id
+        if purchase.date_planned:
+            line.date_planned = purchase.date_planned
         return line
 
-    def fast_entry(self, cr, uid, ids, context=None):
+    @api.multi
+    def fast_entry(self):
         """ Create one purchase order line per variant of a product template
         """
-        if isinstance(ids, (list, tuple)):
-            assert len(ids) == 1, "Only 1 ID accepted, got %r" % ids
-            ids = ids[0]
-        if context is None:
-            return
-        form = self.browse(cr, uid, ids, context=context)
-        purchase_ids = context.get('active_ids', [])
-        purchase_obj = self.pool['purchase.order']
-        purchases = purchase_obj.browse(cr, uid, purchase_ids, context=context)
+        self.ensure_one()
+        purchase_ids = self.env.context.get('active_ids', [])
+        purchase_model = self.env['purchase.order']
+        purchases = purchase_model.browse(purchase_ids)
+        lines = self.env['purchase.order.line'].browse()
         for purchase in purchases:
-            lines = []
-            for variant in form.product_tmpl_id.variant_ids:
-                vals = self._prepare_line(cr, uid, purchase,
-                                          variant, form.quantity,
-                                          context=context)
-                lines.append(vals)
+            for variant in self.product_tmpl_id.product_variant_ids:
+                line = self._prepare_line(purchase, variant)
+                lines |= line
             purchase.write({
-                'order_line': [(0, 0, line) for line in lines],
+                'order_line': [(0, 0, l._convert_to_write(l._cache))
+                               for l in lines],
             })
         return {'type': 'ir.actions.act_window_close'}

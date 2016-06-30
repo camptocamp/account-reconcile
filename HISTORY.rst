@@ -23,6 +23,9 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Connector: transfer QoQa's payment id to account move lines'
+  ``transaction_ref``
+
 **Bugfixes**
 
 **Build**

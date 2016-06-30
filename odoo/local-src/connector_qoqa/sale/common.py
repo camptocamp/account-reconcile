@@ -89,6 +89,7 @@ class SaleOrder(models.Model):
                 # restore order's name, don't want the concatenated
                 # invoices numbers
                 'reference': self.name,
+                'transaction_id': binding.qoqa_payment_id,
             })
         return values
 

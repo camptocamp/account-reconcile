@@ -40,8 +40,8 @@ class TestExportPicking(QoQaTransactionCase):
         self.product_1 = self.env['product.product'].create({
             'name': 'Unittest P1'
         })
-        self.create_bindind_no_export(
-            'qoqa.product.product', self.product_1.id, '100011'
+        self.create_binding_no_export(
+            'qoqa.product.product', self.product_1.id, qoqa_id='100011'
         )
 
         self.sale = self.env['sale.order'].create({
@@ -107,15 +107,6 @@ class TestExportPicking(QoQaTransactionCase):
         self.assertEqual(expected, packages[0])
         return True
 
-    def create_bindind_no_export(self, model_name, openerp_id, qoqa_id=None):
-        return self.env[model_name].with_context(
-            connector_no_export=True
-        ).create({
-            'backend_id': self.backend_record.id,
-            'openerp_id': openerp_id,
-            'qoqa_id': qoqa_id
-        })
-
     def set_picking_done(self, package_ref=None):
         self.picking.action_assign()
         for op in self.picking.pack_operation_ids:
@@ -167,8 +158,8 @@ class TestExportPicking(QoQaTransactionCase):
         )
 
     def test_export_picking(self):
-        self.create_bindind_no_export(
-            'qoqa.sale.order', self.sale.id, '10'
+        self.create_binding_no_export(
+            'qoqa.sale.order', self.sale.id, qoqa_id='10'
         )
         picking_binding = self.set_picking_done(package_ref="PKG_1")
 

@@ -21,7 +21,7 @@ class TestExportRefund(QoQaTransactionCase):
         self.product_1 = self.env['product.product'].create({
             'name': 'Unittest P1'
         })
-        self.create_bindind_no_export(
+        self.create_binding_no_export(
             'qoqa.product.product', self.product_1.id, '11'
         )
 
@@ -40,7 +40,7 @@ class TestExportRefund(QoQaTransactionCase):
             })],
             'pricelist_id': self.env.ref('product.list0').id,
         })
-        self.create_bindind_no_export(
+        self.create_binding_no_export(
             'qoqa.sale.order', self.sale.id, '1',
             qoqa_payment_id='1'
         )

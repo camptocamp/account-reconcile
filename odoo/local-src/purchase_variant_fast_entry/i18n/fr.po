@@ -23,7 +23,7 @@ msgstr "Saisie rapide de variantes"
 #. module: purchase_variant_fast_entry
 #: view:purchase.variant.fast.entry:0
 msgid "Fast Entry"
-msgstr "Saise rapide"
+msgstr "Saisie rapide"
 
 #. module: purchase_variant_fast_entry
 #: code:_description:0
@@ -60,9 +60,3 @@ msgstr "Saisie rapide de variantes dans les commandes d'achat"
 #: view:purchase.variant.fast.entry:0
 msgid "Cancel"
 msgstr "Annuler"
-
-#. module: purchase_variant_fast_entry
-#: view:purchase.variant.fast.entry:0
-msgid "or"
-msgstr "ou"
-

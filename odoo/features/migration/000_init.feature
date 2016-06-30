@@ -218,7 +218,7 @@ Feature: Parameter the new database
         #| ecotax                                          |
         | picking_dispatch_delay_done                     |
         #| picking_dispatch_group                          |
-        #| purchase_variant_fast_entry                     |
+        | purchase_variant_fast_entry                     |
         #| qoqa_base_data                                  |
         | qoqa_claim                                      |
         #| qoqa_claim_unclaimed_process                    |

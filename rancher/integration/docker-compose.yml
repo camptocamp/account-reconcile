@@ -6,7 +6,7 @@ odoo:
   links:
   - external-db:db
   volumes:
-    - dataodoo:/data/odoo
+    - qoqa-integration-dataodoo:/data/odoo
   environment:
     - SCENARIO_MAIN_TAG=${SCENARIO_MAIN_TAG}
     - DB_USER=${DB_USER}

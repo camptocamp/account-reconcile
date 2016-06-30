@@ -3,7 +3,7 @@ odoo:
   links:
     - db:db
   volumes:
-    - dataodoo:/data/odoo
+    - qoqa-latest-dataodoo:/data/odoo
   environment:
     - SCENARIO_MAIN_TAG=${SCENARIO_MAIN_TAG}
     - DB_USER=${DB_USER}
@@ -30,7 +30,7 @@ db:
     - POSTGRES_USER=${DB_USER}
     - POSTGRES_PASSWORD=${DB_PASSWORD}
   volumes:
-    - datadb:/var/lib/postgresql
+    - qoqa-latest-datadb:/var/lib/postgresql
 
 nginx:
   image: camptocamp/odoo-nginx:9.0

@@ -26,8 +26,12 @@ latest (unreleased)
 * Connector: transfer QoQa's payment id to account move lines'
   ``transaction_ref``
 * Migrate addon to create a purchase line for each variant of a template
+* Validating invoices takes less time.
+* Creating an invoice from a SO takes less time.
 
 **Bugfixes**
+* Analytic accounts : allow to "search more..." on SO
+  (due to performance improvement)
 
 **Build**
 

@@ -158,4 +158,13 @@
     # port module web_send_message_popup
     - oca refs/pull/369/head
   target: *default_target
+./src:
+  remotes:
+    oca: git@github.com:OCA/OCB.git
+    camptocamp: git@github.com:camptocamp/odoo.git
+  merges:
+    - oca 9.0
+    # Performance improvements
+    - oca refs/pull/515/head
+  target: *default_target
 

@@ -101,7 +101,7 @@ class TestImportClaim(QoQaTransactionCase):
     def test_import_claim_record(self):
         """ Import a claim """
         partner = self._create_partner()
-        self.create_bindind_no_export(
+        self.create_binding_no_export(
             'qoqa.res.partner',
             partner.id,
             qoqa_id='1000001'
@@ -109,7 +109,7 @@ class TestImportClaim(QoQaTransactionCase):
         sale = self._create_qoqa_sale_order(partner)
         sale.action_confirm()
         sale.action_invoice_create()
-        self.create_bindind_no_export(
+        self.create_binding_no_export(
             'qoqa.sale.order',
             sale.id,
             qoqa_id=2,

@@ -236,3 +236,34 @@ class TestImportOrder(QoQaTransactionCase):
             ),
         ]
         self.assert_records(expected, order.order_line)
+
+    def test_sale_order_invoice_transaction_id(self):
+        partner = self.env['res.partner'].create({'name': 'Test'})
+        product = self.product_1_binding.openerp_id
+        sale = self.env['sale.order'].create({
+            'partner_id': partner.id,
+            'partner_invoice_id': partner.id,
+            'partner_shipping_id': partner.id,
+            'order_line': [(0, 0, {
+                'name': product.name,
+                'product_id': product.id,
+                'product_uom_qty': 5.0,
+                'product_uom': product.uom_id.id,
+            })],
+            'pricelist_id': self.env.ref('product.list0').id,
+        })
+        self.create_binding_no_export(
+            'qoqa.sale.order', sale.id,
+            qoqa_id='99',
+            qoqa_payment_id='123456789',
+        )
+        self.env['sale.exception'].search([]).write({'active': False})
+        sale.action_confirm()
+        sale.action_invoice_create()
+        invoice = sale.invoice_ids
+        self.assertEquals(invoice.transaction_id, '123456789')
+        invoice.signal_workflow('invoice_open')
+        for move_line in invoice.move_id.line_ids:
+            # we need the transaction_id only on those lines:
+            if move_line.account_id == invoice.account_id:
+                self.assertEquals(move_line.transaction_ref, '123456789')

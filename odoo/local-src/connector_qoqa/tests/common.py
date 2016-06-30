@@ -265,7 +265,7 @@ class QoQaTransactionCase(common.TransactionCase):
                 }
         PricelistItem.create(vals)
 
-    def create_bindind_no_export(self, model_name, openerp_id, qoqa_id=None,
+    def create_binding_no_export(self, model_name, openerp_id, qoqa_id=None,
                                  **cols):
         values = {
             'backend_id': self.backend_record.id,

@@ -89,6 +89,8 @@
       camptocamp: git@github.com:camptocamp/purchase-workflow.git
   merges:
     - oca 9.0
+    # port purchase_discount
+    - oca refs/pull/214/head
     # port  purchase_analytic_global
     - oca refs/pull/228/head
   target: *default_target

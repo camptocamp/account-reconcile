@@ -31,6 +31,8 @@ latest (unreleased)
 
 **Build**
 
+* Add pending-merge for ``purchase_discount`` so the addon is now installed
+
 **Documentation**
 
 9.1.0 (2016-06-29)

@@ -9,24 +9,7 @@ class ReportWineMoveAnalysis(models.Model):
     _name = "report.wine.move.analysis"
     _description = "Wine Moves Analysis"
     _auto = False
-    date = fields.Date('Date', readonly=True)
-    year = fields.Char('Year', size=4, readonly=True)
-    day = fields.Char('Day', readonly=True)
-    month = fields.Selection(
-        [('01', 'January'),
-         ('02', 'February'),
-         ('03', 'March'),
-         ('04', 'April'),
-         ('05', 'May'),
-         ('06', 'June'),
-         ('07', 'July'),
-         ('08', 'August'),
-         ('09', 'September'),
-         ('10', 'October'),
-         ('11', 'November'),
-         ('12', 'December')],
-        string='Month',
-        readonly=True)
+    date = fields.Datetime('Date', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
     product_id = fields.Many2one('product.product', 'Product', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
@@ -83,9 +66,6 @@ class ReportWineMoveAnalysis(models.Model):
             SELECT
                     min(sm.id) as id,
                     date_trunc('day', sm.date) as date,
-                    to_char(date_trunc('day',sm.date), 'YYYY') as year,
-                    to_char(date_trunc('day',sm.date), 'MM') as month,
-                    to_char(date_trunc('day',sm.date), 'YYYY-MM-DD') as day,
                     sm.location_id as location_id,
                     sm.picking_id as picking_id,
                     spt.id as stock_picking_type_id,
@@ -161,9 +141,6 @@ class ReportWineMoveAnalysis(models.Model):
                     sm.location_dest_id,
                     pu.factor,
                     pt.categ_id,
-                    year,
-                    month,
-                    day,
                     pt.is_wine,
                     pt.is_liquor,
                     pt.wine_bottle_id

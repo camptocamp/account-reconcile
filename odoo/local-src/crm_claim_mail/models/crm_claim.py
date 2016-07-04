@@ -225,9 +225,9 @@ class CrmClaim(models.Model):
             body=body, subject=subject, message_type=message_type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
             content_subtype=content_subtype, author_id=author.id, **kwargs)
-        # Also write the field "last_message_date".
-        self.write({'last_message_date': fields.datetime.now()})
         # Subtype with sequence 0 : 'Discussions' (emails)
         if result.subtype_id and result.subtype_id.sequence == 0:
             self.case_close()
+            # Also write the field "last_message_date".
+            self.write({'last_message_date': fields.datetime.now()})
         return result

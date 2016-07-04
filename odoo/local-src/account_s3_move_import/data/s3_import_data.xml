@@ -8,6 +8,6 @@
         <field name="active">True</field>
         <field name="model">account.journal</field>
         <field name="function">s3_multi_move_import</field>
-        <field name="args">()</field>
+        <field name="args">(False,)</field>
     </record>
 </odoo>

@@ -11,7 +11,6 @@
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
  'depends': [
-     #'product_custom_attributes',
      'report',
      'qoqa_product',
      'stock',

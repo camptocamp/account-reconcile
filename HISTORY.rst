@@ -29,6 +29,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Record rules on account_payment_mode for multi company
+
 **Build**
 
 * Add pending-merge for ``purchase_discount`` so the addon is now installed

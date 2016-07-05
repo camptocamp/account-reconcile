@@ -279,6 +279,10 @@ Feature: Parameter the new database
   Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
     Given I migrate the product attribute variants
 
+  @product_variants
+  Scenario: product variant configuration
+    Given I set "Product Variants" to "Products can have several attributes, defining variants (Example: size, color,...)" in "Inventory" settings menu
+
   @product_brand
   Scenario: migrate char field 'brand' to product_brand addon
     Given I execute the SQL commands

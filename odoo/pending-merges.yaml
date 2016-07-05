@@ -22,6 +22,8 @@
     - oca refs/pull/236/head
     # [2nd revolution] port to v9 with several improvements (sorrento code sprint)
     - oca refs/pull/270/head
+    # account_payment_mode multi company ir.rule
+    - oca refs/pull/279/head
   target: *default_target
 ./external-src/bank-statement-reconcile:
   remotes:

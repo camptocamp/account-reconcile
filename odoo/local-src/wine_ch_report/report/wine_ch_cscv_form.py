@@ -1,51 +1,32 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    Author: Nicolas Bessi, Guewen Baconnier
-#    Copyright Camptocamp SA 2011
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-import time
+# -*- coding: utf-8 -*-
+# Copyright 2011-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from datetime import datetime
 
-from openerp.report import report_sxw
-from openerp import pooler
-from openerp.osv import orm
-from openerp.tools.translate import _
+from openerp import _, api, exceptions, models
 
-from openerp.addons.wine_ch_report.wine_bottle import volume_to_string
+from openerp.addons.qoqa_product.models.wine import volume_to_string
 
 
-class WineCHCSCVFormWebkit(report_sxw.rml_parse):
+class WineCHCSCVFormReport(models.AbstractModel):
+    _name = 'report.wine_ch_report.report_wine_cscv_form'
 
-    def __init__(self, cr, uid, name, context):
-        super(WineCHCSCVFormWebkit, self).__init__(cr, uid, name,
-                                                   context=context)
-        self.pool = pooler.get_pool(self.cr.dbname)
-        self.cursor = self.cr
+    @api.multi
+    def render_html(self, data=None):
+        report_obj = self.env['report']
+        report = report_obj._get_report_from_name(
+            'wine_ch_report.report_wine_cscv_form')
 
-        self.localcontext.update({
-            'time': time,
-            'cr': cr,
-            'uid': uid,
-            'report_name': _('Wine CH Inventory'),
-            })
+        docargs = {
+            'doc_ids': self._ids,
+            'doc_model': report.model,
+            'docs': self,
+        }
+        docargs.update(self.get_form_data(data))
+        return report_obj.render('wine_ch_report.report_wine_cscv_form',
+                                 docargs)
 
-    def _get_wine_stocks(self, loc_ids, set_id, inventory_date):
+    def _get_wine_stocks(self, locs, beverage_type, inventory_date):
         """
         Returns a dict of stock per wine class and per type of wine
         - A dict:
@@ -53,9 +34,10 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
         IMPORTANT: no negative stocks are used! This is to keep it consistent
         with the other Wine CH report, that only displays positive stocks.
         """
-        cr = self.cursor
-        # TODO: x_wine_type is now wine_type_id
-        cr.execute("SELECT c.code, t.x_wine_type,"
+        is_wine = beverage_type == 'wine'
+        is_liquor = beverage_type == 'liquor'
+        cr = self.env.cr
+        cr.execute("SELECT c.code, t.wine_type_id,"
                    "       SUM(GREATEST((CASE WHEN q1.qty_in IS NULL THEN 0 "
                    "            ELSE q1.qty_in END"
                    "        - CASE WHEN q2.qty_out IS NULL THEN 0 "
@@ -88,54 +70,55 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
                    "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
-                   "  WHERE t.attribute_set_id = %s"
-                   "  GROUP BY c.code, t.x_wine_type",
+                   "  WHERE t.is_wine = %s"
+                   "    AND t.is_liquor = %s"
+                   "  GROUP BY c.code, t.wine_type_id",
                    ('done',
-                    tuple(loc_ids),
-                    tuple(loc_ids),
+                    tuple(locs.ids),
+                    tuple(locs.ids),
                     inventory_date,
                     'done',
-                    tuple(loc_ids),
-                    tuple(loc_ids),
+                    tuple(locs.ids),
+                    tuple(locs.ids),
                     inventory_date,
-                    set_id,
+                    is_wine,
+                    is_liquor
                     ))
         rows = cr.fetchall()
         return dict(((class_code, type_id), qty)
                     for class_code, type_id, qty in rows if qty)
 
-    def set_context(self, objects, data, ids, report_type=None):
-        """Populate a wine stock infos for mako template"""
+    @api.model
+    def get_form_data(self, data):
+        """Populate a wine stock infos for qweb template"""
 
         # Reading form
 
         inventory_date = self._get_inventory_date(data)
         company_id = self._get_company_id(data)
-        location_ids = self._get_location_ids(data)
-        attribute_set_id = self._get_attribute_set_id(data)
-        wine_stocks = self._get_wine_stocks(location_ids,
-                                            attribute_set_id,
-                                            inventory_date)
+        locations = self._get_locations(data)
+        beverage_type = self._get_beverage_type(data)
+        wine_stocks = self._get_wine_stocks(
+            locations,
+            beverage_type,
+            inventory_date)
 
         if not wine_stocks:
-            raise orm.except_orm('Error', 'No stock for given location')
+            raise exceptions.UserError(_('No stock for given location'))
 
         wine_classes = self._get_wine_classes()
         wine_types = self._get_wine_types()
 
         exploitation_number = self._get_exploitation_number(company_id)
 
-        self.localcontext.update({
-            'inventory_date': inventory_date,
-            'exploitation_number': exploitation_number,
-            'wine_classes': wine_classes,
-            'wine_types': wine_types,
-            'wine_stocks': wine_stocks,
-            'format_volume': volume_to_string,
-            })
-        return super(WineCHCSCVFormWebkit,
-                     self).set_context(objects, data, ids,
-                                       report_type=report_type)
+        return {
+                'inventory_date': inventory_date,
+                'exploitation_number': exploitation_number,
+                'wine_classes': wine_classes,
+                'wine_types': wine_types,
+                'wine_stocks': wine_stocks,
+                'format_volume': volume_to_string,
+                }
 
     def _get_info(self, data, field):
         return data.get('form', {}).get(field)
@@ -149,65 +132,46 @@ class WineCHCSCVFormWebkit(report_sxw.rml_parse):
     def _get_company_id(self, data):
         return self._get_info(data, 'company_id')
 
+    @api.model
     def _get_exploitation_number(self, company_id):
-        company_obj = self.pool.get('res.company')
-        company = company_obj.browse(self.cr, self.uid, company_id)
+        company_obj = self.env['res.company']
+        company = company_obj.browse(company_id)
         return company.wine_exploitation_number
 
-    def _get_location_ids(self, data):
+    @api.model
+    def _get_locations(self, data):
         location_ids = self._get_info(data, 'location_ids')
         if not location_ids or len(location_ids) == 0:
-            return self._get_all_ids('stock.location')
+            return self._get_all('stock.location')
         else:
             # Retrieve children locations
-            location_ids = self._get_all_children(
+            locations = self._get_all_children(
                 location_ids, 'stock.location')
-        return location_ids
+        return locations
 
-    def _get_attribute_set_id(self, data):
-        set_id = self._get_info(data, 'attribute_set_id')
-        if not set_id:
-            set_ids = self._search_wine_set_id()
-            return set_ids and set_ids[0]
-        return set_id[0]
+    @api.model
+    def _get_beverage_type(self, data):
+        beverage_type = self._get_info(data, 'beverage_type')
+        if not beverage_type:
+            return 'wine'
+        return beverage_type
 
+    @api.model
     def _get_wine_classes(self):
-        class_obj = self.pool.get('wine.class')
-        class_ids = class_obj.search(self.cr, self.uid,
-                                     [], order="code")
-        return class_obj.browse(self.cr, self.uid, class_ids)
+        class_obj = self.env['wine.class']
+        classes = class_obj.search([], order="code")
+        return classes
 
+    @api.model
     def _get_wine_types(self):
-        # TODO: model types are now stored in wine_type
-        option_obj = self.pool.get('attribute.option')
-        option_ids = option_obj.search(
-            self.cr, self.uid,
-            [('attribute_id.name', '=', 'x_wine_type')])
-        return option_obj.browse(self.cr, self.uid, option_ids)
+        return self.env['wine.type'].search([])
 
-    def _search_wine_set_id(self):
-        """
-        Search for the wine attribute set
-        """
-        # TODO: replace by a domain on product_template.is_wine
-        model_obj = self.pool.get('attribute.set')
-        return model_obj.search(self.cr, self.uid,
-                                ['|',
-                                 ('name', 'ilike', 'wine'),
-                                 ('name', 'ilike', 'vin'),
-                                 ])
+    @api.model
+    def _get_all(self, model):
+        model_obj = self.env[model]
+        return model_obj.search([])
 
-    def _get_all_ids(self, model):
-        model_obj = self.pool.get(model)
-        return model_obj.search(self.cr, self.uid, [])
-
+    @api.model
     def _get_all_children(self, ids, model):
-        model_obj = self.pool.get(model)
-        return model_obj.search(self.cr, self.uid, [('id', 'child_of', ids)])
-
-
-report_sxw.report_sxw(
-    'report.wine.ch.cscv_form.webkit',
-    'wine.ch.inventory.wizard',
-    'addons/wine_ch_report/report/templates/wine_ch_cscv_form.mako.html',
-    parser=WineCHCSCVFormWebkit)
+        model_obj = self.env[model]
+        return model_obj.search([('id', 'child_of', ids)])

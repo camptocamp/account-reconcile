@@ -233,7 +233,7 @@ Feature: Parameter the new database
         | speedy_views                                    |
         #| web_custom                                      |
         | web_environment                                 |
-        #| wine_ch_report                                  |
+        | wine_ch_report                                  |
     Then my modules should have been installed and models reloaded
 
   @lang

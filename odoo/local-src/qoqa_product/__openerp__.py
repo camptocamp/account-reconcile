@@ -14,6 +14,7 @@
              ],
  'website': 'http://www.camptocamp.com',
  'data': [
+     'security/ir.model.access.csv',
      'data/wine_data.xml',
      'views/product_views.xml',
      'views/product_attribute_views.xml',

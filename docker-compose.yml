@@ -13,7 +13,8 @@ odoo:
     - "./odoo/src:/opt/odoo/src"
     - "./odoo/local-src:/opt/odoo/local-src"
     - "./odoo/external-src:/opt/odoo/external-src"
-    - "./odoo/features:/opt/odoo/features"
+    - "./odoo/songs:/opt/odoo/songs"
+    - "./odoo/migration.yml:/opt/odoo/migration.yml"
     - "./odoo/data:/opt/odoo/data"
   volumes_from:
     - dataodoo
@@ -24,8 +25,9 @@ odoo:
     - DB_NAME=odoodb
     - ADMIN_PASSWD=mijaebohb8Thae1g
     - RUNNING_ENV=dev
-    - DEMO=odoo
     - ODOO_CONNECTOR_CHANNELS=root:4
+    - MARABUNTA_MODE=migration  # could be 'demo' for the minimal db
+    - MARABUNTA_ALLOW_SERIE=True  # should not be set in production
 
 db:
   image: camptocamp/postgresql:pg9.5-latest

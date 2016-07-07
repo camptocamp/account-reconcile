@@ -1,4 +1,4 @@
-FROM camptocamp/odoo-project:9.0
+FROM camptocamp/odoo-project:9.0-1.0.1
 MAINTAINER Camptocamp
 
 # Install additional debian packages if needed

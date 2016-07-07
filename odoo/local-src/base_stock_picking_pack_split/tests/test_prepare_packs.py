@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Yannick Vaucher
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2013-2016 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -21,55 +21,52 @@
 import openerp.tests.common as common
 
 
-class test_prepare_packs(common.TransactionCase):
+class TestPreparePacks(common.TransactionCase):
     """ Test the method to prepare packs
     Setting a max number of product per pack
     """
 
     def setUp(self):
-        super(test_prepare_packs, self).setUp()
-        cr, uid = self.cr, self.uid
+        super(TestPreparePacks, self).setUp()
 
-        self.Move = self.registry('stock.move')
-        self.Picking = self.registry('stock.picking')
+        self.Move = self.env['stock.move']
+        self.Picking = self.env['stock.picking']
 
-        self.picking_out_1_id = self.Picking.create(
-            cr, uid,
+        self.picking_out_1 = self.Picking.create(
             {'partner_id': self.ref('base.res_partner_12'),
-             'type': 'out'})
+             'picking_type_id': self.ref('stock.picking_type_out'),
+             'location_id': self.ref('stock.stock_location_stock'),
+             'location_dest_id': self.ref('stock.stock_location_customers')})
+
+        # need different products as operations groupe by product
+        self.Move.create(
+            {'name': '/',
+             'picking_id': self.picking_out_1.id,
+             'product_id': self.ref('product.product_product_12'),
+             'product_uom': self.ref('product.product_uom_unit'),
+             'product_uom_qty': 10,
+             'location_id': self.ref('stock.stock_location_stock'),
+             'location_dest_id': self.ref('stock.stock_location_customers')})
 
         self.Move.create(
-            cr, uid,
             {'name': '/',
-             'picking_id': self.picking_out_1_id,
-             'product_id': self.ref('product.product_product_33'),
+             'picking_id': self.picking_out_1.id,
+             'product_id': self.ref('product.product_product_10'),
              'product_uom': self.ref('product.product_uom_unit'),
-             'product_qty': 10,
-             'location_id': self.ref('stock.stock_location_14'),
-             'location_dest_id': self.ref('stock.stock_location_7'),
-             })
+             'product_uom_qty': 8,
+             'location_id': self.ref('stock.stock_location_stock'),
+             'location_dest_id': self.ref('stock.stock_location_customers')})
 
         self.Move.create(
-            cr, uid,
             {'name': '/',
-             'picking_id': self.picking_out_1_id,
-             'product_id': self.ref('product.product_product_33'),
+             'picking_id': self.picking_out_1.id,
+             'product_id': self.ref('product.product_product_24'),
              'product_uom': self.ref('product.product_uom_unit'),
-             'product_qty': 8,
-             'location_id': self.ref('stock.stock_location_14'),
-             'location_dest_id': self.ref('stock.stock_location_7'),
-             })
-
-        self.Move.create(
-            cr, uid,
-            {'name': '/',
-             'picking_id': self.picking_out_1_id,
-             'product_id': self.ref('product.product_product_33'),
-             'product_uom': self.ref('product.product_uom_unit'),
-             'product_qty': 6,
-             'location_id': self.ref('stock.stock_location_14'),
-             'location_dest_id': self.ref('stock.stock_location_7'),
-             })
+             'product_uom_qty': 6,
+             'location_id': self.ref('stock.stock_location_stock'),
+             'location_dest_id': self.ref('stock.stock_location_customers')})
+        self.picking_out_1.action_confirm()
+        self.picking_out_1.action_assign()
 
     def test_00_prepare_packs(self):
         """ Check pack preparation
@@ -88,19 +85,20 @@ class test_prepare_packs(common.TransactionCase):
         2x 3C
 
         """
-        cr, uid = self.cr, self.uid
-        picking = self.Picking.browse(cr, uid, self.picking_out_1_id)
-        picking.prepare_packs(max_qty=3)
+        self.picking_out_1.prepare_packs(max_qty=3)
 
-        moves = picking.move_lines
+        ops = self.picking_out_1.pack_operation_product_ids
 
-        # There is 9 moves
-        assert len(moves) == 9
+        # There is 9 operations
+        assert len(ops) == 9
 
-        packs = list(set([m.tracking_id for m in moves]))
+        packs = list(set([op.result_package_id for op in ops]))
         # There is 8 packs
         assert len(packs) == 8
 
+        def qty_in_pack(pack):
+            ops = self.env['stock.pack.operation'].search(
+                [('result_package_id', '=', pack.id)])
+            return sum(op.product_qty for op in ops)
         # There is no more than 3 product per pack
-        assert [p.id for p in packs
-                if sum(m.product_qty for m in p.move_ids) <= 3]
+        assert all(qty_in_pack(pack) <= 3 for pack in packs)

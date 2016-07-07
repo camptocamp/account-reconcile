@@ -56,12 +56,13 @@ class StockPackOperation(models.Model):
         self.ensure_one()
         Package = self.env['stock.quant.package']
         if self.picking_id:
-            op = self.search([('picking_id', '=', self.picking_id.id),
-                              ('result_package_id', '!=', False)],
-                             limit=1,
-                             order='result_package_id desc')
-            if op:
-                pack = op.result_package_id
+            ops = self.search([('picking_id', '=', self.picking_id.id),
+                              ('result_package_id', '!=', False)])
+            # somehow order attribute for search doesn't work
+
+            if ops:
+                packs = ops.mapped('result_package_id')
+                pack = packs.sorted(lambda rec: rec.id)[-1]
             else:
                 pack = Package.create({})
             self.result_package_id = pack
@@ -90,29 +91,25 @@ class StockPicking(models.Model):
             op_to_split = [op for op in pick.pack_operation_product_ids
                            if not op.result_package_id]
 
-            pack_qty = 0
             while op_to_split:
                 op = op_to_split.pop()
-                # Set a result_package_id on the move, the value is the last
-                # one of another move of the same picking, or a new one
-                # if the last picking hadn't a package
+                # Set a result_package_id on the operation, the value is the
+                # last one of another operation of the same picking, or a new
+                # one if the last picking hadn't a package
                 if not op.result_package_id:
                     op.setlast_package()
                 # ensure written change is readable
                 op.refresh()
 
-                pack_qty += op.product_qty
+                pack_qty = sum(p.product_qty for p
+                               in pick.pack_operation_product_ids
+                               if p.result_package_id == op.result_package_id)
                 if pack_qty == max_qty:
-                    op.qty_done = max_qty
-                    pack_qty = 0
+                    op.qty_done = op.product_qty
                     continue
 
                 if pack_qty > max_qty:
-                    # next pack quantity
-                    pack_qty -= max_qty
-                    qty_to_pack = op.product_qty - pack_qty
-                    if int(qty_to_pack) == 0:
-                        continue
+                    qty_to_pack = op.product_qty - (pack_qty - max_qty)
                     new_op = op._split_into_quantity(qty_to_pack)
 
                     if new_op:
@@ -122,5 +119,4 @@ class StockPicking(models.Model):
                         # the move was simply given a new result_package_id.
                         # We add it to check it again.
                         op_to_split.append(op)
-                    pack_qty = 0
         return True

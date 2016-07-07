@@ -171,6 +171,16 @@ def mail_alias(ctx):
         params = (unicode(defaults), alias_id)
         cr.execute(query, params)
 
+def mail_template(ctx):
+    cr = ctx.env.cr
+    query = "DELETE FROM ir_values WHERE model = 'mail.compose.message';"
+    cr.execute(query)
+    MailTemplate = ctx.env['mail.template']
+    template_name = "0 - Réponse vide"
+    default_template = MailTemplate.search(
+        [('name', '=', template_name)], limit=1)
+    default_template.is_default = True
+
 
 def fix_journal_ids(ctx):
     # (old, new)
@@ -284,6 +294,7 @@ def main(ctx):
     payment_method(ctx)
     connector_qoqa(ctx)
     mail_alias(ctx)
+    mail_template(ctx)
     fix_journal_ids(ctx)
     configure_shipper_package_types(ctx)
     move_journal_import_setup(ctx)

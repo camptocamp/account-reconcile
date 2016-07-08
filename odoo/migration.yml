@@ -1,6 +1,11 @@
 migration:
   options:
     install_command: odoo.py
+    # Workaround for https://github.com/odoo/odoo/pull/12730
+    # Please remove once merged.
+    # Warning: the DEMO flag will never be considered as we force
+    # the 'without demo' mode
+    install_args: --without-demo=all
   versions:
     - version: 9.1.0
       operations:

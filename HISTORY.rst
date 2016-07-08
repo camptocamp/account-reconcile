@@ -26,8 +26,11 @@ latest (unreleased)
 * Connector: transfer QoQa's payment id to account move lines'
   ``transaction_ref``
 * Migrate addon to create a purchase line for each variant of a template
+* Migrate Wine report addon
 
 **Bugfixes**
+
+* Record rules on account_payment_mode for multi company
 
 **Build**
 

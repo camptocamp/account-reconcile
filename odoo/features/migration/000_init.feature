@@ -233,7 +233,7 @@ Feature: Parameter the new database
         | speedy_views                                    |
         #| web_custom                                      |
         | web_environment                                 |
-        #| wine_ch_report                                  |
+        | wine_ch_report                                  |
     Then my modules should have been installed and models reloaded
 
   @lang
@@ -278,6 +278,10 @@ Feature: Parameter the new database
   @product_attribute_variants
   Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
     Given I migrate the product attribute variants
+
+  @product_variants
+  Scenario: product variant configuration
+    Given I set "Product Variants" to "Products can have several attributes, defining variants (Example: size, color,...)" in "Inventory" settings menu
 
   @product_brand
   Scenario: migrate char field 'brand' to product_brand addon

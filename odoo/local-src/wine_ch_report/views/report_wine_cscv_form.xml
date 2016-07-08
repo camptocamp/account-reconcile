@@ -1,0 +1,93 @@
+<odoo>
+<template id="report_cscv_style" inherit_id="report.assets_common">
+  <xpath expr=".">
+    <link rel="stylesheet" href="/wine_ch_report/static/src/css/report_wine_cscv_form.css"></link>
+  </xpath>
+</template>
+
+<template id="report_wine_cscv_form">
+  <t t-call="report.html_container">
+    <t t-call="report.internal_layout">
+      <div class="page cscv_form">
+
+        <div class="doc_title">
+          <span class="title1">
+            Formule A
+          </span>
+        </div>
+        <div class="exploitation_num">
+          <span class="underlined">
+            N° d'exploitation: <t t-esc="exploitation_number"/>
+          </span>
+        </div>
+
+        <div class="text1">
+          Récapitulation des <span class="underlined">stocks de vins au <t t-esc="inventory_date"/></span>
+          mentionnés à l'inventaire détaillé ci-joint
+        </div>
+        <div class="address">
+          Contrôle suisse du commerce des vins
+          Case postale 272
+          8803 Rüschlikon
+        </div>
+
+        <div class="text2">
+          <span class="underlined">
+            Important:
+          </span>
+            Indications toujours en litres entiers
+        </div>
+
+        <div class="act_as_table list_table" style="margin-top:5px;">
+          <div class="act_as_thead labels">
+            <div class="act_as_row">
+              <div class="act_as_cell invisible_cell col_code"></div>
+              <div class="act_as_cell invisible_cell"></div>
+              <t t-foreach="wine_types" t-as="color">
+                <div class="act_as_cell amount col_color"><span t-field="color.name"/></div>
+              </t>
+            </div>
+          </div>
+          <div class="act_as_tbody">
+            <!--Print a wine class line filling by empty cells the table-->
+            <t t-foreach="wine_classes" t-as="wine_class">
+              <!--Hack to ensure table head are repeated on second page-->
+              <t t-if="wine_class.code == '40'">
+                &lt;/div&gt;
+                <div class="act_as_thead labels">
+                  <div class="act_as_row">
+                    <div class="act_as_cell invisible_cell col_code"></div>
+                    <div class="act_as_cell invisible_cell"></div>
+                    <t t-foreach="wine_types" t-as="color">
+                      <div class="act_as_cell amount col_color"><field name="color.name"/></div>
+                    </t>
+                  </div>
+                </div>
+                &lt;div class="act_as_tbody"&gt;
+              </t>
+              <div class="act_as_row">
+                <t t-if="wine_class.child_ids">
+                  <t t-set="cell_style" t-value="'invisible_cell'"/>
+                </t>
+                <t t-if="not wine_class.child_ids">
+                  <t t-set="cell_style" t-value="'visible_cell amount'"/>
+                </t>
+                <t t-set="level" t-value="len(str(wine_class.code))"/>
+                <div t-att-class="'act_as_cell title' + str(level) +' col_code'"><t t-esc="wine_class.code if level in (2, 3) else ''"/></div>
+                <div t-att-class="'act_as_cell title' + str(level)"><span t-field="wine_class.name"/></div>
+                <t t-foreach="wine_types" t-as="wine_type">
+                  <t t-if="wine_class.code == '50' and wine_type.name in (u'Rosé', u'Mousseux', u'Autre')">
+                    <t t-set="cell_style" t-value="'invisible_cell'"/>
+                  </t>
+                  <div t-att-class="'act_as_cell ' + cell_style + ' col_color'"><t t-esc="wine_stocks.get((wine_class.code, wine_type.id), '')"/></div>
+                </t>
+              </div>
+            </t>
+          </div>
+        </div>
+      </div>
+    </t>
+  </t>
+
+</template>
+</odoo>

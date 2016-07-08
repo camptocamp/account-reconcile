@@ -10,14 +10,17 @@
     'license': 'AGPL-3',
     'category': 'Customer Relationship Management',
     'depends': [
+        'crm_rma_by_shop',
         'crm_claim_merge',
         'qoqa_base_data',
-        'qoqa_claim'
+        'qoqa_claim',
+        'qoqa_offer'
     ],
     'website': 'http://www.camptocamp.com',
     'data': [
         'data/reopen_claim_on_mail.xml',
         'data/send_mail_on_new_claim.xml',
+        'views/qoqa_shop_view.xml',
         'views/res_company_view.xml',
     ],
     'installable': True,

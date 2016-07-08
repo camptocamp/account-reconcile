@@ -447,7 +447,8 @@ Feature: Parameter the new database
     UPDATE qoqa_shop q
     SET name = s.name,
         company_id = s.company_id,
-        analytic_account_id = s.project_id
+        analytic_account_id = s.project_id,
+        mail_signature_template = s.mail_signature_template
     -- TODO:
     -- postlogistics_logo, swiss_pp_logo, mail_signature_template
     FROM sale_shop s

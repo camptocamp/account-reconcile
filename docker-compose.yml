@@ -1,33 +1,23 @@
+# Root file for the composition.
+#
+# The options specific to the development should go in
+# 'docker-compose.override.yml' which is automatically applied on top of this
+# file when the option '-f' of docker-compose is not used
+
 odoo:
-  tty: true
-  stdin_open: true
   build: ./odoo/
   command: "odoo.py --load=web,connector"
-  ports:
-    - 8069
-    - 8072
   links:
     - db:db
-  volumes:
-    # for dev only (todo: add configuration files per env)
-    - "./odoo/src:/opt/odoo/src"
-    - "./odoo/local-src:/opt/odoo/local-src"
-    - "./odoo/external-src:/opt/odoo/external-src"
-    - "./odoo/songs:/opt/odoo/songs"
-    - "./odoo/migration.yml:/opt/odoo/migration.yml"
-    - "./odoo/data:/opt/odoo/data"
   volumes_from:
     - dataodoo
   environment:
-    - SCENARIO_MAIN_TAG=qoqa
     - DB_USER=odoo
     - DB_PASSWORD=odoo
     - DB_NAME=odoodb
     - ADMIN_PASSWD=mijaebohb8Thae1g
     - RUNNING_ENV=dev
     - ODOO_CONNECTOR_CHANNELS=root:4
-    - MARABUNTA_MODE=migration  # could be 'demo' for the minimal db
-    - MARABUNTA_ALLOW_SERIE=True  # should not be set in production
 
 db:
   image: camptocamp/postgresql:pg9.5-latest
@@ -43,7 +33,6 @@ db:
   ports:
     - 5432
 
-# can be useful for dev when longpolling is required
 nginx:
   image: camptocamp/odoo-nginx:9.0
   ports:

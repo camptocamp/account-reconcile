@@ -27,7 +27,7 @@ Contributors
  'author': 'Camptocamp',
  'maintainer': 'Camptocamp',
  'website': 'http://www.camptocamp.com/',
- 'depends': ['stock'],
+ 'depends': ['stock', 'delivery'],  # delivery not needed, only to pass tests
  'data': ['wizard/split_packs_view.xml',
           ],
  'test': [],

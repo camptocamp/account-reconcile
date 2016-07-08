@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <report
+    auto="False"
+    id="action_report_label_swiss_pp"
+    model="stock.picking"
+    string="Shipping.Label"
+    name="delivery_carrier_label_swiss_pp.report_label_swiss_pp"
+    file="stock.picking.label.swiss.pp"
+    attachment_use="0"
+    multi="True"
+    header="False"
+    paperformat="delivery_carrier_label_swiss_pp.label_report_paper_format"
+    report_type="qweb-pdf"/>
+
+  <template id="report_label_swiss_pp_document">
+    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+    <t t-set="company" t-value="o.company_id"/>
+    <div class="page">
+      <div t-if="company.swiss_pp_stamp_image" class="stamp">
+        <img t-att-src="'data:image/png;base64,%s' % company.swiss_pp_stamp_image" style="max-width: 58mm;"/>
+      </div>
+      <t t-set="shop" t-value="o.sale_id.qoqa_shop_id"/>
+      <t t-if="o.picking_type_id == o.env.ref('stock.picking_type_in') and o.claim_id">
+        <div class="sender_address">
+          <table class="sender">
+            <t t-set="partner" t-value="o.claim_id.delivery_address_id"/>
+            <t t-call="delivery_carrier_label_swiss_pp.report_label_swiss_pp_address"/>
+          </table>
+        </div>
+      </t>
+      <t t-if="(o.picking_type_id == o.env.ref('stock.picking_type_out') or not o.claim_id) and shop">
+        <div class="logo">
+          <img t-att-src="'data:image/png;base64,%s' % shop.swiss_pp_logo" style="max-height: 24mm;"/>
+        </div>
+      </t>
+      <div class="address">
+        <t t-if="o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.move_lines) > 0 and o.move_lines[0].tracking_id">
+          <div class="code">
+            <t t-field="o.offer_id.ref"/>.<span t-field="o.sale_id.name"/>.<span t-field="o.move_lines[0].tracking_id.name"/>
+          </div>
+        </t>
+        <t t-if="not (o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.move_lines) > 0 and o.move_lines[0].tracking_id) and o.claim_id">
+          <div class="code">
+            <t t-field="o.claim_id.number"/>
+          </div>
+        </t>
+        <table class="recipient">
+          <t t-set="partner" t-value="o.partner_id"/>
+          <t t-call="delivery_carrier_label_swiss_pp.report_label_swiss_pp_address"/>
+        </table>
+      </div>
+    </div>
+  </template>
+
+  <template id="report_label_swiss_pp_address">
+    <t t-set="company_partner" t-value="False"/>
+    <t t-if="partner.parent_id">
+      <t t-set="company_partner" t-value="partner.parent_id"/>
+    </t>
+
+    <t t-if="True or not partner.parent_id.qoqa_bind_ids">
+    <!--<t t-if="not partner.parent_id.qoqa_bind_ids">-->
+      <t t-if="company_partner">
+        <tr><td class="name"><span t-field="company_partner.name"/></td></tr>
+        <tr><td><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
+        <t t-set="address_lines" t-value="partner.contact_address.split('\n')[1:]"/>
+      </t>
+      <t t-if="not company_partner">
+        <tr><td class="name"><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
+        <t t-set="address_lines" t-value="partner.contact_address.split('\n')"/>
+      </t>
+    </t>
+    <t t-if="False and partner.parent_id.qoqa_bind_ids">
+    <!--<t t-if="partner.parent_id.qoqa_bind_ids">-->
+      <tr><td><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
+      <t t-set="address_lines" t-value="partner.contact_address.split('\n')[1:]"/>
+    </t>
+    <t t-foreach="address_lines" t-as="part">
+      <t t-if="part">
+        <tr><td><t t-esc="part"/></td></tr>
+      </t>
+    </t>
+  </template>
+
+  <template id="report_label_swiss_pp">
+    <head>
+      <style type="text/css">
+        .stamp {
+          position: absolute;
+          top: 7mm;
+          left: 7mm;
+        }
+        .logo {
+          position: absolute;
+          top: 40mm;
+          left: 0mm;
+        }
+        .address {
+          position: absolute;
+          top: 40mm;
+          left: 20mm;
+        }
+        .sender_address {
+          position: absolute;
+          top: 40mm;
+          left: 0mm;
+          width: 24mm;
+          height: 24mm;
+          -webkit-transform: rotate(-90deg);
+        }
+        .recipient{
+          border-collapse: collapse;
+          font-size: 70%;
+        }
+        .sender{
+          border-collapse: collapse;
+          font-size: 50%;
+        }
+        .code {
+          margin-left: 1px;
+          font-size: 50%;
+        }
+      </style>
+    </head>
+    <t t-call="report.html_container">
+      <t t-foreach="docs" t-as="o">
+        <t t-call="delivery_carrier_label_swiss_pp.report_label_swiss_pp_document" t-lang="o.partner_id.lang"/>
+      </t>
+    </t>
+  </template>
+</odoo>

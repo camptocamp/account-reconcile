@@ -141,6 +141,8 @@
     - oca refs/pull/201/head
     # port stock_picking_dispatch
     - oca refs/pull/223/head
+    # port stock_picking_mass_assign
+    - oca refs/pull/244/head
   target: *default_target
 ./external-src/web:
   remotes:

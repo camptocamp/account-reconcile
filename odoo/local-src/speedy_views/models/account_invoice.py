@@ -11,6 +11,10 @@ class AccountInvoice(models.Model):
 
     def init(self, cr):
         cr.execute("""
+            CREATE EXTENSION IF NOT EXISTS pg_trgm
+        """)
+        cr.commit()
+        cr.execute("""
             SELECT indexname
             FROM pg_indexes
             WHERE indexname = 'account_invoice_origin_gin_trgm'

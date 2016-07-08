@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_qoqa_shop_form_add_signature" model="ir.ui.view">
+    <field name="name">qoqa.shop.add.signature</field>
+    <field name="model">qoqa.shop</field>
+    <field name="inherit_id" ref="qoqa_offer.view_qoqa_shop_form"/>
+    <field name="arch" type="xml">
+      <field name="company_id" position="after">
+        <field name="mail_signature_template"/>
+      </field>
+    </field>
+  </record>
+
+</odoo>

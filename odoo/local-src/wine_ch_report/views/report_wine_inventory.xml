@@ -1,0 +1,119 @@
+<odoo>
+<template id="report_inventory_style" inherit_id="report.assets_common">
+  <xpath expr=".">
+    <link rel="stylesheet" href="/wine_ch_report/static/src/css/report_wine_inventory.css"></link>
+  </xpath>
+</template>
+
+<template id="report_wine_inventory">
+  <t t-call="report.html_container">
+    <t t-call="report.internal_layout">
+      <div class="page inventory">
+
+        <h1>Wine Inventory <t t-esc="inventory_date"/></h1>
+
+        <div class="act_as_table list_table" style="margin-top:5px;">
+          <t t-set="total_volume" t-value="0.0"/>
+          <div class="act_as_thead labels">
+            <div class="act_as_row">
+              <div class="act_as_cell"></div>
+              <div class="act_as_cell" style="width: 30%;"></div>
+              <t t-foreach="wine_bottles" t-as="b">
+                <div class="act_as_cell amount"><t t-esc="format_volume(b)"/></div>
+              </t>
+              <div class="act_as_cell sub_total_col amount">Total</div>
+              <div class="act_as_cell"></div>
+            </div>
+          </div>
+          <t t-set="alternated_color" t-value="0"/>
+          <t t-foreach="wine_classes" t-as="wine_class">
+            <div t-att-class="'act_as_tbody line_grp' + str(alternated_color)">
+              <!--Print a wine class line filling by empty cells the table-->
+              <t t-if="wine_class.child_ids or not wine_class.parent_id">
+                <div class="act_as_row labels">
+                  <div class="act_as_cell title"><t t-field="wine_class.code"/></div>
+                  <div class="act_as_cell title"><t t-field="wine_class.name"/></div>
+                  <t t-foreach="wine_bottles" t-as="b">
+                    <div class="act_as_cell" style="width: 80px;"></div>
+                  </t>
+                  <div class="act_as_cell sub_total_col " style="width: 80px;"></div>
+                  <div class="act_as_cell" style="width: 80px;"></div>
+                </div>
+              </t>
+              <t t-if="not wine_class.child_ids">
+                <t t-set="alternated_color" t-value="(alternated_color + 1) % 2"/>
+                <t t-foreach="wine_types" t-as="color">
+                  <t t-set="class_total_volume" t-value="0.0"/>
+                  <t t-set="wine_ids" t-value="get_wine_ids(wine_class.id, color)"/>
+                  <t t-set="wine_ids" t-value="[w for w in wine_ids if w in wine_lines]"/>
+                  <t t-if="wine_ids">
+                    <div class="act_as_row">
+                      <div class="act_as_cell"></div>
+                      <div class="act_as_cell title2"><span t-field="wine_class.name"/> <span t-field="color.name"/></div>
+                      <t t-foreach="wine_bottles" t-as="b">
+                        <div class="act_as_cell" style="width: 80px;"></div>
+                      </t>
+                      <div class="act_as_cell sub_total_col " style="width: 80px;"></div>
+                      <div class="act_as_cell" style="width: 80px;"></div>
+                    </div>
+                    <t t-foreach="wine_ids" t-as="p_id">
+                      <div class="act_as_row">
+                        <t t-set="p_name" t-value="wine_lines.get(p_id)[0]"/>
+                        <t t-set="winemaker" t-value="wine_lines.get(p_id)[1]"/>
+                        <t t-set="stock" t-value="wine_lines.get(p_id)[2]"/>
+                        <t t-set="sum_volume" t-value="wine_lines.get(p_id)[3]"/>
+                        <div class="act_as_cell"></div>
+                        <div class="act_as_cell title3" style="width: 80px;">
+                          <div class="nobreak">
+                            <div class="winemaker"><t t-esc="winemaker"/></div>
+                            <div t-esc="p_name"></div>
+                          </div>
+                        </div>
+                        <t t-foreach="wine_bottles" t-as="b">
+                          <div class="act_as_cell amount" style="width: 80px;"><t t-esc="stock.get(b, '')"/></div>
+                        </t>
+                        <t t-set="is_subtotal" t-value="p_id == wine_ids[-1] and len([w for w in wine_ids if w in wine_lines]) > 1"/>
+                        <div t-att-class="'act_as_cell amount sub_total_col ' + str(is_subtotal and 'sub_total_cell')" style="width: 80px;"><t t-esc="sum_volume"/></div>
+                        <t t-set="class_total_volume" t-value="sum_volume"/>
+                        <div class="act_as_cell amount" style="width: 80px;">
+                          <t t-if="p_id == wine_ids[-1]">
+                            <span t-esc="class_total_volume"/>
+                          </t>
+                        </div>
+                      </div>
+                    </t>
+                    <t t-set="total_volume" t-value="total_volume + class_total_volume"/>
+                  </t>
+                </t>
+                <!--Add an empty row after a class and all its colors to give some space-->
+                <div class="act_as_row">
+                  <t t-foreach="range(len(wine_bottles)+2)" t-as="b">
+                    <div class="act_as_cell">&amp;nbsp;</div>
+                  </t>
+                  <div class="act_as_cell sub_total_col">&amp;nbsp;</div>
+                  <div class="act_as_cell">&amp;nbsp;</div>
+                </div>
+              </t>
+            </div>
+          </t>
+          <div class="act_as_tfoot totals">
+            <div class="act_as_row">
+              <t t-foreach="range(len(wine_bottles)+2)" t-as="b">
+                <div class="act_as_cell total_empty_cell"></div>
+              </t>
+              <div class="act_as_cell total_sum_label_cell">
+                  General Total:
+              </div>
+              <div class="act_as_cell amount total_sum_cell">
+                <b><t t-esc="total_volume"/></b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </t>
+  </t>
+
+</template>
+</odoo>

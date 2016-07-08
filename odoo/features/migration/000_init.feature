@@ -233,7 +233,7 @@ Feature: Parameter the new database
         | speedy_views                                    |
         #| web_custom                                      |
         | web_environment                                 |
-        #| wine_ch_report                                  |
+        | wine_ch_report                                  |
     Then my modules should have been installed and models reloaded
 
   @lang
@@ -278,6 +278,10 @@ Feature: Parameter the new database
   @product_attribute_variants
   Scenario: migrate product attributes from the custom wizard to the odoo core variant attributes
     Given I migrate the product attribute variants
+
+  @product_variants
+  Scenario: product variant configuration
+    Given I set "Product Variants" to "Products can have several attributes, defining variants (Example: size, color,...)" in "Inventory" settings menu
 
   @product_brand
   Scenario: migrate char field 'brand' to product_brand addon
@@ -532,3 +536,22 @@ Feature: Parameter the new database
   @mail_alias
   Scenario: rename 'shop_id' field in aliases' default values
     Given I correct the alias default values for shop_id
+
+  @journal
+  Scenario: remove refund journals
+  Given I execute the SQL commands
+  """
+  UPDATE account_invoice SET journal_id = 2 WHERE journal_id = 4;
+  UPDATE account_invoice SET journal_id = 3 WHERE journal_id = 5;
+  UPDATE account_invoice SET journal_id = 10 WHERE journal_id = 12;
+  UPDATE account_invoice SET journal_id = 11 WHERE journal_id = 13;
+  UPDATE account_move SET journal_id = 2 WHERE journal_id = 4;
+  UPDATE account_move SET journal_id = 3 WHERE journal_id = 5;
+  UPDATE account_move SET journal_id = 10 WHERE journal_id = 12;
+  UPDATE account_move SET journal_id = 11 WHERE journal_id = 13;
+  UPDATE account_move_line SET journal_id = 2 WHERE journal_id = 4;
+  UPDATE account_move_line SET journal_id = 3 WHERE journal_id = 5;
+  UPDATE account_move_line SET journal_id = 10 WHERE journal_id = 12;
+  UPDATE account_move_line SET journal_id = 11 WHERE journal_id = 13;
+  DELETE FROM account_journal WHERE id IN (4, 5, 12, 13);
+  """

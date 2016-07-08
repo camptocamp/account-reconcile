@@ -7,8 +7,12 @@
 "access_qoqa_shop_user","qoqa_shop user","model_qoqa_shop","base.group_user",1,0,0,0
 "access_qoqa_product_template_user","qoqa.product.template.user","model_qoqa_product_template","base.group_user",1,0,0,0
 "access_qoqa_product_product_user","qoqa.product.product.user","model_qoqa_product_product","base.group_user",1,0,0,0
+"access_qoqa_product_attribute_user","qoqa.product.attribute user","model_qoqa_product_attribute","base.group_user",1,0,0,0
+"access_qoqa_product_attribute_value_user","qoqa.product.attribute_value user","model_qoqa_product_attribute_value","base.group_user",1,0,0,0
 "access_qoqa_product_template_sale_manager","qoqa.product.template salemanager","model_qoqa_product_template","base.group_sale_manager",1,1,1,1
 "access_qoqa_product_product_sale_manager","qoqa.product.product salemanager","model_qoqa_product_product","base.group_sale_manager",1,1,1,1
+"access_qoqa_product_attribute_manager","qoqa.product.attribute salemanager","model_qoqa_product_attribute","base.group_sale_manager",1,1,1,1
+"access_qoqa_product_attribute_value_manager","qoqa.product.attribute_value salemanager","model_qoqa_product_attribute_value","base.group_sale_manager",1,1,1,1
 access_qoqa_res_partner_user,access_qoqa_res_partner,model_qoqa_res_partner,base.group_user,1,0,0,0
 access_qoqa_res_partner_connector_manager,access_qoqa_res_partner connector manager,model_qoqa_res_partner,connector.group_connector_manager,1,1,1,1
 access_qoqa_address_user,access_address,model_qoqa_address,base.group_user,1,0,0,0

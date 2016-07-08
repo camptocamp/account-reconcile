@@ -1,50 +1,33 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    Author: Nicolas Bessi, Guewen Baconnier
-#    Copyright Camptocamp SA 2011
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-
-import time
+# -*- coding: utf-8 -*-
+# Copyright 2011 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from datetime import datetime
 
-from openerp.report import report_sxw
-from openerp import pooler
-from openerp.tools.translate import _
+from openerp import api, models
 
-from openerp.addons.wine_ch_report.wine_bottle import volume_to_string
+from openerp.addons.qoqa_product.models.wine import volume_to_string
 
 
-class WineCHInventoryWebkit(report_sxw.rml_parse):
+class WineCHInventoryReport(models.AbstractModel):
+    _name = 'report.wine_ch_report.report_wine_inventory'
 
-    def __init__(self, cr, uid, name, context):
-        super(WineCHInventoryWebkit, self).__init__(cr, uid, name,
-                                                    context=context)
-        self.pool = pooler.get_pool(self.cr.dbname)
-        self.cursor = self.cr
+    @api.multi
+    def render_html(self, data=None):
+        report_obj = self.env['report']
+        report = report_obj._get_report_from_name(
+            'wine_ch_report.report_wine_inventory')
 
-        self.localcontext.update({
-            'time': time,
-            'cr': cr,
-            'uid': uid,
-            'report_name': _('Wine CH Inventory'),
-            })
+        docargs = {
+            'doc_ids': self._ids,
+            'doc_model': report.model,
+            'docs': self,
+        }
+        docargs.update(self.get_form_data(data))
+        return report_obj.render('wine_ch_report.report_wine_inventory',
+                                 docargs)
 
-    def _get_sum_volume_by_wine(self, loc_ids, set_id, inventory_date):
+    @api.model
+    def _get_sum_volume_by_wine(self, locs, beverage_type, inventory_date):
         """
         Returns a tuple of
         - A list of volumes ordered by size DESC
@@ -55,7 +38,9 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
              <volume sum>)
              }
         """
-        cr = self.cursor
+        is_wine = beverage_type == 'wine'
+        is_liquor = beverage_type == 'liquor'
+        cr = self.env.cr
         cr.execute("SELECT p.id, t.name, wmk.name, b.volume,"
                    "       CASE "
                    "       WHEN q1.qty_in IS NULL THEN 0 "
@@ -75,8 +60,8 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "  ON (p.product_tmpl_id=t.id) "
                    "  INNER JOIN wine_bottle b "
                    "  ON (b.id=t.wine_bottle_id) "
-                   "  INNER JOIN attribute_option wmk "
-                   "  ON (wmk.id=t.x_winemaker) "
+                   "  INNER JOIN wine_winemaker wmk "
+                   "  ON (wmk.id=t.winemaker_id) "
                    "  LEFT OUTER JOIN "
                    "    (SELECT p.id, sum(m.product_qty) AS qty_in"
                    "      FROM stock_move m "
@@ -99,16 +84,18 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
                    "        AND date(m.date) <= %s "
                    "      GROUP BY p.id) AS q2"
                    "    ON q2.id = p.id "
-                   "  WHERE t.attribute_set_id = %s",
+                   "  WHERE t.is_wine = %s"
+                   "    AND t.is_liquor = %s",
                    ('done',
-                    tuple(loc_ids),
-                    tuple(loc_ids),
+                    tuple(locs.ids),
+                    tuple(locs.ids),
                     inventory_date,
                     'done',
-                    tuple(loc_ids),
-                    tuple(loc_ids),
+                    tuple(locs.ids),
+                    tuple(locs.ids),
                     inventory_date,
-                    set_id,
+                    is_wine,
+                    is_liquor
                     ))
         rows = cr.fetchall()
         volumes = set(
@@ -128,34 +115,29 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
         are listed first.  Also, return inactive products; if they have stock,
         they must still be displayed.
         """
-        ctx = {'active_test': False}
-        product_obj = self.pool.get('product.product')
-        product_ids = product_obj.search(
-            self.cr, self.uid,
+        Product = self.env['product.product'].with_context(active_test=False)
+        products = Product.search(
             [('wine_class_id', '=', class_id),
-             ('x_wine_type', '=', color)],
-            context=ctx
+             ('wine_type_id', '=', color.id)],
         )
-        products = product_obj.browse(self.cr, self.uid,
-                                      product_ids, context=ctx)
-        products.sort(key=lambda prod: prod.wine_bottle_id.volume,
-                      reverse=True)
-        return [p.id for p in products]
+        products.sorted(lambda rec: rec.wine_bottle_id.volume,
+                        reverse=True)
+        return products.ids
 
-    def set_context(self, objects, data, ids, report_type=None):
+    def get_form_data(self, data):
         """Populate a wine_report_lines attribute on each browse record
-        that will be used by mako template"""
+        that will be used by qweb template"""
         # Reading form
 
         inventory_date = self._get_inventory_date(data)
-        location_ids = self._get_location_ids(data)
-        attribute_set_id = self._get_attribute_set_id(data)
+        locations = self._get_locations(data)
+        beverage_type = self._get_beverage_type(data)
         wine_bottles, wine_lines = self._get_sum_volume_by_wine(
-            location_ids, attribute_set_id, inventory_date)
+            locations, beverage_type, inventory_date)
         wine_classes = self._get_wine_classes(wine_lines.keys())
         wine_types = self._get_wine_types()
 
-        self.localcontext.update({
+        return {
             'inventory_date': inventory_date,
             'wine_bottles': wine_bottles,
             'wine_classes': wine_classes,
@@ -163,9 +145,7 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
             'wine_lines': wine_lines,
             'get_wine_ids': self._get_wine_ids,
             'format_volume': volume_to_string,
-            })
-        return super(WineCHInventoryWebkit, self).set_context(
-            objects, data, ids, report_type=report_type)
+            }
 
     def _get_info(self, data, field):
         return data.get('form', {}).get(field)
@@ -176,79 +156,52 @@ class WineCHInventoryWebkit(report_sxw.rml_parse):
             return str(datetime.today())
         return inventory_date
 
-    def _get_location_ids(self, data):
+    @api.model
+    def _get_locations(self, data):
         location_ids = self._get_info(data, 'location_ids')
         if not location_ids or len(location_ids) == 0:
-            return self._get_all_ids('stock.location')
+            return self._get_all('stock.location')
         else:
             # Retrieve children locations
-            location_ids = self._get_all_children(
+            locations = self._get_all_children(
                 location_ids, 'stock.location')
-        return location_ids
+        return locations
 
-    def _get_attribute_set_id(self, data):
-        set_id = self._get_info(data, 'attribute_set_id')
-        if not set_id:
-            set_ids = self._search_wine_set_id()
-            return set_ids and set_ids[0]
-        return set_id[0]
+    def _get_beverage_type(self, data):
+        beverage_type = self._get_info(data, 'beverage_type')
+        if not beverage_type:
+            return 'wine'
+        return beverage_type
 
+    @api.model
     def _get_wine_classes(self, product_ids):
-        class_obj = self.pool.get('wine.class')
-        product_obj = self.pool.get('product.product')
-        # have an ordered list of ids
-        class_ids = class_obj.search(self.cr, self.uid,
-                                     [], order="code")
+        class_obj = self.env['wine.class']
+        product_obj = self.env['product.product']
         # find classes with wines in stock
-        products = product_obj.browse(self.cr, self.uid, product_ids)
-        leaf_classes = set([p.wine_class_id for p in products])
-        leaf_ids = [l.id for l in leaf_classes]
+        products = product_obj.browse(product_ids)
+        leaf_classes = products.mapped('wine_class_id')
 
         # get parents of those leaves
-        ancestor_ids = []
+        ancestors = self.env['wine.class']
         for leaf in leaf_classes:
-            ancestor_ids += class_obj.search(
-                self.cr, self.uid,
+            ancestors |= class_obj.search(
                 [('parent_left', '<', leaf.parent_left),
                  ('parent_left', '<', leaf.parent_right),
                  ('parent_right', '>', leaf.parent_left),
                  ('parent_right', '>', leaf.parent_right),
                  ])
+        return (ancestors | leaf_classes).sorted(lambda rec: rec.code)
 
-        class_ids = [c for c in class_ids if c in ancestor_ids + leaf_ids]
-        return class_obj.browse(self.cr, self.uid, class_ids)
-
+    @api.model
     def _get_wine_types(self):
-        # TODO: now in wine_type
-        option_obj = self.pool.get('attribute.option')
-        option_ids = option_obj.search(
-            self.cr, self.uid,
-            [('attribute_id.name', '=', 'x_wine_type')])
-        return option_obj.browse(self.cr, self.uid, option_ids)
+        return self.env['wine.type'].search([])
 
-    def _search_wine_set_id(self):
-        """
-        Search for the wine attribute set
-        """
-        # TODO replace by a domain on product_template.is_wine
-        model_obj = self.pool.get('attribute.set')
-        return model_obj.search(self.cr, self.uid,
-                                ['|',
-                                 ('name', 'ilike', 'wine'),
-                                 ('name', 'ilike', 'vin'),
-                                 ])
+    @api.model
+    def _get_all(self, model):
+        model_obj = self.env[model]
+        return model_obj.search([])
 
-    def _get_all_ids(self, model):
-        model_obj = self.pool.get(model)
-        return model_obj.search(self.cr, self.uid, [])
-
+    @api.model
     def _get_all_children(self, ids, model):
-        model_obj = self.pool.get(model)
-        return model_obj.search(self.cr, self.uid, [('id', 'child_of', ids)])
-
-
-report_sxw.report_sxw(
-    'report.wine.ch.inventory.webkit',
-    'wine.ch.inventory.wizard',
-    'addons/wine_ch_report/report/templates/wine_ch_inventory.mako.html',
-    parser=WineCHInventoryWebkit)
+        model_obj = self.env[model]
+        return model_obj.search([('id', 'child_of', ids)])

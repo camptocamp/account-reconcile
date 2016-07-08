@@ -1,5 +1,7 @@
 odoo:
   image: camptocamp/qoqa_openerp:latest
+  labels:
+    io.rancher.scheduler.affinity:host_label: node_role=odoo
   links:
     - db:db
   volumes:
@@ -26,6 +28,8 @@ odoo:
 
 db:
   image: camptocamp/postgresql:pg9.5-latest
+  labels:
+    io.rancher.scheduler.affinity:host_label: node_role=odoo
   environment:
     - POSTGRES_USER=${DB_USER}
     - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -34,6 +38,8 @@ db:
 
 nginx:
   image: camptocamp/odoo-nginx:9.0
+  labels:
+    io.rancher.scheduler.affinity:host_label: node_role=odoo
   ports:
     - 8080:80
   links:

@@ -3,6 +3,8 @@ external-db:
 
 odoo:
   image: camptocamp/qoqa_openerp:9.1.0
+  labels:
+    io.rancher.scheduler.affinity:host_label: node_role=odoo
   links:
   - external-db:db
   volumes:
@@ -29,6 +31,8 @@ odoo:
 
 nginx:
   image: camptocamp/odoo-nginx:9.0
+  labels:
+    io.rancher.scheduler.affinity:host_label: node_role=odoo
   ports:
     - 80:80
   links:
@@ -40,6 +44,7 @@ lb:
   - 443:80
   labels:
     io.rancher.loadbalancer.ssl.ports: '443'
+    io.rancher.scheduler.affinity:host_label: node_role=odoo
   tty: true
   image: rancher/load-balancer-service
   links:

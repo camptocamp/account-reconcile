@@ -29,6 +29,7 @@ latest (unreleased)
 * Validating invoices takes less time.
 * Creating an invoice from a SO takes less time.
 * Migrate Wine report addon
+* Migrate addon to add a wizard to split products in multiples packs
 
 **Bugfixes**
 * Analytic accounts : allow to "search more..." on SO

@@ -27,6 +27,7 @@ latest (unreleased)
   ``transaction_ref``
 * Migrate addon to create a purchase line for each variant of a template
 * Migrate Wine report addon
+* Migrate addon to add a wizard to split products in multiples packs
 
 **Bugfixes**
 

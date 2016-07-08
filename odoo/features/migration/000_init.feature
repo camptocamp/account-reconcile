@@ -208,12 +208,12 @@ Feature: Parameter the new database
         | web_send_message_popup                          |
         #| web_translate_dialog                            |
         #---- QoQa specifics -----------------------------#
-        #| base_stock_picking_pack_split                   |
+        | base_stock_picking_pack_split                   |
         | account_s3_move_import                          |
         #| connector_qoqa                                  |
         | crm_claim_mail                                  |
         | crm_rma_by_shop                                 |
-        #| delivery_carrier_label_swiss_pp                 |
+        | delivery_carrier_label_swiss_pp                 |
         | delivery_carrier_url                            |
         #| ecotax                                          |
         | picking_dispatch_delay_done                     |
@@ -223,7 +223,7 @@ Feature: Parameter the new database
         | qoqa_claim                                      |
         #| qoqa_claim_unclaimed_process                    |
         #| qoqa_label_dispatch_pack_split                  |
-        #| qoqa_offer                                      |
+        | qoqa_offer                                      |
         #| qoqa_offer_historical_margin                    |
         | qoqa_product                                    |
         | qoqa_record_archiver                            |

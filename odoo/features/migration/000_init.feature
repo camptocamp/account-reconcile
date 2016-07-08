@@ -178,7 +178,7 @@ Feature: Parameter the new database
         #---- OCA/l10n-switzerland -----------------------#
         | l10n_ch_bank                                    |
         | l10n_ch_base_bank                               |
-        #| l10n_ch_dta                                     |
+        | l10n_ch_dta                                     |
         | l10n_ch_payment_slip                            |
         | l10n_ch_zip                                     |
         #---- OCA/product-attributes ---------------------#

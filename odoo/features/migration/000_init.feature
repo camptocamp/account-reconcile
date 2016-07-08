@@ -5,6 +5,13 @@ Feature: Parameter the new database
   In order to have a coherent installation
   I've automated the manual steps.
 
+  @extension
+  Scenario: add extension pg_trgm to PostgreSQL
+    Given I execute the SQL commands
+    """
+    CREATE EXTENSION IF NOT EXISTS pg_trgm;
+    """
+
   @clean
   Scenario: when we receive the database from the migration service, addons are 'to upgrade', set them to uninstalled.
     Given I execute the SQL commands

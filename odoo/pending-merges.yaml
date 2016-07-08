@@ -76,15 +76,6 @@
     # correction in crm_claim_code
     - oca refs/pull/102/head
   target: *default_target
-./external-src/l10n-switzerland:
-  remotes:
-    oca: git@github.com:OCA/l10n-switzerland.git
-    camptocamp: git@github.com:camptocamp/l10n-switzerland.git
-  merges:
-    - oca 9.0
-    # port l10n_ch_payment_slip
-    - oca refs/pull/176/head
-  target: *default_target
 ./external-src/purchase-workflow:
   remotes:
       oca: git@github.com:OCA/purchase-workflow.git

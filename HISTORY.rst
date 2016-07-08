@@ -30,6 +30,8 @@ latest (unreleased)
 * Creating an invoice from a SO takes less time.
 * Migrate Wine report addon
 * Migrate addon to add a wizard to split products in multiples packs
+* Migrate Swiss PP labels addon
+* Migrate addon to select a logo per shop on postlogistics delivery labels
 
 **Bugfixes**
 * Analytic accounts : allow to "search more..." on SO

@@ -204,6 +204,7 @@ Feature: Parameter the new database
         | stock_orderpoint_generator                      |
         #---- OCA/stock-logistics-workflow ---------------#
         #| picking_dispatch                                |
+        | stock_picking_mass_assign                       |
         #---- OCA/web ------------------------------------#
         | web_send_message_popup                          |
         #| web_translate_dialog                            |

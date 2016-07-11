@@ -36,7 +36,8 @@ a `postgres:9.5` one-off container:
 
 ```bash
 $ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backups
-$ export DB_CONTAINER=project_db_1  # Exact name to find with docker-compose ps
+$ export PROJECT_NAME=project_name (the prefix of containers, volumes, networks, usually the root folder's name)
 
 $ docker run --rm --link $DB_CONTAINER:db -e PGPASSWORD=odoo -v $HOST_BACKUPS:/backup postgres:9.5 pg_dump -Uodoo --file /backup/db.pg --format=c odoodb -h db
+$ docker run --rm --net=${PROJECT_NAME}_default --link ${PROJECT_NAME}_db_1:db -e PGPASSWORD=odoo -v $HOST_BACKUPS:/backup postgres:9.5 pg_dump -Uodoo --file /backup/db.pg --format=c odoodb -h db
 ```

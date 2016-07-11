@@ -13,12 +13,9 @@
         'stock_picking_dispatch',
         'stock_picking_mass_assign',
         'product',
-        # TODO:
-        # 'product_custom_attributes',
         'purchase',
         'purchase_analytic_global',
-        # TODO: https://github.com/camptocamp/qoqa_openerp/pull/206
-        # 'delivery_carrier_label_postlogistics_shop_logo',
+        'delivery_carrier_label_postlogistics_shop_logo',
         'qoqa_offer',
         # TODO: A plus!
         # 'account_payment',
@@ -54,18 +51,20 @@ Hide the cancel button action to avoid human mistakes
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
-        'account_invoice_view.xml',
-        'hr_holidays_view.xml',
-        'partner_view.xml',
         # TODO
-        # 'payment_view.xml',
+        # 'account_invoice_view.xml',
+        'views/hr_holidays_view.xml',
+        'views/partner_view.xml',
+        # TODO
+        # 'views/payment_view.xml',
         # TODO: Waiting for connector
-        # 'payment_method_view.xml',
-        'picking_dispatch_view.xml',
-        'product_view.xml',
-        'purchase_view.xml',
-        'sale_view.xml',
-        'stock_view.xml',
+        # 'views/payment_method_view.xml',
+        'views/picking_dispatch_view.xml',
+        'views/product_view.xml',
+        # TODO
+        # 'views/purchase_view.xml',
+        'views/sale_view.xml',
+        'views/stock_view.xml',
         'wizard/account_invoice_refund_view.xml',
     ],
     'installable': True,

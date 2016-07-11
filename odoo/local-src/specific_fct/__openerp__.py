@@ -11,6 +11,7 @@
         # 'account_analytic_required',
         'sale',
         'stock_picking_dispatch',
+        'stock_picking_mass_assign',
         'product',
         # TODO:
         # 'product_custom_attributes',

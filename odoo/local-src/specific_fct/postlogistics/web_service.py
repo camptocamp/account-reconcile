@@ -2,8 +2,8 @@
 # © 2014-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp.osv import orm
-from openerp.tools.translate import _
+from openerp import _
+from openerp.exceptions import UserError
 import re
 
 from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
@@ -101,8 +101,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         if picking.claim_id and picking.type == 'in':
             partner = picking.claim_id.delivery_address_id
             if not partner:
-                raise orm.except_orm(
-                    _('Error'),
+                raise UserError(
                     _('Cannot write sender on label, no delivery address '
                       'assigned on Claim'))
             sender = {

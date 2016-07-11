@@ -31,17 +31,19 @@ before_install:
 install:
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule init ; fi
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule update ; fi
-  - if [ "$LINT_CHECK" == "0" ] ; then docker-compose -f docker-compose.yml -f ./travis/travis-compose.yml build --pull ; fi
-  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml -f ./travis/travis-compose.yml up -d db ; fi
-  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml -f ./travis/travis-compose.yml ps ; fi
+    # we always specify '-f docker-compose.yml' so 'docker-compose.override.yml'
+    # is not used and so the volumes are not shared with the host
+  - if [ "$LINT_CHECK" == "0" ] ; then docker-compose -f docker-compose.yml build --pull ; fi
+  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml up -d db ; fi
+  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml ps ; fi
 
 # We run the tests and scenario in the same build, so we can push the docker image
 # after that we validated it has tests and scenario passing
 script:
   - if [ "$LINT_CHECK" == "1" ] ; then flake8 ${ADDONS_DIR} --exclude=__init__.py ; fi
-  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml -f ./travis/travis-compose.yml run --rm -e DEMO=odoo odoo runtests ; fi
-  # run the scenario
-  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml -f ./travis/travis-compose.yml run --rm -e DEMO=scenario odoo odoo.py --stop-after-init ; fi
+  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml run --rm -e DEMO=True odoo runtests ; fi
+    # run the scenario
+  - if [ "$TESTS" == "1" ] ; then docker-compose -f docker-compose.yml run --rm -e MARABUNTA_MODE=demo -e MARABUNTA_ALLOW_SERIE=True odoo odoo.py --stop-after-init ; fi
 
 after_success:
   - if [ "$TESTS" == "1" ] ; then ./travis/publish.sh ; fi

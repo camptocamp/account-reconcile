@@ -29,7 +29,10 @@ class CrmClaim(models.Model):
             if claim.partner_id.lang:
                 claim = claim.with_context(lang=claim.partner_id.lang)
             template = ''
-            if claim.company_id and claim.company_id.mail_signature_template:
+            if claim.qoqa_shop_id and \
+                    claim.qoqa_shop_id.mail_signature_template:
+                template = claim.qoqa_shop_id.mail_signature_template
+            elif claim.company_id and claim.company_id.mail_signature_template:
                 template = claim.company_id.mail_signature_template
 
             t = Template(template)

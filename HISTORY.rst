@@ -33,6 +33,7 @@ latest (unreleased)
 * Migrate Swiss PP labels addon
 * Migrate addon to select a logo per shop on postlogistics delivery labels
 * Migrate Swiss PP labels addon
+* Migrate addon to create payment in swiss format DTA
 
 **Bugfixes**
 * Analytic accounts : allow to "search more..." on SO

@@ -178,7 +178,7 @@ Feature: Parameter the new database
         #---- OCA/l10n-switzerland -----------------------#
         | l10n_ch_bank                                    |
         | l10n_ch_base_bank                               |
-        #| l10n_ch_dta                                     |
+        | l10n_ch_dta                                     |
         | l10n_ch_payment_slip                            |
         | l10n_ch_zip                                     |
         #---- OCA/product-attributes ---------------------#
@@ -447,7 +447,8 @@ Feature: Parameter the new database
     UPDATE qoqa_shop q
     SET name = s.name,
         company_id = s.company_id,
-        analytic_account_id = s.project_id
+        analytic_account_id = s.project_id,
+        mail_signature_template = s.mail_signature_template
     -- TODO:
     -- postlogistics_logo, swiss_pp_logo, mail_signature_template
     FROM sale_shop s

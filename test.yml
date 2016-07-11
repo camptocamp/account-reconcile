@@ -1,52 +1,16 @@
-# For a test server. Containers are always restarted
+# For testers
 # This file should be called with
-# docker-compose -f test.yml up
-odoo:
-  image: camptocamp/qoqa_openerp:latest
-  restart: always
-  command: ""
-  expose:
-    - 8069
-    - 8072
-  links:
-    - db:db
-  volumes_from:
-    - dataodoo
-  environment:
-    - SCENARIO_MAIN_TAG=qoqa
-    - DB_USER=odoo
-    - DB_PASSWORD=odoo
-    - DB_NAME=odoodb
-    - ADMIN_PASSWD=mijaebohb8Thae1g
+# docker-compose -f docker-compose.yml -f test.yml up
 
-db:
-  image: postgres:9.5
-  restart: always
-  environment:
-    - POSTGRES_USER=odoo
-    - POSTGRES_PASSWORD=odoo
-  volumes_from:
-    - datadb
-  expose:
-    - 5432
+version: '2'
+services:
+  odoo:
+    image: camptocamp/qoqa_openerp:latest
+    environment:
+      - MARABUNTA_MODE=demo  # could be 'migration' to run the migration
+      - MARABUNTA_ALLOW_SERIE=True  # should not be set in production
 
-nginx:
-  image: camptocamp/odoo-nginx:9.0
-  restart: always
-  ports:
-    - 80:80
-    # TODO: 443
-  links:
-    - odoo:odoo
-
-dataodoo:
-  image: debian:jessie
-  volumes:
-    - /data/odoo
-  command: "true"
-
-datadb:
-  image: debian:jessie
-  volumes:
-    - /var/lib/postgresql
-  command: "true"
+  nginx:
+    ports:
+      - 80:80
+      # TODO: 443

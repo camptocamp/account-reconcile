@@ -5,7 +5,7 @@ from openerp import api, fields, models
 from openerp.addons.base.res.res_partner import _lang_get
 import logging
 
-from postlogistics.web_service import PostlogisticsWebServiceQoQa
+from ..postlogistics.web_service import PostlogisticsWebServiceQoQa
 
 _logger = logging.getLogger(__name__)
 

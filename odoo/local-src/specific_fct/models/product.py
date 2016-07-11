@@ -16,7 +16,7 @@ class ProductCategory(models.Model):
 
     warranty = fields.Float('Warranty', default=24)
     product_type = fields.Selection(
-        'get_product_type',
+        '_get_product_type',
         string='Product Type',
         default='product'
     )
@@ -27,6 +27,8 @@ class ProductTemplate(models.Model):
 
     company_id = fields.Many2one(default=False)
     categ_id = fields.Many2one(default=False)
+    property_cost_method = fields.Selection(company_dependent=True,
+                                            default='average')
 
     @api.onchange('categ_id')
     def onchange_categ_id(self):

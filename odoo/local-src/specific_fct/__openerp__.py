@@ -52,7 +52,7 @@ Hide the cancel button action to avoid human mistakes
         'security/ir.model.access.csv',
         'security/security.xml',
         # TODO
-        # 'account_invoice_view.xml',
+        # 'views/account_invoice_view.xml',
         'views/hr_holidays_view.xml',
         'views/partner_view.xml',
         # TODO

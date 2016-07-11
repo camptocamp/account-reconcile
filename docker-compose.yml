@@ -4,50 +4,40 @@
 # 'docker-compose.override.yml' which is automatically applied on top of this
 # file when the option '-f' of docker-compose is not used
 
-odoo:
-  build: ./odoo/
-  command: "odoo.py --load=web,connector"
-  links:
-    - db:db
-  volumes_from:
-    - dataodoo
-  environment:
-    - DB_USER=odoo
-    - DB_PASSWORD=odoo
-    - DB_NAME=odoodb
-    - ADMIN_PASSWD=mijaebohb8Thae1g
-    - RUNNING_ENV=dev
-    - ODOO_CONNECTOR_CHANNELS=root:4
+version: '2'
+services:
+  odoo:
+    build: ./odoo/
+    command: "odoo.py --load=web,connector"
+    depends_on:
+      - db
+    volumes:
+      - "data-odoo:/data/odoo"
+    environment:
+      - DB_USER=odoo
+      - DB_PASSWORD=odoo
+      - DB_NAME=odoodb
+      - ADMIN_PASSWD=mijaebohb8Thae1g
+      - RUNNING_ENV=dev
+      - ODOO_CONNECTOR_CHANNELS=root:4
 
-db:
-  image: camptocamp/postgresql:pg9.5-latest
-  environment:
-    - POSTGRES_USER=odoo
-    - POSTGRES_PASSWORD=odoo
-    - PG_SYSTEM_SHARED_BUFFERS=256MB
-    - PG_SYSTEM_MAINTENANCE_WORK_MEM=256MB
-    - PG_SYSTEM_WAL_BUFFERS=8MB
-    - PG_SYSTEM_EFFECTIVE_CACHE_SIZE=1024MB
-  volumes_from:
-    - datadb
-  ports:
-    - 5432
+  db:
+    image: camptocamp/postgresql:pg9.5-latest
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - PG_SYSTEM_SHARED_BUFFERS=256MB
+      - PG_SYSTEM_MAINTENANCE_WORK_MEM=256MB
+      - PG_SYSTEM_WAL_BUFFERS=8MB
+      - PG_SYSTEM_EFFECTIVE_CACHE_SIZE=1024MB
+    volumes:
+      - "data-db:/var/lib/postgresql/data"
 
-nginx:
-  image: camptocamp/odoo-nginx:9.0
-  ports:
-    - 80:80
-  links:
-    - odoo:odoo
+  nginx:
+    image: camptocamp/odoo-nginx:9.0
+    depends_on:
+      - odoo
 
-dataodoo:
-  image: debian:jessie
-  volumes:
-    - /data/odoo
-  command: "true"
-
-datadb:
-  image: debian:jessie
-  volumes:
-    - /var/lib/postgresql/data
-  command: "true"
+volumes:
+  data-odoo:
+  data-db:

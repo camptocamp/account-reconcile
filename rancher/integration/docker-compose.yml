@@ -10,7 +10,6 @@ odoo:
   volumes:
     - qoqa-integration-dataodoo:/data/odoo
   environment:
-    - SCENARIO_MAIN_TAG=${SCENARIO_MAIN_TAG}
     - DB_USER=${DB_USER}
     - DB_PASSWORD=${DB_PASSWORD}
     - DB_NAME=${DB_NAME}
@@ -28,6 +27,7 @@ odoo:
     - LIMIT_REQUEST=${LIMIT_REQUEST}
     - LIMIT_TIME_CPU=${LIMIT_TIME_CPU}
     - LIMIT_TIME_REAL=${LIMIT_TIME_REAL}
+    - MARABUNTA_MODE=migration
 
 nginx:
   image: camptocamp/odoo-nginx:9.0

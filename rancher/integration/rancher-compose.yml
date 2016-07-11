@@ -29,10 +29,6 @@
       type: "string"
       required: true
       default: "odoo"
-    - variable: "SCENARIO_MAIN_TAG"
-      label: "Scenario tag"
-      description: "Tag used in scenarii for this project e.g. c2c"
-      required: true
     - variable: "ADMIN_PASSWD"
       label: "admin_passwd"
       description: "Master password for database management"

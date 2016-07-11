@@ -8,7 +8,7 @@ $ export DATAODOO_VOLUME=project_data-odoo  # Exact name to find with 'docker vo
 $ export DATADB_VOLUME=project_data-db  # Exact name to find with 'docker volume ls'
 
 $ docker run --rm -v "$DATAODOO_VOLUME:/data/odoo" -v $HOST_BACKUPS:/backup debian tar cvf /backup/backup-dataodoo.tar /data/odoo
-$ docker run --rm "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:/backup debian tar cvf /backup/backup-datadb.tar /var/lib/postgresql/data
+$ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:/backup debian tar cvf /backup/backup-datadb.tar /var/lib/postgresql/data
 ```
 
 ## Restore the db and filestore (as volumes)

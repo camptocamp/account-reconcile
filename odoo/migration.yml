@@ -121,3 +121,5 @@ migration:
           operations:
             post:
               - anthem songs.install.demo::main
+    - version: 9.2.0
+      # nothing to do, all has been migrated in 9.1.0

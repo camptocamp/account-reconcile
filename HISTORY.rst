@@ -23,6 +23,17 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+9.2.0 (2016-07-11)
+++++++++++++++++++
+
+**Features and Improvements**
+
 * Connector: transfer QoQa's payment id to account move lines'
   ``transaction_ref``
 * Migrate addon to create a purchase line for each variant of a template
@@ -36,16 +47,16 @@ latest (unreleased)
 * Migrate addon to create payment in swiss format DTA
 
 **Bugfixes**
+
 * Analytic accounts : allow to "search more..." on SO
   (due to performance improvement)
-
 * Record rules on account_payment_mode for multi company
 
 **Build**
 
 * Add pending-merge for ``purchase_discount`` so the addon is now installed
-
-**Documentation**
+* Integrate with the new Docker image using anthem and marabunta for the migration
+* Use docker-compose v2 file format
 
 9.1.0 (2016-06-29)
 ++++++++++++++++++

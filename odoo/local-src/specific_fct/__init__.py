@@ -13,4 +13,3 @@ from . import account_bank_statement
 # from . import payment_method
 from . import purchase
 from . import picking_dispatch
-from . import ir_ui_menu

@@ -173,7 +173,16 @@ def mail_alias(ctx):
 
 def mail_template(ctx):
     cr = ctx.env.cr
+    # Remove user defaults
     query = "DELETE FROM ir_values WHERE model = 'mail.compose.message';"
+    cr.execute(query)
+
+    # Replace "shop_id" by "qoqa_shop_id" in mail templates
+    query = (
+        "UPDATE mail_template "
+        "SET body_html = replace(body_html, 'object.shop_id', "
+        "'object.qoqa_shop_id')"
+    )
     cr.execute(query)
     MailTemplate = ctx.env['mail.template']
     template_name = "0 - Réponse vide"

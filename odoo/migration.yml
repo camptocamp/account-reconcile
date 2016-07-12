@@ -79,7 +79,7 @@ migration:
           #---- OCA/stock-logistics-warehouse --------------#
           - stock_orderpoint_generator
           #---- OCA/stock-logistics-workflow ---------------#
-          #- picking_dispatch
+          - stock_batch_picking
           - stock_picking_mass_assign
           #---- OCA/web ------------------------------------#
           - web_send_message_popup

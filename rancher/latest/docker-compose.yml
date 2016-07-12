@@ -1,5 +1,6 @@
 odoo:
   image: camptocamp/qoqa_openerp:latest
+  command: "odoo.py --load=web,connector"
   labels:
     io.rancher.scheduler.affinity:host_label: node_role=odoo
   links:
@@ -24,6 +25,7 @@ odoo:
     - LIMIT_REQUEST=${LIMIT_REQUEST}
     - LIMIT_TIME_CPU=${LIMIT_TIME_CPU}
     - LIMIT_TIME_REAL=${LIMIT_TIME_REAL}
+    - ODOO_CONNECTOR_CHANNELS=${ODOO_CONNECTOR_CHANNELS}
     - MARABUNTA_ALLOW_SERIE=True
     - MARABUNTA_MODE=demo
 

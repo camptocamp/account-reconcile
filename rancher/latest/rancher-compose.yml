@@ -116,3 +116,9 @@
       type: "int"
       required: false
       default: 86400
+    - variable: "ODOO_CONNECTOR_CHANNELS"
+      label: "odoo_connector_channels"
+      description: "Connector Channels"
+      type: "char"
+      required: false
+      default: "root:1"

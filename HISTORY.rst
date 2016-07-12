@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Build**
 
+* Activate job runner on Rancher stacks
+
 **Documentation**
 
 9.2.0 (2016-07-11)

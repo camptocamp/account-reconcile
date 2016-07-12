@@ -3,6 +3,7 @@ external-db:
 
 odoo:
   image: camptocamp/qoqa_openerp:9.2.0
+  command: "odoo.py --load=web,connector"
   labels:
     io.rancher.scheduler.affinity:host_label: node_role=odoo
   links:
@@ -27,6 +28,7 @@ odoo:
     - LIMIT_REQUEST=${LIMIT_REQUEST}
     - LIMIT_TIME_CPU=${LIMIT_TIME_CPU}
     - LIMIT_TIME_REAL=${LIMIT_TIME_REAL}
+    - ODOO_CONNECTOR_CHANNELS=${ODOO_CONNECTOR_CHANNELS}
     - MARABUNTA_MODE=migration
 
 nginx:

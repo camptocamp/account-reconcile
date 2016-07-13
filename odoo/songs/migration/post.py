@@ -13,7 +13,7 @@ def sale_shop(ctx):
             company_id = s.company_id,
             analytic_account_id = s.project_id,
             swiss_pp_logo = s.swiss_pp_logo,
-            postlogistics_logo = s.postlogistics_logo
+            postlogistics_logo = s.postlogistics_logo,
             mail_signature_template = s.mail_signature_template
         FROM sale_shop s
         WHERE s.id = q.openerp_id

@@ -79,7 +79,7 @@ migration:
           #---- OCA/stock-logistics-warehouse --------------#
           - stock_orderpoint_generator
           #---- OCA/stock-logistics-workflow ---------------#
-          #- picking_dispatch
+          - stock_batch_picking
           - stock_picking_mass_assign
           #---- OCA/web ------------------------------------#
           - web_send_message_popup
@@ -93,7 +93,7 @@ migration:
           - delivery_carrier_label_swiss_pp
           - delivery_carrier_url
           - ecotax
-          - picking_dispatch_delay_done
+          #- picking_dispatch_delay_done
           #- picking_dispatch_group
           - purchase_variant_fast_entry
           - qoqa_base_data
@@ -121,3 +121,5 @@ migration:
           operations:
             post:
               - anthem songs.install.demo::main
+    - version: 9.2.0
+      # nothing to do, all has been migrated in 9.1.0

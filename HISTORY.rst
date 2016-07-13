@@ -28,6 +28,7 @@ latest (unreleased)
 **Build**
 
 * Activate job runner on Rancher stacks
+* Use odoo-project image version 1.0.3
 
 **Documentation**
 

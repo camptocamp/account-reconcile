@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Implement cancellation of credit notes in the QoQa connector
+
 **Bugfixes**
 
 **Build**

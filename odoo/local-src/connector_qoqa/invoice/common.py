@@ -5,7 +5,9 @@
 from openerp import models, fields, api, _
 from openerp.addons.connector.session import ConnectorSession
 from .exporter import create_refund, cancel_refund
-from ..unit.backend_adapter import api_handle_errors
+from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
+
+from ..backend import qoqa
 
 
 class AccountInvoice(models.Model):
@@ -128,3 +130,16 @@ class AccountInvoice(models.Model):
         result = super(AccountInvoice, self).action_cancel()
         self.cancel_refund_on_qoqa()
         return result
+
+
+@qoqa
+class QoQaCreditNote(QoQaAdapter):
+    _model_name = 'qoqa.credit.note'  # virtual model
+    _endpoint = 'admin/credit_notes'
+    _resource = 'credit_note'
+
+    def cancel(self, id):
+        url = "{}{}/cancel".format(self.url(), id)
+        response = self.client.put(url)
+        result = self._handle_response(response)
+        return result['cancelled']

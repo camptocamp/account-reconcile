@@ -415,17 +415,3 @@ class QoQaPaymentAdapter(QoQaAdapter):
         url = "{}{}/credit_notes".format(self.url(), id)
         response = self.client.post(url, data=json.dumps({'amount': amount}))
         return self._handle_response(response)
-
-    # TODO: not documented yet
-    def cancel_refund(self, id, payment_id):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        payload = {'action': 'cancel_refund',
-                   'params': {'refno': payment_id,
-                              }
-                   }
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(payload),
-                                   headers=headers)
-        response = self._handle_response(response)
-        return True

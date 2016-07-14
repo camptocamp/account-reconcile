@@ -14,7 +14,7 @@ interactions:
     body: {string: !!python/unicode '{"data": {"relationships": {"invoice": {"data":
         null}}, "attributes": {"status": "requested", "kind": "credit_note", "created_at":
         "2016-06-07T11:48:03.223+02:00", "payment_provider_id": 7, "updated_at": "2016-06-07T11:48:03.223+02:00",
-        "parent_id": 1, "amount": "5.0", "transaction_id": null, "payment_method_id":
+        "parent_id": 1, "amount": "5.0", "transaction_id": 9, "payment_method_id":
         1}, "type": "payment", "id": "7"}, "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']

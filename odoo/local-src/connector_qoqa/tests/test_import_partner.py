@@ -126,6 +126,11 @@ class TestImportPartner(QoQaTransactionCase):
         partner_domain = [('qoqa_id', '=', '1000003')]
         partner_binding = self.QoqaPartner.search(partner_domain)
         partner_binding.ensure_one()
+        # we write something on the partner just to ensure that the parent and
+        # the address do not share the same values (as it happens when an
+        # address is of type 'contact'
+        partner_binding.street = 'Another street'
+        partner_binding.city = 'Another city'
 
         expected = [
             ExpectedAddress(

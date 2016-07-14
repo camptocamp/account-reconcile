@@ -183,6 +183,14 @@ def fix_journal_ids(ctx):
     """, (tuple([m[0] for m in mapping]),))
 
 
+def disable_shipper_services(ctx):
+    """ Disable qoqa shipper services not used anymore """
+    ctx.env.cr.execute("""
+        UPDATE delivery_carrier SET active = false
+        WHERE qoqa_type = 'service'
+    """)
+
+
 def main(ctx):
     post_product.product_attribute_variants(ctx)
     post_product.product_brand(ctx)
@@ -194,3 +202,4 @@ def main(ctx):
     connector_qoqa(ctx)
     mail_alias(ctx)
     fix_journal_ids(ctx)
+    disable_shipper_services(ctx)

@@ -114,6 +114,10 @@ migration:
         migration:
           operations:
             pre:
+              # we execute a cleaning query before running
+              # anthem otherwise the import of openerp
+              # will issue a lot of warnings
+              - "sh -c 'PGPASSWORD=$DB_PASSWORD psql -h db -U $DB_USER -f songs/migration/clean.sql $DB_NAME'"
               - anthem songs.migration.pre::main
             post:
               - anthem songs.migration.post::main

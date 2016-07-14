@@ -5,19 +5,6 @@
 from common import column_exists, table_exists
 
 
-def reset_modules_state(ctx):
-    """ Reset 'state' of ir_module_module
-
-    When we receive the database from the migration service, addons are
-    'to upgrade', set them to uninstalled.
-    """
-    ctx.env.cr.execute("""
-        UPDATE ir_module_module
-        SET state = 'uninstalled'
-        WHERE state IN ('to install', 'to upgrade')
-    """)
-
-
 def cron_no_doall(ctx):
     """ Remove the 'retry missing' flag on cron
 
@@ -222,7 +209,6 @@ def connector_shipper_rate_rename(ctx):
 
 def main(ctx):
     """ Executed at the very beginning of the migration """
-    reset_modules_state(ctx)
     cron_no_doall(ctx)
     clean_uninstalled(ctx)
     move_wine_ch_xml_ids(ctx)

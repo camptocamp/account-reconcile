@@ -24,8 +24,12 @@ No assertion, used to measure the time the split takes
 in order to improve the duration of the operation.
 """
 
+import os
 import time
 from contextlib import contextmanager
+
+import unittest
+
 import openerp.tests.common as common
 
 
@@ -74,6 +78,8 @@ class TestSplitPerformance(common.TransactionCase):
         end = time.time()
         print "%0.3f seconds" % (end - start)
 
+    @unittest.skipIf(os.environ.get('TRAVIS'),
+                     'Skipping time-consuming tests on Travis CI')
     def test_prepare_packs_10_products(self):
         """ Picking with 10 products """
         picking = self._create_picking(10)
@@ -81,6 +87,8 @@ class TestSplitPerformance(common.TransactionCase):
         with self._benchmark():
             picking.prepare_packs(max_qty=1)
 
+    @unittest.skipIf(os.environ.get('TRAVIS'),
+                     'Skipping time-consuming tests on Travis CI')
     def test_prepare_packs_100_products(self):
         """ Picking with 100 products """
         picking = self._create_picking(100)
@@ -88,6 +96,8 @@ class TestSplitPerformance(common.TransactionCase):
         with self._benchmark():
             picking.prepare_packs(max_qty=1)
 
+    @unittest.skipIf(os.environ.get('TRAVIS'),
+                     'Skipping time-consuming tests on Travis CI')
     def test_prepare_packs_1000_products(self):
         """ Picking with 1000 products """
         picking = self._create_picking(1000)
@@ -95,6 +105,8 @@ class TestSplitPerformance(common.TransactionCase):
         with self._benchmark():
             picking.prepare_packs(max_qty=1)
 
+    @unittest.skipIf(os.environ.get('TRAVIS'),
+                     'Skipping time-consuming tests on Travis CI')
     def test_prepare_packs_10_pickings(self):
         """ 10 Picking with 3 products """
         pickings = self.env['stock.picking']
@@ -104,6 +116,8 @@ class TestSplitPerformance(common.TransactionCase):
         with self._benchmark():
             pickings.prepare_packs(max_qty=1)
 
+    @unittest.skipIf(os.environ.get('TRAVIS'),
+                     'Skipping time-consuming tests on Travis CI')
     def test_prepare_packs_100_pickings(self):
         """ 100 Picking with 3 products """
         pickings = self.env['stock.picking']
@@ -113,6 +127,8 @@ class TestSplitPerformance(common.TransactionCase):
         with self._benchmark():
             pickings.prepare_packs(max_qty=1)
 
+    @unittest.skipIf(os.environ.get('TRAVIS'),
+                     'Skipping time-consuming tests on Travis CI')
     def test_prepare_packs_1000_pickings(self):
         """ 1000 Picking with 3 products """
         pickings = self.env['stock.picking']

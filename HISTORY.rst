@@ -34,6 +34,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Imported addresses do no longer takes the address fields of their parent
+
 **Build**
 
 * Activate job runner on Rancher stacks

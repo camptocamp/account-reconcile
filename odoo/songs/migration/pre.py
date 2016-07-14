@@ -207,6 +207,25 @@ def connector_shipper_rate_rename(ctx):
         ctx.env.cr.execute(query)
 
 
+def partner_contact(ctx):
+    """ Convert 'contact' addresses to 'other'
+
+    Addresses imported from the BO are of type 'contact'
+    When an address is of type contact, its address fields
+    are shared with the parent record. That's not what we
+    want here.
+
+    """
+    ctx.env.cr.execute("""
+        UPDATE res_partner
+        SET type = 'other'
+        WHERE type = 'contact'
+        AND   EXISTS (SELECT id
+                      FROM qoqa_address
+                      WHERE openerp_id = res_partner.id)
+    """)
+
+
 def main(ctx):
     """ Executed at the very beginning of the migration """
     cron_no_doall(ctx)
@@ -216,3 +235,4 @@ def main(ctx):
     claim_rma(ctx)
     fix_claim_rma_update(ctx)
     connector_shipper_rate_rename(ctx)
+    partner_contact(ctx)

@@ -10,3 +10,12 @@ def column_exists(ctx, table, column):
         WHERE table_name=%s and column_name=%s
     """, (table, column))
     return bool(ctx.env.cr.fetchone())
+
+
+def table_exists(ctx, table):
+    ctx.env.cr.execute("""
+        SELECT table_name
+        FROM information_schema.columns
+        WHERE table_name = %s
+    """, (table,))
+    return bool(ctx.env.cr.fetchone())

@@ -92,7 +92,7 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
 
     def _item_shipping(self, line, parent):
         # find carrier_id from parent record (sales order)
-        binder = self.binder_for('qoqa.shipper.rate')
+        binder = self.binder_for('qoqa.shipper.fee')
         qoqa_fee_id = parent.source['data']['attributes']['shipping_fee_id']
         fee = binder.to_openerp(qoqa_fee_id, unwrap=True)
         if not fee:

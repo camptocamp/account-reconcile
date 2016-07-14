@@ -17,7 +17,7 @@ from .common import recorder, QoQaTransactionCase
 ExpectedOrder = namedtuple(
     'ExpectedOrder',
     'name partner_id partner_invoice_id partner_shipping_id invoice_ref '
-    'client_order_ref qoqa_amount_total qoqa_shop_id offer_id carrier_id '
+    'client_order_ref qoqa_amount_total qoqa_shop_id offer_id '
     'qoqa_payment_amount'
 )
 ExpectedOrderLine = namedtuple(
@@ -51,15 +51,7 @@ class TestImportOrder(QoQaTransactionCase):
             'name': 'Drone',
             'default_code': 'drone',
         })
-        self.carrier_binding = self.env['qoqa.shipper.service'].create({
-            'backend_id': self.backend_record.id,
-            'qoqa_id': '1',
-            'delivery_type': 'fixed',
-            'name': 'Drone delivery',
-            'product_id': self.drone_product.id,
-            'partner_id': self.env.ref('base.main_company').partner_id.id,
-        })
-        self.fee_binding = self.env['qoqa.shipper.rate'].create({
+        self.fee_binding = self.env['qoqa.shipper.fee'].create({
             'backend_id': self.backend_record.id,
             'qoqa_id': '1000001',
             'delivery_type': 'fixed',
@@ -154,7 +146,6 @@ class TestImportOrder(QoQaTransactionCase):
                 qoqa_amount_total=20700.0,
                 qoqa_shop_id=shop,
                 offer_id=offer,
-                carrier_id=self.carrier_binding.openerp_id,
                 qoqa_payment_amount=6900,
             ),
         ]

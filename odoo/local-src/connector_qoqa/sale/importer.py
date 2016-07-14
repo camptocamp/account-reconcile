@@ -249,8 +249,6 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
         (iso8601_to_utc('updated_at'), 'updated_at'),
         (backend_to_m2o('website_id'), 'qoqa_shop_id'),
         (backend_to_m2o('offer_id'), 'offer_id'),
-        (backend_to_m2o('shipping_carrier_id',
-                        binding='qoqa.shipper.service'), 'carrier_id'),
     ]
 
     @mapping

@@ -25,6 +25,10 @@ latest (unreleased)
 
 * Implement cancellation of credit notes in the QoQa connector
 
+* Remove QoQa Shipper Services
+* Rename QoQa Shipper Rates to QoQa Shipper Fees
+* QoQa Package types are now "delivery.carrier"
+
 **Bugfixes**
 
 **Build**

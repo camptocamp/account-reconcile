@@ -58,17 +58,20 @@ class QoQaTrackingExporter(Exporter):
         for package, operations in packages.iteritems():
             if package:
                 number = package.name
-                qoqa_packaging_id = self._get_qoqa_id('product.packaging',
-                                                      package.packaging_id)
             else:
                 # if lines are not linked to a tracking, we use the
                 # tracking number directly written on the picking
                 number = picking_binding.carrier_tracking_ref
-                qoqa_packaging_id = None
 
+            qoqa_package_type_id = None
+            if picking_binding.carrier_id:
+                qoqa_package_type_id = self._get_qoqa_id(
+                    'qoqa.shipper.package.type',
+                    picking_binding.carrier_id.id,
+                )
             package_dict = {
                 'tracking_number': number or "",
-                'shipping_package_type_id': qoqa_packaging_id,
+                'shipping_package_type_id': qoqa_package_type_id,
             }
             items = []
             for operation in operations:

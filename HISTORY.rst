@@ -21,6 +21,9 @@ latest (unreleased)
 
 **Data Migration**
 
+* Modules are now set as 'uninstalled' before we run anthem to prevent a lot
+  of warnings at the start of anthem (which imports 'openerp')
+
 **Features and Improvements**
 
 * Implement cancellation of credit notes in the QoQa connector

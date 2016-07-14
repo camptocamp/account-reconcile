@@ -192,7 +192,16 @@ class QoQaAdapter(CRUDAdapter):
                     'url': response.url,
                     }
             raise QoQaAPIAuthError(msg % vals)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except:
+            _logger.error(
+                'bad status received on: %s %s %s',
+                response.request.method,
+                response.url,
+                response.request.body,
+            )
+            raise
         try:
             parsed = json.loads(response.content)
         except ValueError as err:

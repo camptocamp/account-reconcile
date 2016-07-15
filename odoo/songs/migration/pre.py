@@ -224,6 +224,18 @@ def partner_contact(ctx):
                       FROM qoqa_address
                       WHERE openerp_id = res_partner.id)
     """)
+    ctx.env.cr.execute("""
+        UPDATE res_partner
+        SET type = 'contact'
+        WHERE type = 'default'
+        AND parent_id IS NULL
+    """)
+    ctx.env.cr.execute("""
+        UPDATE res_partner
+        SET type = 'other'
+        WHERE type = 'default'
+        AND parent_id IS NOT NULL
+    """)
 
 
 def main(ctx):

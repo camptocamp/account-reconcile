@@ -66,6 +66,12 @@ class ProductProduct(models.Model):
             record.create_binding()
         return record
 
+    @api.constrains('attribute_value_ids')
+    def _check_attribute_value_length(self):
+        for record in self:
+            for attribute_value in record.attribute_value_ids:
+                attribute_value._check_name_length()
+
 
 @qoqa
 class QoQaProductAdapter(QoQaAdapter):

@@ -35,6 +35,7 @@ latest (unreleased)
   might still be longer but are not allowed to be used.
 * QoQa users are no longer imported as companies, now Odoo 9 allows an
   individual to have addresses
+* Allow to edit name, ref and barcode of variants inline in the tree view
 
 **Bugfixes**
 

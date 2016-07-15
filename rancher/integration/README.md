@@ -18,7 +18,7 @@ export SCENARIO_MAIN_TAG=qoqa
 export ADMIN_PASSWD=# set an admin password (anything, we don't use it)
 export RUNNING_ENV=integration
 export DEMO=none
-export WORKERS=4
+export WORKERS=6
 export MAX_CRON_THREADS=2
 export LOG_LEVEL=info
 export LOG_HANDLER=:INFO
@@ -28,7 +28,7 @@ export LIMIT_MEMORY_HARD=2684354560
 export LIMIT_REQUEST=8192
 export LIMIT_TIME_CPU=86400
 export LIMIT_TIME_REAL=86400
-export ODOO_CONNECTOR_CHANNELS=root:2
+export ODOO_CONNECTOR_CHANNELS=root:3,root.connector_qoqa.fast:1,root.connector_qoqa.normal:1
 
 ```
 

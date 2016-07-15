@@ -31,6 +31,8 @@ latest (unreleased)
 * Remove QoQa Shipper Services
 * Rename QoQa Shipper Rates to QoQa Shipper Fees
 * QoQa Package types are now "delivery.carrier"
+* Forbid usage of attribute values with more than 25 chars. Historic values
+  might still be longer but are not allowed to be used.
 
 **Bugfixes**
 

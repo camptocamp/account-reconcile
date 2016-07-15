@@ -1,0 +1,327 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* qoqa_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 9.0e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-07-15 10:13+0000\n"
+"PO-Revision-Date: 2016-07-15 10:13+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_ageing
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_ageing
+msgid "Ageing"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_abv
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_abv
+msgid "Alcohol by volume"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,help:qoqa_product.field_product_product_base_default_code
+#: model:ir.model.fields,help:qoqa_product.field_product_template_base_default_code
+msgid "All generated variants' internal code will begin with this code."
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_appellation
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_appellation
+msgid "Appellation"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_base_default_code
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_base_default_code
+msgid "Base Reference"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_product_brand_id
+msgid "Brand"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_child_ids
+msgid "Children classes"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.actions.act_window,help:qoqa_product.action_wine_bottle
+#: model:ir.actions.act_window,help:qoqa_product.action_wine_class
+#: model:ir.actions.act_window,help:qoqa_product.action_wine_type
+#: model:ir.actions.act_window,help:qoqa_product.action_wine_winemaker
+msgid "Click to create a new wine class."
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_code
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_code
+msgid "Code"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_complete_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_complete_name
+msgid "Complete name"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_country_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_country_id
+msgid "Country"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_create_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_create_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_create_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_create_date
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_create_date
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_create_date
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_taxes_id
+msgid "Customer Taxes"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_display_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_display_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_display_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: qoqa_product
+#: code:addons/qoqa_product/models/wine.py:128
+#, python-format
+msgid "Error! You cannot create recursive classes."
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_property_account_expense_id
+msgid "Expense Account"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_form_view
+msgid "General"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_id
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_id
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_id
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_id
+msgid "ID"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_property_account_income_id
+msgid "Income Account"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle___last_update
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class___last_update
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type___last_update
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_write_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_write_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_write_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_write_date
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_write_date
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_write_date
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_left
+msgid "Left Parent"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_is_liquor
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_is_liquor
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_form_view
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_search_view
+msgid "Liquor"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_millesime
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_millesime
+msgid "Millesime"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_type_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_name
+msgid "Name"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_id
+msgid "Parent class"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_product
+msgid "Product"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_right
+msgid "Right Parent"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,help:qoqa_product.field_product_product_product_brand_id
+msgid "Select a brand for this product"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,help:qoqa_product.field_product_product_property_account_expense_id
+msgid "This account will be used for invoices instead of the default one to value expenses for the current product."
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,help:qoqa_product.field_product_product_property_account_income_id
+msgid "This account will be used for invoices instead of the default one to value sales for the current product."
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_supplier_taxes_id
+msgid "Vendor Taxes"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_bottle_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_bottle_id
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_volume
+msgid "Volume"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_is_wine
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_is_wine
+#: model:ir.ui.menu,name:qoqa_product.wine_config_main
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_form_view
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_search_view
+msgid "Wine"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_form_view
+msgid "Wine / Liquor"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_wine_bottle
+msgid "Wine Bottle"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.actions.act_window,name:qoqa_product.action_wine_bottle
+#: model:ir.ui.menu,name:qoqa_product.menu_wine_bottle
+msgid "Wine Bottles"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_wine_class
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_class_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_class_id
+msgid "Wine Class"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.actions.act_window,name:qoqa_product.action_wine_class
+#: model:ir.actions.act_window,name:qoqa_product.action_wine_type
+#: model:ir.actions.act_window,name:qoqa_product.action_wine_winemaker
+#: model:ir.ui.menu,name:qoqa_product.menu_wine_class
+#: model:ir.ui.view,arch_db:qoqa_product.view_wine_class_form
+msgid "Wine Classes"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_wine_type
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_type_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_type_id
+msgid "Wine Type"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.menu,name:qoqa_product.menu_wine_type
+msgid "Wine Types"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.menu,name:qoqa_product.menu_wine_winemaker
+msgid "Wine Winemakers"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.view_wine_bottle_form
+msgid "Wine bottles"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_region
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_region
+msgid "Wine region"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_short_name
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_short_name
+msgid "Wine short name"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_wine_winemaker
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_winemaker_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_winemaker_id
+msgid "Winemaker"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_attribute_value
+msgid "product.attribute.value"
+msgstr ""
+

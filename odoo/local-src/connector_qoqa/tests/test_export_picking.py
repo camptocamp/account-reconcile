@@ -34,8 +34,11 @@ class TestExportPicking(QoQaTransactionCase):
 
         self.carrier = self.env['delivery.carrier'].create({
             'partner_id': self.carrier_partner.id,
-            'name': 'Unittest carrier',
+            'name': 'colis < 1kg',
         })
+        self.create_binding_no_export(
+            'qoqa.shipper.package.type', self.carrier.id, qoqa_id='7'
+        )
 
         self.product_1 = self.env['product.product'].create({
             'name': 'Unittest P1'
@@ -55,11 +58,6 @@ class TestExportPicking(QoQaTransactionCase):
                 'product_uom': self.product_1.uom_id.id,
             })],
             'pricelist_id': self.env.ref('product.list0').id,
-        })
-
-        self.packacking = self.env['product.packaging'].create({
-            'name': 'colis < 1kg',
-            'qoqa_id': 7,
         })
 
         procurement = self.env['procurement.order'].create({
@@ -116,7 +114,6 @@ class TestExportPicking(QoQaTransactionCase):
             package_id = self.picking.put_in_pack()
             package = self.env['stock.quant.package'].browse(package_id)
             package.name = package_ref
-            package.packaging_id = self.packacking.id
 
         self.picking.do_transfer()
         picking_binding = self.env['qoqa.stock.picking'].search([

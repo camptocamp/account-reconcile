@@ -2,20 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from common import column_exists
-
-
-def reset_modules_state(ctx):
-    """ Reset 'state' of ir_module_module
-
-    When we receive the database from the migration service, addons are
-    'to upgrade', set them to uninstalled.
-    """
-    ctx.env.cr.execute("""
-        UPDATE ir_module_module
-        SET state = 'uninstalled'
-        WHERE state IN ('to install', 'to upgrade')
-    """)
+from common import column_exists, table_exists
 
 
 def cron_no_doall(ctx):
@@ -175,12 +162,77 @@ def fix_claim_rma_update(ctx):
     """)
 
 
+def connector_shipper_rate_rename(ctx):
+    """ rename rate to fee in connector binding """
+    if table_exists(ctx, 'qoqa_shipper_fee'):
+        return
+    ctx.env.cr.execute("""
+        ALTER TABLE qoqa_shipper_rate RENAME TO qoqa_shipper_fee
+    """)
+    ctx.env.cr.execute("""
+        ALTER SEQUENCE qoqa_shipper_rate_id_seq
+        RENAME TO qoqa_shipper_fee_id_seq
+    """)
+    ctx.env.cr.execute("""
+        SELECT i.relname as indname
+        FROM   pg_index as idx
+        JOIN   pg_class as i
+        ON     i.oid = idx.indexrelid
+        WHERE  i.relname LIKE '%qoqa_shipper_rate%'
+    """)
+    for index_name, in ctx.env.cr.fetchall():
+        query = "ALTER INDEX %s RENAME TO %s" % (
+            index_name,
+            index_name.replace('qoqa_shipper_rate', 'qoqa_shipper_fee')
+        )
+        ctx.env.cr.execute(query)
+    ctx.env.cr.execute("""
+        SELECT
+           constraint_name, table_name
+        FROM
+            information_schema.table_constraints
+        WHERE constraint_type = 'FOREIGN KEY'
+        AND   constraint_name LIKE '%qoqa_shipper_rate%';
+    """)
+    for constraint_name, table_name in ctx.env.cr.fetchall():
+        query = ("""
+            ALTER TABLE %s
+            RENAME CONSTRAINT %s
+            TO %s
+        """) % (table_name,
+                constraint_name,
+                constraint_name.replace('qoqa_shipper_rate',
+                                        'qoqa_shipper_fee')
+                )
+        ctx.env.cr.execute(query)
+
+
+def partner_contact(ctx):
+    """ Convert 'contact' addresses to 'other'
+
+    Addresses imported from the BO are of type 'contact'
+    When an address is of type contact, its address fields
+    are shared with the parent record. That's not what we
+    want here.
+
+    """
+    ctx.env.cr.execute("""
+        UPDATE res_partner
+        SET type = 'other'
+        WHERE type = 'contact'
+        AND   EXISTS (SELECT id
+                      FROM qoqa_address
+                      WHERE openerp_id = res_partner.id)
+    """)
+
+
 def main(ctx):
     """ Executed at the very beginning of the migration """
-    reset_modules_state(ctx)
     cron_no_doall(ctx)
     clean_uninstalled(ctx)
     move_wine_ch_xml_ids(ctx)
     fix_claim_line_origin(ctx)
     claim_rma(ctx)
     fix_claim_rma_update(ctx)
+    connector_shipper_rate_rename(ctx)
+    partner_contact(ctx)

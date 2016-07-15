@@ -11,29 +11,29 @@ from ..backend import qoqa
 class DeliveryCarrier(models.Model):
     _inherit = 'delivery.carrier'
 
-    qoqa_bind_service_ids = fields.One2many(
-        comodel_name='qoqa.shipper.service',
+    qoqa_bind_package_type_ids = fields.One2many(
+        comodel_name='qoqa.shipper.package.type',
         inverse_name='openerp_id',
-        string='QoQa Bindings (Services)',
+        string='QoQa Bindings (Package Types)',
     )
-    qoqa_bind_rate_ids = fields.One2many(
-        comodel_name='qoqa.shipper.rate',
+    qoqa_bind_fee_ids = fields.One2many(
+        comodel_name='qoqa.shipper.fee',
         inverse_name='openerp_id',
         string='QoQa Bindings (Rates)',
     )
 
 
-class QoqaShipperRate(models.Model):
-    """ QoQa Shipper Rate
+class QoqaShipperPackageType(models.Model):
+    """ QoQa Shipper Package Type
 
-    A shipper rate on QoQa is assigned to a deal and gives
-    the shipping amount of the sales orders.
+    This is want we send alongside to the tracking number
+    to the QoQa API to show what the delivery method was.
 
     """
-    _name = 'qoqa.shipper.rate'
+    _name = 'qoqa.shipper.package.type'
     _inherit = 'qoqa.binding'
     _inherits = {'delivery.carrier': 'openerp_id'}
-    _description = 'QoQa Shipper Rate'
+    _description = 'QoQa Shipper Package Type'
 
     openerp_id = fields.Many2one(
         comodel_name='delivery.carrier',
@@ -43,18 +43,29 @@ class QoqaShipperRate(models.Model):
         ondelete='restrict',
     )
 
+    def _auto_init(self, cr, context=None):
+        # remove the uniq constraint (from qoqa.binding), because
+        # we should be allowed to have several delivery methods on Odoo
+        # for one on QoQa
+        self._sql_constraints = filter(
+            lambda (name, __, ___): name != 'qoqa_binding_uniq',
+            self._sql_constraints
+        )
+        super(QoqaShipperPackageType, self)._auto_init(cr, context=context)
 
-class QoqaShipperService(models.Model):
-    """ QoQa Shipper Service
 
-    A shipper service on QoQa represents the delivery method.
-    It is the method used to print the shipping labels.
+class QoqaShipperFee(models.Model):
+    """ QoQa Shipper Fee
+
+    Used on QoQa for the amount of the shipping fee.
+    We map it in order to set the name and the product_id of the shipping order
+    line.
 
     """
-    _name = 'qoqa.shipper.service'
+    _name = 'qoqa.shipper.fee'
     _inherit = 'qoqa.binding'
     _inherits = {'delivery.carrier': 'openerp_id'}
-    _description = 'QoQa Shipper Service'
+    _description = 'QoQa Shipper Fee'
 
     openerp_id = fields.Many2one(
         comodel_name='delivery.carrier',
@@ -67,8 +78,8 @@ class QoqaShipperService(models.Model):
 
 @qoqa
 class ShipperBinder(QoQaInheritsBinder):
-    _model_name = ['qoqa.shipper.service',
-                   'qoqa.shipper.rate',
+    _model_name = ['qoqa.shipper.package.type',
+                   'qoqa.shipper.fee',
                    ]
 
     def bind(self, external_id, binding_id):

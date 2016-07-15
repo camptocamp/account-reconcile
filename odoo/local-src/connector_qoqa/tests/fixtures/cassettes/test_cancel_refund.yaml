@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: PUT
+    uri: https://api-sprint.qoqa.com/v1/admin/credit_notes/9/cancel
+  response:
+    body: {string: !!python/unicode '{"cancelled":true}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 14 Jul 2016 06:28:20 GMT']
+      etag: [W/"79a34c8bca308e1c5d161dbc86973e1e"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [9c5143d7-5c21-4c46-aae5-43001f28e519]
+      x-runtime: ['0.050854']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

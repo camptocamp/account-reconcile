@@ -26,7 +26,7 @@ class AddressBatchImport(DelayedBatchImporter):
 
 
 @qoqa
-class AddressImport(QoQaImporter):
+class AddressImporter(QoQaImporter):
     _model_name = 'qoqa.address'
 
     def _import_dependencies(self):
@@ -81,7 +81,9 @@ class AddressImportMapper(ImportMapper, FromDataAttributes):
     @only_create
     @mapping
     def type(self, record):
-        return {'type': 'contact'}
+        # do not set 'contact', otherwise the address fields are shared with
+        # the parent
+        return {'type': 'other'}
 
     @only_create
     @mapping

@@ -21,13 +21,25 @@ latest (unreleased)
 
 **Data Migration**
 
+* Modules are now set as 'uninstalled' before we run anthem to prevent a lot
+  of warnings at the start of anthem (which imports 'openerp')
+
 **Features and Improvements**
 
+* Implement cancellation of credit notes in the QoQa connector
+
+* Remove QoQa Shipper Services
+* Rename QoQa Shipper Rates to QoQa Shipper Fees
+* QoQa Package types are now "delivery.carrier"
+
 **Bugfixes**
+
+* Imported addresses do no longer takes the address fields of their parent
 
 **Build**
 
 * Activate job runner on Rancher stacks
+* Use odoo-project image version 1.0.3
 
 **Documentation**
 

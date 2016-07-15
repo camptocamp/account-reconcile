@@ -62,7 +62,6 @@ def create_refund(session, model_name, backend_id, refund_id):
         return exporter.run(refund_id)
 
 
-# TODO: cancel of refund does not exist yet in the qoqa API
 @qoqa
 class CancelRefundExporter(Exporter):
     _model_name = 'account.invoice'
@@ -82,12 +81,16 @@ class CancelRefundExporter(Exporter):
         if not origin_payment_id:
             raise exceptions.UserError(
                 _('Cannot be canceled on the QoQa backend because '
-                  'no payment ID could be retrieved for the sales order %s') %
+                  'there is no transaction id on the credit note') %
                 qsale.name)
-        adapter = self.unit_for(BackendAdapter, 'qoqa.payment')
+        adapter = self.unit_for(BackendAdapter, 'qoqa.credit.note')
 
-        payment_id = adapter.cancel_refund(origin_payment_id)
-        return _('Cancel refund with payment id: %s' % payment_id)
+        result = adapter.cancel(origin_payment_id)
+        if not result:
+            raise exceptions.UserError(
+                _('Credit note could not be cancelled')
+            )
+        return _('Canceled refund with payment id: %s' % origin_payment_id)
 
 
 @job(default_channel='root.connector_qoqa.fast')

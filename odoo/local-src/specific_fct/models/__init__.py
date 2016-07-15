@@ -6,4 +6,4 @@ from . import partner
 from . import account_invoice
 from . import account_payment_mode
 from . import purchase
-from . import picking_dispatch
+from . import stock_batch_picking

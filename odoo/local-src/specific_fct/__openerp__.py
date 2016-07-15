@@ -9,15 +9,13 @@
     'depends': [
         'account_analytic_required',
         'sale',
-        'stock_picking_dispatch',
+        'stock_batch_picking',
         'stock_picking_mass_assign',
         'product',
         'purchase',
         'purchase_analytic_global',
         'delivery_carrier_label_postlogistics_shop_logo',
         'qoqa_offer',
-        # TODO: Waiting for connector
-        # 'connector_qoqa',
         # TODO: waiting for http://jira.qoqa.com/browse/MIGO-127
         # 'delivery_carrier_label_dispatch',
         'base_transaction_id',
@@ -32,7 +30,7 @@
         'views/hr_holidays_view.xml',
         'views/partner_view.xml',
         'views/account_payment_mode_view.xml',
-        'views/picking_dispatch_view.xml',
+        'views/stock_batch_picking_view.xml',
         'views/product_view.xml',
         'views/purchase_view.xml',
         'views/sale_view.xml',

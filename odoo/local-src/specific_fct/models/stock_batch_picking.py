@@ -5,8 +5,8 @@
 from openerp import fields, models
 
 
-class PickingDispatch(models.Model):
-    _inherit = 'picking.dispatch'
+class StockBatchPicking(models.Model):
+    _inherit = 'stock.batch.picking'
 
     active = fields.Boolean(
         'Active', default=True,

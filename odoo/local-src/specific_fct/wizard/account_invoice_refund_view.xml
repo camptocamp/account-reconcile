@@ -8,7 +8,7 @@
             <xpath expr="//form/group[1]/group[1]" position="before">
                 <group colspan="2">
                     <field name="warning" class="account_invoice_refund_warning" readonly="1"
-                           attrs="{'invisible': [('warning', '=', False)]}"/>
+                           attrs="{'invisible': [('warning', '=', False)]}" color="red"/>
                 </group>
             </xpath>
         </field>

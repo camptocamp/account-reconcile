@@ -13,6 +13,7 @@ class AccountInvoiceRefund(models.TransientModel):
 
     def _get_warning_message(self):
         invoice_model = self.env['account.invoice']
+        sale_order_model = self.env['sale.order']
 
         invoice = False
         # Check that we called the wizard from an invoice
@@ -37,27 +38,27 @@ class AccountInvoiceRefund(models.TransientModel):
                                      DEFAULT_SERVER_DATE_FORMAT)
         delta_days = (datetime.now() - inv_date).days
 
-        payments = invoice.sale_ids
-        for payment in payments:
-            if (payment.payment_method_id.refund_min_date and
-                    payment.payment_method_id.refund_min_date >
+        sales = sale_order_model.search([('name', '=', invoice.origin)])
+        for sale in sales:
+            if (sale.payment_mode_id.refund_min_date and
+                    sale.payment_mode_id.refund_min_date >
                     invoice.date_invoice):
                 return (
                     "La commande ne sera pas remboursée par le "
                     "provider de paiement (Datatrans, Mercanet, "
                     "etc.) car il s'agit d'une commande "
                     "datantrans d'avant le " +
-                    payment.payment_method_id.refund_min_date
+                    sale.payment_mode_id.refund_min_date
                 )
-            elif (payment.payment_method_id.refund_max_days and
-                  payment.payment_method_id.refund_max_days <
+            elif (sale.payment_mode_id.refund_max_days and
+                  sale.payment_mode_id.refund_max_days <
                   delta_days):
                 return (
                     "La commande ne sera pas remboursée par le "
                     "provider de paiement (Datatrans, Mercanet, "
                     "etc.) car la méthode de paiement n'autorise "
                     "le remboursement que pour %s jours maximum"
-                    % payment.payment_method_id.refund_max_days
+                    % sale.payment_mode_id.refund_max_days
                 )
         if len(invoice.refund_ids) > 0:
             return ("La commande possède déjà %d avoir(s)" %

@@ -24,15 +24,13 @@ class AccountInvoice(models.Model):
     def action_move_create(self):
         # ensure that there is no analytic accounts on lines
         # when the policy is never
-        # TODO: waiting for https://github.com/OCA/account-analytic/pull/59
-        # lines = self.mapped('invoice_line_ids').filtered(
-        #     lambda l: (
-        #         l.account_id.user_type_id.analytic_policy == 'never'
-        #         and l.account_analytic_id
-        #     )
-        # )
-        # lines.write({'account_analytic_id': False})
-
+        lines = self.mapped('invoice_line_ids').filtered(
+            lambda l: (
+                l.account_id.user_type_id.analytic_policy == 'never'
+                and l.account_analytic_id
+            )
+        )
+        lines.write({'account_analytic_id': False})
         return super(AccountInvoice, self).action_move_create()
 
     @api.multi

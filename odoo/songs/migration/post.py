@@ -2,6 +2,8 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from __future__ import print_function
+
 from . import post_product
 
 
@@ -183,12 +185,56 @@ def fix_journal_ids(ctx):
     """, (tuple([m[0] for m in mapping]),))
 
 
-def disable_shipper_services(ctx):
-    """ Disable qoqa shipper services not used anymore """
+def configure_shipper_package_types(ctx):
+    """ Configure delivery carriers
+
+    Disable qoqa shipper services not used anymore and configure
+    the new 'package types'
+
+    Based on
+    https://docs.google.com/a/qoqa.com/spreadsheets/d/14qfCiFSvqnf_ZidqMbeljyx79BEq7IyjA3DjtVXpNTA/edit?usp=sharing
+
+    """
+    inactive = (65, 66, 68, 50, 61, 49, 48, 47, 46, 52, 45, 55)
     ctx.env.cr.execute("""
         UPDATE delivery_carrier SET active = false
-        WHERE qoqa_type = 'service'
+        WHERE id IN %s
+    """, (inactive,))
+    mappings = [(125, 14),
+                (77, 8),
+                (67, 7),
+                (60, 5),
+                (59, 13),
+                (58, 2),
+                (57, 12),
+                (56, 1),
+                (54, 6),
+                (53, 8),
+                (44, 14),
+                ]
+    # just in case we run the migration script 2 times:
+    ctx.env.cr.execute("""
+        DELETE FROM qoqa_shipper_package_type
     """)
+    check_query = "SELECT id FROM delivery_carrier WHERE id = %s"
+    insert_query = ("""
+            INSERT INTO qoqa_shipper_package_type
+                (openerp_id, qoqa_id, backend_id,
+                 create_uid, create_date,
+                 write_uid, write_date)
+            VALUES
+                (%s, %s,
+                 (SELECT id FROM qoqa_backend),
+                 1, NOW(), 1, NOW())
+    """)
+    for carrier_id, qoqa_id in mappings:
+        ctx.env.cr.execute(check_query, (carrier_id,))
+        if ctx.env.cr.fetchone():
+            ctx.env.cr.execute(insert_query, (carrier_id, qoqa_id))
+        else:
+            print('Could not create the qoqa_shipper_package_type with '
+                  'qoqa_id %s because the delivery_carrier with id %s '
+                  'is missing.' % (qoqa_id, carrier_id))
 
 
 def main(ctx):
@@ -202,4 +248,4 @@ def main(ctx):
     connector_qoqa(ctx)
     mail_alias(ctx)
     fix_journal_ids(ctx)
-    disable_shipper_services(ctx)
+    configure_shipper_package_types(ctx)

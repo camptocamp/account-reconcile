@@ -37,8 +37,6 @@
     - oca refs/pull/137/head
     # account mass reconcile extension
     - oca refs/pull/139/head
-    # Correct missing underscore
-    - oca refs/pull/147/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

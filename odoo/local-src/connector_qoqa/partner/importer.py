@@ -83,9 +83,3 @@ class ResPartnerImportMapper(ImportMapper, FromDataAttributes):
             binder = self.binder_for('res.lang')
             lang = binder.to_openerp(qoqa_lang)
             return {'lang': lang.code}
-
-    @only_create
-    @mapping
-    def is_company(self, record):
-        """ partners are companies so we can bind addresses on them """
-        return {'is_company': True}

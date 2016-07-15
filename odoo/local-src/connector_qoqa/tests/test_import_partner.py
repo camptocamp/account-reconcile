@@ -15,7 +15,7 @@ from .common import recorder, QoQaTransactionCase
 
 ExpectedPartner = namedtuple(
     'ExpectedPartner',
-    'name qoqa_name email created_at updated_at lang'
+    'name qoqa_name email created_at updated_at lang is_company'
 )
 ExpectedAddress = namedtuple(
     'ExpectedAddress',
@@ -70,7 +70,8 @@ class TestImportPartner(QoQaTransactionCase):
                 email='qoqasien@qoqa.com',
                 created_at='2016-04-19 12:02:11',
                 updated_at='2016-04-19 12:02:11',
-                lang='fr_FR'
+                lang='fr_FR',
+                is_company=False,
             )]
 
         self.assert_records(expected, partner_bindings)

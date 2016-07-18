@@ -23,18 +23,18 @@ class PurchaseOrder(models.Model):
     # redefine one part from purchase order merge: the notes
     # should not be concatenated.
 
-    #def _update_merged_order_data(self, merged_data, order):
-        #if order.date_order < merged_data['date_order']:
-            #merged_data['date_order'] = order.date_order
-        #if order.origin:
-            #if (
-                #order.origin not in merged_data['origin'] and
-                #merged_data['origin'] not in order.origin
-            #):
-                #merged_data['origin'] = (
-                    #(merged_data['origin'] or '') + ' ' + order.origin
-                #)
-        #return merged_data
+    # def _update_merged_order_data(self, merged_data, order):
+    #    if order.date_order < merged_data['date_order']:
+    #         merged_data['date_order'] = order.date_order
+    #     if order.origin:
+    #         if (
+    #             order.origin not in merged_data['origin'] and
+    #             merged_data['origin'] not in order.origin
+    #         ):
+    #             merged_data['origin'] = (
+    #                 (merged_data['origin'] or '') + ' ' + order.origin
+    #             )
+    #     return merged_data
 
 
 class PurchaseOrderLine(models.Model):

@@ -24,6 +24,7 @@ latest (unreleased)
 * Modules are now set as 'uninstalled' before we run anthem to prevent a lot
   of warnings at the start of anthem (which imports 'openerp')
 * Configure new delivery carrier mappings with the new QoQa package types
+* Move account statement profiles to the configuration of the journals
 
 **Features and Improvements**
 

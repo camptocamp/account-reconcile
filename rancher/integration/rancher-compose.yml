@@ -133,7 +133,9 @@ odoo:
 lb:
   scale: 1
   load_balancer_config:
-    haproxy_config: {}
+    haproxy_config:
+      defaults: timeout server 6h
+      global: ''
   default_cert: '*.qoqa.com'
   health_check:
     port: 42

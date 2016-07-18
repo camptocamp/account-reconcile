@@ -55,6 +55,8 @@ latest (unreleased)
 
 * Activate job runner on Rancher stacks
 * Use odoo-project image version 1.0.3
+* Extend the server timeout of HAProxy on Rancher to 6h to align with the nginx
+  option (we can have very long requests on Odoo!)
 
 **Documentation**
 

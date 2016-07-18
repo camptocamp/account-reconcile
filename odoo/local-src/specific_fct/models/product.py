@@ -37,15 +37,7 @@ class ProductTemplate(models.Model):
 
 
 class ProductProduct(models.Model):
-    """ Do not copy the ean13 product code
-    """
     _inherit = 'product.product'
-
-    @api.multi
-    def copy(self, default=None):
-        default = dict(default or {})
-        default.update({'ean13': False})
-        return super(ProductProduct, self).copy(default)
 
     @api.onchange('categ_id')
     def onchange_categ_id(self):

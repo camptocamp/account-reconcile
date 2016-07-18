@@ -95,9 +95,21 @@
     </field>
   </record>
 
-  <record id="product_product_tree_view" model="ir.ui.view">
+  <!--
+
+  They want to be able to edit some fields in the tree view,
+  so we activate the editable mode. However, when we activate
+  the editable mode, we cannot anymore reach the form view.
+
+  So we make a copy of the view (primary mode) and we add a new
+  action / menu.
+
+  -->
+  <record id="product_product_tree_inline_edit_view" model="ir.ui.view">
     <field name="name">product.product.tree</field>
     <field name="model">product.product</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="50"/>
     <field name="inherit_id" ref="product_brand.view_product_variant_tree_brand"/>
     <field name="arch" type="xml">
       <tree position="attributes">
@@ -125,5 +137,20 @@
       </field>
     </field>
   </record>
+
+  <record id="product_product_edit_tree_view" model="ir.actions.act_window">
+      <field name="name">Product Variants (List)</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">product.product</field>
+      <field name="view_mode">tree</field>
+      <field name="view_type">form</field>
+      <field name="context">{"search_default_filter_to_sell":1}</field>
+      <field name="view_id" ref="product_product_tree_inline_edit_view"/>
+      <field name="search_view_id" ref="product.product_search_form_view"/>
+  </record>
+
+  <menuitem id="menu_product_product_edit_tree_view"
+    action="product_product_edit_tree_view"
+    parent="base.menu_sales" groups="product.group_product_variant" sequence="100"/>
 
 </odoo>

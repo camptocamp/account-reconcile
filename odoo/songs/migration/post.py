@@ -237,6 +237,30 @@ def configure_shipper_package_types(ctx):
                   'is missing.' % (qoqa_id, carrier_id))
 
 
+def move_journal_import_setup(ctx):
+    """ Move journal import setup
+
+    The configuration in account_statement_profile is now in account_journal
+    """
+    ctx.env.cr.execute("""
+        UPDATE account_journal j
+        SET used_for_import = true,
+            commission_account_id = p.commission_account_id,
+            receivable_account_id = p.receivable_account_id,
+            partner_id = p.partner_id,
+            message_last_post = p.message_last_post,
+            import_type = p.import_type,
+            last_import_date = p.last_import_date,
+            launch_import_completion = p.launch_import_completion,
+            s3_import = CASE WHEN j.id IN (51, 28, 27,  72, 76) THEN true
+                             ELSE false
+                        END
+        FROM account_statement_profile p
+        WHERE j.id = p.journal_id
+    """)
+    # TODO account_move_completion_rule
+
+
 def main(ctx):
     post_product.product_attribute_variants(ctx)
     post_product.product_brand(ctx)
@@ -249,3 +273,4 @@ def main(ctx):
     mail_alias(ctx)
     fix_journal_ids(ctx)
     configure_shipper_package_types(ctx)
+    move_journal_import_setup(ctx)

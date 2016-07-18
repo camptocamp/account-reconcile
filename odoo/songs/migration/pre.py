@@ -238,6 +238,37 @@ def partner_contact(ctx):
     """)
 
 
+def crm_unclaimed_fix_ids(ctx):
+    ctx.env.cr.execute("""
+        WITH old_new_categ_ids AS (
+          SELECT 68 as old_id, 39 as new_id
+          UNION
+          SELECT 69, 41
+          UNION
+          SELECT 70, 40
+          UNION
+          SELECT 71, 44
+        )
+        UPDATE res_company c
+        SET unclaimed_initial_categ_id = (
+                SELECT new_id
+                FROM old_new_categ_ids
+                WHERE old_id = c.unclaimed_initial_categ_id),
+            unclaimed_first_reminder_categ_id = (
+                SELECT new_id
+                FROM old_new_categ_ids
+                WHERE old_id = c.unclaimed_first_reminder_categ_id),
+            unclaimed_second_reminder_categ_id = (
+                SELECT new_id
+                FROM old_new_categ_ids
+                WHERE old_id = c.unclaimed_second_reminder_categ_id),
+            unclaimed_final_categ_id = (
+                SELECT new_id
+                FROM old_new_categ_ids
+                WHERE old_id = c.unclaimed_final_categ_id)
+    """)
+
+
 def main(ctx):
     """ Executed at the very beginning of the migration """
     cron_no_doall(ctx)
@@ -248,3 +279,4 @@ def main(ctx):
     fix_claim_rma_update(ctx)
     connector_shipper_rate_rename(ctx)
     partner_contact(ctx)
+    crm_unclaimed_fix_ids(ctx)

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="vpicktree" model="ir.ui.view">
+    <field name="name">stock.picking.tree</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.vpicktree"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="number_of_products" invisible="1"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="view_picking_form" model="ir.ui.view">
+    <field name="name">stock.picking.form</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="lang"/>
+      </field>
+      <button name="force_assign" position="attributes">
+        <attribute name="groups">specific_fct.group_admin_user</attribute>
+      </button>
+    </field>
+  </record>
+  <record id="view_move_tree" model="ir.ui.view">
+    <field name="name">stock.move.tree</field>
+    <field name="model">stock.move</field>
+    <field name="inherit_id" ref="stock.view_move_tree"/>
+    <field name="arch" type="xml">
+      <button name="%(stock.move_scrap)d" position="attributes">
+        <attribute name="states">draft,waiting,confirmed,assigned,done</attribute>
+      </button>
+    </field>
+  </record>
+  <record id="view_move_picking_tree" model="ir.ui.view">
+    <field name="name">stock.move.tree</field>
+    <field name="model">stock.move</field>
+    <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+      <field name="arch" type="xml">
+        <button name="%(stock.move_scrap)d" position="attributes">
+          <attribute name="states">draft,waiting,confirmed,assigned,done</attribute>
+        </button>
+      </field>
+    </record>
+    <record id="view_move_form" model="ir.ui.view">
+      <field name="name">stock.move.form</field>
+      <field name="model">stock.move</field>
+      <field name="inherit_id" ref="stock.view_move_form"/>
+      <field name="arch" type="xml">
+        <button name="%(stock.move_scrap)d" position="attributes">
+          <attribute name="states">draft,waiting,confirmed,assigned,done</attribute>
+        </button>
+      </field>
+    </record>
+    <record id="view_move_picking_form" model="ir.ui.view">
+      <field name="name">stock.move.form</field>
+      <field name="model">stock.move</field>
+      <field name="inherit_id" ref="stock.view_move_picking_form"/>
+      <field name="arch" type="xml">
+        <button name="%(stock.move_scrap)d" position="attributes">
+          <attribute name="states">draft,waiting,confirmed,assigned,done</attribute>
+        </button>
+      </field>
+    </record>
+    <record id="view_move_tree_receipt_picking" model="ir.ui.view">
+      <field name="name">stock.move.tree2</field>
+      <field name="model">stock.move</field>
+      <field name="inherit_id" ref="stock.view_move_tree_receipt_picking"/>
+      <field name="arch" type="xml">
+        <button name="%(stock.move_scrap)d" position="attributes">
+          <attribute name="states">draft,waiting,confirmed,assigned,done</attribute>
+        </button>
+      </field>
+    </record>
+    <record id="view_picking_internal_search" model="ir.ui.view">
+      <field name="name">stock.picking.internal.search</field>
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+      <field name="arch" type="xml">
+        <field name="group_id" position="after">
+          <field name="number_of_products"/>
+        </field>
+        <field name="partner_id" position="after">
+          <field name="lang"/>
+        </field>
+        <group position="inside">
+          <filter string="Language" domain="[]" context="{'group_by': 'lang'}"/>
+        </group>
+      </field>
+    </record>
+</odoo>

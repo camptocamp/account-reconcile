@@ -1,82 +1,68 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2004-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp.osv import fields, orm
+
+from openerp import fields, models
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime
 
 
-class account_invoice_refund(orm.TransientModel):
+class AccountInvoiceRefund(models.TransientModel):
     _inherit = 'account.invoice.refund'
 
-    def _get_warning_message(self, cr, uid, context=None):
-        inv = False
-        # Check that we called the wizard from an invoice
-        active_id = context and \
-            context.get('active_model', False) == 'account.invoice' and \
-            context.get('active_id', False)
-        # For RMAs, the ID is in context['invoice_ids']
-        invoice_ids = context and context.get('invoice_ids', [])
-        if active_id:
-            inv = self.pool.get('account.invoice').browse(cr, uid, active_id,
-                                                          context=context)
-        elif invoice_ids:
-            inv = self.pool.get('account.invoice').browse(
-                cr, uid, invoice_ids[0], context=context)
+    def _get_warning_message(self):
+        invoice_model = self.env['account.invoice']
+        sale_order_model = self.env['sale.order']
 
-        if not (inv and inv.date_invoice):
+        invoice = False
+        # Check that we called the wizard from an invoice
+        if self.env.context.get('active_model', False) == 'account.invoice':
+            active_id = self.env.context.get('active_id', False)
+        else:
+            active_id = False
+
+        if active_id:
+            invoice = invoice_model.browse(active_id)
+        else:
+            # For RMAs, the ID is in context['invoice_ids']
+            invoice_ids = self.env.context.get('invoice_ids')
+            if invoice_ids:
+                invoice = invoice_model.browse(invoice_ids[0])
+
+        if not (invoice and invoice.date_invoice):
             return ("La facture ne possède pas de date de facturation! "
                     "Veuillez ajouter une date de facturation avant de "
                     "continuer.")
-        inv_date = datetime.strptime(inv.date_invoice,
+        inv_date = datetime.strptime(invoice.date_invoice,
                                      DEFAULT_SERVER_DATE_FORMAT)
-        delta = datetime.now() - inv_date
-        delta_days = delta.days
-        payments = inv.sale_ids
-        for payment in payments:
-            if (payment.payment_method_id.refund_min_date and
-                    payment.payment_method_id.refund_min_date >
-                    inv.date_invoice):
-                return ("La commande ne sera pas remboursée par le "
-                        "provider de paiement (Datatrans, Mercanet, "
-                        "etc.) car il s'agit d'une commande "
-                        "datantrans d'avant le " +
-                        payment.payment_method_id.refund_min_date)
-            elif (payment.payment_method_id.refund_max_days and
-                  payment.payment_method_id.refund_max_days <
+        delta_days = (datetime.now() - inv_date).days
+
+        sales = sale_order_model.search([('name', '=', invoice.origin)])
+        for sale in sales:
+            if (sale.payment_mode_id.refund_min_date and
+                    sale.payment_mode_id.refund_min_date >
+                    invoice.date_invoice):
+                return (
+                    "La commande ne sera pas remboursée par le "
+                    "provider de paiement (Datatrans, Mercanet, "
+                    "etc.) car il s'agit d'une commande "
+                    "datantrans d'avant le " +
+                    sale.payment_mode_id.refund_min_date
+                )
+            elif (sale.payment_mode_id.refund_max_days and
+                  sale.payment_mode_id.refund_max_days <
                   delta_days):
-                return ("La commande ne sera pas remboursée par le "
-                        "provider de paiement (Datatrans, Mercanet, "
-                        "etc.) car la méthode de paiement n'autorise "
-                        "le remboursement que pour %s jours maximum"
-                        % (payment.payment_method_id.refund_max_days))
-        if len(inv.refund_ids) > 0:
-            return ("La commande possède déjà %i avoir(s)" %
-                    len(inv.refund_ids))
+                return (
+                    "La commande ne sera pas remboursée par le "
+                    "provider de paiement (Datatrans, Mercanet, "
+                    "etc.) car la méthode de paiement n'autorise "
+                    "le remboursement que pour %s jours maximum"
+                    % sale.payment_mode_id.refund_max_days
+                )
+        if len(invoice.refund_ids) > 0:
+            return ("La commande possède déjà %d avoir(s)" %
+                    len(invoice.refund_ids))
         return ''
 
-    _columns = {
-        'warning': fields.char('Warning'),
-    }
-
-    _defaults = {
-        'warning': _get_warning_message,
-    }
+    warning = fields.Char('Warning', default=_get_warning_message)

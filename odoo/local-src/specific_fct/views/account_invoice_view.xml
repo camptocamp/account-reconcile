@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="invoice_supplier_form" model="ir.ui.view">
+        <field name="name">account.invoice.supplier.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="validation_agreement"/>
+            </field>
+            <field name="state" position="after">
+                <button name="button_validate_agreement"
+                        attrs="{'invisible': [('validation_agreement', '=', True)]}"
+                        type="object"
+                        string="Agreement validated"/>
+            </field>
+            <xpath expr="//button[@name='invoice_open']" position="after">
+                <button name="invoice_print" string="Print" type="object" groups="base.group_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter" model="ir.ui.view">
+        <field name="name">account.invoice.select</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <filter name="unpaid" position="after">
+                <separator/>
+                <filter name="approved" string="Agreement to validation"
+                        invisible="context.get('type') != 'in_invoice'"
+                        domain="[('validation_agreement', '=', True)]"/>
+            </filter>
+            <field name="partner_id" position="attributes">
+                <attribute name="domain">[('is_company', '=', True)]</attribute>
+            </field>
+            <!--<field name="user_id" position="after">-->
+                <!--<field name="refund_description_id" invisible="context.get('type') != 'out_refund'"/>-->
+            <!--</field>-->
+        </field>
+    </record>
+
+    <record id="invoice_tree" model="ir.ui.view">
+        <field name="name">account.invoice.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="arch" type="xml">
+            <data>
+                <field name="state" position="before">
+                    <field name="type" invisible="1"/>
+                    <field name="validation_agreement" invisible="context.get('type') != 'in_invoice'"/>
+                    <button name="button_validate_agreement"
+                            attrs="{'invisible': [('validation_agreement', '=', True)]}"
+                            type="object"
+                            string="Agreement validated"
+                            icon="gtk-paste-v"/>
+                </field>
+                <!--<field name="number" position="after">-->
+                    <!--<field name="refund_description_id" invisible="context.get('type') != 'out_refund'"/>-->
+                <!--</field>-->
+            </data>
+        </field>
+    </record>
+
+    <record id="invoice_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="attrs">{'invisible': [('type', '=', 'out_refund')]}</attribute>
+            </field>
+            <!--<field name="name" position="after">-->
+                <!--<field name="refund_description_id" attrs="{'invisible': [('type', '&lt;&gt;', 'out_refund')]}"/>-->
+            <!--</field>-->
+        </field>
+    </record>
+
+    <record id="view_refund_description_form" model="ir.ui.view">
+        <field name="name">account.refund.description.form</field>
+        <field name="model">account.refund.description</field>
+        <field name="arch" type="xml">
+            <form string="Refund Description">
+                <field name="name"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_refund_description_tree" model="ir.ui.view">
+        <field name="name">account.refund.description.tree</field>
+        <field name="model">account.refund.description</field>
+        <field name="arch" type="xml">
+            <tree string="Refund Description">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_refund_description_form" model="ir.actions.act_window">
+        <field name="name">Refund Descriptions</field>
+        <field name="res_model">account.refund.description</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_refund_description_form"
+              id="menu_action_refund_description_form"
+              parent="account.menu_finance_configuration"
+              sequence="40"/>
+
+</odoo>

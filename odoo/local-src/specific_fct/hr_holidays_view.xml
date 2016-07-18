@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
-        <!-- Remove action to hide crm.meeting to users -->
-        <delete id="hr_holidays.act_hr_leave_request_to_meeting" model="ir.actions.act_window"/>
-    </data>
-</openerp>

@@ -32,6 +32,7 @@ latest (unreleased)
 * Remove QoQa Shipper Services
 * Rename QoQa Shipper Rates to QoQa Shipper Fees
 * QoQa Package types are now "delivery.carrier"
+* First pass for migrating specific_fct (dispatch part still on hold)
 * Forbid usage of attribute values with more than 25 chars. Historic values
   might still be longer but are not allowed to be used.
 * QoQa users are no longer imported as companies, now Odoo 9 allows an

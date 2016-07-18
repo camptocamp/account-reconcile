@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp import _, api, models
+from openerp import api, models
 
 
 class ClaimMakePicking(models.TransientModel):
@@ -44,52 +44,6 @@ class ClaimMakePicking(models.TransientModel):
 
         return super_wiz._default_claim_line_source_location_id()
 
-    @api.multi
-    def _create_unclaimed_invoice(self, claim):
-        invoice_obj = self.env['account.invoice']
-        # retrieve values
-        company = self.env.user.company_id
-        analytic_account = self.env.ref(
-            'scenario.analytic_account_shop_general_ch')
-        inv_account = company.unclaimed_invoice_account_id
-        inv_journal = company.unclaimed_invoice_journal_id
-        product = company.unclaimed_invoice_product_id
-        partner = claim.partner_id
-        fiscal_position = partner.property_account_position and \
-            partner.property_account_position.id or False
-        payment_term = partner.property_payment_term and \
-            partner.property_payment_term.id or False
-
-        # Fill values (taken from on_change on invoice and invoice line)
-        invoice_vals = {
-            'account_id': inv_account.id,
-            'company_id': company.id,
-            'fiscal_position': fiscal_position,
-            'journal_id': inv_journal.id,
-            'partner_id': partner.id,
-            'name': _('Refacturation Frais de renvoi'),
-            'payment_term': payment_term,
-            'reference': claim.code,
-            'transaction_id': claim.code,
-            'type': 'out_invoice',
-            'invoice_line': [
-                (0, 0,
-                 {'account_analytic_id': analytic_account.id,
-                  'account_id': product.property_account_income.id,
-                  'invoice_line_tax_id': [
-                      (6, 0, [tax.id for tax in product.taxes_id])
-                  ],
-                  'name': product.partner_ref,
-                  'product_id': product.id,
-                  'price_unit': claim.unclaimed_price,
-                  'uos_id': product.uom_id.id}
-                 )
-            ]
-        }
-        # create and open/validate invoice
-        invoice = invoice_obj.create(invoice_vals)
-        invoice.signal_workflow('invoice_open')
-
     """ copy whole method to remove check availability on picking """
     @api.multi
     def action_create_picking(self):
@@ -112,7 +66,5 @@ class ClaimMakePicking(models.TransientModel):
             claim.write(
                 {'categ_id': company.unclaimed_final_categ_id.id}
             )
-            if claim.unclaimed_price:
-                self._create_unclaimed_invoice(claim)
 
         return super(ClaimMakePicking, self).action_create_picking()

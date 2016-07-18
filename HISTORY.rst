@@ -38,6 +38,12 @@ latest (unreleased)
   individual to have addresses
 * Allow to edit name, ref and barcode of variants inline in the tree view
 
+**Performance**
+
+* Disable 'tracking' ('Record created' notification, ...) on product
+  variants, the creation of hundreds of variants is near 2 times faster
+  and we don't need those notifications
+
 **Bugfixes**
 
 * Imported addresses do no longer takes the address fields of their parent

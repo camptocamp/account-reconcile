@@ -64,3 +64,13 @@ class ProductProduct(models.Model):
         for product in self:
             product.purchase_count = purchase_counts.get(product.id, 0)
         return purchase_counts
+
+    @api.model
+    def create(self, vals):
+        self_no_track = self.with_context(tracking_disable=True)
+        return super(ProductProduct, self_no_track).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        self_no_track = self.with_context(tracking_disable=True)
+        return super(ProductProduct, self_no_track).write(vals)

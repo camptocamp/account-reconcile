@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from common import column_exists, table_exists
+from ..common import column_exists, table_exists
 
 
 def cron_no_doall(ctx):

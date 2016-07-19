@@ -2,8 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-
-from common import column_exists
+from ..common import column_exists, create_default_value
 
 
 def activate_variants(ctx):
@@ -220,3 +219,12 @@ def product_attributes(ctx):
         UPDATE product_template SET wine_region = x_wine_region
         WHERE x_wine_region IS NOT NULL
     """)
+
+
+def default_values(ctx):
+    for company in ctx.env['res.company'].search([]):
+        create_default_value(ctx,
+                             'product.template',
+                             'purchase_method',
+                             company.id,
+                             'purchase')

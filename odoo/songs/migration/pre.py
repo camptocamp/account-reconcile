@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from ..common import column_exists, table_exists
+from . import mail
 
 
 def cron_no_doall(ctx):
@@ -237,6 +238,7 @@ def partner_contact(ctx):
         AND parent_id IS NOT NULL
     """)
 
+
 def sale_order_line_project(ctx):
     if not column_exists(ctx, 'sale_order_line', 'project_id'):
         ctx.env.cr.execute("""
@@ -250,6 +252,7 @@ def sale_order_line_project(ctx):
         AND sale_order_line.project_id IS NULL
         AND sale_order.project_id IS NOT NULL
     """)
+
 
 def crm_unclaimed_fix_ids(ctx):
     ctx.env.cr.execute("""
@@ -294,3 +297,4 @@ def main(ctx):
     partner_contact(ctx)
     crm_unclaimed_fix_ids(ctx)
     sale_order_line_project(ctx)
+    mail.mail_message_purge(ctx)

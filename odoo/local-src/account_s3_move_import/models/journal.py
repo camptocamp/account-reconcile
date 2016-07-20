@@ -36,7 +36,7 @@ class AccountJournal(models.Model):
                     serv_config.items(section_name))
 
             for field in values.keys():
-                self[field] = values[field]
+                journal[field] = values[field]
 
     s3_import = fields.Boolean(
         string="S3 bucket used for automatic import")

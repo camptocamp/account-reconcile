@@ -89,6 +89,18 @@ def payment_method(ctx):
         WHERE p.id = s.payment_method_id
         AND s.payment_method_id IS NOT NULL AND s.payment_mode_id IS NULL
     """)
+    ctx.env.cr.execute("""
+        UPDATE account_invoice i
+        SET payment_mode_id = o.payment_mode_id
+        FROM sale_order o
+        INNER JOIN sale_order_line ol
+        ON ol.order_id = o.id
+        INNER JOIN sale_order_line_invoice_rel rel
+        ON rel.order_line_id = ol.id
+        INNER JOIN account_invoice_line il
+        ON il.id = rel.invoice_line_id
+        WHERE il.invoice_id = i.id
+    """)
     # trigger recomputation of function fields
     for mode in ctx.env['account.payment.mode'].search([]):
         mode.write({'payment_method_id': mode.payment_method_id.id})

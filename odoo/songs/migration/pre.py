@@ -237,6 +237,19 @@ def partner_contact(ctx):
         AND parent_id IS NOT NULL
     """)
 
+def sale_order_line_project(ctx):
+    if not column_exists(ctx, 'sale_order_line', 'project_id'):
+        ctx.env.cr.execute("""
+            ALTER TABLE sale_order_line ADD COLUMN project_id integer
+        """)
+    ctx.env.cr.execute("""
+        UPDATE sale_order_line
+        SET project_id = sale_order.project_id
+        FROM sale_order
+        WHERE sale_order.id = sale_order_line.order_id
+        AND sale_order_line.project_id IS NULL
+        AND sale_order.project_id IS NOT NULL
+    """)
 
 def crm_unclaimed_fix_ids(ctx):
     ctx.env.cr.execute("""
@@ -280,3 +293,4 @@ def main(ctx):
     connector_shipper_rate_rename(ctx)
     partner_contact(ctx)
     crm_unclaimed_fix_ids(ctx)
+    sale_order_line_project(ctx)

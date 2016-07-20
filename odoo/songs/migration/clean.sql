@@ -5,3 +5,7 @@
 UPDATE ir_module_module
 SET state = 'uninstalled'
 WHERE state IN ('to install', 'to upgrade');
+
+DELETE FROM ir_model_data
+WHERE module = 'base'
+AND name = 'module_product_manufacturer';

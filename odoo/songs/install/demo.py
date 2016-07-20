@@ -5,6 +5,7 @@
 from base64 import b64encode
 from pkg_resources import Requirement, resource_string
 from anthem.lyrics.records import create_or_update
+from ..common import create_default_value
 
 
 def setup_company(ctx, req):
@@ -72,9 +73,19 @@ def setup_language(ctx):
     })
 
 
+def default_values(ctx):
+    for company in ctx.env['res.company'].search([]):
+        create_default_value(ctx,
+                             'product.template',
+                             'purchase_method',
+                             company.id,
+                             'purchase')
+
+
 def main(ctx):
     """ Create demo data """
     req = Requirement.parse('qoqa-odoo')
     setup_company(ctx, req)
     setup_language(ctx)
+    default_values(ctx)
     # TODO: generate demo data

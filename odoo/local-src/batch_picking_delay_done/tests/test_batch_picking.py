@@ -7,31 +7,47 @@ from openerp.tests import TransactionCase
 from mock import patch
 
 
-class TestPickingDispatch(TransactionCase):
+class TestStockBatchPicking(TransactionCase):
 
     def setUp(self):
-        super(TestPickingDispatch, self).setUp()
+        super(TestStockBatchPicking, self).setUp()
 
-        self.dispatch_model = self.env['picking.dispatch']
-        self.wizard_model = self.env['picking.dispatch.delayed.done']
+        self.batch_model = self.env['stock.batch.picking']
+        self.wizard_model = self.env['stock.batch.picking.delayed.done']
         product_model = self.env['product.product']
 
         product1 = product_model.create({'name': 'Unittest P1'})
         product2 = product_model.create({'name': 'Unittest P2'})
+        self.wh_main = self.browse_ref('stock.warehouse0')
 
-        self.picking = self.create_simple_picking([product1.id, product2.id])
+        # Add products in stock
+        inventory = self.env['stock.inventory'].create({
+            'name': 'Add test products',
+            'location_id': self.ref('stock.stock_location_locations'),
+            'filter': 'partial'
+        })
+        inventory.prepare_inventory()
+        for product in [product1, product2]:
+            self.env['stock.inventory.line'].create({
+                'inventory_id': inventory.id,
+                'product_id': product.id,
+                'location_id': self.wh_main.lot_stock_id.id,
+                'product_qty': 10.0
+            })
+        inventory.action_done()
+
+        self.picking = self.create_simple_picking([product1.id])
         self.picking.action_confirm()
 
-        self.dispatch1 = self.dispatch_model.create({
-            'state': 'progress',
-            'picker_id': self.env.uid,
-            'move_ids': [(4, self.picking.move_lines[0].id)]
+        self.picking2 = self.create_simple_picking([product2.id])
+        self.picking2.action_confirm()
+
+        self.batch1 = self.batch_model.create({
+            'picking_ids': [(4, self.picking.id)]
         })
 
-        self.dispatch2 = self.dispatch_model.create({
-            'state': 'progress',
-            'picker_id': self.env.uid,
-            'move_ids': [(4, self.picking.move_lines[1].id)]
+        self.batch2 = self.batch_model.create({
+            'picking_ids': [(4, self.picking2.id)]
         })
 
     def create_simple_picking(self, product_ids):
@@ -62,29 +78,29 @@ class TestPickingDispatch(TransactionCase):
             wrong_wizard.delayed_done()
 
         wizard = self.wizard_model.with_context(
-            active_ids=[self.dispatch1.id, self.dispatch2.id]
+            active_ids=[self.batch1.id, self.batch2.id]
         ).create({})
 
         wizard.delayed_done()
-        self.assertEqual('delayed_done', self.dispatch1.state)
-        self.assertEqual('delayed_done', self.dispatch2.state)
-        self.assertEqual('confirmed', self.picking.move_lines[0].state)
-        self.assertEqual('confirmed', self.picking.move_lines[1].state)
+        self.assertEqual('delayed_done', self.batch1.state)
+        self.assertEqual('delayed_done', self.batch2.state)
+        self.assertEqual('confirmed', self.picking.state)
+        self.assertEqual('confirmed', self.picking.state)
 
         # Simulate cron but without commit.
         with patch.object(self.env.cr, "commit") as mock_commit:
-            self.dispatch_model._scheduler_delayed_done()
+            self.batch_model._scheduler_delayed_done()
             self.assertEqual(2, mock_commit.call_count)
 
-        self.assertEqual('done', self.dispatch1.state)
-        self.assertEqual('done', self.dispatch2.state)
-        self.assertEqual('done', self.picking.move_lines[0].state)
-        self.assertEqual('done', self.picking.move_lines[1].state)
+        self.assertEqual('done', self.batch1.state)
+        self.assertEqual('done', self.batch2.state)
+        self.assertEqual('done', self.picking.state)
+        self.assertEqual('done', self.picking2.state)
 
     def test_wizard_wrong_state(self):
-        self.dispatch1.state = 'assigned'
+        self.batch1.state = 'cancel'
         wizard = self.wizard_model.with_context(
-            active_ids=[self.dispatch1.id, self.dispatch2.id]
+            active_ids=[self.batch1.id, self.batch2.id]
         ).create({})
 
         with self.assertRaises(UserError):

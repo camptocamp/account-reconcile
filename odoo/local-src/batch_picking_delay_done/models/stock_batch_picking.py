@@ -8,8 +8,8 @@ from openerp import api, fields, models
 _logger = logging.getLogger(__name__)
 
 
-class PickingDispatch(models.Model):
-    _inherit = 'picking.dispatch'
+class StockBatchPicking(models.Model):
+    _inherit = 'stock.batch.picking'
 
     state = fields.Selection(
         selection_add=[('delayed_done', 'Delayed Done')]
@@ -23,17 +23,17 @@ class PickingDispatch(models.Model):
     def _scheduler_delayed_done(self):
         """ Called from the Scheduled Actions.
 
-        Warning: it commits after each dispatch so it should not be
+        Warning: it commits after each batch so it should not be
         called outside of the scheduled actions
         """
-        dispatches = self.search([('state', '=', 'delayed_done')])
-        for dispatch in dispatches:
+        batches = self.search([('state', '=', 'delayed_done')])
+        for batch in batches:
             try:
-                dispatch.action_done()
+                batch.action_transfer()
                 self.env.cr.commit()
             except:
                 self.env.cr.rollback()
                 _logger.exception(
-                    'Could not set picking with ID %s as done',
-                    dispatch
+                    'Could not set batch picking with ID %s as done',
+                    batch
                 )

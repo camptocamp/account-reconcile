@@ -41,6 +41,8 @@ latest (unreleased)
 * Allow to edit name, ref and barcode of variants inline in the tree view with
   a new menu
 * Install the enterprise barcode addon
+* Portage of module delivery_carrier_label_dispatch renamed to delivery_carrier_label_batch
+  to add setup of carrier option from picking batch to all related pickings.
 
 **Performance**
 

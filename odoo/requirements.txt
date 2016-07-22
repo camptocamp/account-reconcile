@@ -1,4 +1,5 @@
 boto==2.40.0
+PyPDF2==1.18
 suds-jurko==0.6
 xlrd==0.9.4
 vcrpy==1.7.4

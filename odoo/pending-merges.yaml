@@ -51,6 +51,8 @@
     # port base_delivery_carrier_label
     # TODO: conflict
     # - oca refs/pull/84/head
+    # port delivery_carrier_label_dispatch
+    - oca refs/pull/99/head
   target: *default_target
 ./external-src/connector-ecommerce:
   remotes:

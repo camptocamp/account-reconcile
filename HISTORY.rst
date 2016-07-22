@@ -40,6 +40,7 @@ latest (unreleased)
   individual to have addresses
 * Allow to edit name, ref and barcode of variants inline in the tree view with
   a new menu
+* Install the enterprise barcode addon
 
 **Performance**
 

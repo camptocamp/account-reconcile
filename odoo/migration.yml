@@ -21,6 +21,8 @@ migration:
           - l10n_ch
           - l10n_fr
           - l10n_multilang
+          #---- odoo/enterprise ----------------------------#
+          - stock_barcode
           # old official modules
           #- multi_company
           #---- OCA/account-financial-reporting ------------#

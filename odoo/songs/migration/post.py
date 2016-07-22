@@ -181,9 +181,22 @@ def mail_template(ctx):
     query = (
         "UPDATE mail_template "
         "SET body_html = replace(body_html, 'object.shop_id', "
-        "'object.qoqa_shop_id')"
+        "'object.qoqa_shop_id') "
+        "WHERE body_html ~ 'object.shop_id'"
     )
     cr.execute(query)
+    # Replace "shop_id" by "qoqa_shop_id" in mail templates in translations
+    query = (
+        "UPDATE ir_translation "
+        "SET src = replace(src, 'object.shop_id', "
+        "'object.qoqa_shop_id'), "
+        "value = replace(value, 'object.shop_id', "
+        "'object.qoqa_shop_id') "
+        "WHERE src ~ 'object.shop_id' OR value ~ 'object.shop_id'"
+    )
+    cr.execute(query)
+
+    # define default mail template
     MailTemplate = ctx.env['mail.template']
     template_name = "0 - Réponse vide"
     default_template = MailTemplate.search(

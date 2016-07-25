@@ -27,6 +27,14 @@ latest (unreleased)
 
 **Documentation**
 
+9.3.1 (2016-07-25)
+++++++++++++++++++
+
+**Bugfixes**
+
+* Correct paths and refund description re-added correctly in invoice view
+
+
 9.3.0 (2016-07-25)
 ++++++++++++++++++
 

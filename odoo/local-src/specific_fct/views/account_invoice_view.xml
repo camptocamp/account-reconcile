@@ -34,9 +34,9 @@
             <field name="partner_id" position="attributes">
                 <attribute name="domain">[('is_company', '=', True)]</attribute>
             </field>
-            <!--<field name="user_id" position="after">-->
-                <!--<field name="refund_description_id" invisible="context.get('type') != 'out_refund'"/>-->
-            <!--</field>-->
+            <field name="user_id" position="after">
+                <field name="refund_description_id"/>
+            </field>
         </field>
     </record>
 
@@ -55,9 +55,9 @@
                             string="Agreement validated"
                             icon="gtk-paste-v"/>
                 </field>
-                <!--<field name="number" position="after">-->
-                    <!--<field name="refund_description_id" invisible="context.get('type') != 'out_refund'"/>-->
-                <!--</field>-->
+                <field name="number" position="after">
+                    <field name="refund_description_id"/>
+                </field>
             </data>
         </field>
     </record>
@@ -67,12 +67,12 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_form"/>
         <field name="arch" type="xml">
-            <field name="name" position="attributes">
+            <xpath expr="//notebook/page/group/group/field[@name='name']" position="attributes">
                 <attribute name="attrs">{'invisible': [('type', '=', 'out_refund')]}</attribute>
-            </field>
-            <!--<field name="name" position="after">-->
-                <!--<field name="refund_description_id" attrs="{'invisible': [('type', '&lt;&gt;', 'out_refund')]}"/>-->
-            <!--</field>-->
+            </xpath>
+            <xpath expr="//notebook/page/group/group/field[@name='name']" position="after">
+                <field name="refund_description_id" attrs="{'invisible': [('type', '&lt;&gt;', 'out_refund')]}"/>
+            </xpath>
         </field>
     </record>
 

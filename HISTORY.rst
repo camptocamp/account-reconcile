@@ -19,6 +19,17 @@ Release History
 latest (unreleased)
 +++++++++++++++++++
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+9.3.0 (2016-07-25)
+++++++++++++++++++
+
 **Data Migration**
 
 * Modules are now set as 'uninstalled' before we run anthem to prevent a lot
@@ -29,7 +40,6 @@ latest (unreleased)
 **Features and Improvements**
 
 * Implement cancellation of credit notes in the QoQa connector
-
 * Remove QoQa Shipper Services
 * Rename QoQa Shipper Rates to QoQa Shipper Fees
 * QoQa Package types are now "delivery.carrier"
@@ -61,8 +71,6 @@ latest (unreleased)
 * Use odoo-project image version 1.0.3
 * Extend the server timeout of HAProxy on Rancher to 6h to align with the nginx
   option (we can have very long requests on Odoo!)
-
-**Documentation**
 
 9.2.0 (2016-07-11)
 ++++++++++++++++++

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+    <xpath expr="//p[@t-field='o.notes']" position="after">
+      <t t-if="o.picking_type_id.warehouse_id">
+        <p style="page-break-before:always"/>
+        <div>
+          <br/>
+          <p><b>Information pour la livraison</b></p>
+
+          <t t-if="o.picking_type_id.warehouse_id.name == 'QoQa Services SA'">
+            <p>Contacts logistique QoQa : Serkan Kilinc</p>
+            <p>Téléphone : 021/633.20.83</p>
+            <p>e-mail : logistique@qoqa.ch</p>
+            <p>Heures d’ouverture : 8h-12h et 13h30-17h30</p>
+            <p>Hauteur minimum du véhicule pour livraison : 70cm</p>
+            <p>Hauteur max palettes : 220cm</p>
+
+            <p>Plan d'accès :</p>
+            <br/>
+            <img src="/specific_report/static/src/img/plan_access.jpeg" style="height:auto;max-width:550px"/>
+          </t>
+          <t t-if="o.picking_type_id.warehouse_id.name == 'Poste Daillens'">
+            <p>Merci de contacter Sylvain Ecoffey, Responsable d’exploitation pour les livraisons et informations supplémentaires.</p>
+            <br/>
+            <p>Poste CH SA</p>
+            <p>PostLogistics</p>
+            <p>Centre logistique</p>
+            <p>Z.I. Les Graveys</p>
+            <p>CH-1306 Daillens</p>
+            <br/>
+            <p>Portable : +41 (0)79 606 22 28</p>
+            <p>E-Mail : sylvain.ecoffey@poste.ch</p>
+            <p>Info logistique team: cld.sav.stockage@post.ch</p>
+          </t>
+          <t t-if="o.picking_type_id.warehouse_id.name == 'Poste Dintikon'">
+            <p>Merci de contacter Sylvain Ecoffey, Responsable d’exploitation pour les livraisons et informations supplémentaires.</p>
+            <p>Pour la livraison des gros articles de plus de 30 kg (sèche-linge, imprimantes, TV, appareils de fitness,...).</p>
+            <br/>
+            <p>PostLogistics SA</p>
+            <p>Service de montage</p>
+            <p>Lagerstrasse 12</p>
+            <p>5606 Dintikon</p>
+            <br/>
+            <p>Portable : +41 (0)79 606 22 28</p>
+            <p>E-Mail : sylvain.ecoffey@poste.ch</p>
+            <p>Info logistique team: cld.sav.stockage@post.ch</p>
+          </t>
+        </div>
+      </t>
+    </xpath>
+</template>
+
+</odoo>

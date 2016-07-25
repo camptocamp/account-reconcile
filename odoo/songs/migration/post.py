@@ -171,6 +171,38 @@ def mail_alias(ctx):
         params = (unicode(defaults), alias_id)
         cr.execute(query, params)
 
+def mail_template(ctx):
+    cr = ctx.env.cr
+    # Remove user defaults
+    query = "DELETE FROM ir_values WHERE model = 'mail.compose.message';"
+    cr.execute(query)
+
+    # Replace "shop_id" by "qoqa_shop_id" in mail templates
+    query = (
+        "UPDATE mail_template "
+        "SET body_html = replace(body_html, 'object.shop_id', "
+        "'object.qoqa_shop_id') "
+        "WHERE body_html ~ 'object.shop_id'"
+    )
+    cr.execute(query)
+    # Replace "shop_id" by "qoqa_shop_id" in mail templates in translations
+    query = (
+        "UPDATE ir_translation "
+        "SET src = replace(src, 'object.shop_id', "
+        "'object.qoqa_shop_id'), "
+        "value = replace(value, 'object.shop_id', "
+        "'object.qoqa_shop_id') "
+        "WHERE src ~ 'object.shop_id' OR value ~ 'object.shop_id'"
+    )
+    cr.execute(query)
+
+    # define default mail template
+    MailTemplate = ctx.env['mail.template']
+    template_name = "0 - Réponse vide"
+    default_template = MailTemplate.search(
+        [('name', '=', template_name)], limit=1)
+    default_template.is_default = True
+
 
 def fix_journal_ids(ctx):
     # (old, new)
@@ -284,6 +316,7 @@ def main(ctx):
     payment_method(ctx)
     connector_qoqa(ctx)
     mail_alias(ctx)
+    mail_template(ctx)
     fix_journal_ids(ctx)
     configure_shipper_package_types(ctx)
     move_journal_import_setup(ctx)

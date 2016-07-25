@@ -22,6 +22,7 @@
         'data/send_mail_on_new_claim.xml',
         'views/qoqa_shop_view.xml',
         'views/res_company_view.xml',
+        'views/mail_template.xml',
     ],
     'installable': True,
     'auto_install': False,

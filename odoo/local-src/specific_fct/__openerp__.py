@@ -8,6 +8,7 @@
     'category': 'Others',
     'depends': [
         'account_analytic_required',
+        'hr_holidays',
         'sale',
         'stock_batch_picking',
         'stock_picking_mass_assign',

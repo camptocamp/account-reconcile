@@ -6,6 +6,7 @@ from __future__ import print_function
 
 import anthem
 
+from . import post_dispatch
 from . import post_product
 from ..common import copy_sequence_next_number
 
@@ -341,3 +342,4 @@ def main(ctx):
     fix_journal_ids(ctx)
     configure_shipper_package_types(ctx)
     move_journal_import_setup(ctx)
+    post_dispatch.dispatch_migration(ctx)

@@ -14,19 +14,6 @@
       header="False"
       report_type="webkit"/>
 
-    <report auto="False"
-      id="account.account_invoices"
-      model="account.invoice"
-      name="account.invoice"
-      file="specific_report/report/account_invoice.mako"
-      string="Invoices"
-      attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/',''))"
-      attachment_use="True"
-      multi="True"
-      webkit_header="base_headers_webkit.base_reports_portrait_header"
-      report_type="webkit"/>
-      
-      
     <report id="picking_dispatch.webkit_dispatch_order"
             name="webkit.dispatch_order"
             auto="False"
@@ -38,13 +25,5 @@
             webkit_header="base_headers_webkit.base_minimum_reports_portrait_header"
             menu="False"/>
 
-    <report id="purchase.report_purchase_order"
-            name="purchase.order.webkit"
-            auto="False"
-            model="purchase.order"
-            file="specific_report/report/purchase_order.mako"
-            string="Purchase Order"
-            report_type="webkit"
-            webkit_header="base_headers_webkit.base_reports_portrait_header"/>
   </data>
 </openerp>

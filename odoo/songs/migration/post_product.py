@@ -2,18 +2,23 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import anthem
+
 from ..common import column_exists, create_default_value
 
 
+@anthem.log
 def activate_variants(ctx):
+    """ Activating variants """
     employee_group = ctx.env.ref('base.group_user')
     employee_group.write({
         'implied_ids': [(4, ctx.env.ref('product.group_product_variant').id)]
     })
 
 
+@anthem.log
 def product_attribute_variants(ctx):
-    """ Migrate product attributes
+    """ Migrating product attributes
 
     from the custom wizard to the odoo core variant attributes
     """
@@ -65,8 +70,9 @@ def product_attribute_variants(ctx):
                     )
 
 
+@anthem.log
 def product_brand(ctx):
-    """ Migrate char field 'brand' to product_brand addon """
+    """ Migrating char field 'brand' to product_brand addon """
     # Do not fail if the fix has already been applied
     if column_exists(ctx, 'product_template', 'brand'):
         ctx.env.cr.execute("""
@@ -86,8 +92,9 @@ def product_brand(ctx):
         ctx.env.cr.execute("ALTER TABLE product_template DROP COLUMN brand")
 
 
+@anthem.log
 def product_attributes(ctx):
-    """ Migrate product dynamic attributes to regular fields """
+    """ Migrating product dynamic attributes to regular fields """
     ctx.env.cr.execute("""
         UPDATE product_template SET is_wine = True
         WHERE attribute_set_id = (
@@ -221,7 +228,9 @@ def product_attributes(ctx):
     """)
 
 
+@anthem.log
 def default_values(ctx):
+    """ Setting default values on products """
     for company in ctx.env['res.company'].search([]):
         create_default_value(ctx,
                              'product.template',

@@ -4,53 +4,49 @@
 
 from __future__ import print_function
 
-import time
+import anthem
 
 from .common import table_exists
 
 
-def verbose_execute(ctx, query, params=None):
-    print(ctx.env.cr.mogrify(query, params))
-    start = time.time()
-    ctx.env.cr.execute(query, params)
-    end = time.time()
-    print('Duration: %s' % (end - start))
-
-
+@anthem.log
 def mail_message_purge(ctx):
-    start = time.time()
+    """ Purging mail_message records """
     if table_exists(ctx, 'mail_message_to_remove'):
         ctx.env.cr.execute("DROP TABLE mail_message_to_remove")
 
     # duration: 15-30s
-    verbose_execute(ctx, """
-        CREATE TABLE mail_message_to_remove AS
-          SELECT id FROM mail_message
-          WHERE (model in ('sale.order',
-                           'account.invoice',
-                           'stock.picking',
-                           'res.partner',
-                           'account.bank.statement',
-                           'procurement.order')
-                 AND message_type = 'notification')
-             OR model in ('queue.job',
-                           'qoqa.offer',
-                           'account.statement.profile',
-                           'account.easy.reconcile')
-    """)
+    with ctx.log(u'creating a table with mail_message ids to remove'):
+        ctx.env.cr.execute("""
+            CREATE TABLE mail_message_to_remove AS
+              SELECT id FROM mail_message
+              WHERE (model in ('sale.order',
+                               'account.invoice',
+                               'stock.picking',
+                               'res.partner',
+                               'account.bank.statement',
+                               'procurement.order')
+                     AND message_type = 'notification')
+                 OR model in ('queue.job',
+                               'qoqa.offer',
+                               'account.statement.profile',
+                               'account.easy.reconcile')
+        """)
     # ~5000 messages have a parent_id which would be deleted,
     # keep them, that's the easy way, but a bit slow :-(
     # duration: 150s
-    verbose_execute(ctx, """
-        DELETE FROM mail_message_to_remove WHERE id IN (
-            SELECT parent_id
-            FROM mail_message m
-            LEFT JOIN mail_message_to_remove r USING (id)
-            INNER JOIN mail_message_to_remove p
-            ON p.id = m.parent_id
-            WHERE r.id IS NULL
-        )
-    """)
+    with ctx.log(u'removing from this table some ids to keep because '
+                 u'they are used by other messages'):
+        ctx.env.cr.execute("""
+            DELETE FROM mail_message_to_remove WHERE id IN (
+                SELECT parent_id
+                FROM mail_message m
+                LEFT JOIN mail_message_to_remove r USING (id)
+                INNER JOIN mail_message_to_remove p
+                ON p.id = m.parent_id
+                WHERE r.id IS NULL
+            )
+        """)
     # all indices but the PK
     indices = [
         ('mail_message_author_id_index', 'author_id'),
@@ -63,7 +59,7 @@ def mail_message_purge(ctx):
     ]
 
     for index_name, __ in indices:
-        verbose_execute(ctx, "DROP index %s" % index_name)
+        ctx.env.cr.execute("DROP index %s" % index_name)
 
     # referenced by:
     referenced_by = [
@@ -110,60 +106,64 @@ def mail_message_purge(ctx):
     ]
 
     for table, constraint_name, __, __ in referenced_by:
-        verbose_execute(ctx, """
+        ctx.env.cr.execute("""
             ALTER TABLE %s DROP CONSTRAINT %s
         """ % (table, constraint_name))
 
-    verbose_execute(ctx, """
+    ctx.env.cr.execute("""
         SET temp_buffers = '1000MB'
     """)
 
     # duration: 60s
-    verbose_execute(ctx, """
-        CREATE TEMP TABLE tmp AS
-        SELECT m.*
-        FROM mail_message m
-        LEFT JOIN mail_message_to_remove r USING (id)
-        WHERE r.id IS NULL
-    """)
+    with ctx.log(u'creating a temporary table as a copy of mail_message '
+                 u'records to keep'):
+        ctx.env.cr.execute("""
+            CREATE TEMP TABLE tmp AS
+            SELECT m.*
+            FROM mail_message m
+            LEFT JOIN mail_message_to_remove r USING (id)
+            WHERE r.id IS NULL
+        """)
 
     # duration: 0.0132989883423 :)
-    verbose_execute(ctx, """
-        TRUNCATE mail_message
-    """)
+    with ctx.log(u'truncating mail_message'):
+        ctx.env.cr.execute("""
+            TRUNCATE mail_message
+        """)
 
     # duration: 90s
-    verbose_execute(ctx, """
-        INSERT INTO mail_message
-        SELECT * from tmp
-    """)
+    with ctx.log(u'writing back mail_message records from the temp table '):
+        ctx.env.cr.execute("""
+            INSERT INTO mail_message
+            SELECT * from tmp
+        """)
 
     for table, constraint_name, field, ondelete in referenced_by:
         # duration for delete + constraint: 30s * 10
-        verbose_execute(ctx, """
-            DELETE FROM %s
-            WHERE %s IN (SELECT id FROM mail_message_to_remove)
-        """ % (table, field))
+        with ctx.log(u're-creating constraint %s' % (constraint_name,)):
+            ctx.env.cr.execute("""
+                DELETE FROM %s
+                WHERE %s IN (SELECT id FROM mail_message_to_remove)
+            """ % (table, field))
 
-        verbose_execute(ctx, """
-            ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s)
-            REFERENCES mail_message (id) ON DELETE %s
-        """ % (table, constraint_name, field, ondelete))
+            ctx.env.cr.execute("""
+                ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s)
+                REFERENCES mail_message (id) ON DELETE %s
+            """ % (table, constraint_name, field, ondelete))
 
     for index_name, fields in indices:
         # duration: 1-40s per index
-        verbose_execute(ctx, """
-            CREATE INDEX %s ON mail_message (%s)
-        """ % (index_name, fields))
+        with ctx.log(u're-creating index %s' % (index_name,)):
+            ctx.env.cr.execute("""
+                CREATE INDEX %s ON mail_message (%s)
+            """ % (index_name, fields))
 
     # duration: negligible
-    verbose_execute(ctx, """
-        ANALYZE mail_message
-    """)
+    with ctx.log(u'analyzing mail_message'):
+        ctx.env.cr.execute("""
+            ANALYZE mail_message
+        """)
 
-    verbose_execute(ctx, """
+    ctx.env.cr.execute("""
         DROP TABLE mail_message_to_remove
     """)
-
-    stop = time.time()
-    print('purge of mail.message, total time: %s s' % (stop - start,))

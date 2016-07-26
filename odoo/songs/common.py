@@ -42,3 +42,15 @@ def create_default_value(ctx, model, field, company_id, value):
           'company_id': company_id,
           'pickled': pickle.dumps(value),
           })
+
+
+# TODO: candidate for a new anthem.lyrics?
+def copy_sequence_next_number(ctx,
+                              source_sequence_code,
+                              target_sequence_code):
+    Sequence = ctx.env['ir.sequence']
+    source_sequence = Sequence.search([('code', '=', source_sequence_code)])
+    target_sequence = Sequence.search([('code', '=', target_sequence_code)])
+    target_sequence.write(
+        {'number_next': source_sequence.number_next}
+    )

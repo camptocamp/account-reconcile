@@ -209,18 +209,16 @@ class BatchPickingGroup(models.TransientModel):
         to avoid having one batch for each unique pack.
         """
         leftovers_packs = []
+        leftovers_threshold = self.group_leftovers_threshold
         for packs, group, leftover, leftover_size in batches:
-            if self.group_leftovers:
-                if len(packs) <= self.group_leftovers_threshold:
-                    leftovers_packs += packs
-                else:
-                    yield PreparedBatch(packs, group=group,
-                                        leftover=leftover,
-                                        leftover_size=leftover_size)
+            if self.group_leftovers and len(packs) <= leftovers_threshold:
+                leftovers_packs += packs
+
             else:
-                yield PreparedBatch(packs, group=group,
-                                    leftover=leftover,
-                                    leftover_size=leftover_size)
+                yield PreparedBatch(
+                    packs, group=group,
+                    leftover=leftover, leftover_size=leftover_size
+                )
 
         if leftovers_packs:
             yield PreparedBatch(leftovers_packs, group=False,
@@ -366,7 +364,7 @@ class BatchPickingGroup(models.TransientModel):
             packs = self.env['stock.quant.package'].browse(active_ids)
 
         batches = self._group_packs(packs)
-        batch_domain = "[('id', 'in', %s)]" % batches.mapped('id')
+        batch_domain = "[('id', 'in', %s)]" % batches.ids
 
         if warnings:
             return {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_internal_search" model="ir.ui.view">
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+      <field name="arch" type="xml">
+        <filter name="done" position="after">
+          <separator/>
+          <filter name="not_in_batch"
+            string="Not in batch"
+            icon="terp-check"
+            domain="[('batch_picking_id', '=', False)]"/>
+        </filter>
+      </field>
+    </record>
+</odoo>

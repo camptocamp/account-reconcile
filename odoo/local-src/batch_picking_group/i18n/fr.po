@@ -1,0 +1,372 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* batch_picking_group
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 9.0e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-07-25 14:24+0000\n"
+"PO-Revision-Date: 2016-07-25 14:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:316
+#, python-format
+msgid "%d packs grouped by: %s"
+msgstr "%d colis groupés par : %s"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:308
+#, python-format
+msgid "%d packs of leftovers with %s units"
+msgstr "%d colis reliquats avec %s unités"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:305
+#, python-format
+msgid "%d packs of leftovers with various units"
+msgstr "%d colis reliquats de quantités différentes"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:299
+#, python-format
+msgid "%d packs of mixed content"
+msgstr "%d packs of mixed content"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:313
+#, python-format
+msgid "%sx[%s]"
+msgstr "%sx[%s]"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.report_batch_picking
+msgid "<strong>Date:</strong>"
+msgstr "<strong>Date:</strong>"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.report_batch_picking
+msgid "<strong>Printed by:</strong>"
+msgstr "<strong>Imprimé par:</strong>"
+
+#. module: batch_picking_group
+#: model:ir.model,name:batch_picking_group.model_stock_batch_picking_group
+msgid "Batch Picking Grouping"
+msgstr "Regroupement de bons de préparation"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_batch_domain
+msgid "Batch domain"
+msgstr "Batch domain"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,help:batch_picking_group.field_stock_batch_picking_group_only_product_ids
+msgid "Batches will be created only if the content of the pack contains exactly the same products than selected (without consideration for the quantity).\n"
+"No filter is applied when no product is selected."
+msgstr "Les bons de préparation seront créés seulement si le contenu des colis contient exactement les mêmes produits que sélectionnés (sans considération pour la quantité).\n"
+"Pas de filtre appliqué lorsqu'aucun produit n'est sélectionné."
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_create_uid
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_create_date
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_display_name
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Filter Products"
+msgstr "Filtrer les produits"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_only_product_ids
+msgid "Filter on products"
+msgstr "Filtrer sur les produits"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Generate Batches"
+msgstr "Générer les bons de préparation"
+
+#. module: batch_picking_group
+#: model:ir.actions.act_window,name:batch_picking_group.action_batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.batch_pickings_warnings
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Generate Grouped Batches"
+msgstr "Générer des bons de préparation groupés"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:388
+#: code:addons/batch_picking_group/wizard/batch_picking_warnings.py:38
+#, python-format
+msgid "Generated Batches"
+msgstr "Generated Batches"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:373
+#, python-format
+msgid "Generated Batches Warning"
+msgstr "Generated Batches Warning"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,help:batch_picking_group.field_stock_batch_picking_group_group_leftovers_threshold
+msgid "Generated batches are considered as leftovers when they have a less or equal number of packs than the threshold.\n"
+"With the default value of 1, the batches with 1 pack will be grouped in a final batch."
+msgstr "Les bons de préparation sont considérés comme des reliquats quand ils ont un nombre de colis inférieur au seuil.\n"
+"Avec la valeur par défaut de 1, les bons de préparation avec 1 colis seront regroupés dans un bon de préparation final."
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_group_by_content
+msgid "Group By Content"
+msgstr "Grouper par contenu"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_group_leftovers
+msgid "Group Leftovers"
+msgstr "Grouper les reliquats"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Grouping"
+msgstr "Regroupement"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_id
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_id
+msgid "ID"
+msgstr "ID"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings___last_update
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group___last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_write_uid
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_write_uid
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_write_date
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,help:batch_picking_group.field_stock_batch_picking_group_group_leftovers
+msgid "Leftovers are batches generated and containing a number of packs below a threshold. This option will group them all in a final batch"
+msgstr "Les reliquats sont des bons de préparation générés et contenant un nombre de colis inférieur à un seuil. Cette option va les grouper dans un bon de préparation final."
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Leftovers are batches generated with a number of packs below a defined threshold.\n"
+"                <span attrs=\"{'invisible': [('group_leftovers', '=', False)]}\">\n"
+"                  The leftovers will all be grouped in a final batches.\n"
+"                </span>\n"
+"                <span attrs=\"{'invisible': [('group_leftovers', '=', True)]}\">\n"
+"                  The leftovers will not be grouped.\n"
+"                </span>\n"
+"                <span attrs=\"{'invisible': [('group_leftovers', '=', False)]}\">\n"
+"                  Dispatches are considered as leftovers when they contains less that the Threshold\n"
+"                </span>"
+msgstr "Les reliquats sont des bons de préparation générés avec un nombre de colis sous le seuil défini.\n"
+"                <span attrs=\"{'invisible': [('group_leftovers', '=', False)]}\">\n"
+"                  Les relicats seront regroupés dans un bon de préparation final.\n"
+"                </span>\n"
+"                <span attrs=\"{'invisible': [('group_leftovers', '=', True)]}\">\n"
+"                  Les reliquats ne seront pas groupés.\n"
+"                </span>\n"
+"                <span attrs=\"{'invisible': [('group_leftovers', '=', False)]}\">\n"
+"                  Les bons de préparation sont considérés comme reliquats quand ils contiennent moins de colis que le seuil.\n"
+"                </span>"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Limit per Dispatch"
+msgstr "Limite par bon de préparation"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_group_warnings_message
+msgid "Message"
+msgstr "Message"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Name"
+msgstr "Description"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:329
+#, python-format
+msgid "No available packages to group."
+msgstr "Aucun colis disponible pour créer un bon de préparation"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_pack_limit_apply_threshold
+msgid "No limit for 1 unit"
+msgstr "Pas de limite pour 1 unité"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.report_batch_picking
+msgid "Not in a pack"
+msgstr "Pas dans un colis"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_picking_internal_search
+msgid "Not in batch"
+msgstr "Sans bon de préparation"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_pack_limit
+msgid "Number of packs"
+msgstr "Nombre de colis"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.batch_pickings_warnings
+msgid "Ok"
+msgstr "Ok"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "Options"
+msgstr "Options"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_quant_package_pack_operation_ids
+msgid "Pack operation ids"
+msgstr "Pack operation ids"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,help:batch_picking_group.field_stock_batch_picking_group_group_by_content
+msgid "Packs with similar content will be grouped in the same batch"
+msgstr "Les colis avec un contenu similaire seront groupés dans un bon de préparation"
+
+#. module: batch_picking_group
+#: model:ir.model,name:batch_picking_group.model_stock_quant_package
+msgid "Physical Packages"
+msgstr "Colis physiques"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.report_batch_picking
+msgid "Picked by:"
+msgstr "Préparateur:"
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_group.py:94
+#, python-format
+msgid "Some selected pickings contain products that are not in packages"
+msgstr "Certains bon de livraison contiennent des produits qui ne sont pas dans des colis"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_suffix
+msgid "Suffix"
+msgstr "Suffixe"
+
+#. module: batch_picking_group
+#: sql_constraint:stock.batch.picking.group:0
+msgid "The Leftovers threshold must be above 0."
+msgstr "Le seuil de reliquats doit être supérieur à 0."
+
+#. module: batch_picking_group
+#: code:addons/batch_picking_group/wizard/batch_picking_warnings.py:16
+#, python-format
+msgid "The following pickings were ignored because they contain zero or more than one package:"
+msgstr "Les bons de livraison suivants ont été ignorés car ils ne contiennent aucun ou plus d'un colis :"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "The generated batches will contain an unlimited number of packs."
+msgstr "Les bons de préparation groupés vont contenir un nombre illimité de colis."
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "The generated batches will not contain more packs than the limit.\n"
+"                <span attrs=\"{'invisible': [('pack_limit_apply_threshold', '=', False)]}\">\n"
+"                  The limit is applied excepted for packs with only 1 unit.\n"
+"                </span>\n"
+"                <span attrs=\"{'invisible': [('pack_limit_apply_threshold', '=', True)]}\">\n"
+"                  The limit is applied even for packs with only 1 unit.\n"
+"                </span>"
+msgstr "Les bons de préparation générés ne contiendront pas plus de colis que la limite.\n"
+"                <span attrs=\"{'invisible': [('pack_limit_apply_threshold', '=', False)]}\">\n"
+"                  La limite est appliquée excepté pour les colis avec 1 unité.\n"
+"                </span>\n"
+"                <span attrs=\"{'invisible': [('pack_limit_apply_threshold', '=', True)]}\">\n"
+"                  La limite est appliquée même pour les colis avec 1 unité.\n"
+"                </span>"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,help:batch_picking_group.field_stock_batch_picking_group_pack_limit_apply_threshold
+msgid "The limit is not applied when the packs contains only 1 unit. Does only apply to the batches grouped with similar content."
+msgstr "La limite n'est pas appliquée quand les colis contiennent 1 unité. Uniquement pour les bons de préparation groupés par contenu similaire"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,help:batch_picking_group.field_stock_batch_picking_group_pack_limit
+msgid "The number of packs per batch will be limited to this quantity. Leave 0 to set no limit."
+msgstr "Le nombre de colis par bon de préparation sera limité à cette quantité. Laisser 0 pour ne pas appliquer de limite."
+
+#. module: batch_picking_group
+#: sql_constraint:stock.batch.picking.group:0
+msgid "The pack limit must be equal or above 0."
+msgstr "La limite de colis doit être au-dessus ou égale à 0."
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "The packs will not be grouped according to their content, the batches\n"
+"                will contain various packs."
+msgstr "Les colis ne seront pas groupés selon leur contenu, les bons de préparation                  contiendront des colis mélangés."
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "The packs with identical content will be grouped in the same batch."
+msgstr "Les colis avec un contenu identique seront regroupés dans le même bon de préparation"
+
+#. module: batch_picking_group
+#: model:ir.model.fields,field_description:batch_picking_group.field_stock_batch_picking_group_group_leftovers_threshold
+msgid "Threshold"
+msgstr "Seuil"
+
+#. module: batch_picking_group
+#: model:ir.ui.view,arch_db:batch_picking_group.view_batch_picking_group
+msgid "or"
+msgstr "ou"
+
+#. module: batch_picking_group
+#: model:ir.model,name:batch_picking_group.model_report_stock_batch_picking_report_batch_picking
+msgid "report.stock_batch_picking.report_batch_picking"
+msgstr "report.stock_batch_picking.report_batch_picking"
+
+#. module: batch_picking_group
+#: model:ir.model,name:batch_picking_group.model_stock_batch_group_warnings
+msgid "stock.batch.group.warnings"
+msgstr "stock.batch.group.warnings"
+
+#. module: batch_picking_group
+#: model:ir.model,name:batch_picking_group.model_stock_batch_picking_warnings
+msgid "stock.batch.picking.warnings"
+msgstr "stock.batch.picking.warnings"
+

@@ -286,23 +286,32 @@ def move_journal_import_setup(ctx):
 
     The configuration in account_statement_profile is now in account_journal
     """
-    ctx.env.cr.execute("""
-        UPDATE account_journal j
-        SET used_for_import = true,
-            commission_account_id = p.commission_account_id,
-            receivable_account_id = p.receivable_account_id,
-            partner_id = p.partner_id,
-            message_last_post = p.message_last_post,
-            import_type = p.import_type,
-            last_import_date = p.last_import_date,
-            launch_import_completion = p.launch_import_completion,
-            s3_import = CASE WHEN j.id IN (51, 28, 27,  72, 76) THEN true
-                             ELSE false
-                        END
-        FROM account_statement_profile p
-        WHERE j.id = p.journal_id
-    """)
-    # TODO account_move_completion_rule
+    rules = [
+        ctx.env.ref('account_move_transactionid_import.'
+                    'bank_statement_completion_rule_4').id,
+        ctx.env.ref('account_move_transactionid_import.'
+                    'bank_statement_completion_rule_trans_id_invoice').id,
+        ctx.env.ref('account_move_so_import.'
+                    'bank_statement_completion_rule_1').id
+    ]
+    for journal in ctx.env['account.journal'].browse([51, 28, 27, 72, 76]):
+        journal.used_for_import = True
+        journal.used_for_completion = True
+        journal.s3_import = True
+        journal.rule_ids = rules
+        ctx.env.cr.execute("""
+            UPDATE account_journal j
+            SET commission_account_id = p.commission_account_id,
+                receivable_account_id = p.receivable_account_id,
+                partner_id = p.partner_id,
+                message_last_post = p.message_last_post,
+                import_type = p.import_type,
+                last_import_date = p.last_import_date,
+                launch_import_completion = p.launch_import_completion
+            FROM account_statement_profile p
+            WHERE j.id = p.journal_id
+            AND j.id = %s
+        """, (journal.id, ))
 
 
 def main(ctx):

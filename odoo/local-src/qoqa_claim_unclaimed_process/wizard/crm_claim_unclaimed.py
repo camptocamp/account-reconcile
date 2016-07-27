@@ -233,7 +233,7 @@ class CrmClaimUnclaimed(models.TransientModel):
             claim.claim_delivery_address_id = picking.partner_id.id
             claim.claim_carrier_price = picking.carrier_price
 
-            sale = picking.sale_id or False
+            sale = picking.sale_id
             if not sale:
                 raise UserError(
                     _('No sale associated to this tracking number!')

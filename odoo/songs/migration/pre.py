@@ -2,12 +2,15 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import anthem
+
 from ..common import column_exists, table_exists
 from . import mail
 
 
+@anthem.log
 def cron_no_doall(ctx):
-    """ Remove the 'retry missing' flag on cron
+    """ Removing the 'retry missing' flag on cron
 
     To avoid having them running again and again.
     """
@@ -68,8 +71,9 @@ def _clean_broken_ir_values(ctx):
     )
 
 
+@anthem.log
 def clean_uninstalled(ctx):
-    """ Clean technical records of uninstalled addons """
+    """ Cleaning technical records of uninstalled addons """
     models = (
         'ir.ui.view',
         'assembled.report',
@@ -88,8 +92,9 @@ def clean_uninstalled(ctx):
     _clean_broken_ir_values(ctx)
 
 
+@anthem.log
 def move_wine_ch_xml_ids(ctx):
-    """ Move wine_ch_report xmlids to qoqa_product """
+    """ Moving wine_ch_report xmlids to qoqa_product """
     ctx.env.cr.execute("""
         UPDATE ir_model_data SET module = 'qoqa_product'
         WHERE module = 'wine_ch_report'
@@ -97,8 +102,12 @@ def move_wine_ch_xml_ids(ctx):
     """)
 
 
+@anthem.log
 def fix_claim_line_origin(ctx):
-    """ A required field 'claim_origin' has been added and is empty """
+    """ Fixing origin of claim lines
+
+    A required field 'claim_origin' has been added and is empty
+    """
     if not column_exists(ctx, 'claim_line', 'claim_origin'):
         ctx.env.cr.execute("""
             ALTER TABLE claim_line ADD COLUMN claim_origin varchar
@@ -109,8 +118,12 @@ def fix_claim_line_origin(ctx):
     """)
 
 
+@anthem.log
 def claim_rma(ctx):
-    """ crm_claim.number has been renamed to crm_claim.code """
+    """ Renaming claim fields (number -> code)
+
+    crm_claim.number has been renamed to crm_claim.code
+    """
     if not column_exists(ctx, 'crm_claim', 'code'):
         ctx.env.cr.execute("""
             ALTER TABLE crm_claim ADD COLUMN code varchar
@@ -152,8 +165,9 @@ def claim_rma(ctx):
     """)
 
 
+@anthem.log
 def fix_claim_rma_update(ctx):
-    """ lines in a wizard make the upgrade fail """
+    """ Fixing presence of wizard's lines making the upgrade fail """
     ctx.env.cr.execute("""
         DELETE FROM claim_make_picking_wizard
     """)
@@ -163,8 +177,9 @@ def fix_claim_rma_update(ctx):
     """)
 
 
+@anthem.log
 def connector_shipper_rate_rename(ctx):
-    """ rename rate to fee in connector binding """
+    """ Renaming rate to fee in connector binding """
     if table_exists(ctx, 'qoqa_shipper_fee'):
         return
     ctx.env.cr.execute("""
@@ -208,8 +223,9 @@ def connector_shipper_rate_rename(ctx):
         ctx.env.cr.execute(query)
 
 
+@anthem.log
 def partner_contact(ctx):
-    """ Convert 'contact' addresses to 'other'
+    """ Converting 'contact' addresses to 'other'
 
     Addresses imported from the BO are of type 'contact'
     When an address is of type contact, its address fields
@@ -217,29 +233,34 @@ def partner_contact(ctx):
     want here.
 
     """
-    ctx.env.cr.execute("""
-        UPDATE res_partner
-        SET type = 'other'
-        WHERE type = 'contact'
-        AND   EXISTS (SELECT id
-                      FROM qoqa_address
-                      WHERE openerp_id = res_partner.id)
-    """)
-    ctx.env.cr.execute("""
-        UPDATE res_partner
-        SET type = 'contact'
-        WHERE type = 'default'
-        AND parent_id IS NULL
-    """)
-    ctx.env.cr.execute("""
-        UPDATE res_partner
-        SET type = 'other'
-        WHERE type = 'default'
-        AND parent_id IS NOT NULL
-    """)
+    with ctx.log(u"fixing 'contact' -> 'other' on addresses"):
+        ctx.env.cr.execute("""
+            UPDATE res_partner
+            SET type = 'other'
+            WHERE type = 'contact'
+            AND   EXISTS (SELECT id
+                          FROM qoqa_address
+                          WHERE openerp_id = res_partner.id)
+        """)
+    with ctx.log(u"fixing 'default' -> 'contact' on parents"):
+        ctx.env.cr.execute("""
+            UPDATE res_partner
+            SET type = 'contact'
+            WHERE type = 'default'
+            AND parent_id IS NULL
+        """)
+    with ctx.log(u"fixing 'default' -> 'other' on addresses"):
+        ctx.env.cr.execute("""
+            UPDATE res_partner
+            SET type = 'other'
+            WHERE type = 'default'
+            AND parent_id IS NOT NULL
+        """)
 
 
+@anthem.log
 def sale_order_line_project(ctx):
+    """ Setting the project_id on the sale order lines """
     if not column_exists(ctx, 'sale_order_line', 'project_id'):
         ctx.env.cr.execute("""
             ALTER TABLE sale_order_line ADD COLUMN project_id integer
@@ -254,7 +275,9 @@ def sale_order_line_project(ctx):
     """)
 
 
+@anthem.log
 def crm_unclaimed_fix_ids(ctx):
+    """ Updating unclaimed categories ids on the company """
     ctx.env.cr.execute("""
         WITH old_new_categ_ids AS (
           SELECT 68 as old_id, 39 as new_id
@@ -285,8 +308,9 @@ def crm_unclaimed_fix_ids(ctx):
     """)
 
 
+@anthem.log
 def main(ctx):
-    """ Executed at the very beginning of the migration """
+    """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
     clean_uninstalled(ctx)
     move_wine_ch_xml_ids(ctx)

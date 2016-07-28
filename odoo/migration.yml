@@ -43,6 +43,7 @@ migration:
           #---- OCA/bank-statement-reconcile ---------------#
           - account_mass_reconcile
           - account_move_base_import
+          - account_move_so_import
           - account_move_transactionid_import
           - base_transaction_id
           #---- OCA/carrier-delivery -----------------------#

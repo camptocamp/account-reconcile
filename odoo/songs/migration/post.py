@@ -4,52 +4,48 @@
 
 from __future__ import print_function
 
+import anthem
+
 from . import post_product
+from ..common import copy_sequence_next_number
 
 
+@anthem.log
 def sale_shop(ctx):
-    """ Migrate sale.shop to qoqa.shop """
-    ctx.env.cr.execute("""
-        UPDATE qoqa_shop q
-        SET name = s.name,
-            company_id = s.company_id,
-            analytic_account_id = s.project_id,
-            swiss_pp_logo = s.swiss_pp_logo,
-            postlogistics_logo = s.postlogistics_logo,
-            mail_signature_template = s.mail_signature_template
-        FROM sale_shop s
-        WHERE s.id = q.openerp_id
-    """)
-    ctx.env.cr.execute("""
-        UPDATE crm_claim c
-        SET qoqa_shop_id = q.id
-        FROM qoqa_shop q
-        WHERE q.openerp_id = c.shop_id
-        AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
-    """)
-    ctx.env.cr.execute("""
-        UPDATE sale_order c
-        SET qoqa_shop_id = q.id
-        FROM qoqa_shop q
-        WHERE q.openerp_id = c.shop_id
-        AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
-    """)
+    """ Migrating sale.shop to qoqa.shop """
+    with ctx.log(u'moving sale.shop values to qoqa.shop values'):
+        ctx.env.cr.execute("""
+            UPDATE qoqa_shop q
+            SET name = s.name,
+                company_id = s.company_id,
+                analytic_account_id = s.project_id,
+                swiss_pp_logo = s.swiss_pp_logo,
+                postlogistics_logo = s.postlogistics_logo,
+                mail_signature_template = s.mail_signature_template
+            FROM sale_shop s
+            WHERE s.id = q.openerp_id
+        """)
+    with ctx.log(u'setting qoqa_shop_id on crm_claim'):
+        ctx.env.cr.execute("""
+            UPDATE crm_claim c
+            SET qoqa_shop_id = q.id
+            FROM qoqa_shop q
+            WHERE q.openerp_id = c.shop_id
+            AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
+        """)
+    with ctx.log(u'setting qoqa_shop_id on sale_order'):
+        ctx.env.cr.execute("""
+            UPDATE sale_order c
+            SET qoqa_shop_id = q.id
+            FROM qoqa_shop q
+            WHERE q.openerp_id = c.shop_id
+            AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
+        """)
 
 
-# TODO: candidate for a new anthem.lyrics?
-def copy_sequence_next_number(ctx,
-                              source_sequence_code,
-                              target_sequence_code):
-    Sequence = ctx.env['ir.sequence']
-    source_sequence = Sequence.search([('code', '=', source_sequence_code)])
-    target_sequence = Sequence.search([('code', '=', target_sequence_code)])
-    target_sequence.write(
-        {'number_next': source_sequence.number_next}
-    )
-
-
+@anthem.log
 def claim_sequence(ctx):
-    """ Correct claim sequences """
+    """ Correcting claim sequences """
     ctx.env.cr.execute("""
         UPDATE ir_sequence
         SET prefix = 'SOS-'
@@ -58,56 +54,62 @@ def claim_sequence(ctx):
     copy_sequence_next_number(ctx, 'crm.claim.rma', 'crm.claim.rma.customer')
 
 
+@anthem.log
 def payment_method(ctx):
-    """ migrate payment.method → account.payment.mode """
-    ctx.env.cr.execute("""
-        INSERT INTO account_payment_mode (
-          create_uid, write_uid, create_date, write_date,
-          name, company_id, active, bank_account_link,
-          fixed_journal_id, payment_method_id, workflow_process_id,
-          days_before_cancel, import_rule, sequence,
-          payment_cancellable_on_qoqa, qoqa_id,
-          gift_card, payment_settlable_on_qoqa
-          )
-          SELECT
-          create_uid, write_uid, create_date, write_date,
-          name, COALESCE(company_id, 3), active, 'fixed',
-          journal_id, 1, workflow_process_id,
-          days_before_cancel, import_rule, sequence,
-          payment_cancellable_on_qoqa, qoqa_id,
-          gift_card, payment_settlable_on_qoqa
-          FROM payment_method
-          WHERE NOT EXISTS (SELECT id FROM account_payment_mode
-                            WHERE name = payment_method.name)
-    """)
-    ctx.env.cr.execute("""
-        UPDATE sale_order s
-        SET payment_mode_id = m.id
-        FROM account_payment_mode m
-        INNER JOIN payment_method p
-        ON p.name = m.name
-        WHERE p.id = s.payment_method_id
-        AND s.payment_method_id IS NOT NULL AND s.payment_mode_id IS NULL
-    """)
-    ctx.env.cr.execute("""
-        UPDATE account_invoice i
-        SET payment_mode_id = o.payment_mode_id
-        FROM sale_order o
-        INNER JOIN sale_order_line ol
-        ON ol.order_id = o.id
-        INNER JOIN sale_order_line_invoice_rel rel
-        ON rel.order_line_id = ol.id
-        INNER JOIN account_invoice_line il
-        ON il.id = rel.invoice_line_id
-        WHERE il.invoice_id = i.id
-    """)
-    # trigger recomputation of function fields
-    for mode in ctx.env['account.payment.mode'].search([]):
-        mode.write({'payment_method_id': mode.payment_method_id.id})
+    """ Migrating payment.method -> account.payment.mode """
+    with ctx.log(u'creating account_payment_mode records'):
+        ctx.env.cr.execute("""
+            INSERT INTO account_payment_mode (
+              create_uid, write_uid, create_date, write_date,
+              name, company_id, active, bank_account_link,
+              fixed_journal_id, payment_method_id, workflow_process_id,
+              days_before_cancel, import_rule, sequence,
+              payment_cancellable_on_qoqa, qoqa_id,
+              gift_card, payment_settlable_on_qoqa
+              )
+              SELECT
+              create_uid, write_uid, create_date, write_date,
+              name, COALESCE(company_id, 3), active, 'fixed',
+              journal_id, 1, workflow_process_id,
+              days_before_cancel, import_rule, sequence,
+              payment_cancellable_on_qoqa, qoqa_id,
+              gift_card, payment_settlable_on_qoqa
+              FROM payment_method
+              WHERE NOT EXISTS (SELECT id FROM account_payment_mode
+                                WHERE name = payment_method.name)
+        """)
+    with ctx.log(u'setting payment_mode_id on sale_order'):
+        ctx.env.cr.execute("""
+            UPDATE sale_order s
+            SET payment_mode_id = m.id
+            FROM account_payment_mode m
+            INNER JOIN payment_method p
+            ON p.name = m.name
+            WHERE p.id = s.payment_method_id
+            AND s.payment_method_id IS NOT NULL AND s.payment_mode_id IS NULL
+        """)
+    with ctx.log(u'setting payment_mode_id on account_invoice'):
+        ctx.env.cr.execute("""
+            UPDATE account_invoice i
+            SET payment_mode_id = o.payment_mode_id
+            FROM sale_order o
+            INNER JOIN sale_order_line ol
+            ON ol.order_id = o.id
+            INNER JOIN sale_order_line_invoice_rel rel
+            ON rel.order_line_id = ol.id
+            INNER JOIN account_invoice_line il
+            ON il.id = rel.invoice_line_id
+            WHERE il.invoice_id = i.id
+            AND i.payment_mode_id != o.payment_mode_id
+        """)
+    with ctx.log(u'trigger recomputation of function fields'):
+        for mode in ctx.env['account.payment.mode'].search([]):
+            mode.write({'payment_method_id': mode.payment_method_id.id})
 
 
+@anthem.log
 def connector_qoqa(ctx):
-    """ Migrate connector's stuff """
+    """ Migrating connector's stuff """
     ctx.env.cr.execute("""
       UPDATE qoqa_backend_timestamp
       SET from_date_field = 'import_discount_accounting_from_date'
@@ -125,8 +127,9 @@ def connector_qoqa(ctx):
     """)
 
 
+@anthem.log
 def mail_alias(ctx):
-    """ Rename 'shop_id' field in aliases' default values """
+    """ Renaming 'shop_id' field in aliases' default values """
     cr = ctx.env.cr
     query = ("SELECT openerp_id, id "
              "FROM qoqa_shop ")
@@ -171,7 +174,10 @@ def mail_alias(ctx):
         params = (unicode(defaults), alias_id)
         cr.execute(query, params)
 
+
+@anthem.log
 def mail_template(ctx):
+    """ Fixing reference to renamed fields in bodies of email templates """
     cr = ctx.env.cr
     # Remove user defaults
     query = "DELETE FROM ir_values WHERE model = 'mail.compose.message';"
@@ -204,7 +210,9 @@ def mail_template(ctx):
     default_template.is_default = True
 
 
+@anthem.log
 def fix_journal_ids(ctx):
+    """ Fix mapping of accounting journals """
     # (old, new)
     mapping = [(4, 2),
                (5, 3),
@@ -229,8 +237,9 @@ def fix_journal_ids(ctx):
     """, (tuple([m[0] for m in mapping]),))
 
 
+@anthem.log
 def configure_shipper_package_types(ctx):
-    """ Configure delivery carriers
+    """ Configuring delivery carriers
 
     Disable qoqa shipper services not used anymore and configure
     the new 'package types'
@@ -281,8 +290,9 @@ def configure_shipper_package_types(ctx):
                   'is missing.' % (qoqa_id, carrier_id))
 
 
+@anthem.log
 def move_journal_import_setup(ctx):
-    """ Move journal import setup
+    """ Moving journal import setup
 
     The configuration in account_statement_profile is now in account_journal
     """
@@ -314,7 +324,9 @@ def move_journal_import_setup(ctx):
         """, (journal.id, ))
 
 
+@anthem.log
 def main(ctx):
+    """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
     post_product.product_brand(ctx)
     post_product.product_attributes(ctx)

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="batch_pickings_warnings" model="ir.ui.view">
+        <field name="name">stock.batch.group.warnings</field>
+        <field name="model">stock.batch.group.warnings</field>
+        <field name="arch" type="xml">
+            <form string="Generate Grouped Batches">
+                <field name="message" attrs="{'readonly': True}"/>
+                <footer>
+                    <button name="action_ok" string="Ok" type="object" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

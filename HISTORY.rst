@@ -21,9 +21,14 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Migrate module ``picking_dispatch_group`` that creates dispatches grouped by
+  products according to some rules
+
 **Bugfixes**
 
 **Build**
+
+* Use Docker image odoo-project 1.2.1
 
 **Documentation**
 

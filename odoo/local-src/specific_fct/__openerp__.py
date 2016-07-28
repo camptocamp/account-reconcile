@@ -17,8 +17,7 @@
         'purchase_analytic_global',
         'delivery_carrier_label_postlogistics_shop_logo',
         'qoqa_offer',
-        # TODO: waiting for http://jira.qoqa.com/browse/MIGO-127
-        # 'delivery_carrier_label_dispatch',
+        'delivery_carrier_label_batch',
         'base_transaction_id',
     ],
     'author': 'Camptocamp',

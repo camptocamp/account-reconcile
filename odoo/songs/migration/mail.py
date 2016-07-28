@@ -6,7 +6,7 @@ from __future__ import print_function
 
 import anthem
 
-from .common import table_exists
+from ..common import table_exists
 
 
 @anthem.log

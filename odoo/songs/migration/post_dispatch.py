@@ -52,7 +52,7 @@ def dispatch_migration(ctx):
     )
 
     dispatches = cr.fetchall()
-
+    migrated_ids = []
     for dispatch_row in dispatches:
         dispatch_row = list(dispatch_row)
 
@@ -61,6 +61,8 @@ def dispatch_migration(ctx):
         picking_states = _get_dispatch_pickings(cr, dispatch_id)
         if not picking_states:
             continue
+
+        migrated_ids.append(dispatch_id)
 
         if all(p[1] == 'assigned' for p in picking_states):
             state = 'assigned'
@@ -82,3 +84,7 @@ def dispatch_migration(ctx):
             "UPDATE stock_picking SET batch_picking_id=%s WHERE id IN %s",
             (batch_id, tuple(p[0] for p in picking_states))
         )
+
+    if migrated_ids:
+        cr.execute("DELETE FROM picking_dispatch WHERE id IN %s",
+                   (tuple(migrated_ids), ))

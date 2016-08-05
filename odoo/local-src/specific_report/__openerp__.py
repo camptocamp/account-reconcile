@@ -9,21 +9,20 @@
 
  Contains:
  - specific report headers
- - specific shipping default webkit labels
+ - specific shipping default qweb labels
  - specific invoice report to fit with QoQa addresses
- - specific stock.location report "Stock Inventory Overview" with
-   added description_warehouse info
  """,
  'author': 'Camptocamp',
  'website': 'http://www.camptocamp.com',
  'depends': ['purchase',
              'connector_qoqa',
              'specific_fct',
-             #'delivery_carrier_label_default_webkit',
+             'delivery_carrier_label_default',
              ],
  'data': [#'reports.xml',
           'views/report_purchaseorder.xml',
           'views/report_accountinvoice.xml',
+          'views/report_default_shipping_label.xml',
           ],
  'test': [],
  'installable': True,

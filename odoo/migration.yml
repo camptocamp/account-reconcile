@@ -49,6 +49,7 @@ migration:
           #---- OCA/carrier-delivery -----------------------#
           - base_delivery_carrier_label
           - delivery_carrier_label_batch
+          - delivery_carrier_label_default
           - delivery_carrier_label_postlogistics
           - delivery_carrier_label_postlogistics_shop_logo
           #---- OCA/connector-ecommerce --------------------#

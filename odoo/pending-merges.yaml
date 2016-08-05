@@ -45,14 +45,12 @@
   merges:
     - oca 9.0
     # port base_delivery_carrier_label
-    - oca refs/pull/72/head
-    # port delivery_carrier_label_postlogistics
-    - oca refs/pull/73/head
-    # port base_delivery_carrier_label
     # TODO: conflict
     # - oca refs/pull/84/head
     # port delivery_carrier_label_dispatch
     - oca refs/pull/99/head
+    # port delivery_carrier_label_default
+    - oca refs/pull/100/head
   target: *default_target
 ./external-src/connector-ecommerce:
   remotes:

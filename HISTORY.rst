@@ -23,6 +23,9 @@ latest (unreleased)
 
 * Migrate module ``picking_dispatch_group`` that creates dispatches grouped by
   products according to some rules
+* Migration of default shipping labels
+* Migration of specific purchase report
+* Migration of specific invoice report
 
 **Bugfixes**
 

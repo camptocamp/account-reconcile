@@ -1,6 +1,6 @@
 [submodule "odoo/src"]
 	path = odoo/src
-	url = git@github.com:camptocamp/odoo
+	url = git@github.com:oca/OCB
 [submodule "odoo/external-src/enterprise"]
 	path = odoo/external-src/enterprise
 	url = git@github.com:odoo/enterprise
@@ -30,7 +30,7 @@
 	url = git@github.com:camptocamp/bank-payment
 [submodule "odoo/external-src/bank-statement-reconcile"]
 	path = odoo/external-src/bank-statement-reconcile
-	url = git@github.com:camptocamp/bank-statement-reconcile
+	url = git@github.com:oca/bank-statement-reconcile
 [submodule "odoo/external-src/carrier-delivery"]
 	path = odoo/external-src/carrier-delivery
 	url = git@github.com:camptocamp/carrier-delivery
@@ -87,4 +87,4 @@
 	url = git@github.com:camptocamp/stock-logistics-workflow
 [submodule "odoo/external-src/web"]
 	path = odoo/external-src/web
-	url = git@github.com:camptocamp/web
+	url = git@github.com:oca/web

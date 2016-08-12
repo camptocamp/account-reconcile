@@ -91,6 +91,7 @@
   remotes:
     oca: git@github.com:OCA/rma.git
     camptocamp: git@github.com:camptocamp/rma.git
+    cyrilgdn: git@github.com:cyrilgdn/rma.git
   merges:
     - oca 9.0
     # port crm_claim_rma_code
@@ -99,6 +100,8 @@
     - oca refs/pull/86/head
     # port crm_rma_stock_location
     - oca refs/pull/87/head
+    # fix rma responsive design
+    - cyrilgdn refs/pull/1/head
   target: *default_target
 ./external-src/sale-workflow:
   remotes:

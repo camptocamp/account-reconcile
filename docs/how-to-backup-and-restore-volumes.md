@@ -7,8 +7,8 @@ $ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backu
 $ export DATAODOO_VOLUME=project_data-odoo  # Exact name to find with 'docker volume ls'
 $ export DATADB_VOLUME=project_data-db  # Exact name to find with 'docker volume ls'
 
-$ docker run --rm -v "$DATAODOO_VOLUME:/data/odoo" -v $HOST_BACKUPS:/backup debian tar cvf /backup/backup-dataodoo.tar /data/odoo
-$ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:/backup debian tar cvf /backup/backup-datadb.tar /var/lib/postgresql/data
+$ docker run --rm -v "$DATAODOO_VOLUME:/data/odoo" -v $HOST_BACKUPS:/backup debian tar cvzf /backup/backup-dataodoo.tar.gz /data/odoo
+$ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:/backup debian tar cvzf /backup/backup-datadb.tar.gz /var/lib/postgresql/data
 ```
 
 ## Restore the db and filestore (as volumes)
@@ -22,8 +22,8 @@ $ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backu
 $ export DATAODOO_VOLUME=project_data-odoo  # Exact name to find with 'docker volume ls'
 $ export DATADB_VOLUME=project_data-db  # Exact name to find with 'docker volume ls'
 
-$ docker run --rm -v "$DATAODOO_VOLUME:/data/odoo" -v $HOST_BACKUPS:/backup debian bash -c "tar xvf /backup/backup-dataodoo.tar"
-$ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:/backup debian bash -c "tar xvf /backup/backup-datadb.tar"
+$ docker run --rm -v "$DATAODOO_VOLUME:/data/odoo" -v $HOST_BACKUPS:/backup debian bash -c "tar xvzf /backup/backup-dataodoo.tar.gz"
+$ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:/backup debian bash -c "tar xvzf /backup/backup-datadb.tar.gz"
 ```
 
 ## Backup the db in a pg dump

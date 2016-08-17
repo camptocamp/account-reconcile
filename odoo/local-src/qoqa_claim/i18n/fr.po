@@ -194,6 +194,11 @@ msgid "Not a valid tracking number!"
 msgstr "Numéro de colis invalide !"
 
 #. module: qoqa_claim
+#: model:crm.claim.category,name:qoqa_claim.crm_case_categ_default_others
+msgid "Others"
+msgstr "Autres"
+
+#. module: qoqa_claim
 #: field:crm.claim,pay_by_email_url:0
 #: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_pay_by_email_url
 msgid "Pay by e-mail URL"

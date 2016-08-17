@@ -62,7 +62,7 @@ class TestImportOffer(QoQaTransactionCase):
         edit_url = self.backend_record.url + '/dot/edit/1'
         expected = [
             ExpectedOffer(
-                name='Apple iPhone 6 / 64GB',
+                name='[1] Apple iPhone 6 / 64GB',
                 qoqa_link=url,
                 qoqa_edit_link=edit_url,
             ),

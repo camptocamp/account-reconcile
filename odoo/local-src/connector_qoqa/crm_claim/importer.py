@@ -64,7 +64,7 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
     @mapping
     def message(self, record):
         message = record['data']['attributes']['message']
-        return {'description': '<pre>%s</pre>' % message}
+        return {'description': message}
 
     @mapping
     def partner_id(self, record):

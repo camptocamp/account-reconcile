@@ -15,14 +15,17 @@ class SaleOrderLine(models.Model):
         """
         res = super(SaleOrderLine, self).product_id_change()
 
-        product = self.product_id.with_context(
-            lang=self.order_id.partner_id.lang,
-            partner=self.order_id.partner_id.id,
-            quantity=self.product_uom_qty,
-            date=self.order_id.date_order,
-            pricelist=self.order_id.pricelist_id.id,
-            uom=self.product_uom.id
-        )
-        self.name = product.name_get()[0][1]
+        if self.product_id:
+            product = self.product_id.with_context(
+                lang=self.order_id.partner_id.lang,
+                partner=self.order_id.partner_id.id,
+                quantity=self.product_uom_qty,
+                date=self.order_id.date_order,
+                pricelist=self.order_id.pricelist_id.id,
+                uom=self.product_uom.id
+            )
+            self.name = product.name_get()[0][1]
+        else:
+            self.name = False
 
         return res

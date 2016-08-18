@@ -27,6 +27,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Claim sync: remove <pre> tags
+* Fix an issue when creating a new sale order line or emptying the product field
 
 **Build**
 

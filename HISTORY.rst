@@ -26,6 +26,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Claim sync: remove <pre> tags
+
 **Build**
 
 * Use Docker image odoo-project 1.2.1

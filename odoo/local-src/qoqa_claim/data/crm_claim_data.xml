@@ -13,4 +13,7 @@
         <field name="state">cancel</field>
         <field name="claim_common" eval="True"/>
     </record>
+    <record id="crm_case_categ_default_others" model="crm.claim.category">
+        <field name="name">Others</field>
+    </record>
 </odoo>

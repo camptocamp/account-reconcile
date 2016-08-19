@@ -33,7 +33,7 @@ latest (unreleased)
 
 **Build**
 
-* Use Docker image odoo-project 1.2.1
+* Use Docker image odoo-project 1.3.0
 
 **Documentation**
 

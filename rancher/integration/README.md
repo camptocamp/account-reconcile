@@ -14,7 +14,6 @@ export DB_NAME=qoqa_int
 export DB_USER=openerp
 export DB_PORT=5432
 export DB_PASSWORD=# see in lastpass ("QoQa RDS")
-export SCENARIO_MAIN_TAG=qoqa
 export ADMIN_PASSWD=# set an admin password (anything, we don't use it)
 export RUNNING_ENV=integration
 export DEMO=none

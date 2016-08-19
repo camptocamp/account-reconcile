@@ -2,8 +2,6 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from __future__ import print_function
-
 import anthem
 
 from . import post_dispatch
@@ -286,9 +284,9 @@ def configure_shipper_package_types(ctx):
         if ctx.env.cr.fetchone():
             ctx.env.cr.execute(insert_query, (carrier_id, qoqa_id))
         else:
-            print('Could not create the qoqa_shipper_package_type with '
-                  'qoqa_id %s because the delivery_carrier with id %s '
-                  'is missing.' % (qoqa_id, carrier_id))
+            ctx.log_line('Could not create the qoqa_shipper_package_type with '
+                         'qoqa_id %s because the delivery_carrier with id %s '
+                         'is missing.' % (qoqa_id, carrier_id))
 
 
 @anthem.log

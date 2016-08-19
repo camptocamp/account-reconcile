@@ -5,6 +5,8 @@
 .. 0.0.1 (2016-05-09)
 .. ++++++++++++++++++
 
+.. **Data Migration**
+
 .. **Features and Improvements**
 
 .. **Bugfixes**
@@ -19,6 +21,11 @@ Release History
 latest (unreleased)
 +++++++++++++++++++
 
+**Data Migration**
+
+* Setup the accounting journals, completion rules, s3 imports
+* Migration of picking dispatchs
+
 **Features and Improvements**
 
 * Migrate module ``picking_dispatch_group`` that creates dispatches grouped by
@@ -26,19 +33,23 @@ latest (unreleased)
 * Migration of default shipping labels
 * Migration of specific purchase report
 * Migration of specific invoice report
+* Port 7.0 feature: default claim category
 
 **Bugfixes**
 
 * Claim sync: remove <pre> tags
 * Fix an issue when creating a new sale order line or emptying the product field
-
 * Offers sync: add id in the title (``[xxxx] name of the offer``)
+* Fix responsive design on the claim views
 
 **Build**
 
 * Use Docker image odoo-project 1.3.0
+* Add invoke with a ``bump`` task to increment the release number
 
 **Documentation**
+
+* Use tar.gz instead of tar for backups of volumes
 
 9.3.1 (2016-07-25)
 ++++++++++++++++++

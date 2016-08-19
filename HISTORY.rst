@@ -28,6 +28,8 @@ latest (unreleased)
 
 * Claim sync: remove <pre> tags
 
+* Offers sync: add id in the title (``[xxxx] name of the offer``)
+
 **Build**
 
 * Use Docker image odoo-project 1.2.1

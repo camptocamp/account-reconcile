@@ -29,6 +29,7 @@ You'll find a [Docker guide for the development](./docs/docker-dev.md) and on fo
 * [Pull Requests](./docs/pull-requests.md)
 * [Upgrade scripts](./docs/upgrade-scripts.md)
 * [Automated rancher build](./docs/rancher.md)
+* [Using automated tasks with Invoke](./docs/invoke.md)
 
 ## How-to
 

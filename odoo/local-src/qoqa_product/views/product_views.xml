@@ -95,6 +95,18 @@
     </field>
   </record>
 
+  <record id="view_product_variant_tree_brand" model="ir.ui.view">
+    <field name="name">product.product.tree</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product_brand.view_product_variant_tree_brand"/>
+    <field name="arch" type="xml">
+      <field name="barcode" position="replace">
+      </field>
+      <field name="name" position="after">
+        <field name="barcode"/>
+      </field>
+    </field>
+  </record>
   <!--
 
   They want to be able to edit some fields in the tree view,
@@ -110,7 +122,7 @@
     <field name="model">product.product</field>
     <field name="mode">primary</field>
     <field name="priority" eval="50"/>
-    <field name="inherit_id" ref="product_brand.view_product_variant_tree_brand"/>
+    <field name="inherit_id" ref="view_product_variant_tree_brand"/>
     <field name="arch" type="xml">
       <tree position="attributes">
         <attribute name="editable">top</attribute>
@@ -130,11 +142,6 @@
       <field name="product_brand_id" position="attributes">
         <attribute name="readonly">1</attribute>
       </field>
-      <field name="barcode" position="replace">
-      </field>
-      <field name="name" position="after">
-        <field name="barcode"/>
-      </field>
     </field>
   </record>
 
@@ -147,6 +154,17 @@
       <field name="context">{"search_default_filter_to_sell":1}</field>
       <field name="view_id" ref="product_product_tree_inline_edit_view"/>
       <field name="search_view_id" ref="product.product_search_form_view"/>
+  </record>
+
+  <record id="product_search_form_view" model="ir.ui.view">
+    <field name="name">product.search.form</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_search_form_view"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="barcode"/>
+      </field>
+    </field>
   </record>
 
   <menuitem id="menu_product_product_edit_tree_view"

@@ -25,6 +25,7 @@ latest (unreleased)
 
 * Setup the accounting journals, completion rules, s3 imports
 * Migration of picking dispatchs
+* Correct stock location complete names
 
 **Features and Improvements**
 

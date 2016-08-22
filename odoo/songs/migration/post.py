@@ -324,6 +324,23 @@ def move_journal_import_setup(ctx):
 
 
 @anthem.log
+def correct_stock_location_complete_name(ctx):
+    """ Correcting stock location complete name """
+    ctx.env.cr.execute("""
+        UPDATE stock_location l
+        SET name = t.value
+        FROM ir_translation t
+        WHERE l.id = t.res_id
+        AND l.name = 'stock.location,name'
+        AND t.lang = 'fr_FR'
+    """)
+    locations = ctx.env['stock.location'].with_context(lang='fr_FR').search([])
+    for location in locations:
+        # trigger complete_name function field
+        location.name = location.name
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)

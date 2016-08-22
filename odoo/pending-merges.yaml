@@ -123,3 +123,12 @@
     # port stock_batch_picking
     - oca refs/pull/241/head
   target: *default_target
+./src:
+  remotes:
+    oca: git@github.com:OCA/OCB.git
+    camptocamp: git@github.com:camptocamp/odoo.git
+  merges:
+    - oca 9.0
+    # Add multi-company security rule for employees
+    - oca refs/pull/533/head
+  target: *default_target

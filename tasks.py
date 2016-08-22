@@ -60,6 +60,17 @@ def _current_version():
     return version
 
 
+def _check_git_diff(ctx):
+    try:
+        ctx.run('git diff --quiet --exit-code')
+        ctx.run('git diff --cached --quiet --exit-code')
+    except exceptions.Failure:
+        r = raw_input('Your repository has local changes, '
+                      'are you sure you want to continue? (y/N) ')
+        if r not in ('y', 'Y', 'yes'):
+            exit_msg('Aborted')
+
+
 @task
 def bump(ctx, feature=False, patch=False):
     """ Increase the version number where needed """
@@ -142,8 +153,9 @@ def push_branches(ctx):
     response = raw_input(
         'push local branches to {}? (y/N) '.format(branch_name)
     )
+    _check_git_diff(ctx)
     if response not in ('y', 'Y', 'yes'):
-        return
+        exit_msg('Aborted')
     with open(PENDING_MERGES, 'ru') as f:
         merges = yaml.load(f.read())
         for path in merges:

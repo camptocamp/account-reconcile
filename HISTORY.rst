@@ -23,6 +23,9 @@ latest (unreleased)
 
 **Data Migration**
 
+* Remove custom views (dashboards), as the original views have been updated, it
+  is better to let the users create them again
+
 **Features and Improvements**
 
 **Bugfixes**

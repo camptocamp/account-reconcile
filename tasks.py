@@ -74,7 +74,8 @@ def bump(ctx, feature=False, patch=False):
         if index == new_version_index:
             today = date.today().strftime('%Y-%m-%d')
             new_version_header = "{} ({})".format(version, today)
-            print("\n**Features and Improvements**\n\n"
+            print("\n**Data Migration**\n\n"
+                  "**Features and Improvements**\n\n"
                   "**Bugfixes**\n\n"
                   "**Build**\n\n"
                   "**Documentation**\n\n\n"

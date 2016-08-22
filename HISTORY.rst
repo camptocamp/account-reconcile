@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.4.0 (2016-08-22)
+++++++++++++++++++
+
+**Data Migration**
+
 * Setup the accounting journals, completion rules, s3 imports
 * Migration of picking dispatchs
 * Correct stock location complete names
@@ -42,6 +56,7 @@ latest (unreleased)
 * Fix an issue when creating a new sale order line or emptying the product field
 * Offers sync: add id in the title (``[xxxx] name of the offer``)
 * Fix responsive design on the claim views
+* Fix security rules on employees
 
 **Build**
 

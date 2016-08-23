@@ -128,6 +128,17 @@
     </field>
   </record>
 
+  <record id="product_search_form_view" model="ir.ui.view">
+    <field name="name">product.search.form</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_search_form_view"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="barcode"/>
+      </field>
+    </field>
+  </record>
+
   <record id="product_product_edit_tree_view" model="ir.actions.act_window">
       <field name="name">Product Variants (List)</field>
       <field name="type">ir.actions.act_window</field>
@@ -162,17 +173,6 @@
         process: price, notes in the quotation, accounting data,
         procurement methods, etc.
       </p>
-    </field>
-  </record>
-
-  <record id="product_search_form_view" model="ir.ui.view">
-    <field name="name">product.search.form</field>
-    <field name="model">product.product</field>
-    <field name="inherit_id" ref="product.product_search_form_view"/>
-    <field name="arch" type="xml">
-      <field name="name" position="after">
-        <field name="barcode"/>
-      </field>
     </field>
   </record>
 

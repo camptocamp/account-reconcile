@@ -334,9 +334,10 @@ def correct_stock_location_complete_name(ctx):
         AND l.name = 'stock.location,name'
         AND t.lang = 'fr_FR'
     """)
-    locations = ctx.env['stock.location'].with_context(lang='fr_FR').search([])
+    location_model = ctx.env['stock.location'].with_context(lang='fr_FR')
+    locations = location_model.search([('location_id', '=', False)])
     for location in locations:
-        # trigger complete_name function field
+        # trigger complete_name function field, child records will recurse
         location.name = location.name
 
 

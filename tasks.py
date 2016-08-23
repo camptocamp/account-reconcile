@@ -97,7 +97,7 @@ def bump(ctx, feature=False, patch=False):
                    version.version[2] + 1)
     version = '.'.join([str(v) for v in version])
     with open(VERSION_FILE, 'w') as fd:
-        fd.write(version)
+        fd.write(version + '\n')
 
     pattern = r'^(\s*)image:\s+{}:\d+.\d+.\d+$'.format(DOCKER_IMAGE)
     replacement = r'\1image: {}:{}'.format(DOCKER_IMAGE, version)

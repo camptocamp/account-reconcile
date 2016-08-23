@@ -25,6 +25,7 @@ latest (unreleased)
 
 * Remove custom views (dashboards), as the original views have been updated, it
   is better to let the users create them again
+* Correct stock location complete names, again (some were still wrong)
 
 **Features and Improvements**
 

@@ -2,7 +2,7 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api, exceptions, _
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
@@ -65,6 +65,18 @@ class ProductProduct(models.Model):
         if record.product_tmpl_id.qoqa_exportable:
             record.create_binding()
         return record
+
+    @api.multi
+    def write(self, vals):
+        if 'active' in vals and not vals.get('active'):
+            if any(product.mapped('qoqa_bind_ids.qoqa_id')
+                   for product in self):
+                raise exceptions.UserError(
+                    _('A product has already been exported and cannot be '
+                      'disabled. If you were trying to add a new variant, '
+                      'you must add it manually on the template.')
+                )
+        return super(ProductProduct, self).write(vals)
 
     @api.constrains('attribute_value_ids')
     def _check_attribute_value_length(self):

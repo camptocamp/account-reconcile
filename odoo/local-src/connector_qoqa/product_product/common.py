@@ -61,6 +61,10 @@ class ProductProduct(models.Model):
 
     @api.model
     def create(self, vals):
+        if self.env.context.get('default_product_tmpl_id'):
+            vals['product_tmpl_id'] = (
+                self.env.context['default_product_tmpl_id']
+            )
         record = super(ProductProduct, self).create(vals)
         if record.product_tmpl_id.qoqa_exportable:
             record.create_binding()

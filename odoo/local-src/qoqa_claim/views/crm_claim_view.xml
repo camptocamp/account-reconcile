@@ -46,6 +46,9 @@
                 <field name="invoice_id" position="attributes">
                     <attribute name="context">{'active_test': False}</attribute>
                 </field>
+                <field name="categ_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
                 <button name="%(account.action_account_invoice_refund)d" position="attributes">
                     <attribute name="context">{'invoice_ids': [invoice_id], 'description': name, 'claim_id': id}</attribute>
                 </button>

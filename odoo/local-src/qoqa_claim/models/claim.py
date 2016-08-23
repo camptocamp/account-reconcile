@@ -29,15 +29,6 @@ class CrmClaim(models.Model):
     """
     _inherit = "crm.claim"
 
-    @api.model
-    def _default_categ_id(self):
-        # Since the field already existed but was non-mandatory, and the
-        # object's creation happens after the field update, we try/except.
-        try:
-            return self.env.ref('qoqa_claim.crm_case_categ_default_others')
-        except:
-            return self.env['crm.claim.category'].browse()
-
     priority = fields.Selection(
         [('0', 'Low'),
          ('1', 'Normal'),
@@ -74,10 +65,6 @@ class CrmClaim(models.Model):
         string='Partner City',
         store=True,
         readonly=True
-    )
-    categ_id = fields.Many2one(
-        required=True,
-        default=_default_categ_id
     )
 
     @api.multi

@@ -28,7 +28,13 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add a button on the product templates to open the editable tree view of the
+  variants
+
 **Bugfixes**
+
+* Fix variants editable tree view; barcode and brand fields on variants tree
+  view
 
 **Build**
 

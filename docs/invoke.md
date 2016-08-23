@@ -18,7 +18,7 @@ $ invoke --list
 
 ```
 
-For instance, if I need to bump the current version number, I can run `invoke bump --release` or `invoke bump --patch` and the according files will be modified.
+For instance, if I need to bump the current version number, I can run `invoke release.bump --feature` or `invoke release.bump --patch` and the according files will be modified.
 
 
 The tasks are defined in `tasks.py`.

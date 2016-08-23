@@ -32,6 +32,8 @@ latest (unreleased)
 
 **Build**
 
+* Add an ``invoke`` task to push the pending-merges branches
+
 **Documentation**
 
 

@@ -309,6 +309,17 @@ def crm_unclaimed_fix_ids(ctx):
 
 
 @anthem.log
+def clean_dashboards(ctx):
+    """ Delete the custom views in dashboards
+
+    Because they still refer to non-existing views
+    """
+    ctx.env.cr.execute("""
+        DELETE FROM ir_ui_view_custom
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -321,4 +332,5 @@ def main(ctx):
     partner_contact(ctx)
     crm_unclaimed_fix_ids(ctx)
     sale_order_line_project(ctx)
+    clean_dashboards(ctx)
     mail.mail_message_purge(ctx)

@@ -105,14 +105,15 @@ class SaleOrderImporter(QoQaImporter):
                 # do not import the canceled sales orders if they
                 # have not been already imported
                 return _('Sales order %s is not imported because it '
-                         'has been canceled.') % self.qoqa_record['id']
+                         'has been canceled.') % self.qoqa_record['data']['id']
             else:
                 # Already imported orders, but canceled afterwards,
                 # triggers the automatic cancellation
                 if sale.state != 'cancel' and not sale.canceled_in_backend:
                     sale.write({'canceled_in_backend': True})
-                    return _('Sales order %s has been marked '
-                             'as "to cancel".') % self.qoqa_record['id']
+                    return (_('Sales order %s has been marked '
+                              'as "to cancel".') %
+                            self.qoqa_record['data']['id'])
 
     def _is_uptodate(self, binding):
         """ Check whether the current sale order should be imported or not.

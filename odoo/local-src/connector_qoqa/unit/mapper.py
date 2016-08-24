@@ -7,7 +7,6 @@ from __future__ import division
 import logging
 
 from openerp import fields, models
-from openerp.tools.float_utils import float_round
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit import mapper
 from ..connector import (iso8601_to_utc_datetime,
@@ -175,25 +174,6 @@ def date_to_iso8601(field):
     return modifier
 
 
-def qoqafloat(field):
-    """ A modifier intended to be used on the ``direct`` mappings for
-    importers.
-
-    QoQa provides the float values multiplied by 100.
-    Example: 33.00 is represented as 3300 on the API.
-
-    Usage::
-
-        direct = [(qoqafloat('unit_price'), 'unit_price')]
-
-    :param field: name of the source field in the record
-    """
-    def modifier(self, record, to_attr):
-        value = record.get(field) or 0
-        return float(value) / 100
-    return modifier
-
-
 def strformat(field, format_string):
     """ A modifier intended to be used on the ``direct`` mappings.
 
@@ -211,28 +191,6 @@ def strformat(field, format_string):
         if not value:
             return None
         return format_string.format(value)
-    return modifier
-
-
-def floatqoqa(field):
-    """ A modifier intended to be used on the ``direct`` mappings for
-    exporters.
-
-    QoQa provides the float values multiplied by 100.
-    Example: 33.00 is represented as 3300 on the API.
-
-    Usage::
-
-        direct = [(floatqoqa('unit_price'), 'unit_price')]
-
-    :param field: name of the source field in the record
-    """
-    def modifier(self, record, to_attr):
-        value = record[field] or 0
-        value = float(value)
-        # qoqa uses 2 digits
-        rounded = float_round(value * 100, precision_digits=0)
-        return int(rounded)
     return modifier
 
 

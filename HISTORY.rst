@@ -40,6 +40,7 @@ latest (unreleased)
 * Fix computation of partner display name which made the partner not searchable
 * The display name of partners do no longer show weird ', , ' when there is no
   address
+* Fix creation of delivery method
 
 **Build**
 

@@ -36,6 +36,7 @@
         'views/sale_view.xml',
         'views/stock_view.xml',
         'wizard/account_invoice_refund_view.xml',
+        'data/product_category.xml',
     ],
     'installable': True,
     'application': True,

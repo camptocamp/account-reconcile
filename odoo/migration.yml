@@ -62,6 +62,8 @@ migration:
           - l10n_ch_bank
           - l10n_ch_base_bank
           - l10n_ch_dta
+          - l10n_ch_pain_base
+          - l10n_ch_pain_credit_transfer
           - l10n_ch_payment_slip
           - l10n_ch_zip
           #---- OCA/product-attributes ---------------------#

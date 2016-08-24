@@ -124,7 +124,7 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         # line builder
         builder = self.unit_for(QoQaPromoLineBuilder)
         promo_type = self._discount_type(discount)
-        builder.price_unit = -float(line['attributes']['unit_price'])
+        builder.price_unit = -float(line['attributes']['lot_price'])
         # choose product according to the promo type
         builder.product = promo_type.product_id
         builder.code = discount['id']
@@ -152,7 +152,7 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         attributes = record['attributes']
         lot_size = attributes['lot_size'] or 1
         quantity = attributes['lot_quantity']
-        price = float(attributes['unit_price'])
+        price = float(attributes['lot_price'])
         if lot_size > 1:
             price /= lot_size
         values = {'product_uom_qty': quantity,

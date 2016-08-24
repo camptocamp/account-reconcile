@@ -94,7 +94,8 @@ class ResPartner(models.Model):
             super(ResPartner, self.with_context(show_address=True)).name_get()
         res = []
         for partner_id, name in names:
-            res.append((partner_id, name.replace('\n', ', ')))
+            parts = (p.strip() for p in name.splitlines() if p.strip())
+            res.append((partner_id, ', '.join(parts)))
         return res
 
     def init(self, cr):

@@ -373,24 +373,33 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    data=json.dumps({'cancelled': True}))
         self._handle_response(response)
 
-    def pay_by_email_url(self, id, claim, amount):
-        url = self.url(with_lang=False)
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        payload = {'action': 'pay_by_email_url',
-                   'params': {'refno': claim,
-                              'amount': amount,
-                              }
-                   }
-        response = self.client.put(url + str(id),
-                                   data=json.dumps(payload),
-                                   headers=headers)
-        response = self._handle_response(response)
-        return response['data']['url']
+    def create_payment(self, id, amount, kind):
+        """ Create a payment on the order
 
-    def add_trackings(self, qoqa_id, packages):
+        ``kind`` can be a value of:
+          - standard
+          - credit_note
+          - unclaimed
+        """
+        assert kind in ('standard', 'credit_note', 'unclaimed')
+        url = '%s%s/payments' % (self.url(), id)
+
+        payload = {
+            'payment': {
+                'amount': str(amount),
+                'kind': kind,
+            }
+        }
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.post(url,
+                                    data=json.dumps(payload),
+                                    headers=headers)
+        return self._handle_response(response)
+
+    def add_trackings(self, id, packages):
         """ Synchronize picking packages.
         """
-        url = "%s%s/shipping_packages" % (self.url(), qoqa_id)
+        url = "%s%s/shipping_packages" % (self.url(), id)
 
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         response = self.client.post(url,

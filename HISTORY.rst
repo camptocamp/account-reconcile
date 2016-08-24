@@ -31,6 +31,7 @@ latest (unreleased)
 
 * Add a button on the product templates to open the editable tree view of the
   variants
+* Implement the new pay by email url
 
 **Bugfixes**
 

@@ -7,7 +7,6 @@ import logging
 
 from datetime import date
 
-from openerp import fields
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
@@ -66,9 +65,8 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         date_delivery = order['data']['attributes']['delivery_on']
         if date_delivery:
             date_delivery = iso8601_to_local_date(date_delivery)
-            delivery_date = fields.Date.from_string(date_delivery)
             today = date.today()
-            values['delay'] = (delivery_date - today).days
+            values['delay'] = (date_delivery - today).days
 
         return values
 

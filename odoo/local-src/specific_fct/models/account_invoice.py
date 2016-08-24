@@ -26,8 +26,8 @@ class AccountInvoice(models.Model):
         # when the policy is never
         lines = self.mapped('invoice_line_ids').filtered(
             lambda l: (
-                l.account_id.user_type_id.analytic_policy == 'never'
-                and l.account_analytic_id
+                l.account_id.user_type_id.analytic_policy == 'never' and
+                l.account_analytic_id
             )
         )
         lines.write({'account_analytic_id': False})

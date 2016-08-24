@@ -37,6 +37,7 @@ latest (unreleased)
 * Fix variants editable tree view; barcode and brand fields on variants tree
   view
 * Fix the custom filters of the wine moves analysis view
+* Fix computation of partner display name which made the partner not searchable
 
 **Build**
 

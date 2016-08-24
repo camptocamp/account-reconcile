@@ -14,20 +14,16 @@ def strip(value):
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    @api.multi
-    @api.depends('parent_id', 'is_company', 'name', 'firstname',
-                 'lastname', 'street', 'street2', 'zip', 'city',
-                 'state_id', 'country_id')
-    def _display_name_compute(self):
-        return self.name_get()
-
-    # indirection to avoid passing a copy of the overridable method
-    # when declaring the function field
-    def _display_name(self, *args, **kwargs):
-        return self._display_name_compute(*args, **kwargs)
-
-    display_name = fields.Char(compute=_display_name,
+    display_name = fields.Char(compute='_compute_display_name',
                                string='Name')
+
+    @api.multi
+    @api.depends('parent_id', 'is_company', 'name',
+                 'street', 'street2', 'zip', 'city',
+                 'state_id', 'country_id')
+    def _compute_display_name(self):
+        for partner in self:
+            partner.display_name = partner.name_get()[0][1]
 
     @api.model
     def _display_address(self, address, without_company=False):

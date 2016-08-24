@@ -342,6 +342,23 @@ def correct_stock_location_complete_name(ctx):
 
 
 @anthem.log
+def fix_wine_analysis_filters(ctx):
+    """ Fixing wine move analysis filters """
+    domain = [('model_id', '=', 'report.wine.move.analysis')]
+    filters = ctx.env['ir.filters'].search(domain)
+    for filter in filters:
+        domain_replaces = [
+            ("['attribute_set_id', '=', 2]", "['is_wine', '=', True]"),
+            ("['attribute_set_id', '=', 3]", "['is_liquor', '=', True]"),
+        ]
+        new_domain = filter.domain
+        for source, target in domain_replaces:
+            new_domain = new_domain.replace(source, target)
+        filter.domain = new_domain
+        filter.context = '{}'
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -359,3 +376,4 @@ def main(ctx):
     configure_shipper_package_types(ctx)
     move_journal_import_setup(ctx)
     post_dispatch.dispatch_migration(ctx)
+    fix_wine_analysis_filters(ctx)

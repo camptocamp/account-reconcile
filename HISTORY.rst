@@ -25,6 +25,7 @@ latest (unreleased)
 
 * Remove custom views (dashboards), as the original views have been updated, it
   is better to let the users create them again
+* Correct stock location complete names, again (some were still wrong)
 
 **Features and Improvements**
 
@@ -35,6 +36,7 @@ latest (unreleased)
 
 * Fix variants editable tree view; barcode and brand fields on variants tree
   view
+* Fix the custom filters of the wine moves analysis view
 
 **Build**
 

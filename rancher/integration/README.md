@@ -53,13 +53,14 @@ Assuming you already have a pg dump:
 
   ```
   rancher-compose -p qoqa-odoo-integration stop
+  rancher-compose -p qoqa-odoo-integration rm odoo --force
   ```
 
 3. `scp` the dump on a qoqa server (so we have access to the RDS server)
 
   ```
   scp ~/nobackup/backups/qoqa/db.pg openerp@test.erp.qoqa.com:/srv/openerp
-  ```
+  ``m
 
 4. `ssh` on the server
 

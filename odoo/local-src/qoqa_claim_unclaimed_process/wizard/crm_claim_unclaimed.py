@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 # © 2016 Camptocamp SA (Matthieu Dietrich)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+import time
 from openerp import _, api, fields, models
 from openerp.exceptions import UserError
-# from openerp.tools.float_utils import float_round
-# from openerp.addons.connector_qoqa.connector import get_environment
-# from openerp.addons.connector.session import ConnectorSession
-# from openerp.addons.connector.unit.backend_adapter import BackendAdapter
+from openerp.addons.connector.session import ConnectorSession
+from openerp.addons.connector.unit.backend_adapter import BackendAdapter
+from openerp.addons.connector.connector import Binder
+
+from openerp.addons.connector_qoqa.connector import get_environment
+from openerp.addons.connector_qoqa.unit.backend_adapter import (
+    api_handle_errors,
+)
 
 
 class CrmClaimUnclaimed(models.TransientModel):
@@ -106,25 +111,49 @@ class CrmClaimUnclaimed(models.TransientModel):
         claim_obj = self.env['crm.claim']
         customer_type = self.env.ref('crm_claim_type.crm_claim_type_customer')
 
-        # TODO after API is decided
         claim_number = claim_obj._get_sequence_number(customer_type.id)
         sale = self.claim_sale_order_id
         pay_by_email_url = False
-        # try:
-        #    session = ConnectorSession()
-        #    qsale = sale.qoqa_bind_ids[0]
-        #    backend_id = qsale.backend_id.id
-        #    env = get_environment(session, 'qoqa.sale.order', backend_id)
-        #    adapter = env.get_connector_unit(BackendAdapter)
-        #    amount = float_round(self.claim_carrier_price * 100,
-        #                         precision_digits=0)
-        #    pay_by_email_url = adapter.pay_by_email_url(
-        #        qsale.qoqa_id, claim_number, int(amount))
-        #    if not pay_by_email_url:
-        #        raise
-        # except:
-        #    raise UserError(('Error'),
-        #                    ('Pay by email not retrieved from BO!'))
+
+        qsale = sale.qoqa_bind_ids
+        backend = qsale.backend_id
+
+        session = ConnectorSession.from_env(self.env)
+        with get_environment(session, 'qoqa.sale.order',
+                             backend.id) as connector_env:
+            msg = ('"Pay by email" URL could not be obtained on the BO, '
+                   'try later')
+            sale_adapter = connector_env.get_connector_unit(BackendAdapter)
+            binder = connector_env.get_connector_unit(Binder)
+            with api_handle_errors(message=msg):
+                payment = sale_adapter.create_payment(
+                    binder.to_backend(qsale),
+                    self.claim_carrier_price,
+                    'unclaimed',
+                )
+                payment_id = payment['data']['id']
+
+        # We have to poll the GET method until we have a value in 'payment_url'
+        # because the payment is created on Datatrans by a job on the Backend's
+        # side. Once the timeout is reached, we just raise an error and the
+        # user has to retry later
+        with get_environment(session, 'qoqa.payment',
+                             backend.id) as connector_env:
+            payment_adapter = connector_env.get_connector_unit(BackendAdapter)
+            payment = payment_adapter.read(payment_id)
+            pay_by_email_url = payment['data']['attributes'].get('payment_url')
+            retries = 0
+            while retries < 10 and not pay_by_email_url:
+                time.sleep(2)
+                payment = payment_adapter.read(payment_id)
+                attributes = payment['data']['attributes']
+                pay_by_email_url = attributes.get('payment_url')
+                retries += 1
+            if not pay_by_email_url:
+                raise UserError(
+                    _('The payment could not be created on the BO. '
+                      'Retry later.')
+                )
 
         claim_vals = {
             'name': self.claim_name,
@@ -217,15 +246,22 @@ class CrmClaimUnclaimed(models.TransientModel):
             claim.claim_partner_id = False
             claim.claim_delivery_address_id = False
             claim.claim_carrier_price = False
-            pack_obj = self.env['stock.quant.package']
+            pack_model = self.env['stock.quant.package']
+            pack_operation_model = self.env['stock.pack.operation']
             if not claim.track_number:
                 return
 
-            pack = pack_obj.search([('name', '=', claim.track_number)],
-                                   limit=1)
+            pack = pack_model.search(
+                [('parcel_tracking', '=', claim.track_number)],
+                limit=1,
+            )
+            pack_op = pack_operation_model.search(
+                [('result_package_id', '=', pack.id)],
+                limit=1,
+            )
             if not pack:
                 raise UserError(_('Not a valid tracking number!'))
-            picking = pack.picking_ids and pack.picking_ids[0] or False
+            picking = pack_op.picking_id
             if not picking:
                 raise UserError(_('Delivery order not found '
                                   'for this tracking number!'))

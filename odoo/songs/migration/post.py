@@ -103,6 +103,17 @@ def payment_method(ctx):
         """)
     with ctx.log(u'setting DTA payment modes on supplier invoices'):
         ctx.env.cr.execute("""
+            UPDATE account_invoice
+            SET payment_mode_id = NULL
+            WHERE type = 'in_invoice';
+
+            DELETE FROM account_payment_mode
+            WHERE payment_method_code = 'DTA';
+
+            DELETE FROM account_payment_method
+            WHERE code = 'DTA';
+
+
             INSERT INTO account_payment_method (
                 id, create_uid, write_uid, create_date, write_date, code,
                 name, payment_type, display_name, bank_account_required,

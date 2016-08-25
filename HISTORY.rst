@@ -26,6 +26,7 @@ latest (unreleased)
 * Remove custom views (dashboards), as the original views have been updated, it
   is better to let the users create them again
 * Correct stock location complete names, again (some were still wrong)
+* Change mapping of ``qoqa_id`` on shops (modified on the backend)
 
 **Features and Improvements**
 

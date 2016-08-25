@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import anthem
+from anthem.lyrics.records import add_xmlid
 
 from ..common import column_exists, table_exists
 from . import mail
@@ -320,6 +321,18 @@ def clean_dashboards(ctx):
 
 
 @anthem.log
+def add_xmlid_delivery_category(ctx):
+    """ Adding a xmlid on the 'Frais de livraison' product category
+
+    So we can refer to it from the addons.
+    """
+    category = ctx.env['product.category'].browse(234)
+    add_xmlid(ctx, category,
+              'specific_fct.product_category_delivery',
+              noupdate=True)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -334,3 +347,4 @@ def main(ctx):
     sale_order_line_project(ctx)
     clean_dashboards(ctx)
     mail.mail_message_purge(ctx)
+    add_xmlid_delivery_category(ctx)

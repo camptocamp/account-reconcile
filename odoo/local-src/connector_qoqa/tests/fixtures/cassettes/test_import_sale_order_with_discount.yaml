@@ -15,7 +15,7 @@ interactions:
         "company_id": 1, "updated_at": "2016-06-28T17:32:22.000+02:00", "currency":
         "chf", "amount": "499.0", "accounting_website_id": 3, "main_type": "promo",
         "sub_type": "marketing"}, "type": "discount", "id": "10000011"}, {"attributes":
-        {"created_at": "2016-06-28T17:32:23.000+02:00", "variation_id": 100001, "unit_price":
+        {"created_at": "2016-06-28T17:32:23.000+02:00", "variation_id": 100001, "lot_price":
         "333.0", "updated_at": "2016-06-28T17:32:23.000+02:00", "lot_size": 1, "lot_quantity":
         2}, "type": "order_item", "id": "19"}, {"relationships": {"invoice": {"data":
         {"type": "invoice", "id": "15"}}}, "attributes": {"status": "confirmed", "kind":
@@ -29,18 +29,18 @@ interactions:
         "reference": "Q8ZUIQJY6T", "updated_at": "2016-06-28T17:32:24.000+02:00"},
         "type": "invoice", "id": "15"}, {"attributes": {"category": "product", "updated_at":
         "2016-06-28T17:32:25.000+02:00", "created_at": "2016-06-28T17:32:25.000+02:00",
-        "variation_id": 100001, "unit_price": "333.0", "ignore_credit": false, "discount_id":
+        "variation_id": 100001, "lot_price": "333.0", "ignore_credit": false, "discount_id":
         null, "vat_id": 6, "lot_size": 1, "lot_quantity": 2}, "type": "invoice_item",
         "id": "24"}, {"attributes": {"category": "shipping", "updated_at": "2016-06-28T17:32:25.000+02:00",
-        "created_at": "2016-06-28T17:32:25.000+02:00", "variation_id": null, "unit_price":
+        "created_at": "2016-06-28T17:32:25.000+02:00", "variation_id": null, "lot_price":
         "9.0", "ignore_credit": false, "discount_id": null, "vat_id": 6, "lot_size":
         1, "lot_quantity": 1}, "type": "invoice_item", "id": "25"}, {"attributes":
         {"category": "discount", "updated_at": "2016-06-28T17:32:25.000+02:00", "created_at":
-        "2016-06-28T17:32:25.000+02:00", "variation_id": null, "unit_price": "9.0",
+        "2016-06-28T17:32:25.000+02:00", "variation_id": null, "lot_price": "9.0",
         "ignore_credit": true, "discount_id": 10000011, "vat_id": 6, "lot_size": 1,
         "lot_quantity": 1}, "type": "invoice_item", "id": "26"}, {"attributes": {"category":
         "discount", "updated_at": "2016-06-28T17:32:25.000+02:00", "created_at": "2016-06-28T17:32:25.000+02:00",
-        "variation_id": null, "unit_price": "499.0", "ignore_credit": false, "discount_id":
+        "variation_id": null, "lot_price": "499.0", "ignore_credit": false, "discount_id":
         10000011, "vat_id": 6, "lot_size": 1, "lot_quantity": 1}, "type": "invoice_item",
         "id": "27"}], "data": {"relationships": {"billing_address": {"data": {"type":
         "address", "id": "100000001"}}, "invoices": {"data": [{"type": "invoice",

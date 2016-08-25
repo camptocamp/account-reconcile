@@ -42,6 +42,9 @@ latest (unreleased)
 * The display name of partners do no longer show weird ', , ' when there is no
   address
 * Fix creation of delivery method
+* Import of job for canceled orders do no longer fail
+* Fix import of orders failing due to a renaming in the API (`unit_price` →
+  `lot_price`)
 
 **Build**
 

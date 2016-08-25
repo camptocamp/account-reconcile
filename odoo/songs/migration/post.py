@@ -101,6 +101,197 @@ def payment_method(ctx):
             WHERE il.invoice_id = i.id
             AND i.payment_mode_id != o.payment_mode_id
         """)
+    with ctx.log(u'setting DTA payment modes on supplier invoices'):
+        ctx.env.cr.execute("""
+            UPDATE account_invoice
+            SET payment_mode_id = NULL
+            WHERE type = 'in_invoice';
+
+            DELETE FROM account_payment_mode
+            WHERE payment_method_code = 'DTA';
+
+            DELETE FROM account_payment_method
+            WHERE code = 'DTA';
+
+
+            INSERT INTO account_payment_method (
+                id, create_uid, write_uid, create_date, write_date, code,
+                name, payment_type, display_name, bank_account_required,
+                active
+            ) VALUES (
+                NEXTVAL('account_payment_method_id_seq'), 1, 1,
+                current_timestamp, current_timestamp, 'DTA', 'DTA',
+                'outbound', '[DTA] DTA (outbound)', True, True
+            );
+
+
+            INSERT INTO account_payment_mode (
+                id, create_uid, write_uid, create_date, write_date, name,
+                company_id, bank_account_link, payment_method_code,
+                fixed_journal_id, payment_type, active, payment_method_id,
+                default_invoice, default_date_type, no_debit_before_maturity,
+                group_lines, default_payment_mode, generate_move,
+                offsetting_account, payment_order_ok, move_option,
+                default_target_move, days_before_cancel, import_rule,
+                sequence, payment_cancellable_on_qoqa, gift_card,
+                payment_settlable_on_qoqa, refund_max_days
+            ) VALUES (
+                NEXTVAL('account_payment_mode_id_seq'), 1, 1,
+                current_timestamp, current_timestamp, 'DTA USD', 3, 'fixed',
+                'DTA', 23, 'outbound', True,
+                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
+                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                30, 'always', 0, True, False, False, 0
+            );
+
+            UPDATE account_journal
+            SET bank_account_id = 6
+            WHERE id = 23;
+
+            UPDATE account_invoice
+            SET payment_mode_id = CURRVAL('account_payment_mode_id_seq')
+            WHERE currency_id IN (
+                SELECT id
+                FROM res_currency
+                WHERE name = 'USD'
+            ) AND type = 'in_invoice';
+
+
+            INSERT INTO account_payment_mode (
+                id, create_uid, write_uid, create_date, write_date, name,
+                company_id, bank_account_link, payment_method_code,
+                fixed_journal_id, payment_type, active, payment_method_id,
+                default_invoice, default_date_type, no_debit_before_maturity,
+                group_lines, default_payment_mode, generate_move,
+                offsetting_account, payment_order_ok, move_option,
+                default_target_move, days_before_cancel, import_rule,
+                sequence, payment_cancellable_on_qoqa, gift_card,
+                payment_settlable_on_qoqa, refund_max_days
+            ) VALUES (
+                NEXTVAL('account_payment_mode_id_seq'), 1, 1,
+                current_timestamp, current_timestamp, 'DTA EUR', 3, 'fixed',
+                'DTA', 22, 'outbound', True,
+                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
+                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                30, 'always', 0, True, False, False, 0
+            );
+
+            UPDATE account_journal
+            SET bank_account_id = 5
+            WHERE id = 22;
+
+            UPDATE account_invoice
+            SET payment_mode_id = CURRVAL('account_payment_mode_id_seq')
+            WHERE currency_id IN (
+                SELECT id
+                FROM res_currency
+                WHERE name = 'EUR'
+            ) AND type = 'in_invoice';
+
+
+            INSERT INTO account_payment_mode (
+                id, create_uid, write_uid, create_date, write_date, name,
+                company_id, bank_account_link, payment_method_code,
+                fixed_journal_id, payment_type, active, payment_method_id,
+                default_invoice, default_date_type, no_debit_before_maturity,
+                group_lines, default_payment_mode, generate_move,
+                offsetting_account, payment_order_ok, move_option,
+                default_target_move, days_before_cancel, import_rule,
+                sequence, payment_cancellable_on_qoqa, gift_card,
+                payment_settlable_on_qoqa, refund_max_days
+            ) VALUES (
+                NEXTVAL('account_payment_mode_id_seq'), 1, 1,
+                current_timestamp, current_timestamp, 'DTA CHF', 3, 'fixed',
+                'DTA', 19, 'outbound', True,
+                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
+                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                30, 'always', 0, True, False, False, 0
+            );
+
+            UPDATE account_journal
+            SET bank_account_id = 2
+            WHERE id = 19;
+
+            UPDATE account_invoice
+            SET payment_mode_id = CURRVAL('account_payment_mode_id_seq')
+            WHERE currency_id NOT IN (
+                SELECT id
+                FROM res_currency
+                WHERE name IN ('EUR', 'USD')
+            ) AND type = 'in_invoice';
+
+
+            INSERT INTO account_payment_mode (
+                id, create_uid, write_uid, create_date, write_date, name,
+                company_id, bank_account_link, payment_method_code,
+                fixed_journal_id, payment_type, active, payment_method_id,
+                default_invoice, default_date_type, no_debit_before_maturity,
+                group_lines, default_payment_mode, generate_move,
+                offsetting_account, payment_order_ok, move_option,
+                default_target_move, days_before_cancel, import_rule,
+                sequence, payment_cancellable_on_qoqa, gift_card,
+                payment_settlable_on_qoqa, refund_max_days
+            ) VALUES (
+                NEXTVAL('account_payment_mode_id_seq'), 1, 1,
+                current_timestamp, current_timestamp, 'DTA Salaires', 3,
+                'fixed', 'DTA', 24, 'outbound', True,
+                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
+                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                30, 'always', 0, True, False, False, 0
+            );
+
+            UPDATE account_journal
+            SET bank_account_id = 7
+            WHERE id = 24;
+
+
+            INSERT INTO account_payment_mode (
+                id, create_uid, write_uid, create_date, write_date, name,
+                company_id, bank_account_link, payment_method_code,
+                fixed_journal_id, payment_type, active, payment_method_id,
+                default_invoice, default_date_type, no_debit_before_maturity,
+                group_lines, default_payment_mode, generate_move,
+                offsetting_account, payment_order_ok, move_option,
+                default_target_move, days_before_cancel, import_rule,
+                sequence, payment_cancellable_on_qoqa, gift_card,
+                payment_settlable_on_qoqa, refund_max_days
+            ) VALUES (
+                NEXTVAL('account_payment_mode_id_seq'), 1, 1,
+                current_timestamp, current_timestamp,
+                'DTA CCP Pepsee 14-5058581', 3, 'fixed', 'DTA', 68,
+                'outbound', True, CURRVAL('account_payment_method_id_seq'),
+                False, 'due', False, True, 'same', True, 'bank_account', True,
+                'date', 'posted', 30, 'always', 0, True, False, False, 0
+            );
+
+            UPDATE account_journal
+            SET bank_account_id = 714
+            WHERE id = 68;
+
+
+            INSERT INTO account_payment_mode (
+                id, create_uid, write_uid, create_date, write_date, name,
+                company_id, bank_account_link, payment_method_code,
+                fixed_journal_id, payment_type, active, payment_method_id,
+                default_invoice, default_date_type, no_debit_before_maturity,
+                group_lines, default_payment_mode, generate_move,
+                offsetting_account, payment_order_ok, move_option,
+                default_target_move, days_before_cancel, import_rule,
+                sequence, payment_cancellable_on_qoqa, gift_card,
+                payment_settlable_on_qoqa, refund_max_days
+            ) VALUES (
+                NEXTVAL('account_payment_mode_id_seq'), 1, 1,
+                current_timestamp, current_timestamp, 'DTA Conférence QGroup',
+                3, 'fixed', 'DTA', 65, 'outbound', True,
+                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
+                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                30, 'always', 0, True, False, False, 0
+            );
+
+            UPDATE account_journal
+            SET bank_account_id = 709
+            WHERE id = 65;
+        """)
     with ctx.log(u'trigger recomputation of function fields'):
         for mode in ctx.env['account.payment.mode'].search([]):
             mode.write({'payment_method_id': mode.payment_method_id.id})

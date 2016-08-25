@@ -40,6 +40,16 @@ def sale_shop(ctx):
             WHERE q.openerp_id = c.shop_id
             AND shop_id IS NOT NULL AND qoqa_shop_id IS NULL
         """)
+    with ctx.log(u'updating the shops qoqa_id mapping'):
+        mapping = [(1, 3), (2, 5), (3, 8), (4, 10), (5, 4), (6, 9), (7, 11),
+                   (8, 14), (9, 15), (10, 16), (11, 17)]
+        # prevent unique key constraint error
+        ctx.env.cr.execute("UPDATE qoqa_shop SET qoqa_id = null")
+        for shop_id, qoqa_id in mapping:
+            ctx.env.cr.execute("""
+                UPDATE qoqa_shop SET qoqa_id = %s
+                WHERE id = %s
+            """, (qoqa_id, shop_id))
 
 
 @anthem.log

@@ -165,7 +165,10 @@ class CrmClaim(models.Model):
                 # Check if the section need to be notify
                 if current_team.notify:
                     notify_partner_id = current_responsible.partner_id.id
-                    claim.notify_claim_only_specific_user(notify_partner_id)
+                    if notify_partner_id:
+                        claim.notify_claim_only_specific_user(
+                            notify_partner_id
+                        )
 
         return super(CrmClaim, self).write(vals)
 

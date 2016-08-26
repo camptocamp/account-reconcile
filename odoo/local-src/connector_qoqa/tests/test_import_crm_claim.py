@@ -15,7 +15,7 @@ from .common import recorder, QoQaTransactionCase
 
 ExpectedClaim = namedtuple(
     'ExpectedClaim',
-    'name description qoqa_shop_id user_id team_id warehouse_id '
+    'name qoqa_shop_id user_id team_id warehouse_id '
     'partner_id email_from partner_phone invoice_id categ_id'
 )
 
@@ -125,17 +125,9 @@ class TestImportClaim(QoQaTransactionCase):
         claim_binding = self.QoqaClaim.search(domain)
         claim_binding.ensure_one()
 
-        expected_description = (
-            u"Bonjour, J'ai enfin reçu mon iPhone. "
-            u"Mais il était cassé dans "
-            u"sa boite. Vous pouvez voir les cassures dans la photo envoyé. "
-            u"Comme tout ça à pas l'air très solide je vais reprendre "
-            u"mon 3310 merci\n"
-        )
         expected = [
             ExpectedClaim(
                 name=u'Admin - Order <150414-C8TBCI>',
-                description=expected_description,
                 qoqa_shop_id=self.shop,
                 user_id=self.user,
                 team_id=self.team,
@@ -146,6 +138,14 @@ class TestImportClaim(QoQaTransactionCase):
                 invoice_id=sale.invoice_ids,
                 categ_id=self.category,
             )]
+        expected_description = (
+            u"Bonjour, J'ai enfin reçu mon iPhone. "
+            u"Mais il était cassé dans "
+            u"sa boite. Vous pouvez voir les cassures dans la photo envoyé. "
+            u"Comme tout ça à pas l'air très solide je vais reprendre "
+            u"mon 3310 merci\n"
+        )
+        self.assertTrue(expected_description in claim_binding.description)
 
         self.assert_records(expected, claim_binding)
         lines = claim_binding.claim_line_ids

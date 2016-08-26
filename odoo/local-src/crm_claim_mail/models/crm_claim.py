@@ -161,6 +161,15 @@ class CrmClaim(models.Model):
         return merge_fields
 
     @api.multi
+    def forge_original_message(self):
+        self.ensure_one()
+        return self.env['mail.message'].new({
+            'date': self.date,
+            'author_id': self.partner_id,
+            'body': self.description or '',
+        })
+
+    @api.multi
     def message_quote(self, limit=None):
         """ For a claim, generate a thread with quotations.
 
@@ -187,6 +196,9 @@ class CrmClaim(models.Model):
             order='date asc',
             limit=limit)
         if not messages:
+            # build a message with the content of the claim
+            messages = self.forge_original_message()
+        if not messages:
             return ''
         else:
             lang = self.env.user.lang
@@ -204,7 +216,15 @@ class CrmClaim(models.Model):
                 header = _('On %s at %s, %s wrote:') % (msg_date_f,
                                                         msg_time_f,
                                                         message.author_id.name)
-                plain = html2text.html2text(message.body).split('\n')
+                if message.id:
+                    plain = html2text.html2text(message.body).split('\n')
+                else:
+                    # Special case for the 'original message' we just crafted
+                    # above.  The content is already in text.
+                    # But as MailMessage.body is of type Html, it surrounds the
+                    # text with a <p> element, that we chop off of the string.
+                    # 3 is the len of '<p>' and 4 of '</p>'
+                    plain = message.body[3:-4].splitlines()
                 plain += body
                 body = [header] + ['&gt; %s' % line for line in plain]
 

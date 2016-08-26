@@ -16,7 +16,7 @@ from .common import recorder, QoQaTransactionCase
 ExpectedClaim = namedtuple(
     'ExpectedClaim',
     'name description qoqa_shop_id user_id team_id warehouse_id '
-    'partner_id email_from partner_phone invoice_id'
+    'partner_id email_from partner_phone invoice_id categ_id'
 )
 
 ExpectedMedium = namedtuple(
@@ -38,6 +38,10 @@ class TestImportClaim(QoQaTransactionCase):
         self.user = self.env.ref('base.user_demo')
         self.team = self.env['crm.team'].create({'name': 'Team'})
         self.warehouse = self.env['stock.warehouse'].search([], limit=1)
+        self.category = self.env['crm.claim.category'].create({
+            'name': 'Questions',
+            'qoqa_id': '1',
+        })
         alias_defaults = {
             'qoqa_shop_id': self.shop.id,
             'user_id': self.user.id,
@@ -140,6 +144,7 @@ class TestImportClaim(QoQaTransactionCase):
                 email_from='dev@qoqa.com',  # from API
                 partner_phone='0041 79 123 45 67',   # from onchange
                 invoice_id=sale.invoice_ids,
+                categ_id=self.category,
             )]
 
         self.assert_records(expected, claim_binding)

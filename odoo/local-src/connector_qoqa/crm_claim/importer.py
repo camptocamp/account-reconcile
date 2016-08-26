@@ -73,6 +73,16 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
         return {'partner_id': binder.to_openerp(user_id, unwrap=True).id}
 
     @mapping
+    def category(self, record):
+        binder = self.binder_for('crm.claim.category')
+        qoqa_categ_id = record['data']['attributes']['category_id']
+        category = binder.to_openerp(qoqa_categ_id, unwrap=True)
+        if not category:
+            raise MappingError('No claim category configured for '
+                               'QoQa ID: "%s"' % (qoqa_categ_id,))
+        return {'categ_id': category .id}
+
+    @mapping
     def sale_and_invoice(self, record):
         binder = self.binder_for('qoqa.sale.order')
         qoqa_order_id = record['data']['attributes']['order_id']

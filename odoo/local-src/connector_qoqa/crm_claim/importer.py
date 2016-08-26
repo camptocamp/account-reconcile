@@ -115,6 +115,13 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
             default_values.update(values)
             values = default_values
 
+        # usually, the team is set in the alias (above), but
+        # if it was not defined, we want to take it from the category
+        if not values.get('team_id') and values.get('categ_id'):
+            claim_categ_model = self.env['crm.claim.category']
+            category = claim_categ_model.browse(values['categ_id'])
+            values['team_id'] = category.team_id.id
+
         existing = self.env['crm.claim']
         if not self.options.for_create:
             existing = self.binder_for().to_openerp(

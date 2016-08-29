@@ -4,7 +4,9 @@
 
 import logging
 
+from openerp import _
 from openerp.tools.safe_eval import safe_eval
+from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
@@ -37,6 +39,32 @@ class CrmClaimImporter(QoQaImporter):
         qoqa_user_id = rec['data']['attributes']['user_id']
         self._import_dependency(qoqa_user_id, 'qoqa.res.partner')
 
+    def _map_data(self):
+        """ Returns an instance of
+        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+
+        The mapper is instanciated with an environment in the
+        language of the partner creating the claim, so we can
+        tranlate the message accordingly
+
+        """
+        qoqa_user_id = self.qoqa_record['data']['attributes']['user_id']
+        binder = self.binder_for('qoqa.res.partner')
+        partner = binder.to_openerp(qoqa_user_id, unwrap=True)
+        lang_context = self.env.context.copy()
+        lang_context['lang'] = partner.lang or 'fr_FR'
+        env = self.env(context=lang_context)
+        backend_record = self.backend_record.with_env(env)
+        session = ConnectorSession.from_env(env)
+        lang_connector_env = self.connector_env.create_environment(
+            backend_record,
+            session,
+            self._model_name,
+            self.connector_env
+        )
+        lang_mapper = lang_connector_env.get_connector_unit(ImportMapper)
+        return lang_mapper.map_record(self.qoqa_record)
+
     def _after_import(self, binding):
         medium_importer = self.unit_for(QoQaImporter, 'qoqa.crm.claim.medium')
         if self.qoqa_record.get('included'):
@@ -63,14 +91,50 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
 
     @mapping
     def message(self, record):
+        message_template = _(
+            u"Main Category: {main_category}\n"
+            u"Sub Category: {sub_category}\n\n"
+            u"User: {user}\n"
+            u"Order: {order}\n\n"
+            u"Subject: {subject}\n\n"
+            u"{message}"
+        )
+        partner = self._get_partner(record)
         message = record['data']['attributes']['message']
-        return {'description': message}
+        subject = record['data']['attributes']['subject']
+        order = record['data']['attributes']['order_id']
+        main_category = record['data']['attributes']['main_category']
+        values = {
+            'main_category': main_category or '',
+            'sub_category': self._get_category(record).name or '',
+            'user': partner.name or '',
+            'order': order or '',
+            'subject': subject or '',
+            'message': message or '',
+        }
+        return {'description': message_template.format(**values)}
+
+    def _get_partner(self, record):
+        user_id = record['data']['attributes']['user_id']
+        binder = self.binder_for('qoqa.res.partner')
+        return binder.to_openerp(user_id, unwrap=True)
 
     @mapping
     def partner_id(self, record):
-        user_id = record['data']['attributes']['user_id']
-        binder = self.binder_for('qoqa.res.partner')
-        return {'partner_id': binder.to_openerp(user_id, unwrap=True).id}
+        return {'partner_id': self._get_partner(record).id}
+
+    def _get_category(self, record):
+        binder = self.binder_for('crm.claim.category')
+        qoqa_categ_id = record['data']['attributes']['category_id']
+        category = binder.to_openerp(qoqa_categ_id, unwrap=True)
+        if not category:
+            raise MappingError('No claim category configured for '
+                               'QoQa ID: "%s"' % (qoqa_categ_id,))
+        return category
+
+    @mapping
+    def category(self, record):
+        return {'categ_id': self._get_category(record).id}
 
     @mapping
     def sale_and_invoice(self, record):
@@ -104,6 +168,13 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
             default_values = safe_eval(email_alias.alias_defaults)
             default_values.update(values)
             values = default_values
+
+        # usually, the team is set in the alias (above), but
+        # if it was not defined, we want to take it from the category
+        if not values.get('team_id') and values.get('categ_id'):
+            claim_categ_model = self.env['crm.claim.category']
+            category = claim_categ_model.browse(values['categ_id'])
+            values['team_id'] = category.team_id.id
 
         existing = self.env['crm.claim']
         if not self.options.for_create:

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-15 10:04+0000\n"
+"POT-Creation-Date: 2016-08-26 15:00+0000\n"
 "PO-Revision-Date: 2014-09-03 12:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -120,11 +120,11 @@ msgstr "<span class=\"o_stat_text\">QoQa</span>"
 #: sql_constraint:qoqa.discount.accounting.line:0
 #: sql_constraint:qoqa.product.attribute:0
 #: sql_constraint:qoqa.product.attribute.value:0
-#: sql_constraint:qoqa.product.product:0
-#: sql_constraint:qoqa.product.template:0 sql_constraint:qoqa.promo.type:0
-#: sql_constraint:qoqa.res.partner:0 sql_constraint:qoqa.sale.order:0
-#: sql_constraint:qoqa.sale.order.line:0 sql_constraint:qoqa.shipper.fee:0
-#: sql_constraint:qoqa.shop:0 sql_constraint:qoqa.stock.picking:0
+#: sql_constraint:qoqa.product.product:0 sql_constraint:qoqa.product.template:0
+#: sql_constraint:qoqa.promo.type:0 sql_constraint:qoqa.res.partner:0
+#: sql_constraint:qoqa.sale.order:0 sql_constraint:qoqa.sale.order.line:0
+#: sql_constraint:qoqa.shipper.fee:0 sql_constraint:qoqa.shop:0
+#: sql_constraint:qoqa.stock.picking:0
 msgid "A binding already exists for this QoQa record"
 msgstr "Un binding avec le BO QoQa existe déjà pour cet enregistrement"
 
@@ -720,6 +720,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_route_from_categ_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_route_from_categ_ids
 msgid "Category Routes"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_crm_claim_category
+msgid "Category of claim"
 msgstr ""
 
 #. module: connector_qoqa
@@ -1765,6 +1770,7 @@ msgstr "ID du paiement sur QoQa"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_account_payment_mode_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_account_tax_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_crm_claim_category_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_qoqa_id
@@ -2500,6 +2506,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_packaging_ids
 msgid "Logistical Units"
 msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/crm_claim/importer.py:94
+#, python-format
+msgid ""
+"Main Category: {main_category}\n"
+"Sub Category: {sub_category}\n"
+"\n"
+"User: {user}\n"
+"Order: {order}\n"
+"\n"
+"Subject: {subject}\n"
+"\n"
+"{message}"
+msgstr ""
+"Catégorie principale : {main_category}\n"
+"Sous-catégorie : {sub_category}\n"
+"\n"
+"Utilisateur : {user}\n"
+"Commande : {order}\n"
+"\n"
+"Sujet : {subject}\n"
+"\n"
+"{message}"
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form

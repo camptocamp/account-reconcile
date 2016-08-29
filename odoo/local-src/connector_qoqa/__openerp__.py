@@ -60,6 +60,7 @@ Synchronize OpenERP with the different QoQa Stores
           'res_currency/res_currency_view.xml',
           'account_payment_mode/account_payment_mode_views.xml',
           'delivery_carrier/delivery_carrier_view.xml',
+          'crm_claim_category/crm_claim_category_views.xml',
           'security/ir.model.access.csv',
           ],
  'installable': True,

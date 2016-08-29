@@ -333,6 +333,14 @@ def add_xmlid_delivery_category(ctx):
 
 
 @anthem.log
+def crm_claim_categ_id_nullable(ctx):
+    """ Setting crm_claim.categ_id nullable """
+    ctx.env.cr.execute("""
+        ALTER TABLE crm_claim ALTER COLUMN categ_id DROP NOT NULL
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -348,3 +356,4 @@ def main(ctx):
     clean_dashboards(ctx)
     mail.mail_message_purge(ctx)
     add_xmlid_delivery_category(ctx)
+    crm_claim_categ_id_nullable(ctx)

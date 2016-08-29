@@ -44,6 +44,10 @@ class QoqaProductTemplate(models.Model):
 
     @api.multi
     def unlink(self):
+        if any(record.qoqa_id for record in self):
+            raise exceptions.UserError(
+                _('Template already exported, it cannot be undone.')
+            )
         for variant in self.mapped('openerp_id.product_variant_ids'):
             variant.qoqa_bind_ids.unlink()
         return super(QoqaProductTemplate, self).unlink()
@@ -72,12 +76,7 @@ class ProductTemplate(models.Model):
     def toggle_qoqa_exportable(self):
         for record in self:
             if record.qoqa_exportable:
-                if any(record.mapped('qoqa_bind_ids.qoqa_id')):
-                    raise exceptions.UserError(
-                        _('Template already exported, it cannot be undone.')
-                    )
                 record.qoqa_bind_ids.unlink()
-                record.mapped('product_variant_ids.qoqa_bind_ids').unlink()
             else:
                 backend = self.env['qoqa.backend'].get_singleton()
                 self.env['qoqa.product.template'].create({

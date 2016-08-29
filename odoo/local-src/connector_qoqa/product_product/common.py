@@ -18,12 +18,20 @@ class QoqaProductProduct(models.Model):
                                  string='Product',
                                  required=True,
                                  index=True,
-                                 ondelete='restrict')
+                                 ondelete='cascade')
 
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A product can be exported only once on the same backend"),
     ]
+
+    @api.multi
+    def unlink(self):
+        if any(record.qoqa_id for record in self):
+            raise exceptions.UserError(
+                _('Variant already exported, it cannot be undone.')
+            )
+        return super(QoqaProductProduct, self).unlink()
 
 
 class ProductProduct(models.Model):
@@ -81,6 +89,13 @@ class ProductProduct(models.Model):
                       'you must add it manually on the template.')
                 )
         return super(ProductProduct, self).write(vals)
+
+    @api.multi
+    def unlink(self):
+        # ensure we call the 'unlink' method of the binding,
+        # the 'ondelete=cascade' would not
+        self.mapped('qoqa_bind_ids').unlink()
+        return super(ProductProduct, self).unlink()
 
     @api.constrains('attribute_value_ids')
     def _check_attribute_value_length(self):

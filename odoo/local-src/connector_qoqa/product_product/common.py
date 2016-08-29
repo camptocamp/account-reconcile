@@ -2,7 +2,7 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api, exceptions, _
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
@@ -18,12 +18,20 @@ class QoqaProductProduct(models.Model):
                                  string='Product',
                                  required=True,
                                  index=True,
-                                 ondelete='restrict')
+                                 ondelete='cascade')
 
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A product can be exported only once on the same backend"),
     ]
+
+    @api.multi
+    def unlink(self):
+        if any(record.qoqa_id for record in self):
+            raise exceptions.UserError(
+                _('Variant already exported, it cannot be undone.')
+            )
+        return super(QoqaProductProduct, self).unlink()
 
 
 class ProductProduct(models.Model):
@@ -61,10 +69,33 @@ class ProductProduct(models.Model):
 
     @api.model
     def create(self, vals):
+        if self.env.context.get('default_product_tmpl_id'):
+            vals['product_tmpl_id'] = (
+                self.env.context['default_product_tmpl_id']
+            )
         record = super(ProductProduct, self).create(vals)
         if record.product_tmpl_id.qoqa_exportable:
             record.create_binding()
         return record
+
+    @api.multi
+    def write(self, vals):
+        if 'active' in vals and not vals.get('active'):
+            if any(product.mapped('qoqa_bind_ids.qoqa_id')
+                   for product in self):
+                raise exceptions.UserError(
+                    _('A product has already been exported and cannot be '
+                      'disabled. If you were trying to add a new variant, '
+                      'you must add it manually on the template.')
+                )
+        return super(ProductProduct, self).write(vals)
+
+    @api.multi
+    def unlink(self):
+        # ensure we call the 'unlink' method of the binding,
+        # the 'ondelete=cascade' would not
+        self.mapped('qoqa_bind_ids').unlink()
+        return super(ProductProduct, self).unlink()
 
     @api.constrains('attribute_value_ids')
     def _check_attribute_value_length(self):

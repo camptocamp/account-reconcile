@@ -32,6 +32,12 @@ latest (unreleased)
 * Add a button on the product templates to open the editable tree view of the
   variants
 * Implement the new pay by email url
+* Improvements on claims:
+  * Set the team from the claim category if there is no default value in the
+    mail alias
+  * Add the original description in the quoted message when sending a new message
+  * Import the claim category
+  * Write more information in the imported claim's description (category, ...)
 
 **Bugfixes**
 
@@ -45,6 +51,8 @@ latest (unreleased)
 * Import of job for canceled orders do no longer fail
 * Fix import of orders failing due to a renaming in the API (`unit_price` →
   `lot_price`)
+* Add missing access rights on qoqa.crm.claim
+* Fix error when saving a claim which has no responsible
 
 **Build**
 

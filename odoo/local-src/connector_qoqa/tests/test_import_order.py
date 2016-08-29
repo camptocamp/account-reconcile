@@ -117,15 +117,19 @@ class TestImportOrder(QoQaTransactionCase):
         order = self.env['qoqa.sale.order'].search(domain)
         order.ensure_one()
 
+        # addresses or orders are imported as inactive
+        address_model = self.env['qoqa.address'].with_context(
+            active_test=False,
+        )
         # expected relations
         domain = [('qoqa_id', '=', '1000001')]
         partner = self.env['qoqa.res.partner'].search(domain)
         partner.ensure_one()
         domain = [('qoqa_id', '=', '100000001')]
-        shipping_address = self.env['qoqa.address'].search(domain)
+        shipping_address = address_model.search(domain)
         shipping_address.ensure_one()
         domain = [('qoqa_id', '=', '100000001')]
-        invoice_address = self.env['qoqa.address'].search(domain)
+        invoice_address = address_model.search(domain)
         invoice_address.ensure_one()
         domain = [('qoqa_id', '=', '3')]
         shop = self.env['qoqa.shop'].search(domain)

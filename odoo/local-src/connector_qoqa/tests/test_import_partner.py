@@ -31,7 +31,9 @@ class TestImportPartner(QoQaTransactionCase):
         super(TestImportPartner, self).setUp()
         self.QoqaPartner = self.env['qoqa.res.partner']
         self.Partner = self.env['res.partner']
-        self.QoqaAddress = self.env['qoqa.address']
+        self.QoqaAddress = self.env['qoqa.address'].with_context(
+            active_test=False,
+        )
         self.setup_company()
         self.sync_metadata()
 

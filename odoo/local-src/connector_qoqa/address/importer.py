@@ -94,10 +94,25 @@ class AddressImportMapper(ImportMapper, FromDataAttributes):
     def parent(self, record):
         data = record['data']
         qoqa_user_id = data['attributes']['user_id']
+        qoqa_order_user_id = data['attributes']['order_user_id']
+        assert qoqa_user_id or qoqa_order_user_id
+
+        vals = {}
+        if qoqa_user_id:
+            # The address comes from a sales order. The website
+            # copies the addresses used for sales and remove their
+            # user_id link.  The original user of the address is in
+            # order_user_id.
+            vals['active'] = False
+
         binder = self.binder_for('qoqa.res.partner')
-        parent = binder.to_openerp(qoqa_user_id, unwrap=True)
+        parent = binder.to_openerp(qoqa_user_id or qoqa_order_user_id,
+                                   unwrap=True)
         assert parent, ("user %s should have been imported "
-                        "in dependencies" % qoqa_user_id)
-        return {'parent_id': parent.id,
-                'lang': parent.lang,
-                }
+                        "in dependencies" %
+                        (qoqa_user_id or qoqa_order_user_id,))
+        vals.update({
+            'parent_id': parent.id,
+            'lang': parent.lang,
+        })
+        return vals

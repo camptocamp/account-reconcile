@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Set the correct unclaimed categories on the company
+
 **Features and Improvements**
 
 **Bugfixes**

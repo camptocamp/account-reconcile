@@ -6,11 +6,14 @@
     <field name="model">qoqa.shop</field>
     <field name="inherit_id" ref="qoqa_offer.view_qoqa_shop_form"/>
     <field name="arch" type="xml">
-      <group name="shop">
+      <group name="shop" position="inside">
         <group string="Informations" name="info">
           <field name="backend_id" widget="selection"/>
         </group>
       </group>
+      <field name="company_id" position="after">
+        <field name="domain"/>
+      </field>
     </field>
   </record>
 

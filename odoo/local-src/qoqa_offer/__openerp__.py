@@ -28,11 +28,11 @@ Adds *Offer* models.
              # TODO: activate
              # 'picking_dispatch',  # stock-logistic-flows
              ],
- 'data': ['qoqa_shop_view.xml',
-          'sale_order_view.xml',
+ 'data': ['sale_order_view.xml',
           'account_invoice_view.xml',
           'stock_view.xml',
           'qoqa_offer_view.xml',
+          'qoqa_shop_view.xml',
           'procurement_view.xml',
           'security/ir.model.access.csv',
           'res_users_view.xml',

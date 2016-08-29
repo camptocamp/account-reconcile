@@ -25,7 +25,12 @@ latest (unreleased)
 
 * Set the correct unclaimed categories on the company
 
+* Initialize a domain on QoQa shops used to generate the offers links
+
 **Features and Improvements**
+
+* Adapt the offers edition link to the new URL
+* Add a menu to edit the QoQa shops
 
 **Bugfixes**
 
@@ -58,7 +63,6 @@ latest (unreleased)
   * Add the original description in the quoted message when sending a new message
   * Import the claim category
   * Write more information in the imported claim's description (category, ...)
-* Adapt the offers edition link to the new URL
 
 **Bugfixes**
 

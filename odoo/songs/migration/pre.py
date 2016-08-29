@@ -280,32 +280,37 @@ def sale_order_line_project(ctx):
 def crm_unclaimed_fix_ids(ctx):
     """ Updating unclaimed categories ids on the company """
     ctx.env.cr.execute("""
-        WITH old_new_categ_ids AS (
-          SELECT 68 as old_id, 39 as new_id
-          UNION
-          SELECT 69, 41
-          UNION
-          SELECT 70, 40
-          UNION
-          SELECT 71, 44
-        )
-        UPDATE res_company c
+        UPDATE res_company
         SET unclaimed_initial_categ_id = (
-                SELECT new_id
-                FROM old_new_categ_ids
-                WHERE old_id = c.unclaimed_initial_categ_id),
-            unclaimed_first_reminder_categ_id = (
-                SELECT new_id
-                FROM old_new_categ_ids
-                WHERE old_id = c.unclaimed_first_reminder_categ_id),
-            unclaimed_second_reminder_categ_id = (
-                SELECT new_id
-                FROM old_new_categ_ids
-                WHERE old_id = c.unclaimed_second_reminder_categ_id),
-            unclaimed_final_categ_id = (
-                SELECT new_id
-                FROM old_new_categ_ids
-                WHERE old_id = c.unclaimed_final_categ_id)
+            SELECT id
+            FROM crm_claim_category
+            WHERE name = 'Non-réclamé'
+        )
+        WHERE id = 3;
+
+        UPDATE res_company
+        SET unclaimed_first_reminder_categ_id = (
+            SELECT id
+            FROM crm_claim_category
+            WHERE name = 'Non-réclamé - 2e rappel'
+        )
+        WHERE id = 3;
+
+        UPDATE res_company
+        SET unclaimed_second_reminder_categ_id = (
+            SELECT id
+            FROM crm_claim_category
+            WHERE name = 'Non-réclamé - 3. Dernier rappel lettre'
+        )
+        WHERE id = 3;
+
+        UPDATE res_company
+        SET unclaimed_final_categ_id = (
+            SELECT id
+            FROM crm_claim_category
+            WHERE name = 'Non-réclamé - 4. Résolu'
+        )
+        WHERE id = 3;
     """)
 
 

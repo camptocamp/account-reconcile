@@ -154,6 +154,10 @@ def payment_method(ctx):
                 30, 'always', 0, True, False, False, 0
             );
 
+            INSERT INTO account_journal_outbound_payment_method_rel (
+                journal_id, outbound_payment_method
+            ) VALUES (23, CURRVAL('account_payment_method_id_seq'));
+
             UPDATE account_journal
             SET bank_account_id = 6
             WHERE id = 23;
@@ -185,6 +189,10 @@ def payment_method(ctx):
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0
             );
+
+            INSERT INTO account_journal_outbound_payment_method_rel (
+                journal_id, outbound_payment_method
+            ) VALUES (22, CURRVAL('account_payment_method_id_seq'));
 
             UPDATE account_journal
             SET bank_account_id = 5
@@ -218,6 +226,10 @@ def payment_method(ctx):
                 30, 'always', 0, True, False, False, 0
             );
 
+            INSERT INTO account_journal_outbound_payment_method_rel (
+                journal_id, outbound_payment_method
+            ) VALUES (19, CURRVAL('account_payment_method_id_seq'));
+
             UPDATE account_journal
             SET bank_account_id = 2
             WHERE id = 19;
@@ -250,6 +262,10 @@ def payment_method(ctx):
                 30, 'always', 0, True, False, False, 0
             );
 
+            INSERT INTO account_journal_outbound_payment_method_rel (
+                journal_id, outbound_payment_method
+            ) VALUES (24, CURRVAL('account_payment_method_id_seq'));
+
             UPDATE account_journal
             SET bank_account_id = 7
             WHERE id = 24;
@@ -274,6 +290,10 @@ def payment_method(ctx):
                 'date', 'posted', 30, 'always', 0, True, False, False, 0
             );
 
+            INSERT INTO account_journal_outbound_payment_method_rel (
+                journal_id, outbound_payment_method
+            ) VALUES (68, CURRVAL('account_payment_method_id_seq'));
+
             UPDATE account_journal
             SET bank_account_id = 714
             WHERE id = 68;
@@ -297,6 +317,10 @@ def payment_method(ctx):
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0
             );
+
+            INSERT INTO account_journal_outbound_payment_method_rel (
+                journal_id, outbound_payment_method
+            ) VALUES (65, CURRVAL('account_payment_method_id_seq'));
 
             UPDATE account_journal
             SET bank_account_id = 709

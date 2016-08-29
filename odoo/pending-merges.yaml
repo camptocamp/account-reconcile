@@ -60,11 +60,14 @@
 ./external-src/purchase-workflow:
   remotes:
       oca: git@github.com:OCA/purchase-workflow.git
+      acsone: git@github.com:acsone/purchase-workflow.git
       camptocamp: git@github.com:camptocamp/purchase-workflow.git
   merges:
     - oca 9.0
     # port purchase_discount
     - oca refs/pull/214/head
+    # Fix issue with previous PR
+    - acsone refs/pull/3/head
     # port  purchase_analytic_global
     - oca refs/pull/228/head
   target: *default_target
@@ -80,6 +83,8 @@
     - oca refs/pull/86/head
     # port crm_rma_stock_location
     - oca refs/pull/87/head
+    # port crm_rma_stock_location
+    - oca refs/pull/92/head
   target: *default_target
 ./external-src/sale-workflow:
   remotes:

@@ -60,6 +60,7 @@ class QoqaBackend(models.Model):
              "Note that a similar configuration exists for each shop.",
     )
     url = fields.Char(string='URL')
+    site_url = fields.Char(string='Site URL')
     token = fields.Char('Token')
     debug = fields.Boolean('Debug')
 

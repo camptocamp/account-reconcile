@@ -58,6 +58,7 @@ latest (unreleased)
   * Add the original description in the quoted message when sending a new message
   * Import the claim category
   * Write more information in the imported claim's description (category, ...)
+* Adapt the offers edition link to the new URL
 
 **Bugfixes**
 

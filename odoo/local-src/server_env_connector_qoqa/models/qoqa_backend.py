@@ -20,7 +20,7 @@ class QoqaBackend(models.Model):
     @api.multi
     def _compute_server_env(self):
         for backend in self:
-            for field_name in ('url', 'debug'):
+            for field_name in ('url', 'site_url', 'debug'):
                 section_name = '.'.join((self._name.replace('.', '_'),
                                          backend.name))
                 try:
@@ -32,4 +32,5 @@ class QoqaBackend(models.Model):
                                       section_name)
 
     url = fields.Char(compute='_compute_server_env')
+    site_url = fields.Char(compute='_compute_server_env')
     debug = fields.Boolean(compute='_compute_server_env')

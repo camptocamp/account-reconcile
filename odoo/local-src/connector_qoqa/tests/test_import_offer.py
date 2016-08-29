@@ -56,10 +56,11 @@ class TestImportOffer(QoQaTransactionCase):
         domain = [('qoqa_id', '=', '1')]
         offer = self.Offer.search(domain)
         offer.ensure_one()
+        offer.qoqa_shop_id.domain = 'https://www.qoqa.ch'
 
-        url = ('http://wwwqoqach-sprint.qoqa.com/'
-               'fr/offer/view/1?show_banner=False')
-        edit_url = self.backend_record.url + '/dot/edit/1'
+        url = 'https://www.qoqa.ch/fr/offers/1'
+        edit_url = (self.backend_record.site_url +
+                    '/admin/offers/1/wizard?step=1')
         expected = [
             ExpectedOffer(
                 name='[1] Apple iPhone 6 / 64GB',

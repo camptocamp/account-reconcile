@@ -33,6 +33,8 @@ latest (unreleased)
 
 **Documentation**
 
+* Document upgrade scripts
+
 
 9.5.0 (2016-08-29)
 ++++++++++++++++++

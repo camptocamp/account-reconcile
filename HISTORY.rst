@@ -25,7 +25,12 @@ latest (unreleased)
 
 * Set the correct unclaimed categories on the company
 
+* Initialize a domain on QoQa shops used to generate the offers links
+
 **Features and Improvements**
+
+* Adapt the offers edition link to the new URL
+* Add a menu to edit the QoQa shops
 
 **Bugfixes**
 

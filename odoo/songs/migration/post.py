@@ -595,6 +595,15 @@ def correct_parcel_tracking(ctx):
 
 
 @anthem.log
+def set_shop_domain(ctx):
+    """ Setting up domains on shops """
+    ctx.env.cr.execute("""
+        UPDATE qoqa_shop
+        SET domain = 'https://www.' || lower(name)
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -614,3 +623,4 @@ def main(ctx):
     post_dispatch.dispatch_migration(ctx)
     fix_wine_analysis_filters(ctx)
     correct_parcel_tracking(ctx)
+    set_shop_domain(ctx)

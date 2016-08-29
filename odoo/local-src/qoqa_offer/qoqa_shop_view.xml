@@ -37,4 +37,10 @@
     <field name="view_id" ref="view_qoqa_shop_tree"/>
   </record>
 
+  <menuitem
+    id="menu_qoqa_offer"
+    name="Shops"
+    parent="menu_qoqa_offer_config"
+    sequence="10" action="action_qoqa_shop"/>
+
 </odoo>

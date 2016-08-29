@@ -26,6 +26,7 @@
   <record model="qoqa.backend" id="qoqa_backend_config">
     <field name="name">QoQa Services</field>
     <field name="url">https://api-sprint.qoqa.com</field>
+    <field name="site_url">https://wwwqoqach-sprint.qoqa.com</field>
     <field name="version">v1</field>
     <field name="default_lang_id" ref="base.lang_en"/>
     <field name="debug" eval="1"/>

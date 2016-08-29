@@ -150,6 +150,9 @@
               </group>
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
+              <group string="Website" name="website">
+                <field name="site_url"/>
+              </group>
               <group string="Voucher" name="voucher">
                 <field name="property_voucher_journal_id"/>
               </group>

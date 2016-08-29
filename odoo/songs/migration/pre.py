@@ -327,9 +327,12 @@ def add_xmlid_delivery_category(ctx):
     So we can refer to it from the addons.
     """
     category = ctx.env['product.category'].browse(234)
-    add_xmlid(ctx, category,
-              'specific_fct.product_category_delivery',
-              noupdate=True)
+    existing = ctx.env.ref('specific_fct.product_category_delivery',
+                           raise_if_not_found=False)
+    if not existing:
+        add_xmlid(ctx, category,
+                  'specific_fct.product_category_delivery',
+                  noupdate=True)
 
 
 @anthem.log

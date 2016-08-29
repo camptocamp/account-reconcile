@@ -13,11 +13,7 @@ $ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:
 
 ## Restore the db and filestore (as volumes)
 
-If the volumes do not exist yet, use `docker-compose create` which will create empty volumes.
-
 ```bash
-$ docker-compose create
-
 $ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backups
 $ export DATAODOO_VOLUME=project_data-odoo  # Exact name to find with 'docker volume ls'
 $ export DATADB_VOLUME=project_data-db  # Exact name to find with 'docker volume ls'
@@ -30,9 +26,11 @@ $ docker run --rm -v "$DATADB_VOLUME:/var/lib/postgresql/data" -v $HOST_BACKUPS:
 
 If you have the same `pg_dump` version on your computer than the one used in the
 db container (9.5 at time of writing), you can just use your local `pg_dump`
-directly on the outgoing port of the db container. But if you have another
-version, `pgdump` will refuse to make a dump, here is how you can do this with
-a `postgres:9.5` one-off container:
+directly on the outgoing port of the db container.
+
+If you have another version, `pg_dump` will refuse to make a dump, here is how
+you can do this with a `postgres:9.5` one-off container (the `db` container
+must be running):
 
 ```bash
 $ export HOST_BACKUPS=/path/of/hosts/backups  # Where you want to save the backups

@@ -23,10 +23,25 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.5.0 (2016-08-29)
+++++++++++++++++++
+
+**Data Migration**
+
 * Remove custom views (dashboards), as the original views have been updated, it
   is better to let the users create them again
 * Correct stock location complete names, again (some were still wrong)
 * Change mapping of ``qoqa_id`` on shops (modified on the backend)
+* Configure journal and payment modes
 
 **Features and Improvements**
 
@@ -58,8 +73,6 @@ latest (unreleased)
 **Build**
 
 * Add an ``invoke`` task to push the pending-merges branches
-
-**Documentation**
 
 
 9.4.0 (2016-08-22)

@@ -584,6 +584,17 @@ def fix_wine_analysis_filters(ctx):
 
 
 @anthem.log
+def correct_parcel_tracking(ctx):
+    """ Get tracking value from name, and add it in parcel_tracking"""
+    ctx.env.cr.execute("""
+        UPDATE stock_quant_package
+        SET parcel_tracking = SPLIT_PART(name, ' - ', 2),
+        name = SPLIT_PART(name, ' - ', 1)
+        WHERE NAME ILIKE '% - %';
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -602,3 +613,4 @@ def main(ctx):
     move_journal_import_setup(ctx)
     post_dispatch.dispatch_migration(ctx)
     fix_wine_analysis_filters(ctx)
+    correct_parcel_tracking(ctx)

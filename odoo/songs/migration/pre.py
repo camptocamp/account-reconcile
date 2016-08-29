@@ -321,6 +321,18 @@ def clean_dashboards(ctx):
 
 
 @anthem.log
+def clean_custom_filters(ctx):
+    """ Deleting the custom filters """
+    ctx.env.cr.execute("""
+        DELETE FROM ir_filters f
+        WHERE NOT EXISTS (
+            SELECT id FROM ir_model_data
+            WHERE res_id = f.id AND model = 'ir.filters'
+        )
+    """)
+
+
+@anthem.log
 def add_xmlid_delivery_category(ctx):
     """ Adding a xmlid on the 'Frais de livraison' product category
 
@@ -357,6 +369,7 @@ def main(ctx):
     crm_unclaimed_fix_ids(ctx)
     sale_order_line_project(ctx)
     clean_dashboards(ctx)
+    clean_custom_filters(ctx)
     mail.mail_message_purge(ctx)
     add_xmlid_delivery_category(ctx)
     crm_claim_categ_id_nullable(ctx)

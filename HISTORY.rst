@@ -34,6 +34,9 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Addresses imported in orders are copied to new addresses. Now they are
+  imported as inactive.
+
 **Build**
 
 **Documentation**

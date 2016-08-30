@@ -140,7 +140,7 @@ interactions:
     uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
   response:
     body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
-        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "zip": "2068",
+        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "order_user_id": null, "zip": "2068",
         "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
         1, "service_client_number": null, "updated_at": "2016-06-28T17:32:24.000+02:00",
         "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
@@ -204,7 +204,7 @@ interactions:
     uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
   response:
     body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
-        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "zip": "2068",
+        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "order_user_id": null, "zip": "2068",
         "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
         1, "service_client_number": null, "updated_at": "2016-06-28T17:32:24.000+02:00",
         "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,

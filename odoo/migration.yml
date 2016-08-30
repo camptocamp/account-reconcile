@@ -140,3 +140,6 @@ migration:
       # nothing to do, all has been migrated in 9.1.0
     - version: 9.4.0
       # nothing to do, all has been migrated in 9.1.0
+    - version: 9.5.0
+    - version: 9.6.0
+    - version: 9.6.1

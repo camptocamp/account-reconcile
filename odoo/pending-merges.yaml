@@ -57,6 +57,15 @@
     # correction in crm_claim_code
     - oca refs/pull/102/head
   target: *default_target
+./external-src/l10n-switzerland:
+  remotes:
+    oca: git@github.com:OCA/l10n-switzerland.git
+    camptocamp: git@github.com:camptocamp/l10n-switzerland.git
+  merges:
+    - oca 9.0
+    # Add index on invoice_id for account.move.line
+    - oca refs/pull/258/head
+  target: *default_target
 ./external-src/purchase-workflow:
   remotes:
       oca: git@github.com:OCA/purchase-workflow.git

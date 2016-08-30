@@ -32,6 +32,15 @@ latest (unreleased)
 **Documentation**
 
 
+9.6.1 (2016-08-30)
+++++++++++++++++++
+
+**Build**
+
+* Change integration connector API url to api-sprint which have more recent
+  fixes
+
+
 9.6.0 (2016-08-30)
 ++++++++++++++++++
 

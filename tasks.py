@@ -72,6 +72,34 @@ def _check_git_diff(ctx):
 
 
 @task
+def push_branches(ctx):
+    """ Push the local branches to the camptocamp remote
+
+    The branch name will be composed of the id of the project and the current
+    version number (the one in odoo/VERSION).
+
+    It should be done at the closing of every release, so we are able
+    to build a new patch branch from the same commits if required.
+    """
+    version = _current_version()
+    branch_name = 'merge-branch-{}-{}'.format(PROJECT_ID, version)
+    response = raw_input(
+        'push local branches to {}? (y/N) '.format(branch_name)
+    )
+    _check_git_diff(ctx)
+    if response not in ('y', 'Y', 'yes'):
+        exit_msg('Aborted')
+    with open(PENDING_MERGES, 'ru') as f:
+        merges = yaml.load(f.read())
+        for path in merges:
+            with cd(build_path(path, from_file=PENDING_MERGES)):
+                ctx.run(
+                    'git push -f -v {} HEAD:refs/heads/{}'
+                    .format(GIT_REMOTE_NAME, branch_name)
+                )
+
+
+@task(post=[push_branches])
 def bump(ctx, feature=False, patch=False):
     """ Increase the version number where needed """
     if not (feature or patch):
@@ -136,34 +164,6 @@ def bump(ctx, feature=False, patch=False):
     print('you should probably clean {}'
           '(remove empty sections, whitespaces, ...)'.format(HISTORY_FILE))
     print('and commit + tag the changes')
-
-
-@task
-def push_branches(ctx):
-    """ Push the local branches to the camptocamp remote
-
-    The branch name will be composed of the id of the project and the current
-    version number (the one in odoo/VERSION).
-
-    It should be done at the closing of every release, so we are able
-    to build a new patch branch from the same commits if required.
-    """
-    version = _current_version()
-    branch_name = 'merge-branch-{}-{}'.format(PROJECT_ID, version)
-    response = raw_input(
-        'push local branches to {}? (y/N) '.format(branch_name)
-    )
-    _check_git_diff(ctx)
-    if response not in ('y', 'Y', 'yes'):
-        exit_msg('Aborted')
-    with open(PENDING_MERGES, 'ru') as f:
-        merges = yaml.load(f.read())
-        for path in merges:
-            with cd(build_path(path, from_file=PENDING_MERGES)):
-                ctx.run(
-                    'git push -f -v {} HEAD:refs/heads/{}'
-                    .format(GIT_REMOTE_NAME, branch_name)
-                )
 
 
 release.add_task(bump, 'bump')

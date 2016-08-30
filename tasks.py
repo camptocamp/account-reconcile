@@ -86,9 +86,9 @@ def push_branches(ctx):
     response = raw_input(
         'push local branches to {}? (y/N) '.format(branch_name)
     )
-    _check_git_diff(ctx)
     if response not in ('y', 'Y', 'yes'):
         exit_msg('Aborted')
+    _check_git_diff(ctx)
     with open(PENDING_MERGES, 'ru') as f:
         merges = yaml.load(f.read())
         for path in merges:

@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Configure 'web.base.url' to print reports correctly
+
 **Build**
 
 **Documentation**

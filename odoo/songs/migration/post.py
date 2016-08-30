@@ -604,6 +604,14 @@ def set_shop_domain(ctx):
 
 
 @anthem.log
+def set_web_base_url(ctx):
+    """ Configuring web.base.url """
+    url = 'http://localhost:8069'
+    ctx.env['ir.config_parameter'].set_param('web.base.url', url)
+    ctx.env['ir.config_parameter'].set_param('web.base.url.freeze', 'True')
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -624,3 +632,4 @@ def main(ctx):
     fix_wine_analysis_filters(ctx)
     correct_parcel_tracking(ctx)
     set_shop_domain(ctx)
+    set_web_base_url(ctx)

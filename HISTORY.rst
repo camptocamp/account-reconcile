@@ -23,21 +23,34 @@ latest (unreleased)
 
 **Data Migration**
 
-* Set the correct unclaimed categories on the company
+**Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.6.0 (2016-08-30)
+++++++++++++++++++
+
+**Data Migration**
+
+* Set the correct unclaimed categories on the company
 * Initialize a domain on QoQa shops used to generate the offers links
+* Delete custom filters (they refer to a modified data model)
 
 **Features and Improvements**
 
 * Adapt the offers edition link to the new URL
 * Add a menu to edit the QoQa shops
+* Prevent to remove an exported variant
 
 **Bugfixes**
 
 * Addresses imported in orders are copied to new addresses. Now they are
   imported as inactive.
-
-**Build**
 
 **Documentation**
 

@@ -37,6 +37,7 @@ HISTORY_FILE = build_path('HISTORY.rst')
 DOCKER_IMAGE = 'camptocamp/qoqa_openerp'
 PENDING_MERGES = build_path('odoo/pending-merges.yaml')
 GIT_REMOTE_NAME = 'camptocamp'
+MIGRATION_FILE = build_path('odoo/migration.yml')
 
 
 def exit_msg(message):
@@ -86,9 +87,9 @@ def push_branches(ctx):
     response = raw_input(
         'push local branches to {}? (y/N) '.format(branch_name)
     )
-    _check_git_diff(ctx)
     if response not in ('y', 'Y', 'yes'):
         exit_msg('Aborted')
+    _check_git_diff(ctx)
     with open(PENDING_MERGES, 'ru') as f:
         merges = yaml.load(f.read())
         for path in merges:
@@ -124,6 +125,16 @@ def bump(ctx, feature=False, patch=False):
                    version.version[1],
                    version.version[2] + 1)
     version = '.'.join([str(v) for v in version])
+
+    try:
+        ctx.run(r'grep --quiet --regexp "- version:.*{}" {}'.format(
+            version,
+            MIGRATION_FILE
+        ))
+    except exceptions.Failure:
+        with open(MIGRATION_FILE, 'a') as fd:
+            fd.write('    - version: {}\n'.format(version))
+
     with open(VERSION_FILE, 'w') as fd:
         fd.write(version + '\n')
 

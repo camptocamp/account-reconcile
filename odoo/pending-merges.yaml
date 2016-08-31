@@ -77,14 +77,10 @@
     camptocamp: git@github.com:camptocamp/rma.git
   merges:
     - oca 9.0
-    # port crm_claim_rma_code
-    - oca refs/pull/85/head
-    # port crm_claim_rma
-    - oca refs/pull/86/head
-    # port crm_rma_stock_location
-    - oca refs/pull/87/head
     # port crm_rma_stock_location
     - oca refs/pull/92/head
+    # Change picking type to "Out"
+    - oca refs/pull/93/head
   target: *default_target
 ./external-src/sale-workflow:
   remotes:

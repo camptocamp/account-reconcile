@@ -91,6 +91,8 @@ migration:
           #---- OCA/web ------------------------------------#
           - web_send_message_popup
           #- web_translate_dialog
+          #---- Odoo Monitoring ----------------------------#
+          - monitoring_log_requests
           #---- QoQa specifics -----------------------------#
           - base_stock_picking_pack_split
           - account_s3_move_import

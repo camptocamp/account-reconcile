@@ -8,6 +8,9 @@
             <field name="currency_id" position="after">
                 <field name="validation_agreement"/>
             </field>
+            <field name="reference" position="attributes">
+              <attribute name="required">1</attribute>
+            </field>
             <field name="state" position="after">
                 <button name="button_validate_agreement"
                         attrs="{'invisible': [('validation_agreement', '=', True)]}"

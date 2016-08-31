@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Configure 'web.base.url' to print reports correctly
+
 **Build**
 
 * The 'release.bump' task adds the entry in 'migration.yml' if it does not

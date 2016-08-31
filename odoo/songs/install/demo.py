@@ -92,10 +92,19 @@ def default_values(ctx):
 
 
 @anthem.log
+def set_web_base_url(ctx):
+    """ Configuring web.base.url """
+    url = 'http://localhost:8069'
+    ctx.env['ir.config_parameter'].set_param('web.base.url', url)
+    ctx.env['ir.config_parameter'].set_param('web.base.url.freeze', 'True')
+
+
+@anthem.log
 def main(ctx):
     """ Main: creating demo data """
     req = Requirement.parse('qoqa-odoo')
     setup_company(ctx, req)
     setup_language(ctx)
     default_values(ctx)
+    set_web_base_url(ctx)
     # TODO: generate demo data

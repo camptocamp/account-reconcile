@@ -33,6 +33,7 @@ latest (unreleased)
 
 * The 'release.bump' task adds the entry in 'migration.yml' if it does not
   exist
+* Switch back to the api-staging
 
 **Documentation**
 

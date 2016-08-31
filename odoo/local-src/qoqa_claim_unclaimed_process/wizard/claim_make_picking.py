@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp import api, models
+from openerp import api, fields, models
 
 
 class ClaimMakePicking(models.TransientModel):
@@ -29,7 +29,7 @@ class ClaimMakePicking(models.TransientModel):
         super_wiz = super(ClaimMakePicking, self)
         # Get destination for in, and set as source for out
         if (self.env.context.get('picking_type') == 'out' and
-                self.context.get('partner_id')):
+                self.env.context.get('partner_id')):
 
             location_list = []
             # Retrieve used destination location in "IN"
@@ -44,9 +44,42 @@ class ClaimMakePicking(models.TransientModel):
 
         return super_wiz._default_claim_line_source_location_id()
 
-    """ copy whole method to remove check availability on picking """
+    @api.model
+    def _default_claim_line_dest_location_id(self):
+        super_wiz = super(ClaimMakePicking, self)
+        # Get destination for in, and set as source for out
+        if (self.env.context.get('picking_type') == 'out' and
+                self.env.context.get('partner_id')):
+
+            location_list = []
+            # Retrieve used source location in "IN"
+            lines = self._default_claim_line_ids()
+            for line in lines:
+                if line.move_in_id and line.move_in_id.location_id:
+                    source_location_id = line.move_in_id.location_id.id
+                    if source_location_id not in location_list:
+                        location_list.append(source_location_id)
+            if len(location_list) == 1:
+                return location_list[0]
+
+        return super_wiz._default_claim_line_dest_location_id()
+
+    claim_line_source_location_id = fields.Many2one(
+        'stock.location', string='Source Location',
+        default=_default_claim_line_source_location_id,
+        help="Location where the returned products are from.")
+
+    claim_line_dest_location_id = fields.Many2one(
+        'stock.location', string='Dest. Location', required=True,
+        default=_default_claim_line_dest_location_id,
+        help="Location where the system will stock the returned products.")
+
     @api.multi
     def action_create_picking(self):
+        # For QoQa, create an OUT picking instead of a procurement order
+        if self.env.context.get('picking_type') != 'out':
+            return super(ClaimMakePicking, self).action_create_picking()
+
         claim_obj = self.env['crm.claim']
         claim = claim_obj.browse(self.env.context['active_id'])
 
@@ -67,4 +100,4 @@ class ClaimMakePicking(models.TransientModel):
                 {'categ_id': company.unclaimed_final_categ_id.id}
             )
 
-        return super(ClaimMakePicking, self).action_create_picking()
+        return self._create_picking(claim, 'out')

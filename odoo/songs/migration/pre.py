@@ -311,6 +311,24 @@ def crm_unclaimed_fix_ids(ctx):
             WHERE name = 'Non-réclamé - 4. Résolu'
         )
         WHERE id = 3;
+
+        UPDATE ir_model_data
+        SET module = 'qoqa_claim_unclaimed_process'
+        WHERE module = 'crm_claim_mail'
+        AND name IN (
+            'email_template_rma_unclaimed',
+            'trans_email_template_rma_unclaimed_fr_body_html',
+            'trans_email_template_rma_unclaimed_de_body_html',
+            'email_template_rma_invalid_address',
+            'trans_email_template_rma_invalid_address_fr_body_html',
+            'trans_email_template_rma_invalid_address_de_body_html',
+            'email_template_rma_first_reminder',
+            'trans_email_template_rma_first_reminder_fr_body_html',
+            'trans_email_template_rma_first_reminder_de_body_html',
+            'email_template_rma_second_reminder',
+            'trans_email_template_rma_second_reminder_fr_body_html',
+            'trans_email_template_rma_second_reminder_de_body_html'
+        );
     """)
 
 

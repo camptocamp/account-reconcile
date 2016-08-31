@@ -38,7 +38,7 @@
   </record>
 
   <menuitem
-    id="menu_qoqa_offer"
+    id="menu_qoqa_shop"
     name="Shops"
     parent="menu_qoqa_offer_config"
     sequence="10" action="action_qoqa_shop"/>

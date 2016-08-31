@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Again a correction on the locations complete name
+
 **Features and Improvements**
 
 **Bugfixes**

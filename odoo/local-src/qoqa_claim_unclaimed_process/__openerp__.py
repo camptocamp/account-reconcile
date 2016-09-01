@@ -19,6 +19,7 @@
         'data/claim_data.xml',
         'data/mail_template.xml',
         'views/company_view.xml',
+        'wizard/claim_make_picking.xml',
         'wizard/crm_claim_unclaimed_view.xml',
     ],
     'installable': True,

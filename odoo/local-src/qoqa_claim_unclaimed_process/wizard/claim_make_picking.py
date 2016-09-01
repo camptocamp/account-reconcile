@@ -31,16 +31,11 @@ class ClaimMakePicking(models.TransientModel):
         if (self.env.context.get('picking_type') == 'out' and
                 self.env.context.get('partner_id')):
 
-            location_list = []
-            # Retrieve used destination location in "IN"
-            lines = self._default_claim_line_ids()
-            for line in lines:
-                if line.move_in_id and line.move_in_id.location_dest_id:
-                    dest_location_id = line.move_in_id.location_dest_id.id
-                    if dest_location_id not in location_list:
-                        location_list.append(dest_location_id)
-            if len(location_list) == 1:
-                return location_list[0]
+            locations = self.env['stock.location'].browse()
+            for line in self._default_claim_line_ids():
+                locations |= line.move_in_id.location_dest_id
+            if len(locations) == 1:
+                return locations.id
 
         return super_wiz._default_claim_line_source_location_id()
 
@@ -51,16 +46,11 @@ class ClaimMakePicking(models.TransientModel):
         if (self.env.context.get('picking_type') == 'out' and
                 self.env.context.get('partner_id')):
 
-            location_list = []
-            # Retrieve used source location in "IN"
-            lines = self._default_claim_line_ids()
-            for line in lines:
-                if line.move_in_id and line.move_in_id.location_id:
-                    source_location_id = line.move_in_id.location_id.id
-                    if source_location_id not in location_list:
-                        location_list.append(source_location_id)
-            if len(location_list) == 1:
-                return location_list[0]
+            locations = self.env['stock.location'].browse()
+            for line in self._default_claim_line_ids():
+                locations |= line.move_in_id.location_id
+            if len(locations) == 1:
+                return locations.id
 
         return super_wiz._default_claim_line_dest_location_id()
 

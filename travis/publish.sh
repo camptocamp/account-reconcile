@@ -3,14 +3,17 @@
 set -e
 
 function deploy {
-    local version=$1
+    local environment=$1
 
     wget -O - http://releases.rancher.com/compose/beta/v0.7.2/rancher-compose-linux-amd64-v0.7.2.tar.gz |\
         tar -x -z -C ${HOME} && mv ${HOME}/rancher-compose*/rancher-compose ${HOME}/ || exit $?
+
     RANCHER_COMPOSE="${HOME}/rancher-compose"
-    TEMPLATE_DIR="${PWD}/rancher/${version}"
-    openssl aes-256-cbc -K $encrypted_2e4df3d9a0ba_key -iv $encrypted_2e4df3d9a0ba_iv -in .rancher.env.enc -out "$HOME/.rancher.env" -d
-    (. "$HOME/.rancher.env" ; cd "${TEMPLATE_DIR}" && \
+    TEMPLATE_DIR="${TRAVIS_BUILD_DIR}/rancher/${environment}"
+
+    source <(echo $rancher_env_password | gpg --passphrase-fd 0 --decrypt --no-tty $TEMPLATE_DIR/rancher.env.gpg)
+
+    (cd "${TEMPLATE_DIR}" && \
      ${RANCHER_COMPOSE} -p "${RANCHER_STACK_NAME}" rm odoo db --force && \
      sleep 30 && \
      ${RANCHER_COMPOSE} -p "${RANCHER_STACK_NAME}" up --pull --recreate --force-recreate --confirm-upgrade -d)

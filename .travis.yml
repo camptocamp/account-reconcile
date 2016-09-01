@@ -18,6 +18,7 @@ env:
     - SONGS_DIR=${TRAVIS_BUILD_DIR}/odoo/songs
     - COMPOSE_PROJECT_NAME=qoqa
     - RANCHER_STACK_NAME=qoqa-odoo-test
+    - secure: "WVXkE3u2qFd+EdAs2OAbgfxq2P+TuVQQ5nM+LYT1cS17m9nUjD6ZLt6PnaRM1Wtu9UQpSuYHygycmGTBiX+AwvbyWAn6ekKkszKvz77v6bugPreeON5pStLha+C9YXqzD7ZglH3GWfRPBidVhqJGTIU1l9h8cNfl+W/BSKH3ACE="
 
 before_install:
   - sudo apt-get update

@@ -20,14 +20,28 @@ rancher stack automatically upgraded by Travis.
 ## Rancher environment setup
 
 In order to configure the variables for the container built on Rancher by
-Travis, `.rancher.env.enc` is used.
+Travis, the files `rancher.env.gpg` are used. Each environment in `rancher/` contains its own file.
 
-To create it, uses:
+For every operation below, a password will be asked. The passwords are stored in Lastpass in the following sites:
+
+* Rancher: latest/rancher.env.gpg
+* Rancher: integration/rancher.env.gpg
+* Rancher: production/rancher.env.gpg
+
+To decrypt a file, run:
 
 ```
-travis encrypt-file -f --pro .rancher.env
+$ gpg rancher.env.gpg
 ```
 
-It contains credentials for rancher, Postgres configuration, scenario tag and
-Odoo environment variables.
-(An unencrypted copy of `.rancher.env` is available on LastPass)
+Or directly source the content of a file (which is only composed of environment variables used by `rancher-compose`) with:
+
+```
+$ source <(gpg2 -d rancher.env.gpg)
+```
+
+When you have to modify the file, you have to re-encrypt the file, which is done with:
+
+```
+$ gpg2 --symmetric --cipher-algo AES256 rancher.env
+```

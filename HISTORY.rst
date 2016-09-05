@@ -23,21 +23,36 @@ latest (unreleased)
 
 **Data Migration**
 
-* Again a correction on the locations complete name
-
 **Features and Improvements**
 
 **Bugfixes**
 
+**Build**
+
+**Documentation**
+
+
+9.7.0 (2016-09-05)
+++++++++++++++++++
+
+**Data Migration**
+
+* Again a correction on the locations complete name
+* Configure unclaimed ids
+
+**Bugfixes**
+
 * Configure 'web.base.url' to print reports correctly
+* Corrections in claims regarding stock locations
+* Reference on supplier invoice is now required [MIG-287]
 
 **Build**
 
 * The 'release.bump' task adds the entry in 'migration.yml' if it does not
   exist
 * Switch back to the api-staging
-
-**Documentation**
+* Add a new module that logs requests, that will be used to do usage analysis /
+  monitor the duration of the requests.
 
 
 9.6.1 (2016-08-30)
@@ -106,7 +121,6 @@ latest (unreleased)
 * The display name of partners do no longer show weird ', , ' when there is no
   address
 * Fix creation of delivery method
-* Reference on supplier invoice is now required [MIG-287]
 * Import of job for canceled orders do no longer fail
 * Fix import of orders failing due to a renaming in the API (`unit_price` →
   `lot_price`)

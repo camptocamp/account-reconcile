@@ -88,3 +88,6 @@
 [submodule "odoo/external-src/web"]
 	path = odoo/external-src/web
 	url = git@github.com:oca/web
+[submodule "odoo/external-src/odoo-monitoring"]
+	path = odoo/external-src/odoo-monitoring
+	url = git@github.com:camptocamp/odoo-monitoring.git

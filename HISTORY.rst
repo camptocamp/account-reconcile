@@ -29,9 +29,15 @@ latest (unreleased)
 
 **Build**
 
-* Update the server-tools pending merge branch for a correction in mail_cleanup
-
 **Documentation**
+
+
+9.7.1 (2016-09-05)
+++++++++++++++++++
+
+**Build**
+
+* Update the server-tools pending merge branch for a correction in mail_cleanup
 
 
 9.7.0 (2016-09-05)

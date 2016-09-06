@@ -1,94 +1,84 @@
-# Integration templates
+# Integration deployment
 
-That will change!
+## Restore the new database
 
-For now, you have to export the following variables:
+We restore the database with a different name, then we just switch the old one
+with the new one. First, restore it:
 
-```
 
-export RANCHER_URL=https://caas.camptocamp.net
-export RANCHER_ACCESS_KEY=# create an api key
-export RANCHER_SECRET_KEY=# create an api key
-
-export DB_NAME=qoqa_int
-export DB_USER=openerp
-export DB_PORT=5432
-export DB_PASSWORD=# see in lastpass ("QoQa RDS")
-export ADMIN_PASSWD=# set an admin password (anything, we don't use it)
-export RUNNING_ENV=integration
-export DEMO=none
-export WORKERS=6
-export MAX_CRON_THREADS=2
-export LOG_LEVEL=warn
-export LOG_HANDLER=":WARNING,monitoring.http.requests:INFO"
-export DB_MAXCONN=64
-export LIMIT_MEMORY_SOFT=2147483648
-export LIMIT_MEMORY_HARD=2684354560
-export LIMIT_REQUEST=8192
-export LIMIT_TIME_CPU=86400
-export LIMIT_TIME_REAL=86400
-export ODOO_CONNECTOR_CHANNELS=root:3,root.connector_qoqa.fast:1,root.connector_qoqa.normal:1
-
-```
-
-The command to start the stack is 
-
-```
-rancher-compose -p qoqa-odoo-integration up -d
-```
-
-## Process to setup the integration server:
-
-Warning: this process needs testing.
-
-Things to check:
-
-* In `docker-compose.yml`, verify that the tag of the image is the correct one
-  (such as camptocamp/qoqa_openerp:9.1.0)
-
-Assuming you already have a pg dump:
-
-1. source the variables above
-2. stop the services
+1. `scp` the dump on the `Shell` container
 
   ```
-  rancher-compose -p qoqa-odoo-integration stop
-  rancher-compose -p qoqa-odoo-integration rm odoo --force
+  $ scp ~/path/to/db.pg your-github-user@erp-sprint.qoqa.com:~
   ```
 
-3. `scp` the dump on a qoqa server (so we have access to the RDS server)
+2. SSH on the `Shell` container
 
   ```
-  scp ~/nobackup/backups/qoqa/db.pg openerp@test.erp.qoqa.com:/srv/openerp
-  ``m
+  $ ssh your-github-user@erp-sprint.qoqa.com -p 2622
+  ```
 
-4. `ssh` on the server
+3. open a tmux (because the dump is slow to load)
 
   ```
-  ssh openerp@test.erp.qoqa.com
+  $ tmux
   ```
   
-5. drop the database:
+4. create the database with an alternative name (we'll rename)
 
   ```
-  dropdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com qoqa_int
+  ~ createdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -O openerp -Uopenerp qoqa_int_new
   ```
-  
-6. create the database:
 
-  ```
-  createdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -O openerp -Uopenerp qoqa_int
-  ```
-  
-7. open a tmux (important because the dump is really slow to load)
+5. restore the dump and only when the dump is fully restored, continue to [Switch the databases](#switch-the-databases)
 
    ```
-   pg_restore -O -j2 -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -d qoqa_int -U openerp db.pg
+   ~ pg_restore -O -j2 -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -d qoqa_int_new -U openerp db.pg
    ```
 
-8. TODO: see if restoring the filestore is required and document this step
+## Restore the filestore
+
+Restoring the filestore is not documented yet. For now, we leave the current
+one in place.
+
+## Switch the databases
+
+
+1. checkout the tag to deploy
+
+  ```
+  $ git checkout 9.X.Y
+  ```
+
+2. source the environment variables (password is in Lastpass: `Rancher: integration/rancher.env.gpg`)
+
+  ```
+  $ source <(gpg2 -d rancher.env.gpg)
+  ```
+
+3. stop the services (from your host)
+
+  ```
+  $ rancher-compose -p qoqa-odoo-integration stop
+  ```
+
+4. SSH on the `Shell` container and switch the databases
+
+  ```
+  $ ssh your-github-user@erp-sprint.qoqa.com -p 2622
+  ~ psql -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -Uopenerp postgres -c "ALTER DATABASE qoqa_int RENAME TO qoqa_int_old"
+  ~ psql -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -Uopenerp postgres -c "ALTER DATABASE qoqa_int_new RENAME TO qoqa_int"
+  ```
    
-8. Once loaded, start the services
-```
-rancher-compose -p qoqa-odoo-integration up --pull --recreate --force-recreate --confirm-upgrade -d
-```
+5. start the services
+
+  ```
+  rancher-compose -p qoqa-odoo-integration up --pull --recreate --force-recreate --confirm-upgrade -d
+  ```
+  
+6. On the server, drop the old database:
+
+  ```
+  $ ssh your-github-user@erp-sprint.qoqa.com -p 2622
+  ~ dropdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -Uopenerp qoqa_int_old
+  ```

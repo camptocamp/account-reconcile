@@ -94,6 +94,7 @@ migration:
           #---- Odoo Monitoring ----------------------------#
           - monitoring_log_requests
           #---- QoQa specifics -----------------------------#
+          - account_bank_statement_import_camt
           - base_stock_picking_pack_split
           - account_s3_move_import
           - connector_qoqa

@@ -6,3 +6,4 @@ vcrpy==1.7.4
 freezegun==0.3.7
 requests==2.9.1
 unidecode==0.04.19
+xlsxwriter==0.9.3

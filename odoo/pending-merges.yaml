@@ -10,6 +10,15 @@
     # [9.0][PORT] account_analytic_required
     - oca refs/pull/59/head
   target: &default_target camptocamp merge-branch-1151-master
+./external-src/account-financial-reporting:
+  remotes:
+    oca: git@github.com:OCA/account-financial-reporting.git
+    camptocamp: git@github.com:camptocamp/account-financial-reporting.git
+  merges:
+    - oca 9.0
+    # Performance improvement for OCA accounting reports
+    - oca refs/pull/219/head
+  target: *default_target
 ./external-src/bank-payment:
   remotes:
     oca: git@github.com:OCA/bank-payment.git
@@ -18,6 +27,8 @@
     - oca 9.0
     # account_payment_mode multi company ir.rule
     - oca refs/pull/279/head
+    # account_payment_sale : change debit account on invoice
+    - oca refs/pull/298/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:
@@ -139,4 +150,6 @@
     - oca 9.0
     # Add multi-company security rule for employees
     - oca refs/pull/533/head
+    # Search for quants in top packages as well
+    - oca refs/pull/540/head
   target: *default_target

@@ -97,8 +97,6 @@
     camptocamp: git@github.com:camptocamp/sale-workflow.git
   merges:
     - oca 9.0
-    # sale_automatic_workflow_payment_mode
-    - oca refs/pull/297/head
   target: *default_target
 ./external-src/server-tools:
   remotes:

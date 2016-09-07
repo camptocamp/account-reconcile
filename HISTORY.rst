@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Allow to have no shipping fee in imported orders
+
 **Build**
 
 **Documentation**

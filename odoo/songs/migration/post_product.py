@@ -230,6 +230,11 @@ def product_attributes(ctx):
 
 @anthem.log
 def default_values(ctx):
+    """ Update all product to be Control Purchase bill
+    to be set on ordered quantity [MIGO-304]"""
+    ctx.env.cr.execute("""
+        UPDATE product_template set purchase_method='purchase'
+    """)
     """ Setting default values on products """
     for company in ctx.env['res.company'].search([]):
         create_default_value(ctx,

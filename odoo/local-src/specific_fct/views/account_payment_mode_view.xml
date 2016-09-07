@@ -11,4 +11,6 @@
             </field>
         </field>
     </record>
+
+    <menuitem id="account_reports.menu_action_followups" groups="scenario._group"/>
 </odoo>

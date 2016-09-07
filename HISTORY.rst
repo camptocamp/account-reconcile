@@ -25,7 +25,12 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* optimized version of the financial QWeb reports
+
 **Bugfixes**
+
+* use journal debit account on invoice with specific payment modes
+* look for quants in top-level packages (issue with RMA product return)
 
 **Build**
 

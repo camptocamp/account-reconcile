@@ -31,6 +31,7 @@ latest (unreleased)
 
 * use journal debit account on invoice with specific payment modes
 * look for quants in top-level packages (issue with RMA product return)
+* problems on move import (invalid error message, wrong debit amount)
 
 **Build**
 

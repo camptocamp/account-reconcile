@@ -30,7 +30,7 @@
 	url = git@github.com:camptocamp/bank-payment
 [submodule "odoo/external-src/bank-statement-reconcile"]
 	path = odoo/external-src/bank-statement-reconcile
-	url = git@github.com:oca/bank-statement-reconcile
+	url = git@github.com:camptocamp/bank-statement-reconcile
 [submodule "odoo/external-src/carrier-delivery"]
 	path = odoo/external-src/carrier-delivery
 	url = git@github.com:camptocamp/carrier-delivery

@@ -30,6 +30,17 @@
     # account_payment_sale : change debit account on invoice
     - oca refs/pull/298/head
   target: *default_target
+./external-src/bank-statement-reconcile:
+  remotes:
+    oca: git@github.com:OCA/bank-statement-reconcile.git
+    camptocamp: git@github.com:camptocamp/bank-statement-reconcile.git
+  merges:
+    - oca 9.0
+    # Correct error messages in account_move_base_import
+    - oca refs/pull/150/head
+    # Correct debit amount in account_move_transactionid_import
+    - oca refs/pull/151/head
+  target: *default_target
 ./external-src/carrier-delivery:
   remotes:
     oca: git@github.com:OCA/carrier-delivery.git

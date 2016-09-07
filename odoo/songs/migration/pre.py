@@ -379,6 +379,20 @@ def crm_claim_categ_id_nullable(ctx):
 
 
 @anthem.log
+def prefix_qoqa_order_line_ids(ctx):
+    """ Prefix qoqa_sale_order_line.qoqa_id with 'item-'
+
+    Because in qoqa3 the ids were the 'item_id', so the ids of the sale order
+    lines of qoqa3 and now we use the qoqa4 invoice lines ids.
+    """
+    ctx.env.cr.execute("""
+        UPDATE qoqa_sale_order_line
+        SET qoqa_id = 'item_id-' || qoqa_id
+        WHERE qoqa_id IS NOT NULL
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -396,3 +410,4 @@ def main(ctx):
     mail.mail_message_purge(ctx)
     add_xmlid_delivery_category(ctx)
     crm_claim_categ_id_nullable(ctx)
+    prefix_qoqa_order_line_ids(ctx)

@@ -23,6 +23,9 @@ latest (unreleased)
 
 **Data Migration**
 
+* Prefix the old sale order lines qoqa ids, because we do no longer use the
+  same object on qoqa4 for the ids
+
 **Features and Improvements**
 
 * optimized version of the financial QWeb reports
@@ -32,6 +35,8 @@ latest (unreleased)
 * use journal debit account on invoice with specific payment modes
 * look for quants in top-level packages (issue with RMA product return)
 * problems on move import (invalid error message, wrong debit amount)
+
+* Allow to have no shipping fee in imported orders
 
 **Build**
 

@@ -41,9 +41,12 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
     """
     _model_name = 'qoqa.sale.order.line'
 
+    direct = [
+        ('id', 'qoqa_id'),
+    ]
+
     from_attributes = [
         ('lot_quantity', 'qoqa_quantity'),  # original quantity on lot
-        ('id', 'qoqa_id'),
     ]
 
     def finalize(self, map_record, values):

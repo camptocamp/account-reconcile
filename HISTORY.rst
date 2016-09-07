@@ -23,6 +23,9 @@ latest (unreleased)
 
 **Data Migration**
 
+* Prefix the old sale order lines qoqa ids, because we do no longer use the
+  same object on qoqa4 for the ids
+
 **Features and Improvements**
 
 **Bugfixes**

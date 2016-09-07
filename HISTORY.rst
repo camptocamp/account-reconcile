@@ -33,6 +33,10 @@ latest (unreleased)
 * look for quants in top-level packages (issue with RMA product return)
 * problems on move import (invalid error message, wrong debit amount)
 
+* Fix sale automatic working not working because the filters used for the
+  workflows were restricted to the admin user, where we run the automatic cron
+  with other users (CH, FR)
+
 **Build**
 
 **Documentation**

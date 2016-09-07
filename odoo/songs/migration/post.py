@@ -617,6 +617,24 @@ def set_web_base_url(ctx):
 
 
 @anthem.log
+def config_automatic_workflow(ctx):
+    """ Configure automatic workflows """
+    with ctx.log('Remove user_id from the sale automatic workflow filters'):
+        ctx.env.cr.execute("""
+            UPDATE ir_filters
+            SET user_id = NULL
+            WHERE id IN (SELECT res_id
+                         FROM ir_model_data
+                         WHERE model = 'ir.filters'
+                         AND module LIKE 'sale_automatic_workflow%')
+        """)
+    with ctx.log('Disable validation of pickings'):
+        ctx.env.cr.execute("""
+            UPDATE sale_workflow_process SET validate_picking = false
+        """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -638,3 +656,4 @@ def main(ctx):
     correct_parcel_tracking(ctx)
     set_shop_domain(ctx)
     set_web_base_url(ctx)
+    config_automatic_workflow(ctx)

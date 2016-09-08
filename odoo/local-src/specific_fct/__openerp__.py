@@ -7,6 +7,7 @@
     'version': '9.0.1.0.0',
     'category': 'Others',
     'depends': [
+        'account_reports',
         'account_analytic_required',
         'hr_holidays',
         'sale',

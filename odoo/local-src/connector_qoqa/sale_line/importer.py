@@ -153,7 +153,7 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         """
         attributes = record['attributes']
         lot_size = attributes['lot_size'] or 1
-        quantity = attributes['lot_quantity']
+        quantity = attributes['lot_quantity'] * lot_size
         price = float(attributes['lot_price'])
         if lot_size > 1:
             price /= lot_size

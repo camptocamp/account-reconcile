@@ -37,6 +37,8 @@ latest (unreleased)
 * problems on move import (invalid error message, wrong debit amount)
 
 * Allow to have no shipping fee in imported orders
+* Wrong quantity in imported sale order lines when the lot size is above 1
+  (MIGO-329)
 
 **Build**
 

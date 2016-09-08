@@ -12,7 +12,7 @@
 	url = git@github.com:camptocamp/account-analytic
 [submodule "odoo/external-src/account-financial-reporting"]
 	path = odoo/external-src/account-financial-reporting
-	url = git@github.com:oca/account-financial-reporting
+	url = git@github.com:camptocamp/account-financial-reporting
 [submodule "odoo/external-src/account-financial-tools"]
 	path = odoo/external-src/account-financial-tools
 	url = git@github.com:oca/account-financial-tools
@@ -30,7 +30,7 @@
 	url = git@github.com:camptocamp/bank-payment
 [submodule "odoo/external-src/bank-statement-reconcile"]
 	path = odoo/external-src/bank-statement-reconcile
-	url = git@github.com:oca/bank-statement-reconcile
+	url = git@github.com:camptocamp/bank-statement-reconcile
 [submodule "odoo/external-src/carrier-delivery"]
 	path = odoo/external-src/carrier-delivery
 	url = git@github.com:camptocamp/carrier-delivery

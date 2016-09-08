@@ -47,6 +47,7 @@ latest (unreleased)
 * Fix sale automatic working not working because the filters used for the
   workflows were restricted to the admin user, where we run the automatic cron
   with other users (CH, FR)
+* Fix 23 sales orders buggy since V7 as they are 'to invoice' but not invoiceable.
 
 **Build**
 

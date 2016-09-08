@@ -29,6 +29,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * optimized version of the financial QWeb reports
+* Send sequence of the attributes on exported product variants (MIGO-321)
 
 **Bugfixes**
 

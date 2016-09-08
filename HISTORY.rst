@@ -41,6 +41,10 @@ latest (unreleased)
 * Wrong quantity in imported sale order lines when the lot size is above 1
   (MIGO-329)
 
+* Fix sale automatic working not working because the filters used for the
+  workflows were restricted to the admin user, where we run the automatic cron
+  with other users (CH, FR)
+
 **Build**
 
 * Update connector-ecommerce pending merge branch

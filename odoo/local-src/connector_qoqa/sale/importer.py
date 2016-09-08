@@ -373,3 +373,7 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
 @qoqa
 class QoQaSaleOrderOnChange(SaleOrderOnChange):
     _model_name = 'qoqa.sale.order'
+
+    order_onchange_fields = SaleOrderOnChange.order_onchange_fields + [
+        'qoqa_shop_id',
+    ]

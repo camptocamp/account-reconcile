@@ -131,7 +131,7 @@ def claim_rma(ctx):
         """)
     ctx.env.cr.execute("""
         UPDATE crm_claim SET code = number
-        WHERE number IS NOT NULL AND code != number
+        WHERE number IS NOT NULL AND (code IS NULL OR code != number)
     """)
     ctx.env.cr.execute("""
         UPDATE mail_template

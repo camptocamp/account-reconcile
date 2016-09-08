@@ -167,10 +167,13 @@ class SaleOrder(models.Model):
             #     for move in payment_moves:
             #         move.unlink()
             if not cancel_direct and order.amount_total:
-                # create the invoice, open it because we need the move
-                # lines so we'll be able to reconcile them with the
-                # payments
-                order.action_invoice_create(grouped=False)
+                # create the invoice, so we'll be able to create the refund
+                # later, we'll cancel the invoice
+                try:
+                    order.action_invoice_create(grouped=False)
+                except exceptions.UserError:
+                    # the invoice already exists
+                    pass
                 invoices = order.invoice_ids
                 invoices.signal_workflow('invoice_open')
                 for invoice in invoices:

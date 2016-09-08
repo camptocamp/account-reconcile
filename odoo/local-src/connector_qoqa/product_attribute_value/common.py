@@ -20,6 +20,12 @@ class QoqaProductAttributeValue(models.Model):
                                  index=True,
                                  ondelete='restrict')
 
+    _sql_constraints = [
+        ('openerp_uniq', 'unique(backend_id, openerp_id)',
+         "A product attribute value can be exported only "
+         "once on the same backend"),
+    ]
+
 
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"

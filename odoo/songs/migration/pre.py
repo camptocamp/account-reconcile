@@ -379,6 +379,18 @@ def crm_claim_categ_id_nullable(ctx):
 
 
 @anthem.log
+def fix_hidden_menus_group(ctx):
+    """ Update hidden menus to specifc_fct definition """
+    ctx.env.cr.execute("""
+        UPDATE ir_model_data
+        SET module = 'specific_fct',
+        name = 'hidden_menu_group'
+        WHERE module = 'scenario'
+        AND name = '_group';
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -396,3 +408,4 @@ def main(ctx):
     mail.mail_message_purge(ctx)
     add_xmlid_delivery_category(ctx)
     crm_claim_categ_id_nullable(ctx)
+    fix_hidden_menus_group(ctx)

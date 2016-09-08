@@ -12,5 +12,10 @@
         </field>
     </record>
 
-    <menuitem id="account_reports.menu_action_followups" groups="scenario._group"/>
+    <record id="hidden_menu_group" model="res.groups">
+        <field name="name">hidden menus</field>
+        <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+    </record>
+
+    <menuitem id="account_reports.menu_action_followups" groups="hidden_menu_group"/>
 </odoo>

@@ -6,10 +6,10 @@
 	url = git@github.com:odoo/enterprise
 [submodule "odoo/external-src/l10n-switzerland"]
 	path = odoo/external-src/l10n-switzerland
-	url = git@github.com:camptocamp/l10n-switzerland
+	url = git@github.com:oca/l10n-switzerland
 [submodule "odoo/external-src/account-analytic"]
 	path = odoo/external-src/account-analytic
-	url = git@github.com:camptocamp/account-analytic
+	url = git@github.com:oca/account-analytic
 [submodule "odoo/external-src/account-financial-reporting"]
 	path = odoo/external-src/account-financial-reporting
 	url = git@github.com:camptocamp/account-financial-reporting
@@ -69,10 +69,10 @@
 	url = git@github.com:oca/reporting-engine
 [submodule "odoo/external-src/rma"]
 	path = odoo/external-src/rma
-	url = git@github.com:camptocamp/rma
+	url = git@github.com:oca/rma
 [submodule "odoo/external-src/sale-workflow"]
 	path = odoo/external-src/sale-workflow
-	url = git@github.com:camptocamp/sale-workflow
+	url = git@github.com:oca/sale-workflow
 [submodule "odoo/external-src/server-tools"]
 	path = odoo/external-src/server-tools
 	url = git@github.com:camptocamp/server-tools

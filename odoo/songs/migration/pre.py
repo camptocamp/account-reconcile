@@ -405,6 +405,37 @@ def fix_hidden_menus_group(ctx):
 
 
 @anthem.log
+def reset_purchase_mail_template(ctx):
+    """ Reset purchase mail template
+
+    If we delete it, it will be created again on the update of the purchase
+    module.
+    """
+    ctx.env.cr.execute("""
+        DELETE FROM ir_translation
+        WHERE name LIKE 'mail.template,%'
+        AND res_id = (
+          SELECT res_id FROM ir_model_data
+          WHERE module = 'purchase'
+          AND name = 'email_template_edi_purchase'
+        )
+    """)
+    ctx.env.cr.execute("""
+        DELETE FROM mail_template
+        WHERE id = (
+          SELECT res_id FROM ir_model_data
+          WHERE module = 'purchase'
+          AND name = 'email_template_edi_purchase'
+        )
+    """)
+    ctx.env.cr.execute("""
+        DELETE FROM ir_model_data
+        WHERE module = 'purchase'
+        AND name = 'email_template_edi_purchase'
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)

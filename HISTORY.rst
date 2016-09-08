@@ -25,6 +25,8 @@ latest (unreleased)
 
 * Prefix the old sale order lines qoqa ids, because we do no longer use the
   same object on qoqa4 for the ids
+* Reset the purchase mail template because it was referring to removed fields
+  (MIGO-292)
 
 **Features and Improvements**
 

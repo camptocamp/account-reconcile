@@ -27,6 +27,10 @@ class SaleOrder(models.Model):
         vals['offer_id'] = self.offer_id.id
         return vals
 
+    @api.onchange('qoqa_shop_id')
+    def onchange_qoqa_shop_id(self):
+        self.project_id = self.qoqa_shop_id.analytic_account_id
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'

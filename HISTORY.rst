@@ -36,7 +36,8 @@ latest (unreleased)
 * use journal debit account on invoice with specific payment modes
 * look for quants in top-level packages (issue with RMA product return)
 * problems on move import (invalid error message, wrong debit amount)
-
+* Set sales orders analytic account on modification of the QoQa shop and when
+  importing them (MIGO-322)
 * Allow to have no shipping fee in imported orders
 * Wrong quantity in imported sale order lines when the lot size is above 1
   (MIGO-329)

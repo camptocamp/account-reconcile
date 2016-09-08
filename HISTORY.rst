@@ -40,6 +40,8 @@ latest (unreleased)
 
 **Build**
 
+* Update connector-ecommerce pending merge branch
+
 **Documentation**
 
 

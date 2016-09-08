@@ -61,8 +61,8 @@
     camptocamp: git@github.com:camptocamp/connector-ecommerce.git
   merges:
     - oca 9.0
-    # port connector_ecommerce
-    - oca refs/pull/32/head
+    # Extract onchange fields for better extensibility
+    - oca refs/pull/33/head
   target: *default_target
 ./external-src/crm:
   remotes:

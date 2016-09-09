@@ -47,6 +47,7 @@ latest (unreleased)
 * Fix sale automatic working not working because the filters used for the
   workflows were restricted to the admin user, where we run the automatic cron
   with other users (CH, FR)
+* Fix error when trying to cancel a refund without transaction id (MIGO-332)
 
 **Build**
 

@@ -32,6 +32,8 @@ latest (unreleased)
 
 * optimized version of the financial QWeb reports
 * Send sequence of the attributes on exported product variants (MIGO-321)
+* Add an action on the products to generate purchases orders from the
+  orderpoints (MIGO-326)
 
 **Bugfixes**
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-15 09:56+0000\n"
+"POT-Creation-Date: 2016-09-09 10:12+0000\n"
 "PO-Revision-Date: 2014-10-22 09:56+0100\n"
 "Last-Translator: Tristan Rouiller <tristan.rouiller@qoqa.com>\n"
 "Language-Team: \n"
@@ -48,9 +48,15 @@ msgid "Bank"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_product_brand
 #: model:ir.model.fields,field_description:qoqa_offer.field_product_template_brand
 msgid "Brand"
 msgstr "Marque"
+
+#. module: qoqa_offer
+#: model:ir.ui.view,arch_db:qoqa_offer.product_orderpoint_confirm_form_view
+msgid "Cancel"
+msgstr ""
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_res_users_ref_company_ids
@@ -61,6 +67,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_company_id
 msgid "Company"
 msgstr "Société"
+
+#. module: qoqa_offer
+#: model:ir.actions.act_window,name:qoqa_offer.act_product_orderpoint_confirm_product
+#: model:ir.actions.act_window,name:qoqa_offer.act_product_orderpoint_confirm_template
+msgid "Compute Stock Minimum Rules"
+msgstr "Calculer les règles de stock minimum"
+
+#. module: qoqa_offer
+#: model:ir.ui.view,arch_db:qoqa_offer.product_orderpoint_confirm_form_view
+msgid "Confirm"
+msgstr "Confirmer"
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_res_users_contract_ids
@@ -74,6 +91,7 @@ msgid "Count Payment Method"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm_create_uid
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_create_uid
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_create_uid
 msgid "Created by"
@@ -82,9 +100,10 @@ msgstr ""
 #. module: qoqa_offer
 #: model:ir.ui.view,arch_db:qoqa_offer.view_order_tree
 msgid "Created date in OpenERP"
-msgstr "Date de création dans OpenERP"
+msgstr "Date de création dans Odoo"
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm_create_date
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_create_date
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_create_date
 msgid "Created on"
@@ -111,16 +130,11 @@ msgid "Delivery Method"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm_display_name
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_display_name
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_display_name
 msgid "Display Name"
 msgstr ""
-
-#. module: qoqa_offer
-#: code:addons/qoqa_offer/qoqa_offer.py:45
-#, python-format
-msgid "Error"
-msgstr "Erreur"
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_res_users_qoqa_shop_ids
@@ -135,7 +149,12 @@ msgid "Fiscal Position"
 msgstr ""
 
 #. module: qoqa_offer
-#: code:addons/qoqa_offer/qoqa_offer.py:61
+#: model:ir.ui.view,arch_db:qoqa_offer.product_orderpoint_confirm_form_view
+msgid "Generate purchases from the orderpoints"
+msgstr "Générer les achats depuis les règles de stock minimum"
+
+#. module: qoqa_offer
+#: code:addons/qoqa_offer/product.py:47
 #, python-format
 msgid "Generated Purchases"
 msgstr "Achats générés"
@@ -151,6 +170,7 @@ msgid "Has unreconciled entries"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_id
 msgid "ID"
@@ -173,18 +193,21 @@ msgid "Journal Items"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm___last_update
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer___last_update
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop___last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm_write_uid
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_write_uid
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_product_orderpoint_confirm_write_date
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_write_date
 #: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_shop_write_date
 msgid "Last Updated on"
@@ -237,13 +260,11 @@ msgstr ""
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_account_invoice_offer_id
-#: model:ir.model.fields,field_description:qoqa_offer.field_procurement_order_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_sale_order_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_move_offer_id
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_offer_id
 #: model:ir.ui.view,arch_db:qoqa_offer.view_move_search
 #: model:ir.ui.view,arch_db:qoqa_offer.view_picking_out_search_add_offer
-#: model:ir.ui.view,arch_db:qoqa_offer.view_procurement_filter
 #: model:ir.ui.view,arch_db:qoqa_offer.view_qoqa_offer_form
 #: model:ir.ui.view,arch_db:qoqa_offer.view_sales_offer_filter
 #: model:ir.ui.view,arch_db:qoqa_offer.view_sales_order_filter
@@ -268,9 +289,15 @@ msgid "Payment Methods"
 msgstr ""
 
 #. module: qoqa_offer
-#: model:ir.model,name:qoqa_offer.model_procurement_order
-msgid "Procurement"
-msgstr ""
+#: model:ir.model,name:qoqa_offer.model_product_product
+msgid "Product"
+msgstr "Article"
+
+#. module: qoqa_offer
+#: model:ir.model,name:qoqa_offer.model_product_orderpoint_confirm
+#: model:ir.ui.view,arch_db:qoqa_offer.product_orderpoint_confirm_form_view
+msgid "Product Orderpoint Confirm"
+msgstr "Calcul des règles de stock minimum d'un article"
 
 #. module: qoqa_offer
 #: model:ir.model,name:qoqa_offer.model_product_template
@@ -325,6 +352,11 @@ msgid "Sell on"
 msgstr "Vendre sur"
 
 #. module: qoqa_offer
+#: model:ir.ui.menu,name:qoqa_offer.menu_qoqa_shop
+msgid "Shops"
+msgstr "Magasins"
+
+#. module: qoqa_offer
 #: model:ir.model,name:qoqa_offer.model_stock_move
 msgid "Stock Move"
 msgstr "Mouvement de stock"
@@ -348,7 +380,7 @@ msgid ""
 msgstr ""
 
 #. module: qoqa_offer
-#: code:addons/qoqa_offer/qoqa_offer.py:46
+#: code:addons/qoqa_offer/product.py:31
 #, python-format
 msgid "The products have no orderpoints configured."
 msgstr "Les produits n'ont pas de règle d'approvisionnement configurée."

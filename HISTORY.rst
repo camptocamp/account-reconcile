@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Empty company on products, all products should now be shared (MIGO-328)
+
 **Features and Improvements**
 
 **Bugfixes**

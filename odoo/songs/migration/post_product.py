@@ -8,6 +8,15 @@ from ..common import column_exists, create_default_value
 
 
 @anthem.log
+def no_company(ctx):
+    """ Remove company from product templates """
+    ctx.env.cr.execute("""
+        UPDATE product_template
+        SET company_id = NULL where company_id IS NOT NULL
+    """)
+
+
+@anthem.log
 def activate_variants(ctx):
     """ Activating variants """
     employee_group = ctx.env.ref('base.group_user')

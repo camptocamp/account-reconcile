@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.8.0 (2016-09-12)
+++++++++++++++++++
+
+**Data Migration**
+
 * Prefix the old sale order lines qoqa ids, because we do no longer use the
   same object on qoqa4 for the ids
 * Reset the purchase mail template because it was referring to removed fields
@@ -45,7 +59,6 @@ latest (unreleased)
 * Allow to have no shipping fee in imported orders
 * Wrong quantity in imported sale order lines when the lot size is above 1
   (MIGO-329)
-
 * Fix sale automatic working not working because the filters used for the
   workflows were restricted to the admin user, where we run the automatic cron
   with other users (CH, FR)
@@ -57,8 +70,6 @@ latest (unreleased)
 **Build**
 
 * Update connector-ecommerce pending merge branch
-
-**Documentation**
 
 
 9.7.1 (2016-09-05)

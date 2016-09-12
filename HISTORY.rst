@@ -47,6 +47,8 @@ latest (unreleased)
 * Fix sale automatic working not working because the filters used for the
   workflows were restricted to the admin user, where we run the automatic cron
   with other users (CH, FR)
+* Fix cancellation on sales orders not possible when an invoice already exist
+  (MIGO-320)
 
 **Build**
 

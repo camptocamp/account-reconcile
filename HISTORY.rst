@@ -52,6 +52,7 @@ latest (unreleased)
 * Fix cancellation on sales orders not possible when an invoice already exist
   (MIGO-320)
 * Fix 23 sales orders buggy since V7 as they are 'to invoice' but not invoiceable.
+* Fix error when trying to cancel a refund without transaction id (MIGO-332)
 
 **Build**
 

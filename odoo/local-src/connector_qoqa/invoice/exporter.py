@@ -21,6 +21,8 @@ class RefundExporter(Exporter):
         refund = self.model.browse(refund_id)
         if refund.transaction_id:
             return _('Already a transaction ID for this refund')
+        if refund.state == 'cancel':
+            return _('The refund has been cancelled.')
         invoice = refund.refund_from_invoice_id
         if not invoice:
             return _('No origin invoice')
@@ -35,7 +37,6 @@ class RefundExporter(Exporter):
                   'no payment ID could be retrieved for the sales order %s') %
                 qsale.name)
         adapter = self.unit_for(BackendAdapter, 'qoqa.payment')
-        # qoqa uses 2 digits, expressed in integers
         payment = adapter.refund(origin_payment_id,
                                  refund.amount_total)
         transaction_id = payment['data']['attributes']['transaction_id']
@@ -75,14 +76,9 @@ class CancelRefundExporter(Exporter):
         sales = invoice.sale_order_ids
         if not sales or not sales[0].qoqa_bind_ids:
             return _('Not a sale from the QoQa backend')
-        qsale = sales[0].qoqa_bind_ids[0]
         origin_payment_id = refund.transaction_id
-
         if not origin_payment_id:
-            raise exceptions.UserError(
-                _('Cannot be canceled on the QoQa backend because '
-                  'there is no transaction id on the credit note') %
-                qsale.name)
+            return
         adapter = self.unit_for(BackendAdapter, 'qoqa.credit.note')
 
         result = adapter.cancel(origin_payment_id)

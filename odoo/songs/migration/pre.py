@@ -436,6 +436,26 @@ def reset_purchase_mail_template(ctx):
 
 
 @anthem.log
+def fix_sale_order_invoice_status(ctx):
+    """ Disable invoicing on done sales orders
+
+    Some sales orders are done with a cancelled invoice.
+    We change them as not invoiceable because we can't create invoice for them
+    and it makes the sale automatic workflow retry again and again.
+    """
+    ctx.env.cr.execute("""
+        UPDATE sale_order
+        SET invoice_status = 'no'
+        WHERE state = 'done' AND invoice_status = 'to invoice'
+    """)
+    ctx.env.cr.execute("""
+        UPDATE sale_order_line
+        SET invoice_status = 'no'
+        WHERE qty_to_invoice = 0 AND invoice_status = 'to invoice'
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -455,3 +475,4 @@ def main(ctx):
     crm_claim_categ_id_nullable(ctx)
     prefix_qoqa_order_line_ids(ctx)
     fix_hidden_menus_group(ctx)
+    fix_sale_order_invoice_status(ctx)

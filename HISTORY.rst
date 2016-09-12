@@ -51,6 +51,7 @@ latest (unreleased)
   with other users (CH, FR)
 * Fix cancellation on sales orders not possible when an invoice already exist
   (MIGO-320)
+* Fix 23 sales orders buggy since V7 as they are 'to invoice' but not invoiceable.
 
 **Build**
 

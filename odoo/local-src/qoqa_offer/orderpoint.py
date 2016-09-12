@@ -21,11 +21,14 @@
 #
 ##############################################################################
 
+# flake8: noqa
+# this is a raw copy with slight adaptations of
+# odoo/src/addons/stock/procurement.py ->
+# procurement_order._procure_orderpoint_confirm
+
 from openerp.osv import orm
-from openerp import netsvc
+from openerp.tools import float_compare, float_round
 
-
-# TODO: see if still required, migrate
 
 class stock_warehouse_orderpoint(orm.Model):
     _inherit = 'stock.warehouse.orderpoint'
@@ -40,58 +43,58 @@ class stock_warehouse_orderpoint(orm.Model):
 
         Returns the list of generated procurements.
         """
-        procurement_obj = self.pool['procurement.order']
+        if context is None:
+            context = {}
+        orderpoint_obj = self.pool.get('stock.warehouse.orderpoint')
+        procurement_obj = self.pool.get('procurement.order')
+        product_obj = self.pool.get('product.product')
+
         _prepare_op = procurement_obj._prepare_orderpoint_procurement
-        wf_service = netsvc.LocalService("workflow")
 
-        generated_proc_ids = []
-        for op in self.browse(cr, uid, ids, context=context):
-            prods = procurement_obj._product_virtual_get(cr, uid, op)
-            if prods is None:
-                continue
-            if prods < op.product_min_qty:
-                qty = max(op.product_min_qty, op.product_max_qty) - prods
+        product_dict = {}
+        ops_dict = {}
+        tot_procs = []
+        ops = self.browse(cr, uid, ids, context=context)
 
-                reste = qty % op.qty_multiple
-                if reste > 0:
-                    qty += op.qty_multiple - reste
+        #Calculate groups that can be executed together
+        for op in ops:
+            key = (op.location_id.id,)
+            if not product_dict.get(key):
+                product_dict[key] = [op.product_id]
+                ops_dict[key] = [op]
+            else:
+                product_dict[key] += [op.product_id]
+                ops_dict[key] += [op]
 
-                if qty <= 0:
+        for key in product_dict.keys():
+            ctx = context.copy()
+            ctx.update({'location': ops_dict[key][0].location_id.id})
+            prod_qty = product_obj._product_available(cr, uid, [x.id for x in product_dict[key]],
+                                                      context=ctx)
+            subtract_qty = orderpoint_obj.subtract_procurements_from_orderpoints(cr, uid, [x.id for x in ops_dict[key]], context=context)
+            for op in ops_dict[key]:
+                prods = prod_qty[op.product_id.id]['virtual_available']
+                if prods is None:
                     continue
+                if float_compare(prods, op.product_min_qty, precision_rounding=op.product_uom.rounding) <= 0:
+                    qty = max(op.product_min_qty, op.product_max_qty) - prods
+                    reste = op.qty_multiple > 0 and qty % op.qty_multiple or 0.0
+                    if float_compare(reste, 0.0, precision_rounding=op.product_uom.rounding) > 0:
+                        qty += op.qty_multiple - reste
 
-                if op.product_id.type not in ('consu'):
-                    if op.procurement_draft_ids:
-                        # Check draft procurement related to this
-                        # order point
-                        pro_ids = [x.id for x in op.procurement_draft_ids]
-                        procure_datas = procurement_obj.read(
-                            cr, uid, pro_ids,
-                            ['id', 'product_qty'], context=context)
-                        to_generate = qty
-                        for proc_data in procure_datas:
-                            if to_generate >= proc_data['product_qty']:
-                                wf_service.trg_validate(
-                                    uid, 'procurement.order',
-                                    proc_data['id'], 'button_confirm', cr)
-                                procurement_obj.write(cr, uid,
-                                                      [proc_data['id']],
-                                                      {'origin': op.name},
-                                                      context=context)
-                                to_generate -= proc_data['product_qty']
-                            if not to_generate:
-                                break
-                        qty = to_generate
+                    if float_compare(qty, 0.0, precision_rounding=op.product_uom.rounding) < 0:
+                        continue
 
-                if qty:
-                    vals = _prepare_op(cr, uid, op, qty, context=context)
-                    proc_id = procurement_obj.create(cr, uid, vals,
-                                                     context=context)
-                    wf_service.trg_validate(uid, 'procurement.order',
-                                            proc_id, 'button_confirm', cr)
-                    wf_service.trg_validate(uid, 'procurement.order',
-                                            proc_id, 'button_check', cr)
-                    self.write(cr, uid, [op.id],
-                               {'procurement_id': proc_id},
-                               context=context)
-                    generated_proc_ids.append(proc_id)
-        return generated_proc_ids
+                    qty -= subtract_qty[op.id]
+
+                    qty_rounded = float_round(qty, precision_rounding=op.product_uom.rounding)
+                    if qty_rounded > 0:
+                        proc_id = procurement_obj.create(cr, uid,
+                                                         _prepare_op(cr, uid, op, qty_rounded, context=context),
+                                                         context=dict(context, procurement_autorun_defer=True))
+                        tot_procs.append(proc_id)
+
+            tot_procs.reverse()
+            procurement_obj.run(cr, uid, tot_procs, context=context)
+
+        return tot_procs

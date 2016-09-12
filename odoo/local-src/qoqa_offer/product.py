@@ -2,11 +2,7 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from datetime import datetime, timedelta
-
-from openerp import models, fields
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
-                           DEFAULT_SERVER_DATETIME_FORMAT)
+from openerp import models, fields, api, exceptions, _
 
 
 class ProductTemplate(models.Model):
@@ -17,19 +13,40 @@ class ProductTemplate(models.Model):
                         related='product_brand_id.name',
                         readonly=True)
 
-    # TODO: seems related to historical margin, see how to adapt as
-    # _read_flat is gone
-    def _read_flat(self, cr, uid, ids, fields,
-                   context=None, load='_classic_read'):
-        if context is None:
-            context = {}
-        if (context.get('date_begin') is not None and
-                context.get('time_begin') is not None):
-            context = context.copy()
-            date_fmt = DEFAULT_SERVER_DATE_FORMAT
-            datetime_fmt = DEFAULT_SERVER_DATETIME_FORMAT
-            begin = datetime.strptime(context.pop('date_begin'), date_fmt)
-            begin += timedelta(hours=context.pop('time_begin'))
-            context['to_date'] = begin.strftime(datetime_fmt)
-        return super(ProductTemplate, self)._read_flat(
-            cr, uid, ids, fields, context=context, load=load)
+    @api.multi
+    def run_orderpoint(self):
+        variants = self.mapped('product_variant_ids')
+        purchases = variants._run_orderpoint()
+        return variants.action_open_generated_purchases(purchases.ids)
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    @api.multi
+    def _run_orderpoint(self):
+        orderpoints = self.mapped('orderpoint_ids')
+        if not orderpoints:
+            raise exceptions.UserError(
+                _('The products have no orderpoints configured.')
+            )
+
+        procurement_ids = orderpoints.procure_orderpoint_confirm()
+        procurements = self.env['procurement.order'].browse(procurement_ids)
+        purchases = procurements.mapped('purchase_id')
+        return purchases
+
+    def run_orderpoint(self):
+        purchases = self._run_orderpoint()
+        return self.action_open_generated_purchases(purchases.ids)
+
+    @api.multi
+    def action_open_generated_purchases(self, purchase_ids):
+        return {
+            'domain': "[('id', 'in', %s)]" % purchase_ids,
+            'name': _('Generated Purchases'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'purchase.order',
+            'type': 'ir.actions.act_window',
+        }

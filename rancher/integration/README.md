@@ -9,7 +9,7 @@ with the new one. First, restore it:
 1. `scp` the dump on the `Shell` container
 
   ```
-  $ scp ~/path/to/db.pg your-github-user@erp-sprint.qoqa.com:~
+  $ scp -P 2622 ~/path/to/db.pg your-github-user@erp-sprint.qoqa.com:~
   ```
 
 2. SSH on the `Shell` container

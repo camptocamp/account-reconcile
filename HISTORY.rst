@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Activate migrated batch pickings
+
 **Features and Improvements**
 
 **Bugfixes**

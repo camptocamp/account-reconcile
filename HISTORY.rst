@@ -23,9 +23,15 @@ latest (unreleased)
 
 **Data Migration**
 
+* Empty company on products, all products should now be shared (MIGO-328)
+
+* Activate migrated batch pickings
+
 **Features and Improvements**
 
 **Bugfixes**
+
+* Allow partner delivery address to be non-mandatory
 
 **Build**
 

@@ -642,6 +642,7 @@ def main(ctx):
     post_product.product_attributes(ctx)
     post_product.activate_variants(ctx)
     post_product.default_values(ctx)
+    post_product.no_company(ctx)
     sale_shop(ctx)
     claim_sequence(ctx)
     payment_method(ctx)

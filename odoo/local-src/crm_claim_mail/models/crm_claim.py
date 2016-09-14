@@ -236,6 +236,7 @@ class CrmClaim(models.Model):
     def message_post(self, body='', subject=None, message_type='notification',
                      subtype=None, parent_id=False, attachments=None,
                      content_subtype='html', **kwargs):
+        comment_subtype_id = self.env.ref('mail.mt_comment').id
         # change author to partner with address 'loutres@qoqa.com'
         kwargs.pop('author_id', None)
         author = self.env['res.partner'].search(
@@ -249,7 +250,7 @@ class CrmClaim(models.Model):
             subtype=subtype, parent_id=parent_id, attachments=attachments,
             content_subtype=content_subtype, author_id=author.id, **kwargs)
         # Subtype with sequence 0 : 'Discussions' (emails)
-        if result.subtype_id and result.subtype_id.sequence == 0:
+        if result.subtype_id and result.subtype_id.id == comment_subtype_id:
             self.case_close()
             # Also write the field "last_message_date".
             self.write({'last_message_date': fields.datetime.now()})

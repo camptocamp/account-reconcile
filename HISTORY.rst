@@ -31,6 +31,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Allow partner delivery address to be non-mandatory
+
 **Build**
 
 **Documentation**

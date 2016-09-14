@@ -39,8 +39,8 @@ class RefundExporter(Exporter):
         adapter = self.unit_for(BackendAdapter, 'qoqa.payment')
         payment = adapter.refund(origin_payment_id,
                                  refund.amount_total)
-        transaction_id = payment['data']['attributes']['transaction_id']
-        refund.write({'transaction_id': transaction_id})
+        payment_id = payment['data']['id']
+        refund.write({'transaction_id': payment_id})
         # We search move_line to write transaction_ref
         move_lines = self.env['account.move.line'].search(
             [('move_id', '=', refund.move_id.id),
@@ -49,9 +49,9 @@ class RefundExporter(Exporter):
         # TODO: check if we still have account_constraint
         # We deactive the account_constraint check by updating the context
         move_lines.with_context(from_parent_object=True).write(
-            {'transaction_ref': transaction_id}
+            {'transaction_ref': payment_id}
         )
-        return _('Refund created with transaction_id: %s' % transaction_id)
+        return _('Refund created with payment id: %s' % payment_id)
 
 
 @job(default_channel='root.connector_qoqa.fast')

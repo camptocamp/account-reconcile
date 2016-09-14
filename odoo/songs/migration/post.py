@@ -635,6 +635,16 @@ def config_automatic_workflow(ctx):
 
 
 @anthem.log
+def cancel_fr_draft_invoices(ctx):
+    """ Cancel french draft invoices """
+    ctx.env.cr.execute("""
+        UPDATE account_invoice
+        SET state = 'cancel'
+        WHERE company_id = 4 AND state = 'draft'
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -658,3 +668,4 @@ def main(ctx):
     set_shop_domain(ctx)
     set_web_base_url(ctx)
     config_automatic_workflow(ctx)
+    cancel_fr_draft_invoices(ctx)

@@ -32,6 +32,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Allow partner delivery address to be non-mandatory
+* Export refund even if the origin sales order is inactive (MIGO-344)
 
 **Build**
 

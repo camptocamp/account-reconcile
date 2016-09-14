@@ -74,8 +74,8 @@ def dispatch_migration(ctx):
         cr.execute(
             "INSERT INTO stock_batch_picking "
             "(create_uid, create_date, write_uid, picker_id, "
-            "notes, date, name, state)"
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id",
+            "notes, date, name, state, active)"
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, true) RETURNING id",
             dispatch_row
         )
         batch_id = cr.fetchone()[0]

@@ -25,6 +25,8 @@ latest (unreleased)
 
 * Empty company on products, all products should now be shared (MIGO-328)
 
+* Activate migrated batch pickings
+
 **Features and Improvements**
 
 **Bugfixes**

@@ -98,6 +98,8 @@ migration:
           #---- QoQa specifics -----------------------------#
           - account_bank_statement_import_camt
           - base_stock_picking_pack_split
+          - batch_picking_delay_done
+          - batch_picking_group
           - account_s3_move_import
           - connector_qoqa
           - crm_claim_mail
@@ -105,8 +107,6 @@ migration:
           - delivery_carrier_label_swiss_pp
           - delivery_carrier_url
           - ecotax
-          #- picking_dispatch_delay_done
-          - picking_dispatch_group
           - purchase_variant_fast_entry
           - qoqa_base_data
           - qoqa_claim

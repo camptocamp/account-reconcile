@@ -19,6 +19,8 @@
 #
 ##############################################################################
 from openerp import api, fields, models
+from openerp.addons.crm_claim_rma.wizards.claim_make_picking\
+    import ClaimMakePicking as OldWizard
 
 
 class ClaimMakePicking(models.TransientModel):
@@ -41,7 +43,6 @@ class ClaimMakePicking(models.TransientModel):
 
     @api.model
     def _default_claim_line_dest_location_id(self):
-        super_wiz = super(ClaimMakePicking, self)
         # Get destination for in, and set as source for out
         if (self.env.context.get('picking_type') == 'out' and
                 self.env.context.get('partner_id')):
@@ -52,7 +53,10 @@ class ClaimMakePicking(models.TransientModel):
             if len(locations) == 1:
                 return locations.id
 
-        return super_wiz._default_claim_line_dest_location_id()
+        # For super(), use the class from crm_claim_rma directly (as the
+        # method in crm_rma_stock_location does not use super, and warranty
+        # information is not retrieved in that case)
+        return OldWizard._default_claim_line_dest_location_id(self)
 
     claim_line_source_location_id = fields.Many2one(
         'stock.location', string='Source Location',

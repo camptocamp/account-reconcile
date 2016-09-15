@@ -29,7 +29,7 @@
     <field name="arch" type="xml">
       <tree string="QoQa Offer">
         <field name="qoqa_shop_id"/>
-        <field name="name"/>
+        <field name="display_name"/>
       </tree>
     </field>
   </record>
@@ -50,7 +50,7 @@
               <label for="name"/>
             </div>
             <h1>
-              <field name="name" class="oe_inline"/>
+              <field name="display_name" class="oe_inline"/>
             </h1>
           </div>
           <div class="oe_right oe_button_box" name="buttons">

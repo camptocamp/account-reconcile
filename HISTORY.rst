@@ -39,6 +39,7 @@ latest (unreleased)
 
 * On export of refund, we now store back the payment id, not the
   'transaction_id' field (MIGO-332)
+* Errors on picking labels, mainly due to fields renamed
 
 **Build**
 

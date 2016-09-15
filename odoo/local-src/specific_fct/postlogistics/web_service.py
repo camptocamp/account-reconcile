@@ -77,12 +77,13 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         attributes = super(PostlogisticsWebServiceQoQa, self
                            )._prepare_attributes(picking)
 
-        if picking.type == 'out' and picking.offer_id and picking.sale_id:
+        if (picking.picking_type_code == 'outgoing' and
+                picking.offer_id and picking.sale_id):
             attributes['FreeText'] = (picking.offer_id.ref +
                                       "." +
                                       picking.sale_id.name)
         elif picking.claim_id:
-            attributes['FreeText'] = picking.claim_id.number
+            attributes['FreeText'] = picking.claim_id.code
         return attributes
 
     def _prepare_customer(self, picking):
@@ -98,7 +99,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
         customer = super(PostlogisticsWebServiceQoQa, self
                          )._prepare_customer(picking)
 
-        if picking.claim_id and picking.type == 'in':
+        if picking.claim_id and picking.picking_type_code == 'incoming':
             partner = picking.claim_id.delivery_address_id
             if not partner:
                 raise UserError(

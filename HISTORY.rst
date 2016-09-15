@@ -30,6 +30,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Allow to select delivery method even on IN pickings (MIGO-330)
+
 **Bugfixes**
 
 * Allow partner delivery address to be non-mandatory

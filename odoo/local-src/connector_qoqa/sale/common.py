@@ -285,13 +285,6 @@ class SaleOrder(models.Model):
                 if payment_date == date.today():
                     cancel_direct = True
             if cancel_direct:
-                # Done the same day; remove payments
-                # TODO: not sure we'll still have order.payment_ids
-                # payment_moves = [payment.move_id
-                #                  for payment
-                #                  in sale.payment_ids]
-                # for move in payment_moves:
-                #     move.unlink()
                 # Cancel now-reopened invoices
                 for invoice in sale.invoice_ids:
                     invoice.signal_workflow('invoice_cancel')

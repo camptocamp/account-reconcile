@@ -18,7 +18,7 @@ class RefundExporter(Exporter):
 
     def run(self, refund_id):
         """ Create a refund on the QoQa backend """
-        refund = self.model.browse(refund_id)
+        refund = self.model.with_context(active_test=False).browse(refund_id)
         if refund.transaction_id:
             return _('Already a transaction ID for this refund')
         if refund.state == 'cancel':
@@ -69,7 +69,7 @@ class CancelRefundExporter(Exporter):
 
     def run(self, refund_id):
         """ Get the refund to cancel """
-        refund = self.model.browse(refund_id)
+        refund = self.model.with_context(active_test=False).browse(refund_id)
         invoice = refund.refund_from_invoice_id
         if not invoice:
             return _('No origin invoice')

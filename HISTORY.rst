@@ -33,6 +33,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Allow partner delivery address to be non-mandatory
+* Export refund even if the origin sales order is inactive (MIGO-344)
 
 * On export of refund, we now store back the payment id, not the
   'transaction_id' field (MIGO-332)

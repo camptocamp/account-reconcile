@@ -40,6 +40,8 @@ latest (unreleased)
 
 **Build**
 
+* Add pending merge in carrier-delivery for a new fix
+
 **Documentation**
 
 

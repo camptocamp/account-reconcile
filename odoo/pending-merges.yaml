@@ -43,6 +43,8 @@
     - oca refs/pull/99/head
     # port delivery_carrier_label_default
     - oca refs/pull/100/head
+    # Fix assignation on recordset with len > 1
+    - oca refs/pull/102/head
   target: *default_target
 ./external-src/connector-ecommerce:
   remotes:

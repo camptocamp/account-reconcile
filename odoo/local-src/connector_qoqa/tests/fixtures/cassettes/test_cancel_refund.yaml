@@ -9,7 +9,7 @@ interactions:
       Content-Type: [application/json]
       User-Agent: [python-requests/2.9.1]
     method: PUT
-    uri: https://api-sprint.qoqa.com/v1/admin/credit_notes/9/cancel
+    uri: https://api-sprint.qoqa.com/v1/admin/credit_notes/7/cancel
   response:
     body: {string: !!python/unicode '{"cancelled":true}'}
     headers:

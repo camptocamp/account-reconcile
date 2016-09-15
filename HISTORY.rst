@@ -34,6 +34,9 @@ latest (unreleased)
 
 * Allow partner delivery address to be non-mandatory
 
+* On export of refund, we now store back the payment id, not the
+  'transaction_id' field (MIGO-332)
+
 **Build**
 
 **Documentation**

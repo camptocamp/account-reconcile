@@ -57,13 +57,13 @@ class TestExportRefund(QoQaTransactionCase):
             refund.signal_workflow('invoice_open')
             request = cassette.requests[0]
             self.assertEqual(json.loads(request.body), {'amount': 5.0})
-            self.assertEqual(refund.transaction_id, '9')
+            self.assertEqual(refund.transaction_id, '7')
             move_lines = self.env['account.move.line'].search(
                 [('move_id', '=', refund.move_id.id),
                  ('account_id', '=', refund.account_id.id)]
             )
             for line in move_lines:
-                self.assertEqual(line.transaction_ref, '9')
+                self.assertEqual(line.transaction_ref, '7')
 
     def test_cancel_refund(self):
         invoice = self.sale.invoice_ids

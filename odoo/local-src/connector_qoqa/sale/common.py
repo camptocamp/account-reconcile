@@ -134,6 +134,7 @@ class SaleOrder(models.Model):
         """
         actions = []
         for order in self:
+            delivered = order.picking_ids.filtered(lambda r: r.state == 'done')
             cancel_direct = False
             if (order.qoqa_bind_ids and
                     order.payment_mode_id.payment_cancellable_on_qoqa):
@@ -144,28 +145,11 @@ class SaleOrder(models.Model):
                 )
                 if payment_date == date.today():
                     cancel_direct = True
-            # For SwissBilling: if the SO is not done yet, cancel directly.
-            # Otherwise, refund.
-            if (order.qoqa_bind_ids and
-                    order.payment_mode_id.payment_settlable_on_qoqa):
-                cancel_direct = True
-            # payment_ids = None
-            invoices = self.env['account.invoice'].browse()
-            # if cancel_direct:
-            #     If the order can be canceled on QoQa, the payment is
-            #     canceled as well on QoQa so the internal payments
-            #     can just be withdrawn.
-            #     Otherwise, we have to keep them, they will be
-            #     reconciled with the invoice
-            #     WARNING! Delete account.move,
-            #     not just payments (account.move.line)
 
-            #     TODO: not sure we'll still have order.payment_ids
-            #     payment_moves = [payment.move_id
-            #                      for payment
-            #                      in order.payment_ids]
-            #     for move in payment_moves:
-            #         move.unlink()
+                if (not delivered and
+                        order.payment_mode_id.payment_settlable_on_qoqa):
+                    cancel_direct = True
+
             if not cancel_direct and order.amount_total:
                 # create the invoice, so we'll be able to create the refund
                 # later, we'll cancel the invoice
@@ -174,57 +158,19 @@ class SaleOrder(models.Model):
                 except exceptions.UserError:
                     # the invoice already exists
                     pass
-                invoices = order.invoice_ids
-                invoices.signal_workflow('invoice_open')
-                for invoice in invoices:
-                    # create a refund since the payment cannot be
-                    # canceled
-                    actions = self._refund_all_invoices()
+                order.invoice_ids.signal_workflow('invoice_open')
+                # create a refund since the payment cannot be canceled
+                actions += order.invoice_ids._refund_and_get_action(
+                    _('Order Cancellation')
+                )
 
-                # We can't cancel an order with open invoices, but
-                # we still want to do that, because we need the move lines
-                # to be there to reconcile them with the payments. The
-                # sales order is really canceled though. So we disconnect the
-                # invoices then link them again after the cancellation.
-                # We have the same issue with the automatic payments so
-                # we use the same trick
-
-                # TODO: see if we get rid of order.payment_ids or not
-                # payments = order.payment_ids
-                # payment_ids = [payment.id for payment in payments]
-                # payment_commands = [(3, pay_id) for pay_id in payment_ids]
-
-                invoice_commands = [(3, inv.id) for inv in invoices]
-                # order.write({'payment_ids': payment_commands,
-                #              'invoice_ids': invoice_commands})
-                order.write({'invoice_ids': invoice_commands})
-
-            # cancel the pickings
-            for picking in order.picking_ids:
-                # draft pickings are already canceled by the cancellation
-                # of the sale order so we don't need to take care of
-                # them.
-                if picking.state not in ('draft', 'cancel', 'done'):
-                    picking.action_cancel()
-
-            # cancel the invoices
-            for invoice in invoices:
-                # paid invoices were set as opened due to payments
-                # being deleted, or were "detached" previously since
-                # they will be refunded. Draft invoices will be cancelled
-                # by the sale order cancellation.
-                if invoice.state not in ('draft', 'cancel', 'paid'):
-                    invoice.signal_workflow('invoice_cancel')
+            if not delivered:
+                order.invoice_ids.filtered(
+                    lambda r: r.state != 'paid'
+                ).signal_workflow('invoice_cancel')
+                order.picking_ids.action_cancel()
 
             super(SaleOrder, order).action_cancel()
-            # if invoices or payment_ids:
-            if invoices:
-                # TODO: see if we get rid of payments or not
-                # payment_commands = [(4, pay_id) for pay_id in payment_ids]
-                invoice_commands = [(4, inv.id) for inv in invoices]
-                # order.write({'payment_ids': payment_commands,
-                #              'invoice_ids': invoice_commands})
-                order.write({'invoice_ids': invoice_commands})
 
         action_res = None
         if actions:
@@ -236,96 +182,6 @@ class SaleOrder(models.Model):
             return action_res
 
         return True
-
-    @api.multi
-    def action_done(self):
-        res = super(SaleOrder, self).action_done()
-        # Browse orders to send 'settled' to BO
-        for order in self:
-            if (order.qoqa_bind_ids and
-                    order.payment_mode_id.payment_settlable_on_qoqa):
-                session = ConnectorSession.from_env(self.env)
-                for binding in order.qoqa_bind_ids:
-                    _logger.info("Settle order %s later (job) on QoQa",
-                                 binding.name)
-                    settle_sales_order.delay(session, binding._model._name,
-                                             binding.id, priority=1)
-        return res
-
-    # TODO: still needed?
-    @api.multi
-    def action_force_cancel(self):
-        """ Force cancellation of a done sales order.
-
-        Only usable on done sales orders (so in the final state of the
-        workflow) to avoid to break the workflow in the middle of its
-        course.
-        At QoQa, they might deliver sales orders and only cancel the order
-        afterwards. In that case, even if the sales order is done, they need
-        to set it as canceled on OpenERP and on the backend.
-        """
-        actions = []
-        for sale in self:
-            if sale.state != 'done':
-                raise exceptions.UserError(
-                    _('Only done sales orders can be forced to be canceled.')
-                )
-
-            sale.order_line.write({'state': 'cancel'})
-
-            cancel_direct = False
-            if (sale.qoqa_bind_ids and
-                    sale.payment_mode_id.payment_cancellable_on_qoqa and
-                    not sale.payment_mode_id.payment_settlable_on_qoqa):
-                binding = sale.qoqa_bind_ids[0]
-                # can be canceled only the day of the payment
-                payment_date = fields.Date.from_string(
-                    binding.qoqa_payment_date
-                )
-                if payment_date == date.today():
-                    cancel_direct = True
-            if cancel_direct:
-                # Cancel now-reopened invoices
-                for invoice in sale.invoice_ids:
-                    invoice.signal_workflow('invoice_cancel')
-            else:
-                actions = self._refund_all_invoices()
-
-        self.write({'state': 'cancel'})
-        message = _("The sales order was done, but it has been manually "
-                    "canceled.")
-        self.message_post(body=message)
-
-        # Return view for refunds
-        action_res = None
-        if actions:
-            action_res = self.action_res = self._parse_refund_action(actions)
-
-        self._call_cancel(cancel_direct=cancel_direct)
-
-        if action_res:
-            return action_res
-
-        return True
-
-    def _refund_all_invoices(self):
-        refund_model = self.env['account.invoice.refund']
-        actions = []
-        for order in self:
-            for invoice in order.invoice_ids:
-                # create a refund since the payment cannot be
-                # canceled
-                action = refund_model.with_context(
-                    active_model='account.invoice',
-                    active_id=invoice.id,
-                    active_ids=invoice.ids,
-                ).create(
-                    {'filter_refund': 'refund',
-                     'description': _('Order Cancellation')}
-                ).invoice_refund()
-
-                actions.append(action)
-        return actions
 
     def _parse_refund_action(self, actions):
         # Prepare the returning action.
@@ -355,6 +211,21 @@ class SaleOrder(models.Model):
                     new_domain.append((field, op, value))
             action_res['domain'] = new_domain
         return action_res
+
+    @api.multi
+    def action_done(self):
+        res = super(SaleOrder, self).action_done()
+        # Browse orders to send 'settled' to BO
+        for order in self:
+            if (order.qoqa_bind_ids and
+                    order.payment_mode_id.payment_settlable_on_qoqa):
+                session = ConnectorSession.from_env(self.env)
+                for binding in order.qoqa_bind_ids:
+                    _logger.info("Settle order %s later (job) on QoQa",
+                                 binding.name)
+                    settle_sales_order.delay(session, binding._model._name,
+                                             binding.id, priority=1)
+        return res
 
 
 @qoqa

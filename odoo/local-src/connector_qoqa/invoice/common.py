@@ -131,6 +131,25 @@ class AccountInvoice(models.Model):
         self.cancel_refund_on_qoqa()
         return result
 
+    @api.multi
+    def _refund_and_get_action(self, reason):
+        refund_model = self.env['account.invoice.refund']
+        actions = []
+        for invoice in self:
+            # create a refund since the payment cannot be
+            # canceled
+            action = refund_model.with_context(
+                active_model='account.invoice',
+                active_id=invoice.id,
+                active_ids=invoice.ids,
+            ).create(
+                {'filter_refund': 'refund',
+                 'description': reason}
+            ).invoice_refund()
+
+            actions.append(action)
+        return actions
+
 
 @qoqa
 class QoQaCreditNote(QoQaAdapter):

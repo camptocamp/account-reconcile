@@ -5,12 +5,6 @@
     <field name="model">sale.order</field>
     <field name="inherit_id" ref="connector_ecommerce.view_order_connector_form"/>
     <field name="arch" type="xml">
-      <button name="action_cancel" position="after">
-        <button name="action_force_cancel"
-          states="done" string="Cancel Order"
-          type="object"
-          groups="base.group_user"/>
-      </button>
       <page name="connector" position="attributes">
         <attribute name="invisible">0</attribute>
         <attribute name="groups">connector.group_connector_manager</attribute>
@@ -20,6 +14,13 @@
           <field name="qoqa_bind_ids" nolabel="1"/>
         </group>
       </page>
+
+      <button name="action_cancel" position="attributes">
+        <attribute name="states">draft,sent,sale,done</attribute>
+      </button>
+      <button name="action_draft" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </button>
     </field>
   </record>
 

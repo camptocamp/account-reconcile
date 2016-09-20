@@ -37,6 +37,7 @@ latest (unreleased)
 
 * On export of refund, we now store back the payment id, not the
   'transaction_id' field (MIGO-332)
+* Rework cancellation of sales orders, invoices were not cancelled (MIGO-348)
 
 **Build**
 

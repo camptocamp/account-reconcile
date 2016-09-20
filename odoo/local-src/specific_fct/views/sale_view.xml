@@ -5,15 +5,9 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <button name="action_cancel" position="after">
-                <button name="action_force_cancel"
-                        states="done" string="Cancel Order"
-                        type="object"
-                        groups="base.group_user"/>
-            </button>
             <button name="print_quotation" class="btn-primary" position="replace"/>
-            <button name="print_quotation" states="sent,sale" position="replace">
-                <button name="print_quotation" string="Print" type="object" states="" groups="base.group_user"/>
+            <button name="print_quotation" states="sent,sale" position="attributes">
+                <attribute name="states"></attribute>
             </button>
         </field>
     </record>

@@ -27,6 +27,8 @@ latest (unreleased)
 
 * Activate migrated batch pickings
 * Cancel french draft invoices (MIGO-334)
+* Require analytic account on Income, Other incomes, cost of revenue account
+  types (MIGO-322)
 
 **Features and Improvements**
 

@@ -657,6 +657,23 @@ def setup_cron(ctx):
 
 
 @anthem.log
+def configure_account_type(ctx):
+    """ Configure account types """
+    ctx.env.cr.execute("""
+        UPDATE account_account_type
+        SET analytic_policy = 'always'
+        WHERE id IN (
+            SELECT res_id
+            FROM ir_model_data
+            WHERE name IN ('data_account_type_other_income',
+                           'data_account_type_direct_costs',
+                           'data_account_type_revenue')
+            AND module = 'account'
+        )
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -682,3 +699,4 @@ def main(ctx):
     config_automatic_workflow(ctx)
     cancel_fr_draft_invoices(ctx)
     setup_cron(ctx)
+    configure_account_type(ctx)

@@ -645,6 +645,18 @@ def cancel_fr_draft_invoices(ctx):
 
 
 @anthem.log
+def setup_cron(ctx):
+    """ Setup the crons """
+    ctx.env.cr.execute("""
+        UPDATE ir_cron
+        SET active = false
+        WHERE id in (44, -- Automatic Workflow Job
+                     33 -- Automatic Workflow Job FR
+                     )
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -669,3 +681,4 @@ def main(ctx):
     set_web_base_url(ctx)
     config_automatic_workflow(ctx)
     cancel_fr_draft_invoices(ctx)
+    setup_cron(ctx)

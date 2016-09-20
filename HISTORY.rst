@@ -23,8 +23,21 @@ latest (unreleased)
 
 **Data Migration**
 
-* Empty company on products, all products should now be shared (MIGO-328)
+**Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.9.0 (2016-09-20)
+++++++++++++++++++
+
+**Data Migration**
+
+* Empty company on products, all products should now be shared (MIGO-328)
 * Activate migrated batch pickings
 * Cancel french draft invoices (MIGO-334)
 * Require analytic account on Income, Other incomes, cost of revenue account
@@ -38,7 +51,6 @@ latest (unreleased)
 
 * Allow partner delivery address to be non-mandatory
 * Export refund even if the origin sales order is inactive (MIGO-344)
-
 * On export of refund, we now store back the payment id, not the
   'transaction_id' field (MIGO-332)
 * Rework cancellation of sales orders, invoices were not cancelled (MIGO-348)
@@ -47,8 +59,6 @@ latest (unreleased)
 **Build**
 
 * Add pending merge in carrier-delivery for a new fix
-
-**Documentation**
 
 
 9.8.0 (2016-09-12)

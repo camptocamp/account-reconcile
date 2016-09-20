@@ -62,15 +62,14 @@ class QoQaOfferImport(QoQaImporter):
 class QoQaOfferImportMapper(ImportMapper, FromDataAttributes):
     _model_name = 'qoqa.offer'
 
-    direct = []
-
-    from_data_attributes = []
+    from_data_attributes = [
+        ('name', 'name')
+    ]
 
     @mapping
-    def name(self, record):
+    def ref(self, record):
         data = record.get('data', {})
-        name = u"[{}] {}".format(data['id'], data['attributes']['name'])
-        return {'name': name}
+        return {'ref': data['id']}
 
     @mapping
     def shop(self, record):

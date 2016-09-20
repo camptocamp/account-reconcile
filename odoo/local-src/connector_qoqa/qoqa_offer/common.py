@@ -95,7 +95,7 @@ class QoqaOffer(models.Model):
             raise exceptions.UserError(
                 _('Exported Offers can no longer be deleted (ref: %s).'
                   'They can still be deactivated using the "active" '
-                  'checkbox.') % ','.join(offer.ref for offer in exported))
+                  'checkbox.') % ','.join(offer.name for offer in exported))
         return super(QoqaOffer, self).unlink()
 
 

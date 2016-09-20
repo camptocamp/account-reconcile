@@ -4,11 +4,11 @@
     auto="False"
     id="action_report_label_swiss_pp"
     model="stock.picking"
-    string="Shipping.Label"
+    string="Swiss PP Shipping Label"
     name="delivery_carrier_label_swiss_pp.report_label_swiss_pp"
     file="stock.picking.label.swiss.pp"
     attachment_use="0"
-    multi="True"
+    multi="False"
     header="False"
     paperformat="delivery_carrier_label_swiss_pp.label_report_paper_format"
     report_type="qweb-pdf"/>
@@ -35,14 +35,14 @@
         </div>
       </t>
       <div class="address">
-        <t t-if="o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.move_lines) > 0 and o.move_lines[0].tracking_id">
+        <t t-if="o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.mapped('pack_operation_ids.result_package_id.parcel_tracking')) > 0">
           <div class="code">
-            <t t-field="o.offer_id.ref"/>.<span t-field="o.sale_id.name"/>.<span t-field="o.move_lines[0].tracking_id.name"/>
+            <span t-field="o.offer_id.ref"/>.<span t-field="o.sale_id.name"/>.<span t-field="o.first_package_name"/>
           </div>
         </t>
-        <t t-if="not (o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.move_lines) > 0 and o.move_lines[0].tracking_id) and o.claim_id">
+        <t t-if="not (o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.mapped('pack_operation_ids.result_package_id.parcel_tracking')) > 0) and o.claim_id">
           <div class="code">
-            <t t-field="o.claim_id.number"/>
+            <span t-field="o.claim_id.code"/>
           </div>
         </t>
         <table class="recipient">

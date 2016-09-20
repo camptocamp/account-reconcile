@@ -16,7 +16,7 @@ from .common import recorder, QoQaTransactionCase
 
 ExpectedOffer = namedtuple(
     'ExpectedOffer',
-    'name qoqa_link qoqa_edit_link'
+    'name ref display_name qoqa_link qoqa_edit_link'
 )
 
 
@@ -63,7 +63,9 @@ class TestImportOffer(QoQaTransactionCase):
                     '/admin/offers/1/wizard?step=1')
         expected = [
             ExpectedOffer(
-                name='[1] Apple iPhone 6 / 64GB',
+                name='Apple iPhone 6 / 64GB',
+                ref='1',
+                display_name='[1] Apple iPhone 6 / 64GB',
                 qoqa_link=url,
                 qoqa_edit_link=edit_url,
             ),

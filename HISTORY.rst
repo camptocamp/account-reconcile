@@ -30,6 +30,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Allow to select delivery method even on IN pickings (MIGO-330)
+
 **Bugfixes**
 
 * Allow partner delivery address to be non-mandatory
@@ -38,6 +40,7 @@ latest (unreleased)
 * On export of refund, we now store back the payment id, not the
   'transaction_id' field (MIGO-332)
 * Rework cancellation of sales orders, invoices were not cancelled (MIGO-348)
+* Errors on picking labels, mainly due to fields renamed
 
 **Build**
 

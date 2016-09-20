@@ -14,12 +14,25 @@ class QoqaOffer(models.Model):
         string='Title',
         readonly=True,
     )
+    ref = fields.Char(
+        string='Ref',
+        readonly=True,
+    )
     qoqa_shop_id = fields.Many2one(
         comodel_name='qoqa.shop',
         string='Sell on',
         readonly=True,
     )
     active = fields.Boolean(default=True)
+
+    @api.multi
+    @api.depends('name', 'ref')
+    def name_get(self):
+        result = []
+        for offer in self:
+            name = u'[%s] %s' % (offer.ref, offer.name)
+            result.append((offer.id, name))
+        return result
 
     @api.multi
     def action_view_sale_order(self):

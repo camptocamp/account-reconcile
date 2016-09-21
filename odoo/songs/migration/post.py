@@ -674,6 +674,20 @@ def configure_account_type(ctx):
 
 
 @anthem.log
+def rename_qoqa_offer(ctx):
+    """ Rename qoqa_offers (remove the qoqa_id, now in display_name)
+
+    An offer named "[9487] Domo: Robot de Cuisine" becomes "Domo: Robot de
+    Cuisine", the name_get/display_name will be prefixed with the qoqa_id
+    """
+    ctx.env.cr.execute("""
+        UPDATE qoqa_offer
+        SET name = substring(name FROM '\[\d+\] (.*)')
+        WHERE name ~ '\[\d+\](.*)'
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -700,3 +714,4 @@ def main(ctx):
     cancel_fr_draft_invoices(ctx)
     setup_cron(ctx)
     configure_account_type(ctx)
+    rename_qoqa_offer(ctx)

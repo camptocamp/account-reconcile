@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Remove the [xxxx] prefix from qoqa offers (now added in name_get)
+
 **Features and Improvements**
 
 **Bugfixes**

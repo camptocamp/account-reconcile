@@ -11,4 +11,16 @@
             </button>
         </field>
     </record>
+
+    <record id="view_order_form_inherit_sale_stock" model="ir.ui.view">
+        <field name="name">sale.order.form.sale.stock</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+          <button name="action_view_delivery" position="attributes">
+            <!-- display the button even when the pickings are delivered -->
+            <attribute name="attrs"></attribute>
+          </button>
+        </field>
+    </record>
 </odoo>

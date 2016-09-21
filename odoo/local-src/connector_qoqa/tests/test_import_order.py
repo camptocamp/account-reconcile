@@ -146,7 +146,7 @@ class TestImportOrder(QoQaTransactionCase):
                 partner_shipping_id=shipping_address.openerp_id,
                 partner_invoice_id=invoice_address.openerp_id,
                 invoice_ref='ABCD1',
-                client_order_ref='ABCD1',
+                client_order_ref='150414-UGLBGN',
                 qoqa_amount_total=20700.0,
                 qoqa_shop_id=shop,
                 offer_id=offer,

@@ -98,7 +98,7 @@ class AddressImportMapper(ImportMapper, FromDataAttributes):
         assert qoqa_user_id or qoqa_order_user_id
 
         vals = {}
-        if qoqa_user_id:
+        if qoqa_order_user_id:
             # The address comes from a sales order. The website
             # copies the addresses used for sales and remove their
             # user_id link.  The original user of the address is in

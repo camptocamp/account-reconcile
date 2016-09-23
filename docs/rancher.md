@@ -45,3 +45,22 @@ When you have to modify the file, you have to re-encrypt the file, which is done
 ```
 $ gpg2 --symmetric --cipher-algo AES256 rancher.env
 ```
+
+## Travis
+
+Each succeeded build on the master branch triggers:
+
+* push of a new `latest` image on the Docker Hub
+* deploy of the `latest` image on the test environment
+
+The password to decrypt the gpg environment file (Rancher:
+latest/rancher.env.gpg) is needed by Travis, so we store it in a `secure`
+environment variable like this:
+
+```
+$ travis encrypt -r camptocamp/<repository_name> rancher_env_password=xxxxxxx
+```
+
+The output of this command should be added in the `global` section in `env` of
+`travis.yml`.
+

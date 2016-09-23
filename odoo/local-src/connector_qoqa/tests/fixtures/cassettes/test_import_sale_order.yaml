@@ -38,7 +38,7 @@ interactions:
         {"data": null}, "payments": {"data": [{"type": "payment", "id": "1"}]}, "shipping_address":
         {"data": {"type": "address", "id": "100000001"}}, "user": {"data": {"type":
         "user", "id": "1000001"}}}, "attributes": {"status": "confirmed", "delivery_on":
-        null, "offer_id": 1000005, "website_id": 3, "updated_at": "2015-04-14T10:19:06.000+02:00",
+        null, "reference": "150414-UGLBGN", "offer_id": 1000005, "website_id": 3, "updated_at": "2015-04-14T10:19:06.000+02:00",
         "currency": "chf", "shipping_carrier_id": 1, "total": "20700.0", "subtotal":
         "20700.0", "created_at": "2015-04-14T10:19:06.000+02:00", "shipping_fee_id":
         1000003}, "type": "order", "id": "1"}, "jsonapi": {"version": "1.0"}}'}

@@ -330,21 +330,17 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
         return values
 
     @mapping
+    def reference(self, record):
+        attrs = record['data']['attributes']
+        values = {'client_order_ref': attrs['reference']}
+        return values
+
+    @mapping
     def from_invoice(self, record):
         """ Get the invoice node and extract some data """
         invoices = valid_invoices(record)
         invoice = find_sale_invoice(invoices)
-        # We can have several invoices, some are refunds, normally
-        # we have only 1 invoice for sale.
-        # Concatenate them, keep them in customer reference
-        invoices_refs = ', '.join(inv['attributes']['reference']
-                                  for inv in invoices)
-        # keep the main one for copying in the invoice once generated
-        ref = invoice['attributes']['reference']
-        values = {'invoice_ref': ref,
-                  'client_order_ref': invoices_refs,
-                  }
-        return values
+        return {'invoice_ref': invoice['attributes']['reference']}
 
     def finalize(self, map_record, values):
         lines = self.extract_lines(map_record)

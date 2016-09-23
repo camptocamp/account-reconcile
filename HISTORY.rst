@@ -50,6 +50,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * Allow to select delivery method even on IN pickings (MIGO-330)
+* Import order reference from QoQa4 (MIGO-307)
 
 **Bugfixes**
 

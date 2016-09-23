@@ -158,9 +158,12 @@ class SaleOrder(models.Model):
                 except exceptions.UserError:
                     # the invoice already exists
                     pass
-                order.invoice_ids.signal_workflow('invoice_open')
+                invoices = order.invoice_ids.filtered(
+                    lambda r: r.state != 'cancel'
+                )
+                invoices.signal_workflow('invoice_open')
                 # create a refund since the payment cannot be canceled
-                actions += order.invoice_ids._refund_and_get_action(
+                actions += invoices._refund_and_get_action(
                     _('Order Cancellation')
                 )
 

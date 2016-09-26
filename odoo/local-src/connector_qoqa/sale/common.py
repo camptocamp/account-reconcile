@@ -151,6 +151,7 @@ class SaleOrder(models.Model):
                         order.payment_mode_id.payment_settlable_on_qoqa):
                     cancel_direct = True
 
+            existing_invoices = order.invoice_ids
             if not cancel_direct and order.amount_total:
                 # create the invoice, so we'll be able to create the refund
                 # later, we'll cancel the invoice
@@ -163,14 +164,15 @@ class SaleOrder(models.Model):
                     lambda r: r.state != 'cancel'
                 )
                 invoices.signal_workflow('invoice_open')
+                existing_invoices = order.invoice_ids
                 # create a refund since the payment cannot be canceled
                 actions += invoices._refund_and_get_action(
                     _('Order Cancellation')
                 )
 
             if not delivered:
-                order.invoice_ids.filtered(
-                    lambda r: r.state != 'paid'
+                existing_invoices.filtered(
+                    lambda r: r.state not in ('paid', 'cancel')
                 ).signal_workflow('invoice_cancel')
                 order.picking_ids.action_cancel()
 

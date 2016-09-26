@@ -35,6 +35,7 @@ class ProductAttributeValue(models.Model):
         'openerp_id',
         string='Attribute Bindings',
         copy=False,
+        context={'active_test': False},
     )
 
     @api.constrains('name')

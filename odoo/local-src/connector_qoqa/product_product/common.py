@@ -42,6 +42,7 @@ class ProductProduct(models.Model):
         inverse_name='openerp_id',
         string='QoQa Bindings',
         copy=False,
+        context={'active_test': False},
     )
 
     _sql_constraints = [

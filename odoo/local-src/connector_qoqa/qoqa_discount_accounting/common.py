@@ -85,6 +85,7 @@ class AccountMove(models.Model):
         inverse_name='openerp_id',
         string='QoQa Discount Accounting',
         copy=False,
+        context={'active_test': False},
     )
 
 
@@ -96,6 +97,7 @@ class AccountMoveLine(models.Model):
         inverse_name='openerp_id',
         string='QoQa Discount Accounting Line',
         copy=False,
+        context={'active_test': False},
     )
 
 

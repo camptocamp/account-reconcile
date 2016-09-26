@@ -38,6 +38,7 @@ class StockPicking(models.Model):
         inverse_name='openerp_id',
         string='QBindings for Delivery Orders',
         copy=False,
+        context={'active_test': False},
     )
 
 

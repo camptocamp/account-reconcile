@@ -33,6 +33,8 @@ latest (unreleased)
 
 **Build**
 
+* Install ``specific_report``
+
 **Documentation**
 
 

@@ -177,14 +177,10 @@ class SaleOrder(models.Model):
                 order.picking_ids.action_cancel()
 
             super(SaleOrder, order).action_cancel()
+            order._call_cancel(cancel_direct=cancel_direct)
 
-        action_res = None
         if actions:
-            action_res = self.action_res = self._parse_refund_action(actions)
-
-        self._call_cancel(cancel_direct=cancel_direct)
-
-        if action_res:
+            action_res = self._parse_refund_action(actions)
             return action_res
 
         return True

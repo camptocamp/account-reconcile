@@ -74,7 +74,7 @@ class CrmClaim(models.Model):
                      % (claim.name))
             subject = _('A new CRM claim has been assigned to you')
             claim.message_post(body=body, subject=subject,
-                               type='email',
+                               message_type='email',
                                subtype='mail.mt_comment',
                                parent_id=False,
                                attachments=None,

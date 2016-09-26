@@ -24,6 +24,7 @@ latest (unreleased)
 **Data Migration**
 
 * Remove the [xxxx] prefix from qoqa offers (now added in name_get)
+* Migrate done and cancel picking dispatchs (MIGO-384)
 
 **Features and Improvements**
 

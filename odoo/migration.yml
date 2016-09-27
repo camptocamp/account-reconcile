@@ -44,6 +44,8 @@ migration:
           - account_payment_sale
           #---- OCA/bank-statement-reconcile ---------------#
           - account_mass_reconcile
+          - account_mass_reconcile_ref_deep_search
+          - account_mass_reconcile_transaction_ref
           - account_move_base_import
           - account_move_so_import
           - account_move_transactionid_import

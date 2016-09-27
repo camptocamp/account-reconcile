@@ -28,6 +28,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * Show delivery button on sales orders even when all is delivered (MIGO-346)
+* Allow to search offers by code
 
 **Bugfixes**
 

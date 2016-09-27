@@ -28,6 +28,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * Show delivery button on sales orders even when all is delivered (MIGO-346)
+* Better error messages for errors occurring on the QoQa4 API (MIGO-345)
 
 **Bugfixes**
 

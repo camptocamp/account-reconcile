@@ -1,23 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2016 Camptocamp SA
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from openerp.addons.connector.exception import (ConnectorException,
                                                 RetryableJobError)
@@ -46,17 +29,17 @@ class QoQaResponseError(QoQaAPIError):
         """
 
         :param errors: errors of the API, list of tuples
-                       (type, code, message)
+                       (code, title, detail)
         """
         self.errors = errors
 
     def __str__(self):
         if not self.errors:
-            return 'Unknow error'
+            return u'Unknow error'
         else:
             return ','.join([
-                "[{0} {1}]: {2}".format(errtype, code, msg)
-                for errtype, code, msg in self.errors
+                u"[code {0}] {1}: {2}".format(code, title, detail)
+                for code, title, detail in self.errors
             ])
 
 

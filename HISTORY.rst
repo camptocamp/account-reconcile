@@ -34,6 +34,7 @@ latest (unreleased)
 **Build**
 
 * Install ``specific_report``
+* Use a pending-merge branch for l10n-switzerland
 
 **Documentation**
 

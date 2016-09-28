@@ -707,20 +707,17 @@ def migrate_automatic_reconciliation(ctx):
             write_off, journal_id, filter, account_lost_id,
             expense_exchange_account_id, income_exchange_account_id
         ) SELECT id, create_uid, create_date, write_uid, write_date,
-                 OVERLAY(name PLACING 'mass.' FROM 1 FOR 5), task_id,
-                 CASE WHEN date_base_on != 'newest'
+                 CASE WHEN name = 'easy.reconcile.advanced.bank_statement'
+                      THEN 'mass.reconcile.advanced.ref'
+                      ELSE OVERLAY(name PLACING 'mass.' FROM 1 FOR 5)
+                 END, task_id,
+                 CASE WHEN date_base_on = 'end_period_last_credit'
                       THEN 'actual'
                       ELSE 'newest'
                  END, account_profit_id, sequence, company_id, write_off,
                  journal_id, filter, account_lost_id,
                  expense_exchange_account_id, income_exchange_account_id
-        FROM account_easy_reconcile_method
-        WHERE name != 'mass.reconcile.advanced.bank_statement';
-        DELETE FROM account_mass_reconcile
-        WHERE id NOT IN (
-            SELECT DISTINCT task_id
-            FROM account_mass_reconcile_method
-        );
+        FROM account_easy_reconcile_method;
     """)
 
 

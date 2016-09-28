@@ -617,6 +617,16 @@ def set_web_base_url(ctx):
 
 
 @anthem.log
+def set_currency_exchange_journal(ctx):
+    """ Configuring default currency exchange journal """
+    ctx.env.cr.execute("""
+        UPDATE res_company
+        SET currency_exchange_journal_id = 62
+        WHERE id = 3;
+    """)
+
+
+@anthem.log
 def config_automatic_workflow(ctx):
     """ Configure automatic workflows """
     with ctx.log('Remove user_id from the sale automatic workflow filters'):
@@ -710,6 +720,7 @@ def main(ctx):
     correct_parcel_tracking(ctx)
     set_shop_domain(ctx)
     set_web_base_url(ctx)
+    set_currency_exchange_journal(ctx)
     config_automatic_workflow(ctx)
     cancel_fr_draft_invoices(ctx)
     setup_cron(ctx)

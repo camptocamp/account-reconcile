@@ -34,6 +34,15 @@ class QoqaOffer(models.Model):
             result.append((offer.id, name))
         return result
 
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        domain = []
+        domain = ['|', ('ref', operator, name), ('name', operator, name)]
+        offers = self.search(domain + args, limit=limit)
+        return offers.name_get()
+
     @api.multi
     def action_view_sale_order(self):
         action = self.env.ref('sale.action_orders')

@@ -163,6 +163,22 @@ class QoQaAdapter(CRUDAdapter):
                   }
         return "{url}{version}/{endpoint}/".format(**values)
 
+    def _parse_content(self, response):
+        try:
+            parsed = json.loads(response.content)
+        except ValueError as err:
+            req = "%s %s with content:\n%s\n\nReturned %s %s:\n%s" % (
+                response.request.method,
+                response.url,
+                response.request.body,
+                response.status_code,
+                response.reason,
+                response.content,
+            )
+            msg = "%s\n\n%s" % (err, req)
+            raise QoQaResponseNotParsable(msg)
+        return parsed
+
     def _handle_response(self, response):
         _logger.debug("%s %s returned %s %s", response.request.method,
                       response.url, response.status_code, response.reason)
@@ -195,38 +211,29 @@ class QoQaAdapter(CRUDAdapter):
         try:
             response.raise_for_status()
         except:
-            _logger.error(
-                'bad status received on: %s %s %s',
-                response.request.method,
-                response.url,
-                response.request.body,
-            )
+            if response.content:
+                # will raise an error with the content
+                parsed = self._parse_content(response)
+                _logger.error("%s %s with content:\n%s\n\nReturned %s %s:\n%s",
+                              response.request.method,
+                              response.url,
+                              response.request.body,
+                              response.status_code,
+                              response.reason,
+                              response.content)
+                errors = []
+                for err in parsed.get('errors', []):
+                    errors.append((err['code'], err['title'], err['detail']))
+                raise QoQaResponseError(errors)
+            else:
+                _logger.error(
+                    u'bad status received on: %s %s %s',
+                    response.request.method,
+                    response.url,
+                    response.request.body,
+                )
             raise
-        try:
-            parsed = json.loads(response.content)
-        except ValueError as err:
-            req = "%s %s with content:\n%s\n\nReturned %s %s:\n%s" % (
-                response.request.method,
-                response.url,
-                response.request.body,
-                response.status_code,
-                response.reason,
-                response.content,
-            )
-            msg = "%s\n\n%s" % (err, req)
-            raise QoQaResponseNotParsable(msg)
-        if parsed.get('errors'):
-            _logger.error("%s %s with content:\n%s\n\nReturned %s %s:\n%s",
-                          response.request.method,
-                          response.url,
-                          response.request.body,
-                          response.status_code,
-                          response.reason,
-                          response.content)
-            errors = []
-            for err in parsed['errors']:
-                errors.append((err['code'], err['title']))
-            raise QoQaResponseError(errors)
+        parsed = self._parse_content(response)
         return parsed
 
     def create(self, vals):

@@ -689,7 +689,7 @@ def rename_qoqa_offer(ctx):
 
 @anthem.log
 def migrate_automatic_reconciliation(ctx):
-    """ 
+    """
         Migrate from account.easy.reconcile to account.mass.reconcile
     """
     ctx.env.cr.execute("""
@@ -699,7 +699,7 @@ def migrate_automatic_reconciliation(ctx):
             id, create_uid, create_date, write_uid, write_date,
             account, name, company_id, message_last_post)
         SELECT id, create_uid, create_date, write_uid, write_date,
-               account, name, company_id, message_last_post 
+               account, name, company_id, message_last_post
         FROM account_easy_reconcile;
         INSERT INTO account_mass_reconcile_method (
             id, create_uid, create_date, write_uid, write_date, name,
@@ -709,7 +709,7 @@ def migrate_automatic_reconciliation(ctx):
         ) SELECT id, create_uid, create_date, write_uid, write_date,
                  OVERLAY(name PLACING 'mass.' FROM 1 FOR 5), task_id,
                  CASE WHEN date_base_on != 'newest'
-                      THEN 'actual' 
+                      THEN 'actual'
                       ELSE 'newest'
                  END, account_profit_id, sequence, company_id, write_off,
                  journal_id, filter, account_lost_id,

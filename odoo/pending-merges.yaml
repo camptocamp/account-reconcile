@@ -43,8 +43,8 @@
     - oca refs/pull/99/head
     # port delivery_carrier_label_default
     - oca refs/pull/100/head
-    # Fix assignation on recordset with len > 1
-    - oca refs/pull/102/head
+    # rename field tracking_id to package_id
+    - oca refs/pull/105/head
   target: *default_target
 ./external-src/connector-ecommerce:
   remotes:
@@ -63,6 +63,15 @@
     - oca 9.0
     # port crm_claim_merge
     - oca refs/pull/93/head
+  target: *default_target
+./external-src/l10n-switzerland:
+  remotes:
+    oca: git@github.com:OCA/l10n-switzerland.git
+    camptocamp: git@github.com:camptocamp/l10n-switzerland.git
+  merges:
+    - oca 9.0
+    # Fix a misusage of v7 api in payment slip
+    - oca refs/pull/265/head
   target: *default_target
 ./external-src/purchase-workflow:
   remotes:

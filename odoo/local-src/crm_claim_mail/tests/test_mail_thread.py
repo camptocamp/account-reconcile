@@ -35,25 +35,17 @@ class TestMailThread(TestMail):
                 self.msg = message
                 break
 
-    def test_in_reply_to(self):
-        """ Link with parent using In-Reply-To """
-
-        msg_id = '<1198923581.41972151344608186760.JavaMail.1@agrolait.com>'
-        reply_msg = self.format(MAIL_TEMPLATE, to='erroneous@example.com',
-                                extra='In-Reply-To: %s' % self.msg.message_id,
-                                msg_id=msg_id)
-        self.Claim.message_process(None, reply_msg)
-        self.assertReceived(nb_messages=4, nb_children=1)
-
     def assertReceived(self, nb_messages, nb_children):
         self.claim.refresh()
         self.msg.refresh()
         self.assertEqual(nb_messages, len(self.claim.message_ids),
-                         'message_process: claim should contain %d messages' %
-                         nb_messages)
+                         'message_process: claim should contain %d messages '
+                         'instead of %d messages' %
+                         (nb_messages, len(self.claim.message_ids)))
         self.assertEqual(nb_children, len(self.msg.child_ids),
-                         'message_process: message should have %d children' %
-                         nb_children)
+                         'message_process: message should have %d children '
+                         'instead of %d children' %
+                         (nb_children, len(self.msg.child_ids)))
 
     def test_claim_number(self):
         """ Link with parent using number of the claim """
@@ -64,4 +56,14 @@ class TestMailThread(TestMail):
                                 subject=subject,
                                 msg_id=msg_id)
         self.Claim.message_process(None, reply_msg)
-        self.assertReceived(nb_messages=4, nb_children=2)
+        self.assertReceived(nb_messages=3, nb_children=1)
+
+    def test_in_reply_to(self):
+        """ Link with parent using In-Reply-To """
+
+        msg_id = '<1198923581.41972151344608186760.JavaMail.1@agrolait.com>'
+        reply_msg = self.format(MAIL_TEMPLATE, to='erroneous@example.com',
+                                extra='In-Reply-To: %s' % self.msg.message_id,
+                                msg_id=msg_id)
+        self.Claim.message_process(None, reply_msg)
+        self.assertReceived(nb_messages=3, nb_children=0)

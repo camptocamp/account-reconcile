@@ -46,9 +46,9 @@ def dispatch_migration(ctx):
     cr = ctx.env.cr
 
     cr.execute(
-        "SELECT id, create_uid, create_date, write_uid, picker_id, "
-        "notes, date, name "
-        "FROM picking_dispatch WHERE state NOT IN ('done', 'cancel')"
+        "SELECT id, state, create_uid, create_date, write_uid, picker_id, "
+        "notes, date, name, active "
+        "FROM picking_dispatch"
     )
 
     dispatches = cr.fetchall()
@@ -57,25 +57,29 @@ def dispatch_migration(ctx):
         dispatch_row = list(dispatch_row)
 
         dispatch_id = dispatch_row.pop(0)
+        dispatch_state = dispatch_row.pop(0)
 
         picking_states = _get_dispatch_pickings(cr, dispatch_id)
         if not picking_states:
             continue
 
-        migrated_ids.append(dispatch_id)
-
-        if all(p[1] == 'assigned' for p in picking_states):
-            state = 'assigned'
+        if dispatch_state in ('cancel', 'done'):
+            dispatch_row.append(dispatch_state)
         else:
-            state = 'draft'
+            if all(p[1] == 'assigned' for p in picking_states):
+                state = 'assigned'
+            else:
+                state = 'draft'
 
-        dispatch_row.append(state)
+            dispatch_row.append(state)
+
+        migrated_ids.append(dispatch_id)
 
         cr.execute(
             "INSERT INTO stock_batch_picking "
             "(create_uid, create_date, write_uid, picker_id, "
-            "notes, date, name, state, active)"
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, true) RETURNING id",
+            "notes, date, name, active, state)"
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id",
             dispatch_row
         )
         batch_id = cr.fetchone()[0]

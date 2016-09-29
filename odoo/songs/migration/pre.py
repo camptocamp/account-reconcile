@@ -394,13 +394,24 @@ def prefix_qoqa_order_line_ids(ctx):
 
 @anthem.log
 def fix_hidden_menus_group(ctx):
-    """ Update hidden menus to specifc_fct definition """
+    """ Update hidden menus to specifc_fct definition,
+        and remove all users from this group
+    """
     ctx.env.cr.execute("""
         UPDATE ir_model_data
         SET module = 'specific_fct',
         name = 'hidden_menu_group'
         WHERE module = 'scenario'
         AND name = '_group';
+
+        DELETE FROM res_groups_users_rel
+        WHERE gid IN (
+            SELECT res_id
+            FROM ir_model_data
+            WHERE module = 'specific_fct'
+            AND name = 'hidden_menu_group'
+            AND model = 'res.groups'
+        );
     """)
 
 

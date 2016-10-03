@@ -74,7 +74,8 @@ def payment_method(ctx):
               fixed_journal_id, payment_method_id, workflow_process_id,
               days_before_cancel, import_rule, sequence,
               payment_cancellable_on_qoqa, qoqa_id,
-              gift_card, payment_settlable_on_qoqa
+              gift_card, payment_settlable_on_qoqa,
+              refund_max_days, refund_min_date
               )
               SELECT
               create_uid, write_uid, create_date, write_date,
@@ -82,7 +83,8 @@ def payment_method(ctx):
               journal_id, 1, workflow_process_id,
               days_before_cancel, import_rule, sequence,
               payment_cancellable_on_qoqa, qoqa_id,
-              gift_card, payment_settlable_on_qoqa
+              gift_card, payment_settlable_on_qoqa,
+              refund_max_days, refund_min_date
               FROM payment_method
               WHERE NOT EXISTS (SELECT id FROM account_payment_mode
                                 WHERE name = payment_method.name)

@@ -37,7 +37,7 @@ class StockPackOperation(models.Model):
         for op in self:
             if not op.picking_id or not op.picking_id.carrier_id.url_template:
                 continue
-            tracking_number = op.package_id.parcel_tracking
+            tracking_number = op.result_package_id.parcel_tracking
             if not tracking_number:
                 tracking_number = op.picking_id.carrier_tracking_ref
             if not tracking_number:

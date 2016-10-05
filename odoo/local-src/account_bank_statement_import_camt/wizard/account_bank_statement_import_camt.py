@@ -59,7 +59,7 @@ class AccountBankStatementImport(models.TransientModel):
                 entry_vals['date'] = transaction_date and transaction_date[0] or False
 
                 # Name 0..1
-                transaction_name = entry.xpath('.//ns:RmtInf/ns:Ustrd/text()', namespaces=ns)
+                transaction_name = entry.xpath('.//ns:AddtlNtryInf/text()', namespaces=ns)
                 partner_name = entry.xpath('.//ns:RltdPties/ns:%s/ns:Nm/text()' % (counter_party,), namespaces=ns)
                 entry_vals['name'] = transaction_name and transaction_name[0] or '/'
                 entry_vals['partner_name'] = partner_name and partner_name[0] or False

@@ -43,6 +43,7 @@ class ProductAttributeValueExportMapper(ExportMapper):
     direct = [
         (m2o_to_backend('attribute_id', binding='qoqa.product.attribute'),
          'product_attribute_category_id'),
+        ('sequence', 'position'),
     ]
 
     translatable_fields = [

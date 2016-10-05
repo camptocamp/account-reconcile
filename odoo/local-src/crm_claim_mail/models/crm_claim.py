@@ -238,6 +238,7 @@ class CrmClaim(models.Model):
                      content_subtype='html', **kwargs):
         # change author to partner with address 'loutres@qoqa.com'
         kwargs.pop('author_id', None)
+        kwargs.pop('email_from', None)
         author = self.env['res.partner'].search(
             [('email', '=', 'loutres@qoqa.com')],
             limit=1)
@@ -247,7 +248,8 @@ class CrmClaim(models.Model):
         result = super(CrmClaim, self).message_post(
             body=body, subject=subject, message_type=message_type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
-            content_subtype=content_subtype, author_id=author.id, **kwargs)
+            content_subtype=content_subtype, author_id=author.id,
+            email_from='Loutres <loutres@qoqa.com>', **kwargs)
         # Subtype with sequence 0 : 'Discussions' (emails)
         if message_type == 'comment' and subtype:
             self.case_close()

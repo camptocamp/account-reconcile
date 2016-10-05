@@ -49,4 +49,5 @@ class SaleOrderLine(models.Model):
         comodel_name='qoqa.sale.order.line',
         inverse_name='openerp_id',
         string='QBindings',
+        context={'active_test': False},
     )

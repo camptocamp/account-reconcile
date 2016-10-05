@@ -101,7 +101,7 @@ class SaleOrderImporter(QoQaImporter):
         attrs = self.qoqa_record['data']['attributes']
         if attrs['status'] == QoQaOrderStatus.cancelled:
             sale = self.binder.to_openerp(self.qoqa_id, unwrap=True)
-            if sale is None:
+            if not sale:
                 # do not import the canceled sales orders if they
                 # have not been already imported
                 return _('Sales order %s is not imported because it '

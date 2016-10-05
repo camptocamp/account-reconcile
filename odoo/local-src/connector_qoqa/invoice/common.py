@@ -73,7 +73,7 @@ class AccountInvoice(models.Model):
         payment service (datatrans) and return a transaction ID.
 
         """
-        for refund in self.with_context(active_test=False):
+        for refund in self:
             invoice = refund.refund_from_invoice_id
             if not invoice:
                 continue

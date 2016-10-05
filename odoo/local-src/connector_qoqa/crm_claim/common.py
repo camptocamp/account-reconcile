@@ -30,7 +30,9 @@ class CrmClaim(models.Model):
         comodel_name='qoqa.crm.claim',
         inverse_name='openerp_id',
         copy=False,
-        string='QBindings')
+        string='QBindings',
+        context={'active_test': False},
+    )
 
 
 class QoQaClaimMedium(models.Model):

@@ -61,6 +61,7 @@ class ProductTemplate(models.Model):
         inverse_name='openerp_id',
         string='QoQa Bindings',
         copy=False,
+        context={'active_test': False},
     )
     qoqa_exportable = fields.Boolean(
         string='Exportable on QoQa',

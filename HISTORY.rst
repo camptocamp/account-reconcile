@@ -34,6 +34,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Several fixes on the cancellation on sales orders (MIGO-344)
+
 **Build**
 
 * Install ``specific_report``

@@ -31,6 +31,7 @@ class ResPartner(models.Model):
         'openerp_id',
         string='QBindings for Addresses',
         copy=False,
+        context={'active_test': False},
     )
     digicode = fields.Char('Digicode')
     qoqa_address = fields.Boolean('Address from QoQa')

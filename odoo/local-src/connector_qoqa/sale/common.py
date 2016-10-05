@@ -74,6 +74,7 @@ class SaleOrder(models.Model):
         comodel_name='qoqa.sale.order',
         inverse_name='openerp_id',
         string='QBindings',
+        context={'active_test': False},
     )
     active = fields.Boolean(string='Active', default=True)
 
@@ -150,6 +151,7 @@ class SaleOrder(models.Model):
                         order.payment_mode_id.payment_settlable_on_qoqa):
                     cancel_direct = True
 
+            existing_invoices = order.invoice_ids
             if not cancel_direct and order.amount_total:
                 # create the invoice, so we'll be able to create the refund
                 # later, we'll cancel the invoice
@@ -162,26 +164,23 @@ class SaleOrder(models.Model):
                     lambda r: r.state != 'cancel'
                 )
                 invoices.signal_workflow('invoice_open')
+                existing_invoices = order.invoice_ids
                 # create a refund since the payment cannot be canceled
                 actions += invoices._refund_and_get_action(
                     _('Order Cancellation')
                 )
 
             if not delivered:
-                order.invoice_ids.filtered(
-                    lambda r: r.state != 'paid'
+                existing_invoices.filtered(
+                    lambda r: r.state not in ('paid', 'cancel')
                 ).signal_workflow('invoice_cancel')
                 order.picking_ids.action_cancel()
 
             super(SaleOrder, order).action_cancel()
+            order._call_cancel(cancel_direct=cancel_direct)
 
-        action_res = None
         if actions:
-            action_res = self.action_res = self._parse_refund_action(actions)
-
-        self._call_cancel(cancel_direct=cancel_direct)
-
-        if action_res:
+            action_res = self._parse_refund_action(actions)
             return action_res
 
         return True

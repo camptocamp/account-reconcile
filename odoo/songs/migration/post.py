@@ -698,6 +698,40 @@ def rename_qoqa_offer(ctx):
 
 
 @anthem.log
+def migrate_automatic_reconciliation(ctx):
+    """
+        Migrate from account.easy.reconcile to account.mass.reconcile
+    """
+    ctx.env.cr.execute("""
+        DELETE FROM account_mass_reconcile_method;
+        DELETE FROM account_mass_reconcile;
+        INSERT INTO account_mass_reconcile (
+            id, create_uid, create_date, write_uid, write_date,
+            account, name, company_id, message_last_post)
+        SELECT id, create_uid, create_date, write_uid, write_date,
+               account, name, company_id, message_last_post
+        FROM account_easy_reconcile;
+        INSERT INTO account_mass_reconcile_method (
+            id, create_uid, create_date, write_uid, write_date, name,
+            task_id, date_base_on, account_profit_id, sequence, company_id,
+            write_off, journal_id, filter, account_lost_id,
+            expense_exchange_account_id, income_exchange_account_id
+        ) SELECT id, create_uid, create_date, write_uid, write_date,
+                 CASE WHEN name = 'easy.reconcile.advanced.bank_statement'
+                      THEN 'mass.reconcile.advanced.ref'
+                      ELSE OVERLAY(name PLACING 'mass.' FROM 1 FOR 5)
+                 END, task_id,
+                 CASE WHEN date_base_on = 'end_period_last_credit'
+                      THEN 'actual'
+                      ELSE 'newest'
+                 END, account_profit_id, sequence, company_id, write_off,
+                 journal_id, filter, account_lost_id,
+                 expense_exchange_account_id, income_exchange_account_id
+        FROM account_easy_reconcile_method;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -726,3 +760,4 @@ def main(ctx):
     setup_cron(ctx)
     configure_account_type(ctx)
     rename_qoqa_offer(ctx)
+    migrate_automatic_reconciliation(ctx)

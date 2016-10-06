@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.10.0 (2016-10-06)
++++++++++++++++++++
+
+**Data Migration**
+
 * Remove the [xxxx] prefix from qoqa offers (now added in name_get)
 * Migrate done and cancel picking dispatchs (MIGO-384)
 * Add refund parameters to payment method migration
@@ -54,8 +68,6 @@ latest (unreleased)
 
 * Install ``specific_report``
 * Use a pending-merge branch for l10n-switzerland
-
-**Documentation**
 
 
 9.9.0 (2016-09-20)

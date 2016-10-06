@@ -2,7 +2,7 @@ external-db:
   image: rancher/external-service
 
 odoo:
-  image: camptocamp/qoqa_openerp:9.9.0
+  image: camptocamp/qoqa_openerp:9.10.0
   command: "odoo.py --load=web,connector"
   labels:
     io.rancher.scheduler.affinity:host_label: node_role=odoo

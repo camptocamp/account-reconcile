@@ -25,16 +25,30 @@ latest (unreleased)
 
 * Remove the [xxxx] prefix from qoqa offers (now added in name_get)
 * Migrate done and cancel picking dispatchs (MIGO-384)
+* Add refund parameters to payment method migration
+* Remove users from hidden menus
+* Set default currency exchange journal
+* Migrate reconciliation rules
 
 **Features and Improvements**
 
 * Show delivery button on sales orders even when all is delivered (MIGO-346)
 * Allow to search offers by code
 * Better error messages for errors occurring on the QoQa4 API (MIGO-345)
+* Synchronize position of product attributes
+* Remove Odoo header in e-mails
 
 **Bugfixes**
 
 * Several fixes on the cancellation on sales orders (MIGO-344)
+* Fix errors related to bindings being inactive
+* Correct tracking number url button never shown on packages
+* Correct sender for emails from claims
+* Use PostFinance additional text as entry name
+* Correct action for mail template
+* Use advanced_ref instead of bank_statement rule
+* Change test due to change in message type
+* Correct claim status only on outgoing e-mails
 
 **Build**
 

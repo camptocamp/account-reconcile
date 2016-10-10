@@ -51,13 +51,11 @@ class TestImportOrder(QoQaTransactionCase):
             'name': 'Drone',
             'default_code': 'drone',
         })
-        self.fee_binding = self.env['qoqa.shipper.fee'].create({
+        self.fee_binding = self.env['qoqa.shipping.fee'].create({
             'backend_id': self.backend_record.id,
             'qoqa_id': '1000001',
-            'delivery_type': 'fixed',
             'name': 'Drone delivery',
             'product_id': self.drone_product.id,
-            'partner_id': self.env.ref('base.main_company').partner_id.id,
         })
         self.product_1_binding = self.env['qoqa.product.product'].create({
             'backend_id': self.backend_record.id,

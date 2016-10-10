@@ -22,6 +22,7 @@ from . import promo
 from . import qoqa_backend
 from . import qoqa_discount_accounting
 from . import qoqa_offer
+from . import qoqa_shipping_fee
 from . import qoqa_shop
 from . import res_company
 from . import res_country

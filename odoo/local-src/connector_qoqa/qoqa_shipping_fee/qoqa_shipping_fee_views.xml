@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_qoqa_shipping_fee_form" model="ir.ui.view">
+    <field name="name">qoqa.shipping.fee</field>
+    <field name="model">qoqa.shipping.fee</field>
+    <field name="arch" type="xml">
+      <form string="QoQa Fees">
+        <label for="name" class="oe_edit_only"/>
+        <h1><field name="name"/></h1>
+        <group name="main">
+          <group>
+            <field name="product_id"/>
+            <field name="qoqa_id"/>
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_qoqa_shipping_fee_tree" model="ir.ui.view">
+    <field name="name">qoqa.shipping.fee</field>
+    <field name="model">qoqa.shipping.fee</field>
+    <field name="arch" type="xml">
+      <tree string="QoQa Fees">
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="qoqa_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_qoqa_shipping_fee" model="ir.actions.act_window">
+    <field name="name">QoQa Shipping Fees</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">qoqa.shipping.fee</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_qoqa_shipping_fee_tree"/>
+  </record>
+
+  <menuitem
+    id="menu_qoqa_shipping_fee"
+    name="QoQa Shipping Fees"
+    parent="delivery.menu_delivery"
+    sequence="10" action="action_qoqa_shipping_fee"/>
+
+</odoo>

@@ -8,53 +8,56 @@ interactions:
       Content-Type: [application/json]
       User-Agent: [python-requests/2.9.1]
     method: GET
-    uri: https://api-sprint.qoqa.com/v1/admin/orders/1
+    uri: https://api-sprint.qoqa.com/v1/admin/orders/100000001
   response:
-    body: {string: !!python/unicode '{"included": [{"attributes": {"created_at": "2016-06-24T14:14:25.000+02:00",
-        "variation_id": 100009, "lot_price": "6900.0", "updated_at": "2016-06-24T14:14:25.000+02:00",
-        "lot_size": 1, "lot_quantity": 1}, "type": "order_item", "id": "1"}, {"attributes":
-        {"created_at": "2016-06-24T14:14:25.000+02:00", "variation_id": 100011, "lot_price":
-        "6900.0", "updated_at": "2016-06-24T14:14:25.000+02:00", "lot_size": 1, "lot_quantity":
-        2}, "type": "order_item", "id": "2"}, {"relationships": {"invoice": {"data":
-        {"type": "invoice", "id": "1"}}}, "attributes": {"status": "confirmed", "kind":
-        "standard", "payment_url": null, "created_at": "2016-06-24T14:14:24.000+02:00",
-        "payment_provider_id": 7, "updated_at": "2016-06-24T14:14:24.000+02:00", "parent_id":
-        null, "amount": "6900.0", "transaction_id": "1", "payment_method_id": 1},
-        "type": "payment", "id": "1"}, {"relationships": {"invoice_items": {"data":
+    body: {string: !!python/unicode '{"included": [{"attributes": {"lot_price": "6900.0",
+        "created_at": "2016-10-10T12:47:57.000+02:00", "variation_id": 100009, "updated_at":
+        "2016-10-10T12:47:57.000+02:00", "lot_size": 1, "lot_quantity": 1}, "type":
+        "order_item", "id": "100000001"}, {"attributes": {"lot_price": "6900.0", "created_at":
+        "2016-10-10T12:47:57.000+02:00", "variation_id": 100011, "updated_at": "2016-10-10T12:47:57.000+02:00",
+        "lot_size": 1, "lot_quantity": 2}, "type": "order_item", "id": "100000002"},
+        {"relationships": {"invoice": {"data": {"type": "invoice", "id": "1"}}}, "attributes":
+        {"status": "confirmed", "kind": "standard", "payment_url": null, "created_at":
+        "2016-10-10T12:47:55.000+02:00", "payment_provider_id": 7, "updated_at": "2016-10-10T12:47:55.000+02:00",
+        "parent_id": null, "amount": "6900.0", "transaction_id": "1", "payment_method_id":
+        1}, "type": "payment", "id": "1"}, {"relationships": {"invoice_items": {"data":
         [{"type": "invoice_item", "id": "1"}, {"type": "invoice_item", "id": "2"}]}},
         "attributes": {"status": "confirmed", "kind": "standard", "created_at": "2015-04-14T10:19:06.000+02:00",
-        "reference": "ABCD1", "updated_at": "2016-06-24T14:14:24.000+02:00"}, "type":
-        "invoice", "id": "1"}, {"attributes": {"category": "product", "updated_at":
-        "2016-06-24T14:14:25.000+02:00", "created_at": "2016-06-24T14:14:25.000+02:00",
-        "variation_id": 100009, "lot_price": "6900.0", "ignore_credit": false, "discount_id":
-        null, "vat_id": 6, "lot_size": 1, "lot_quantity": 1}, "type": "invoice_item",
-        "id": "1"}, {"attributes": {"category": "product", "updated_at": "2016-06-24T14:14:25.000+02:00",
-        "created_at": "2016-06-24T14:14:25.000+02:00", "variation_id": 100011, "lot_price":
-        "6900.0", "ignore_credit": false, "discount_id": null, "vat_id": 6, "lot_size":
-        1, "lot_quantity": 2}, "type": "invoice_item", "id": "2"}], "data": {"relationships":
-        {"billing_address": {"data": {"type": "address", "id": "100000001"}}, "invoices":
-        {"data": [{"type": "invoice", "id": "1"}]}, "order_items": {"data": [{"type":
-        "order_item", "id": "1"}, {"type": "order_item", "id": "2"}]}, "discount":
-        {"data": null}, "payments": {"data": [{"type": "payment", "id": "1"}]}, "shipping_address":
-        {"data": {"type": "address", "id": "100000001"}}, "user": {"data": {"type":
-        "user", "id": "1000001"}}}, "attributes": {"status": "confirmed", "delivery_on":
-        null, "reference": "150414-UGLBGN", "offer_id": 1000005, "website_id": 3, "updated_at": "2015-04-14T10:19:06.000+02:00",
+        "reference": "ABCD1", "updated_at": "2016-10-10T12:47:57.000+02:00"}, "type":
+        "invoice", "id": "1"}, {"attributes": {"category": "product", "lot_price":
+        "6900.0", "updated_at": "2016-10-10T12:47:55.000+02:00", "created_at": "2016-10-10T12:47:55.000+02:00",
+        "variation_id": 100009, "ignore_credit": false, "discount_id": null, "vat_id":
+        6, "lot_size": 1, "lot_quantity": 1}, "type": "invoice_item", "id": "1"},
+        {"attributes": {"category": "product", "lot_price": "6900.0", "updated_at":
+        "2016-10-10T12:47:55.000+02:00", "created_at": "2016-10-10T12:47:55.000+02:00",
+        "variation_id": 100011, "ignore_credit": false, "discount_id": null, "vat_id":
+        6, "lot_size": 1, "lot_quantity": 2}, "type": "invoice_item", "id": "2"}],
+        "data": {"relationships": {"billing_address": {"data": {"type": "address",
+        "id": "100000001"}}, "invoices": {"data": [{"type": "invoice", "id": "1"}]},
+        "order_items": {"data": [{"type": "order_item", "id": "100000001"}, {"type":
+        "order_item", "id": "100000002"}]}, "discount": {"data": null}, "payments":
+        {"data": [{"type": "payment", "id": "1"}]}, "shipping_address": {"data": {"type":
+        "address", "id": "100000001"}}, "user": {"data": {"type": "user", "id": "1000001"}}},
+        "attributes": {"status": "confirmed", "delivery_on": "2016-10-19", "reference":
+        "150414-UGLBGN", "offer_id": 1000005, "website_id": 3, "updated_at": "2015-04-14T10:19:06.000+02:00",
         "currency": "chf", "shipping_carrier_id": 1, "total": "20700.0", "subtotal":
         "20700.0", "created_at": "2015-04-14T10:19:06.000+02:00", "shipping_fee_id":
-        1000003}, "type": "order", "id": "1"}, "jsonapi": {"version": "1.0"}}'}
+        1000003}, "type": "order", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 13:12:08 GMT']
-      etag: [W/"fb89841edc43c2e8063506829da0561f"]
+      date: ['Mon, 10 Oct 2016 13:45:11 GMT']
+      etag: [W/"3218d6070399f8c7dd21404c8b823f59"]
       server: [Cowboy]
+      set-cookie: [_mkra_ctxt=dde8c5d78bf8bd5dbaeade3f33c2c919--200; path=/; max-age=5;
+          HttpOnly; secure]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [3ca94a8a-891f-48f3-8ae3-377cae124eee]
-      x-runtime: ['1.043726']
+      x-request-id: [75772da9-7d98-4078-9f13-8097d774914b]
+      x-runtime: ['0.591473']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -68,22 +71,59 @@ interactions:
     method: GET
     uri: https://api-sprint.qoqa.com/v1/admin/offers/1000005
   response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"created_at": "2016-06-24T14:14:26.000+02:00",
-        "website_id": 3, "name": "Converse All stars", "updated_at": "2016-06-24T14:15:32.148+02:00"},
-        "type": "offer", "id": "1000005"}, "jsonapi": {"version": "1.0"}}'}
+    body: {string: !!python/unicode '{"data": {"attributes": {"vat_id": 6, "created_at":
+        "2016-10-10T12:47:57.000+02:00", "website_id": 3, "name": "Converse All stars",
+        "updated_at": "2016-10-10T12:49:16.998+02:00"}, "type": "offer", "id": "1000005"},
+        "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 13:12:09 GMT']
-      etag: [W/"6d52a93dd73a8c880c00c30f87f3910a"]
+      date: ['Mon, 10 Oct 2016 13:45:11 GMT']
+      etag: [W/"bc47ef914d1d4105752f3bc0154b988b"]
       server: [Cowboy]
+      set-cookie: [_mkra_ctxt=ddcec393f8c14d3945e446f8b0e915a2--200; path=/; max-age=5;
+          HttpOnly; secure]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [ee8d5489-4778-4a46-819c-8acd60c61da9]
-      x-runtime: ['0.181815']
+      x-request-id: [2363ed04-78b1-4749-9005-dda9a1a678a0]
+      x-runtime: ['0.089514']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://api-sprint.qoqa.com/v1/admin/shipping_fees/1000003
+  response:
+    body: {string: !!python/unicode '{"included": [{"attributes": {"min_quantity":
+        1, "price": "0.0"}, "type": "shipping_fee_price", "id": "1000007"}], "data":
+        {"relationships": {"website": {"data": {"type": "website", "id": "3"}}, "shipping_fee_prices":
+        {"data": [{"type": "shipping_fee_price", "id": "1000007"}]}}, "attributes":
+        {"name": "Gratuit"}, "type": "shipping_fee", "id": "1000003"}, "jsonapi":
+        {"version": "1.0"}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 10 Oct 2016 13:45:12 GMT']
+      etag: [W/"63889aa9ebd26ec4f03a34a7d3f1d527"]
+      server: [Cowboy]
+      set-cookie: [_mkra_ctxt=0ef05f27d5f161024260335b3e8d33ad--200; path=/; max-age=5;
+          HttpOnly; secure]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [54c44aa3-13d1-43ff-87a1-56f35da4e2f9]
+      x-runtime: ['0.170430']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -97,24 +137,29 @@ interactions:
     method: GET
     uri: https://api-sprint.qoqa.com/v1/admin/users/1000001
   response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "fr", "created_at":
-        "2016-06-24T14:14:27.000+02:00", "pseudo": "Admin", "language_id": 1, "updated_at":
-        "2016-06-24T15:01:02.475+02:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1466770464",
-        "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"}, "jsonapi": {"version":
-        "1.0"}}'}
+    body: {string: !!python/unicode '{"data": {"relationships": {"mailing_config":
+        {"data": {"type": "mailing_config", "id": "929608796"}}, "user_extension":
+        {"data": {"type": "user_extension", "id": "74324737"}}}, "attributes": {"has_avatar":
+        true, "locale": "fr", "created_at": "2016-10-10T12:47:58.000+02:00", "pseudo":
+        "Admin", "language_id": 1, "updated_at": "2016-10-10T13:42:49.338+02:00",
+        "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/001/thumb/loutre.jpg?1476096473",
+        "is_admin": true, "email": "dev@qoqa.com"}, "type": "user", "id": "1000001"},
+        "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 13:12:09 GMT']
-      etag: [W/"4b8ecb298dac2888e62e98cf15af1a5a"]
+      date: ['Mon, 10 Oct 2016 13:45:12 GMT']
+      etag: [W/"5ae6e37f8e9c1a8a5734239b6f924d88"]
       server: [Cowboy]
+      set-cookie: [_mkra_ctxt=eb9394d037b520c1c0f1c8c8bead5ac2--200; path=/; max-age=5;
+          HttpOnly; secure]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [cc500a4a-2cf6-4ea1-b1d4-5790a3ddf581]
-      x-runtime: ['0.079247']
+      x-request-id: [b72ef9fa-73ae-4236-bd6e-2752291af54b]
+      x-runtime: ['0.403924']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -129,25 +174,28 @@ interactions:
     uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
   response:
     body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
-        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "order_user_id": null,
-        "zip": "2068", "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
-        1, "service_client_number": null, "updated_at": "2016-06-24T14:14:25.000+02:00",
-        "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
-        "gender": 1, "country": "Suisse", "digicode": null, "created_at": "2016-06-24T14:14:25.000+02:00"},
-        "type": "address", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
+        "city": "Hauterive", "kind": "personal", "order_user_id": 1000001, "user_id":
+        1000003, "zip": "2068", "firstname": "John", "alias": null, "lastname": "Doe",
+        "street2": null, "country_id": 1, "service_client_number": null, "updated_at":
+        "2016-10-10T12:47:56.000+02:00", "phone": "0781733455", "street": "Chemin
+        du bois 17", "company_name": null, "gender": 1, "country": "Suisse", "digicode":
+        null, "created_at": "2016-10-10T12:47:56.000+02:00"}, "type": "address", "id":
+        "100000001"}, "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 13:12:10 GMT']
-      etag: [W/"3f920a0a5dc3016f33199badb392f17e"]
+      date: ['Mon, 10 Oct 2016 13:45:13 GMT']
+      etag: [W/"6c9b1e3ea7bfc0eafae39c9cf81ba360"]
       server: [Cowboy]
+      set-cookie: [_mkra_ctxt=9e4a0c6df6fbd7396999e9b88dfe6530--200; path=/; max-age=5;
+          HttpOnly; secure]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [57195442-f9c4-4c98-9d45-c177904ba855]
-      x-runtime: ['0.117641']
+      x-request-id: [4dc2702f-3e8a-4a7c-b4b2-5b32fdff85d3]
+      x-runtime: ['0.210664']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -161,24 +209,29 @@ interactions:
     method: GET
     uri: https://api-sprint.qoqa.com/v1/admin/users/1000003
   response:
-    body: {string: !!python/unicode '{"data": {"attributes": {"locale": "de", "created_at":
-        "2016-06-24T14:14:27.000+02:00", "pseudo": "Hans", "language_id": 2, "updated_at":
-        "2016-01-01T11:00:00.000+01:00", "avatar_url": "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/003/thumb/cat_boobs.jpg?1466770464",
-        "email": "de@qoqa.com"}, "type": "user", "id": "1000003"}, "jsonapi": {"version":
-        "1.0"}}'}
+    body: {string: !!python/unicode '{"data": {"relationships": {"mailing_config":
+        {"data": {"type": "mailing_config", "id": "426169715"}}, "user_extension":
+        {"data": {"type": "user_extension", "id": "710965808"}}}, "attributes": {"has_avatar":
+        true, "locale": "de", "created_at": "2016-10-10T12:47:58.000+02:00", "pseudo":
+        "Hans", "language_id": 2, "updated_at": "2016-01-01T11:00:00.000+01:00", "avatar_url":
+        "https://s3-eu-central-1.amazonaws.com/qoqa4-sprint/users/avatars/001/000/003/thumb/cat_boobs.jpg?1476096473",
+        "is_admin": null, "email": "de@qoqa.com"}, "type": "user", "id": "1000003"},
+        "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 13:12:10 GMT']
-      etag: [W/"93e69bd717f8b62799ff8559bd17624f"]
+      date: ['Mon, 10 Oct 2016 13:45:13 GMT']
+      etag: [W/"294888603e96b283b12fd02955777a04"]
       server: [Cowboy]
+      set-cookie: [_mkra_ctxt=f1b07118597e142fffb46e5b3c0ddaed--200; path=/; max-age=5;
+          HttpOnly; secure]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [6ad4f627-63e9-4006-b4d6-7b17e5522ffe]
-      x-runtime: ['0.080813']
+      x-request-id: [c6b8b929-a50e-4cd7-a84c-34e1bc0ccda1]
+      x-runtime: ['0.304881']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -193,25 +246,28 @@ interactions:
     uri: https://api-sprint.qoqa.com/v1/admin/addresses/100000001
   response:
     body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
-        "city": "Hauterive", "kind": "personal", "user_id": 1000003, "order_user_id": null, "zip": "2068",
-        "firstname": "John", "alias": null, "lastname": "Doe", "street2": null, "country_id":
-        1, "service_client_number": null, "updated_at": "2016-06-24T14:14:25.000+02:00",
-        "phone": "0781733455", "street": "Chemin du bois 17", "company_name": null,
-        "gender": 1, "country": "Suisse", "digicode": null, "created_at": "2016-06-24T14:14:25.000+02:00"},
-        "type": "address", "id": "100000001"}, "jsonapi": {"version": "1.0"}}'}
+        "city": "Hauterive", "kind": "personal", "order_user_id": 1000001, "user_id":
+        1000003, "zip": "2068", "firstname": "John", "alias": null, "lastname": "Doe",
+        "street2": null, "country_id": 1, "service_client_number": null, "updated_at":
+        "2016-10-10T12:47:56.000+02:00", "phone": "0781733455", "street": "Chemin
+        du bois 17", "company_name": null, "gender": 1, "country": "Suisse", "digicode":
+        null, "created_at": "2016-10-10T12:47:56.000+02:00"}, "type": "address", "id":
+        "100000001"}, "jsonapi": {"version": "1.0"}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]
       content-type: [application/json; charset=utf-8]
-      date: ['Fri, 24 Jun 2016 13:12:11 GMT']
-      etag: [W/"3f920a0a5dc3016f33199badb392f17e"]
+      date: ['Mon, 10 Oct 2016 13:45:14 GMT']
+      etag: [W/"6c9b1e3ea7bfc0eafae39c9cf81ba360"]
       server: [Cowboy]
+      set-cookie: [_mkra_ctxt=c0c00d8a3176fbaee7e718c8cf11fff7--200; path=/; max-age=5;
+          HttpOnly; secure]
       strict-transport-security: [max-age=31536000]
       via: [1.1 vegur]
       x-content-type-options: [nosniff]
       x-frame-options: [SAMEORIGIN]
-      x-request-id: [8a9cba16-67da-4456-9881-5c6500f3765d]
-      x-runtime: ['0.073121']
+      x-request-id: [bb4d39b1-8e38-489d-95f3-2711b92bf2e9]
+      x-runtime: ['0.357911']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1

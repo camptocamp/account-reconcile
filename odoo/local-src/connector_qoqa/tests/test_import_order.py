@@ -110,8 +110,8 @@ class TestImportOrder(QoQaTransactionCase):
 
         # import
         import_record(self.session, 'qoqa.sale.order',
-                      self.backend_record.id, 1)
-        domain = [('qoqa_id', '=', '1')]
+                      self.backend_record.id, 100000001)
+        domain = [('qoqa_id', '=', '100000001')]
         order = self.env['qoqa.sale.order'].search(domain)
         order.ensure_one()
 
@@ -139,7 +139,7 @@ class TestImportOrder(QoQaTransactionCase):
         # check order
         expected = [
             ExpectedOrder(
-                name='00000001',
+                name='100000001',
                 partner_id=partner.openerp_id,
                 partner_shipping_id=shipping_address.openerp_id,
                 partner_invoice_id=invoice_address.openerp_id,

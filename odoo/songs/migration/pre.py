@@ -447,6 +447,34 @@ def reset_purchase_mail_template(ctx):
 
 
 @anthem.log
+def clean_taxes(ctx):
+    """ Remove 7.0 obsolete taxes (and correct invoices/positions
+        which use them)
+    """
+    ctx.env.cr.execute("""
+        UPDATE account_invoice_tax
+        SET tax_id = 92
+        WHERE tax_id = 15
+    """)
+    ctx.env.cr.execute("""
+        UPDATE account_invoice_tax
+        SET tax_id = 16
+        WHERE tax_id = 104
+    """)
+    ctx.env.cr.execute("""
+        UPDATE qoqa_offer_position
+        SET tax_id = 94
+        WHERE tax_id = 15
+    """)
+    ctx.env.cr.execute("""
+        DELETE FROM account_tax
+        WHERE id IN (
+            15, 95, 100, 101, 102, 104, 106, 112, 115, 116, 117, 118, 119
+        )
+    """)
+
+
+@anthem.log
 def fix_sale_order_invoice_status(ctx):
     """ Disable invoicing on done sales orders
 
@@ -487,3 +515,4 @@ def main(ctx):
     prefix_qoqa_order_line_ids(ctx)
     fix_hidden_menus_group(ctx)
     fix_sale_order_invoice_status(ctx)
+    clean_taxes(ctx)

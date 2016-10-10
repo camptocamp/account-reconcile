@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Migrate stock journals to picking types
+
 **Features and Improvements**
 
 **Bugfixes**

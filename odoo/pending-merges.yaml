@@ -30,6 +30,8 @@
     - oca refs/pull/151/head
     # Don't write company_id on counterpart move line as it is a related on account
     - oca refs/pull/152/head
+    # Force import partner on account.move
+    - oca refs/pull/157/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

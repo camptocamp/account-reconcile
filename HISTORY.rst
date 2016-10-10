@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add a sales exception: paid amount on QoQa should match total amount
+
 **Bugfixes**
 
 **Build**

@@ -84,6 +84,16 @@
     <field name="active" eval="True"/>
   </record>
 
+  <record id="excep_wrong_paid_amount" model="sale.exception">
+    <field name="name">Paid Amount differs from QoQa</field>
+    <field name="description">The amount computed in Odoo doesn't match with the paid amount in QoQa.</field>
+    <field name="sequence">30</field>
+    <field name="model">sale.order</field>
+    <field name="code">if order.qoqa_bind_ids and abs(order.amount_total - order.qoqa_bind_ids[0].qoqa_payment_amount) >= 0.01:
+      failed = True</field>
+    <field name="active" eval="True"/>
+  </record>
+
   <record forcecreate="True" id="ir_cron_qoqa_import_sale_order" model="ir.cron">
     <field name="name">QoQa - Import Sales Orders</field>
     <field eval="False" name="active"/>

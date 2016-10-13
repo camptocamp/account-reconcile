@@ -7,10 +7,26 @@ from lxml import etree
 from StringIO import StringIO
 
 from openerp import models
+from openerp.addons.account_bank_statement_import.account_bank_statement_import \
+    import sanitize_account_number as old_sanitize
 
 
 class AccountBankStatementImport(models.TransientModel):
     _inherit = 'account.bank.statement.import'
+
+    def _complete_stmts_vals(self, stmts_vals, journal, account_number):
+        # Ugly inherit to simply remove all the part about the bank account ;
+        # otherwise, the parsed partners are lost
+        for st_vals in stmts_vals:
+            st_vals['journal_id'] = journal.id
+
+            for line_vals in st_vals['transactions']:
+                unique_import_id = line_vals.get('unique_import_id')
+                if unique_import_id:
+                    sanitized_account_number = old_sanitize(account_number)
+                    line_vals['unique_import_id'] = (sanitized_account_number and sanitized_account_number + '-' or '') + str(journal.id) + '-' + unique_import_id
+
+        return stmts_vals
 
     def _check_camt(self, data_file):
         try:
@@ -28,6 +44,26 @@ class AccountBankStatementImport(models.TransientModel):
         return super(AccountBankStatementImport, self)._parse_file(data_file)
 
     def _parse_file_camt(self, root):
+
+        def find_partner_and_name(entry_text):
+            if "PFYP" in entry_text:
+                # PostFinance partner
+                return (667295, "Virement Postfinance")
+            elif "SIX PAYMENT SERVICES" in entry_text:
+                # Visa/MasterCard partner
+                return (667296, "Virement Six")
+            elif "PAYPAL" in entry_text:
+                # PayPal partner
+                return (667297, "Virement Paypal")
+            elif "SWISSBILLING" in entry_text:
+                # Swissbilling partner
+                return (865751, "Virement Swissbilling")
+            elif "SWISSCARD" in entry_text:
+                # AmericanExpress partner
+                return (1052745, "Virement American Express")
+            else:
+                return "", entry_text
+
         ns = {k or 'ns': v for k, v in root.nsmap.iteritems()}
         statement_list = []
         for statement in root[0].findall('ns:Stmt', ns):
@@ -60,9 +96,8 @@ class AccountBankStatementImport(models.TransientModel):
 
                 # Name 0..1
                 transaction_name = entry.xpath('.//ns:AddtlNtryInf/text()', namespaces=ns)
-                partner_name = entry.xpath('.//ns:RltdPties/ns:%s/ns:Nm/text()' % (counter_party,), namespaces=ns)
-                entry_vals['name'] = transaction_name and transaction_name[0] or '/'
-                entry_vals['partner_name'] = partner_name and partner_name[0] or False
+                if transaction_name:
+                    entry_vals['partner_id'], entry_vals['name'] = find_partner_and_name(transaction_name[0])
                 # Bank Account No
                 bank_account_no = entry.xpath(""".//ns:RltdPties/ns:%sAcct/ns:Id/ns:IBAN/text() |
                                                   (.//ns:%sAcct/ns:Id/ns:Othr/ns:Id)[1]/text()

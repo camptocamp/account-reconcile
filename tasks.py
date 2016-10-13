@@ -5,6 +5,7 @@
 from __future__ import print_function
 
 import fileinput
+import glob
 import os
 import re
 
@@ -20,6 +21,8 @@ from invoke import task, exceptions, Collection
 ns = Collection()
 release = Collection('release')
 ns.add_collection(release)
+translate = Collection('translate')
+ns.add_collection(translate)
 
 
 def build_path(path, from_file=None):
@@ -179,3 +182,46 @@ def bump(ctx, feature=False, patch=False):
 
 release.add_task(bump, 'bump')
 release.add_task(push_branches, 'push-branches')
+
+
+@task(default=True)
+def translate_generate(ctx, addon_path, update_po=True):
+    """ Generate pot template and merge it in language files
+
+    Example:
+
+        $ invoke translate.generate odoo/local-src/my_module
+    """
+    dbname = 'tmp_generate_pot'
+    addon = addon_path.split('/')[-1]
+    assert os.path.exists(build_path(addon_path)), "%s not found" % addon_path
+    container_path = os.path.join('/opt', addon_path, 'i18n')
+    if not os.path.exists(container_path):
+        os.mkdir(os.path.join(build_path(addon_path), 'i18n'))
+    container_po_path = os.path.join(container_path, '%s.po' % addon)
+    user_id = ctx.run(['id --user'], hide='both').stdout.strip()
+    cmd = ('docker-compose run --rm  -e LOCAL_USER_ID=%(user)s '
+           '-e DEMO=False -e MIGRATE=False odoo odoo.py '
+           '--log-level=warn --workers=0 '
+           '--database %(dbname)s --i18n-export=%(path)s '
+           '--modules=%(addon)s --stop-after-init --without-demo=all '
+           '--init=%(addon)s') % {'user': user_id, 'path': container_po_path,
+                                  'dbname': dbname, 'addon': addon}
+    ctx.run(cmd)
+
+    ctx.run('docker-compose run --rm -e PGPASSWORD=odoo odoo '
+            'dropdb %s -U odoo -h db' % dbname)
+
+    # mv .po to .pot
+    i18n_dir = build_path(os.path.join(addon_path, 'i18n'))
+    source = os.path.join(i18n_dir, '%s.po' % addon)
+    pot_file = source + 't'
+    ctx.run('mv %s %s' % (source, pot_file))
+
+    if update_po:
+        for po_file in glob.glob('%s/*.po' % i18n_dir):
+            ctx.run('msgmerge %(po)s %(pot)s -o %(po)s' %
+                    {'po': po_file, 'pot': pot_file})
+    print('%s.pot generated' % addon)
+
+translate.add_task(translate_generate, 'generate')

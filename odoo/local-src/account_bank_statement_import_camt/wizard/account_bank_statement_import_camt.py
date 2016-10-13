@@ -62,7 +62,7 @@ class AccountBankStatementImport(models.TransientModel):
                 # AmericanExpress partner
                 return (1052745, "Virement American Express")
             else:
-                return "", entry_text
+                return (False, entry_text)
 
         ns = {k or 'ns': v for k, v in root.nsmap.iteritems()}
         statement_list = []

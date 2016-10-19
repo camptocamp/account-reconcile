@@ -295,3 +295,8 @@ msgstr ""
 #: view:crm.claim.unclaimed.delivery:0
 msgid "or"
 msgstr ""
+
+#. module: qoqa_claim
+#: field:crm.claim,priority:0
+msgid "Customer Satisfaction"
+msgstr "Satisfaction client"

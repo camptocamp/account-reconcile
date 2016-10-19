@@ -700,6 +700,21 @@ def rename_qoqa_offer(ctx):
 
 
 @anthem.log
+def delete_stock_translation(ctx):
+    """ Remove new "Suppliers" translation (done in "specific_fct", but
+        needed if "specific_fct" is updated at the same time than "stock")
+    """
+    ctx.env.cr.execute("""
+        DELETE FROM ir_translation
+        WHERE name = 'stock.location,name'
+        AND lang IN ('de_DE', 'fr_FR')
+        AND module = 'stock'
+        AND src = 'Suppliers'
+        AND value IN ('Vendeur', 'Lieferanten');
+    """)
+
+
+@anthem.log
 def migrate_automatic_reconciliation(ctx):
     """
         Migrate from account.easy.reconcile to account.mass.reconcile

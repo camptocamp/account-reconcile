@@ -31,6 +31,4 @@ class TestCamtFile(TransactionCase):
 
         # Check an imported bank statement line
         line = bank_st_record.line_ids.filtered(lambda r: r.ref == 'INNDNL2U20150105000217200000708')
-        self.assertEqual(line.partner_name, 'Agrolait')
         self.assertEqual(line.amount, 1636.88)
-        self.assertEqual(line.partner_id.id, self.ref('base.res_partner_2'))

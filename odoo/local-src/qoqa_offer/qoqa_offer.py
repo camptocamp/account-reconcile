@@ -18,6 +18,12 @@ class QoqaOffer(models.Model):
         string='Ref',
         readonly=True,
     )
+    display_name = fields.Char(
+        string='Display Name',
+        compute='_compute_display_name',
+        store=True,
+        readonly=True
+    )
     qoqa_shop_id = fields.Many2one(
         comodel_name='qoqa.shop',
         string='Sell on',
@@ -28,17 +34,18 @@ class QoqaOffer(models.Model):
     @api.multi
     @api.depends('name', 'ref')
     def name_get(self):
-        result = []
+        return [(offer.id, offer.display_name) for offer in self]
+
+    @api.multi
+    @api.depends('name', 'ref')
+    def _compute_display_name(self):
         for offer in self:
-            name = u'[%s] %s' % (offer.ref, offer.name)
-            result.append((offer.id, name))
-        return result
+            offer.display_name = u'[%s] %s' % (offer.ref, offer.name)
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         if args is None:
             args = []
-        domain = []
         domain = ['|', ('ref', operator, name), ('name', operator, name)]
         offers = self.search(domain + args, limit=limit)
         return offers.name_get()

@@ -202,6 +202,7 @@ class QoqaBackend(models.Model):
             # and it is simpler to import them sequentially
             with api_handle_errors():
                 import_batch(session, 'qoqa.shop', backend.id)
+                import_batch(session, 'qoqa.shipping.fee', backend.id)
         return True
 
     @api.model

@@ -51,13 +51,11 @@ class TestImportOrder(QoQaTransactionCase):
             'name': 'Drone',
             'default_code': 'drone',
         })
-        self.fee_binding = self.env['qoqa.shipper.fee'].create({
+        self.fee_binding = self.env['qoqa.shipping.fee'].create({
             'backend_id': self.backend_record.id,
             'qoqa_id': '1000001',
-            'delivery_type': 'fixed',
             'name': 'Drone delivery',
             'product_id': self.drone_product.id,
-            'partner_id': self.env.ref('base.main_company').partner_id.id,
         })
         self.product_1_binding = self.env['qoqa.product.product'].create({
             'backend_id': self.backend_record.id,
@@ -112,8 +110,8 @@ class TestImportOrder(QoQaTransactionCase):
 
         # import
         import_record(self.session, 'qoqa.sale.order',
-                      self.backend_record.id, 1)
-        domain = [('qoqa_id', '=', '1')]
+                      self.backend_record.id, 100000001)
+        domain = [('qoqa_id', '=', '100000001')]
         order = self.env['qoqa.sale.order'].search(domain)
         order.ensure_one()
 
@@ -141,7 +139,7 @@ class TestImportOrder(QoQaTransactionCase):
         # check order
         expected = [
             ExpectedOrder(
-                name='00000001',
+                name='100000001',
                 partner_id=partner.openerp_id,
                 partner_shipping_id=shipping_address.openerp_id,
                 partner_invoice_id=invoice_address.openerp_id,

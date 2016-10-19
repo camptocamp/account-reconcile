@@ -61,6 +61,7 @@ Synchronize OpenERP with the different QoQa Stores
           'account_payment_mode/account_payment_mode_views.xml',
           'delivery_carrier/delivery_carrier_view.xml',
           'crm_claim_category/crm_claim_category_views.xml',
+          'qoqa_shipping_fee/qoqa_shipping_fee_views.xml',
           'security/ir.model.access.csv',
           ],
  'installable': True,

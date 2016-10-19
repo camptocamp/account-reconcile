@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-09 10:12+0000\n"
+"POT-Creation-Date: 2016-10-10 15:23+0000\n"
 "PO-Revision-Date: 2014-10-22 09:56+0100\n"
 "Last-Translator: Tristan Rouiller <tristan.rouiller@qoqa.com>\n"
 "Language-Team: \n"
@@ -56,7 +56,7 @@ msgstr "Marque"
 #. module: qoqa_offer
 #: model:ir.ui.view,arch_db:qoqa_offer.product_orderpoint_confirm_form_view
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_res_users_ref_company_ids
@@ -326,6 +326,11 @@ msgid "QoQa Shops"
 msgstr "Magasins QoQa"
 
 #. module: qoqa_offer
+#: model:ir.model.fields,field_description:qoqa_offer.field_qoqa_offer_ref
+msgid "Ref"
+msgstr "Référence"
+
+#. module: qoqa_offer
 #: model:ir.model.fields,field_description:qoqa_offer.field_stock_picking_sale_create_date
 msgid "Sale Create Date"
 msgstr "Date de création de la commande"
@@ -335,11 +340,6 @@ msgstr "Date de création de la commande"
 #: model:ir.model.fields,field_description:qoqa_offer.field_res_users_sale_order_ids
 msgid "Sales Order"
 msgstr "Bon de commande"
-
-#. module: qoqa_offer
-#: model:ir.model,name:qoqa_offer.model_sale_order_line
-msgid "Sales Order Line"
-msgstr "Ligne de commande"
 
 #. module: qoqa_offer
 #: model:ir.ui.view,arch_db:qoqa_offer.view_sales_offer_filter

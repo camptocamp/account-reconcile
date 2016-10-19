@@ -30,14 +30,3 @@ class SaleOrder(models.Model):
     @api.onchange('qoqa_shop_id')
     def onchange_qoqa_shop_id(self):
         self.project_id = self.qoqa_shop_id.analytic_account_id
-
-
-class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
-
-    @api.multi
-    def _prepare_order_line_procurement(self, group_id=False):
-        _super = super(SaleOrderLine, self)
-        vals = _super._prepare_order_line_procurement(group_id=group_id)
-        vals['offer_id'] = self.order_id.offer_id.id
-        return vals

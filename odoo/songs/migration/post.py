@@ -734,6 +734,16 @@ def migrate_automatic_reconciliation(ctx):
 
 
 @anthem.log
+def disable_shipper_fee(ctx):
+    """ Disabling former shipper fees """
+    ctx.env.cr.execute("""
+        UPDATE delivery_carrier
+        SET active = false
+        WHERE id IN (SELECT openerp_id FROM qoqa_shipper_fee)
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -763,3 +773,4 @@ def main(ctx):
     configure_account_type(ctx)
     rename_qoqa_offer(ctx)
     migrate_automatic_reconciliation(ctx)
+    disable_shipper_fee(ctx)

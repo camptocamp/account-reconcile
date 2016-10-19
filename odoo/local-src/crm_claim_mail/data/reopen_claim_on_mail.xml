@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
+    <data noupdate="1">
         <record model="crm.claim.stage" id="stage_response_received">
             <field name="name">Response Received</field>
             <field name="state">open</field>
@@ -10,7 +10,7 @@
         </record>
     </data>
 
-    <data noupdate="1">
+    <data>
         <record id="reopen_claim" model="ir.actions.server">
             <field name="name">Re-open Claim</field>
             <field name="state">code</field>
@@ -18,8 +18,8 @@
             <field name="condition">object.stage_id.state != 'draft'</field>
             <field name="sequence">6</field>
             <field name="code">
-stage_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'crm_claim_mail', 'stage_response_received')[1]
-object.write({'stage_id': stage_id})
+stage = self.env.ref('crm_claim_mail.stage_response_received')
+object.write({'stage_id': stage.id})
             </field>
         </record>
     </data>

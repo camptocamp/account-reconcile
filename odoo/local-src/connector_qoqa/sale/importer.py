@@ -86,6 +86,7 @@ class SaleOrderImporter(QoQaImporter):
         rels = data['relationships']
         self._import_dependency(attrs['website_id'], 'qoqa.shop')
         self._import_dependency(attrs['offer_id'], 'qoqa.offer')
+        self._import_dependency(attrs['shipping_fee_id'], 'qoqa.shipping.fee')
         self._import_dependency(rels['user']['data']['id'], 'qoqa.res.partner')
         self._import_dependency(rels['billing_address']['data']['id'],
                                 'qoqa.address', always=True)

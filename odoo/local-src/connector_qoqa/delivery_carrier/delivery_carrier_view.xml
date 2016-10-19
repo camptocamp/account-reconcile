@@ -17,16 +17,6 @@
               </form>
             </field>
           </group>
-          <group string="Fees">
-            <field name="qoqa_bind_fee_ids" nolabel="1">
-              <tree string="Services">
-                <field name="qoqa_id"/>
-              </tree>
-              <form string="Services">
-                <field name="qoqa_id"/>
-              </form>
-            </field>
-          </group>
         </page>
       </notebook>
     </field>

@@ -92,8 +92,7 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         return {'product_id': product.id}
 
     def _item_shipping(self, line, parent):
-        # find carrier_id from parent record (sales order)
-        binder = self.binder_for('qoqa.shipper.fee')
+        binder = self.binder_for('qoqa.shipping.fee')
         qoqa_fee_id = parent.source['data']['attributes']['shipping_fee_id']
         fee = binder.to_openerp(qoqa_fee_id, unwrap=True)
         if qoqa_fee_id and not fee:
@@ -104,9 +103,8 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         builder = self.unit_for(QoQaShippingLineBuilder)
         builder.price_unit = 0
         builder.quantity = line['attributes']['lot_quantity']
-        # this is the delivery carrier having the rates
         if fee:
-            builder.carrier = fee
+            builder.fee = fee
             builder.product = fee.product_id
         values = builder.get_line()
         del values['price_unit']  # keep the price of the mapping
@@ -201,13 +199,13 @@ class QoQaShippingLineBuilder(ShippingLineBuilder):
 
     def __init__(self, environment):
         super(QoQaShippingLineBuilder, self).__init__(environment)
-        self.carrier = None
+        self.fee = None
 
     def get_line(self):
         line = super(QoQaShippingLineBuilder, self).get_line()
-        if self.carrier:
-            line['product_id'] = self.carrier.product_id.id
-            line['name'] = self.carrier.name
+        if self.fee:
+            line['product_id'] = self.fee.product_id.id
+            line['name'] = self.fee.name
         return line
 
 

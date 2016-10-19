@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-26 15:00+0000\n"
+"POT-Creation-Date: 2016-10-10 15:02+0000\n"
 "PO-Revision-Date: 2014-09-03 12:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -57,7 +57,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_purchase_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_purchase_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_purchase_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_purchase_count
 msgid "# Purchases"
 msgstr ""
@@ -65,7 +64,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sales_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sales_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_sales_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sales_count
 msgid "# Sales"
 msgstr ""
@@ -84,7 +82,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_product_variant_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_product_variant_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_variant_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_variant_count
 msgid "# of Product Variants"
 msgstr ""
@@ -102,8 +99,7 @@ msgid "# of Sales Order"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/product/common.py:95
-#: code:addons/connector_qoqa/product_product/common.py:49
+#: code:addons/connector_qoqa/product_product/common.py:58
 #, python-format
 msgid "-copy"
 msgstr "- copie"
@@ -123,7 +119,7 @@ msgstr "<span class=\"o_stat_text\">QoQa</span>"
 #: sql_constraint:qoqa.product.product:0 sql_constraint:qoqa.product.template:0
 #: sql_constraint:qoqa.promo.type:0 sql_constraint:qoqa.res.partner:0
 #: sql_constraint:qoqa.sale.order:0 sql_constraint:qoqa.sale.order.line:0
-#: sql_constraint:qoqa.shipper.fee:0 sql_constraint:qoqa.shop:0
+#: sql_constraint:qoqa.shipping.fee:0 sql_constraint:qoqa.shop:0
 #: sql_constraint:qoqa.stock.picking:0
 msgid "A binding already exists for this QoQa record"
 msgstr "Un binding avec le BO QoQa existe déjà pour cet enregistrement"
@@ -131,8 +127,6 @@ msgstr "Un binding avec le BO QoQa existe déjà pour cet enregistrement"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_type
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_product_type
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_product_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_type
 msgid ""
@@ -150,7 +144,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_description_sale
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_description_sale
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_description_sale
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_description_sale
 msgid ""
 "A description of the Product that you want to communicate to your customers. "
@@ -161,7 +154,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_description_purchase
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_description_purchase
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_description_purchase
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_description_purchase
 msgid ""
 "A description of the Product that you want to communicate to your vendors. "
@@ -195,7 +187,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_description
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_description
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_description
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_description
 msgid ""
 "A precise description of the Product, used only for internal information "
@@ -203,9 +194,28 @@ msgid ""
 msgstr ""
 
 #. module: connector_qoqa
+#: sql_constraint:qoqa.product.attribute:0
+msgid "A product attribute can be exported only once on the same backend"
+msgstr "Une caractéristique ne peut être exportée qu'une fois sur le même backend."
+
+#. module: connector_qoqa
+#: sql_constraint:qoqa.product.attribute.value:0
+msgid "A product attribute value can be exported only once on the same backend"
+msgstr ""
+"Un valeur de caractéristique ne peut être exportée qu'une fois sur le même backend."
+
+#. module: connector_qoqa
 #: sql_constraint:qoqa.product.product:0
 msgid "A product can be exported only once on the same backend"
 msgstr "Un article ne peut être exporté qu'une fois sur le même backend."
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/product_product/common.py:88
+#, python-format
+msgid ""
+"One of the product has already been exported and cannot be disabled."
+msgstr ""
+"Un des produits a déjà été exporté et ne peut pas être désactivé."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.template:0
@@ -267,6 +277,11 @@ msgid ""
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_account_tax
+msgid "Account tax"
+msgstr "Compte de taxe"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_company_voucher_account_id
 msgid "Account used for voucher counterpart"
 msgstr ""
@@ -278,7 +293,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_needaction
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_needaction
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_needaction
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_needaction
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_needaction
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_needaction
 msgid "Action Needed"
@@ -297,7 +311,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_active
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_active
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_active
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_active
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_active
 #: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_active
 msgid "Active"
@@ -334,7 +347,6 @@ msgstr "Configuration avancée"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_ageing
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_ageing
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_ageing
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_ageing
 msgid "Ageing"
 msgstr "Maturation"
@@ -342,7 +354,6 @@ msgstr "Maturation"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_abv
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_abv
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_abv
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_abv
 msgid "Alcohol by volume"
 msgstr "Volume"
@@ -350,7 +361,6 @@ msgstr "Volume"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_base_default_code
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_base_default_code
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_base_default_code
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_base_default_code
 msgid "All generated variants' internal code will begin with this code."
 msgstr ""
@@ -380,7 +390,6 @@ msgstr "Déjà à jour."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_amount
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_amount
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_amount
 msgid "Amount"
 msgstr "Montant"
@@ -391,7 +400,6 @@ msgid "Amount currency"
 msgstr "Devise"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_amount
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_amount
 msgid ""
 "Amount of the order to benefit from a free shipping, expressed in the "
@@ -423,7 +431,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_appellation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_appellation
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_appellation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_appellation
 msgid "Appellation"
 msgstr "Appellation"
@@ -474,7 +481,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_attribute_value_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_attribute_value_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_attribute_value_ids
 msgid "Attributes"
 msgstr ""
@@ -496,7 +502,6 @@ msgid "Automatic Workflow"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_available
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_available
 msgid "Available"
 msgstr ""
@@ -543,7 +548,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_barcode
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_barcode
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_barcode
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_barcode
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_barcode
 msgid "Barcode"
 msgstr ""
@@ -551,7 +555,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_base_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_base_default_code
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_base_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_base_default_code
 msgid "Base Reference"
 msgstr "Référence de base"
@@ -559,7 +562,6 @@ msgstr "Référence de base"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_list_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_list_price
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_list_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_list_price
 msgid ""
 "Base price to compute the customer price. Sometimes called the catalog price."
@@ -567,7 +569,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_image
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_image
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_image
 msgid "Big-sized image"
 msgstr ""
@@ -584,8 +585,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_product_brand_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_brand
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_product_brand_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_brand
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_brand_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_brand
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_brand_id
 msgid "Brand"
@@ -629,7 +628,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_purchase_ok
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_purchase_ok
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_purchase_ok
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_purchase_ok
 msgid "Can be Purchased"
 msgstr ""
@@ -637,7 +635,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_rental
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_rental
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_rental
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_rental
 msgid "Can be Rent"
 msgstr ""
@@ -645,8 +642,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sale_ok
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sale_ok
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_sale_ok
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_sale_ok
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_sale_ok
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sale_ok
 msgid "Can be Sold"
@@ -658,17 +653,12 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #. module: connector_qoqa
-#: model:ir.ui.view,arch_db:connector_qoqa.view_order_form
-msgid "Cancel Order"
-msgstr "Annuler la commande"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_canceled_in_backend
 msgid "Canceled in backend"
-msgstr ""
+msgstr "Annulée sur QoQa"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:93
+#: code:addons/connector_qoqa/invoice/exporter.py:89
 #, python-format
 msgid "Canceled refund with payment id: %s"
 msgstr "Note de crédit annulée avec l'id de paiement : %s"
@@ -679,17 +669,7 @@ msgid "Cancellation from the backend resolved"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:83
-#, python-format
-msgid ""
-"Cannot be canceled on the QoQa backend because there is no transaction id on "
-"the credit note"
-msgstr ""
-"Impossible d'annuler sur le BO QoQa parce qu'il n'y a pas d'id de "
-"transaction sur la note de crédit"
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:34
+#: code:addons/connector_qoqa/invoice/exporter.py:36
 #, python-format
 msgid ""
 "Cannot be refund on the QoQa backend because no payment ID could be "
@@ -717,7 +697,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_route_from_categ_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_route_from_categ_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_route_from_categ_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_route_from_categ_ids
 msgid "Category Routes"
 msgstr ""
@@ -832,7 +811,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_color
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_color
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_color
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_color
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_color
 msgid "Color Index"
 msgstr ""
@@ -865,7 +843,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_company_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_company_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_company_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_company_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_company_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_company_id
 msgid "Company"
@@ -928,7 +905,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_purchase_method
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_purchase_method
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_purchase_method
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_purchase_method
 msgid "Control Purchase Bills"
 msgstr ""
@@ -936,14 +912,12 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_standard_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_standard_price
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_standard_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_standard_price
 msgid "Cost"
 msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_standard_price
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_standard_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_standard_price
 msgid ""
 "Cost of the product template used for standard stock valuation in accounting "
@@ -959,7 +933,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_cost_method
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_cost_method
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_cost_method
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_cost_method
 msgid "Costing Method"
 msgstr ""
@@ -976,7 +949,6 @@ msgid "Counterpart"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_country_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_country_ids
 msgid "Countries"
 msgstr "Pays"
@@ -987,7 +959,6 @@ msgstr "Pays"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_country_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_country_id
 msgid "Country"
 msgstr "Pays"
@@ -1020,8 +991,8 @@ msgstr "Créé le (sur QoQa)"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_create_uid
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_create_uid
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_create_uid
 msgid "Created by"
 msgstr ""
@@ -1043,8 +1014,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_create_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_create_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_create_date
 msgid "Created on"
 msgstr ""
@@ -1081,7 +1052,7 @@ msgid "Credit journal items that are matched with this journal item."
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:91
+#: code:addons/connector_qoqa/invoice/exporter.py:87
 #, python-format
 msgid "Credit note could not be cancelled"
 msgstr "La note de crédit ne peut pas être annulée"
@@ -1097,14 +1068,12 @@ msgstr "La note de crédit ne peut pas être annulée"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_currency_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_currency_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_currency_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_currency_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_currency_id
 msgid "Currency"
 msgstr "Devise"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_qty_available
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_qty_available
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_qty_available
 msgid ""
 "Current quantity of products.\n"
@@ -1128,7 +1097,6 @@ msgstr "Client"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sale_delay
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sale_delay
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_sale_delay
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sale_delay
 msgid "Customer Lead Time"
 msgstr ""
@@ -1164,14 +1132,12 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_taxes_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_taxes_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_taxes_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_taxes_id
 msgid "Customer Taxes"
 msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_partner_ref
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_partner_ref
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_partner_ref
 msgid "Customer ref"
 msgstr ""
@@ -1201,7 +1167,6 @@ msgstr ""
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_message_last_post
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_message_last_post
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_message_last_post
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_message_last_post
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_message_last_post
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_message_last_post
 msgid "Date of the last message posted on the record."
@@ -1258,7 +1223,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_uom_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_uom_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_uom_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_uom_id
 msgid "Default Unit of Measure used for all stock operation."
 msgstr ""
@@ -1266,7 +1230,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_uom_po_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_uom_po_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_uom_po_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_uom_po_id
 msgid ""
 "Default Unit of Measure used for purchase orders. It must be in the same "
@@ -1280,7 +1243,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_delivery_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_delivery_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_delivery_count
 msgid "Delivery"
 msgstr ""
@@ -1299,7 +1261,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_property_delivery_carrier_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_property_delivery_carrier_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_carrier_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_openerp_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_openerp_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_move_type
 msgid "Delivery Method"
@@ -1316,7 +1277,6 @@ msgid "Delivery Orders"
 msgstr "Bons de livraisons"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_id
 msgid "Delivery Product"
 msgstr ""
@@ -1329,7 +1289,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_route_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_route_ids
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_route_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_route_ids
 msgid ""
 "Depending on the modules installed, this will allow you to define the route "
@@ -1342,7 +1301,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_description
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_description
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_name
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_description
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_description
 msgid "Description"
 msgstr ""
@@ -1350,7 +1308,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_description_picking
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_description_picking
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_description_picking
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_description_picking
 msgid "Description on Picking"
 msgstr ""
@@ -1368,7 +1325,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_attribute_sequence
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_attribute_value_sequence
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_sequence
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_sequence
 msgid "Determine the display order"
 msgstr ""
@@ -1423,8 +1379,8 @@ msgstr "Description du rabais"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_display_name
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_display_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_display_name
 msgid "Display Name"
 msgstr ""
@@ -1505,7 +1461,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_account_expense_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_account_expense_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_account_expense_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_account_expense_id
 msgid "Expense Account"
 msgstr ""
@@ -1521,7 +1476,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_product_template_qoqa_exportable
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_qoqa_exportable
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_qoqa_exportable
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_qoqa_exportable
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_qoqa_exportable
 msgid "Exportable on QoQa"
 msgstr "Exportable sur QoQa"
@@ -1532,7 +1486,7 @@ msgid "Exported"
 msgstr "Exporté"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_offer/common.py:99
+#: code:addons/connector_qoqa/qoqa_offer/common.py:96
 #, python-format
 msgid ""
 "Exported Offers can no longer be deleted (ref: %s).They can still be "
@@ -1549,11 +1503,6 @@ msgstr "Les bindings exportés ne peuvent pas être supprimés."
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_fax
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_fax
 msgid "Fax"
-msgstr ""
-
-#. module: connector_qoqa
-#: model:ir.ui.view,arch_db:connector_qoqa.view_delivery_carrier_form
-msgid "Fees"
 msgstr ""
 
 #. module: connector_qoqa
@@ -1584,7 +1533,6 @@ msgid "Fiscal Position"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_fixed_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_fixed_price
 msgid "Fixed Price"
 msgstr ""
@@ -1596,7 +1544,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_follower_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_follower_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_follower_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_follower_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_follower_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_follower_ids
 msgid "Followers"
@@ -1609,7 +1556,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_channel_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_channel_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_channel_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_channel_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_channel_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_channel_ids
 msgid "Followers (Channels)"
@@ -1622,7 +1568,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_partner_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_partner_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_partner_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_partner_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_partner_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_partner_ids
 msgid "Followers (Partners)"
@@ -1630,14 +1575,12 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_virtual_available
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_virtual_available
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_virtual_available
 msgid "Forecast Quantity"
 msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_virtual_available
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_virtual_available
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_virtual_available
 msgid ""
 "Forecast quantity (computed as Quantity On Hand - Outgoing + Incoming)\n"
@@ -1655,7 +1598,6 @@ msgid "Forecasted Quantity"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_free_if_more_than
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_free_if_more_than
 msgid "Free if Order total is more than"
 msgstr ""
@@ -1688,7 +1630,6 @@ msgstr "Bon cadeau"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_packaging_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_packaging_ids
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_packaging_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_packaging_ids
 msgid ""
 "Gives the different ways to package the same product. This has no impact on "
@@ -1704,7 +1645,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_weight
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_weight
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_weight
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_weight
 msgid "Gross Weight"
 msgstr ""
@@ -1712,7 +1652,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_has_checkpoint
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_has_checkpoint
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_has_checkpoint
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_has_checkpoint
 msgid "Has Checkpoint"
 msgstr ""
@@ -1756,8 +1695,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_id
 msgid "ID"
 msgstr ""
@@ -1786,8 +1725,8 @@ msgstr "ID du paiement sur QoQa"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_company_qoqa_id
@@ -1826,7 +1765,6 @@ msgstr ""
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_message_unread
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_message_unread
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_message_unread
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_message_unread
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_message_unread
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_message_unread
 msgid "If checked new messages require your attention."
@@ -1839,7 +1777,6 @@ msgstr ""
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_message_needaction
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_message_needaction
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_message_needaction
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_message_needaction
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_message_needaction
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_message_needaction
 msgid "If checked, new messages require your attention."
@@ -1857,7 +1794,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_valuation
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_valuation
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_valuation
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_valuation
 msgid ""
 "If perpetual valuation is enabled for a product, the system will "
@@ -1869,7 +1805,6 @@ msgid ""
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_free_if_more_than
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_free_if_more_than
 msgid ""
 "If the order is more expensive than a certain amount, the customer can "
@@ -1894,7 +1829,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_active
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_active
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_active
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_active
 msgid ""
 "If unchecked, it will allow you to hide the product without removing it."
@@ -1914,7 +1848,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_image
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image
 msgid ""
 "Image of the product variant (Big-sized image of product template if false). "
@@ -1924,7 +1857,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image_medium
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_image_medium
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image_medium
 msgid ""
 "Image of the product variant (Medium-sized image of product template if "
@@ -1933,7 +1865,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image_small
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_image_small
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image_small
 msgid ""
 "Image of the product variant (Small-sized image of product template if "
@@ -2062,7 +1993,7 @@ msgid "Impossible to cancel a refund on the backend."
 msgstr "Impossible d'annuler un avoir sur QoQa."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:112
+#: code:addons/connector_qoqa/sale/common.py:113
 #, python-format
 msgid "Impossible to cancel the sales order on the backend now."
 msgstr "Impossible d'annuler la commande sur QoQa maintenant."
@@ -2076,7 +2007,6 @@ msgstr "Impossible de créer l'avoir sur QoQa."
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_account_income_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_account_income_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_account_income_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_account_income_id
 msgid "Income Account"
 msgstr ""
@@ -2084,7 +2014,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_incoming_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_incoming_qty
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_incoming_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_incoming_qty
 msgid "Incoming"
 msgstr ""
@@ -2107,7 +2036,6 @@ msgstr "Informations"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_categ_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_categ_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_categ_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_categ_id
 msgid "Internal Category"
 msgstr ""
@@ -2125,8 +2053,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_ref
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_code
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_default_code
 msgid "Internal Reference"
@@ -2134,7 +2060,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_barcode
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_barcode
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_barcode
 msgid "International Article Number used for product identification."
 msgstr ""
@@ -2149,7 +2074,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_stock_inventory
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_stock_inventory
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_stock_inventory
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_stock_inventory
 msgid "Inventory Location"
 msgstr ""
@@ -2157,7 +2081,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_valuation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_valuation
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_valuation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_valuation
 msgid "Inventory Valuation"
 msgstr ""
@@ -2219,7 +2142,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_invoice_policy
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_invoice_policy
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_invoice_policy
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_invoice_policy
 msgid "Invoicing Policy"
 msgstr ""
@@ -2231,7 +2153,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_is_follower
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_is_follower
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_is_follower
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_is_follower
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_is_follower
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_is_follower
 msgid "Is Follower"
@@ -2263,7 +2184,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_is_product_variant
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_is_product_variant
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_is_product_variant
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_is_product_variant
 msgid "Is a product variant"
 msgstr ""
@@ -2318,7 +2238,6 @@ msgid "Journal for Vouchers"
 msgstr "Journal pour le bon"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_fixed_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_fixed_price
 msgid ""
 "Keep empty if the pricing depends on the advanced pricing per destination"
@@ -2342,7 +2261,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_last_post
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_last_post
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_last_post
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_last_post
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_last_post
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_last_post
 msgid "Last Message Date"
@@ -2366,8 +2284,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line___last_update
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type___last_update
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking___last_update
 msgid "Last Modified on"
 msgstr ""
@@ -2389,8 +2307,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_write_uid
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_write_uid
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -2412,8 +2330,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_write_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_write_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_write_date
 msgid "Last Updated on"
 msgstr ""
@@ -2440,8 +2358,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_sync_date
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_qoqa_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_sync_date
@@ -2481,7 +2399,6 @@ msgstr "Lien"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_is_liquor
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_is_liquor
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_is_liquor
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_is_liquor
 msgid "Liquor"
 msgstr "Spiritueux"
@@ -2494,7 +2411,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_location_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_location_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_location_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_location_id
 msgid "Location"
 msgstr ""
@@ -2502,7 +2418,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_packaging_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_packaging_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_packaging_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_packaging_ids
 msgid "Logistical Units"
 msgstr ""
@@ -2571,7 +2486,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_image_medium
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_image_medium
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_image_medium
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_image_medium
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_image_medium
 msgid "Medium-sized image"
 msgstr ""
@@ -2606,7 +2520,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_ids
 msgid "Messages"
@@ -2615,7 +2528,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_millesime
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_millesime
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_millesime
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_millesime
 msgid "Millesime"
 msgstr "Millésime"
@@ -2627,7 +2539,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_orderpoint_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_orderpoint_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_orderpoint_ids
 msgid "Minimum Stock Rules"
 msgstr ""
@@ -2651,8 +2562,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_name
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_name
 msgid "Name"
 msgstr "Nom"
 
@@ -2682,8 +2593,8 @@ msgid "No Follow-up"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:26
-#: code:addons/connector_qoqa/invoice/exporter.py:74
+#: code:addons/connector_qoqa/invoice/exporter.py:28
+#: code:addons/connector_qoqa/invoice/exporter.py:75
 #, python-format
 msgid "No origin invoice"
 msgstr ""
@@ -2694,8 +2605,8 @@ msgid "Non pack"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:29
-#: code:addons/connector_qoqa/invoice/exporter.py:77
+#: code:addons/connector_qoqa/invoice/exporter.py:31
+#: code:addons/connector_qoqa/invoice/exporter.py:78
 #, python-format
 msgid "Not a sale from the QoQa backend"
 msgstr "Ce n'est pas une commande du BO QoQa"
@@ -2739,7 +2650,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_needaction_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_needaction_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_needaction_counter
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_needaction_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_needaction_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_needaction_counter
 msgid "Number of Actions"
@@ -2764,7 +2674,6 @@ msgstr ""
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_message_needaction_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_message_needaction_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_message_needaction_counter
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_message_needaction_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_message_needaction_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_message_needaction_counter
 msgid "Number of messages which requires an action"
@@ -2777,7 +2686,6 @@ msgstr ""
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_message_unread_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_message_unread_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_message_unread_counter
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_message_unread_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_message_unread_counter
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_message_unread_counter
 msgid "Number of unread messages"
@@ -2814,16 +2722,10 @@ msgstr ""
 "                                    dans le menu 'Connectors > Checkpoint'."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_backend/common.py:215
+#: code:addons/connector_qoqa/qoqa_backend/common.py:217
 #, python-format
 msgid "Only 1 QoQa configuration is allowed."
 msgstr "Seulement 1 configuration de backend QoQa est possible."
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:268
-#, python-format
-msgid "Only done sales orders can be forced to be canceled."
-msgstr "Seulement les commandes terminées peuvent être annulées en force."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_opportunity_ids
@@ -2845,7 +2747,7 @@ msgid "Opt-Out"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:328
+#: code:addons/connector_qoqa/sale/common.py:170
 #, python-format
 msgid "Order Cancellation"
 msgstr "Annulation de commande"
@@ -2884,7 +2786,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_outgoing_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_outgoing_qty
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_outgoing_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_outgoing_qty
 msgid "Outgoing"
 msgstr ""
@@ -2913,6 +2814,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_product_packaging
 msgid "Packaging"
 msgstr ""
+
+#. module: connector_qoqa
+#: model:sale.exception,name:connector_qoqa.excep_wrong_paid_amount
+msgid "Paid Amount differs from QoQa"
+msgstr "Le montant total n'est pas égal à celui payé sur QoQa."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_parent_id
@@ -3036,13 +2942,11 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_price
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_price
 msgid "Price"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_delivery_type
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_delivery_type
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_delivery_type
 msgid "Price Computation"
@@ -3051,7 +2955,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_account_creditor_price_difference
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_account_creditor_price_difference
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_account_creditor_price_difference
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_account_creditor_price_difference
 msgid "Price Difference Account"
 msgstr ""
@@ -3072,7 +2975,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_pricelist_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_pricelist_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_pricelist_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_pricelist_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_pricelist_id
 msgid "Pricelist"
 msgstr ""
@@ -3080,7 +2982,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_item_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_item_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_item_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_item_ids
 msgid "Pricelist Items"
 msgstr ""
@@ -3091,7 +2992,6 @@ msgid "Pricelist for current sales order."
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_price_rule_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_price_rule_ids
 msgid "Pricing Rules"
 msgstr ""
@@ -3123,7 +3023,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_stock_procurement
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_stock_procurement
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_stock_procurement
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_stock_procurement
 msgid "Procurement Location"
 msgstr ""
@@ -3152,7 +3051,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_attribute_line_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_attribute_line_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_attribute_line_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_attribute_line_ids
 msgid "Product Attributes"
 msgstr ""
@@ -3160,7 +3058,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_product_manager
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_product_manager
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_manager
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_manager
 msgid "Product Manager"
 msgstr ""
@@ -3169,7 +3066,6 @@ msgstr ""
 #: model:ir.model,name:connector_qoqa.model_product_template
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_product_tmpl_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_product_tmpl_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_tmpl_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_tmpl_id
 msgid "Product Template"
 msgstr "Modèle d'article"
@@ -3177,17 +3073,19 @@ msgstr "Modèle d'article"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_type
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_type
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_type
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_type
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_type
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_type
 msgid "Product Type"
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_product_id
+msgid "Product id"
+msgstr "Article"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_stock_production
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_stock_production
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_stock_production
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_stock_production
 msgid "Production Location"
 msgstr ""
@@ -3195,7 +3093,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_product_variant_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_product_variant_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_product_variant_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_variant_ids
 msgid "Products"
 msgstr "Articles"
@@ -3219,7 +3116,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_description_purchase
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_description_purchase
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_description_purchase
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_description_purchase
 msgid "Purchase Description"
 msgstr ""
@@ -3232,7 +3128,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_uom_po_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_uom_po_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_uom_po_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_uom_po_id
 msgid "Purchase Unit of Measure"
 msgstr ""
@@ -3315,8 +3210,8 @@ msgstr "QoQa Auth"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_backend_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_backend_id
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
@@ -3350,24 +3245,15 @@ msgstr "Liens QoQa (abstrait)"
 #: model:ir.model.fields,field_description:connector_qoqa.field_product_template_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_qoqa_bind_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_qoqa_bind_ids
 msgid "QoQa Bindings"
 msgstr "Liens QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_package_type_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_qoqa_bind_package_type_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_qoqa_bind_package_type_ids
 msgid "QoQa Bindings (Package Types)"
 msgstr "Liens QoQa (Package Types)"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_qoqa_bind_fee_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_qoqa_bind_fee_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_qoqa_bind_fee_ids
-msgid "QoQa Bindings (Rates)"
-msgstr "Liens QoQa (Frais de livraison)"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_crm_claim
@@ -3399,6 +3285,12 @@ msgstr "Émission de bon ou promotion QoQa"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_qoqa_discount_accounting_line_ids
 msgid "QoQa Discount Accounting Line"
 msgstr "Émission de bon ou promotion QoQa"
+
+#. module: connector_qoqa
+#: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_shipping_fee_form
+#: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_shipping_fee_tree
+msgid "QoQa Fees"
+msgstr "Frais de livraison QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_name
@@ -3461,14 +3353,16 @@ msgid "QoQa Sales Order Line"
 msgstr "Lignes de commandes QoQa"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_fee
-msgid "QoQa Shipper Fee"
-msgstr "Frais de livraison QoQa"
-
-#. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_shipper_package_type
 msgid "QoQa Shipper Package Type"
 msgstr "Types de colis QoQa"
+
+#. module: connector_qoqa
+#: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_shipping_fee
+#: model:ir.model,name:connector_qoqa.model_qoqa_shipping_fee
+#: model:ir.ui.menu,name:connector_qoqa.menu_qoqa_shipping_fee
+msgid "QoQa Shipping Fees"
+msgstr "Frais de livraison QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_shop
@@ -3504,14 +3398,12 @@ msgstr "Quantité"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_qty_available
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_qty_available
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_qty_available
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_qty_available
 msgid "Quantity On Hand"
 msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_incoming_qty
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_incoming_qty
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_incoming_qty
 msgid ""
 "Quantity of products that are planned to arrive.\n"
@@ -3525,7 +3417,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_outgoing_qty
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_outgoing_qty
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_outgoing_qty
 msgid ""
 "Quantity of products that are planned to leave.\n"
@@ -3559,7 +3450,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_reception_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_reception_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_reception_count
 msgid "Receipt"
 msgstr ""
@@ -3616,10 +3506,10 @@ msgid "Reference of the document that generated this sales order request."
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/exporter.py:53
+#: code:addons/connector_qoqa/invoice/exporter.py:54
 #, python-format
-msgid "Refund created with transaction_id: %s"
-msgstr ""
+msgid "Refund created with payment id: %s"
+msgstr "Note de crédit créée avec l'id de paiement : %s"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_account_invoice_refund_from_invoice_id
@@ -3656,7 +3546,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_nbr_reordering_rules
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_nbr_reordering_rules
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_nbr_reordering_rules
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_nbr_reordering_rules
 msgid "Reordering Rules"
 msgstr ""
@@ -3731,7 +3620,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_route_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_route_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_route_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_route_ids
 msgid "Routes"
 msgstr ""
@@ -3744,7 +3632,6 @@ msgstr "Date de création de la commande"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_description_sale
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_description_sale
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_description_sale
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_description_sale
 msgid "Sale Description"
 msgstr ""
@@ -3763,8 +3650,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_list_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_lst_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_list_price
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_list_price
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_lst_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_list_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_lst_price
 msgid "Sale Price"
@@ -3809,13 +3694,13 @@ msgid "Sales Team"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/importer.py:114
+#: code:addons/connector_qoqa/sale/importer.py:115
 #, python-format
 msgid "Sales order %s has been marked as \"to cancel\"."
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/importer.py:107
+#: code:addons/connector_qoqa/sale/importer.py:108
 #, python-format
 msgid "Sales order %s is not imported because it has been canceled."
 msgstr ""
@@ -3867,7 +3752,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_product_brand_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_product_brand_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_product_brand_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_product_brand_id
 msgid "Select a brand for this product"
 msgstr ""
@@ -3875,7 +3759,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_categ_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_categ_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_categ_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_categ_id
 msgid "Select category for the current product"
 msgstr ""
@@ -3907,7 +3790,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_sequence
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_sequence
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_sequence
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_sequence
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sequence
 msgid "Sequence"
 msgstr ""
@@ -3928,7 +3810,6 @@ msgid "Shipping Policy"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_shipping_enabled
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_shipping_enabled
 msgid "Shipping enabled"
 msgstr ""
@@ -3979,11 +3860,15 @@ msgid "Single Imports"
 msgstr "Imports unitaires (debug)"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_site_url
+msgid "Site URL"
+msgstr ""
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_image_small
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_image_small
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_image_small
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_image_small
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_image_small
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_image_small
 msgid "Small-sized image"
 msgstr ""
@@ -4024,8 +3909,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_sale_ok
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_sale_ok
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_product_sale_ok
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_sale_ok
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_product_sale_ok
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_sale_ok
 msgid "Specify if the product can be selected in a sales order line."
@@ -4039,7 +3922,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_cost_method
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_cost_method
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_cost_method
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_cost_method
 msgid ""
 "Standard Price: The cost price is manually updated at the end of a specific "
@@ -4062,7 +3944,6 @@ msgid "Statement"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_state_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_state_ids
 msgid "States"
 msgstr ""
@@ -4072,7 +3953,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_state
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_state
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_state
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_state
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_state
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_state
 msgid "Status"
@@ -4081,7 +3961,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_stock_account_input
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_stock_account_input
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_stock_account_input
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_stock_account_input
 msgid "Stock Input Account"
 msgstr ""
@@ -4094,7 +3973,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_stock_account_output
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_property_stock_account_output
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_property_stock_account_output
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_stock_account_output
 msgid "Stock Output Account"
 msgstr ""
@@ -4160,7 +4038,6 @@ msgstr "Taxes"
 #: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_tax_group_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_tax_group_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_tax_group_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_tax_group_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_tax_group_id
 msgid "Tax Group"
 msgstr ""
@@ -4177,7 +4054,6 @@ msgstr ""
 #: model:ir.model.fields,help:connector_qoqa.field_delivery_carrier_tax_group_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_tax_group_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_tax_group_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_tax_group_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_tax_group_id
 msgid "Tax groups are used with some external system like Prestashop"
 msgstr ""
@@ -4238,13 +4114,12 @@ msgstr "Modèle d'article"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_name_template
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_name_template
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_name_template
 msgid "Template Name"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/product_template/common.py:77
+#: code:addons/connector_qoqa/product_template/common.py:49
 #, python-format
 msgid "Template already exported, it cannot be undone."
 msgstr ""
@@ -4266,6 +4141,12 @@ msgstr ""
 "Le montant calculé par Odoo ne correspond pas au montant calculé par QoQa."
 
 #. module: connector_qoqa
+#: model:sale.exception,description:connector_qoqa.excep_wrong_paid_amount
+msgid "The amount computed in Odoo doesn't match with the paid amount in QoQa."
+msgstr ""
+"Le montant calculé par Odoo ne correspond pas au montant payé sur QoQa."
+
+#. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_discount_accounting_line_amount_currency
 msgid ""
 "The amount expressed in an optional other currency if it is a multi-currency "
@@ -4279,7 +4160,7 @@ msgid "The analytic account related to a sales order."
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_backend/common.py:189
+#: code:addons/connector_qoqa/qoqa_backend/common.py:190
 #, python-format
 msgid ""
 "The authentication failed. Use the \"Get Authentication Tokens\" button to "
@@ -4289,7 +4170,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_sale_delay
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_sale_delay
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_sale_delay
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_sale_delay
 msgid ""
 "The average delay in days between the confirmation of the customer order and "
@@ -4329,7 +4209,7 @@ msgid ""
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/product_attribute_value/common.py:45
+#: code:addons/connector_qoqa/product_attribute_value/common.py:52
 #, python-format
 msgid ""
 "The limit for an attribute value is 25 characters.\n"
@@ -4344,7 +4224,7 @@ msgid "The move of this entry line."
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_offer/common.py:85
+#: code:addons/connector_qoqa/qoqa_offer/common.py:82
 #, python-format
 msgid "The offer does not exist on the backend."
 msgstr "L'offre n'existe pas sur le backend."
@@ -4370,7 +4250,6 @@ msgid ""
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_partner_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_partner_id
 msgid "The partner that is doing the delivery service."
 msgstr ""
@@ -4401,6 +4280,12 @@ msgid "The record id this is attached to"
 msgstr ""
 
 #. module: connector_qoqa
+#: code:addons/connector_qoqa/invoice/exporter.py:25
+#, python-format
+msgid "The refund has been cancelled."
+msgstr "Les paiements peuvent être annulés le même jour"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_discount_accounting_line_amount_residual_currency
 msgid ""
 "The residual amount on a journal item expressed in its currency (possibly "
@@ -4414,13 +4299,7 @@ msgid ""
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:299
-#, python-format
-msgid "The sales order was done, but it has been manually canceled."
-msgstr ""
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_backend/common.py:242
+#: code:addons/connector_qoqa/qoqa_backend/common.py:244
 #, python-format
 msgid ""
 "The synchronization timestamp %s is currently locked, probably due to an "
@@ -4430,7 +4309,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_volume
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_volume
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_volume
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_volume
 msgid "The volume in m3."
 msgstr ""
@@ -4438,7 +4316,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_weight
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_weight
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_weight
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_weight
 msgid "The weight of the contents in Kg, not including any packaging, etc."
 msgstr ""
@@ -4454,7 +4331,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_account_expense_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_account_expense_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_account_expense_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_account_expense_id
 msgid ""
 "This account will be used for invoices instead of the default one to value "
@@ -4464,7 +4340,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_account_income_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_account_income_id
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_account_income_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_account_income_id
 msgid ""
 "This account will be used for invoices instead of the default one to value "
@@ -4490,7 +4365,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_account_creditor_price_difference
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_account_creditor_price_difference
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_account_creditor_price_difference
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_account_creditor_price_difference
 msgid ""
 "This account will be used to value price difference between purchase price "
@@ -4526,7 +4400,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image_variant
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_image_variant
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image_variant
 msgid ""
 "This field holds the image used as image for the product variant, limited to "
@@ -4568,7 +4441,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_price_extra
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_price_extra
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_price_extra
 msgid "This is the sum of the extra price of all attributes"
 msgstr ""
@@ -4621,7 +4493,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_production
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_production
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_stock_production
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_production
 msgid ""
 "This stock location will be used, instead of the default one, as the source "
@@ -4631,7 +4502,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_procurement
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_procurement
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_stock_procurement
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_procurement
 msgid ""
 "This stock location will be used, instead of the default one, as the source "
@@ -4641,7 +4511,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_inventory
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_inventory
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_stock_inventory
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_inventory
 msgid ""
 "This stock location will be used, instead of the default one, as the source "
@@ -4730,7 +4599,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_track_service
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_track_service
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_track_service
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_track_service
 msgid "Track Service"
 msgstr ""
@@ -4738,7 +4606,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_tracking
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_tracking
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_tracking
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_tracking
 msgid "Tracking"
 msgstr ""
@@ -4769,7 +4636,6 @@ msgid "Transfer"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_partner_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_partner_id
 msgid "Transporter Company"
 msgstr ""
@@ -4798,7 +4664,6 @@ msgid "URL"
 msgstr "URL"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_shipping_enabled
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_shipping_enabled
 msgid ""
 "Uncheck this box to disable package shipping while validating Delivery Orders"
@@ -4814,7 +4679,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_uom_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_uom_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_product_uom
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_uom_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_uom_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_weight_uom_id
 msgid "Unit of Measure"
@@ -4832,7 +4696,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_unread
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_unread
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_unread
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_unread
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_unread
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_unread
 msgid "Unread Messages"
@@ -4845,7 +4708,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_message_unread_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_message_unread_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_message_unread_counter
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_message_unread_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_message_unread_counter
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_message_unread_counter
 msgid "Unread Messages Counter"
@@ -4922,7 +4784,6 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_price_extra
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_price_extra
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_price_extra
 msgid "Variant Extra Price"
 msgstr ""
@@ -4934,9 +4795,14 @@ msgstr "ID de variante"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_image_variant
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_image_variant
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_image_variant
 msgid "Variant Image"
+msgstr ""
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/product_product/common.py:32
+#, python-format
+msgid "Variant already exported, it cannot be undone."
 msgstr ""
 
 #. module: connector_qoqa
@@ -4947,7 +4813,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_seller_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_seller_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_seller_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_seller_ids
 msgid "Vendor"
 msgstr ""
@@ -4967,7 +4832,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_supplier_taxes_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_supplier_taxes_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_supplier_taxes_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_supplier_taxes_id
 msgid "Vendor Taxes"
 msgstr ""
@@ -4977,8 +4841,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_wine_bottle_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_volume
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_wine_bottle_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_volume
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_wine_bottle_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_volume
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_wine_bottle_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_volume
@@ -5001,7 +4863,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_warehouse_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_warehouse_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_warehouse_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_warehouse_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_warehouse_id
 msgid "Warehouse"
 msgstr ""
@@ -5009,7 +4870,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_warranty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_warranty
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_warranty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_warranty
 msgid "Warranty"
 msgstr ""
@@ -5022,6 +4882,7 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_website
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_website
+#: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
 msgid "Website"
 msgstr ""
 
@@ -5052,7 +4913,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_account_input
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_account_input
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_stock_account_input
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_account_input
 msgid ""
 "When doing real-time inventory valuation, counterpart journal items for all "
@@ -5064,7 +4924,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_account_output
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_account_output
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_fee_property_stock_account_output
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_account_output
 msgid ""
 "When doing real-time inventory valuation, counterpart journal items for all "
@@ -5076,7 +4935,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_is_wine
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_is_wine
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_is_wine
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_is_wine
 msgid "Wine"
 msgstr ""
@@ -5084,7 +4942,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_wine_class_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_wine_class_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_wine_class_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_wine_class_id
 msgid "Wine Class"
 msgstr ""
@@ -5092,7 +4949,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_wine_type_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_wine_type_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_wine_type_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_wine_type_id
 msgid "Wine Type"
 msgstr ""
@@ -5100,7 +4956,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_wine_region
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_wine_region
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_wine_region
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_wine_region
 msgid "Wine region"
 msgstr ""
@@ -5108,7 +4963,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_wine_short_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_wine_short_name
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_wine_short_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_wine_short_name
 msgid "Wine short name"
 msgstr ""
@@ -5116,7 +4970,6 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_winemaker_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_winemaker_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_winemaker_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_winemaker_id
 msgid "Winemaker"
 msgstr ""
@@ -5142,13 +4995,11 @@ msgid "Zip"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_zip_from
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_zip_from
 msgid "Zip From"
 msgstr ""
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_zip_to
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_zip_to
 msgid "Zip To"
 msgstr ""
@@ -5183,10 +5034,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_reordering_max_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_reordering_min_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_valuation
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_cost_method
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_reordering_max_qty
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_reordering_min_qty
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_fee_valuation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_cost_method
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_reordering_max_qty
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_reordering_min_qty

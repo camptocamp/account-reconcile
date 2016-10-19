@@ -27,6 +27,8 @@ latest (unreleased)
 
 * Add a sales exception: paid amount on QoQa should match total amount
 
+* Synchronize shipping fees from QoQa (MIGO-354)
+
 **Bugfixes**
 
 **Build**

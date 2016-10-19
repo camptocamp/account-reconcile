@@ -85,9 +85,8 @@ class ProductProduct(models.Model):
             if any(product.mapped('qoqa_bind_ids.qoqa_id')
                    for product in self):
                 raise exceptions.UserError(
-                    _('A product has already been exported and cannot be '
-                      'disabled. If you were trying to add a new variant, '
-                      'you must add it manually on the template.')
+                    _('One of the product has already been exported and '
+                      'cannot be disabled.')
                 )
         return super(ProductProduct, self).write(vals)
 

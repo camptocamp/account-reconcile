@@ -16,11 +16,6 @@ class DeliveryCarrier(models.Model):
         inverse_name='openerp_id',
         string='QoQa Bindings (Package Types)',
     )
-    qoqa_bind_fee_ids = fields.One2many(
-        comodel_name='qoqa.shipper.fee',
-        inverse_name='openerp_id',
-        string='QoQa Bindings (Rates)',
-    )
 
 
 class QoqaShipperPackageType(models.Model):
@@ -54,32 +49,9 @@ class QoqaShipperPackageType(models.Model):
         super(QoqaShipperPackageType, self)._auto_init(cr, context=context)
 
 
-class QoqaShipperFee(models.Model):
-    """ QoQa Shipper Fee
-
-    Used on QoQa for the amount of the shipping fee.
-    We map it in order to set the name and the product_id of the shipping order
-    line.
-
-    """
-    _name = 'qoqa.shipper.fee'
-    _inherit = 'qoqa.binding'
-    _inherits = {'delivery.carrier': 'openerp_id'}
-    _description = 'QoQa Shipper Fee'
-
-    openerp_id = fields.Many2one(
-        comodel_name='delivery.carrier',
-        string='Delivery Method',
-        required=True,
-        index=True,
-        ondelete='restrict',
-    )
-
-
 @qoqa
 class ShipperBinder(QoQaInheritsBinder):
     _model_name = ['qoqa.shipper.package.type',
-                   'qoqa.shipper.fee',
                    ]
 
     def bind(self, external_id, binding_id):

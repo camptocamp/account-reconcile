@@ -23,15 +23,8 @@ class OfferBatchImport(DelayedBatchImporter):
 
 
 @qoqa
-class QoQaOfferImport(QoQaImporter):
-    """ Import the description of the offer.
-
-    All the offer's fields are master in OpenERP but the
-    ``description`` field.
-    This field is filed on the QoQa Backend and we get
-    back its value on OpenERP.
-
-    """
+class QoQaOfferImporter(QoQaImporter):
+    """ Import an offer. """
     _model_name = 'qoqa.offer'
 
     def _import_dependencies(self):
@@ -55,7 +48,7 @@ class QoQaOfferImport(QoQaImporter):
             raise QoQaError('No connector user configured for company %s' %
                             shop_binding.company_id.name)
         with self.session.change_user(user.id):
-            super(QoQaOfferImport, self)._import(binding_id)
+            super(QoQaOfferImporter, self)._import(binding_id)
 
 
 @qoqa

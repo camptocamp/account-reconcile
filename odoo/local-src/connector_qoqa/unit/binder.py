@@ -57,6 +57,7 @@ class QoQaDirectBinder(QoQaBinder):
     """
     _model_name = ['qoqa.offer',
                    'qoqa.shop',
+                   'qoqa.shipping.fee',
                    ]
     _sync_date_field = 'qoqa_sync_date'
 

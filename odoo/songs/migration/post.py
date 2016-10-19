@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import anthem
+from anthem.lyrics.records import create_or_update
 
 from . import post_dispatch
 from . import post_product
@@ -700,6 +701,21 @@ def rename_qoqa_offer(ctx):
 
 
 @anthem.log
+def delete_stock_translation(ctx):
+    """ Remove new "Suppliers" translation (done in "specific_fct", but
+        needed if "specific_fct" is updated at the same time than "stock")
+    """
+    ctx.env.cr.execute("""
+        DELETE FROM ir_translation
+        WHERE name = 'stock.location,name'
+        AND lang IN ('de_DE', 'fr_FR')
+        AND module = 'stock'
+        AND src = 'Suppliers'
+        AND value IN ('Vendeur', 'Lieferanten');
+    """)
+
+
+@anthem.log
 def migrate_automatic_reconciliation(ctx):
     """
         Migrate from account.easy.reconcile to account.mass.reconcile
@@ -744,6 +760,52 @@ def disable_shipper_fee(ctx):
 
 
 @anthem.log
+def move_stock_journal_to_picking_type(ctx):
+    """ Move stock journal to picking types """
+    picking_type_out = ctx.env.ref('stock.picking_type_out')
+    sequence_out = picking_type_out.sequence_id
+    picking_types = {}
+    ctx.env.cr.execute("""
+        SELECT id, name FROM stock_journal
+    """)
+    for id_, name in ctx.env.cr.fetchall():
+        location_src = picking_type_out.default_location_src_id
+        location_dest = picking_type_out.default_location_dest_id
+        picking_types[id_] = create_or_update(
+            ctx,
+            'stock.picking.type',
+            '__setup__.stock_picking_type_stock_journal_%s' % (id_,),
+            {'name': name,
+             'warehouse_id': picking_type_out.warehouse_id.id,
+             'code': 'outgoing',
+             'use_create_lots': picking_type_out.use_create_lots,
+             'use_existing_lots': picking_type_out.use_existing_lots,
+             'sequence_id': sequence_out.id,
+             'default_location_src_id': location_src.id,
+             'default_location_dest_id': location_dest.id,
+             'sequence': picking_type_out.sequence + 1,
+             'color': picking_type_out.color,
+             }
+        )
+    for id_, picking_type in picking_types.iteritems():
+        ctx.env.cr.execute("""
+            SELECT count(*) FROM stock_picking
+            WHERE stock_journal_id = %s
+            AND picking_type_id = %s
+        """, (id_, picking_type_out.id))
+        picking_count, = ctx.env.cr.fetchone()
+        msg = ('move %d pickings to picking type %s' %
+               (picking_count, picking_type.name))
+        with ctx.log(msg):
+            ctx.env.cr.execute("""
+                UPDATE stock_picking
+                SET picking_type_id = %s
+                WHERE stock_journal_id = %s
+                AND picking_type_id = %s
+            """, (picking_type.id, id_, picking_type_out.id))
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -774,3 +836,4 @@ def main(ctx):
     rename_qoqa_offer(ctx)
     migrate_automatic_reconciliation(ctx)
     disable_shipper_fee(ctx)
+    move_stock_journal_to_picking_type(ctx)

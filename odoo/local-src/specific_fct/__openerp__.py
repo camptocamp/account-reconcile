@@ -39,6 +39,7 @@
         'wizard/account_invoice_refund_view.xml',
         'data/mail_data.xml',
         'data/product_category.xml',
+        'data/delete_translation.sql',
     ],
     'installable': True,
     'application': True,

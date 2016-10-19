@@ -6,7 +6,7 @@
     <field name="model">qoqa.offer</field>
     <field name="arch" type="xml">
       <search string="Search Offers">
-        <field name="name" string="Offer"/>
+        <field name="display_name" string="Offer"/>
         <field name="qoqa_shop_id" widget="selection"/>
         <separator/>
         <filter

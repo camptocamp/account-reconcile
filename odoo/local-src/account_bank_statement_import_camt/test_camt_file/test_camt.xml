@@ -113,6 +113,7 @@
             <AddtlTxInf>MKB 859239PERIOD 31.12.2015</AddtlTxInf>
           </TxDtls>
         </NtryDtls>
+        <AddtlNtryInf>MKB 859239PERIOD 31.12.2015</AddtlNtryInf>
       </Ntry>
       <Ntry>
         <Amt Ccy="USD">594.05</Amt>
@@ -182,6 +183,7 @@
             <AddtlTxInf>Direct debit S14 0410 AC07 Rek.nummer blokkade TESTBANK/NL/20141229/01206408</AddtlTxInf>
           </TxDtls>
         </NtryDtls>
+        <AddtlNtryInf>Direct debit S14 0410 AC07 Rek.nummer blokkade TESTBANK/NL/20141229/01206408</AddtlNtryInf>
       </Ntry>
       <Ntry>
         <Amt Ccy="USD">1636.88</Amt>
@@ -243,6 +245,7 @@
             <AddtlTxInf>#RD INV/2015/0002 INV/2015/0003</AddtlTxInf>
           </TxDtls>
         </NtryDtls>
+        <AddtlNtryInf>#RD INV/2015/0002 INV/2015/0003</AddtlNtryInf>
       </Ntry>
     </Stmt>
   </BkToCstmrStmt>

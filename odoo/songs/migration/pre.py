@@ -448,9 +448,13 @@ def reset_purchase_mail_template(ctx):
 
 @anthem.log
 def clean_taxes(ctx):
-    """ Remove 7.0 obsolete taxes (and correct invoices/positions
-        which use them)
+    """ Remove 7.0 obsolete taxes (and correct invoices which use them).
+        Also, to avoid issues, drop constraint on position's tax ID.
     """
+    ctx.env.cr.execute("""
+        ALTER TABLE qoqa_offer_position
+        ALTER COLUMN tax_id DROP NOT NULL;
+    """)
     ctx.env.cr.execute("""
         UPDATE account_invoice_tax
         SET tax_id = 92
@@ -460,11 +464,6 @@ def clean_taxes(ctx):
         UPDATE account_invoice_tax
         SET tax_id = 16
         WHERE tax_id = 104
-    """)
-    ctx.env.cr.execute("""
-        UPDATE qoqa_offer_position
-        SET tax_id = 94
-        WHERE tax_id = 15
     """)
     ctx.env.cr.execute("""
         DELETE FROM account_tax

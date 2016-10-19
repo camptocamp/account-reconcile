@@ -26,12 +26,10 @@
     camptocamp: git@github.com:camptocamp/bank-statement-reconcile.git
   merges:
     - oca 9.0
-    # Correct debit amount in account_move_transactionid_import
-    - oca refs/pull/151/head
     # Don't write company_id on counterpart move line as it is a related on account
     - oca refs/pull/152/head
-    # Force import partner on account.move
-    - oca refs/pull/157/head
+    # Remove now non-existing "Display partial" button
+    - oca refs/pull/161/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

@@ -23,19 +23,37 @@ latest (unreleased)
 
 **Data Migration**
 
-* Migrate stock journals to picking types
-
 **Features and Improvements**
-
-* Add a sales exception: paid amount on QoQa should match total amount
-
-* Synchronize shipping fees from QoQa (MIGO-354)
 
 **Bugfixes**
 
 **Build**
 
 **Documentation**
+
+
+9.11.0 (2016-10-26)
++++++++++++++++++++
+
+**Data Migration**
+
+* Migrate stock journals to picking types
+
+**Features and Improvements**
+
+* Add a sales exception: paid amount on QoQa should match total amount
+* Synchronize shipping fees from QoQa (MIGO-354)
+* Migrate stock journals to picking types
+* Set server actions as writable (needed to update code)
+* Clean taxes
+* Update odoo-monitoring branch
+* CAMT.053: Fill partner id and label depending on free text 
+
+**Bugfixes**
+
+* Remove "vendor" translation for supplier stock location
+* Store offer display_name to be searchable/orderable
+* Add translated field name for Customer Satisfaction on claims
 
 
 9.10.0 (2016-10-06)

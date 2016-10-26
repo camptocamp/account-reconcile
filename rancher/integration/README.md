@@ -65,7 +65,7 @@ one in place.
 4. SSH on the `Shell` container and switch the databases
 
   ```
-  $ ssh your-github-user@erp-sprint.qoqa.com -p 2622
+  $ ssh sftp@erp-sprint.qoqa.com -p 2223
   ~ psql -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -Uopenerp postgres -c "ALTER DATABASE qoqa_int RENAME TO qoqa_int_old"
   ~ psql -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -Uopenerp postgres -c "ALTER DATABASE qoqa_int_new RENAME TO qoqa_int"
   ```
@@ -79,6 +79,6 @@ one in place.
 6. On the server, drop the old database:
 
   ```
-  $ ssh your-github-user@erp-sprint.qoqa.com -p 2622
+  $ ssh sftp@erp-sprint.qoqa.com -p 2223
   ~ dropdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -Uopenerp qoqa_int_old
   ```

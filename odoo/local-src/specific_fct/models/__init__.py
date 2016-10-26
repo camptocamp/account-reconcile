@@ -8,3 +8,4 @@ from . import account_invoice
 from . import account_payment_mode
 from . import purchase
 from . import stock_batch_picking
+from . import ir_qweb

@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Correct addresses in reports + migrated columns in PO report
+
 **Build**
 
 **Documentation**

@@ -9,13 +9,13 @@ with the new one. First, restore it:
 1. `scp` the dump on the `Shell` container
 
   ```
-  $ scp -P 2622 ~/path/to/db.pg your-github-user@erp-sprint.qoqa.com:~
+  $ scp -P 2223 ~/path/to/db.pg sftp@erp-sprint.qoqa.com:~
   ```
 
 2. SSH on the `Shell` container
 
   ```
-  $ ssh your-github-user@erp-sprint.qoqa.com -p 2622
+  $ ssh sftp@erp-sprint.qoqa.com -p 2223
   ```
 
 3. open a tmux (because the dump is slow to load)
@@ -27,7 +27,7 @@ with the new one. First, restore it:
 4. create the database with an alternative name (we'll rename)
 
   ```
-  ~ createdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -O openerp -Uopenerp qoqa_int_new
+  ~ createdb -h odoo-database-qoqaint.c67s1aro4oyt.eu-west-1.rds.amazonaws.com -O openerp -U openerp qoqa_int_new
   ```
 
 5. restore the dump and only when the dump is fully restored, continue to [Switch the databases](#switch-the-databases)

@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Remove "Loutres" as automatic follower on all claims
+
 **Build**
 
 **Documentation**

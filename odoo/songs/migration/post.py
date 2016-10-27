@@ -806,6 +806,17 @@ def move_stock_journal_to_picking_type(ctx):
 
 
 @anthem.log
+def correct_banks_on_journals(ctx):
+    """ Move old banks back to the journals """
+    ctx.env.cr.execute("""
+        UPDATE account_journal
+        SET bank_account_id = bank.id
+        FROM res_partner_bank bank
+        WHERE account_journal.id = bank.journal_id
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -837,3 +848,4 @@ def main(ctx):
     migrate_automatic_reconciliation(ctx)
     disable_shipper_fee(ctx)
     move_stock_journal_to_picking_type(ctx)
+    correct_banks_on_journals(ctx)

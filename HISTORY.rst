@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Correct banks on journals
+
 **Features and Improvements**
 
 **Bugfixes**

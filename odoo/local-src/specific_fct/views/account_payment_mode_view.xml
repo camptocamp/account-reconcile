@@ -12,5 +12,7 @@
         </field>
     </record>
 
-    <menuitem id="account_reports.menu_action_followups" groups="hidden_menu_group"/>
+    <record id="account_reports.menu_action_followups" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('hidden_menu_group')])]"/>
+    </record>
 </odoo>

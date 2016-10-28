@@ -170,10 +170,12 @@ class SaleOrder(models.Model):
                     _('Order Cancellation')
                 )
 
-            if not delivered:
+            if cancel_direct:
                 existing_invoices.filtered(
                     lambda r: r.state not in ('paid', 'cancel')
                 ).signal_workflow('invoice_cancel')
+
+            if not delivered:
                 order.picking_ids.action_cancel()
 
             super(SaleOrder, order).action_cancel()

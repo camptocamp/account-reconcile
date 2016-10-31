@@ -30,6 +30,8 @@
     - oca refs/pull/152/head
     # Remove now non-existing "Display partial" button
     - oca refs/pull/161/head
+    # Remove now non-existing "Display partial" button
+    - oca refs/pull/162/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

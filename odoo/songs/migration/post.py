@@ -539,6 +539,7 @@ def move_journal_import_setup(ctx):
         ctx.env.cr.execute("""
             UPDATE account_journal j
             SET commission_account_id = p.commission_account_id,
+                commission_analytic_account_id = p.commission_analytic_id,
                 receivable_account_id = p.receivable_account_id,
                 partner_id = p.partner_id,
                 message_last_post = p.message_last_post,

@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Correctly migrate display_name for offers
+
 **Features and Improvements**
 
 **Bugfixes**

@@ -697,7 +697,12 @@ def rename_qoqa_offer(ctx):
     ctx.env.cr.execute("""
         UPDATE qoqa_offer
         SET name = substring(name FROM '\[\d+\] (.*)')
-        WHERE name ~ '\[\d+\](.*)'
+        WHERE name ~ '\[\d+\].*'
+    """)
+    ctx.env.cr.execute("""
+        UPDATE qoqa_offer
+        SET display_name = substring(display_name FROM '\[\d+\] (\[\d+\] .*)')
+        WHERE display_name ~ '\[\d+\] \[\d+\].*'
     """)
 
 

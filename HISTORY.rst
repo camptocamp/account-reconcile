@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix translation for field "Customer Satisfaction" in claims
+
 **Build**
 
 **Documentation**

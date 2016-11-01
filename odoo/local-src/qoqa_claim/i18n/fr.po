@@ -296,7 +296,7 @@ msgstr ""
 msgid "or"
 msgstr "ou"
 
-#. module: qoqa_claim
-#: field:crm.claim,priority:0
+#. module: crm_claim
+#: model:ir.model.fields,field_description:crm_claim.field_crm_claim_priority
 msgid "Customer Satisfaction"
 msgstr "Satisfaction client"

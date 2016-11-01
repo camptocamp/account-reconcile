@@ -25,6 +25,7 @@ latest (unreleased)
 
 * Delete 3 more taxes
 * Correctly migrate display_name for offers
+* Correct banks on journals
 
 **Features and Improvements**
 

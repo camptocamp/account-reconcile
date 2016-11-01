@@ -495,6 +495,15 @@ def fix_sale_order_invoice_status(ctx):
 
 
 @anthem.log
+def connector_qoqa_map_product(ctx):
+    """ Map a shipping product added in connector_qoqa """
+    product = ctx.env['product.product'].browse(10950)
+    add_xmlid(ctx, product,
+              'connector_qoqa.product_product_shipping_postlogistics',
+              noupdate=True)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -516,3 +525,4 @@ def main(ctx):
     fix_hidden_menus_group(ctx)
     fix_sale_order_invoice_status(ctx)
     clean_taxes(ctx)
+    connector_qoqa_map_product(ctx)

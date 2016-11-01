@@ -539,6 +539,7 @@ def move_journal_import_setup(ctx):
         ctx.env.cr.execute("""
             UPDATE account_journal j
             SET commission_account_id = p.commission_account_id,
+                commission_analytic_account_id = p.commission_analytic_id,
                 receivable_account_id = p.receivable_account_id,
                 partner_id = p.partner_id,
                 message_last_post = p.message_last_post,
@@ -696,7 +697,12 @@ def rename_qoqa_offer(ctx):
     ctx.env.cr.execute("""
         UPDATE qoqa_offer
         SET name = substring(name FROM '\[\d+\] (.*)')
-        WHERE name ~ '\[\d+\](.*)'
+        WHERE name ~ '\[\d+\].*'
+    """)
+    ctx.env.cr.execute("""
+        UPDATE qoqa_offer
+        SET display_name = substring(display_name FROM '\[\d+\] (\[\d+\] .*)')
+        WHERE display_name ~ '\[\d+\] \[\d+\].*'
     """)
 
 

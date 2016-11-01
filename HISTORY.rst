@@ -24,10 +24,13 @@ latest (unreleased)
 **Data Migration**
 
 * Delete 3 more taxes
+* Correctly migrate display_name for offers
 
 **Features and Improvements**
 
 **Bugfixes**
+
+* Fix translation for field "Customer Satisfaction" in claims
 
 **Build**
 

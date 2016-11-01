@@ -23,8 +23,10 @@ class QoqaShippingFee(models.Model):
 
     @api.model
     def _default_product_id(self):
-        product = self.env.ref('connector_ecommerce.product_product_shipping',
-                               raise_if_not_found=False)
+        product = self.env.ref(
+            'connector_qoqa.product_product_shipping_postlogistics',
+            raise_if_not_found=False
+        )
         return product.id
 
 

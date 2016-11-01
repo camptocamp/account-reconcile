@@ -245,7 +245,10 @@ class CrmClaim(models.Model):
         if not author:
             raise UserError(_('No partner set with email "loutres@qoqa.com"'))
 
-        result = super(CrmClaim, self).message_post(
+        # Use "mail_create_nosubscribe" in context to avoid having
+        # "loutres" as follower
+        result = super(CrmClaim, self.with_context(
+            mail_create_nosubscribe=True)).message_post(
             body=body, subject=subject, message_type=message_type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
             content_subtype=content_subtype, author_id=author.id,

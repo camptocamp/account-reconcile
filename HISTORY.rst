@@ -32,6 +32,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Fix translation for field "Customer Satisfaction" in claims
+* Remove "Loutres" as automatic follower on all claims
 
 **Build**
 

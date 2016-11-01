@@ -23,21 +23,29 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.12.0 (2016-11-01)
++++++++++++++++++++
+
+**Data Migration**
+
 * Delete 3 more taxes
 * Correctly migrate display_name for offers
 * Correct banks on journals
-
-**Features and Improvements**
 
 **Bugfixes**
 
 * Fix translation for field "Customer Satisfaction" in claims
 * Remove "Loutres" as automatic follower on all claims
 * Correct addresses in reports + migrated columns in PO report
-
-**Build**
-
-**Documentation**
 
 
 9.11.0 (2016-10-26)

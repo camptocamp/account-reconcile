@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Delete 3 more taxes
+
 **Features and Improvements**
 
 **Bugfixes**

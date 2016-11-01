@@ -2,6 +2,57 @@
 <odoo>
 
 <template id="report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+    <xpath expr="//div[@class='page']/table[1]" position="replace">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th><strong>Brand</strong></th>
+            <th><strong>Name</strong></th>
+            <th><strong>Description</strong></th>
+            <th><strong>Date Req.</strong></th>
+            <th class="text-center"><strong>Qty</strong></th>
+            <th class="text-right"><strong>UoM</strong></th>
+            <th class="text-right"><strong>Unit Price</strong></th>
+            <th class="text-right"><strong>Taxes</strong></th>
+            <th class="text-right"><strong>Net Price</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr t-foreach="o.order_line" t-as="line">
+            <td>
+              <span t-field="line.product_id.brand"/>
+            </td>
+            <td>
+              <span t-field="line.product_id.name"/>
+            </td>
+            <td>
+              <span t-field="line.product_id.default_code"/>
+            </td>
+            <td>
+              <span t-field="line.date_planned"/>
+            </td>
+            <td class="text-center">
+              <span t-field="line.product_qty"/>
+            </td>
+            <td class="text-right">
+              <span t-field="line.product_uom.name" groups="product.group_uom"/>
+            </td>
+            <td class="text-right">
+              <span t-field="line.price_unit"
+                    t-field-options='{"widget": "monetary"}'/>
+            </td>
+            <td class="text-right">
+              <span t-esc="', '.join([tax.name or '' for tax in line.taxes_id])"/>
+            </td>
+            <td class="text-right">
+              <span t-field="line.price_subtotal"
+                    t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </xpath>
+
     <xpath expr="//p[@t-field='o.notes']" position="after">
       <t t-if="o.picking_type_id.warehouse_id">
         <p style="page-break-before:always"/>

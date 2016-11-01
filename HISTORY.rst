@@ -33,6 +33,7 @@ latest (unreleased)
 
 * Fix translation for field "Customer Satisfaction" in claims
 * Remove "Loutres" as automatic follower on all claims
+* Correct addresses in reports + migrated columns in PO report
 
 **Build**
 

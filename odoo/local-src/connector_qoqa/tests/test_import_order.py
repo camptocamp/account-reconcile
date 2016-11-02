@@ -22,7 +22,7 @@ ExpectedOrder = namedtuple(
 )
 ExpectedOrderLine = namedtuple(
     'ExpectedOrderLine',
-    'product_id price_unit product_uom_qty'
+    'product_id name price_unit product_uom_qty'
 )
 
 
@@ -157,11 +157,13 @@ class TestImportOrder(QoQaTransactionCase):
         expected = [
             ExpectedOrderLine(
                 product_id=self.product_9_binding.openerp_id,
+                name='[product_9] Product 9',
                 price_unit=6900,
                 product_uom_qty=1,
             ),
             ExpectedOrderLine(
                 product_id=self.product_11_binding.openerp_id,
+                name='[product_11] Product 11',
                 price_unit=6900,
                 product_uom_qty=2,
             ),
@@ -180,16 +182,19 @@ class TestImportOrder(QoQaTransactionCase):
         expected = [
             ExpectedOrderLine(
                 product_id=self.product_1_binding.openerp_id,
+                name='[product_1] Product 1',
                 price_unit=333,
                 product_uom_qty=2,
             ),
             ExpectedOrderLine(
                 product_id=self.product_2_binding.openerp_id,
+                name='[product_2] Product 2',
                 price_unit=333,
                 product_uom_qty=1,
             ),
             ExpectedOrderLine(
                 product_id=self.drone_product,
+                name='Drone delivery',
                 price_unit=12,
                 product_uom_qty=1,
             ),
@@ -209,21 +214,25 @@ class TestImportOrder(QoQaTransactionCase):
         expected = [
             ExpectedOrderLine(
                 product_id=self.product_1_binding.openerp_id,
+                name='[product_1] Product 1',
                 price_unit=333,
                 product_uom_qty=2,
             ),
             ExpectedOrderLine(
                 product_id=self.drone_product,
+                name='Drone delivery',
                 price_unit=9,
                 product_uom_qty=1,
             ),
             ExpectedOrderLine(
                 product_id=promo.product_id,
+                name='Bon marketing (10000011)',
                 price_unit=-9,
                 product_uom_qty=1,
             ),
             ExpectedOrderLine(
                 product_id=promo.product_id,
+                name='Bon marketing (10000011)',
                 price_unit=-499,
                 product_uom_qty=1,
             ),

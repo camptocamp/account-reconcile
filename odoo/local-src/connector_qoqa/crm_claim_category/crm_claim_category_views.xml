@@ -6,17 +6,32 @@
     <field name="inherit_id" ref="crm_claim.crm_claim_category_form"/>
     <field name="arch" type="xml">
       <field name="team_id" position="after">
-        <field name="qoqa_id"/>
+        <group string="QBindings">
+          <field name="qoqa_bind_ids" nolabel="1"/>
+        </group>
       </field>
     </field>
   </record>
 
-  <record id="crm_claim_category_tree" model="ir.ui.view">
-    <field name="name">crm.claim.category.tree</field>
-    <field name="model">crm.claim.category</field>
-    <field name="inherit_id" ref="crm_claim.crm_claim_category_tree"/>
+  <record id="view_qoqa_crm_claim_category_form" model="ir.ui.view">
+    <field name="name">qoqa.crm.claim.category.form</field>
+    <field name="model">qoqa.crm.claim.category</field>
     <field name="arch" type="xml">
-      <tree position="inside">
+      <form string="QoQa Claim Category">
+        <group>
+          <field name="backend_id"/>
+          <field name="qoqa_id"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_qoqa_crm_claim_category_tree" model="ir.ui.view">
+    <field name="name">qoqa.crm.claim.category.tree</field>
+    <field name="model">qoqa.crm.claim.category</field>
+    <field name="arch" type="xml">
+      <tree string="QoQa Claim Category">
+        <field name="backend_id"/>
         <field name="qoqa_id"/>
       </tree>
     </field>

@@ -124,7 +124,7 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
         return {'partner_id': self._get_partner(record).id}
 
     def _get_category(self, record):
-        binder = self.binder_for('crm.claim.category')
+        binder = self.binder_for('qoqa.crm.claim.category')
         qoqa_categ_id = record['data']['attributes']['category_id']
         category = binder.to_openerp(qoqa_categ_id, unwrap=True)
         if not category:

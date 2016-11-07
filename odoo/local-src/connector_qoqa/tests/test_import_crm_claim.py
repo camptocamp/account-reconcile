@@ -38,7 +38,7 @@ class TestImportClaim(QoQaTransactionCase):
         self.user = self.env.ref('base.user_demo')
         self.team = self.env['crm.team'].create({'name': 'Team'})
         self.warehouse = self.env['stock.warehouse'].search([], limit=1)
-        self.category = self.env['crm.claim.category'].create({
+        self.category = self.env['qoqa.crm.claim.category'].create({
             'name': 'Questions',
             'qoqa_id': '1',
         })
@@ -136,7 +136,7 @@ class TestImportClaim(QoQaTransactionCase):
                 email_from='dev@qoqa.com',  # from API
                 partner_phone='0041 79 123 45 67',   # from onchange
                 invoice_id=sale.invoice_ids,
-                categ_id=self.category,
+                categ_id=self.category.openerp_id,
             )]
         expected_description = (
             u"Bonjour, J'ai enfin reçu mon iPhone. "

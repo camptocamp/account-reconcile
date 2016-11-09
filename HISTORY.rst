@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add IN and OUT picking types for unclaimed claims
+
 **Bugfixes**
 
 **Build**

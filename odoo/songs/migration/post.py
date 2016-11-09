@@ -823,6 +823,78 @@ def correct_banks_on_journals(ctx):
 
 
 @anthem.log
+def account_unaffected_earnings(ctx):
+    """ Set account 29910 as "unaffected_earnings" """
+    ctx.env.cr.execute("""
+        UPDATE account_account
+        SET user_type_id = model_data.res_id
+        FROM ir_model_data model_data
+        WHERE account_account.id IN (
+            SELECT res_id FROM ir_model_data
+            WHERE module = 'scenario'
+            AND name = 'pcg_CH_29910'
+            AND model = 'account.account'
+        ) AND model_data.module = 'account'
+          AND model_data.name = 'data_unaffected_earnings'
+          AND model_data.model = 'account.account.type'
+    """)
+
+
+@anthem.log
+def add_purchase_journals(ctx):
+    """ Set account 29910 as "unaffected_earnings" """
+    ctx.env.cr.execute("""
+        DELETE FROM account_journal
+        WHERE name IN ('Achats EUR', 'Achats USD', 'Achats GBP')
+    """)
+
+    ctx.env.cr.execute("""
+        INSERT INTO account_journal (
+            code, name, currency_id, sequence_id, company_id, type,
+            update_posted, show_on_dashboard, at_least_one_inbound,
+            at_least_one_outbound, display_on_footer, refund_sequence,
+            used_for_completion, split_counterpart, import_type,
+            launch_import_completion, create_counterpart, used_for_import,
+            s3_import
+        ) VALUES (
+            'ACH', 'Achats EUR', 1, 37, 3, 'purchase', True, True, True, True,
+            False, False, False, False, 'generic_csvxls_so', False, True,
+            False, False
+        )
+    """)
+
+    ctx.env.cr.execute("""
+        INSERT INTO account_journal (
+            code, name, currency_id, sequence_id, company_id, type,
+            update_posted, show_on_dashboard, at_least_one_inbound,
+            at_least_one_outbound, display_on_footer, refund_sequence,
+            used_for_completion, split_counterpart, import_type,
+            launch_import_completion, create_counterpart, used_for_import,
+            s3_import
+        ) VALUES (
+            'ACH', 'Achats USD', 3, 37, 3, 'purchase', True, True, True, True,
+            False, False, False, False, 'generic_csvxls_so', False, True,
+            False, False
+        )
+    """)
+
+    ctx.env.cr.execute("""
+        INSERT INTO account_journal (
+            code, name, currency_id, sequence_id, company_id, type,
+            update_posted, show_on_dashboard, at_least_one_inbound,
+            at_least_one_outbound, display_on_footer, refund_sequence,
+            used_for_completion, split_counterpart, import_type,
+            launch_import_completion, create_counterpart, used_for_import,
+            s3_import
+        ) VALUES (
+            'ACH', 'Achats GBP', 152, 37, 3, 'purchase', True, True, True,
+            True, False, False, False, False, 'generic_csvxls_so', False, True,
+            False, False
+        )
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -855,3 +927,5 @@ def main(ctx):
     disable_shipper_fee(ctx)
     move_stock_journal_to_picking_type(ctx)
     correct_banks_on_journals(ctx)
+    account_unaffected_earnings(ctx)
+    add_purchase_journals(ctx)

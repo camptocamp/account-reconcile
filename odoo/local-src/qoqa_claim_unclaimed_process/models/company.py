@@ -23,6 +23,14 @@ class ResCompany(models.Model):
         comodel_name='crm.claim.category',
         string='Default category for sent back unclaimed packages'
     )
+    unclaimed_in_picking_type_id = fields.Many2one(
+        comodel_name='stock.picking.type',
+        string='Default IN picking type for unclaimed packages'
+    )
+    unclaimed_out_picking_type_id = fields.Many2one(
+        comodel_name='stock.picking.type',
+        string='Default OUT picking type for unclaimed packages'
+    )
     unclaimed_invoice_journal_id = fields.Many2one(
         comodel_name='account.journal',
         string='Default journal for invoices for sent back unclaimed packages'

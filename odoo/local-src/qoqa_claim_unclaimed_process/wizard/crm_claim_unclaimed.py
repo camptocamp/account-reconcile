@@ -192,10 +192,11 @@ class CrmClaimUnclaimed(models.TransientModel):
         # Set correct mail template
         if self.unclaimed_type == 'unclaimed':
             template = self.env.ref(
-                'crm_claim_mail.email_template_rma_unclaimed')
+                'qoqa_claim_unclaimed_process.email_template_rma_unclaimed')
         elif self.unclaimed_type == 'invalid_address':
             template = self.env.ref(
-                'crm_claim_mail.email_template_rma_invalid_address')
+                'qoqa_claim_unclaimed_process.'
+                'email_template_rma_invalid_address')
 
         claim_vals.update({
             'confirmation_email_sent': False,

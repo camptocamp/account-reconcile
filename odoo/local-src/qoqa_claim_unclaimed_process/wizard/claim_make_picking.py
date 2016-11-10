@@ -68,6 +68,32 @@ class ClaimMakePicking(models.TransientModel):
         default=_default_claim_line_dest_location_id,
         help="Location where the system will stock the returned products.")
 
+    def _is_unclaimed(self, claim):
+        # Retrieve list of unclaimed categories
+        company = self.env.user.company_id
+        unclaimed_categ_ids = [
+            company.unclaimed_initial_categ_id.id,
+            company.unclaimed_first_reminder_categ_id.id,
+            company.unclaimed_second_reminder_categ_id.id,
+            company.unclaimed_final_categ_id.id
+        ]
+        if claim.categ_id and claim.categ_id.id in unclaimed_categ_ids:
+            return True
+        return False
+
+    def _get_picking_data(self, claim, picking_type, partner_id):
+        company = self.env.user.company_id
+        res = super(ClaimMakePicking, self)._get_picking_data(
+            claim, picking_type, partner_id)
+        if self._is_unclaimed(claim):
+            if self.env.context.get('picking_type', False) == 'in':
+                res['picking_type_id'] = \
+                    company.unclaimed_in_picking_type_id.id
+            else:
+                res['picking_type_id'] = \
+                    company.unclaimed_out_picking_type_id.id
+        return res
+
     @api.multi
     def action_create_picking(self):
         # For QoQa, create an OUT picking instead of a procurement order
@@ -75,21 +101,12 @@ class ClaimMakePicking(models.TransientModel):
             return super(ClaimMakePicking, self).action_create_picking()
 
         claim_obj = self.env['crm.claim']
-        claim = claim_obj.browse(self.env.context['active_id'])
-
-        # Retrieve list of unclaimed categories
         company = self.env.user.company_id
-        unclaimed_categ_ids = [
-            company.unclaimed_initial_categ_id.id,
-            company.unclaimed_first_reminder_categ_id.id,
-            company.unclaimed_second_reminder_categ_id.id
-        ]
+        claim = claim_obj.browse(self.env.context['active_id'])
 
         # If claim has an unclaimed category, set the final one
         if (self.env.context.get('picking_type', False) == 'out' and
-                claim.categ_id and
-                claim.categ_id.id in unclaimed_categ_ids and
-                company.unclaimed_final_categ_id):
+                self._is_unclaimed(claim)):
             claim.write(
                 {'categ_id': company.unclaimed_final_categ_id.id}
             )

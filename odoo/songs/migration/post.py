@@ -564,11 +564,11 @@ def correct_stock_location_complete_name(ctx):
         AND t.lang = 'fr_FR'
     """)
     location_model = ctx.env['stock.location'].with_context(lang='fr_FR')
-    # few names not updated when we run it once,
+    # few names not updated when we run it once or twice,
     # don't want to lose time to search why
-    # just run the update twice
+    # just run the update five times (it takes 2 seconds)
     # all records will get the right name, bye
-    for __ in range(2):
+    for __ in range(5):
         locations = location_model.search([('location_id', '=', False)])
         for location in locations:
             # trigger complete_name function field, child records will recurse

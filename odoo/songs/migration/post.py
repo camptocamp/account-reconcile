@@ -769,36 +769,58 @@ def disable_shipper_fee(ctx):
 def move_stock_journal_to_picking_type(ctx):
     """ Move stock journal to picking types """
     picking_type_out = ctx.env.ref('stock.picking_type_out')
-    sequence_out = picking_type_out.sequence_id
+    picking_type_in = ctx.env.ref('stock.picking_type_in')
+    picking_type_internal = ctx.env.ref('stock.picking_type_internal')
     picking_types = {}
     ctx.env.cr.execute("""
         SELECT id, name FROM stock_journal
     """)
     for id_, name in ctx.env.cr.fetchall():
-        location_src = picking_type_out.default_location_src_id
-        location_dest = picking_type_out.default_location_dest_id
+        if name.startswith('Interne'):
+            picking_type = picking_type_internal
+            code = 'internal'
+        elif name.startswith(u'Réception'):
+            picking_type = picking_type_in
+            code = 'incoming'
+        else:
+            picking_type = picking_type_out
+            code = 'outgoing'
+
+        location_src = picking_type.default_location_src_id
+        location_dest = picking_type.default_location_dest_id
         picking_types[id_] = create_or_update(
             ctx,
             'stock.picking.type',
             '__setup__.stock_picking_type_stock_journal_%s' % (id_,),
             {'name': name,
-             'warehouse_id': picking_type_out.warehouse_id.id,
-             'code': 'outgoing',
-             'use_create_lots': picking_type_out.use_create_lots,
-             'use_existing_lots': picking_type_out.use_existing_lots,
-             'sequence_id': sequence_out.id,
+             'warehouse_id': picking_type.warehouse_id.id,
+             'code': code,
+             'use_create_lots': picking_type.use_create_lots,
+             'use_existing_lots': picking_type.use_existing_lots,
+             'sequence_id': picking_type.sequence_id.id,
              'default_location_src_id': location_src.id,
              'default_location_dest_id': location_dest.id,
-             'sequence': picking_type_out.sequence + 1,
-             'color': picking_type_out.color,
+             'sequence': picking_type.sequence + 1,
+             'color': picking_type.color,
              }
         )
+
+    # 11 and 25 are the ids of the stock journals on v7:
+    # 11 | Non-réclamé - renvoi colis
+    # 25 | Réception non-réclamé
+    ctx.env.cr.execute("""
+        UPDATE res_company SET
+        unclaimed_out_picking_type_id = %s,
+        unclaimed_in_picking_type_id = %s
+        WHERE id = 3
+    """, (picking_types[11].id, picking_types[25].id))
+
     for id_, picking_type in picking_types.iteritems():
+
         ctx.env.cr.execute("""
             SELECT count(*) FROM stock_picking
             WHERE stock_journal_id = %s
-            AND picking_type_id = %s
-        """, (id_, picking_type_out.id))
+        """, (id_,))
         picking_count, = ctx.env.cr.fetchone()
         msg = ('move %d pickings to picking type %s' %
                (picking_count, picking_type.name))
@@ -807,8 +829,14 @@ def move_stock_journal_to_picking_type(ctx):
                 UPDATE stock_picking
                 SET picking_type_id = %s
                 WHERE stock_journal_id = %s
-                AND picking_type_id = %s
-            """, (picking_type.id, id_, picking_type_out.id))
+            """, (picking_type.id, id_))
+    ctx.env.cr.execute("""
+        UPDATE stock_move m
+        SET picking_type_id = p.picking_type_id
+        FROM stock_picking p
+        WHERE m.picking_id = p.id
+        AND m.picking_type_id != p.picking_type_id
+    """)
 
 
 @anthem.log

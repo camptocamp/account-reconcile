@@ -804,7 +804,19 @@ def move_stock_journal_to_picking_type(ctx):
              'color': picking_type.color,
              }
         )
+
+    # 11 and 25 are the ids of the stock journals on v7:
+    # 11 | Non-réclamé - renvoi colis
+    # 25 | Réception non-réclamé
+    ctx.env.cr.execute("""
+        UPDATE res_company SET
+        unclaimed_out_picking_type_id = %s,
+        unclaimed_in_picking_type_id = %s
+        WHERE id = 3
+    """, (picking_types[11].id, picking_types[25].id))
+
     for id_, picking_type in picking_types.iteritems():
+
         ctx.env.cr.execute("""
             SELECT count(*) FROM stock_picking
             WHERE stock_journal_id = %s

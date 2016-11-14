@@ -29,6 +29,9 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Do not cancel invoices when the cancellation of the sale is not done during
+  the day (MIGO-344)
+
 **Build**
 
 **Documentation**

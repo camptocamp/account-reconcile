@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Set correct type on account 29910 and add 3 purchase journals for currencies
+
 **Features and Improvements**
 
 * Add IN and OUT picking types for unclaimed claims

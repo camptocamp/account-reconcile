@@ -823,6 +823,54 @@ def correct_banks_on_journals(ctx):
 
 
 @anthem.log
+def mapping_claim_categories(ctx):
+    """ Mapping claim categories """
+    mapping = [
+        # (qoqa_id, odoo_id, team_id)
+        (51, 1, 3),
+        (52, 20, 4),
+        (53, 17, 4),
+        (54, 16, 4),
+        (55, 4, 4),
+        (56, 149, 4),
+        (57, 42, 4),
+        (58, 58, 6),
+        (59, 25, 6),
+        (60, 57, 6),
+        (61, 24, 6),
+        (62, 25, 6),
+        (63, 23, 3),
+        (None, 2, 3),
+        (None, 53, 3),
+        (64, 13, 3),
+        (65, 44, 4),
+        (66, 36, 5),
+        (67, 29, 5),
+        (68, 33, 5),
+        (69, 33, 5),
+        (70, 28, 5),
+        (71, 2, 3),
+        (72, 32, 3),
+        (74, 32, 3),
+    ]
+    for qoqa_id, odoo_id, team_id in mapping:
+        ctx.env.cr.execute("""
+            UPDATE crm_claim_category
+            SET team_id = %s
+            WHERE id = %s
+        """, (team_id, odoo_id))
+        binding_model = ctx.env['qoqa.crm.claim.category']
+        if not qoqa_id:
+            continue
+        if not ctx.env['crm.claim.category'].search([('id', '=', odoo_id)]):
+            continue
+        if not binding_model.search([('openerp_id', '=', odoo_id),
+                                     ('qoqa_id', '=', qoqa_id)]):
+            binding_model.create({'openerp_id': odoo_id,
+                                  'qoqa_id': qoqa_id})
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -855,3 +903,4 @@ def main(ctx):
     disable_shipper_fee(ctx)
     move_stock_journal_to_picking_type(ctx)
     correct_banks_on_journals(ctx)
+    mapping_claim_categories(ctx)

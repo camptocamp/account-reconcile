@@ -91,7 +91,7 @@ class ProductExportMapper(ExportMapper):
                 'product_attribute_id': value_qoqa_id,
                 'product_category_attributes': {
                     'product_attribute_category_id': attr_qoqa_id,
-                    'position': attribute.sequence,
+                    'position': attribute_value.sequence,
                     'product_id': template_qoqa_id,
                 }
             })

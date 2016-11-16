@@ -91,6 +91,7 @@ def message_route(self, message, message_dict, model=None, thread_id=None,
         self, message, message_dict, model=model, thread_id=thread_id,
         custom_values=custom_values)
 
+
 MailThread.message_route = types.MethodType(message_route, None, MailThread)
 
 
@@ -114,5 +115,6 @@ def message_parse(self, message, save_original=False):
                     msg_dict['author_id'] = partners[0].id
 
     return msg_dict
+
 
 MailThread.message_parse = types.MethodType(message_parse, None, MailThread)

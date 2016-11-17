@@ -23,20 +23,34 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.13.0 (2016-11-17)
++++++++++++++++++++
+
+**Data Migration**
+
 * Set correct type on account 29910 and add 3 purchase journals for currencies
+* Migrate stock journals to picking types, more fine-grained, with In, Out, Internal
+* Fix stock location names again
+* Map claim categories
 
 **Features and Improvements**
 
 * Add IN and OUT picking types for unclaimed claims
+* Export position of attributes values instead of attributes on variant export
 
 **Bugfixes**
 
 * Do not cancel invoices when the cancellation of the sale is not done during
   the day (MIGO-344)
-
-**Build**
-
-**Documentation**
 
 
 9.12.0 (2016-11-01)

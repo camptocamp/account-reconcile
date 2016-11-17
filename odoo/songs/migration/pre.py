@@ -389,6 +389,7 @@ def prefix_qoqa_order_line_ids(ctx):
         UPDATE qoqa_sale_order_line
         SET qoqa_id = 'item_id-' || qoqa_id
         WHERE qoqa_id IS NOT NULL
+        AND qoqa_id NOT LIKE 'item_id-%'
     """)
 
 

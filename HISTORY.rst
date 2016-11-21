@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix scheduler methods calls in connector_qoqa
+
 **Build**
 
 **Documentation**

@@ -391,31 +391,31 @@ class QoqaBackend(models.Model):
 
     @api.model
     def _scheduler_import_sale_order(self):
-        self.import_sale_order(self.search([]))
+        self.search([]).import_sale_order()
 
     @api.model
     def _scheduler_import_res_partner(self):
-        self.import_res_partner(self.search([]))
+        self.search([]).import_res_partner()
 
     @api.model
     def _scheduler_import_address(self):
-        self.import_address(self.search([]))
+        self.search([]).import_address()
 
     @api.model
     def _scheduler_discount_accounting(self):
-        self.import_discount_accounting(self.search([]))
+        self.search([]).import_discount_accounting()
 
     @api.model
     def _scheduler_import_offer(self):
-        self.import_offer(self.search([]))
+        self.search([]).import_offer()
 
     @api.model
     def _scheduler_import_product_template_image(self):
-        self.import_product_template_image(self.search([]))
+        self.search([]).import_product_template_image()
 
     @api.model
     def _scheduler_import_crm_claim(self):
-        self.import_crm_claim(self.search([]))
+        self.search([]).import_crm_claim()
 
 
 class QoqaBackendTimestamp(models.Model):

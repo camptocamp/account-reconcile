@@ -28,6 +28,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Fix scheduler methods calls in connector_qoqa
+* Send both attribute and attribute positions in product exports
 
 **Build**
 

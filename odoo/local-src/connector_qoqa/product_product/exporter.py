@@ -89,9 +89,10 @@ class ProductExportMapper(ExportMapper):
             assert value_qoqa_id, 'attribute should have been exported'
             attributes.append({
                 'product_attribute_id': value_qoqa_id,
+                'position': attribute_value.sequence,
                 'product_category_attributes': {
                     'product_attribute_category_id': attr_qoqa_id,
-                    'position': attribute_value.sequence,
+                    'position': attribute.sequence,
                     'product_id': template_qoqa_id,
                 }
             })

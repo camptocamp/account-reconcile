@@ -347,10 +347,13 @@ def clean_dashboards(ctx):
 def clean_custom_filters(ctx):
     """ Deleting the custom filters """
     ctx.env.cr.execute("""
+
         DELETE FROM ir_filters f
         WHERE NOT EXISTS (
             SELECT id FROM ir_model_data
             WHERE res_id = f.id AND model = 'ir.filters'
+        ) AND id NOT IN (
+            SELECT DISTINCT filter_id FROM base_action_rule
         )
     """)
 

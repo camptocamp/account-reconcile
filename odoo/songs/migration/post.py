@@ -975,6 +975,28 @@ def add_purchase_journals(ctx):
     """)
 
 
+def add_accounting_to_payment_group(ctx):
+    """ """
+    ctx.env.cr.execute("""
+        SELECT res_id
+        FROM ir_model_data
+        WHERE module = 'account_payment_order'
+        AND model = 'res.groups'
+        AND name = 'group_account_payment'
+    """)
+    group_id = ctx.env.cr.fetchone()[0]
+    ctx.env.cr.execute("""
+        INSERT INTO res_groups_implied_rel (gid, hid)
+        VALUES (74, %s)
+    """, (group_id,))
+    ctx.env.cr.execute("""
+        INSERT INTO res_groups_users_rel (gid, uid)
+        SELECT %s, uid
+        FROM res_groups_users_rel
+        WHERE gid = 74
+    """, (group_id,))
+
+
 @anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
@@ -1011,3 +1033,4 @@ def main(ctx):
     mapping_claim_categories(ctx)
     account_unaffected_earnings(ctx)
     add_purchase_journals(ctx)
+    add_accounting_to_payment_group(ctx)

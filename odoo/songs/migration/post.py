@@ -555,20 +555,20 @@ def move_journal_import_setup(ctx):
 @anthem.log
 def correct_stock_location_complete_name(ctx):
     """ Correcting stock location complete name """
-    ctx.env.cr.execute("""
-        UPDATE stock_location l
-        SET name = t.value
-        FROM ir_translation t
-        WHERE l.id = t.res_id
-        AND l.name = 'stock.location,name'
-        AND t.lang = 'fr_FR'
-    """)
     location_model = ctx.env['stock.location'].with_context(lang='fr_FR')
     # few names not updated when we run it once or twice,
     # don't want to lose time to search why
     # just run the update five times (it takes 2 seconds)
     # all records will get the right name, bye
-    for __ in range(5):
+    for __ in range(2):
+        ctx.env.cr.execute("""
+            UPDATE stock_location l
+            SET name = t.value
+            FROM ir_translation t
+            WHERE l.id = t.res_id
+            AND l.name = 'stock.location,name'
+            AND t.lang = 'fr_FR'
+        """)
         locations = location_model.search([('location_id', '=', False)])
         for location in locations:
             # trigger complete_name function field, child records will recurse
@@ -921,60 +921,6 @@ def account_unaffected_earnings(ctx):
     """)
 
 
-@anthem.log
-def add_purchase_journals(ctx):
-    """ Set account 29910 as "unaffected_earnings" """
-    ctx.env.cr.execute("""
-        DELETE FROM account_journal
-        WHERE name IN ('Achats EUR', 'Achats USD', 'Achats GBP')
-    """)
-
-    ctx.env.cr.execute("""
-        INSERT INTO account_journal (
-            code, name, currency_id, sequence_id, company_id, type,
-            update_posted, show_on_dashboard, at_least_one_inbound,
-            at_least_one_outbound, display_on_footer, refund_sequence,
-            used_for_completion, split_counterpart, import_type,
-            launch_import_completion, create_counterpart, used_for_import,
-            s3_import
-        ) VALUES (
-            'ACH', 'Achats EUR', 1, 37, 3, 'purchase', True, True, True, True,
-            False, False, False, False, 'generic_csvxls_so', False, True,
-            False, False
-        )
-    """)
-
-    ctx.env.cr.execute("""
-        INSERT INTO account_journal (
-            code, name, currency_id, sequence_id, company_id, type,
-            update_posted, show_on_dashboard, at_least_one_inbound,
-            at_least_one_outbound, display_on_footer, refund_sequence,
-            used_for_completion, split_counterpart, import_type,
-            launch_import_completion, create_counterpart, used_for_import,
-            s3_import
-        ) VALUES (
-            'ACH', 'Achats USD', 3, 37, 3, 'purchase', True, True, True, True,
-            False, False, False, False, 'generic_csvxls_so', False, True,
-            False, False
-        )
-    """)
-
-    ctx.env.cr.execute("""
-        INSERT INTO account_journal (
-            code, name, currency_id, sequence_id, company_id, type,
-            update_posted, show_on_dashboard, at_least_one_inbound,
-            at_least_one_outbound, display_on_footer, refund_sequence,
-            used_for_completion, split_counterpart, import_type,
-            launch_import_completion, create_counterpart, used_for_import,
-            s3_import
-        ) VALUES (
-            'ACH', 'Achats GBP', 152, 37, 3, 'purchase', True, True, True,
-            True, False, False, False, False, 'generic_csvxls_so', False, True,
-            False, False
-        )
-    """)
-
-
 def add_accounting_to_payment_group(ctx):
     """ """
     ctx.env.cr.execute("""
@@ -1032,5 +978,4 @@ def main(ctx):
     correct_banks_on_journals(ctx)
     mapping_claim_categories(ctx)
     account_unaffected_earnings(ctx)
-    add_purchase_journals(ctx)
     add_accounting_to_payment_group(ctx)

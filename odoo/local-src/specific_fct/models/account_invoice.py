@@ -33,6 +33,18 @@ class AccountInvoice(models.Model):
         lines.write({'account_analytic_id': False})
         return super(AccountInvoice, self).action_move_create()
 
+    @api.onchange('purchase_id')
+    def purchase_order_change(self):
+        if self.purchase_id and self.purchase_id.currency_id:
+            self.currency_id = self.purchase_id.currency_id.id
+        return super(AccountInvoice, self).purchase_order_change()
+
+    @api.onchange('journal_id')
+    def _onchange_journal_id(self):
+        # Deactivate all currency change from the journal
+        # (default or purchase currency is already set)
+        return
+
     @api.multi
     def button_validate_agreement(self):
         self.ensure_one()

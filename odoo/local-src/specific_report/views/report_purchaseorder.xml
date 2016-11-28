@@ -39,7 +39,7 @@
             </td>
             <td class="text-right">
               <span t-field="line.price_unit"
-                    t-field-options='{"widget": "monetary"}'/>
+                    t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
             </td>
             <td class="text-right">
               <span t-esc="', '.join([tax.name or '' for tax in line.taxes_id])"/>

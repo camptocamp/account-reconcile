@@ -25,7 +25,10 @@ class Contact(models.AbstractModel):
         value_rec = value_rec.sudo().with_context(show_address=True)
         value = value_rec.name_get()[0][1]
         # Call display_address to have it with line breaks
-        address = value_rec._display_address(value_rec)
+        address = ""
+        if value_rec.parent_id:
+            address += value.split(", ")[1] + "\n\n"
+        address += value_rec._display_address(value_rec, without_company=True)
 
         # Use the new format with ", " as separator
         val = {

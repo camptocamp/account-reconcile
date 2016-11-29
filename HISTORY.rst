@@ -25,6 +25,20 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.14.0 (2016-11-29)
++++++++++++++++++++
+
+**Data Migration**
+
+**Features and Improvements**
+
 * Clean default values for SMTP mail servers
 * Fix address display in reports
 * Add accounting group to new "Payments" group

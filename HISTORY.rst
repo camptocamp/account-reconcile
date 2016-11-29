@@ -25,10 +25,15 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Clean default values for SMTP mail servers
+* Fix address display in reports
+* Add accounting group to new "Payments" group
+
 **Bugfixes**
 
 * Fix scheduler methods calls in connector_qoqa
 * Send both attribute and attribute positions in product exports
+* Price unit now displayed correctly in PO report
 
 **Build**
 

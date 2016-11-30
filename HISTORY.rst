@@ -32,7 +32,7 @@ latest (unreleased)
 **Documentation**
 
 
-9.14.1 (2016-11-30)
+9.15.0 (2016-11-30)
 +++++++++++++++++++
 
 **Bugfixes**

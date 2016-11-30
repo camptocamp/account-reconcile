@@ -31,8 +31,8 @@
               <!--Print a wine class line filling by empty cells the table-->
               <t t-if="wine_class.child_ids or not wine_class.parent_id">
                 <div class="act_as_row labels">
-                  <div class="act_as_cell title"><t t-field="wine_class.code"/></div>
-                  <div class="act_as_cell title"><t t-field="wine_class.name"/></div>
+                  <div class="act_as_cell title"><span t-field="wine_class.code"/></div>
+                  <div class="act_as_cell title"><span t-field="wine_class.name"/></div>
                   <t t-foreach="wine_bottles" t-as="b">
                     <div class="act_as_cell" style="width: 80px;"></div>
                   </t>

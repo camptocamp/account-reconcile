@@ -27,11 +27,17 @@ latest (unreleased)
 
 **Bugfixes**
 
-* Correct filename for batch picking delivery labels
-
 **Build**
 
 **Documentation**
+
+
+9.15.0 (2016-11-30)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Correct filename for batch picking delivery labels
 
 
 9.14.0 (2016-11-29)

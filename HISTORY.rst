@@ -29,6 +29,8 @@ latest (unreleased)
 * Update stock-logistics-workflow
 
 **Bugfixes**
+* Correct filename for batch picking delivery labels
+* Fix issues with wine reports (boolean not set, error in template)
 
 **Build**
 

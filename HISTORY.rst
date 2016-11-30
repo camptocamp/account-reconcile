@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Correct filename for batch picking delivery labels
+
 **Build**
 
 **Documentation**

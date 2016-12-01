@@ -20,9 +20,49 @@ msgid "Brand"
 msgstr "Marque"
 
 #. module: specific_report
-#: report:addons/specific_report/report/purchase_order.mako:278
-msgid "Invoice address:"
-msgstr "Adresse de livraison et facturation:"
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Brand</strong>"
+msgstr "<strong>Marque</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Name</strong>"
+msgstr "<strong>Nom</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Description</strong>"
+msgstr "<strong>Description</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Date Req.</strong>"
+msgstr "<strong>Date prévue</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Qty</strong>"
+msgstr "<strong>Qté</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>UoM</strong>"
+msgstr "<strong>UdM</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Unit Price</strong>"
+msgstr "<strong>Prix unitaire</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Taxes</strong>"
+msgstr "<strong>Taxes</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<strong>Net Price</strong>"
+msgstr "<strong>Prix net</strong>"
 
 #. module: specific_report
 #: model:ir.actions.report.xml,name:specific_report.picking_dispatch_report_assemblage

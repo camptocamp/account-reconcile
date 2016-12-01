@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Update stock-logistics-workflow
+
 **Bugfixes**
 
 **Build**

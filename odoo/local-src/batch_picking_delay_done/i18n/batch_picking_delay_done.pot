@@ -43,8 +43,13 @@ msgstr ""
 
 #. module: batch_picking_delay_done
 #: model:ir.actions.act_window,name:batch_picking_delay_done.action_batch_picking_delayed_done
-#: model:ir.ui.view,arch_db:batch_picking_delay_done.stock_bacth_picking_form
+#: model:ir.ui.view,arch_db:batch_picking_delay_done.stock_batch_picking_form
 #: model:ir.ui.view,arch_db:batch_picking_delay_done.view_batch_picking_delayed_done
+msgid "Delayed Done"
+msgstr ""
+
+#. module: batch_picking_delay_done
+#: selection:stock.batch.picking,state:0
 msgid "Delayed Done"
 msgstr ""
 

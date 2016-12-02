@@ -54,8 +54,8 @@
     camptocamp: git@github.com:camptocamp/connector-ecommerce.git
   merges:
     - oca 9.0
-    # Extract onchange fields for better extensibility
-    - oca refs/pull/33/head
+    # fix message_post() expecting a len(recordset) == 1
+    - oca refs/pull/37/head
   target: *default_target
 ./external-src/crm:
   remotes:

@@ -93,7 +93,7 @@ class QoQaImporter(Importer):
         return qoqa_date < sync_date
 
     def _import_dependency(self, qoqa_id, binding_model,
-                           importer_class=None, always=False):
+                           importer_class=None, always=False, **kwargs):
         """
         Import a dependency. The importer class is a subclass of
         ``QoQaImporter``. A specific class can be defined.
@@ -111,6 +111,7 @@ class QoQaImporter(Importer):
                        exists,
                        it is still skipped if it has not been modified on QoQa
         :type always: boolean
+        :param **kwargs: kwargs are passed to the dependency importer
         """
         if not qoqa_id:
             return
@@ -119,7 +120,7 @@ class QoQaImporter(Importer):
         binder = self.binder_for(binding_model)
         if always or not binder.to_openerp(qoqa_id):
             importer = self.unit_for(importer_class, model=binding_model)
-            importer.run(qoqa_id)
+            importer.run(qoqa_id, **kwargs)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
@@ -243,7 +244,7 @@ class QoQaImporter(Importer):
                 else:
                     cr.commit()
 
-    def run(self, qoqa_id, force=False, record=None):
+    def run(self, qoqa_id, force=False, record=None, **kwargs):
         """ Run the synchronization
 
         A record can be given, reducing number of calls when
@@ -330,9 +331,9 @@ class QoQaImporter(Importer):
         # import the missing linked resources
         self._import_dependencies()
 
-        self._import(binding)
+        self._import(binding, **kwargs)
 
-    def _import(self, binding):
+    def _import(self, binding, **kwargs):
         """ Import the external record.
 
         Can be inherited to modify for instance the session

@@ -24,6 +24,7 @@ from . import qoqa_discount_accounting
 from . import qoqa_offer
 from . import qoqa_shipping_fee
 from . import qoqa_shop
+from . import qoqa_voucher_payment
 from . import res_company
 from . import res_country
 from . import res_currency

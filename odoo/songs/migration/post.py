@@ -114,6 +114,14 @@ def payment_method(ctx):
             WHERE il.invoice_id = i.id
             AND i.payment_mode_id != o.payment_mode_id
         """)
+    with ctx.log(u'configure journal on payment modes'):
+        # set "Règlement Bon Cadeau" on "Bon Cadeau CH"
+        ctx.env.cr.execute("""
+        UPDATE account_payment_mode
+        SET fixed_journal_id = 33
+        WHERE company_id = 3
+        AND qoqa_id = '9'
+        """)
     with ctx.log(u'setting DTA payment modes on supplier invoices'):
         ctx.env.cr.execute("""
             UPDATE account_invoice

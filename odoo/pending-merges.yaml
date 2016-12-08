@@ -84,6 +84,15 @@
     # port  purchase_analytic_global
     - oca refs/pull/228/head
   target: *default_target
+./external-src/reporting-engine:
+  remotes:
+    oca: git@github.com:OCA/reporting-engine.git
+    camptocamp: git@github.com:camptocamp/reporting-engine.git
+  merges:
+    - oca 9.0
+    # 9.0-mig-report_custom_filename
+    - oca refs/pull/82/head
+  target: *default_target
 ./external-src/server-tools:
   remotes:
     oca: git@github.com:OCA/server-tools.git

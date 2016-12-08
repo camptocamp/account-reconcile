@@ -66,7 +66,7 @@
 	url = git@github.com:oca/purchase-reporting
 [submodule "odoo/external-src/reporting-engine"]
 	path = odoo/external-src/reporting-engine
-	url = git@github.com:oca/reporting-engine
+	url = git@github.com:camptocamp/reporting-engine
 [submodule "odoo/external-src/rma"]
 	path = odoo/external-src/rma
 	url = git@github.com:oca/rma

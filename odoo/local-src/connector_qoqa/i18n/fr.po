@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-10 15:02+0000\n"
+"POT-Creation-Date: 2016-12-12 09:41+0000\n"
 "PO-Revision-Date: 2014-09-03 12:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -111,7 +111,8 @@ msgstr "<span class=\"o_stat_text\">QoQa</span>"
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.address:0 sql_constraint:qoqa.binding:0
-#: sql_constraint:qoqa.crm.claim:0 sql_constraint:qoqa.crm.claim.medium:0
+#: sql_constraint:qoqa.crm.claim:0 sql_constraint:qoqa.crm.claim.category:0
+#: sql_constraint:qoqa.crm.claim.medium:0
 #: sql_constraint:qoqa.discount.accounting:0
 #: sql_constraint:qoqa.discount.accounting.line:0
 #: sql_constraint:qoqa.product.attribute:0
@@ -120,7 +121,7 @@ msgstr "<span class=\"o_stat_text\">QoQa</span>"
 #: sql_constraint:qoqa.promo.type:0 sql_constraint:qoqa.res.partner:0
 #: sql_constraint:qoqa.sale.order:0 sql_constraint:qoqa.sale.order.line:0
 #: sql_constraint:qoqa.shipping.fee:0 sql_constraint:qoqa.shop:0
-#: sql_constraint:qoqa.stock.picking:0
+#: sql_constraint:qoqa.stock.picking:0 sql_constraint:qoqa.voucher.payment:0
 msgid "A binding already exists for this QoQa record"
 msgstr "Un binding avec le BO QoQa existe déjà pour cet enregistrement"
 
@@ -196,26 +197,20 @@ msgstr ""
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.attribute:0
 msgid "A product attribute can be exported only once on the same backend"
-msgstr "Une caractéristique ne peut être exportée qu'une fois sur le même backend."
+msgstr ""
+"Une caractéristique ne peut être exportée qu'une fois sur le même backend."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.attribute.value:0
 msgid "A product attribute value can be exported only once on the same backend"
 msgstr ""
-"Un valeur de caractéristique ne peut être exportée qu'une fois sur le même backend."
+"Un valeur de caractéristique ne peut être exportée qu'une fois sur le même "
+"backend."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.product:0
 msgid "A product can be exported only once on the same backend"
 msgstr "Un article ne peut être exporté qu'une fois sur le même backend."
-
-#. module: connector_qoqa
-#: code:addons/connector_qoqa/product_product/common.py:88
-#, python-format
-msgid ""
-"One of the product has already been exported and cannot be disabled."
-msgstr ""
-"Un des produits a déjà été exporté et ne peut pas être désactivé."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.template:0
@@ -248,6 +243,7 @@ msgstr "Version de l'API"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_dummy_account_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_account_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_dummy_account_id
 msgid "Account"
 msgstr "Compte"
 
@@ -368,6 +364,7 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_discount_accounting_state
+#: model:ir.model.fields,help:connector_qoqa.field_qoqa_voucher_payment_state
 msgid ""
 "All manually created new journal entries are usually in the status "
 "'Unposted', but you can set the option to skip that status on the related "
@@ -383,7 +380,7 @@ msgid "Already a transaction ID for this refund"
 msgstr "Un id de transaction existe déjà pour cet avoir"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/importer.py:326
+#: code:addons/connector_qoqa/unit/importer.py:327
 #, python-format
 msgid "Already up-to-date."
 msgstr "Déjà à jour."
@@ -391,6 +388,7 @@ msgstr "Déjà à jour."
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_amount
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_amount
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_amount
 msgid "Amount"
 msgstr "Montant"
 
@@ -534,6 +532,7 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_statement_line_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_statement_line_id
 msgid "Bank statement line reconciled with this entry"
 msgstr ""
 
@@ -666,7 +665,7 @@ msgstr "Note de crédit annulée avec l'id de paiement : %s"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_cancellation_resolved
 msgid "Cancellation from the backend resolved"
-msgstr ""
+msgstr "Annulation du BO résolue"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/invoice/exporter.py:36
@@ -772,6 +771,17 @@ msgid "Claim"
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_openerp_id
+msgid "Claim Category"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_crm_claim_category_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_qoqa_bind_ids
+msgid "Claim Categrory Bindings"
+msgstr "Bindings de catégories de réclamations"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_date
 msgid "Claim Date"
 msgstr ""
@@ -845,6 +855,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_company_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_company_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_company_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_company_id
 msgid "Company"
 msgstr "Société"
 
@@ -856,6 +867,7 @@ msgstr "Type de société"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_discount_accounting_company_id
+#: model:ir.model.fields,help:connector_qoqa.field_qoqa_voucher_payment_company_id
 msgid "Company related to this journal"
 msgstr ""
 
@@ -971,6 +983,7 @@ msgstr "Pays"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_created_at
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_created_at
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_created_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_created_at
 msgid "Created At (on QoQa)"
 msgstr "Créé le (sur QoQa)"
 
@@ -979,6 +992,7 @@ msgstr "Créé le (sur QoQa)"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_auth_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_create_uid
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_create_uid
@@ -994,6 +1008,7 @@ msgstr "Créé le (sur QoQa)"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_create_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_create_uid
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_create_uid
 msgid "Created by"
 msgstr ""
 
@@ -1002,6 +1017,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_auth_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_create_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_create_date
@@ -1017,6 +1033,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_create_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_create_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_create_date
 msgid "Created on"
 msgstr ""
 
@@ -1069,6 +1086,7 @@ msgstr "La note de crédit ne peut pas être annulée"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_currency_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_currency_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_currency_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_currency_id
 msgid "Currency"
 msgstr "Devise"
 
@@ -1152,6 +1170,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_date
 msgid "Date"
 msgstr ""
 
@@ -1367,6 +1386,7 @@ msgstr "Description du rabais"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_display_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_display_name
@@ -1382,6 +1402,7 @@ msgstr "Description du rabais"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_display_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_display_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_display_name
 msgid "Display Name"
 msgstr ""
 
@@ -1432,6 +1453,7 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_rate_diff_partial_rec_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_rate_diff_partial_rec_id
 msgid "Exchange Rate Entry of"
 msgstr ""
 
@@ -1683,6 +1705,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_id
@@ -1698,6 +1721,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_id
 msgid "ID"
 msgstr ""
 
@@ -1712,6 +1736,7 @@ msgstr "ID du paiement sur QoQa"
 #: model:ir.model.fields,field_description:connector_qoqa.field_crm_claim_category_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_qoqa_id
@@ -1729,6 +1754,7 @@ msgstr "ID du paiement sur QoQa"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_qoqa_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_company_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_country_qoqa_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_currency_qoqa_id
@@ -1987,19 +2013,19 @@ msgid "Imports"
 msgstr "Imports"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/common.py:120
+#: code:addons/connector_qoqa/invoice/common.py:105
 #, python-format
 msgid "Impossible to cancel a refund on the backend."
 msgstr "Impossible d'annuler un avoir sur QoQa."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:113
+#: code:addons/connector_qoqa/sale/common.py:118
 #, python-format
 msgid "Impossible to cancel the sales order on the backend now."
 msgstr "Impossible d'annuler la commande sur QoQa maintenant."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/invoice/common.py:87
+#: code:addons/connector_qoqa/invoice/common.py:72
 #, python-format
 msgid "Impossible to refund on the backend."
 msgstr "Impossible de créer l'avoir sur QoQa."
@@ -2044,6 +2070,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_internal_note
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_narration
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_narration
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_narration
 msgid "Internal Note"
 msgstr ""
 
@@ -2208,6 +2235,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_journal_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_journal_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_promo_type_property_journal_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_journal_id
 msgid "Journal"
 msgstr "Journal"
 
@@ -2229,6 +2257,7 @@ msgstr "Écriture comptable"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_issued_total
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_journal_item_count
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_line_ids
 msgid "Journal Items"
 msgstr "Lignes d'écriture"
 
@@ -2273,6 +2302,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim___last_update
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line___last_update
@@ -2287,6 +2317,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee___last_update
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking___last_update
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment___last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -2295,6 +2326,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_auth_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_write_uid
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_write_uid
@@ -2310,6 +2342,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_write_uid
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_write_uid
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -2318,6 +2351,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_auth_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_write_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_write_date
@@ -2333,6 +2367,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_write_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_write_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -2345,6 +2380,7 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_sync_date
@@ -2363,6 +2399,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_qoqa_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_sync_date
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_sync_date
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_sync_date
 msgid "Last synchronization date"
 msgstr "Dernière date de synchronisation"
 
@@ -2550,6 +2587,11 @@ msgid "Mobile"
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_openerp_id
+msgid "Move"
+msgstr ""
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_move_lines_related
 msgid "Move Lines"
 msgstr ""
@@ -2557,6 +2599,7 @@ msgstr ""
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_attribute_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_name
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_name
@@ -2640,6 +2683,7 @@ msgstr "Rien à exporter"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_name
 msgid "Number"
 msgstr ""
 
@@ -2722,6 +2766,12 @@ msgstr ""
 "                                    dans le menu 'Connectors > Checkpoint'."
 
 #. module: connector_qoqa
+#: code:addons/connector_qoqa/product_product/common.py:88
+#, python-format
+msgid "One of the product has already been exported and cannot be disabled."
+msgstr "Un des produits a déjà été exporté et ne peut pas être désactivé."
+
+#. module: connector_qoqa
 #: code:addons/connector_qoqa/qoqa_backend/common.py:217
 #, python-format
 msgid "Only 1 QoQa configuration is allowed."
@@ -2747,7 +2797,7 @@ msgid "Opt-Out"
 msgstr ""
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:170
+#: code:addons/connector_qoqa/sale/common.py:175
 #, python-format
 msgid "Order Cancellation"
 msgstr "Annulation de commande"
@@ -2837,6 +2887,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_partner_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_partner_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_partner_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_partner_id
 msgid "Partner"
 msgstr "Partenaire"
 
@@ -2905,6 +2956,7 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_matched_percentage
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_matched_percentage
 msgid "Percentage Matched"
 msgstr ""
 
@@ -2937,6 +2989,12 @@ msgid ""
 "Policy to receive emails for new messages pushed to your personal Inbox:\n"
 "- Never: no emails are sent\n"
 "- All Messages: for every notification you receive in your Inbox"
+msgstr ""
+
+#. module: connector_qoqa
+#: model:product.product,name:connector_qoqa.product_product_shipping_postlogistics
+#: model:product.template,name:connector_qoqa.product_product_shipping_postlogistics_product_template
+msgid "PostLogistics CH : Basic"
 msgstr ""
 
 #. module: connector_qoqa
@@ -3133,15 +3191,19 @@ msgid "Purchase Unit of Measure"
 msgstr ""
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_move_qoqa_voucher_payment_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_crm_claim_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_qoqa_voucher_payment_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_qoqa_voucher_payment_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_line_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_qoqa_bind_ids
+#: model:ir.ui.view,arch_db:connector_qoqa.crm_claim_category_form
 #: model:ir.ui.view,arch_db:connector_qoqa.product_template_form_view
 #: model:ir.ui.view,arch_db:connector_qoqa.view_order_form
 #: model:ir.ui.view,arch_db:connector_qoqa.view_partner_form
@@ -3198,6 +3260,7 @@ msgstr "QoQa Auth"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_timestamp_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_binding_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_backend_id
@@ -3214,6 +3277,7 @@ msgstr "QoQa Auth"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shop_backend_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_backend_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_backend_id
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_tree
 msgid "QoQa Backend"
@@ -3261,6 +3325,13 @@ msgid "QoQa Claim"
 msgstr "Réclamation QoQa"
 
 #. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_crm_claim_category
+#: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_crm_claim_category_form
+#: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_crm_claim_category_tree
+msgid "QoQa Claim Category"
+msgstr "Catégorie de réclamation QoQa"
+
+#. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_crm_claim_medium
 msgid "QoQa Claim Medium"
 msgstr "Medium de réclamation QoQa"
@@ -3275,6 +3346,7 @@ msgstr "Bulletin de livraison QoQa"
 #: model:ir.model.fields,field_description:connector_qoqa.field_account_move_qoqa_discount_accounting_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_qoqa_discount_accounting_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_qoqa_discount_accounting_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_qoqa_discount_accounting_bind_ids
 msgid "QoQa Discount Accounting"
 msgstr "Émission de bon ou promotion QoQa"
 
@@ -3344,6 +3416,7 @@ msgstr "Vente QoQa"
 #: model:ir.model,name:connector_qoqa.model_qoqa_sale_order
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_order_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_qoqa_sale_binding_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_qoqa_order_id
 msgid "QoQa Sale Order"
 msgstr "Bulletin de commande QoQa"
 
@@ -3386,6 +3459,16 @@ msgstr "Utilisateur QoQa"
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_product_tree
 msgid "QoQa Variant"
 msgstr "Client QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_voucher_payment
+msgid "QoQa Voucher Payment"
+msgstr "Bon cadeau QoQa"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_voucher_payment_ids
+msgid "Qoqa voucher payment ids"
+msgstr "Bons cadeaux QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_line_quantity
@@ -3471,7 +3554,7 @@ msgid "Record %s deleted on QoQa"
 msgstr "Enregistrement %s supprimé sur QoQa"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/unit/importer.py:270
+#: code:addons/connector_qoqa/unit/importer.py:271
 #, python-format
 msgid "Record does no longer exist in QoQa"
 msgstr "L'enregistrement n'existe plus sur QoQa"
@@ -3492,6 +3575,7 @@ msgstr "L'enregistrement à exporter n'existe plus."
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_ref
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_ref
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_name
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_ref
 msgid "Reference"
 msgstr ""
 
@@ -3687,6 +3771,7 @@ msgstr "Ligne de commande"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_team_id
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_category_team_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_team_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_team_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_team_id
@@ -3955,6 +4040,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_state
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_state
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_state
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_state
 msgid "Status"
 msgstr ""
 
@@ -4082,11 +4168,13 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_discount_accounting_matched_percentage
+#: model:ir.model.fields,help:connector_qoqa.field_qoqa_voucher_payment_matched_percentage
 msgid "Technical field used in cash basis method"
 msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_discount_accounting_rate_diff_partial_rec_id
+#: model:ir.model.fields,help:connector_qoqa.field_qoqa_voucher_payment_rate_diff_partial_rec_id
 msgid ""
 "Technical field used to keep track of the origin of journal entries created "
 "in case of fluctuation of the currency exchange rate. This is needed when "
@@ -4732,6 +4820,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_discount_accounting_updated_at
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_updated_at
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_updated_at
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_voucher_payment_updated_at
 msgid "Updated At (on QoQa)"
 msgstr "Mis à jour à (sur QoQa)"
 

@@ -12,8 +12,10 @@ class ProductTemplate(models.Model):
     # TODO: in connector_qoqa: ensure that when we have at least one 'qoqa_id'
     # in variants, the automatic generation of variants should raise an error
 
-    is_wine = fields.Boolean(string='Wine')
-    is_liquor = fields.Boolean(string='Liquor')
+    is_wine = fields.Boolean(string='Wine',
+                             default=False)
+    is_liquor = fields.Boolean(string='Liquor',
+                               default=False)
 
     # Wine and liquor fields
     winemaker_id = fields.Many2one(

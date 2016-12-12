@@ -25,6 +25,7 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Connector: import payments made with vouchers as move lines
 * Update stock-logistics-workflow
 
 **Bugfixes**

@@ -160,6 +160,30 @@ class SaleOrderImporter(QoQaImporter):
         with self.session.change_user(user.id):
             super(SaleOrderImporter, self)._import(binding_id)
 
+    def _after_import(self, binding):
+        """ Hook called at the end of the import """
+        vouchers = get_vouchers(self, self.qoqa_record)
+        if vouchers:
+            self._import_vouchers(binding, vouchers)
+
+    def _import_vouchers(self, binding, vouchers):
+        for voucher in vouchers:
+            self._import_dependency(
+                voucher['id'],
+                'qoqa.voucher.payment',
+                record=voucher,
+                order_binding=binding,
+            )
+
+
+def get_vouchers(connector_unit, record):
+    payments = [item for item in
+                record['included']
+                if item['type'] == 'discount' and
+                item['attributes']['main_type'] == 'voucher'
+                ]
+    return payments
+
 
 def get_payments(connector_unit, record):
     payments = [item for item in

@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Configure tax codes (tags)
+
 **Features and Improvements**
 
 **Bugfixes**

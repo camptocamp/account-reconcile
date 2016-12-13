@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Settle payment id instead of order id
+
 **Build**
 
 **Documentation**

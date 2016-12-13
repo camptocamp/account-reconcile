@@ -25,16 +25,25 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* Connector: import payments made with vouchers as move lines
-* Update stock-logistics-workflow
-
 **Bugfixes**
-* Correct filename for batch picking delivery labels
-* Fix issues with wine reports (boolean not set, error in template)
 
 **Build**
 
 **Documentation**
+
+
+9.16.0 (2016-12-13)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Connector: import payments made with vouchers as move lines
+* Update stock-logistics-workflow
+
+**Bugfixes**
+
+* Correct filename for batch picking delivery labels
+* Fix issues with wine reports (boolean not set, error in template)
 
 
 9.15.0 (2016-11-30)

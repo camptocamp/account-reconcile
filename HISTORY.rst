@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Send a confirmation email when a claim is created from the connector
+
 **Build**
 
 **Documentation**

@@ -93,6 +93,15 @@
     # 9.0-mig-report_custom_filename
     - oca refs/pull/82/head
   target: *default_target
+./external-src/sale-workflow:
+  remotes:
+    oca: git@github.com:OCA/sale-workflow.git
+    camptocamp: git@github.com:camptocamp/sale-workflow.git
+  merges:
+    - oca 9.0
+    # Option to set sale order done consider shipping
+    - oca refs/pull/374/head
+  target: *default_target
 ./external-src/server-tools:
   remotes:
     oca: git@github.com:OCA/server-tools.git

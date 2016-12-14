@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Show transaction ref on account move line tree views
+
 **Bugfixes**
 
 **Build**

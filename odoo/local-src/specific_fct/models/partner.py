@@ -78,8 +78,8 @@ class ResPartner(models.Model):
                         partner,
                         without_company=True
                     )
-                    name = name.replace('\n\n','\n')
-                    name = name.replace('\n\n','\n')
+                    name = name.replace('\n\n', '\n')
+                    name = name.replace('\n\n', '\n')
                     res.append((partner.id, name))
                 else:
                     res += super(ResPartner, partner).name_get()

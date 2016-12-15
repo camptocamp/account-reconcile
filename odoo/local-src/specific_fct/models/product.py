@@ -40,7 +40,7 @@ class ProductTemplate(models.Model):
     def onchange_taxes_id(self):
         self.property_account_income_id = False
 
-        if not self.taxes_id or not self.taxes_id[0]:
+        if not self.taxes_id:
             return
 
         tax = self.taxes_id[0]
@@ -60,7 +60,7 @@ class ProductProduct(models.Model):
     def onchange_taxes_id(self):
         self.property_account_income_id = False
 
-        if not self.taxes_id or not self.taxes_id[0]:
+        if not self.taxes_id:
             return
 
         tax = self.taxes_id[0]

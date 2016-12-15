@@ -35,7 +35,7 @@
 
     <t t-if="o.company_id.vat">
       <div class="row">
-        <div class="col-xs-3"><strong>VAT:</strong></div>
+        <div class="col-xs-3"><strong>Our VAT number:</strong></div>
         <div class="col-xs-9"><span t-field="o.company_id.vat"/></div>
       </div>
     </t>

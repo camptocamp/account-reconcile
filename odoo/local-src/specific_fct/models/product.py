@@ -29,11 +29,23 @@ class ProductTemplate(models.Model):
     categ_id = fields.Many2one(default=False)
     property_cost_method = fields.Selection(company_dependent=True,
                                             default='average')
+    property_account_income_id = fields.Many2one(required=True)
 
     @api.onchange('categ_id')
     def onchange_categ_id(self):
         self.warranty = self.categ_id.warranty
         self.type = self.categ_id.product_type
+
+    @api.onchange('taxes_id')
+    def onchange_taxes_id(self):
+        self.property_account_income_id = False
+
+        if not self.taxes_id or not self.taxes_id[0]:
+            return
+
+        tax = self.taxes_id[0]
+        if tax.default_account_id:
+            self.property_account_income_id = tax.default_account_id.id
 
 
 class ProductProduct(models.Model):
@@ -43,6 +55,17 @@ class ProductProduct(models.Model):
     def onchange_categ_id(self):
         self.warranty = self.categ_id.warranty
         self.type = self.categ_id.product_type
+
+    @api.onchange('taxes_id')
+    def onchange_taxes_id(self):
+        self.property_account_income_id = False
+
+        if not self.taxes_id or not self.taxes_id[0]:
+            return
+
+        tax = self.taxes_id[0]
+        if tax.default_account_id:
+            self.property_account_income_id = tax.default_account_id.id
 
     @api.model
     def create(self, vals):

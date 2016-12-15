@@ -28,6 +28,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/account_invoice_view.xml',
+        'views/account_tax_view.xml',
         'views/hr_holidays_view.xml',
         'views/partner_view.xml',
         'views/account_payment_mode_view.xml',

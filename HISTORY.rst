@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Improve speed of split pack operations
+
 **Bugfixes**
 
 **Build**

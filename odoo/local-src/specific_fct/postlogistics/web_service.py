@@ -6,6 +6,15 @@ from openerp import _
 from openerp.exceptions import UserError
 import re
 
+try:
+    from suds.client import Client
+    from suds.transport.http import HttpAuthenticated
+except ImportError:
+    _logger.warning(
+        'suds library not found. '
+        'If you plan to use it, please install the suds library '
+        'from https://pypi.python.org/pypi/suds')
+
 from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
     .postlogistics import web_service
 
@@ -14,6 +23,15 @@ pickpost_match = re.compile(r'^Pick ?Post ?.*|^My ?Post ?24 ?.*',
 
 
 class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
+
+    def init_connection(self, company):
+        t = HttpAuthenticated(
+            username=company.postlogistics_username,
+            password=company.postlogistics_password,
+            timeout=180)
+        self.client = Client(
+            company.postlogistics_wsdl_url,
+            transport=t)
 
     def _prepare_recipient(self, picking):
         """ Create a ns0:Recipient as a dict from a partner

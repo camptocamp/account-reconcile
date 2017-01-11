@@ -5,6 +5,12 @@
 from openerp import _
 from openerp.exceptions import UserError
 import re
+import logging
+
+from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
+    .postlogistics import web_service
+
+_logger = logging.getLogger(__name__)
 
 try:
     from suds.client import Client
@@ -14,9 +20,6 @@ except ImportError:
         'suds library not found. '
         'If you plan to use it, please install the suds library '
         'from https://pypi.python.org/pypi/suds')
-
-from openerp.addons.delivery_carrier_label_postlogistics_shop_logo\
-    .postlogistics import web_service
 
 pickpost_match = re.compile(r'^Pick ?Post ?.*|^My ?Post ?24 ?.*',
                             re.UNICODE | re.IGNORECASE)

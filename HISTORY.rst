@@ -27,6 +27,7 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Improve speed of split pack operations
 * Show transaction ref on account move line tree views
 * Add an option in automatic workflows to set sales orders to done when fully
   delivered and invoiced

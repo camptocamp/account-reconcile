@@ -72,11 +72,11 @@ class TestSplitPerformance(common.TransactionCase):
         inventory.action_done()
 
     @contextmanager
-    def _benchmark(self):
+    def _benchmark(self, name):
         start = time.time()
         yield
         end = time.time()
-        print "%0.3f seconds" % (end - start)
+        print "%s: %0.3f seconds" % (name, end - start)
 
     @unittest.skipIf(os.environ.get('TRAVIS'),
                      'Skipping time-consuming tests on Travis CI')
@@ -84,7 +84,7 @@ class TestSplitPerformance(common.TransactionCase):
         """ Picking with 10 products """
         picking = self._create_picking(10)
 
-        with self._benchmark():
+        with self._benchmark('Picking with 10 products'):
             picking.prepare_packs(max_qty=1)
 
     @unittest.skipIf(os.environ.get('TRAVIS'),
@@ -93,7 +93,7 @@ class TestSplitPerformance(common.TransactionCase):
         """ Picking with 100 products """
         picking = self._create_picking(100)
 
-        with self._benchmark():
+        with self._benchmark('Picking with 100 products'):
             picking.prepare_packs(max_qty=1)
 
     @unittest.skipIf(os.environ.get('TRAVIS'),
@@ -102,7 +102,7 @@ class TestSplitPerformance(common.TransactionCase):
         """ Picking with 1000 products """
         picking = self._create_picking(1000)
 
-        with self._benchmark():
+        with self._benchmark('Picking with 1000 products'):
             picking.prepare_packs(max_qty=1)
 
     @unittest.skipIf(os.environ.get('TRAVIS'),
@@ -113,7 +113,7 @@ class TestSplitPerformance(common.TransactionCase):
         for _ in xrange(10):
             pickings |= self._create_picking(3)
 
-        with self._benchmark():
+        with self._benchmark('10 pickings with 3 products'):
             pickings.prepare_packs(max_qty=1)
 
     @unittest.skipIf(os.environ.get('TRAVIS'),
@@ -124,7 +124,7 @@ class TestSplitPerformance(common.TransactionCase):
         for _ in xrange(100):
             pickings |= self._create_picking(3)
 
-        with self._benchmark():
+        with self._benchmark('100 pickings with 3 products'):
             pickings.prepare_packs(max_qty=1)
 
     @unittest.skipIf(os.environ.get('TRAVIS'),
@@ -135,5 +135,5 @@ class TestSplitPerformance(common.TransactionCase):
         for _ in xrange(1000):
             pickings |= self._create_picking(3)
 
-        with self._benchmark():
+        with self._benchmark('1000 pickings with 3 products'):
             pickings.prepare_packs(max_qty=1)

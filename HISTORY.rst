@@ -28,6 +28,9 @@ latest (unreleased)
 **Bugfixes**
 
 * Settle payment id instead of order id
+* Get the total amount paid when several payment methods are used (payment +
+  voucher).  This total is used to check if the order has been totally paid so
+  it must include all the payments.
 
 **Build**
 

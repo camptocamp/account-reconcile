@@ -72,7 +72,7 @@
 	url = git@github.com:oca/rma
 [submodule "odoo/external-src/sale-workflow"]
 	path = odoo/external-src/sale-workflow
-	url = git@github.com:oca/sale-workflow
+	url = git@github.com:camptocamp/sale-workflow
 [submodule "odoo/external-src/server-tools"]
 	path = odoo/external-src/server-tools
 	url = git@github.com:camptocamp/server-tools

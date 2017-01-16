@@ -524,8 +524,18 @@ def compute_sale_all_qty_delivered(ctx):
             WHERE state = 'done'
         """)
     with ctx.log(u"computing on 'sale' states"):
-        for order in ctx.env['sale.order'].search([('state', '=', 'sale')]):
-            order._compute_all_qty_delivered()
+        ctx.env.cr.execute("""
+            UPDATE sale_order SET all_qty_delivered = true
+            WHERE state = 'sale'
+            AND NOT EXISTS (
+                SELECT * FROM sale_order_line
+                WHERE order_id = sale_order.id
+                AND product_id IN (
+                    SELECT id FROM product_product
+                    WHERE type in ('product', 'consu')
+                ) AND qty_delivered != product_uom_qty
+            );
+        """)
 
 
 @anthem.log

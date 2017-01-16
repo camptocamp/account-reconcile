@@ -119,6 +119,7 @@ class QoqaBackend(models.Model):
         string='Discount Accounting Group ID'
     )
     import_address_id = fields.Char(string='Address ID')
+    import_claim_id = fields.Char(string='Claim ID')
 
     @api.multi
     @api.depends()
@@ -387,6 +388,11 @@ class QoqaBackend(models.Model):
     @api.multi
     def import_one_address(self):
         self._import_one('qoqa.address', 'import_address_id')
+        return True
+
+    @api.multi
+    def import_one_claim(self):
+        self._import_one('qoqa.crm.claim', 'import_claim_id')
         return True
 
     @api.model

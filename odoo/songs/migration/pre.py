@@ -507,6 +507,27 @@ def connector_qoqa_map_product(ctx):
               noupdate=True)
 
 
+def compute_sale_all_qty_delivered(ctx):
+    """ Computing field all_qty_delivered on sale.order """
+    if not column_exists(ctx, 'sale_order', 'all_qty_delivered'):
+        ctx.env.cr.execute("""
+            ALTER TABLE sale_order ADD COLUMN all_qty_delivered BOOLEAN
+        """)
+    with ctx.log(u"initializing with false values"):
+        ctx.env.cr.execute("""
+            UPDATE sale_order SET all_qty_delivered = false
+            WHERE all_qty_delivered IS NULL
+        """)
+    with ctx.log(u"computing on 'done' states"):
+        ctx.env.cr.execute("""
+            UPDATE sale_order SET all_qty_delivered = true
+            WHERE state = 'done'
+        """)
+    with ctx.log(u"computing on 'sale' states"):
+        for order in ctx.env['sale.order'].search([('state', '=', 'sale')]):
+            order._compute_all_qty_delivered()
+
+
 @anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
@@ -530,3 +551,4 @@ def main(ctx):
     fix_sale_order_invoice_status(ctx)
     clean_taxes(ctx)
     connector_qoqa_map_product(ctx)
+    compute_sale_all_qty_delivered(ctx)

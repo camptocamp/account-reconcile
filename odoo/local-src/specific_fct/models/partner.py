@@ -4,13 +4,6 @@
 from openerp import api, fields, models
 
 
-def strip(value):
-    if value:
-        return value.strip()
-    else:
-        return ''
-
-
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
@@ -31,30 +24,16 @@ class ResPartner(models.Model):
         every text field is stripped of its spaces, so importing an exported
         partner name will fail on the equality check.
         """
-        address_format = (
-            address.country_id and address.country_id.address_format or
-            "%(street)s\n%(street2)s\n%(city)s "
-            "%(state_code)s %(zip)s\n%(country_name)s"
+        # for QoQa customers, the company name is their login/email,
+        # so we don't want to show it in the address
+        if address.qoqa_bind_ids or address.parent_id.qoqa_bind_ids:
+            without_company = True
+        address = super(ResPartner, self)._display_address(
+            address,
+            without_company=without_company
         )
-
-        args = {
-            'state_code': strip(address.state_id.code),
-            'state_name': strip(address.state_id.name),
-            'country_code': strip(address.country_id.code),
-            'country_name': strip(address.country_id.name),
-            'company_name': strip(address.parent_name),
-            'street': strip(address.street),
-            'street2': strip(address.street2),
-            'city': strip(address.city),
-            'zip': strip(address.zip),
-            'state_id': address.state_id,
-            'country_id': address.country_id
-        }
-        if without_company:
-            args['company_name'] = ''
-        elif address.parent_id:
-            address_format = '%(company_name)s\n' + address_format
-        return address_format % args
+        address = '\n'.join(l.strip() for l in address.split('\n'))
+        return address
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
@@ -90,6 +69,21 @@ class ResPartner(models.Model):
     @api.multi
     def name_get(self):
         """ Custom name get which shows the address next to the name """
+        if self.env.context.get('_name_get_report'):
+            res = []
+            for partner in self:
+                if partner.qoqa_bind_ids or partner.parent_id.qoqa_bind_ids:
+                    name = partner.name
+                    name = name + "\n" + self._display_address(
+                        partner,
+                        without_company=True
+                    )
+                    name = name.replace('\n\n', '\n')
+                    name = name.replace('\n\n', '\n')
+                    res.append((partner.id, name))
+                else:
+                    res += super(ResPartner, partner).name_get()
+            return res
         names = \
             super(ResPartner, self.with_context(show_address=True)).name_get()
         res = []

@@ -953,6 +953,13 @@ def add_accounting_to_payment_group(ctx):
     """, (group_id,))
 
 
+def setup_reports(ctx):
+    """ Setting up reports """
+    invoice_report = ctx.env.ref('account.account_invoices')
+    invoice_name = "Factures-${str(o.number or o.id).replace('/', '')}.pdf"
+    invoice_report.download_filename = invoice_name
+
+
 def configure_tax_codes(ctx):
     """ configuring tax codes """
     codes = {
@@ -1019,4 +1026,5 @@ def main(ctx):
     mapping_claim_categories(ctx)
     account_unaffected_earnings(ctx)
     add_accounting_to_payment_group(ctx)
+    setup_reports(ctx)
     configure_tax_codes(ctx)

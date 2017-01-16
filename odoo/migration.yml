@@ -74,6 +74,8 @@ migration:
           - product_brand
           #---- OCA/purchase-workflow ----------------------#
           - purchase_discount
+          #---- OCA/reporting-engine -----------------------#
+          - report_custom_filename
           #---- OCA/rma ------------------------------------#
           - crm_claim_rma
           - crm_rma_stock_location

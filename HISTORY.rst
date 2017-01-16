@@ -31,6 +31,7 @@ latest (unreleased)
 * Show transaction ref on account move line tree views
 * Add an option in automatic workflows to set sales orders to done when fully
   delivered and invoiced
+* Add 7.0 code to add onchange of account depending on taxes in product
 
 **Bugfixes**
 

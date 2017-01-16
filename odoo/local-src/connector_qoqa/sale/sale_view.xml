@@ -41,6 +41,7 @@
           <field name="invoice_ref"/>
           <field name="qoqa_payment_id"/>
           <field name="qoqa_payment_date"/>
+          <field name="qoqa_payment_amount"/>
           <field name="qoqa_transaction"/>
         </group>
       </form>

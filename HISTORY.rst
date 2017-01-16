@@ -33,6 +33,7 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Send a confirmation email when a claim is created from the connector
 * Settle payment id instead of order id
 * Get the total amount paid when several payment methods are used (payment +
   voucher).  This total is used to check if the order has been totally paid so

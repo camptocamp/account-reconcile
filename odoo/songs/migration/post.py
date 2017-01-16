@@ -650,9 +650,11 @@ def config_automatic_workflow(ctx):
                          WHERE model = 'ir.filters'
                          AND module LIKE 'sale_automatic_workflow%')
         """)
-    with ctx.log('Disable validation of pickings'):
+    with ctx.log('configuring options of auto workflows'):
         ctx.env.cr.execute("""
-            UPDATE sale_workflow_process SET validate_picking = false
+            UPDATE sale_workflow_process
+            SET validate_picking = false,
+                sale_done = true
         """)
 
 
@@ -951,6 +953,43 @@ def add_accounting_to_payment_group(ctx):
     """, (group_id,))
 
 
+def setup_reports(ctx):
+    """ Setting up reports """
+    invoice_report = ctx.env.ref('account.account_invoices')
+    invoice_name = "Factures-${str(o.number or o.id).replace('/', '')}.pdf"
+    invoice_report.download_filename = invoice_name
+
+
+def configure_tax_codes(ctx):
+    """ configuring tax codes """
+    codes = {
+        # tax id: tag xmlids
+        18: ['l10n_ch.vat_tag_311_a', 'l10n_ch.vat_tag_311_b'],
+        19: ['l10n_ch.vat_tag_400'],
+        4: ['l10n_ch.vat_tag_400'],
+        5: ['l10n_ch.vat_tag_405'],
+        6: ['l10n_ch.vat_tag_405'],
+        7: ['l10n_ch.vat_tag_341_a', 'l10n_ch.vat_tag_341_b'],
+        8: ['l10n_ch.vat_tag_400'],
+        9: ['l10n_ch.vat_tag_400'],
+        10: ['l10n_ch.vat_tag_405'],
+        11: ['l10n_ch.vat_tag_405'],
+        3: ['l10n_ch.vat_tag_301_a', 'l10n_ch.vat_tag_301_b'],
+        2: ['l10n_ch.vat_tag_400'],
+        12: ['l10n_ch.vat_tag_405'],
+        13: ['l10n_ch.vat_tag_405'],
+        14: ['l10n_ch.vat_tag_220'],
+        91: ['l10n_ch.vat_tag_230'],
+        113: ['l10n_ch.vat_tag_dedouanement'],
+    }
+    Tax = ctx.env['account.tax']
+    Tag = ctx.env['account.account.tag']
+    for tax_id, tag_xmlids in codes.iteritems():
+        tax = Tax.browse(tax_id)
+        tags = Tag.browse([ctx.env.ref(xmlid).id for xmlid in tag_xmlids])
+        tax.tag_ids = [(6, 0, tags.ids)]
+
+
 @anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
@@ -987,3 +1026,5 @@ def main(ctx):
     mapping_claim_categories(ctx)
     account_unaffected_earnings(ctx)
     add_accounting_to_payment_group(ctx)
+    setup_reports(ctx)
+    configure_tax_codes(ctx)

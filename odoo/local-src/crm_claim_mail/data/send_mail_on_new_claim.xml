@@ -105,7 +105,7 @@
     </data>
     <data>
         <record id="send_claim_mail" model="ir.actions.server">
-          <field name="code">template = object.confirmation_email_template or self.env.ref('crm_claim_mail.email_template_rma_received')
+          <field name="code">template = object.confirmation_email_template or object.env.ref('crm_claim_mail.email_template_rma_received')
 template.send_mail(object.id)</field>
           <field name="state">code</field>
           <field name="type">ir.actions.server</field>

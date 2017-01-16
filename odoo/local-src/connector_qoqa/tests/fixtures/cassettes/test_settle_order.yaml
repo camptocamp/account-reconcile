@@ -9,9 +9,9 @@ interactions:
       Content-Type: [application/json]
       User-Agent: [python-requests/2.9.1]
     method: POST
-    uri: https://api-sprint.qoqa.com/v1/admin/payments/6/settle
+    uri: https://api-sprint.qoqa.com/v1/admin/payments/9999/settle
   response:
-    body: {string: !!python/unicode '{"data": {"id": 6}}'}
+    body: {string: !!python/unicode '{"data": {"id": 9999}}'}
     headers:
       cache-control: ['max-age=0, private, must-revalidate']
       connection: [close]

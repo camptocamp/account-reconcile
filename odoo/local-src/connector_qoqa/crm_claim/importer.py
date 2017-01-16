@@ -10,6 +10,7 @@ from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
+                                                  only_create,
                                                   )
 from ..backend import qoqa
 from ..unit.importer import DelayedBatchImporter, QoQaImporter
@@ -118,6 +119,12 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
         user_id = record['data']['attributes']['user_id']
         binder = self.binder_for('qoqa.res.partner')
         return binder.to_openerp(user_id, unwrap=True)
+
+    @only_create
+    @mapping
+    def confirmation_email_sent(self, record):
+        """ A confirmation email will be sent """
+        return {'confirmation_email_sent': False}
 
     @mapping
     def partner_id(self, record):

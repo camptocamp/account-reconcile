@@ -32,6 +32,8 @@ class TestSettleOrder(QoQaTransactionCase):
             'partner_id': self.env['res.partner'].create({'name': 'test'}).id,
             'payment_mode_id': self.payment_mode.id,
             'qoqa_payment_date': fields.Date.today(),
+            'qoqa_payment_id': 9999,
+            'qoqa_payment_amount': 1,
         })
         self.order = self.order_binding.openerp_id
         self.order.action_confirm()
@@ -48,6 +50,12 @@ class TestSettleOrder(QoQaTransactionCase):
                 priority=1
             )
 
-        with recorder.use_cassette('test_settle_order'):
+        with recorder.use_cassette('test_settle_order') as cassette:
             settle_sales_order(self.session, 'qoqa.sale.order',
                                self.order_binding.id)
+
+            request = cassette.requests[0]
+            self.assertEqual('POST', request.method)
+            self.assertEqual('/v1/admin/payments/9999/settle',
+                             self.parse_path(request.uri))
+            self.assertEqual(None, request.body)

@@ -23,9 +23,23 @@ latest (unreleased)
 
 **Data Migration**
 
+* Configure tax codes (tags)
+
 **Features and Improvements**
 
+* Improve speed of split pack operations
+* Show transaction ref on account move line tree views
+* Add an option in automatic workflows to set sales orders to done when fully
+  delivered and invoiced
+* Add 7.0 code to add onchange of account depending on taxes in product
+
 **Bugfixes**
+
+* Send a confirmation email when a claim is created from the connector
+* Settle payment id instead of order id
+* Get the total amount paid when several payment methods are used (payment +
+  voucher).  This total is used to check if the order has been totally paid so
+  it must include all the payments.
 
 **Build**
 

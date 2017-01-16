@@ -18,6 +18,7 @@
              'connector_qoqa',
              'specific_fct',
              'delivery_carrier_label_default',
+             'account_payment_partner',
              ],
  'data': [
           'views/report_purchaseorder.xml',

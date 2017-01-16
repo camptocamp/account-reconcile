@@ -139,6 +139,4 @@
     - oca 9.0
     # Add multi-company security rule for employees
     - oca refs/pull/533/head
-    # Search for quants in top packages as well
-    - oca refs/pull/540/head
   target: *default_target

@@ -27,6 +27,9 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add an option in automatic workflows to set sales orders to done when fully
+  delivered and invoiced
+
 **Bugfixes**
 
 * Settle payment id instead of order id

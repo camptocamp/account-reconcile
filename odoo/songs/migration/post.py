@@ -650,9 +650,11 @@ def config_automatic_workflow(ctx):
                          WHERE model = 'ir.filters'
                          AND module LIKE 'sale_automatic_workflow%')
         """)
-    with ctx.log('Disable validation of pickings'):
+    with ctx.log('configuring options of auto workflows'):
         ctx.env.cr.execute("""
-            UPDATE sale_workflow_process SET validate_picking = false
+            UPDATE sale_workflow_process
+            SET validate_picking = false,
+                sale_done = true
         """)
 
 

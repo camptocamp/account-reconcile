@@ -5,6 +5,7 @@
 
 import logging
 from openerp import _
+from openerp.addons.connector.exception import FailedJobError
 from openerp.addons.connector.queue.job import job, related_action
 from openerp.addons.connector.unit.synchronizer import Exporter, BackendAdapter
 from ..connector import get_environment
@@ -33,11 +34,11 @@ class SettleSalesOrder(Exporter):
 
     def run(self, binding_id):
         """ Settle a sales order on QoQa"""
-        qoqa_id = self.binder.to_backend(binding_id)
-        if not qoqa_id:
-            return _('Sales order does not exist on QoQa')
+        binding = self.model.browse(binding_id)
+        if not binding.qoqa_payment_id:
+            raise FailedJobError('No payment_id for this order')
         adapter = self.unit_for(BackendAdapter, model='qoqa.payment')
-        adapter.settle(qoqa_id)
+        adapter.settle(binding.qoqa_payment_id)
         return _('Sales order settled on QoQa')
 
 

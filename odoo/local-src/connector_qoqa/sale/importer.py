@@ -337,7 +337,8 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
         method = methods[0]
         payment_attrs = method[0]['attributes']
         transaction_id = payment_attrs['transaction_id']
-        payment_amount = payment_attrs['amount']
+        payment_amount = sum(float(p['attributes']['amount'])
+                             for p in qpayments)
         payment_date = _get_payment_date(method[0])
         return {'payment_mode_id': method[1].id,
                 'qoqa_transaction': transaction_id,

@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
+import urlparse
 
 from collections import namedtuple
 from os.path import dirname, exists, join
@@ -277,3 +278,11 @@ class QoQaTransactionCase(common.TransactionCase):
         return self.env[model_name].with_context(
             connector_no_export=True
         ).create(values)
+
+    @staticmethod
+    def parse_path(url):
+        return urlparse.urlparse(url).path
+
+    @staticmethod
+    def parse_body(request):
+        return json.loads(request.body)

@@ -2,7 +2,7 @@
 # © 2015-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp import fields, models
+from openerp import fields, models, api
 
 
 class PurchaseOrder(models.Model):
@@ -18,23 +18,16 @@ class PurchaseOrder(models.Model):
         states={'done': [('readonly', True)]},
     )
 
-    # TODO: Doit-on le migrer ?
-    # Use the module "purchase_group_hooks" in order to
-    # redefine one part from purchase order merge: the notes
-    # should not be concatenated.
+    validator = fields.Many2one(
+        'res.users',
+        string="Validated By",
+        readonly=True
+    )
 
-    # def _update_merged_order_data(self, merged_data, order):
-    #    if order.date_order < merged_data['date_order']:
-    #         merged_data['date_order'] = order.date_order
-    #     if order.origin:
-    #         if (
-    #             order.origin not in merged_data['origin'] and
-    #             merged_data['origin'] not in order.origin
-    #         ):
-    #             merged_data['origin'] = (
-    #                 (merged_data['origin'] or '') + ' ' + order.origin
-    #             )
-    #     return merged_data
+    @api.multi
+    def button_approve(self):
+        self.write({'validator': self.env.uid})
+        return super(PurchaseOrder, self).button_approve()
 
 
 class PurchaseOrderLine(models.Model):

@@ -12,6 +12,9 @@
             <field name="date_planned" position="attributes">
                 <attribute name="required">1</attribute>
             </field>
+            <field name="incoterm_id" position="after">
+                <field name="validator"/>
+            </field>
             <xpath expr="//field[@name='order_line']/tree" position="attributes">
                 <attribute name="editable">top</attribute>
             </xpath>

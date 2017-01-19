@@ -34,6 +34,7 @@ latest (unreleased)
 * Add 7.0 code to add onchange of account depending on taxes in product
 * Add 7.0 code to change timeout for call to Postlogistics web service
 * Correct tracking number in batch picking report
+* Add validator back in PO
 
 **Bugfixes**
 

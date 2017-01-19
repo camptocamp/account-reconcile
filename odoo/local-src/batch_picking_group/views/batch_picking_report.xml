@@ -68,7 +68,7 @@
 
                                 <table class="pack">
                                     <t t-if="pack">
-                                        <caption t-esc="pack.name"/>
+                                        <caption t-esc="pack.parcel_tracking"/>
                                     </t>
                                     <t t-if="not pack">
                                         <caption>Not in a pack</caption>

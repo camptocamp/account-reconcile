@@ -983,7 +983,7 @@ def configure_tax_codes(ctx):
         13: ['l10n_ch.vat_tag_405'],
         14: ['l10n_ch.vat_tag_220'],
         91: ['l10n_ch.vat_tag_230'],
-        113: ['l10n_ch.vat_tag_dedouanement'],
+        124: ['l10n_ch.vat_tag_dedouanement'],
     }
     Tax = ctx.env['account.tax']
     Tag = ctx.env['account.account.tag']

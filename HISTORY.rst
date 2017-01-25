@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.17.0 (2017-01-23)
++++++++++++++++++++
+
+**Data Migration**
+
 * Configure tax codes (tags)
 
 **Features and Improvements**

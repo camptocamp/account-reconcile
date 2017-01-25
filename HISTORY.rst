@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Hide unwanted menus / reports in accounting and stock
+
 **Bugfixes**
 
 **Build**

@@ -23,9 +23,14 @@ latest (unreleased)
 
 **Data Migration**
 
+* Correctly set default values in "is_wine" and "is_liquor" on product
+templates.
+
 **Features and Improvements**
 
 **Bugfixes**
+
+* Correct formatting of CSCV wine report
 
 **Build**
 

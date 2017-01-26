@@ -35,7 +35,7 @@ migration:
           #- account_default_draft_move
           - account_permanent_lock_move
           #- account_reversal
-          #- currency_rate_update
+          - currency_rate_update
           #---- OCA/account-fiscal-rule --------------------#
           #- account_fiscal_position_rule
           #- account_fiscal_position_rule_sale

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_check_assign_all_ch" model="ir.cron">
+        <field name="name">Check Availability of Delivery Orders (CH)</field>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="scenario.user_ch"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model" eval="'stock.picking'"/>
+        <field name="function" eval="'check_assign_all'"/>
+        <field name="args" eval="'([], )'"/>
+    </record>
+
+    <record id="ir_cron_batch_delayed_ch" model="ir.cron">
+        <field name="name">Delayed Batch Picking (CH)</field>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="scenario.user_ch"/>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model" eval="'stock.batch.picking'"/>
+        <field name="function" eval="'_scheduler_delayed_done'"/>
+        <field name="args" eval="'()'"/>
+    </record>
+
+    <record id="ir_cron_run_reconciliations_ch" model="ir.cron">
+        <field name="name">Do Automatic Reconciliations (CH)</field>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="scenario.user_ch"/>
+        <field name="interval_number">2</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model" eval="'account.mass.reconcile'"/>
+        <field name="function" eval="'run_scheduler'"/>
+        <field name="args" eval="'()'"/>
+    </record>
+</odoo>

@@ -563,24 +563,19 @@ def move_journal_import_setup(ctx):
 @anthem.log
 def correct_stock_location_complete_name(ctx):
     """ Correcting stock location complete name """
-    location_model = ctx.env['stock.location'].with_context(lang='fr_FR')
-    # few names not updated when we run it once or twice,
-    # don't want to lose time to search why
-    # just run the update five times (it takes 2 seconds)
-    # all records will get the right name, bye
-    for __ in range(2):
-        ctx.env.cr.execute("""
-            UPDATE stock_location l
-            SET name = t.value
-            FROM ir_translation t
-            WHERE l.id = t.res_id
-            AND l.name = 'stock.location,name'
-            AND t.lang = 'fr_FR'
-        """)
-        locations = location_model.search([('location_id', '=', False)])
-        for location in locations:
-            # trigger complete_name function field, child records will recurse
-            location.name = location.name
+    location_model = ctx.env['stock.location']
+    ctx.env.cr.execute("""
+        UPDATE stock_location l
+        SET name = t.value
+        FROM ir_translation t
+        WHERE l.id = t.res_id
+        AND t.name = 'stock.location,name'
+        AND t.lang = 'fr_FR'
+    """)
+    locations = location_model.search([('location_id', '=', False)])
+    for location in locations:
+        # trigger complete_name function field, child records will recurse
+        location.name = location.name
 
 
 @anthem.log
@@ -674,8 +669,11 @@ def setup_cron(ctx):
     ctx.env.cr.execute("""
         UPDATE ir_cron
         SET active = false
-        WHERE id in (44, -- Automatic Workflow Job
-                     33 -- Automatic Workflow Job FR
+        WHERE id in (45, -- Automatic Workflow Job
+                     33, -- Automatic Workflow Job FR
+                     26, -- Check Availability of Delivery Orders (FR)
+                     47, -- Delayed Batch Picking
+                     27  -- Delayed Picking Dispatches (FR)
                      )
     """)
 
@@ -1012,6 +1010,7 @@ def main(ctx):
     configure_shipper_package_types(ctx)
     move_journal_import_setup(ctx)
     post_dispatch.dispatch_migration(ctx)
+    correct_stock_location_complete_name(ctx)
     fix_wine_analysis_filters(ctx)
     correct_parcel_tracking(ctx)
     set_shop_domain(ctx)

@@ -420,6 +420,18 @@ def fix_hidden_menus_group(ctx):
 
 
 @anthem.log
+def fix_ch_user(ctx):
+    """ Update admin_ch to specifc_fct definition
+    """
+    ctx.env.cr.execute("""
+        UPDATE ir_model_data
+        SET module = 'specific_fct'
+        WHERE module = 'scenario'
+        AND name = 'user_ch';
+    """)
+
+
+@anthem.log
 def reset_purchase_mail_template(ctx):
     """ Reset purchase mail template
 

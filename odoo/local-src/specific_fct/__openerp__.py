@@ -40,6 +40,7 @@
         'views/stock_view.xml',
         'views/account_move_line_view.xml',
         'wizard/account_invoice_refund_view.xml',
+        'data/user_data.xml',
         'data/cron_data.xml',
         'data/mail_data.xml',
         'data/product_category.xml',

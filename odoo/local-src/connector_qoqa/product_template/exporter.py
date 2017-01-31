@@ -106,6 +106,16 @@ class TemplateExportMapper(ExportMapper):
     ]
 
     @mapping
+    def category(self, record):
+        result = {}
+
+        category_name = record.categ_id.complete_name
+        if category_name:
+            result['category'] = category_name
+
+        return result
+
+    @mapping
     def translations(self, record):
         """ Map all the translatable values, including the attributes
 

@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add product category name in connector
+
 **Bugfixes**
 
 **Build**

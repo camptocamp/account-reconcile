@@ -18,12 +18,16 @@ class TestExportProduct(QoQaTransactionCase):
         self.brand = self.env['product.brand'].create({
             'name': 'Things',
         })
+        self.category = self.env['product.category'].create({
+            'name': 'Test Category',
+        })
         self.product_template = self.env['product.template'].with_context(
             create_product_product=False,
         ).create({
             'name': 'MRSAFE',
             'warranty': 12,
             'product_brand_id': self.brand.id,
+            'categ_id': self.category.id,
         })
 
         wine_bottle = self.env['wine.bottle'].create({

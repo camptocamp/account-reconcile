@@ -956,7 +956,7 @@ def setup_reports(ctx):
     invoice_report = ctx.env.ref('account.account_invoices')
     invoice_name = "Factures-${str(o.number or o.id).replace('/', '')}.pdf"
     invoice_report.download_filename = invoice_name
-    purchase_report = ctx.env.ref('purchase.report_purchaseorder_document')
+    purchase_report = ctx.env.ref('purchase.action_report_purchase_order')
     purchase_name = "Bon de commande-${str(o.name or o.id)}.pdf"
     purchase_report.download_filename = purchase_name
 

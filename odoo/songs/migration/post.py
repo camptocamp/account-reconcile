@@ -683,7 +683,8 @@ def update_qoqa_promo_issuance_line(ctx):
     """ Setup the crons """
     ctx.env.cr.execute("""
         UPDATE qoqa_promo_issuance_line
-        SET qoqa_id = 500000 + qoqa_id::integer;
+        SET qoqa_id = 500000 + qoqa_id::integer
+        WHERE qoqa_id::integer < 500000;
     """)
 
 

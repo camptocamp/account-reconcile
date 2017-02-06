@@ -28,6 +28,7 @@ templates.
 
 **Features and Improvements**
 
+* Add product category name in connector
 * Hide unwanted menus / reports in accounting and stock
 
 **Bugfixes**

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="user_ch" model="res.users">
+        <field name="name">admin_ch</field>
+        <field name="login">admin_ch</field>
+    </record>
+</odoo>

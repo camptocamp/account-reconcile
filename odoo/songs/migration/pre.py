@@ -420,6 +420,18 @@ def fix_hidden_menus_group(ctx):
 
 
 @anthem.log
+def fix_ch_user(ctx):
+    """ Update admin_ch to specifc_fct definition
+    """
+    ctx.env.cr.execute("""
+        UPDATE ir_model_data
+        SET module = 'specific_fct'
+        WHERE module = 'scenario'
+        AND name = 'user_ch';
+    """)
+
+
+@anthem.log
 def reset_purchase_mail_template(ctx):
     """ Reset purchase mail template
 
@@ -536,6 +548,16 @@ def compute_sale_all_qty_delivered(ctx):
                 ) AND qty_delivered != product_uom_qty
             );
         """)
+
+
+def template_wine_liquor_default_values(ctx):
+    """ Force value in "is_wine" and "is_liquor" columns """
+    ctx.env.cr.execute("""
+        UPDATE product_template SET is_wine = False WHERE is_wine IS NULL;
+    """)
+    ctx.env.cr.execute("""
+        UPDATE product_template SET is_liquor = False WHERE is_liquor IS NULL;
+    """)
 
 
 @anthem.log

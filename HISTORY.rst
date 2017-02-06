@@ -23,11 +23,17 @@ latest (unreleased)
 
 **Data Migration**
 
+* Correctly set default values in "is_wine" and "is_liquor" on product
+templates.
+
 **Features and Improvements**
 
 * Add product category name in connector
+* Hide unwanted menus / reports in accounting and stock
 
 **Bugfixes**
+
+* Correct formatting of CSCV wine report
 
 **Build**
 

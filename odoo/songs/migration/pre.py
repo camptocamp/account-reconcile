@@ -584,3 +584,4 @@ def main(ctx):
     clean_taxes(ctx)
     connector_qoqa_map_product(ctx)
     compute_sale_all_qty_delivered(ctx)
+    fix_ch_user(ctx)

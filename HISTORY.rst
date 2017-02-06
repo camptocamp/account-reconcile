@@ -39,10 +39,6 @@ templates.
 * Only set Swiss crons as active and fix "SAV" location translation
 * PO download name now correctly set
 
-**Build**
-
-**Documentation**
-
 
 9.17.0 (2017-01-23)
 +++++++++++++++++++
@@ -69,10 +65,6 @@ templates.
 * Get the total amount paid when several payment methods are used (payment +
   voucher).  This total is used to check if the order has been totally paid so
   it must include all the payments.
-
-**Build**
-
-**Documentation**
 
 
 9.16.0 (2016-12-13)
@@ -113,10 +105,6 @@ templates.
 * Fix scheduler methods calls in connector_qoqa
 * Send both attribute and attribute positions in product exports
 * Price unit now displayed correctly in PO report
-
-**Build**
-
-**Documentation**
 
 
 9.13.0 (2016-11-17)

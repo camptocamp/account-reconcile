@@ -25,15 +25,19 @@ latest (unreleased)
 
 * Correctly set default values in "is_wine" and "is_liquor" on product
 templates.
+* Add step to shift QoQa IDs for promo issuances
 
 **Features and Improvements**
 
 * Add product category name in connector
 * Hide unwanted menus / reports in accounting and stock
+* Order move lines in reverse chronological order
 
 **Bugfixes**
 
 * Correct formatting of CSCV wine report
+* Only set Swiss crons as active and fix "SAV" location translation
+* PO download name now correctly set
 
 **Build**
 

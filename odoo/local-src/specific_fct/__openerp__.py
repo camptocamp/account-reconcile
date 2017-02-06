@@ -9,6 +9,7 @@
     'depends': [
         'account_reports',
         'account_analytic_required',
+        'account_move_base_import',
         'hr_holidays',
         'sale',
         'stock_batch_picking',

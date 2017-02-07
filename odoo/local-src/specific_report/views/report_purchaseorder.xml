@@ -18,7 +18,7 @@
             <th><strong>Description</strong></th>
             <th><strong>Date Req.</strong></th>
             <th class="text-center"><strong>Qty</strong></th>
-            <th class="text-right"><strong>UoM</strong></th>
+            <th class="text-right"><strong>EAN13</strong></th>
             <th class="text-right"><strong>Unit Price</strong></th>
             <th class="text-right"><strong>Taxes</strong></th>
             <th class="text-right"><strong>Net Price</strong></th>
@@ -42,7 +42,7 @@
               <span t-field="line.product_qty"/>
             </td>
             <td class="text-right">
-              <span t-field="line.product_uom.name" groups="product.group_uom"/>
+              <span t-field="line.product_id.barcode"/>
             </td>
             <td class="text-right">
               <span t-field="line.price_unit"

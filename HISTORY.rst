@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.18.0 (2017-02-07)
++++++++++++++++++++
+
+**Data Migration**
+
 * Correctly set default values in "is_wine" and "is_liquor" on product
 templates.
 * Add step to shift QoQa IDs for promo issuances

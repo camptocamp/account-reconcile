@@ -165,3 +165,4 @@ migration:
     - version: 9.15.0
     - version: 9.16.0
     - version: 9.17.0
+    - version: 9.18.0

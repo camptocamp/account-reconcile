@@ -680,11 +680,52 @@ def setup_cron(ctx):
 
 @anthem.log
 def update_qoqa_promo_issuance_line(ctx):
-    """ Setup the crons """
+    """ Migrate promo/voucher lines """
     ctx.env.cr.execute("""
-        UPDATE qoqa_promo_issuance_line
-        SET qoqa_id = 500000 + qoqa_id::integer
-        WHERE qoqa_id::integer < 500000;
+        DELETE FROM qoqa_discount_accounting;
+        DELETE FROM qoqa_discount_accounting_line;
+
+        SELECT setval('qoqa_discount_accounting_id_seq',
+                      nextval('qoqa_accounting_issuance_id_seq'));
+
+        INSERT INTO qoqa_discount_accounting (
+            id, create_uid, create_date, write_uid, write_date, qoqa_id,
+            backend_id, updated_at, sync_date, openerp_id, created_at
+        ) SELECT id, create_uid, create_date, write_uid, write_date,
+        qoqa_id, backend_id, updated_at, sync_date, openerp_id, created_at
+        FROM qoqa_accounting_issuance;
+
+        UPDATE qoqa_discount_accounting
+        SET discount_type = 'promo'
+        WHERE id IN (
+            SELECT DISTINCT qoqa_issuance_id
+            FROM qoqa_promo_issuance_line
+        );
+
+        UPDATE qoqa_discount_accounting
+        SET discount_type = 'voucher'
+        WHERE id IN (
+            SELECT DISTINCT qoqa_issuance_id
+            FROM qoqa_voucher_issuance_line
+        );
+
+        INSERT INTO qoqa_discount_accounting_line (
+            create_uid, create_date, write_uid, write_date, qoqa_id,
+            backend_id, updated_at, sync_date, openerp_id, created_at,
+            qoqa_discount_accounting_id
+        ) SELECT create_uid, create_date, write_uid, write_date, qoqa_id,
+        backend_id, updated_at, sync_date, openerp_id, created_at,
+        qoqa_issuance_id
+        FROM qoqa_voucher_issuance_line;
+
+        INSERT INTO qoqa_discount_accounting_line (
+            create_uid, create_date, write_uid, write_date, qoqa_id,
+            backend_id, updated_at, sync_date, openerp_id, created_at,
+            qoqa_discount_accounting_id
+        ) SELECT create_uid, create_date, write_uid, write_date,
+        qoqa_id::integer+500000, backend_id, updated_at, sync_date,
+        openerp_id, created_at, qoqa_issuance_id
+        FROM qoqa_promo_issuance_line;
     """)
 
 

@@ -67,6 +67,8 @@ class CrmClaim(models.Model):
         readonly=True
     )
 
+    description = fields.Html('Description')
+
     @api.multi
     def notify_user(self, partner_id):
         for claim in self:
@@ -183,3 +185,15 @@ class CrmClaim(models.Model):
                                         [('state', '=', 'done')])
             if stage_id:
                 claim.stage_id = stage_id
+
+
+class ClaimLine(models.Model):
+    """ Crm claim
+    """
+    _inherit = "claim.line"
+
+    @api.model
+    def create(self, vals):
+        result = super(ClaimLine, self).create(vals)
+        result.auto_set_warranty()
+        return result

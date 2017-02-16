@@ -4,7 +4,6 @@
 
 import logging
 
-from openerp import _
 from openerp.tools.safe_eval import safe_eval
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.exception import MappingError
@@ -87,33 +86,9 @@ class CrmClaimImportMapper(ImportMapper, FromDataAttributes):
         ('subject', 'name'),
         ('email', 'email_from'),
         ('phone', 'partner_phone'),
+        ('message', 'description'),
         (iso8601_to_utc('created_at'), 'date'),
     ]
-
-    @mapping
-    def message(self, record):
-        message_template = _(
-            u"Main Category: {main_category}\n"
-            u"Sub Category: {sub_category}\n\n"
-            u"User: {user}\n"
-            u"Order: {order}\n\n"
-            u"Subject: {subject}\n\n"
-            u"{message}"
-        )
-        partner = self._get_partner(record)
-        message = record['data']['attributes']['message']
-        subject = record['data']['attributes']['subject']
-        order = record['data']['attributes']['order_id']
-        main_category = record['data']['attributes']['main_category']
-        values = {
-            'main_category': main_category or '',
-            'sub_category': self._get_category(record).name or '',
-            'user': partner.name or '',
-            'order': order or '',
-            'subject': subject or '',
-            'message': message or '',
-        }
-        return {'description': message_template.format(**values)}
 
     def _get_partner(self, record):
         user_id = record['data']['attributes']['user_id']

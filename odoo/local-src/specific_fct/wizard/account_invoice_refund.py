@@ -68,10 +68,14 @@ class AccountInvoiceRefund(models.TransientModel):
 
     @api.multi
     def compute_refund(self, mode='refund'):
+        self.ensure_one()
         inv_obj = self.env['account.invoice']
         inv_tax_obj = self.env['account.invoice.tax']
         inv_line_obj = self.env['account.invoice.line']
         context = dict(self._context or {})
+        invoice_ids = self.env.context.get('invoice_ids', [])
+        if invoice_ids:
+            self = self.with_context(active_ids=invoice_ids)
         xml_id = False
 
         for form in self:

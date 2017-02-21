@@ -19,25 +19,13 @@
            eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>
   </record>
 
-  <record id="general_ledger_wizard_no_pdf" model="ir.ui.view">
-    <field name="name">General Ledger</field>
-    <field name="model">general.ledger.report.wizard</field>
-    <field name="inherit_id"
-           ref="account_financial_report_qweb.general_ledger_wizard"/>
-    <field name="arch" type="xml">
-      <footer position="replace">
-        <footer>
-          <div attrs="{'invisible': [('not_only_one_unaffected_earnings_account', '=', True)]}">
-            <button name="button_export_xlsx" string="Export XLSX"
-                    type="object" default_focus="1" class="oe_highlight"/>
-            or
-            <button string="Cancel" class="oe_link" special="cancel"/>
-          </div>
-          <div attrs="{'invisible': [('not_only_one_unaffected_earnings_account', '=', False)]}">
-            <button string="Cancel" class="oe_link" special="cancel"/>
-          </div>
-        </footer>
-      </footer>
-    </field>
+  <record model="ir.ui.menu" id="account_reports.menu_action_account_report_general_ledger">
+    <field name="groups_id"
+           eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>
+  </record>
+
+  <record model="ir.ui.menu" id="account_financial_report_qweb.menu_general_ledger_wizard">
+    <field name="groups_id"
+           eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>
   </record>
 </odoo>

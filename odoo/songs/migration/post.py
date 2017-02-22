@@ -1001,6 +1001,76 @@ def configure_tax_codes(ctx):
         tax.tag_ids = [(6, 0, tags.ids)]
 
 
+def setup_camt_partners(ctx):
+    """ Add correct debit/credit accounts to partners used in CAMT import """
+    ctx.env.cr.execute("""
+        DELETE FROM ir_property
+        WHERE res_id = 'res.partner,667295'
+        AND name IN ('property_account_receivable_id',
+                     'property_account_payable_id');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_receivable_id', 'many2one', 3, 1794,
+                'account.account,1458', 'res.partner,667295');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_payable_id', 'many2one', 3, 1796,
+                'account.account,1458', 'res.partner,667295');
+
+        DELETE FROM ir_property
+        WHERE res_id = 'res.partner,667296'
+        AND name IN ('property_account_receivable_id',
+                     'property_account_payable_id');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_receivable_id', 'many2one', 3, 1794,
+                'account.account,1459', 'res.partner,667296');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_payable_id', 'many2one', 3, 1796,
+                'account.account,1459', 'res.partner,667296');
+
+        DELETE FROM ir_property
+        WHERE res_id = 'res.partner,667297'
+        AND name IN ('property_account_receivable_id',
+                     'property_account_payable_id');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_receivable_id', 'many2one', 3, 1794,
+                'account.account,2552', 'res.partner,667297');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_payable_id', 'many2one', 3, 1796,
+                'account.account,2552', 'res.partner,667297');
+
+        DELETE FROM ir_property
+        WHERE res_id = 'res.partner,865751'
+        AND name IN ('property_account_receivable_id',
+                     'property_account_payable_id');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_receivable_id', 'many2one', 3, 1794,
+                'account.account,2602', 'res.partner,865751');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_payable_id', 'many2one', 3, 1796,
+                'account.account,2602', 'res.partner,865751');
+
+        DELETE FROM ir_property
+        WHERE res_id = 'res.partner,1052745'
+        AND name IN ('property_account_receivable_id',
+                     'property_account_payable_id');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_receivable_id', 'many2one', 3, 1794,
+                'account.account,2636', 'res.partner,1052745');
+        INSERT INTO ir_property (name, type, company_id, fields_id,
+                                 value_reference, res_id)
+        VALUES ('property_account_payable_id', 'many2one', 3, 1796,
+                'account.account,2636', 'res.partner,1052745');
+    """)
+
+
 @anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
@@ -1041,3 +1111,4 @@ def main(ctx):
     setup_reports(ctx)
     configure_tax_codes(ctx)
     update_qoqa_promo_issuance_line(ctx)
+    setup_camt_partners(ctx)

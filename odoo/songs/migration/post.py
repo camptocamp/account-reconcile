@@ -1075,19 +1075,20 @@ def migrate_qoqa_order_addresses(ctx):
 
     """
     columns_to_copy = (
-        "lang company_id create_uid create_date write_date write_uid comment "
-        "use_parent_address active street supplier city user_id zip title "
-        "function country_id parent_id employee type email vat website fax "
-        "street2 phone credit_limit date tz customer mobile ref birthdate "
-        "is_company state_id zip_id notify_email opt_out display_name "
-        "vat_subjected bank_statement_label digicode qoqa_address "
-        "commercial_partner_id name company_type").split()
+        "lang, company_id, create_uid, create_date, write_date, write_uid, "
+        "comment, use_parent_address, street, supplier, city, "
+        "user_id, zip, title, function, country_id, parent_id, employee, "
+        "type, email, vat, website, fax, street2, phone, credit_limit, date, "
+        "tz, customer, mobile, ref, birthdate, is_company, state_id, zip_id, "
+        "notify_email, opt_out, display_name, vat_subjected, "
+        "bank_statement_label, digicode, qoqa_address, "
+        "commercial_partner_id, name, company_type")
 
     def copy_address(original_address_id, qoqa_address_id):
         ctx.env.cr.execute("""
         WITH addr_ins AS (
-          INSERT INTO res_partner (%(fields)s)
-          SELECT %(fields)s FROM res_partner WHERE id = %%s
+          INSERT INTO res_partner (%(fields)s, active, qoqa_order_address)
+          SELECT %(fields)s, False, True FROM res_partner WHERE id = %%s
           RETURNING id AS address_id
         )
         INSERT INTO qoqa_address
@@ -1096,7 +1097,7 @@ def migrate_qoqa_order_addresses(ctx):
          SELECT 1, NOW(), 1, NOW(), NOW(), address_id, %%s, 1
          FROM addr_ins
          RETURNING openerp_id
-        """ % {'fields': ', '.join(columns_to_copy)},
+        """ % {'fields': columns_to_copy},
             (original_address_id, qoqa_address_id,))
         return ctx.env.cr.fetchone()[0]
 
@@ -1119,6 +1120,8 @@ def migrate_qoqa_order_addresses(ctx):
             WHERE qo.qoqa_id = %s
         """, (qoqa_order_id,))
         row = ctx.env.cr.dictfetchone()
+        if not row:
+            continue
         if row['inv_done']:
             new_invoice_id = None
         else:

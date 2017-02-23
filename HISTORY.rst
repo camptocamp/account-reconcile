@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Split in packs was splitting only the operations of the first picking
+
 **Build**
 
 **Documentation**

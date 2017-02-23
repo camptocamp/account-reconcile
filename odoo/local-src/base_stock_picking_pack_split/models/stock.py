@@ -98,4 +98,4 @@ class StockPicking(models.Model):
                     last_pack = last_op.result_package_id
                     op_to_split.append(last_op)
 
-            return True
+        return True

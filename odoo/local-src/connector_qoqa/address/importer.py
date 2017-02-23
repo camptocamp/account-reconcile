@@ -103,7 +103,10 @@ class AddressImportMapper(ImportMapper, FromDataAttributes):
             # copies the addresses used for sales and remove their
             # user_id link.  The original user of the address is in
             # order_user_id.
-            vals['active'] = False
+            vals.update({
+                'active': False,
+                'qoqa_order_address': True,
+            })
 
         binder = self.binder_for('qoqa.res.partner')
         parent = binder.to_openerp(qoqa_user_id or qoqa_order_user_id,

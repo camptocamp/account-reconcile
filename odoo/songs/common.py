@@ -2,7 +2,14 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import codecs
+import csv
 import pickle
+
+from pkg_resources import Requirement
+
+
+req = Requirement.parse('qoqa-odoo')
 
 
 def column_exists(ctx, table, column):
@@ -54,3 +61,17 @@ def copy_sequence_next_number(ctx,
     target_sequence.write(
         {'number_next': source_sequence.number_next}
     )
+
+
+def csv_unireader(f, encoding="utf-8", **fmtparams):
+    data = csv.reader(
+        codecs.iterencode(codecs.iterdecode(f, encoding), "utf-8"), **fmtparams
+    )
+    for row in data:
+        yield [e.decode("utf-8") for e in row]
+
+
+def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
+    rows = csv_unireader(data, encoding=encoding, **fmtparams)
+    header = rows.next()
+    return header, rows

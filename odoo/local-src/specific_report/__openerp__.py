@@ -15,7 +15,6 @@
  'author': 'Camptocamp',
  'website': 'http://www.camptocamp.com',
  'depends': ['account',
-             'account_reports',
              'account_financial_report_qweb',
              'purchase',
              'connector_qoqa',

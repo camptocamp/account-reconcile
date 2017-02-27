@@ -19,11 +19,6 @@
            eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>
   </record>
 
-  <record model="ir.ui.menu" id="account_reports.menu_action_account_report_general_ledger">
-    <field name="groups_id"
-           eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>
-  </record>
-
   <record model="ir.ui.menu" id="account_financial_report_qweb.menu_general_ledger_wizard">
     <field name="groups_id"
            eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>

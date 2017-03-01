@@ -24,11 +24,18 @@ latest (unreleased)
 **Data Migration**
 
 * Correctly migrate promo / voucher accounting issuances
+* Configure currency rate update process
 
 **Features and Improvements**
 
 * Add EAN13 to PO report lines
 * Ported from 7.0 : use refund description in refund wizard
+* Specific changes on claims:
+  * move "Category" to claim header
+  * "warranty_return_partner" in list view for claim lines
+  * check line warranty at creation
+  * change description type to HTML
+* Hide "General Ledger" menus
 
 **Bugfixes**
 

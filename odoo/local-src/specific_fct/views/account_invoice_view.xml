@@ -74,7 +74,8 @@
                 <attribute name="attrs">{'invisible': [('type', '=', 'out_refund')]}</attribute>
             </xpath>
             <xpath expr="//notebook/page/group/group/field[@name='name']" position="after">
-                <field name="refund_description_id" attrs="{'invisible': [('type', '&lt;&gt;', 'out_refund')]}"/>
+                <field name="refund_description_id"
+                       attrs="{'invisible': [('type', '&lt;&gt;', 'out_refund')], 'required': [('type', '=', 'out_refund')]}"/>
             </xpath>
         </field>
     </record>

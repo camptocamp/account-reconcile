@@ -49,3 +49,19 @@ class AccountInvoice(models.Model):
     def button_validate_agreement(self):
         self.ensure_one()
         self.validation_agreement = True
+
+    @api.multi
+    @api.returns('self')
+    def refund_with_description_id(
+            self, date_invoice=None, date=None, description=None,
+            journal_id=None, description_id=None):
+        new_invoices = self.browse()
+        for invoice in self:
+            # create the new invoice
+            values = self._prepare_refund(
+                invoice, date_invoice=date_invoice, date=date,
+                description=description, journal_id=journal_id)
+            if description_id:
+                values['refund_description_id'] = description_id
+            new_invoices += self.create(values)
+        return new_invoices

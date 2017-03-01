@@ -116,15 +116,14 @@ migration:
           - qoqa_base_data
           - qoqa_claim
           - qoqa_claim_unclaimed_process
-          #- qoqa_label_dispatch_pack_split
           - qoqa_offer
           - qoqa_product
           - qoqa_record_archiver
           - server_env_connector_qoqa
+          - specific_enterprise_report
           - specific_fct
           - specific_report
           - speedy_views
-          #- web_custom
           - web_environment
           - wine_ch_report
       modes:

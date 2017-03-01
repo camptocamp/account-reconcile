@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Data Migration**
 
+* Correctly migrate promo / voucher accounting issuances
+
 **Features and Improvements**
 
 **Bugfixes**

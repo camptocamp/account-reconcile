@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add EAN13 to PO report lines
+
 **Bugfixes**
 
 **Build**

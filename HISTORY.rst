@@ -23,7 +23,12 @@ latest (unreleased)
 
 **Data Migration**
 
+* Correctly migrate promo / voucher accounting issuances
+
 **Features and Improvements**
+
+* Add EAN13 to PO report lines
+* Ported from 7.0 : use refund description in refund wizard
 
 **Bugfixes**
 

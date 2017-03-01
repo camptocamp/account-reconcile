@@ -11,6 +11,9 @@
                            attrs="{'invisible': [('warning', '=', False)]}" color="red"/>
                 </group>
             </xpath>
+            <xpath expr="//field[@name='description']" position="replace">
+                <field name="refund_description_id" required="1"/>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -680,11 +680,52 @@ def setup_cron(ctx):
 
 @anthem.log
 def update_qoqa_promo_issuance_line(ctx):
-    """ Setup the crons """
+    """ Migrate promo/voucher lines """
     ctx.env.cr.execute("""
-        UPDATE qoqa_promo_issuance_line
-        SET qoqa_id = 500000 + qoqa_id::integer
-        WHERE qoqa_id::integer < 500000;
+        DELETE FROM qoqa_discount_accounting;
+        DELETE FROM qoqa_discount_accounting_line;
+
+        SELECT setval('qoqa_discount_accounting_id_seq',
+                      nextval('qoqa_accounting_issuance_id_seq'));
+
+        INSERT INTO qoqa_discount_accounting (
+            id, create_uid, create_date, write_uid, write_date, qoqa_id,
+            backend_id, updated_at, sync_date, openerp_id, created_at
+        ) SELECT id, create_uid, create_date, write_uid, write_date,
+        qoqa_id, backend_id, updated_at, sync_date, openerp_id, created_at
+        FROM qoqa_accounting_issuance;
+
+        UPDATE qoqa_discount_accounting
+        SET discount_type = 'promo'
+        WHERE id IN (
+            SELECT DISTINCT qoqa_issuance_id
+            FROM qoqa_promo_issuance_line
+        );
+
+        UPDATE qoqa_discount_accounting
+        SET discount_type = 'voucher'
+        WHERE id IN (
+            SELECT DISTINCT qoqa_issuance_id
+            FROM qoqa_voucher_issuance_line
+        );
+
+        INSERT INTO qoqa_discount_accounting_line (
+            create_uid, create_date, write_uid, write_date, qoqa_id,
+            backend_id, updated_at, sync_date, openerp_id, created_at,
+            qoqa_discount_accounting_id
+        ) SELECT create_uid, create_date, write_uid, write_date, qoqa_id,
+        backend_id, updated_at, sync_date, openerp_id, created_at,
+        qoqa_issuance_id
+        FROM qoqa_voucher_issuance_line;
+
+        INSERT INTO qoqa_discount_accounting_line (
+            create_uid, create_date, write_uid, write_date, qoqa_id,
+            backend_id, updated_at, sync_date, openerp_id, created_at,
+            qoqa_discount_accounting_id
+        ) SELECT create_uid, create_date, write_uid, write_date,
+        qoqa_id::integer+500000, backend_id, updated_at, sync_date,
+        openerp_id, created_at, qoqa_issuance_id
+        FROM qoqa_promo_issuance_line;
     """)
 
 
@@ -1072,6 +1113,22 @@ def setup_camt_partners(ctx):
 
 
 @anthem.log
+def migrate_rate_update(ctx):
+    """ Configuring currency rate update """
+    ctx.env.cr.execute("""
+        UPDATE currency_rate_update_service
+        SET service = 'CH_ADMIN',
+        company_id = 3
+        WHERE id = 1;
+    """)
+    ctx.env.cr.execute("""
+        UPDATE res_company
+        SET auto_currency_up = True
+        WHERE id = 3;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -1112,3 +1169,4 @@ def main(ctx):
     configure_tax_codes(ctx)
     update_qoqa_promo_issuance_line(ctx)
     setup_camt_partners(ctx)
+    migrate_rate_update(ctx)

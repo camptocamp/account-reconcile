@@ -37,6 +37,13 @@
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">
+                <field name="team_id" position="after">
+                    <field name="categ_id"
+                           options="{'no_create': True, 'no_open': True}"
+                           required="1"/>
+                </field>
+                <xpath expr="//notebook/page/group/field[@name='categ_id']"
+                       position="replace"/>
                 <field name="partner_id" position="attributes">
                     <attribute name="domain">[('parent_id', '=', False)]</attribute>
                 </field>
@@ -46,12 +53,12 @@
                 <field name="invoice_id" position="attributes">
                     <attribute name="context">{'active_test': False}</attribute>
                 </field>
-                <field name="categ_id" position="attributes">
-                    <attribute name="required">1</attribute>
-                </field>
                 <field name="delivery_address_id" position="attributes">
                     <attribute name="attrs">{'invisible': [('pick', '=', True)]}</attribute>
                 </field>
+                <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='prodlot_id']" position="replace">
+                    <field name="warranty_return_partner"/>
+                </xpath>
                 <button name="%(account.action_account_invoice_refund)d" position="attributes">
                     <attribute name="context">{'invoice_ids': [invoice_id], 'description': name, 'claim_id': id}</attribute>
                 </button>

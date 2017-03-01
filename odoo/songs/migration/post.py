@@ -1043,6 +1043,22 @@ def configure_tax_codes(ctx):
 
 
 @anthem.log
+def migrate_rate_update(ctx):
+    """ Configuring currency rate update """
+    ctx.env.cr.execute("""
+        UPDATE currency_rate_update_service
+        SET service = 'CH_ADMIN',
+        company_id = 3
+        WHERE id = 1;
+    """)
+    ctx.env.cr.execute("""
+        UPDATE res_company
+        SET auto_currency_up = True
+        WHERE id = 3;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -1082,3 +1098,4 @@ def main(ctx):
     setup_reports(ctx)
     configure_tax_codes(ctx)
     update_qoqa_promo_issuance_line(ctx)
+    migrate_rate_update(ctx)

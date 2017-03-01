@@ -585,3 +585,4 @@ def main(ctx):
     connector_qoqa_map_product(ctx)
     compute_sale_all_qty_delivered(ctx)
     fix_ch_user(ctx)
+    template_wine_liquor_default_values(ctx)

@@ -519,6 +519,7 @@ def connector_qoqa_map_product(ctx):
               noupdate=True)
 
 
+@anthem.log
 def compute_sale_all_qty_delivered(ctx):
     """ Computing field all_qty_delivered on sale.order """
     if not column_exists(ctx, 'sale_order', 'all_qty_delivered'):
@@ -550,16 +551,6 @@ def compute_sale_all_qty_delivered(ctx):
         """)
 
 
-def template_wine_liquor_default_values(ctx):
-    """ Force value in "is_wine" and "is_liquor" columns """
-    ctx.env.cr.execute("""
-        UPDATE product_template SET is_wine = False WHERE is_wine IS NULL;
-    """)
-    ctx.env.cr.execute("""
-        UPDATE product_template SET is_liquor = False WHERE is_liquor IS NULL;
-    """)
-
-
 @anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
@@ -585,4 +576,3 @@ def main(ctx):
     connector_qoqa_map_product(ctx)
     compute_sale_all_qty_delivered(ctx)
     fix_ch_user(ctx)
-    template_wine_liquor_default_values(ctx)

@@ -963,6 +963,7 @@ def mapping_claim_categories(ctx):
                                   'qoqa_id': qoqa_id})
 
 
+@anthem.log
 def account_unaffected_earnings(ctx):
     """ Set account 29910 as "unaffected_earnings" """
     ctx.env.cr.execute("""
@@ -980,6 +981,7 @@ def account_unaffected_earnings(ctx):
     """)
 
 
+@anthem.log
 def add_accounting_to_payment_group(ctx):
     """ """
     ctx.env.cr.execute("""
@@ -1002,6 +1004,7 @@ def add_accounting_to_payment_group(ctx):
     """, (group_id,))
 
 
+@anthem.log
 def setup_reports(ctx):
     """ Setting up reports """
     invoice_report = ctx.env.ref('account.account_invoices')
@@ -1012,6 +1015,7 @@ def setup_reports(ctx):
     purchase_report.download_filename = purchase_name
 
 
+@anthem.log
 def configure_tax_codes(ctx):
     """ configuring tax codes """
     codes = {
@@ -1042,6 +1046,7 @@ def configure_tax_codes(ctx):
         tax.tag_ids = [(6, 0, tags.ids)]
 
 
+@anthem.log
 def setup_camt_partners(ctx):
     """ Add correct debit/credit accounts to partners used in CAMT import """
     ctx.env.cr.execute("""
@@ -1129,6 +1134,17 @@ def migrate_rate_update(ctx):
 
 
 @anthem.log
+def template_wine_liquor_default_values(ctx):
+    """ Force value in "is_wine" and "is_liquor" columns """
+    ctx.env.cr.execute("""
+        UPDATE product_template SET is_wine = False WHERE is_wine IS NULL;
+    """)
+    ctx.env.cr.execute("""
+        UPDATE product_template SET is_liquor = False WHERE is_liquor IS NULL;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -1170,3 +1186,4 @@ def main(ctx):
     update_qoqa_promo_issuance_line(ctx)
     setup_camt_partners(ctx)
     migrate_rate_update(ctx)
+    template_wine_liquor_default_values(ctx)

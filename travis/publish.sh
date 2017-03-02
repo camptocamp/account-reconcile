@@ -27,7 +27,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     docker tag qoqa_odoo camptocamp/qoqa_openerp:latest
     docker push "camptocamp/qoqa_openerp:latest"
     echo "Building test server"
-    deploy latest
+    # deploy latest
   elif [ ! -z "$TRAVIS_TAG" ]; then
     echo "Deploying image to docker hub for tag ${TRAVIS_TAG}"
     docker tag qoqa_odoo camptocamp/qoqa_openerp:${TRAVIS_TAG}

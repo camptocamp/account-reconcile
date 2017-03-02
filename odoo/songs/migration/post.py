@@ -122,27 +122,37 @@ def payment_method(ctx):
         WHERE company_id = 3
         AND qoqa_id = '9'
         """)
-    with ctx.log(u'setting DTA payment modes on supplier invoices'):
+    with ctx.log(u'add payment group to admin_ch'):
+        ctx.env.cr.execute("""
+            DELETE FROM res_groups_users_rel
+            WHERE gid = 99 and uid = 6;
+
+            INSERT INTO res_groups_users_rel
+            (gid, uid) VALUES (99, 6);
+        """)
+    with ctx.log(u'setting SEPA payment modes on supplier invoices'):
         ctx.env.cr.execute("""
             UPDATE account_invoice
             SET payment_mode_id = NULL
             WHERE type = 'in_invoice';
 
             DELETE FROM account_payment_mode
-            WHERE payment_method_code = 'DTA';
+            WHERE payment_method_code = 'sepa_credit_transfer';
 
             DELETE FROM account_payment_method
-            WHERE code = 'DTA';
+            WHERE code = 'sepa_credit_transfer';
 
 
             INSERT INTO account_payment_method (
                 id, create_uid, write_uid, create_date, write_date, code,
                 name, payment_type, display_name, bank_account_required,
-                active
+                active, pain_version
             ) VALUES (
                 NEXTVAL('account_payment_method_id_seq'), 1, 1,
-                current_timestamp, current_timestamp, 'DTA', 'DTA',
-                'outbound', '[DTA] DTA (outbound)', True, True
+                current_timestamp, current_timestamp, 'sepa_credit_transfer',
+                'SEPA Credit Transfer to suppliers', 'outbound',
+                '[sepa_credit_transfer] SEPA Credit Transfer to suppliers (outbound)',
+                True, True, 'pain.001.001.03.ch.02'
             );
 
 
@@ -158,8 +168,8 @@ def payment_method(ctx):
                 payment_settlable_on_qoqa, refund_max_days
             ) VALUES (
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
-                current_timestamp, current_timestamp, 'DTA USD', 3, 'fixed',
-                'DTA', 23, 'outbound', True,
+                current_timestamp, current_timestamp, 'SEPA USD', 3, 'fixed',
+                'sepa_credit_transfer', 23, 'outbound', True,
                 CURRVAL('account_payment_method_id_seq'), False, 'due', False,
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0
@@ -194,8 +204,8 @@ def payment_method(ctx):
                 payment_settlable_on_qoqa, refund_max_days
             ) VALUES (
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
-                current_timestamp, current_timestamp, 'DTA EUR', 3, 'fixed',
-                'DTA', 22, 'outbound', True,
+                current_timestamp, current_timestamp, 'SEPA EUR', 3, 'fixed',
+                'sepa_credit_transfer', 22, 'outbound', True,
                 CURRVAL('account_payment_method_id_seq'), False, 'due', False,
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0
@@ -230,8 +240,8 @@ def payment_method(ctx):
                 payment_settlable_on_qoqa, refund_max_days
             ) VALUES (
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
-                current_timestamp, current_timestamp, 'DTA CHF', 3, 'fixed',
-                'DTA', 19, 'outbound', True,
+                current_timestamp, current_timestamp, 'SEPA CHF', 3, 'fixed',
+                'sepa_credit_transfer', 19, 'outbound', True,
                 CURRVAL('account_payment_method_id_seq'), False, 'due', False,
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0
@@ -266,8 +276,8 @@ def payment_method(ctx):
                 payment_settlable_on_qoqa, refund_max_days
             ) VALUES (
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
-                current_timestamp, current_timestamp, 'DTA Salaires', 3,
-                'fixed', 'DTA', 24, 'outbound', True,
+                current_timestamp, current_timestamp, 'SEPA Salaires', 3,
+                'fixed', 'sepa_credit_transfer', 24, 'outbound', True,
                 CURRVAL('account_payment_method_id_seq'), False, 'due', False,
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0
@@ -295,10 +305,11 @@ def payment_method(ctx):
             ) VALUES (
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp,
-                'DTA CCP Pepsee 14-5058581', 3, 'fixed', 'DTA', 68,
-                'outbound', True, CURRVAL('account_payment_method_id_seq'),
-                False, 'due', False, True, 'same', True, 'bank_account', True,
-                'date', 'posted', 30, 'always', 0, True, False, False, 0
+                'SEPA CCP Pepsee 14-5058581', 3, 'fixed',
+                'sepa_credit_transfer', 68, 'outbound', True,
+                CURRVAL('account_payment_method_id_seq'), False, 'due',
+                False, True, 'same', True, 'bank_account', True, 'date',
+                'posted', 30, 'always', 0, True, False, False, 0
             );
 
             INSERT INTO account_journal_outbound_payment_method_rel (
@@ -322,8 +333,8 @@ def payment_method(ctx):
                 payment_settlable_on_qoqa, refund_max_days
             ) VALUES (
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
-                current_timestamp, current_timestamp, 'DTA Conférence QGroup',
-                3, 'fixed', 'DTA', 65, 'outbound', True,
+                current_timestamp, current_timestamp, 'SEPA Conférence QGroup',
+                3, 'fixed', 'sepa_credit_transfer', 65, 'outbound', True,
                 CURRVAL('account_payment_method_id_seq'), False, 'due', False,
                 True, 'same', True, 'bank_account', True, 'date', 'posted',
                 30, 'always', 0, True, False, False, 0

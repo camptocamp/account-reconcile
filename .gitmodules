@@ -6,13 +6,13 @@
 	url = git@github.com:odoo/enterprise
 [submodule "odoo/external-src/l10n-switzerland"]
 	path = odoo/external-src/l10n-switzerland
-	url = git@github.com:camptocamp/l10n-switzerland
+	url = git@github.com:oca/l10n-switzerland
 [submodule "odoo/external-src/account-analytic"]
 	path = odoo/external-src/account-analytic
 	url = git@github.com:oca/account-analytic
 [submodule "odoo/external-src/account-financial-reporting"]
 	path = odoo/external-src/account-financial-reporting
-	url = git@github.com:camptocamp/account-financial-reporting
+	url = git@github.com:oca/account-financial-reporting
 [submodule "odoo/external-src/account-financial-tools"]
 	path = odoo/external-src/account-financial-tools
 	url = git@github.com:oca/account-financial-tools
@@ -66,19 +66,19 @@
 	url = git@github.com:oca/purchase-reporting
 [submodule "odoo/external-src/reporting-engine"]
 	path = odoo/external-src/reporting-engine
-	url = git@github.com:camptocamp/reporting-engine
+	url = git@github.com:oca/reporting-engine
 [submodule "odoo/external-src/rma"]
 	path = odoo/external-src/rma
 	url = git@github.com:oca/rma
 [submodule "odoo/external-src/sale-workflow"]
 	path = odoo/external-src/sale-workflow
-	url = git@github.com:camptocamp/sale-workflow
+	url = git@github.com:oca/sale-workflow
 [submodule "odoo/external-src/server-tools"]
 	path = odoo/external-src/server-tools
 	url = git@github.com:camptocamp/server-tools
 [submodule "odoo/external-src/stock-logistics-warehouse"]
 	path = odoo/external-src/stock-logistics-warehouse
-	url = git@github.com:camptocamp/stock-logistics-warehouse
+	url = git@github.com:oca/stock-logistics-warehouse
 [submodule "odoo/external-src/stock-logistics-reporting"]
 	path = odoo/external-src/stock-logistics-reporting
 	url = git@github.com:oca/stock-logistics-reporting
@@ -88,6 +88,6 @@
 [submodule "odoo/external-src/web"]
 	path = odoo/external-src/web
 	url = git@github.com:oca/web
-[submodule "odoo/external-src/odoo-monitoring"]
-	path = odoo/external-src/odoo-monitoring
-	url = git@github.com:camptocamp/odoo-monitoring.git
+[submodule "odoo/external-src/odoo-cloud-platform"]
+	path = odoo/external-src/odoo-cloud-platform
+	url = git@github.com:camptocamp/odoo-cloud-platform.git

@@ -151,7 +151,7 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_method_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'sepa_credit_transfer',
                 'SEPA Credit Transfer to suppliers', 'outbound',
-                '[sepa_credit_transfer] SEPA Credit Transfer to suppliers (outbound)',
+    '[sepa_credit_transfer] SEPA Credit Transfer to suppliers (outbound)',
                 True, True, 'pain.001.001.03.ch.02'
             );
 

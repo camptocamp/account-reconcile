@@ -1156,6 +1156,31 @@ def template_wine_liquor_default_values(ctx):
 
 
 @anthem.log
+def update_bvr_partner_banks(ctx):
+    """ Correct informations on old BV / BVR partner banks """
+    ctx.env.cr.execute("""
+        UPDATE res_partner_bank
+        SET company_id = 3, bank_id = 3710,
+        acc_type = 'postal', ccp = acc_number
+        WHERE acc_type IN ('bv', 'bvr');
+    """)
+
+
+@anthem.log
+def update_supplier_move_lines(ctx):
+    """ Correct informations on supplier invoices' move lines """
+    ctx.env.cr.execute("""
+        UPDATE account_move_line
+        SET payment_mode_id = account_invoice.payment_mode_id,
+        partner_bank_id = account_invoice.partner_bank_id
+        FROM account_invoice
+        WHERE invoice_id = account_invoice.id
+        AND type in ('in_invoice', 'in_refund')
+        AND account_move_line.account_id = account_invoice.account_id;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -1198,3 +1223,5 @@ def main(ctx):
     setup_camt_partners(ctx)
     migrate_rate_update(ctx)
     template_wine_liquor_default_values(ctx)
+    update_bvr_partner_banks(ctx)
+    update_supplier_move_lines(ctx)

@@ -25,6 +25,8 @@ latest (unreleased)
 
 * Correctly migrate promo / voucher accounting issuances
 * Configure currency rate update process
+* Update all branches
+* Fix issues with non-migrated res.bank IDs
 
 **Features and Improvements**
 

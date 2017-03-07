@@ -5,12 +5,14 @@ migration:
     # Please remove once merged.
     # Warning: the DEMO flag will never be considered as we force
     # the 'without demo' mode
-    install_args: --without-demo=all
+    install_args: --without-demo=all --load=web,web_kanban,session_redis,attachment_s3,logging_json
   versions:
     - version: 9.1.0
       operations:
         pre:
           - "sh -c 'PGPASSWORD=$DB_PASSWORD psql -h db -U $DB_USER -c \"CREATE EXTENSION IF NOT EXISTS pg_trgm;\" $DB_NAME'"
+        post:
+          - anthem songs.install.setup_platform::main
       addons:
         upgrade:
           - account
@@ -126,6 +128,7 @@ migration:
           - speedy_views
           - web_environment
           - wine_ch_report
+          - cloud_platform
       modes:
         migration:
           operations:

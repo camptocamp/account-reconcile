@@ -1181,6 +1181,69 @@ def update_supplier_move_lines(ctx):
 
 
 @anthem.log
+def update_account_types(ctx):
+    """ Modify account types """
+    ctx.env.cr.execute("""
+        UPDATE account_account
+        SET user_type_id = account_account_type.id
+        FROM account_account_type
+        WHERE account_account_type.name = 'Non-current Liabilities'
+        AND account_account.code IN (
+            '23000', '23010', '23300','23310', '28010', '29000', '29020',
+            '29900'
+        );
+    """)
+    ctx.env.cr.execute("""
+        UPDATE account_account
+        SET user_type_id = account_account_type.id
+        FROM account_account_type
+        WHERE account_account_type.name = 'Other Income'
+        AND account_account.code IN (
+            '32110', '34001', '34010', '34020', '36800', '80000', '80050',
+            '80060'
+        );
+    """)
+    ctx.env.cr.execute("""
+        UPDATE account_account
+        SET user_type_id = account_account_type.id
+        FROM account_account_type
+        WHERE account_account_type.name = 'Cost of Revenue'
+        AND account_account.code IN (
+            '40910', '42000', '42010', '42800', '42810', '42811', '42860',
+            '42900', '43000', '47040'
+        );
+    """)
+    ctx.env.cr.execute("""
+        DELETE FROM account_account
+        WHERE code = '67000 ';
+    """)
+    ctx.env.cr.execute("""
+        UPDATE account_account_type
+        SET analytic_policy = 'optional'
+        WHERE name = 'Expenses';
+    """)
+    ctx.env.cr.execute("""
+        UPDATE account_account
+        SET user_type_id = account_account_type.id
+        FROM account_account_type
+        WHERE account_account_type.name = 'Expenses'
+        AND account_account.code IN (
+            '51000', '52000', '52001', '52002', '52500', '52501', '52502',
+            '52510', '54501', '54502', '56050', '57000', '57100', '57200',
+            '57300', '57400', '58200', '58210', '58230', '60000', '60010',
+            '60060', '60300', '60400', '60700', '62000', '62200', '62400',
+            '62710', '62720', '63000', '63100', '64000', '65000', '65100',
+            '65200', '65300', '65310', '65320', '65330', '65400', '65500',
+            '65700', '65710', '65720', '65730', '66000', '66010', '66020',
+            '66021', '66030', '66400', '66410', '66412', '66420', '67000',
+            '67400', '68120', '68400', '68410', '68420', '68430', '68500',
+            '68920', '69000', '69200', '74100', '80100', '80200', '89000',
+            '89010'
+        );
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     post_product.product_attribute_variants(ctx)
@@ -1225,3 +1288,4 @@ def main(ctx):
     template_wine_liquor_default_values(ctx)
     update_bvr_partner_banks(ctx)
     update_supplier_move_lines(ctx)
+    update_account_types(ctx)

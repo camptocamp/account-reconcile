@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.19.0 (2017-03-08)
++++++++++++++++++++
+
+**Data Migration**
+
 * Correctly migrate promo / voucher accounting issuances
 * Configure currency rate update process
 * Update all branches

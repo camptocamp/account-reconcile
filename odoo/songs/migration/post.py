@@ -1062,14 +1062,15 @@ def configure_tax_codes(ctx):
 def migrate_qoqa_order_addresses(ctx):
     """ Migrating QoQa Order addresses
 
-    Assuming we have a file containing:
-    qoqa_order_id,qoqa_shipping_address_new_id,qoqa_billing_address_new_id
+    Assuming we have a file containing columns
+
+        id,shipping_address_id,billing_address_id
 
     For every qoqa order id we have to:
       1. find the odoo order
       2. if the shipping address has no flag qoqa_order_address:
         a. duplicate it, with active=False, qoqa_order_address=True
-        b. create a binding with the qoqa_shipping_address_new_id
+        b. create a binding with the new qoqa shipping_address_id
       3. repeat with the invoice address
       4. link the order with the new addresses
 

@@ -1110,7 +1110,9 @@ def migrate_qoqa_order_addresses(ctx):
                    o.partner_invoice_id,
                    o.partner_shipping_id,
                    ainv.qoqa_order_address AS inv_done,
-                   aship.qoqa_order_address AS ship_done
+                   aship.qoqa_order_address AS ship_done,
+                   qainv.id as inv_binding_id,
+                   qaship.id as ship_binding_id
             FROM sale_order AS o
             INNER JOIN qoqa_sale_order qo
             ON qo.openerp_id = o.id
@@ -1118,17 +1120,33 @@ def migrate_qoqa_order_addresses(ctx):
             ON ainv.id = o.partner_invoice_id
             INNER JOIN res_partner as aship
             ON aship.id = o.partner_shipping_id
+            LEFT OUTER JOIN qoqa_address qainv
+            ON qainv.openerp_id = ainv.id
+            LEFT OUTER JOIN qoqa_address qaship
+            ON qaship.openerp_id = aship.id
             WHERE qo.qoqa_id = %s
         """, (qoqa_order_id,))
         row = ctx.env.cr.dictfetchone()
         if not row:
             continue
-        if row['inv_done']:
+        # if (row['partner_shipping_id'] != row['partner_invoice_id'] and
+        #         qoqa_shipping_id == qoqa_billing_id):
+
+        if not row['inv_binding_id']:
+            # not a qoqa address, keep it
+            new_invoice_id = None
+        elif row['inv_done']:
+            # already done in a previous migration
             new_invoice_id = None
         else:
             new_invoice_id = copy_address(row['partner_invoice_id'],
                                           qoqa_billing_id)
-        if row['ship_done']:
+
+        if not row['ship_binding_id']:
+            # not a qoqa address, keep it
+            new_invoice_id = None
+        elif row['ship_done']:
+            # already done in a previous migration
             new_shipping_id = None
         else:
             new_shipping_id = copy_address(row['partner_shipping_id'],
@@ -1141,7 +1159,9 @@ def migrate_qoqa_order_addresses(ctx):
                 SET partner_invoice_id = %s,
                     partner_shipping_id = %s
                 WHERE id = %s
-            """, (new_invoice_id, new_shipping_id, order_id))
+            """, (new_invoice_id or row['partner_invoice_id'],
+                  new_shipping_id or row['partner_shipping_id'],
+                  order_id))
 
 
 @anthem.log

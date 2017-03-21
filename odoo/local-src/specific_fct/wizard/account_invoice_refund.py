@@ -92,6 +92,7 @@ class AccountInvoiceRefund(models.TransientModel):
 
                 date = form.date or False
                 description = form.description or inv.name
+                description_id = False
                 if form.refund_description_id:
                     description = form.refund_description_id.name
                     description_id = form.refund_description_id.id

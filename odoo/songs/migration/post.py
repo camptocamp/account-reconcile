@@ -814,7 +814,7 @@ def migrate_automatic_reconciliation(ctx):
             expense_exchange_account_id, income_exchange_account_id
         ) SELECT id, create_uid, create_date, write_uid, write_date,
                  CASE WHEN name = 'easy.reconcile.advanced.bank_statement'
-                      THEN 'mass.reconcile.advanced.ref'
+                      THEN 'mass.reconcile.simple.partner'
                       ELSE OVERLAY(name PLACING 'mass.' FROM 1 FOR 5)
                  END, task_id,
                  CASE WHEN date_base_on = 'end_period_last_credit'

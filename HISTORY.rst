@@ -21,9 +21,20 @@ Release History
 latest (unreleased)
 +++++++++++++++++++
 
+**Data Migration**
+
+* migrate QoQa address IDs
+* migrate attachment URLs to S3
+
+**Features and Improvements**
+
+* Update account types
+
 **Bugfixes**
 
 * Issue with description_id when cancelling sale order
+* Correct reconciliation type to replace "bank.statement"
+* Do not fail script is postgres is not superuser
 
 
 9.19.0 (2017-03-08)

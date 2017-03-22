@@ -34,7 +34,10 @@ class ResPartner(models.Model):
         context={'active_test': False},
     )
     digicode = fields.Char('Digicode')
-    qoqa_address = fields.Boolean('Address from QoQa')
+    qoqa_address = fields.Boolean('Address from QoQa',
+                                  default=False)
+    qoqa_order_address = fields.Boolean('Address from a QoQa Sale',
+                                        default=False)
 
 
 @qoqa

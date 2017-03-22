@@ -21,15 +21,9 @@ Release History
 latest (unreleased)
 +++++++++++++++++++
 
-**Data Migration**
-
-**Features and Improvements**
-
 **Bugfixes**
 
-**Build**
-
-**Documentation**
+* Issue with description_id when cancelling sale order
 
 
 9.19.0 (2017-03-08)

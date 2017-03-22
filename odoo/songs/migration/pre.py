@@ -552,6 +552,23 @@ def compute_sale_all_qty_delivered(ctx):
 
 
 @anthem.log
+def migrate_attachments_to_s3(ctx):
+    """ Migrate attachments to S3
+
+    We'll need a second pass to move back the small images
+    from S3 to the database...
+    """
+    ctx.env.cr.execute("""
+        UPDATE ir_attachment
+        SET store_fname = 's3://qoqa-odoo-integration/' ||
+         substring(store_fname from '/(.*)')
+        WHERE (res_model != 'ir.ui.view' OR res_model IS NULL)
+        AND store_fname IS NOT NULL
+        AND store_fname NOT LIKE 's3://%';
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -576,3 +593,4 @@ def main(ctx):
     connector_qoqa_map_product(ctx)
     compute_sale_all_qty_delivered(ctx)
     fix_ch_user(ctx)
+    migrate_attachments_to_s3(ctx)

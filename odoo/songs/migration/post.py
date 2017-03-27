@@ -2,14 +2,12 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from pkg_resources import resource_stream
-
 import anthem
 from anthem.lyrics.records import create_or_update
 
 from . import post_dispatch
 from . import post_product
-from ..common import copy_sequence_next_number, read_csv, req
+from ..common import copy_sequence_next_number
 
 
 @anthem.log

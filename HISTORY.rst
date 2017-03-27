@@ -23,8 +23,7 @@ latest (unreleased)
 
 **Data Migration**
 
-* migrate QoQa address IDs
-* migrate attachment URLs to S3
+* Migrate attachment URLs to S3
 
 **Features and Improvements**
 

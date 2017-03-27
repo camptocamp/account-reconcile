@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.20.0 (2017-03-27)
++++++++++++++++++++
+
+**Data Migration**
+
 * Migrate attachment URLs to S3
 
 **Features and Improvements**

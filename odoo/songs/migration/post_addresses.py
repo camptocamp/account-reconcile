@@ -59,7 +59,6 @@ def migrate_qoqa_order_addresses(ctx):
     __, rows = read_csv(resource_stream(req, filepath))
 
     count = 0
-    rows = list(rows)
     tstart = time.time()
     for qoqa_order_id, qoqa_shipping_id, qoqa_billing_id in rows:
         count += 1

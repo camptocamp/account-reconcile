@@ -534,12 +534,12 @@ def compute_sale_all_qty_delivered(ctx):
     with ctx.log(u"computing on 'done' states"):
         ctx.env.cr.execute("""
             UPDATE sale_order SET all_qty_delivered = true
-            WHERE state = 'done'
+            WHERE state = 'done' AND all_qty_delivered = false
         """)
     with ctx.log(u"computing on 'sale' states"):
         ctx.env.cr.execute("""
             UPDATE sale_order SET all_qty_delivered = true
-            WHERE state = 'sale'
+            WHERE state = 'sale' AND all_qty_delivered = false
             AND NOT EXISTS (
                 SELECT * FROM sale_order_line
                 WHERE order_id = sale_order.id

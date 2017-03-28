@@ -2,6 +2,8 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import os
+
 import anthem
 from anthem.lyrics.records import add_xmlid
 
@@ -558,14 +560,18 @@ def migrate_attachments_to_s3(ctx):
     We'll need a second pass to move back the small images
     from S3 to the database...
     """
-    ctx.env.cr.execute("""
-        UPDATE ir_attachment
-        SET store_fname = 's3://qoqa-odoo-integration/' ||
-         substring(store_fname from '/(.*)')
-        WHERE (res_model != 'ir.ui.view' OR res_model IS NULL)
-        AND store_fname IS NOT NULL
-        AND store_fname NOT LIKE 's3://%';
-    """)
+    bucket = None
+    if os.environ.get('RUNNING_ENV') in ('prod', 'integration'):
+        bucket = 's3://qoqa-odoo-%s/' % os.environ['RUNNING_ENV']
+    if bucket:
+        ctx.env.cr.execute("""
+            UPDATE ir_attachment
+            SET store_fname = %s ||
+             substring(store_fname from '/(.*)')
+            WHERE (res_model != 'ir.ui.view' OR res_model IS NULL)
+            AND store_fname IS NOT NULL
+            AND store_fname NOT LIKE 's3://%';
+        """, (bucket,))
 
 
 @anthem.log

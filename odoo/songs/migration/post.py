@@ -906,13 +906,14 @@ def move_stock_journal_to_picking_type(ctx):
                 SET picking_type_id = %s
                 WHERE stock_journal_id = %s
             """, (picking_type.id, id_))
-    ctx.env.cr.execute("""
-        UPDATE stock_move m
-        SET picking_type_id = p.picking_type_id
-        FROM stock_picking p
-        WHERE m.picking_id = p.id
-        AND m.picking_type_id != p.picking_type_id
-    """)
+    with ctx.log(u'copy picking type to stock moves'):
+        ctx.env.cr.execute("""
+            UPDATE stock_move m
+            SET picking_type_id = p.picking_type_id
+            FROM stock_picking p
+            WHERE m.picking_id = p.id
+            AND m.picking_type_id != p.picking_type_id
+        """)
 
 
 @anthem.log

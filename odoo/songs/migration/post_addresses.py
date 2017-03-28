@@ -120,7 +120,7 @@ def migrate_qoqa_order_addresses(ctx):
 
         if count % 1000 == 0:
             ctx.env.cr.commit()
-            tdiff =  time.time() - tstart
+            tdiff = time.time() - tstart
             ctx.log_line('%d rows (%.2fs)...' % (count, tdiff))
             tstart = time.time()
 

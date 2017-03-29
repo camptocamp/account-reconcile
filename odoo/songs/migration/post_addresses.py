@@ -11,6 +11,16 @@ import anthem
 from ..common import read_csv, req
 
 
+def iter_dictfetchmany(cr, size=1000):
+    columns = cr.description
+    while True:
+        rows = cr.fetchmany(size=size)
+        if not rows:
+            break
+        for row in rows:
+            yield {c.name: row[i] for i, c in enumerate(columns)}
+
+
 @anthem.log
 def migrate_qoqa_order_addresses(ctx):
     """ Migrating QoQa Order addresses
@@ -56,14 +66,13 @@ def migrate_qoqa_order_addresses(ctx):
         return ctx.env.cr.fetchone()[0]
 
     filepath = 'data/migration/order_address.csv'
-    __, rows = read_csv(resource_stream(req, filepath))
+    __, filerows = read_csv(resource_stream(req, filepath))
 
-    count = 0
-    tstart = time.time()
-    for qoqa_order_id, qoqa_shipping_id, qoqa_billing_id in rows:
-        count += 1
+    orders = {}
+    with ctx.log('select all orders in memory for later usage'):
         ctx.env.cr.execute("""
             SELECT o.id as order_id,
+                   qo.qoqa_id,
                    o.partner_invoice_id,
                    o.partner_shipping_id,
                    ainv.qoqa_order_address AS inv_done,
@@ -81,9 +90,16 @@ def migrate_qoqa_order_addresses(ctx):
             ON qainv.openerp_id = ainv.id
             LEFT OUTER JOIN qoqa_address qaship
             ON qaship.openerp_id = aship.id
-            WHERE qo.qoqa_id = %s
-        """, (qoqa_order_id,))
-        row = ctx.env.cr.dictfetchone()
+        """)
+        rows = iter_dictfetchmany(ctx.env.cr)
+        for row in rows:
+            orders[row['qoqa_id']] = row
+
+    count = 0
+    tstart = time.time()
+    for qoqa_order_id, qoqa_shipping_id, qoqa_billing_id in filerows:
+        count += 1
+        row = orders.get(qoqa_order_id)
         if row:
 
             if not row['inv_binding_id']:

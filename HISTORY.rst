@@ -23,6 +23,20 @@ latest (unreleased)
 
 **Data Migration**
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.21.0 (2017-04-04)
++++++++++++++++++++
+
+**Data Migration**
+
 * Add special case to set default out picking type
 * Set attachment bucket name according to running env
 
@@ -33,10 +47,6 @@ latest (unreleased)
 **Bugfixes**
 
 * Use correct IDs for refund if coming from claim
-
-**Build**
-
-**Documentation**
 
 
 9.20.0 (2017-03-27)

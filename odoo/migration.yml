@@ -138,7 +138,7 @@ migration:
               # anthem otherwise the import of openerp
               # will issue a lot of warnings
               - "sh -c 'psql -f odoo/songs/migration/clean.sql'"
-              - "sh -c 'psql -f odoo/songs/migration/migrate_res_bank_xml_ids.sql'"
+              - "sh -c 'psql -f odoo/songs/migration/migrate_res_bank_xml_ids.sql >&/dev/null'"
               - anthem songs.migration.pre::main
             post:
               - anthem songs.migration.post::main
@@ -172,3 +172,4 @@ migration:
     - version: 9.18.0
     - version: 9.19.0
     - version: 9.20.0
+    - version: 9.21.0

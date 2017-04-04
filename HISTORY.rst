@@ -23,7 +23,12 @@ latest (unreleased)
 
 **Data Migration**
 
+* Add special case to set default out picking type
+* Set attachment bucket name according to running env
+
 **Features and Improvements**
+
+* Add module stock_picking_operation_quick_change
 
 **Bugfixes**
 

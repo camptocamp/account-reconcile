@@ -32,6 +32,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Use correct IDs for refund if coming from claim
+
 **Build**
 
 **Documentation**

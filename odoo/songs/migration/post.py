@@ -846,6 +846,15 @@ def move_stock_journal_to_picking_type(ctx):
         SELECT id, name FROM stock_journal
     """)
     for id_, name in ctx.env.cr.fetchall():
+        if id_ == 1:
+            # Special case for default "out": only rename it
+            picking_types[id_] = create_or_update(
+                ctx,
+                'stock.picking.type',
+                'stock.picking_type_out',
+                {'name': name}
+            )
+            continue
         if name.startswith('Interne'):
             picking_type = picking_type_internal
             code = 'internal'

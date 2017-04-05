@@ -570,7 +570,7 @@ def migrate_attachments_to_s3(ctx):
              substring(store_fname from '/(.*)')
             WHERE (res_model != 'ir.ui.view' OR res_model IS NULL)
             AND store_fname IS NOT NULL
-            AND store_fname NOT LIKE 's3://%';
+            AND store_fname NOT LIKE 's3://%%';
         """, (bucket,))
 
 

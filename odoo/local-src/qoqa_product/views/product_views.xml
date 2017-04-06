@@ -203,6 +203,18 @@
           <field name="base_default_code"/>
         </group>
       </xpath>
+
+      <xpath expr="//page[@name='variants']//field[@name='attribute_line_ids']" position="after">
+        <group>
+          <field name="attribute_value_code_ids" widget="one2many_list" nolabel="1">
+            <tree string="Variant Codes" editable="bottom" create="0">
+              <field name="value_id" readonly="1"/>
+              <field name="code"/>
+            </tree>
+          </field>
+        </group>
+        <button name="create_variant_ids" type="object" string="Create Variants"/>
+      </xpath>
     </field>
   </record>
 

@@ -7,3 +7,5 @@ access_wine_bottle_employee,wine_bottle employee,model_wine_bottle,base.group_us
 access_wine_bottle_sale_manager,wine_bottle salemanager,model_wine_bottle,base.group_sale_manager,1,1,1,1
 access_wine_winemaker_employee,wine_winemaker employee,model_wine_winemaker,base.group_user,1,0,0,0
 access_wine_winemaker_sale_manager,wine_winemaker salemanager,model_wine_winemaker,base.group_sale_manager,1,1,1,1
+access_product_attribute_value_code,product.attribute value code,model_product_attribute_value_code,base.group_user,1,0,0,0
+access_product_attribute_value_code_sale_manager,product.attribute manager value code,model_product_attribute_value_code,base.group_sale_manager,1,1,1,1

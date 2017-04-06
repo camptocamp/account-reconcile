@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-15 10:13+0000\n"
-"PO-Revision-Date: 2016-07-15 10:13+0000\n"
+"POT-Creation-Date: 2017-04-06 16:08+0000\n"
+"PO-Revision-Date: 2017-04-06 16:08+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,8 +31,7 @@ msgstr "Volume"
 #: model:ir.model.fields,help:qoqa_product.field_product_product_base_default_code
 #: model:ir.model.fields,help:qoqa_product.field_product_template_base_default_code
 msgid "All generated variants' internal code will begin with this code."
-msgstr ""
-"Les références internes des variantes générées vont commencer par ce code."
+msgstr "Les références internes des variantes générées vont commencer par ce code."
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_appellation
@@ -47,16 +46,6 @@ msgid "Base Reference"
 msgstr "Référence de base"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_product_product_product_brand_id
-msgid "Brand"
-msgstr "Marque"
-
-#. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_child_ids
-msgid "Children classes"
-msgstr "Classes filles"
-
-#. module: qoqa_product
 #: model:ir.actions.act_window,help:qoqa_product.action_wine_bottle
 #: model:ir.actions.act_window,help:qoqa_product.action_wine_class
 #: model:ir.actions.act_window,help:qoqa_product.action_wine_type
@@ -65,17 +54,14 @@ msgid "Click to create a new wine class."
 msgstr "Cliquer pour créer une nouvelle classe de vin"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_code
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_code
-msgid "Code"
-msgstr "Code"
+#: model:ir.actions.act_window,help:qoqa_product.edit_product_variant_action
+msgid "Click to define a new product."
+msgstr "Cliquer pour définir un nouvel article."
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_complete_name
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_complete_name
-msgid "Complete name"
-msgstr "Nom complet"
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_code
+msgid "Code"
+msgstr "Code"
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_country_id
@@ -84,27 +70,30 @@ msgid "Country"
 msgstr "Pays"
 
 #. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_only_form_view
+msgid "Create Variants"
+msgstr "Créer les variantes"
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Créé par"
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_create_date
 msgid "Created on"
-msgstr ""
+msgstr "Créé le"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_product_product_taxes_id
-msgid "Customer Taxes"
-msgstr ""
-
-#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_display_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_display_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_display_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_display_name
@@ -119,56 +108,45 @@ msgid "Error! You cannot create recursive classes."
 msgstr "Créer des classes récursives n'est pas autorisé."
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_product_product_property_account_expense_id
-msgid "Expense Account"
-msgstr ""
-
-#. module: qoqa_product
 #: model:ir.ui.view,arch_db:qoqa_product.product_template_form_view
 msgid "General"
 msgstr "Général"
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_product_product_property_account_income_id
-msgid "Income Account"
-msgstr ""
-
-#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker___last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Dernière modification le"
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Dernière modification par"
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_write_date
 msgid "Last Updated on"
-msgstr ""
-
-#. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_left
-msgid "Left Parent"
-msgstr ""
+msgstr "Dernière mise à jour le"
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_is_liquor
@@ -185,57 +163,65 @@ msgid "Millesime"
 msgstr "Millésime"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_name
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_name
 msgid "Name"
-msgstr "Nom"
-
-#. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_id
-msgid "Parent class"
-msgstr "Classe parente"
+msgstr "Nom du segment"
 
 #. module: qoqa_product
 #: model:ir.model,name:qoqa_product.model_product_product
 msgid "Product"
-msgstr ""
+msgstr "Article"
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_attribute_value_code_ids
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_attribute_value_code_ids
+msgid "Product Attribute Codes"
+msgstr "Product Attribute Codes"
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_value_id
+msgid "Product Attribute Value"
+msgstr "Valeur de caractéristique d'article"
 
 #. module: qoqa_product
 #: model:ir.model,name:qoqa_product.model_product_template
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_product_tmpl_id
 msgid "Product Template"
-msgstr ""
+msgstr "Modèle d'article"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_right
-msgid "Right Parent"
-msgstr ""
+#: model:ir.actions.act_window,name:qoqa_product.edit_product_variant_action
+msgid "Product Variants"
+msgstr "Variantes de produits"
 
 #. module: qoqa_product
-#: model:ir.model.fields,help:qoqa_product.field_product_product_product_brand_id
-msgid "Select a brand for this product"
-msgstr "Séléctionner une marque pour ce produit"
+#: model:ir.actions.act_window,name:qoqa_product.product_product_edit_tree_view
+#: model:ir.ui.menu,name:qoqa_product.menu_product_product_edit_tree_view
+msgid "Product Variants (List)"
+msgstr "Product Variants (List)"
 
 #. module: qoqa_product
-#: model:ir.model.fields,help:qoqa_product.field_product_product_property_account_expense_id
-msgid "This account will be used for invoices instead of the default one to value expenses for the current product."
-msgstr ""
+#: model:ir.actions.act_window,help:qoqa_product.edit_product_variant_action
+msgid "The product form contains information to simplify the sale\n"
+"        process: price, notes in the quotation, accounting data,\n"
+"        procurement methods, etc."
+msgstr "The product form contains information to simplify the sale\n"
+"        process: price, notes in the quotation, accounting data,\n"
+"        procurement methods, etc."
 
 #. module: qoqa_product
-#: model:ir.model.fields,help:qoqa_product.field_product_product_property_account_income_id
-msgid "This account will be used for invoices instead of the default one to value sales for the current product."
-msgstr ""
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_only_form_view
+msgid "Variant Codes"
+msgstr "Variant Codes"
 
 #. module: qoqa_product
-#: model:ir.model.fields,field_description:qoqa_product.field_product_product_supplier_taxes_id
-msgid "Vendor Taxes"
-msgstr ""
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_only_form_view
+msgid "Variantes : édition rapide"
+msgstr "Variantes : édition rapide"
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_bottle_id
-#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_bottle_id
-#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_volume
 msgid "Volume"
 msgstr "Volume"
 
@@ -256,18 +242,17 @@ msgstr "Vin / Spiritueux"
 #. module: qoqa_product
 #: model:ir.model,name:qoqa_product.model_wine_bottle
 msgid "Wine Bottle"
-msgstr "Bouteille"
+msgstr "Bouteille de vin"
 
 #. module: qoqa_product
 #: model:ir.actions.act_window,name:qoqa_product.action_wine_bottle
 #: model:ir.ui.menu,name:qoqa_product.menu_wine_bottle
 msgid "Wine Bottles"
-msgstr "Bouteilles"
+msgstr "Bouteilles de vin"
 
 #. module: qoqa_product
 #: model:ir.model,name:qoqa_product.model_wine_class
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_class_id
-#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_class_id
 msgid "Wine Class"
 msgstr "Classe de vin"
 
@@ -322,7 +307,16 @@ msgid "Winemaker"
 msgstr "Vigneron"
 
 #. module: qoqa_product
-#: model:ir.model,name:qoqa_product.model_product_attribute_value
-msgid "product.attribute.value"
-msgstr ""
+#: model:ir.actions.act_window,help:qoqa_product.edit_product_variant_action
+msgid "You must define a product for everything you sell, whether it's\n"
+"        a physical product, a consumable or a service you offer to\n"
+"        customers."
+msgstr "You must define a product for everything you sell, whether it's\n"
+"        a physical product, a consumable or a service you offer to\n"
+"        customers."
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_attribute_value_code
+msgid "product.attribute.value.code"
+msgstr "product.attribute.value.code"
 

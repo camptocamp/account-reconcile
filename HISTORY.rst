@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Set attribut codes per template
+
 **Bugfixes**
 
 **Build**

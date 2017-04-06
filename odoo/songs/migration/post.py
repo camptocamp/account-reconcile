@@ -675,17 +675,11 @@ def cancel_fr_draft_invoices(ctx):
 
 
 @anthem.log
-def setup_cron(ctx):
-    """ Setup the crons """
+def deactivate_crons(ctx):
+    """ Deactivate the crons after module upgrade """
     ctx.env.cr.execute("""
         UPDATE ir_cron
         SET active = false
-        WHERE id in (45, -- Automatic Workflow Job
-                     33, -- Automatic Workflow Job FR
-                     26, -- Check Availability of Delivery Orders (FR)
-                     47, -- Delayed Batch Picking
-                     27  -- Delayed Picking Dispatches (FR)
-                     )
     """)
 
 
@@ -1312,6 +1306,7 @@ def update_account_types(ctx):
 @anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
+    deactivate_crons(ctx)
     post_product.product_attribute_variants(ctx)
     post_product.product_brand(ctx)
     post_product.product_attributes(ctx)
@@ -1336,7 +1331,6 @@ def main(ctx):
     set_currency_exchange_journal(ctx)
     config_automatic_workflow(ctx)
     cancel_fr_draft_invoices(ctx)
-    setup_cron(ctx)
     configure_account_type(ctx)
     rename_qoqa_offer(ctx)
     migrate_automatic_reconciliation(ctx)

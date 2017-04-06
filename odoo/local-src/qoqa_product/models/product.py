@@ -64,6 +64,9 @@ class ProductTemplate(models.Model):
         inverse='_inverse_default_code',
         store=True,
     )
+    attribute_value_code_ids = fields.One2many(
+        'product.attribute.value.code', 'product_tmpl_id',
+        'Product Attribute Codes')
 
     @api.depends('product_variant_ids.default_code', 'base_default_code')
     def _compute_default_code(self):
@@ -87,6 +90,46 @@ class ProductTemplate(models.Model):
         if self.default_code and not self.base_default_code:
             self.base_default_code = self.default_code
 
+    @api.model
+    def create(self, vals):
+        # Add the variable to the context to "skip" variant creation
+        result = super(ProductTemplate, self.with_context(
+            create_product_variant=True)).create(vals)
+        # Fill value codes
+        result.fill_value_codes()
+        return result
+
+    @api.multi
+    def write(self, vals):
+        # Add the variable to the context to "skip" variant creation
+        result = super(ProductTemplate, self.with_context(
+            create_product_variant=True)).write(vals)
+        # Fill value codes
+        self.fill_value_codes()
+        return result
+
+    @api.multi
+    def fill_value_codes(self):
+        # Do the difference between the attribute values in
+        # product.attribute.line and product.attribute.value.code
+        for template in self:
+            value_code_obj = self.env['product.attribute.value.code']
+            line_values = template.attribute_line_ids.mapped('value_ids')
+            code_values = template.attribute_value_code_ids.mapped('value_id')
+            new_attr_values = line_values - code_values
+            for new_attr_value in new_attr_values:
+                value_code_obj.create({
+                    'code': False,
+                    'value_id': new_attr_value.id,
+                    'product_tmpl_id': template.id
+                })
+            to_delete_attr_values = code_values - line_values
+            value_codes_to_delete = value_code_obj.search(
+                [('value_id', 'in', to_delete_attr_values.ids),
+                 ('product_tmpl_id', '=', template.id)]
+            )
+            value_codes_to_delete.unlink()
+
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
@@ -107,16 +150,28 @@ class ProductProduct(models.Model):
             if not record.attribute_value_ids:
                 continue
             attr_values = record.attribute_value_ids.sorted(
-                lambda av: (av.attribute_id.sequence, av.attribute_id.id)
+                lambda av: (av.attribute_id.sequence,
+                            av.attribute_id.id)
             )
             base = record.product_tmpl_id.base_default_code or ''
+            value_codes = dict([
+                (vc.value_id.id, vc.code or vc.value_id.name)
+                for vc in record.product_tmpl_id.attribute_value_code_ids
+            ])
             default_code = u' - '.join(
-                [base] + [val.code or val.name for val in attr_values]
+                [base] + [value_codes[val.id]
+                          for val in attr_values]
             )
             record.default_code = default_code
 
 
-class ProductAttributeValue(models.Model):
-    _inherit = 'product.attribute.value'
+class ProductAttributeValueCode(models.Model):
+    _name = 'product.attribute.value.code'
 
     code = fields.Char(string='Code')
+    value_id = fields.Many2one(
+        'product.attribute.value', 'Product Attribute Value',
+        required=True, ondelete='cascade')
+    product_tmpl_id = fields.Many2one(
+        'product.template', 'Product Template',
+        required=True, ondelete='cascade')

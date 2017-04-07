@@ -25,13 +25,28 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* Set attribut codes per template
-
 **Bugfixes**
 
 **Build**
 
 **Documentation**
+
+
+9.22.0 (2017-04-07)
++++++++++++++++++++
+
+**Data Migration**
+
+* Deactivate crons
+* Add more claim category mappings
+
+**Features and Improvements**
+
+* Set attribut codes per template
+
+**Build**
+
+* Remove old rancher config
 
 
 9.21.0 (2017-04-04)

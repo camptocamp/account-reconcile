@@ -170,8 +170,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA USD', 3, 'fixed',
                 'sepa_credit_transfer', 23, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -206,8 +206,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA EUR', 3, 'fixed',
                 'sepa_credit_transfer', 22, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -242,8 +242,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA CHF', 3, 'fixed',
                 'sepa_credit_transfer', 19, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -278,8 +278,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA Salaires', 3,
                 'fixed', 'sepa_credit_transfer', 24, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -307,9 +307,9 @@ def payment_method(ctx):
                 current_timestamp, current_timestamp,
                 'SEPA CCP Pepsee 14-5058581', 3, 'fixed',
                 'sepa_credit_transfer', 68, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due',
-                False, True, 'same', True, 'bank_account', True, 'date',
-                'posted', 30, 'always', 0, True, False, False, 0
+                CURRVAL('account_payment_method_id_seq'), True, 'due',
+                False, True, 'any', True, 'bank_account', True, 'date',
+                'all', 30, 'always', 0, True, False, False, 0
             );
 
             INSERT INTO account_journal_outbound_payment_method_rel (
@@ -335,8 +335,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA Conférence QGroup',
                 3, 'fixed', 'sepa_credit_transfer', 65, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 

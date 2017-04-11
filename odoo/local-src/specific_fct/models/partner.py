@@ -151,5 +151,5 @@ class ResPartner(models.Model):
                            'ON res_partner '
                            'USING gin (%s gin_trgm_ops)' % (index_name, field))
         if installed:
-            for field in ('email', 'display_name'):
+            for field in ('email', 'display_name', 'ref'):
                 create_gin_trgm_index(field)

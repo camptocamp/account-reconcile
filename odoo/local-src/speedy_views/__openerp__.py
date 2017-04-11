@@ -10,6 +10,8 @@
  'depends': ['account',
              'sale_stock',
              'purchase',
+             'crm_claim_rma',
+             'stock_batch_picking',
              ],
  'website': 'http://www.camptocamp.com',
  'data': [

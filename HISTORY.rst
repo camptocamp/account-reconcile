@@ -25,6 +25,9 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Change parameters in SEPA payment modes
+* Add return instructions on claim lines
+
 **Bugfixes**
 
 **Build**

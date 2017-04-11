@@ -192,6 +192,20 @@ class ClaimLine(models.Model):
     """
     _inherit = "claim.line"
 
+    return_instruction = fields.Many2one(
+        'return.instruction',
+        'Instructions',
+        compute='_compute_return_instruction',
+        help="Instructions for product return"
+    )
+
+    @api.multi
+    def _compute_return_instruction(self):
+        for line in self:
+            if line.product_id and line.product_id.seller_ids:
+                supplier = line.product_id.seller_ids[0]
+                line.return_instruction = supplier.return_instructions
+
     @api.model
     def create(self, vals):
         result = super(ClaimLine, self).create(vals)

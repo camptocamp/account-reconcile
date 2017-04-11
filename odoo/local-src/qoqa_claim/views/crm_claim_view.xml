@@ -57,7 +57,7 @@
                     <attribute name="attrs">{'invisible': [('pick', '=', True)]}</attribute>
                 </field>
                 <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='prodlot_id']" position="replace">
-                    <field name="warranty_return_partner"/>
+                    <field name="return_instruction"/>
                 </xpath>
                 <button name="%(account.action_account_invoice_refund)d" position="attributes">
                     <attribute name="context">{'invoice_ids': [invoice_id], 'description': name, 'claim_id': id}</attribute>

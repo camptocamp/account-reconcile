@@ -19,6 +19,7 @@ class SaleOrder(models.Model):
         comodel_name='qoqa.shop',
         string='QoQa Shop',
         ondelete='restrict',
+        index=True,
     )
 
     @api.multi

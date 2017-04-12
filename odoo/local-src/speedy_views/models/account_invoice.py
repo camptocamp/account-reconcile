@@ -4,13 +4,17 @@
 
 import logging
 
-from openerp import models, api, SUPERUSER_ID
+from openerp import fields, models, api, SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
 
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
+
+    partner_id = fields.Many2one(index=True)
+    claim_id = fields.Many2one(index=True)
+    active = fields.Boolean(index=True)
 
     @api.model
     def _trgm_extension_exists(self):
@@ -69,3 +73,14 @@ class AccountInvoice(models.Model):
                     ON account_invoice
                     USING gin (origin gin_trgm_ops)
                 """)
+
+        # default list view sort by those fields desc
+        index_name = 'account_invoice_list_sort_index'
+        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
+                   (index_name,))
+
+        if not cr.fetchone():
+            cr.execute('CREATE INDEX %s '
+                       'ON account_invoice '
+                       '(date_invoice desc, number desc, id desc) '
+                       'where active ' % index_name)

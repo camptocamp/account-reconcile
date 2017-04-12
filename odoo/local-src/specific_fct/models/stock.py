@@ -38,7 +38,9 @@ class StockPicking(models.Model):
     )
 
     active = fields.Boolean(
-        'Active', default=True,
+        'Active',
+        default=True,
+        index=True,
         help="The active field allows you to hide the picking without "
              "removing it."
     )

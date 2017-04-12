@@ -23,10 +23,13 @@ latest (unreleased)
 
 **Data Migration**
 
+* Add a script to move back S3 small files to DB
+
 **Features and Improvements**
 
 * Change parameters in SEPA payment modes
 * Add return instructions on claim lines
+* Add indexes on frequenty used fields to improve performance
 
 **Bugfixes**
 

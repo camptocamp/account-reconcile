@@ -24,6 +24,7 @@ latest (unreleased)
 **Data Migration**
 
 * Add a script to move back S3 small files to DB
+* Increase mail cleanup delay for migration
 
 **Features and Improvements**
 

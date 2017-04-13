@@ -30,6 +30,7 @@ latest (unreleased)
 * Change parameters in SEPA payment modes
 * Add return instructions on claim lines
 * Add indexes on frequenty used fields to improve performance
+* Improve check_assign_all cron performance
 
 **Bugfixes**
 

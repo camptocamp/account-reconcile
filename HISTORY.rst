@@ -21,6 +21,18 @@ Release History
 latest (unreleased)
 +++++++++++++++++++
 
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.23.0 (2017-04-19)
++++++++++++++++++++
+
 **Data Migration**
 
 * Add a script to move back S3 small files to DB
@@ -36,10 +48,6 @@ latest (unreleased)
 **Bugfixes**
 
 * Use carrier's price instead of the one set in picking for unclaimed
-
-**Build**
-
-**Documentation**
 
 
 9.22.0 (2017-04-07)

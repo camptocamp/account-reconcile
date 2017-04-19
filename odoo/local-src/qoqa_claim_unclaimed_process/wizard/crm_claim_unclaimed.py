@@ -118,6 +118,11 @@ class CrmClaimUnclaimed(models.TransientModel):
         qsale = sale.qoqa_bind_ids
         backend = qsale.backend_id
 
+        if not self.claim_carrier_price:
+            raise UserError(
+                _('The carrier has no fixed price.')
+            )
+
         session = ConnectorSession.from_env(self.env)
         with get_environment(session, 'qoqa.sale.order',
                              backend.id) as connector_env:
@@ -268,7 +273,7 @@ class CrmClaimUnclaimed(models.TransientModel):
                                   'for this tracking number!'))
             claim.return_source_location_id = picking.location_dest_id.id
             claim.claim_delivery_address_id = picking.partner_id.id
-            claim.claim_carrier_price = picking.carrier_price
+            claim.claim_carrier_price = picking.carrier_id.fixed_price
 
             sale = picking.sale_id
             if not sale:

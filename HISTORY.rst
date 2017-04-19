@@ -35,6 +35,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Use carrier's price instead of the one set in picking for unclaimed
+
 **Build**
 
 **Documentation**

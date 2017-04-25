@@ -10,7 +10,7 @@
                     <field name="claim_sale_order_regexp"/>
                 </group>
                 <group string="Mail" name="mail">
-                    <field name="mail_signature_template"/>
+                    <field name="mail_signature_template" widget="html"/>
                 </group>
             </page>
         </field>

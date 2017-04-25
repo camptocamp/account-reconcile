@@ -34,7 +34,8 @@ def get_config(env):
 config = get_config(env)
 
 client = odoorpc.ODOO(config['host'],
-                      protocol='jsonrpc+ssl', port=443)
+                      protocol='jsonrpc+ssl', port=443,
+                      timeout=None)
 client.login(config['db'], 'admin', password)
 
 client.env['ir.attachment'].migrate_small_attachments_from_s3_to_db()

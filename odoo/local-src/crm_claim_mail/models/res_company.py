@@ -14,7 +14,7 @@ class ResCompany(models.Model):
         help="Regular expression used to extract the sales order's "
         "number from the body of the emails."
     )
-    mail_signature_template = fields.Html(
+    mail_signature_template = fields.Text(
         string='Mail signature template',
         required=True,
         translate=True,

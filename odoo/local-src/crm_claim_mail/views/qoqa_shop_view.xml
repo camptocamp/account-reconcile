@@ -7,7 +7,7 @@
     <field name="inherit_id" ref="qoqa_offer.view_qoqa_shop_form"/>
     <field name="arch" type="xml">
       <field name="company_id" position="after">
-        <field name="mail_signature_template"/>
+        <field name="mail_signature_template" widget="html"/>
       </field>
     </field>
   </record>

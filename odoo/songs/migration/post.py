@@ -25,6 +25,15 @@ def sale_shop(ctx):
             FROM sale_shop s
             WHERE s.id = q.openerp_id
         """)
+    with ctx.log(u'moving shop signature translations'):
+        ctx.env.cr.execute("""
+            UPDATE ir_translation i
+            SET name = 'qoqa.shop,mail_signature_template',
+                res_id = q.id
+            FROM qoqa_shop q
+            WHERE q.openerp_id = i.res_id
+            AND i.name = 'sale.shop,mail_signature_template'
+        """)
     with ctx.log(u'setting qoqa_shop_id on crm_claim'):
         ctx.env.cr.execute("""
             UPDATE crm_claim c

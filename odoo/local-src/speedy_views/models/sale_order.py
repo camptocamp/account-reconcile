@@ -11,9 +11,8 @@ class SaleOrder(models.Model):
 
     # revert to the default sort so we can benefit of an index
     # (we remove main_exception_id from the sort)
-    _order = 'date_order desc, name desc'
+    _order = 'date_order desc, id desc'
 
-    active = fields.Boolean(index=True)
     # often used in searches, 'sales to invoice' menu...
     invoice_status = fields.Selection(index=True)
 
@@ -35,6 +34,17 @@ class SaleOrder(models.Model):
             cr.execute('CREATE INDEX %s '
                        'ON sale_order '
                        '(date_order DESC, id DESC) ' % index_name)
+
+        # active is mostly used with 'true' so this partial index improves
+        # globally the queries. The same index on (active) without where
+        # would in general not be used.
+        index_name = 'sale_order_active_true_index'
+        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
+                   (index_name,))
+
+        if not cr.fetchone():
+            cr.execute('CREATE INDEX %s ON sale_order '
+                       '(active) where active ' % index_name)
 
 
 class SaleOrderLine(models.Model):

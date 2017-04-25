@@ -14,7 +14,6 @@ class AccountInvoice(models.Model):
 
     partner_id = fields.Many2one(index=True)
     claim_id = fields.Many2one(index=True)
-    active = fields.Boolean(index=True)
 
     @api.model
     def _trgm_extension_exists(self):
@@ -84,3 +83,15 @@ class AccountInvoice(models.Model):
                        'ON account_invoice '
                        '(date_invoice desc, number desc, id desc) '
                        'where active ' % index_name)
+
+        # active is mostly used with 'true' so this partial index improves
+        # globally the queries. The same index on (active) without where
+        # would in general not be used.
+        index_name = 'account_invoice_active_true_index'
+        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
+                   (index_name,))
+
+        if not cr.fetchone():
+            cr.execute('CREATE INDEX %s '
+                       'ON account_invoice '
+                       '(active) where active ' % index_name)

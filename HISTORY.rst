@@ -23,7 +23,12 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add taxes for display in account move view
+
 **Bugfixes**
+
+* Correctly translate / set mail signatures in shops
+* Remove default timeout of 120 seconds on attachment script
 
 **Build**
 

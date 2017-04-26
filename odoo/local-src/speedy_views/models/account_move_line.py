@@ -2,8 +2,8 @@
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models
-from .utils import create_index
+from openerp import api, models, SUPERUSER_ID
+from .utils import install_trgm_extension, create_index
 
 
 class AccountMoveLine(models.Model):
@@ -14,6 +14,14 @@ class AccountMoveLine(models.Model):
     _order = 'date DESC, id DESC'
 
     def init(self, cr):
+        env = api.Environment(cr, SUPERUSER_ID, {})
+        trgm_installed = install_trgm_extension(env)
+        cr.commit()
+
+        if trgm_installed:
+            index_name = 'account_move_line_transaction_ref_gin_trgm'
+            create_index(cr, index_name, self._table,
+                         'USING gin (transaction_ref gin_trgm_ops)')
 
         # in reconcile wizard, queries look for null or false values
         # for 'reconciled'. We improve the mass reconciliations with

@@ -31,6 +31,7 @@ latest (unreleased)
 * Correctly translate / set mail signatures in shops
 * Remove default timeout of 120 seconds on attachment script
 * Send correct tracking number to connector
+* Correct price on carrier products to have the correct fixed price
 
 **Build**
 

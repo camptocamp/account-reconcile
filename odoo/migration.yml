@@ -96,7 +96,6 @@ migration:
           #---- OCA/stock-logistics-workflow ---------------#
           - stock_batch_picking
           - stock_picking_mass_assign
-          - stock_picking_operation_quick_change
           #---- OCA/web ------------------------------------#
           - web_hide_db_manager_link
           - web_send_message_popup

@@ -575,6 +575,17 @@ def migrate_attachments_to_s3(ctx):
 
 
 @anthem.log
+def drop_indexes(ctx):
+    """ Drop useless indexes """
+    ctx.env.cr.execute("""
+        DROP INDEX IF EXISTS account_move_line_journal_id_period_id_index;
+    """)
+    ctx.env.cr.execute("""
+        DROP INDEX IF EXISTS account_move_line_period_id_index;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called before upgrade of addons """
     cron_no_doall(ctx)
@@ -600,3 +611,4 @@ def main(ctx):
     compute_sale_all_qty_delivered(ctx)
     fix_ch_user(ctx)
     migrate_attachments_to_s3(ctx)
+    drop_indexes(ctx)

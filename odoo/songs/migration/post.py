@@ -1313,6 +1313,21 @@ def update_account_types(ctx):
 
 
 @anthem.log
+def update_carrier_fixed_price(ctx):
+    """ Correct price on carrier products to have the correct fixed price """
+    ctx.env.cr.execute("""
+        UPDATE product_template
+        SET list_price = fixed_price
+        FROM delivery_carrier
+        LEFT JOIN product_product
+        ON product_product.id = delivery_carrier.product_id
+        WHERE product_template.id = product_product.product_tmpl_id
+        AND fixed_price IS NOT NULL
+        AND fixed_price > 0.0;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
     deactivate_crons(ctx)
@@ -1358,3 +1373,4 @@ def main(ctx):
     update_bvr_partner_banks(ctx)
     update_supplier_move_lines(ctx)
     update_account_types(ctx)
+    update_carrier_fixed_price(ctx)

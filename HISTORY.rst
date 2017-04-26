@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * Add taxes for display in account move view
+* Optimize main views with indices
 
 **Bugfixes**
 

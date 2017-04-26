@@ -30,3 +30,9 @@ class AccountMoveLine(models.Model):
         create_index(cr, index_name, self._table,
                      '(reconciled) WHERE '
                      'reconciled IS NULL OR NOT reconciled ')
+
+        # in reconcile wizard, a query is regularly issued with an
+        # order by date_maturity, id, and we improve from 6s to 0.5ms
+        index_name = 'account_move_line_date_maturity_order_index'
+        create_index(cr, index_name, self._table,
+                     '(date_maturity, id)')

@@ -88,7 +88,7 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
                 del recipient['Street']
         return recipient
 
-    def _prepare_attributes(self, picking):
+    def _prepare_attributes(self, picking, pack_num=None, pack_total=None):
         """ Set the Free Text on label for SAV
 
         On merchandise return we need the RMA number on it
@@ -96,7 +96,8 @@ class PostlogisticsWebServiceQoQa(web_service.PostlogisticsWebServiceShop):
 
         """
         attributes = super(PostlogisticsWebServiceQoQa, self
-                           )._prepare_attributes(picking)
+                           )._prepare_attributes(picking, pack_num=pack_num,
+                                                 pack_total=pack_total)
 
         if (picking.picking_type_code == 'outgoing' and
                 picking.offer_id and picking.sale_id):

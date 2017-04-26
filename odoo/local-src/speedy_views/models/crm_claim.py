@@ -4,6 +4,7 @@
 
 
 from openerp import fields, models
+from .utils import create_index
 
 
 class CrmClaim(models.Model):
@@ -16,9 +17,4 @@ class CrmClaim(models.Model):
         # globally the queries. The same index on (active) without where
         # would in general not be used.
         index_name = 'crm_claim_active_true_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s ON crm_claim '
-                       '(active) where active ' % index_name)
+        create_index(cr, index_name, self._table, '(active) where active ')

@@ -4,6 +4,7 @@
 
 
 from openerp import fields, models
+from .utils import create_index
 
 
 class SaleOrder(models.Model):
@@ -27,24 +28,14 @@ class SaleOrder(models.Model):
         # ORDER BY "sale_order"."date_order" DESC,
         # "sale_order"."id" DESC LIMIT 0;
         index_name = 'sale_order_list_sort_desc_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s '
-                       'ON sale_order '
-                       '(date_order DESC, id DESC) ' % index_name)
+        create_index(cr, index_name, self._table,
+                     '(date_order DESC, id DESC) ')
 
         # active is mostly used with 'true' so this partial index improves
         # globally the queries. The same index on (active) without where
         # would in general not be used.
         index_name = 'sale_order_active_true_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s ON sale_order '
-                       '(active) where active ' % index_name)
+        create_index(cr, index_name, self._table, '(active) where active')
 
 
 class SaleOrderLine(models.Model):

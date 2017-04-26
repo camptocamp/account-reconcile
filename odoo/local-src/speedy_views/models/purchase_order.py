@@ -4,6 +4,7 @@
 
 
 from openerp import models
+from .utils import create_index
 
 
 class PurchaseOrder(models.Model):
@@ -14,9 +15,4 @@ class PurchaseOrder(models.Model):
         # globally the queries. The same index on (active) without where
         # would in general not be used.
         index_name = 'purchase_order_active_true_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s ON purchase_order '
-                       '(active) where active ' % index_name)
+        create_index(cr, index_name, self._table, '(active) where active')

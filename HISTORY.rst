@@ -25,6 +25,7 @@ latest (unreleased)
 
 * Add taxes for display in account move view
 * Optimize main views with indices
+* Add plain text version of claim description to quote in mails
 
 **Bugfixes**
 

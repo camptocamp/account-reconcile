@@ -8,6 +8,7 @@ from openerp import fields, models
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    name = fields.Char(index=True)  # used for reconciliation
     journal_id = fields.Many2one(index=True)
 
     def init(self, cr):

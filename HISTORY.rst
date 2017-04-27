@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.24.0 (2017-04-27)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * Add taxes for display in account move view
 * Optimize main views with indices
 * Add plain text version of claim description to quote in mails
@@ -33,10 +45,6 @@ latest (unreleased)
 * Remove default timeout of 120 seconds on attachment script
 * Send correct tracking number to connector
 * Correct price on carrier products to have the correct fixed price
-
-**Build**
-
-**Documentation**
 
 
 9.23.0 (2017-04-19)

@@ -20,6 +20,10 @@
             <xpath expr="//field[@name='line_ids']/tree/field[@name='name']" position="after">
                 <field name="transaction_ref"/>
             </xpath>
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='currency_id']" position="after">
+                <field name="tax_line_id" readonly="1"/>
+                <field name="tax_ids" widget="many2many_tags" readonly="1"/>
+            </xpath>
         </field>
     </record>
 

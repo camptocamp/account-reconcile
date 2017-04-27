@@ -9,7 +9,8 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     active = fields.Boolean(
-        'Active', default=True,
+        'Active',
+        default=True,
         help="The active field allows you to hide the purchase order "
              "without removing it."
     )

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+import openerp
 from openerp import api, fields, models
 from openerp.addons.base.res.res_partner import _lang_get
 import logging
@@ -38,7 +39,8 @@ class StockPicking(models.Model):
     )
 
     active = fields.Boolean(
-        'Active', default=True,
+        'Active',
+        default=True,
         help="The active field allows you to hide the picking without "
              "removing it."
     )
@@ -70,12 +72,23 @@ class StockPicking(models.Model):
                       ('state', '=', 'confirmed')]
             pickings = self.search(domain, order='sale_create_date')
 
-        for picking in pickings:
-            try:
-                picking.action_assign()
-            except Exception:
-                # ignore the error, the picking will just stay as confirmed
-                name = picking.name
-                _logger.info('error in action_assign for picking %s',
-                             name, exc_info=True)
+        count = 0
+        total_pickings = len(pickings)
+        while pickings:
+            pickings_to_assign = pickings[:100]
+            pickings = pickings[100:]
+            count += 100
+            with openerp.registry(self.env.cr.dbname).cursor() as new_cr:
+                new_env = api.Environment(
+                    new_cr, self.env.uid, self.env.context)
+                for picking in pickings_to_assign.with_env(new_env):
+                    try:
+                        picking.action_assign()
+                    except Exception:
+                        # ignore the error, the picking will just stay
+                        # as confirmed
+                        name = picking.name
+                        _logger.info('error in action_assign for picking %s',
+                                     name, exc_info=True)
+                _logger.info('%d / %d pickings done', count, total_pickings)
         return True

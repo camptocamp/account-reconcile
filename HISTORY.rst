@@ -21,15 +21,76 @@ Release History
 latest (unreleased)
 +++++++++++++++++++
 
-**Data Migration**
-
 **Features and Improvements**
 
+* Add taxes for display in account move view
+* Optimize main views with indices
+* Add plain text version of claim description to quote in mails
+
 **Bugfixes**
+
+* Correctly translate / set mail signatures in shops
+* Remove default timeout of 120 seconds on attachment script
+* Send correct tracking number to connector
+* Correct price on carrier products to have the correct fixed price
 
 **Build**
 
 **Documentation**
+
+
+9.23.0 (2017-04-19)
++++++++++++++++++++
+
+**Data Migration**
+
+* Add a script to move back S3 small files to DB
+* Increase mail cleanup delay for migration
+
+**Features and Improvements**
+
+* Change parameters in SEPA payment modes
+* Add return instructions on claim lines
+* Add indexes on frequenty used fields to improve performance
+* Improve check_assign_all cron performance
+
+**Bugfixes**
+
+* Use carrier's price instead of the one set in picking for unclaimed
+
+
+9.22.0 (2017-04-07)
++++++++++++++++++++
+
+**Data Migration**
+
+* Deactivate crons
+* Add more claim category mappings
+
+**Features and Improvements**
+
+* Set attribut codes per template
+
+**Build**
+
+* Remove old rancher config
+
+
+9.21.0 (2017-04-04)
++++++++++++++++++++
+
+**Data Migration**
+
+* Add special case to set default out picking type
+* Set attachment bucket name according to running env
+
+**Features and Improvements**
+
+* Add module stock_picking_operation_quick_change
+
+**Bugfixes**
+
+* Use correct IDs for refund if coming from claim
 
 
 9.20.0 (2017-03-27)

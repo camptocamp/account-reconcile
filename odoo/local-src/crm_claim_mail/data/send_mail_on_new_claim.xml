@@ -26,7 +26,7 @@
                 aidera à vous servir plus rapidement et efficacement.</div>
               <div><br></div>
               <div>Voici un aperçu de votre demande :</div>
-              <div><b><pre>${object.description or '' | trim}</pre></b></div>
+              <div><b><pre>${object.plain_text_description or '' | trim}</pre></b></div>
               <div><br></div>
               <div>Merci de votre patience et meilleures salutations,</div>
               <div><br></div><div>Votre équipe <a href="http://qoqa.ch" target="_blank">qoqa.ch</a></div>
@@ -60,7 +60,7 @@
                 aidera à vous servir plus rapidement et efficacement.</div>
               <div><br></div>
               <div>Voici un aperçu de votre demande :</div>
-              <div><b><pre>${object.description or '' | trim}</pre></b></div>
+              <div><b><pre>${object.plain_text_description or '' | trim}</pre></b></div>
               <div><br></div>
               <div>Merci de votre patience et meilleures salutations,</div>
               <div><br></div><div>Votre équipe <a href="http://qoqa.ch" target="_blank">qoqa.ch</a></div>
@@ -93,7 +93,7 @@
             <div><br></div>
             <div><b>Ihre Ticket-Nummer lautet: ${object.code}</b></div>
             <div><br></div><div>Hier unten eine Übersicht von Ihrer Anfrage :</div>
-            <div><b><pre>${object.description or '' | trim}</pre></b></div>
+            <div><b><pre>${object.plain_text_description or '' | trim}</pre></b></div>
             <div><br></div>
             <div>Danke für Ihre Geduld und freundliche Grüsse,</div>
             <div><br></div>

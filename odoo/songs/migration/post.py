@@ -25,6 +25,15 @@ def sale_shop(ctx):
             FROM sale_shop s
             WHERE s.id = q.openerp_id
         """)
+    with ctx.log(u'moving shop signature translations'):
+        ctx.env.cr.execute("""
+            UPDATE ir_translation i
+            SET name = 'qoqa.shop,mail_signature_template',
+                res_id = q.id
+            FROM qoqa_shop q
+            WHERE q.openerp_id = i.res_id
+            AND i.name = 'sale.shop,mail_signature_template'
+        """)
     with ctx.log(u'setting qoqa_shop_id on crm_claim'):
         ctx.env.cr.execute("""
             UPDATE crm_claim c
@@ -170,8 +179,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA USD', 3, 'fixed',
                 'sepa_credit_transfer', 23, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -206,8 +215,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA EUR', 3, 'fixed',
                 'sepa_credit_transfer', 22, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -242,8 +251,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA CHF', 3, 'fixed',
                 'sepa_credit_transfer', 19, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -278,8 +287,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA Salaires', 3,
                 'fixed', 'sepa_credit_transfer', 24, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -307,9 +316,9 @@ def payment_method(ctx):
                 current_timestamp, current_timestamp,
                 'SEPA CCP Pepsee 14-5058581', 3, 'fixed',
                 'sepa_credit_transfer', 68, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due',
-                False, True, 'same', True, 'bank_account', True, 'date',
-                'posted', 30, 'always', 0, True, False, False, 0
+                CURRVAL('account_payment_method_id_seq'), True, 'due',
+                False, True, 'any', True, 'bank_account', True, 'date',
+                'all', 30, 'always', 0, True, False, False, 0
             );
 
             INSERT INTO account_journal_outbound_payment_method_rel (
@@ -335,8 +344,8 @@ def payment_method(ctx):
                 NEXTVAL('account_payment_mode_id_seq'), 1, 1,
                 current_timestamp, current_timestamp, 'SEPA Conférence QGroup',
                 3, 'fixed', 'sepa_credit_transfer', 65, 'outbound', True,
-                CURRVAL('account_payment_method_id_seq'), False, 'due', False,
-                True, 'same', True, 'bank_account', True, 'date', 'posted',
+                CURRVAL('account_payment_method_id_seq'), True, 'due', False,
+                True, 'any', True, 'bank_account', True, 'date', 'all',
                 30, 'always', 0, True, False, False, 0
             );
 
@@ -675,17 +684,11 @@ def cancel_fr_draft_invoices(ctx):
 
 
 @anthem.log
-def setup_cron(ctx):
-    """ Setup the crons """
+def deactivate_crons(ctx):
+    """ Deactivate the crons after module upgrade """
     ctx.env.cr.execute("""
         UPDATE ir_cron
         SET active = false
-        WHERE id in (45, -- Automatic Workflow Job
-                     33, -- Automatic Workflow Job FR
-                     26, -- Check Availability of Delivery Orders (FR)
-                     47, -- Delayed Batch Picking
-                     27  -- Delayed Picking Dispatches (FR)
-                     )
     """)
 
 
@@ -846,6 +849,15 @@ def move_stock_journal_to_picking_type(ctx):
         SELECT id, name FROM stock_journal
     """)
     for id_, name in ctx.env.cr.fetchall():
+        if id_ == 1:
+            # Special case for default "out": only rename it
+            picking_types[id_] = create_or_update(
+                ctx,
+                'stock.picking.type',
+                'stock.picking_type_out',
+                {'name': name}
+            )
+            continue
         if name.startswith('Interne'):
             picking_type = picking_type_internal
             code = 'internal'
@@ -931,43 +943,99 @@ def correct_banks_on_journals(ctx):
 def mapping_claim_categories(ctx):
     """ Mapping claim categories """
     mapping = [
-        # (qoqa_id, odoo_id, team_id)
-        (51, 1, 3),
-        (52, 20, 4),
-        (53, 17, 4),
-        (54, 16, 4),
-        (55, 4, 4),
-        (56, 149, 4),
-        (57, 42, 4),
-        (58, 58, 6),
-        (59, 25, 6),
-        (60, 57, 6),
-        (61, 24, 6),
-        (62, 25, 6),
-        (63, 23, 3),
-        (None, 2, 3),
-        (None, 53, 3),
-        (64, 13, 3),
-        (65, 44, 4),
-        (66, 36, 5),
-        (67, 29, 5),
-        (68, 33, 5),
-        (69, 33, 5),
-        (70, 28, 5),
-        (71, 2, 3),
-        (72, 32, 3),
-        (74, 32, 3),
+        # (qoqa_id, old_odoo_id, team_id)
+        (4, 168, 3),
+        (5, 148, 3),
+        (6, 190, 3),
+        (7, 178, 6),
+        (8, 154, 5),
+        (9, 168, 3),
+        (10, 168, 3),
+        (11, 168, 3),
+        (12, 150, 4),
+        (13, 154, 5),
+        (14, 154, 5),
+        (15, 156, 5),
+        (16, 168, 3),
+        (17, 168, 3),
+        (18, 168, 3),
+        (19, 168, 3),
+        (20, 168, 3),
+        (21, 168, 3),
+        (22, 168, 3),
+        (23, 168, 3),
+        (24, 168, 3),
+        (25, 168, 3),
+        (26, 168, 3),
+        (27, 168, 3),
+        (28, 168, 3),
+        (29, 168, 3),
+        (30, 168, 3),
+        (31, 168, 3),
+        (32, 48, 11),
+        (33, 168, 3),
+        (34, 48, 11),
+        (35, 48, 11),
+        (36, 48, 11),
+        (37, 168, 3),
+        (38, 168, 3),
+        (39, 168, 3),
+        (40, 168, 3),
+        (41, 168, 3),
+        (42, 168, 3),
+        (43, 168, 3),
+        (44, 168, 3),
+        (45, 145, 4),
+        (46, 38, 4),
+        (47, 37, 4),
+        (48, 168, 3),
+        (49, 168, 3),
+        (50, 168, 3),
+        (51, 168, 3),
+        (52, 168, 3),
+        (53, 168, 3),
+        (151, 26, 3),
+        (152, 35, 4),
+        (153, 38, 4),
+        (154, 37, 4),
+        (155, 40, 4),
+        (156, 149, 4),
+        (157, 176, 4),
+        (158, 178, 6),
+        (159, 186, 6),
+        (160, 177, 6),
+        (161, 185, 6),
+        (162, 186, 6),
+        (163, 148, 3),
+        (None, 32, 3),
+        (None, 192, 3),
+        (164, 29, 3),
+        (165, 150, 4),
+        (166, 170, 5),
+        (167, 166, 5),
+        (168, 167, 5),
+        (169, 152, 5),
+        (170, 156, 5),
+        (171, 32, 3),
+        (172, 168, 3),
+        (173, 48, 11),
+        (174, 168, 3),
     ]
-    for qoqa_id, odoo_id, team_id in mapping:
+    for qoqa_id, old_odoo_id, team_id in mapping:
         ctx.env.cr.execute("""
             UPDATE crm_claim_category
             SET team_id = %s
-            WHERE id = %s
-        """, (team_id, odoo_id))
+            WHERE _cat_id = %s
+        """, (team_id, old_odoo_id))
         binding_model = ctx.env['qoqa.crm.claim.category']
         if not qoqa_id:
             continue
-        if not ctx.env['crm.claim.category'].search([('id', '=', odoo_id)]):
+        ctx.env.cr.execute("""
+            SELECT id FROM crm_claim_category
+            WHERE _cat_id = %s
+        """, (old_odoo_id, ))
+        odoo_id, = ctx.env.cr.fetchone()
+        if not odoo_id:
             continue
         if not binding_model.search([('openerp_id', '=', odoo_id),
                                      ('qoqa_id', '=', qoqa_id)]):
@@ -1258,8 +1326,24 @@ def enqueue_initial_batch_jobs(ctx):
 
 
 @anthem.log
+def update_carrier_fixed_price(ctx):
+    """ Correct price on carrier products to have the correct fixed price """
+    ctx.env.cr.execute("""
+        UPDATE product_template
+        SET list_price = fixed_price
+        FROM delivery_carrier
+        LEFT JOIN product_product
+        ON product_product.id = delivery_carrier.product_id
+        WHERE product_template.id = product_product.product_tmpl_id
+        AND fixed_price IS NOT NULL
+        AND fixed_price > 0.0;
+    """)
+
+
+@anthem.log
 def main(ctx):
     """ Executing main entry point called after upgrade of addons """
+    deactivate_crons(ctx)
     post_product.product_attribute_variants(ctx)
     post_product.product_brand(ctx)
     post_product.product_attributes(ctx)
@@ -1284,7 +1368,6 @@ def main(ctx):
     set_currency_exchange_journal(ctx)
     config_automatic_workflow(ctx)
     cancel_fr_draft_invoices(ctx)
-    setup_cron(ctx)
     configure_account_type(ctx)
     rename_qoqa_offer(ctx)
     migrate_automatic_reconciliation(ctx)
@@ -1304,3 +1387,4 @@ def main(ctx):
     update_supplier_move_lines(ctx)
     update_account_types(ctx)
     enqueue_initial_batch_jobs(ctx)
+    update_carrier_fixed_price(ctx)

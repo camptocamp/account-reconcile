@@ -57,7 +57,7 @@ class QoQaTrackingExporter(Exporter):
         shipping_packages = []
         for package, operations in packages.iteritems():
             if package:
-                number = package.name
+                number = package.parcel_tracking
             else:
                 # if lines are not linked to a tracking, we use the
                 # tracking number directly written on the picking

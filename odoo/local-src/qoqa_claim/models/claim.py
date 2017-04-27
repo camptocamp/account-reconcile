@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # © 2013-2016 Camptocamp SA (Joël Grandguillaume, Matthieu Dietrich)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+import re
 from openerp import _, api, fields, models
+from openerp.tools import html2plaintext
 
 
 class CrmClaimStage(models.Model):
@@ -68,6 +70,14 @@ class CrmClaim(models.Model):
     )
 
     description = fields.Html('Description')
+    plain_text_description = fields.Text('Description in text form',
+                                         compute='_get_plain_text_description')
+
+    @api.depends('description')
+    def _get_plain_text_description(self):
+        for claim in self:
+            desc = html2plaintext(claim.description)
+            claim.plain_text_description = re.sub(r'(\n){3,}', '\n\n', desc)
 
     @api.multi
     def notify_user(self, partner_id):
@@ -191,6 +201,20 @@ class ClaimLine(models.Model):
     """ Crm claim
     """
     _inherit = "claim.line"
+
+    return_instruction = fields.Many2one(
+        'return.instruction',
+        'Instructions',
+        compute='_compute_return_instruction',
+        help="Instructions for product return"
+    )
+
+    @api.multi
+    def _compute_return_instruction(self):
+        for line in self:
+            if line.product_id and line.product_id.seller_ids:
+                supplier = line.product_id.seller_ids[0]
+                line.return_instruction = supplier.return_instructions
 
     @api.model
     def create(self, vals):

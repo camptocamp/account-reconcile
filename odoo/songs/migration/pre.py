@@ -570,8 +570,19 @@ def migrate_attachments_to_s3(ctx):
              substring(store_fname from '/(.*)')
             WHERE (res_model != 'ir.ui.view' OR res_model IS NULL)
             AND store_fname IS NOT NULL
-            AND store_fname NOT LIKE 's3://%';
+            AND store_fname NOT LIKE 's3://%%';
         """, (bucket,))
+
+
+@anthem.log
+def drop_indexes(ctx):
+    """ Drop useless indexes """
+    ctx.env.cr.execute("""
+        DROP INDEX IF EXISTS account_move_line_journal_id_period_id_index;
+    """)
+    ctx.env.cr.execute("""
+        DROP INDEX IF EXISTS account_move_line_period_id_index;
+    """)
 
 
 @anthem.log
@@ -600,3 +611,4 @@ def main(ctx):
     compute_sale_all_qty_delivered(ctx)
     fix_ch_user(ctx)
     migrate_attachments_to_s3(ctx)
+    drop_indexes(ctx)

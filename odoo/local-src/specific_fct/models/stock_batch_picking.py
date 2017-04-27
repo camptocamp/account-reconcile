@@ -9,7 +9,9 @@ class StockBatchPicking(models.Model):
     _inherit = 'stock.batch.picking'
 
     active = fields.Boolean(
-        'Active', default=True,
+        'Active',
+        default=True,
+        index=True,
         help="The active field allows you to hide the picking dispatch "
              "without removing it."
     )

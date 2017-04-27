@@ -73,9 +73,10 @@ class AccountInvoiceRefund(models.TransientModel):
         inv_tax_obj = self.env['account.invoice.tax']
         inv_line_obj = self.env['account.invoice.line']
         context = dict(self._context or {})
-        invoice_ids = self.env.context.get('invoice_ids', [])
+        # If coming from a claim, you need to set the correct active_ids
+        invoice_ids = context.get('invoice_ids', [])
         if invoice_ids:
-            self = self.with_context(active_ids=invoice_ids)
+            context['active_ids'] = invoice_ids
         xml_id = False
 
         for form in self:

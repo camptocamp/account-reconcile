@@ -3,11 +3,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
-from openerp import api, models
+from openerp import fields, api, models
 
 
 class ProcurementOrder(models.Model):
     _inherit = 'procurement.order'
+
+    sale_line_id = fields.Many2one(index=True)
 
     @api.model
     def create(self, vals):

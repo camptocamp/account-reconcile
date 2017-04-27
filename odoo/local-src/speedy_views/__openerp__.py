@@ -10,6 +10,11 @@
  'depends': ['account',
              'sale_stock',
              'purchase',
+             'crm_claim_rma',
+             'stock_batch_picking',
+             'specific_fct',
+             'account_move_base_import',
+             'base_transaction_id',
              ],
  'website': 'http://www.camptocamp.com',
  'data': [

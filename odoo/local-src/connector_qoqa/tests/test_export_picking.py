@@ -113,7 +113,7 @@ class TestExportPicking(QoQaTransactionCase):
         if package_ref:
             package_id = self.picking.put_in_pack()
             package = self.env['stock.quant.package'].browse(package_id)
-            package.name = package_ref
+            package.parcel_tracking = package_ref
 
         self.picking.do_transfer()
         picking_binding = self.env['qoqa.stock.picking'].search([

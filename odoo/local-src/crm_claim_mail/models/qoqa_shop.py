@@ -8,7 +8,7 @@ from openerp import models, fields
 class QoqaShop(models.Model):
     _inherit = 'qoqa.shop'
 
-    mail_signature_template = fields.Html(
+    mail_signature_template = fields.Text(
         string='Mail signature template',
         required=True,
         translate=True,

@@ -186,19 +186,18 @@ def get_vouchers(connector_unit, record):
 
 
 def get_payments(connector_unit, record):
+    valid_states = (QoQaPaymentStatus.success,
+                    QoQaPaymentStatus.confirmed)
     payments = [item for item in
                 record['included']
                 if item['type'] == 'payment' and
-                item['attributes']['kind'] == QoQaPaymentKind.payment
+                item['attributes']['kind'] == QoQaPaymentKind.payment and
+                item['attributes']['status'] in valid_states
                 ]
     return payments
 
 
 def _get_payment_mode(connector_unit, payment, company):
-    valid_states = (QoQaPaymentStatus.success,
-                    QoQaPaymentStatus.confirmed)
-    if payment['attributes']['status'] not in valid_states:
-        return
     qmethod_id = payment['attributes']['payment_method_id']
     if not qmethod_id:
         raise MappingError("Payment method missing for payment %s" %

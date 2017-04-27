@@ -373,11 +373,22 @@ def connector_qoqa(ctx):
     ctx.env.cr.execute("""
       INSERT INTO qoqa_backend_timestamp (backend_id, from_date_field,
                                           import_start_time)
-      SELECT 1, 'import_crm_claim_from_date', '2016-06-15 00:00:00'
+      SELECT 1, 'import_crm_claim_from_date', '2017-04-27 00:00:00'
       WHERE NOT EXISTS (
         SELECT id FROM qoqa_backend_timestamp
         WHERE backend_id = 1
         AND from_date_field = 'import_crm_claim_from_date'
+      )
+    """)
+    ctx.env.cr.execute("""
+      INSERT INTO qoqa_backend_timestamp (backend_id, from_date_field,
+                                          import_start_time)
+      SELECT 1, 'import_product_template_image_from_date',
+      '2017-04-27 00:00:00'
+      WHERE NOT EXISTS (
+        SELECT id FROM qoqa_backend_timestamp
+        WHERE backend_id = 1
+        AND from_date_field = 'import_product_template_image_from_date'
       )
     """)
 
@@ -1321,7 +1332,6 @@ def enqueue_initial_batch_jobs(ctx):
     qoqa_backend.import_sale_order()
     qoqa_backend.import_discount_accounting()
     qoqa_backend.import_offer()
-    qoqa_backend.import_product_template_image()
     qoqa_backend.import_crm_claim()
 
 

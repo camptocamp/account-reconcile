@@ -2,7 +2,7 @@
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import api, models, SUPERUSER_ID
+from openerp import api, fields, models, SUPERUSER_ID
 from .utils import install_trgm_extension, create_index
 
 
@@ -12,6 +12,11 @@ class AccountMoveLine(models.Model):
     # Override _order set in account_move_base_import and which is
     # slow as hell. We redefine the original one.
     _order = 'date DESC, id DESC'
+
+    # Reconciliation processes use intensive searches on those fields
+    debit = fields.Monetary(index=True)
+    credit = fields.Monetary(index=True)
+    amount_residual = fields.Monetary(index=True)
 
     def init(self, cr):
         env = api.Environment(cr, SUPERUSER_ID, {})

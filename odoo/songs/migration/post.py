@@ -1313,6 +1313,19 @@ def update_account_types(ctx):
 
 
 @anthem.log
+def enqueue_initial_batch_jobs(ctx):
+    """ Create initial batch jobs (before re-activating the cron jobs) """
+    qoqa_backend = ctx.env.ref('connector_qoqa.qoqa_backend_config')
+    qoqa_backend.import_res_partner()
+    qoqa_backend.import_address()
+    qoqa_backend.import_sale_order()
+    qoqa_backend.import_discount_accounting()
+    qoqa_backend.import_offer()
+    qoqa_backend.import_product_template_image()
+    qoqa_backend.import_crm_claim()
+
+
+@anthem.log
 def update_carrier_fixed_price(ctx):
     """ Correct price on carrier products to have the correct fixed price """
     ctx.env.cr.execute("""
@@ -1373,4 +1386,5 @@ def main(ctx):
     update_bvr_partner_banks(ctx)
     update_supplier_move_lines(ctx)
     update_account_types(ctx)
+    enqueue_initial_batch_jobs(ctx)
     update_carrier_fixed_price(ctx)

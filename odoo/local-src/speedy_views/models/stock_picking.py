@@ -4,6 +4,7 @@
 
 
 from openerp import fields, models
+from .utils import create_index
 
 
 class StockPicking(models.Model):
@@ -16,32 +17,17 @@ class StockPicking(models.Model):
 
         # index for the default _order of stock.picking
         index_name = 'stock_picking_order_list_sort_desc_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s '
-                       'ON stock_picking '
-                       '(priority desc, date, id desc) ' % index_name)
+        create_index(cr, index_name, self._table,
+                     '(priority desc, date, id desc)')
 
         # this index is not created when we use
         # 'group_id = fields.Many2one(index=True')
         # so create it "manually"
         index_name = 'stock_picking_group_id_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s ON stock_picking '
-                       '(group_id) ' % index_name)
+        create_index(cr, index_name, self._table, '(group_id)')
 
         # active is mostly used with 'true' so this partial index improves
         # globally the queries. The same index on (active) without where
         # would in general not be used.
         index_name = 'stock_picking_active_true_index'
-        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s',
-                   (index_name,))
-
-        if not cr.fetchone():
-            cr.execute('CREATE INDEX %s ON stock_picking '
-                       '(active) where active ' % index_name)
+        create_index(cr, index_name, self._table, '(active) where active')

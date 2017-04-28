@@ -25,6 +25,9 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Disable automatic creation of order line for shipping costs for
+  invoices on delivery.
+
 **Build**
 
 **Documentation**

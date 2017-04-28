@@ -52,6 +52,15 @@ class StockPicking(models.Model):
                 picking.mapped('move_lines.product_qty')
             )
 
+    @api.multi
+    def _add_delivery_cost_to_so(self):
+        """ We never want to add a delivery line on SO
+
+        The line for the delivery costs is created upfront, not from the
+        shipping.
+        """
+        return
+
     def _generate_postlogistics_label(self, webservice_class=None,
                                       package_ids=None):
         """ Generate post label using QoQa specific to hide parent name in  """

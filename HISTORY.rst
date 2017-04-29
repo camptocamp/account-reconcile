@@ -23,16 +23,24 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.24.1 (2017-04-29)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * Cloud platform: do not require metrics on production
 
 **Bugfixes**
 
 * Disable automatic creation of order line for shipping costs for
   invoices on delivery.
-
-**Build**
-
-**Documentation**
 
 
 9.24.0 (2017-04-27)

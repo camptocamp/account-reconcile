@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Cloud platform: do not require metrics on production
+
 **Bugfixes**
 
 **Build**

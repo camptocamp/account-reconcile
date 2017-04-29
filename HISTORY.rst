@@ -30,6 +30,18 @@ latest (unreleased)
 **Documentation**
 
 
+9.24.2 (2017-04-29)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
 9.24.1 (2017-04-29)
 +++++++++++++++++++
 

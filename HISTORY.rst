@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Allow to configure Q4 API URL with environment variables
+
 **Bugfixes**
 
 **Build**
@@ -33,13 +35,10 @@ latest (unreleased)
 9.24.2 (2017-04-29)
 +++++++++++++++++++
 
-**Features and Improvements**
-
-**Bugfixes**
-
 **Build**
 
-**Documentation**
+* Change Q4 api URL
+
 
 
 9.24.1 (2017-04-29)

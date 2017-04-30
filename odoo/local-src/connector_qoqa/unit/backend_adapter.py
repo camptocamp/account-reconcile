@@ -79,6 +79,7 @@ class QoQaClient(object):
         self.debug = debug
         self._session = requests.Session()
         self._session.headers['Content-Type'] = 'application/json'
+        self._session.headers['Accept'] = 'application/json'
         self.token = token
 
     @property
@@ -223,6 +224,13 @@ class QoQaAdapter(CRUDAdapter):
                               response.content)
                 errors = []
                 for err in parsed.get('errors', []):
+                    if err['code'] == 17:  # Maintenance
+                        raise NetworkRetryableError(
+                            'QoQa API is in maintenance mode',
+                            seconds=60 * 3,
+                            ignore_retry=True
+                        )
+
                     errors.append((err['code'], err['title'], err['detail']))
                 raise QoQaResponseError(errors)
             else:

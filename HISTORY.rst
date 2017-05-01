@@ -37,6 +37,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Delay jobs when the API is in maintenance mode
+
 **Build**
 
 **Documentation**

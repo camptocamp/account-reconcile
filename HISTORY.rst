@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Allow to configure Q4 API URL with environment variables
+
 **Bugfixes**
 
 **Build**
@@ -50,6 +52,8 @@ latest (unreleased)
 **Documentation**
 * Disable automatic creation of order line for shipping costs for
   invoices on delivery.
+* Change Q4 api URL
+
 
 
 9.24.1 (2017-04-29)

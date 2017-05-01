@@ -96,17 +96,16 @@ class CrmClaim(models.Model):
     def notify_claim_only_specific_user(self, partner_id):
         for claim in self:
             # Get all followers of current claim
-            followers = claim._get_followers()
-            all_partner_ids = []
-            if 'message_follower_ids' in followers:
-                    all_partner_ids = followers['message_follower_ids'].ids
+            partner_ids = claim.message_partner_ids.ids
+            channel_ids = claim.message_channel_ids.ids
+            if partner_ids or channel_ids:
                     # Remove followers on the message
                     # to not send an unuseful message to the related customer
-                    claim.message_unsubscribe(all_partner_ids)
+                    claim.message_unsubscribe(partner_ids, channel_ids)
             claim.notify_user(partner_id)
-            if all_partner_ids:
+            if partner_ids or channel_ids:
                 # Resuscribe all partner include customer
-                claim.message_subscribe(all_partner_ids)
+                claim.message_subscribe(partner_ids, channel_ids)
 
     @api.model
     def create(self, vals):

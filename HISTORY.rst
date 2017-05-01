@@ -30,6 +30,14 @@ latest (unreleased)
 **Documentation**
 
 
+9.24.3 (2017-05-01)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Fix onchange for batch pickings
+
+
 9.24.2 (2017-04-29)
 +++++++++++++++++++
 

@@ -177,3 +177,4 @@ migration:
     - version: 9.24.0
     - version: 9.24.1
     - version: 9.24.2
+    - version: 9.24.3

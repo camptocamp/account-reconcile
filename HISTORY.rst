@@ -23,13 +23,23 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* Allow to configure Q4 API URL with environment variables
-
 **Bugfixes**
 
 **Build**
 
 **Documentation**
+
+
+9.24.4 (2017-05-01)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Allow to configure Q4 API URL with environment variables
+
+**Bugfixes**
+
+* Fix empty PDF on batch labels
 
 
 9.24.3 (2017-05-01)

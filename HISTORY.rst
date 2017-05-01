@@ -33,8 +33,6 @@ latest (unreleased)
 9.24.2 (2017-04-29)
 +++++++++++++++++++
 
-**Features and Improvements**
-
 **Bugfixes**
 
 * Delay jobs when the API is in maintenance mode
@@ -42,6 +40,8 @@ latest (unreleased)
 **Build**
 
 **Documentation**
+* Disable automatic creation of order line for shipping costs for
+  invoices on delivery.
 
 
 9.24.1 (2017-04-29)

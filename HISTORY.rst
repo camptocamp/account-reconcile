@@ -30,6 +30,18 @@ latest (unreleased)
 **Documentation**
 
 
+9.24.6 (2017-05-01)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Modify S3 import parameters
+
+**Bugfixes**
+
+* Add pick/pack info to all batch label exceptions
+
+
 9.24.5 (2017-05-01)
 +++++++++++++++++++
 

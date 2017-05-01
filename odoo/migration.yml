@@ -180,3 +180,4 @@ migration:
     - version: 9.24.3
     - version: 9.24.4
     - version: 9.24.5
+    - version: 9.24.6

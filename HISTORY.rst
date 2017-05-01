@@ -30,6 +30,14 @@ latest (unreleased)
 **Documentation**
 
 
+9.24.5 (2017-05-01)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Add pick/pack info to all batch label exceptions
+
+
 9.24.4 (2017-05-01)
 +++++++++++++++++++
 

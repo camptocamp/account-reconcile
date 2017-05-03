@@ -25,27 +25,27 @@ class CrmClaimUnclaimedDelivery(models.TransientModel):
         inv_journal = company.unclaimed_invoice_journal_id
         product = company.unclaimed_invoice_product_id
         partner = claim.partner_id
-        fiscal_position = partner.property_account_position and \
-            partner.property_account_position.id or False
-        payment_term = partner.property_payment_term and \
-            partner.property_payment_term.id or False
+        fiscal_position_id = partner.property_account_position_id and \
+            partner.property_account_position_id.id or False
+        payment_term_id = partner.property_payment_term_id and \
+            partner.property_payment_term_id.id or False
 
         # Fill values (taken from on_change on invoice and invoice line)
         invoice_vals = {
             'account_id': inv_account.id,
             'company_id': company.id,
-            'fiscal_position': fiscal_position,
+            'fiscal_position_id': fiscal_position_id,
             'journal_id': inv_journal.id,
             'partner_id': partner.id,
             'name': _('Refacturation Frais de renvoi'),
-            'payment_term': payment_term,
+            'payment_term_id': payment_term_id,
             'reference': claim.code,
             'transaction_id': claim.code,
             'type': 'out_invoice',
-            'invoice_line': [
+            'invoice_line_ids': [
                 (0, 0,
                  {'account_analytic_id': analytic_account.id,
-                  'account_id': product.property_account_income.id,
+                  'account_id': product.property_account_income_id.id,
                   'invoice_line_tax_id': [
                       (6, 0, [tax.id for tax in product.taxes_id])
                   ],

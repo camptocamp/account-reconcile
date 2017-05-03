@@ -1,13 +1,13 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* specific_fct
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-03 15:24+0000\n"
-"PO-Revision-Date: 2014-10-28 11:47+0100\n"
+"POT-Creation-Date: 2017-05-02 11:13+0000\n"
+"PO-Revision-Date: 2017-05-02 11:13+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,248 +16,305 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_stock_picking_in
-#, python-format
-msgid "Incoming Shipments"
-msgstr "Bons de réception"
+#: model:ir.model,name:specific_fct.model_account_payment_populate_statement
+msgid "Account Payment Populate Statement"
+msgstr "Relevé de compte rempli par paiement"
 
 #. module: specific_fct
-#: view:stock.picking.out:0
-msgid "Group By..."
-msgstr "Grouper par..."
+#: model:ir.model.fields,field_description:specific_fct.field_purchase_order_active
+#: model:ir.model.fields,field_description:specific_fct.field_stock_batch_picking_active
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_active
+msgid "Active"
+msgstr "Actif"
 
 #. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_stock_picking
-#, python-format
-msgid "Picking List"
-msgstr "Bon de livraison"
+#: model:res.groups,name:specific_fct.group_admin_user
+msgid "Admin Users"
+msgstr "Admin Users"
 
 #. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_product_product
-#, python-format
-msgid "Product"
-msgstr "Article"
-
-#. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
-#: field:product.template,variant_codes:0
-msgid "Variants References"
-msgstr "Références des variantes"
-
-#. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_related_dispatch_ids_4996
-#: field:stock.picking.in,related_dispatch_ids:0
-msgid "Related Dispatch Picking"
-msgstr "Bon de préparation lié"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_product_supplierinfo
-#, python-format
-msgid "Information about a product supplier"
-msgstr "Information sur le fournisseur de l'article"
-
-#. module: specific_fct
-#: view:product.product:0
-msgid "{'required': [('type', '=', 'product')]}"
-msgstr "{'required': [('type', '=', 'product')]}"
-
-#. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_lang_5263
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_lang_5264
-#: field:stock.picking,lang:0
-#: view:stock.picking.out:0
-#: field:stock.picking.out,lang:0
-msgid "Language"
-msgstr "Langue"
-
-#. module: specific_fct
-#: view:account.move.line:0
-#: view:payment.order.create:0
-msgid "Move lines"
-msgstr "Mouvements de stocks"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_product_template
-#, python-format
-msgid "Product Template"
-msgstr "Modèle d'article"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_payment_order_create
-#, python-format
-msgid "payment.order.create"
-msgstr "payment.order.create"
-
-#. module: specific_fct
-#: code:addons/specific_fct/crm_claim.py:79
-#, python-format
-msgid "A new CRM claim has been assigned to you"
-msgstr "Nouvelle réclamation assignée"
-
-#. module: specific_fct
-#: code:addons/specific_fct/crm_claim.py:77
-#, python-format
-msgid "A new CRM claim (%s) has been assigned to you"
-msgstr "Une nouvelle réclamation (%s) vous a été assignée"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_crm_claim
-#, python-format
-msgid "Claim"
-msgstr "Réclamation"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_crm_claim
-#, python-format
-msgid "Claim"
-msgstr "Réclamation"
-
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_stock_move
-#, python-format
-msgid "Stock Move"
-msgstr "Mouvement de stock"
-
-#. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products_4965
-#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products_4966
-#: field:stock.picking,number_of_products:0
-#: field:stock.picking.in,number_of_products:0
-#: field:stock.picking.out,number_of_products:0
-msgid "Number of products"
-msgstr "Nombre d'articles"
-
-#. module: specific_fct
-#: view:sale.order:0
-msgid "Cancel Order"
-msgstr "Annuler la commande"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_account_invoice
-#, python-format
-msgid "Invoice"
-msgstr "Facture"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_res_partner
-#, python-format
-msgid "Partner"
-msgstr "Partenaire"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_sale_order
-#, python-format
-msgid "Sales Order"
-msgstr "Bon de commande"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_stock_picking_out
-#, python-format
-msgid "Delivery Orders"
-msgstr "Bons de livraisons"
-
-#. module: specific_fct
-#: code:_description:0
-#: model:ir.model,name:specific_fct.model_sale_order_line
-#, python-format
-msgid "Sales Order Line"
-msgstr "Ligne de commandes de vente"
-
-#. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_product_template_variant_codes
-#: field:product.template,variant_codes:0
-msgid "Variants References"
-msgstr "Références des variantes"
-
-#. module: specific_fct
-#: view:product.product:0
-msgid "{'required': [('type', '=', 'product')]}"
-msgstr "{'required': [('type', '=', 'product')]}"
-
-#. module: specific_fct
-#: view:account.invoice:0
 #: model:ir.model.fields,field_description:specific_fct.field_account_invoice_validation_agreement
-#: field:account.invoice,validation_agreement:0
+#: model:ir.ui.view,arch_db:specific_fct.view_account_invoice_filter
 msgid "Agreement to validation"
 msgstr "Accord pour validation"
 
 #. module: specific_fct
-#: view:account.invoice:0
+#: model:ir.ui.view,arch_db:specific_fct.invoice_supplier_form
+#: model:ir.ui.view,arch_db:specific_fct.invoice_tree
 msgid "Agreement validated"
 msgstr "Accord pour validation"
 
 #. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_payment_method_refund_max_days
-#: field:payment.method,refund_max_days:0
-msgid "Refund max days"
-msgstr "Jour max pour le remboursement"
+#: model:ir.model,name:specific_fct.model_account_bank_statement
+msgid "Bank Statement"
+msgstr "Relevé bancaire"
 
 #. module: specific_fct
-#: model:ir.model.fields,field_description:specific_fct.field_payment_method_refund_min_date
-#: field:payment.method,refund_min_date:0
-msgid "Refund min date"
-msgstr "Date min pour le remboursement"
+#: model:ir.model,name:specific_fct.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Ligne de relevé bancaire"
 
 #. module: specific_fct
-#: help:payment.method,refund_max_days:0
-msgid "Number of days when the refund is possible"
-msgstr "Nombre de jour pour lequel un remboursement est possible"
+#: code:addons/specific_fct/wizard/account_invoice_refund.py:87
+#, python-format
+msgid "Cannot refund draft/proforma/cancelled invoice."
+msgstr "Cannot refund draft/proforma/cancelled invoice."
 
 #. module: specific_fct
-#: help:payment.method,refund_min_date:0
+#: code:addons/specific_fct/wizard/account_invoice_refund.py:90
+#, python-format
+msgid "Cannot refund invoice which is already reconciled, invoice should be unreconciled first. You can only refund this invoice."
+msgstr "Cannot refund invoice which is already reconciled, invoice should be unreconciled first. You can only refund this invoice."
+
+#. module: specific_fct
+#: code:addons/specific_fct/postlogistics/web_service.py:128
+#, python-format
+msgid "Cannot write sender on label, no delivery address assigned on Claim"
+msgstr "Cannot write sender on label, no delivery address assigned on Claim"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_delivery_carrier
+msgid "Carrier"
+msgstr "Transporteur"
+
+#. module: specific_fct
+#: model:ir.ui.view,arch_db:specific_fct.stock_batch_picking_form
+msgid "Carrier Info"
+msgstr "Info transporteur"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_crm_claim
+msgid "Claim"
+msgstr "Réclamation"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_tax_default_account_id
+msgid "Default account for product"
+msgstr "Default account for product"
+
+#. module: specific_fct
+#: model:ir.ui.view,arch_db:specific_fct.stock_batch_picking_form
+msgid "Delivery"
+msgstr "Livraison"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_stock_picking_check_assign_all
+msgid "Delivery Orders Check Availability"
+msgstr "Vérification de la disponibilité des bons de livraisons"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_refund_description_id
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_refund_refund_description_id
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_name
+msgid "Description"
+msgstr "Description"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_picking_dispatch
+msgid "Dispatch Picking Order"
+msgstr "Bon de préparation"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: specific_fct
+#: model:product.category,name:specific_fct.product_category_delivery
+msgid "Frais de livraison"
+msgstr "Frais de livraison"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_id
+msgid "ID"
+msgstr "ID"
+
+#. module: specific_fct
+#: model:ir.model.fields,help:specific_fct.field_stock_picking_lang
+msgid "If the selected language is loaded in the system, all documents related to this contact will be printed in this language. If not, it will be English."
+msgstr "Si la langue sélectionnée est chargée dans le système, tous les documents de ce contact seront imprimés dans cette langue. Dans le cas contraire, ils le seront en anglais."
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_product_supplierinfo
+msgid "Information about a product supplier"
+msgstr "Information sur le fournisseur du produit"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_account_invoice
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_account_invoice_refund
+msgid "Invoice Refund"
+msgstr "Avoir"
+
+#. module: specific_fct
+#: model:ir.model.fields,help:specific_fct.field_account_payment_mode_refund_min_date
 msgid "Invoice date older than this value cannot be refund"
 msgstr "Une facture avec une date plus vieille que cette valeur ne pourra pas être remboursée"
 
 #. module: specific_fct
-#: view:account.move.line:0
-msgid "Partial Reconciliation Number"
-msgstr "Numéro de lettrage partiel"
+#: code:addons/specific_fct/wizard/account_invoice_refund.py:165
+#, python-format
+msgid "Invoice refund"
+msgstr "Invoice refund"
 
 #. module: specific_fct
-#: field:product.category,product_type:0
+#: model:ir.model,name:specific_fct.model_account_move_line
+msgid "Journal Items"
+msgstr "Journal Items"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_lang
+#: model:ir.ui.view,arch_db:specific_fct.view_picking_internal_search
+msgid "Language"
+msgstr "Langue"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description___last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_write_uid
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_crm_team__notify
+msgid "Notify on change"
+msgstr "Notify on change"
+
+#. module: specific_fct
+#: model:ir.model.fields,help:specific_fct.field_account_payment_mode_refund_max_days
+msgid "Number of days when the refund is possible"
+msgstr "Nombre de jour pour lequel un remboursement est possible"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_stock_picking_number_of_products
+msgid "Number of products"
+msgstr "Nombre d'articles"
+
+#. module: specific_fct
+#: model:ir.ui.view,arch_db:specific_fct.stock_batch_picking_form
+msgid "Options"
+msgstr "Options"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_res_partner_parent_name
+msgid "Parent name"
+msgstr "Nom du parent"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_res_partner
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_crm_claim_partner_city
+msgid "Partner City"
+msgstr "Partner City"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_crm_claim_partner_street
+msgid "Partner Street"
+msgstr "Partner Street"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_crm_claim_partner_zip
+msgid "Partner ZIP code"
+msgstr "Partner ZIP code"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_payment_line
+msgid "Payment Line"
+msgstr "Ligne de paiement"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_payment_method
+msgid "Payment Method"
+msgstr "Méthode de paiement"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_account_payment_mode
+msgid "Payment Modes"
+msgstr "Modes de paiement"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_picking_batch_apply_carrier
+msgid "Picking Batch Apply Carrier"
+msgstr "Applique un transporteur sur des lots de préparation"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_picking_dispatch_apply_carrier
+msgid "Picking Dispatch Apply Carrier"
+msgstr "Applique un transporteur sur des bons de préparation"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_stock_picking
+msgid "Picking List"
+msgstr "Picking List"
+
+#. module: specific_fct
+#: model:ir.ui.view,arch_db:specific_fct.invoice_supplier_form
+#: model:ir.ui.view,arch_db:specific_fct.purchase_order_form
+msgid "Print"
+msgstr "Imprimer"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_product_product
+msgid "Product"
+msgstr "Article"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_product_category
+msgid "Product Category"
+msgstr "Catégorie d'articles"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_product_template
+msgid "Product Template"
+msgstr "Modèle d'article"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_product_category_product_type
 msgid "Product Type"
 msgstr "Type d'article"
 
 #. module: specific_fct
-#: selection:product.category,product_type:0
-msgid "Consumable"
-msgstr "Consommable"
+#: model:ir.model,name:specific_fct.model_purchase_order
+msgid "Purchase Order"
+msgstr "Commande d'achat"
 
 #. module: specific_fct
-#: selection:product.category,product_type:0
-msgid "Service"
-msgstr "Service"
+#: model:ir.model,name:specific_fct.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Ligne de commande d'achat"
 
 #. module: specific_fct
-#: selection:product.category,product_type:0
-msgid "Stockable Product"
-msgstr "Article stockable"
+#: model:ir.model,name:specific_fct.model_queue_job
+msgid "Queue Job"
+msgstr "Queue de jobs"
 
 #. module: specific_fct
-#: field:account.invoice,refund_description_id:0
-#: field:account.refund.description,name:0
-#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_refund_description_id
-#: model:ir.model.fields,field_description:specific_fct.field_account_refund_description_name
-msgid "Description"
-msgstr ""
-
-#. module: specific_fct
-#: view:account.refund.description:0
+#: model:ir.ui.view,arch_db:specific_fct.view_refund_description_form
+#: model:ir.ui.view,arch_db:specific_fct.view_refund_description_tree
 msgid "Refund Description"
 msgstr "Description d'avoir"
 
@@ -268,7 +325,121 @@ msgid "Refund Descriptions"
 msgstr "Descriptions des avoirs"
 
 #. module: specific_fct
-#: code:addons/specific_fct/wizard/claim_make_picking.py:85
-#, python-format
-msgid "Refacturation Frais de renvoi"
-msgstr "Refacturation Frais de renvoi"
+#: model:ir.model.fields,field_description:specific_fct.field_account_payment_mode_refund_max_days
+msgid "Refund max days"
+msgstr "Jour max pour le remboursement"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_payment_mode_refund_min_date
+msgid "Refund min date"
+msgstr "Date min pour le remboursement"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_stock_return_picking
+msgid "Return Picking"
+msgstr "Retour de marchandise"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de bons de commande"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_crm_team
+msgid "Sales Teams"
+msgstr "Sales Teams"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_purchase_order_line_sequence
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_account_statement_profile
+msgid "Statement Profile"
+msgstr "Statement Profile"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_stock_move
+msgid "Stock Move"
+msgstr "Mouvement de stock"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_account_tax
+msgid "Tax"
+msgstr "Taxe"
+
+#. module: specific_fct
+#: model:ir.model.fields,help:specific_fct.field_stock_batch_picking_active
+msgid "The active field allows you to hide the picking dispatch without removing it."
+msgstr "The active field allows you to hide the picking dispatch without removing it."
+
+#. module: specific_fct
+#: model:ir.model.fields,help:specific_fct.field_stock_picking_active
+msgid "The active field allows you to hide the picking without removing it."
+msgstr "The active field allows you to hide the picking without removing it."
+
+#. module: specific_fct
+#: model:ir.model.fields,help:specific_fct.field_purchase_order_active
+msgid "The active field allows you to hide the purchase order without removing it."
+msgstr "The active field allows you to hide the purchase order without removing it."
+
+#. module: specific_fct
+#: model:ir.ui.view,arch_db:specific_fct.stock_batch_picking_form
+msgid "To modify the carrier, use the 'Apply a carrier and its options' action."
+msgstr "Pour changer le transporteur, merci de passer par l'action 'Appliquer un transporteur et ses options'."
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_account_invoice_refund_warning
+msgid "Warning"
+msgstr "Warning"
+
+#. module: specific_fct
+#: model:ir.model.fields,field_description:specific_fct.field_product_category_warranty
+msgid "Warranty"
+msgstr "Garantie"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_claim_make_picking_wizard
+msgid "Wizard to create pickings from claim lines"
+msgstr "Assistant pour créer des expédition/réceptions à partir des lignes de réclamation"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_account_refund_description
+msgid "account.refund.description"
+msgstr "account.refund.description"
+
+#. module: specific_fct
+#: model:res.groups,name:specific_fct.hidden_menu_group
+msgid "hidden menus"
+msgstr "hidden menus"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_ir_attachment
+msgid "ir.attachment"
+msgstr "ir.attachment"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_ir_qweb_field_contact
+msgid "ir.qweb.field.contact"
+msgstr "ir.qweb.field.contact"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_ir_ui_menu
+msgid "ir.ui.menu"
+msgstr "ir.ui.menu"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_payment_order_create
+msgid "payment.order.create"
+msgstr "payment.order.create"
+
+#. module: specific_fct
+#: model:ir.model,name:specific_fct.model_stock_batch_picking
+msgid "stock.batch.picking"
+msgstr "stock.batch.picking"

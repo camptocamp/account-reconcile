@@ -30,6 +30,17 @@ latest (unreleased)
 **Documentation**
 
 
+9.24.7 (2017-05-03)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Block on-change (force wizard) on batch carrier change
+* Fix loop so that mail_signature is correctly set in claim
+* Fix invoice generation for unclaimed delivery
+* Correct server action + filter on sent e-mails
+
+
 9.24.6 (2017-05-01)
 +++++++++++++++++++
 

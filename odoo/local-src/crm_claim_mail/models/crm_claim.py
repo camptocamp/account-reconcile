@@ -27,13 +27,14 @@ class CrmClaim(models.Model):
         user = self.env.user
         for claim in self:
             if claim.partner_id.lang:
-                claim = claim.with_context(lang=claim.partner_id.lang)
+                claim_ctx = claim.with_context(lang=claim.partner_id.lang)
             template = ''
-            if claim.qoqa_shop_id and \
-                    claim.qoqa_shop_id.mail_signature_template:
-                template = claim.qoqa_shop_id.mail_signature_template
-            elif claim.company_id and claim.company_id.mail_signature_template:
-                template = claim.company_id.mail_signature_template
+            if claim_ctx.qoqa_shop_id and \
+                    claim_ctx.qoqa_shop_id.mail_signature_template:
+                template = claim_ctx.qoqa_shop_id.mail_signature_template
+            elif claim_ctx.company_id and \
+                    claim_ctx.company_id.mail_signature_template:
+                template = claim_ctx.company_id.mail_signature_template
 
             t = Template(template)
             user_signature = "The crazy otter"

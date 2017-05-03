@@ -232,10 +232,13 @@ class CrmClaim(models.Model):
             return body
 
     @api.multi
-    @api.returns('self', lambda value: value.id)
     def message_post(self, body='', subject=None, message_type='notification',
                      subtype=None, parent_id=False, attachments=None,
                      content_subtype='html', **kwargs):
+        # Unsubscribe original author
+        original_author_id = kwargs.get('author_id', None)
+        if original_author_id:
+            self.message_unsubscribe([original_author_id])
         # change author to partner with address 'loutres@qoqa.com'
         kwargs.pop('author_id', None)
         kwargs.pop('email_from', None)
@@ -244,7 +247,6 @@ class CrmClaim(models.Model):
             limit=1)
         if not author:
             raise UserError(_('No partner set with email "loutres@qoqa.com"'))
-
         # Use "mail_create_nosubscribe" in context to avoid having
         # "loutres" as follower
         result = super(CrmClaim, self.with_context(
@@ -253,7 +255,9 @@ class CrmClaim(models.Model):
             subtype=subtype, parent_id=parent_id, attachments=attachments,
             content_subtype=content_subtype, author_id=author.id,
             email_from='Loutres <loutres@qoqa.com>', **kwargs)
-        # Subtype with sequence 0 : 'Discussions' (emails)
+        # Re-subscribe original author
+        if original_author_id:
+            self.message_subscribe([original_author_id])
         if message_type == 'comment' and subtype:
             self.case_close()
             # Also write the field "last_message_date".

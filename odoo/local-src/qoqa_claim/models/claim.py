@@ -85,12 +85,14 @@ class CrmClaim(models.Model):
             body = _('A new CRM claim (%s) has been assigned to you'
                      % (claim.name))
             subject = _('A new CRM claim has been assigned to you')
-            claim.message_post(body=body, subject=subject,
-                               message_type='email',
-                               subtype='mail.mt_comment',
-                               parent_id=False,
-                               attachments=None,
-                               partner_ids=[partner_id])
+            temp_msg = claim.message_post(body=body, subject=subject,
+                                          message_type='email',
+                                          subtype='mail.mt_comment',
+                                          parent_id=False,
+                                          attachments=None,
+                                          partner_ids=[partner_id])
+            # Delete after sending e-mail to avoid quoting it later on
+            temp_msg.unlink()
 
     @api.multi
     def notify_claim_only_specific_user(self, partner_id):

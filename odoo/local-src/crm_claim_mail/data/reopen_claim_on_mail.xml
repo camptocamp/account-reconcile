@@ -18,7 +18,7 @@
             <field name="condition">object.stage_id.state != 'draft'</field>
             <field name="sequence">6</field>
             <field name="code">
-stage = self.env.ref('crm_claim_mail.stage_response_received')
+stage = object.env.ref('crm_claim_mail.stage_response_received')
 object.write({'stage_id': stage.id})
             </field>
         </record>

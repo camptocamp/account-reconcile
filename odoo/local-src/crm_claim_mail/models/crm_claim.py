@@ -233,14 +233,6 @@ class CrmClaim(models.Model):
             return body
 
     @api.multi
-    def _message_auto_subscribe_notify(self, partner_ids):
-        """ Notify newly subscribed followers of the last posted message.
-            Deactivated for claims, since we manually unsubscribe/subscribe
-            users
-        """
-        return
-
-    @api.multi
     @api.returns('self', lambda value: value.id)
     def message_post(self, body='', subject=None, message_type='notification',
                      subtype=None, parent_id=False, attachments=None,

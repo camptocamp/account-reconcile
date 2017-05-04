@@ -260,7 +260,7 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
                                    data=json.dumps({'cancelled': True}))
         self._handle_response(response)
 
-    def create_payment(self, id, amount, kind):
+    def create_payment(self, id, amount, kind, refno):
         """ Create a payment on the order
 
         ``kind`` can be a value of:
@@ -275,6 +275,7 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
             'payment': {
                 'amount': str(amount),
                 'kind': kind,
+                'refno': refno,
             }
         }
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}

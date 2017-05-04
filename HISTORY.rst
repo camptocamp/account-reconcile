@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Add claim number in call to Pay by email.
+
 **Build**
 
 **Documentation**

@@ -25,11 +25,18 @@ latest (unreleased)
 
 **Bugfixes**
 
-* Add claim number in call to Pay by email.
-
 **Build**
 
 **Documentation**
+
+
+9.24.8 (2017-05-04)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Add claim number in call to Pay by email.
+* Deactivate mail when newly subscribed to a claim
 
 
 9.24.7 (2017-05-03)

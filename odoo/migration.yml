@@ -187,3 +187,4 @@ migration:
           - specific_fct
           - crm_claim_mail
           - qoqa_claim
+    - version: 9.24.8

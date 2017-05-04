@@ -49,7 +49,7 @@ class QoQaTrackingExporter(Exporter):
     def _get_shipping_packages(self, picking_binding):
         # Group the lines per tracking numbers
         packages = {}
-        for pack_operation in picking_binding.pack_operation_ids:
+        for pack_operation in picking_binding.pack_operation_product_ids:
             packages.setdefault(pack_operation.result_package_id, set()).add(
                 pack_operation
             )

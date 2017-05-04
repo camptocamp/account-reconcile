@@ -189,3 +189,4 @@ migration:
           - qoqa_claim
     - version: 9.24.8
     - version: 9.24.9
+    - version: 9.24.10

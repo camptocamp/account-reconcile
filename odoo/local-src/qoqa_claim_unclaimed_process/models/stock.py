@@ -25,3 +25,14 @@ class StockQuantPackage(models.Model):
     picking_ids = fields.Many2many('stock.picking',
                                    compute='_compute_pickings',
                                    string='Pickings')
+
+
+class StockPicking(models.Model):
+    _inherit = "stock.picking"
+
+    @api.multi
+    def action_assign(self):
+        # if "do_not_assign" is in context, skip method
+        if self._context.get('do_not_assign', False):
+            return True
+        return super(StockPicking, self).action_assign()

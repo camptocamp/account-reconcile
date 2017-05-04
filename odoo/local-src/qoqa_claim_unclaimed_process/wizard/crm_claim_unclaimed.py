@@ -135,6 +135,7 @@ class CrmClaimUnclaimed(models.TransientModel):
                     binder.to_backend(qsale),
                     self.claim_carrier_price,
                     'unclaimed',
+                    claim_number
                 )
                 payment_id = payment['data']['id']
 

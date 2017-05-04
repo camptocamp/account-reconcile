@@ -30,6 +30,14 @@ latest (unreleased)
 **Documentation**
 
 
+9.24.9 (2017-05-04)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Revert "deactivate mail when newly subscribed to a claim" (more issues)
+
+
 9.24.8 (2017-05-04)
 +++++++++++++++++++
 

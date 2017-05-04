@@ -30,28 +30,26 @@ latest (unreleased)
 **Documentation**
 
 
-9.24.11 (2017-05-04)
+9.24.12 (2017-05-04)
 ++++++++++++++++++++
 
 **Features and Improvements**
 
 **Bugfixes**
 
+* Use pack_operation_product_ids for tracking export
+
 **Build**
 
 **Documentation**
+
+
+9.24.11 (2017-05-04)
+++++++++++++++++++++
 
 
 9.24.10 (2017-05-04)
 ++++++++++++++++++++
-
-**Features and Improvements**
-
-**Bugfixes**
-
-**Build**
-
-**Documentation**
 
 
 9.24.9 (2017-05-04)

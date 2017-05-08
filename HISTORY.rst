@@ -23,6 +23,7 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Hide "Create Variants" button when editing variant
 * Remove action_assign for pickings created from claims
 
 **Bugfixes**

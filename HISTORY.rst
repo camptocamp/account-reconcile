@@ -23,16 +23,25 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.25.0 (2017-05-08)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * Hide "Create Variants" button when editing variant
 * Remove action_assign for pickings created from claims
 
 **Bugfixes**
 
 * Do not change status when an internal note is done on a claim
-
-**Build**
-
-**Documentation**
+* Fix invoice creation from a claim
 
 
 9.24.12 (2017-05-04)

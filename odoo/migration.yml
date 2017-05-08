@@ -192,3 +192,7 @@ migration:
     - version: 9.24.10
     - version: 9.24.11
     - version: 9.24.12
+    - version: 9.25.0
+      addons:
+        upgrade:
+          - qoqa_product

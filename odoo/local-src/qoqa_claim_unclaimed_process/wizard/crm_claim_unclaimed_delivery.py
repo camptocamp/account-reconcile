@@ -46,13 +46,13 @@ class CrmClaimUnclaimedDelivery(models.TransientModel):
                 (0, 0,
                  {'account_analytic_id': analytic_account.id,
                   'account_id': product.property_account_income_id.id,
-                  'invoice_line_tax_id': [
+                  'invoice_line_tax_ids': [
                       (6, 0, [tax.id for tax in product.taxes_id])
                   ],
                   'name': product.partner_ref,
                   'product_id': product.id,
                   'price_unit': claim.unclaimed_price,
-                  'uos_id': product.uom_id.id}
+                  'uom_id': product.uom_id.id}
                  )
             ]
         }

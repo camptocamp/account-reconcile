@@ -24,8 +24,11 @@ latest (unreleased)
 **Features and Improvements**
 
 * Hide "Create Variants" button when editing variant
+* Remove action_assign for pickings created from claims
 
 **Bugfixes**
+
+* Do not change status when an internal note is done on a claim
 
 **Build**
 

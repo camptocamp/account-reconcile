@@ -85,12 +85,16 @@ class CrmClaim(models.Model):
             body = _('A new CRM claim (%s) has been assigned to you'
                      % (claim.name))
             subject = _('A new CRM claim has been assigned to you')
-            msg = claim.message_post(body=body, subject=subject,
-                                     message_type='email',
-                                     subtype='mail.mt_comment',
-                                     parent_id=False,
-                                     attachments=None,
-                                     partner_ids=[partner_id])
+            # Add variable to context so that we know not to change the status
+            msg = claim.with_context(notify_user=True).message_post(
+                body=body,
+                subject=subject,
+                message_type='email',
+                subtype='mail.mt_comment',
+                parent_id=False,
+                attachments=None,
+                partner_ids=[partner_id]
+            )
             # Delete after sending e-mail to avoid quoting it later on
             msg.unlink()
 

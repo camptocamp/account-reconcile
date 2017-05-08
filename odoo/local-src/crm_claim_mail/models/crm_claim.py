@@ -191,7 +191,7 @@ class CrmClaim(models.Model):
         messages = message_obj.search(
             [('res_id', '=', self.id),
              ('model', '=', self._name),
-             ('message_type', 'in', ('email', 'comment')),
+             ('message_type', '=', 'email'),
              ('subtype_id', '!=', False),
              ],
             order='date asc',
@@ -260,8 +260,8 @@ class CrmClaim(models.Model):
         # Re-subscribe original author
         if original_author_id:
             self.message_subscribe([original_author_id])
-        if message_type == 'comment' and subtype:
-            self.case_close()
+        if message_type == 'email' and not self._context.get(
+                'notify_user', False):
             # Also write the field "last_message_date".
             self.write({'last_message_date': fields.datetime.now()})
         return result

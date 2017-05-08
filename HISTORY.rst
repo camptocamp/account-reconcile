@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Do not change status when an internal note is done on a claim
+
 **Build**
 
 **Documentation**

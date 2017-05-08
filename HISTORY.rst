@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Hide "Create Variants" button when editing variant
+
 **Bugfixes**
 
 **Build**

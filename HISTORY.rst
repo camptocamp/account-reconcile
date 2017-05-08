@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Remove action_assign for pickings created from claims
+
 **Bugfixes**
 
 **Build**

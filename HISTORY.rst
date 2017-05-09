@@ -25,6 +25,10 @@ latest (unreleased)
 
 **Bugfixes**
 
+* When a picking operation contains a pack instead of a product, we can
+  now include it in a batch picking as well.
+* Allow to print labels on packs without products (return of pack for instance)
+
 **Build**
 
 **Documentation**

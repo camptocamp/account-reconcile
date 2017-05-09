@@ -30,16 +30,26 @@ latest (unreleased)
 **Documentation**
 
 
+9.25.0 (2017-05-08)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Hide "Create Variants" button when editing variant
+* Remove action_assign for pickings created from claims
+
+**Bugfixes**
+
+* Do not change status when an internal note is done on a claim
+* Fix invoice creation from a claim
+
+
 9.24.13 (2017-05-09)
 ++++++++++++++++++++
 
 **Features and Improvements**
 
-**Bugfixes**
-
-**Build**
-
-**Documentation**
+* Change S3 configuration
 
 
 9.24.12 (2017-05-04)

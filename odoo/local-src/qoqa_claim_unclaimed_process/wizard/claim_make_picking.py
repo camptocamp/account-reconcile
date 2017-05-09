@@ -112,3 +112,9 @@ class ClaimMakePicking(models.TransientModel):
             )
 
         return self._create_picking(claim, 'out')
+
+    def _create_picking(self, claim, picking_type):
+        # Add parameter to context to avoid action_assign
+        return super(
+            ClaimMakePicking, self.with_context(do_not_assign=True)
+        )._create_picking(claim, picking_type)

@@ -19,6 +19,9 @@ class CrmClaimUnclaimedDelivery(models.TransientModel):
         invoice_obj = self.env['account.invoice']
         # retrieve values
         company = self.env.user.company_id
+        # Done because otherwise, the "main company" (QoQa Holding) is used
+        # when reading properties from the product. Don't ask me why...
+        company = company.with_context(force_company=company.id)
         analytic_account = self.env.ref(
             'scenario.analytic_account_shop_general_ch')
         inv_account = company.unclaimed_invoice_account_id
@@ -67,6 +70,8 @@ class CrmClaimUnclaimedDelivery(models.TransientModel):
         return_wiz_obj = self.env['claim_make_picking.wizard']
         act_window_obj = self.env['ir.actions.act_window']
         picking_obj = self.env['stock.picking']
+        company = self.env.user.company_id
+        picking_type = company.unclaimed_out_picking_type_id
 
         for claim in self.claim_ids:
             # Call wizard for claim delivery
@@ -81,7 +86,8 @@ class CrmClaimUnclaimedDelivery(models.TransientModel):
             # the procurement group
             return_wiz.action_create_picking()
             res_ids += picking_obj.search([
-                ('group_id.claim_id', '=', claim.id)
+                ('claim_id', '=', claim.id),
+                ('picking_type_id', '=', picking_type.id)
             ]).ids
             # For unclaimed claims : create invoice
             if claim.unclaimed_price:

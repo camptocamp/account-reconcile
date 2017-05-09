@@ -48,6 +48,14 @@ latest (unreleased)
 * Fix invoice creation from a claim
 
 
+9.24.13 (2017-05-09)
+++++++++++++++++++++
+
+**Features and Improvements**
+
+* Change S3 configuration
+
+
 9.24.12 (2017-05-04)
 ++++++++++++++++++++
 

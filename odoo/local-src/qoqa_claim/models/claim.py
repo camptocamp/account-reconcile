@@ -86,7 +86,7 @@ class CrmClaim(models.Model):
                      % (claim.name))
             subject = _('A new CRM claim has been assigned to you')
             # Add variable to context so that we know not to change the status
-            msg = claim.with_context(notify_user=True).message_post(
+            msg = claim.message_post(
                 body=body,
                 subject=subject,
                 message_type='email',

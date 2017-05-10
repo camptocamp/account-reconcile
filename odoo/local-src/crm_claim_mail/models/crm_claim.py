@@ -238,16 +238,23 @@ class CrmClaim(models.Model):
                      subtype=None, parent_id=False, attachments=None,
                      content_subtype='html', **kwargs):
         # Unsubscribe original author
-        original_author_id = kwargs.get('author_id', None)
+        original_email_partner = False
+        original_email_from = kwargs.pop('email_from', None)
+        original_author_id = kwargs.pop('author_id', None)
         if original_author_id:
             self.message_unsubscribe([original_author_id])
+        elif original_email_from:
+            # Since [False] can be returned, only keep "real" ids
+            original_email_partner = [
+                partner
+                for partner
+                in self._find_partner_from_emails([original_email_from])
+                if partner]
+            self.message_unsubscribe(original_email_partner)
+
         # change author to partner with address 'loutres@qoqa.com'
-        kwargs.pop('author_id', None)
-        kwargs.pop('email_from', None)
-        author = self.env['res.partner'].search(
-            [('email', '=', 'loutres@qoqa.com')],
-            limit=1)
-        if not author:
+        author_ids = self._find_partner_from_emails(['loutres@qoqa.com'])
+        if not author_ids:
             raise UserError(_('No partner set with email "loutres@qoqa.com"'))
         # Use "mail_create_nosubscribe" in context to avoid having
         # "loutres" as follower
@@ -255,13 +262,19 @@ class CrmClaim(models.Model):
             mail_create_nosubscribe=True)).message_post(
             body=body, subject=subject, message_type=message_type,
             subtype=subtype, parent_id=parent_id, attachments=attachments,
-            content_subtype=content_subtype, author_id=author.id,
+            content_subtype=content_subtype, author_id=author_ids[0],
             email_from='Loutres <loutres@qoqa.com>', **kwargs)
-        # Re-subscribe original author
+
+        # Re-subscribe original authors
         if original_author_id:
             self.message_subscribe([original_author_id])
-        if message_type == 'email' and not self._context.get(
-                'notify_user', False):
+        elif original_email_partner:
+            self.message_subscribe(original_email_partner)
+
+        # Use case : only close if email, if not the "assigned to you" email,
+        # and if it does not come from the catchall
+        if message_type == 'comment' and 'subtype_id' not in kwargs:
+            self.case_close()
             # Also write the field "last_message_date".
             self.write({'last_message_date': fields.datetime.now()})
         return result

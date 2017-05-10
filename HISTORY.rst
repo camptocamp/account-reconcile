@@ -46,6 +46,7 @@ latest (unreleased)
 
 * Do not change status when an internal note is done on a claim
 * Fix invoice creation from a claim
+* Final fixes for claim mails
 
 
 9.24.13 (2017-05-09)

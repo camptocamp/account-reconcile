@@ -25,10 +25,6 @@ latest (unreleased)
 
 **Bugfixes**
 
-* When a picking operation contains a pack instead of a product, we can
-  now include it in a batch picking as well.
-* Allow to print labels on packs without products (return of pack for instance)
-
 **Build**
 
 **Documentation**
@@ -41,12 +37,16 @@ latest (unreleased)
 
 * Hide "Create Variants" button when editing variant
 * Remove action_assign for pickings created from claims
+* When a picking operation contains a pack instead of a product, we can
+  now include it in a batch picking as well.
+* Allow to print labels on packs without products (return of pack for instance)
 
 **Bugfixes**
 
 * Do not change status when an internal note is done on a claim
 * Fix invoice creation from a claim
 * Final fixes for claim mails
+* Create default price rules for delivery carriers
 
 
 9.24.13 (2017-05-09)

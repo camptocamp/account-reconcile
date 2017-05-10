@@ -194,6 +194,9 @@ migration:
     - version: 9.24.12
     - version: 9.24.13
     - version: 9.25.0
+      operations:
+        post:
+          - anthem songs.upgrade.9_25_0::main
       addons:
         upgrade:
           - qoqa_product

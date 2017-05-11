@@ -25,6 +25,7 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix related action button for export tracking jobs
 * Fix generation of labels when there is more than one pack per picking
 
 **Build**

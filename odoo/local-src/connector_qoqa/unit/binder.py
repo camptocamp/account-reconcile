@@ -156,4 +156,5 @@ class QoQaInheritsBinder(QoQaBinder):
                    'qoqa.crm.claim.category',
                    'qoqa.crm.claim.medium',
                    'qoqa.voucher.payment',
+                   'qoqa.stock.picking',
                    ]

@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix generation of labels when there is more than one pack per picking
+
 **Build**
 
 **Documentation**

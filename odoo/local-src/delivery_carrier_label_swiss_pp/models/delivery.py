@@ -15,6 +15,6 @@ class DeliveryCarrier(models.Model):
         res.append(('swiss_apost', 'Swiss A Priority'))
         return res
 
-    type = fields.Selection(
+    carrier_type = fields.Selection(
         _get_carrier_type_selection, 'Type',
         help="Carrier type (combines several delivery methods)")

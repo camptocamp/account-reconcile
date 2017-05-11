@@ -37,7 +37,7 @@ class StockPicking(models.Model):
     def generate_shipping_labels(self, package_ids=None):
         """ Add label generation for Swiss Post PP Franking"""
         self.ensure_one()
-        if self.carrier_id.type == 'swiss_apost':
+        if self.carrier_id.carrier_type == 'swiss_apost':
             return [self._generate_swiss_pp_label(package_ids=package_ids)]
         return super(StockPicking, self
                      ).generate_shipping_labels(package_ids=package_ids)

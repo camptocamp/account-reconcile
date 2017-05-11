@@ -25,9 +25,6 @@ latest (unreleased)
 
 **Bugfixes**
 
-* Fix related action button for export tracking jobs
-* Fix generation of labels when there is more than one pack per picking
-
 **Build**
 
 **Documentation**
@@ -50,6 +47,8 @@ latest (unreleased)
 * Fix invoice creation from a claim
 * Final fixes for claim mails
 * Create default price rules for delivery carriers
+* Fix related action button for export tracking jobs
+* Fix generation of labels when there is more than one pack per picking
 
 
 9.24.13 (2017-05-09)

@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix related action button for export tracking jobs
+
 **Build**
 
 **Documentation**

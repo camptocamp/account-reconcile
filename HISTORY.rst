@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix Swiss PP PDF label formatting
+
 **Build**
 
 **Documentation**

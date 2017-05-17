@@ -92,6 +92,8 @@ class ClaimMakePicking(models.TransientModel):
             else:
                 res['picking_type_id'] = \
                     company.unclaimed_out_picking_type_id.id
+        if claim.unclaimed_package_id:
+            res['original_package_id'] = claim.unclaimed_package_id.id
         return res
 
     @api.multi
@@ -114,7 +116,8 @@ class ClaimMakePicking(models.TransientModel):
         return self._create_picking(claim, 'out')
 
     def _create_picking(self, claim, picking_type):
-        # Add parameter to context to avoid action_assign
-        return super(
-            ClaimMakePicking, self.with_context(do_not_assign=True)
-        )._create_picking(claim, picking_type)
+        # Add parameter to context to avoid action_assign for OUT pickings
+        if picking_type == 'out':
+            self = self.with_context(do_not_assign=True)
+        return super(ClaimMakePicking, self)._create_picking(
+            claim, picking_type)

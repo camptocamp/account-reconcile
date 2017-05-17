@@ -30,9 +30,32 @@ class StockQuantPackage(models.Model):
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
+    original_package_id = fields.Many2one(
+        comodel_name='stock.quant.package',
+        string='Original unclaimed package (re-use for reservation)'
+    )
+
     @api.multi
     def action_assign(self):
         # if "do_not_assign" is in context, skip method
         if self._context.get('do_not_assign', False):
+            # can still be draft... if so, action_confirm
+            if self.state == 'draft':
+                self.action_confirm()
             return True
         return super(StockPicking, self).action_assign()
+
+
+class StockQuant(models.Model):
+    _inherit = "stock.quant"
+
+    @api.model
+    def quants_get_preferred_domain(self, qty, move, ops=False, lot_id=False,
+                                    domain=None, preferred_domain_list=[]):
+        # If 'original_package_id' is present in picking, use
+        # the package's quants.
+        if move and move.picking_id and move.picking_id.original_package_id:
+            package = move.picking_id.original_package_id
+            domain += [('package_id', '=', package.id)]
+        return super(StockQuant, self).quants_get_preferred_domain(
+            qty, move, ops, lot_id, domain, preferred_domain_list)

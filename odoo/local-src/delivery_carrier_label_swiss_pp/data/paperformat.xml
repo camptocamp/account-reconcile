@@ -6,5 +6,6 @@
     <field name="orientation">Landscape</field>
     <field eval="0.01" name="margin_top"/>
     <field eval="0.01" name="margin_bottom"/>
+    <field eval="75" name="dpi"/>
   </record>
 </odoo>

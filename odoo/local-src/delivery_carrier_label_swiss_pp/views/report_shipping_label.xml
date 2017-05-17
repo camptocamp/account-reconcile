@@ -17,35 +17,35 @@
     <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
     <t t-set="company" t-value="o.company_id"/>
     <div class="page">
-      <div t-if="company.swiss_pp_stamp_image" class="stamp">
+      <div t-if="company.swiss_pp_stamp_image" style="position: absolute; top: 7mm; left: 7mm;">
         <img t-att-src="'data:image/png;base64,%s' % company.swiss_pp_stamp_image" style="max-width: 58mm;"/>
       </div>
       <t t-set="shop" t-value="o.sale_id.qoqa_shop_id"/>
       <t t-if="o.picking_type_id == o.env.ref('stock.picking_type_in') and o.claim_id">
-        <div class="sender_address">
-          <table class="sender">
+        <div style="position: absolute; top: 40mm; left: 0mm; width: 24mm; height: 24mm; -webkit-transform: rotate(-90deg);">
+          <table style="border-collapse: collapse; font-size: 50%;">
             <t t-set="partner" t-value="o.claim_id.delivery_address_id"/>
             <t t-call="delivery_carrier_label_swiss_pp.report_label_swiss_pp_address"/>
           </table>
         </div>
       </t>
       <t t-if="(o.picking_type_id == o.env.ref('stock.picking_type_out') or not o.claim_id) and shop">
-        <div class="logo">
+        <div style="position: absolute; top: 40mm; left: 0mm;">
           <img t-att-src="'data:image/png;base64,%s' % shop.swiss_pp_logo" style="max-height: 24mm;"/>
         </div>
       </t>
-      <div class="address">
+      <div style="position: absolute; top: 40mm; left: 20mm;">
         <t t-if="o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.mapped('pack_operation_ids.result_package_id.parcel_tracking')) > 0">
-          <div class="code">
+          <div style="margin-left: 1px; font-size: 50%;">
             <span t-field="o.offer_id.ref"/>.<span t-field="o.sale_id.name"/>.<span t-field="o.first_package_name"/>
           </div>
         </t>
         <t t-if="not (o.picking_type_id == o.env.ref('stock.picking_type_out') and o.offer_id.ref and o.sale_id.name and len(o.mapped('pack_operation_ids.result_package_id.parcel_tracking')) > 0) and o.claim_id">
-          <div class="code">
+          <div style="margin-left: 1px; font-size: 50%;">
             <span t-field="o.claim_id.code"/>
           </div>
         </t>
-        <table class="recipient">
+        <table style="border-collapse: collapse; font-size: 70%;">
           <t t-set="partner" t-value="o.partner_id"/>
           <t t-call="delivery_carrier_label_swiss_pp.report_label_swiss_pp_address"/>
         </table>
@@ -84,45 +84,6 @@
   </template>
 
   <template id="report_label_swiss_pp">
-    <head>
-      <style type="text/css">
-        .stamp {
-          position: absolute;
-          top: 7mm;
-          left: 7mm;
-        }
-        .logo {
-          position: absolute;
-          top: 40mm;
-          left: 0mm;
-        }
-        .address {
-          position: absolute;
-          top: 40mm;
-          left: 20mm;
-        }
-        .sender_address {
-          position: absolute;
-          top: 40mm;
-          left: 0mm;
-          width: 24mm;
-          height: 24mm;
-          -webkit-transform: rotate(-90deg);
-        }
-        .recipient{
-          border-collapse: collapse;
-          font-size: 70%;
-        }
-        .sender{
-          border-collapse: collapse;
-          font-size: 50%;
-        }
-        .code {
-          margin-left: 1px;
-          font-size: 50%;
-        }
-      </style>
-    </head>
     <t t-call="report.html_container">
       <t t-foreach="docs" t-as="o">
         <t t-call="delivery_carrier_label_swiss_pp.report_label_swiss_pp_document" t-lang="o.partner_id.lang"/>

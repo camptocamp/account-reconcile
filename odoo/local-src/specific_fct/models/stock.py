@@ -101,3 +101,15 @@ class StockPicking(models.Model):
                                      name, exc_info=True)
                 _logger.info('%d / %d pickings done', count, total_pickings)
         return True
+
+
+class StockLocation(models.Model):
+    _inherit = 'stock.location'
+
+    # Use complete_name for name_get
+    @api.multi
+    def name_get(self):
+        res = []
+        for location in self:
+            res.append((location.id, location.complete_name))
+        return res

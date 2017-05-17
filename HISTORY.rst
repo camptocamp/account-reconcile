@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix problem with complete_name on stock locations
+
 **Build**
 
 **Documentation**

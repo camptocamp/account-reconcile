@@ -39,6 +39,9 @@ class StockPicking(models.Model):
     def action_assign(self):
         # if "do_not_assign" is in context, skip method
         if self._context.get('do_not_assign', False):
+            # can still be draft... if so, action_confirm
+            if self.state == 'draft':
+                self.action_confirm()
             return True
         return super(StockPicking, self).action_assign()
 

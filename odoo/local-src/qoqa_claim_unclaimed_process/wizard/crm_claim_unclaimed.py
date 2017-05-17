@@ -223,7 +223,7 @@ class CrmClaimUnclaimed(models.TransientModel):
             Call to product_return wizard
         """
         return_wiz_obj = self.env['claim_make_picking.wizard']
-        picking_obj = self.env['stock.picking']
+        valid_wiz_obj = self.env['stock.immediate.transfer']
         # Create refund from claim
         ctx = {
             'active_id': claim.id,
@@ -239,8 +239,8 @@ class CrmClaimUnclaimed(models.TransientModel):
              self.return_dest_location_id.id
              })
         wiz_result = return_wiz.action_create_picking()
-        picking = picking_obj.browse(wiz_result['res_id'])
-        picking.action_confirm()
+        wiz_valid = valid_wiz_obj.create({'pick_id': wiz_result['res_id']})
+        wiz_valid.process()
         return wiz_result
 
     @api.onchange('track_number')

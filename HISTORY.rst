@@ -26,6 +26,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Fix problem with complete_name on stock locations
+* Add new "Tous les stocks" location to only get stock info from it
 
 **Build**
 

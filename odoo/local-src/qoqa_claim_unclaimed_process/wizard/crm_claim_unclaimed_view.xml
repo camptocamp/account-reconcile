@@ -21,6 +21,7 @@
                         <field name="claim_user_id"/>
                         <field name="claim_team_id" readonly="1"/>
                         <field name="claim_categ_id" readonly="1"/>
+                        <field name="claim_package_id" invisible="1"/>
                     </group>
                     <footer>
                         <button string='Create Claim and Return' name="create_claim" type="object" class="oe_highlight"/>

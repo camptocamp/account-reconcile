@@ -65,6 +65,11 @@ class CrmClaimUnclaimed(models.TransientModel):
         string='Invoice',
         required=True
     )
+    claim_package_id = fields.Many2one(
+        comodel_name='stock.quant.package',
+        string='Unclaimed Package',
+        required=True
+    )
     claim_sale_order_id = fields.Many2one(
         comodel_name='sale.order',
         string='Sale Order',
@@ -172,7 +177,8 @@ class CrmClaimUnclaimed(models.TransientModel):
             'ref': 'sale.order,%s' % sale.id,
             'partner_id': self.claim_partner_id.id,
             'invoice_id': self.claim_invoice_id.id,
-            'unclaimed_price': int(self.claim_carrier_price)
+            'unclaimed_price': int(self.claim_carrier_price),
+            'unclaimed_package_id': self.claim_package_id.id
         }
         # Call on_change functions to retrieve values
         on_change_partner_vals = claim_obj.onchange_partner_id(
@@ -217,7 +223,7 @@ class CrmClaimUnclaimed(models.TransientModel):
             Call to product_return wizard
         """
         return_wiz_obj = self.env['claim_make_picking.wizard']
-        valid_wiz_obj = self.env['stock.immediate.transfer']
+        picking_obj = self.env['stock.picking']
         # Create refund from claim
         ctx = {
             'active_id': claim.id,
@@ -233,8 +239,8 @@ class CrmClaimUnclaimed(models.TransientModel):
              self.return_dest_location_id.id
              })
         wiz_result = return_wiz.action_create_picking()
-        wiz_valid = valid_wiz_obj.create({'pick_id': wiz_result['res_id']})
-        wiz_valid.process()
+        picking = picking_obj.browse(wiz_result['res_id'])
+        picking.action_confirm()
         return wiz_result
 
     @api.onchange('track_number')
@@ -243,58 +249,61 @@ class CrmClaimUnclaimed(models.TransientModel):
             Onchange to set all values (or return errors)
             from the tracking number
         """
-        for claim in self:
-            claim.ensure_one()
-            claim.claim_name = False
-            claim.return_source_location_id = False
-            claim.return_dest_location_id = False
-            claim.claim_invoice_id = False
-            claim.claim_sale_order_id = False
-            claim.claim_partner_id = False
-            claim.claim_delivery_address_id = False
-            claim.claim_carrier_price = False
-            pack_model = self.env['stock.quant.package']
-            pack_operation_model = self.env['stock.pack.operation']
-            if not claim.track_number:
-                return
+        self.ensure_one()
+        self.claim_package_id = False
+        self.claim_name = False
+        self.return_source_location_id = False
+        self.return_dest_location_id = False
+        self.claim_invoice_id = False
+        self.claim_sale_order_id = False
+        self.claim_partner_id = False
+        self.claim_delivery_address_id = False
+        self.claim_carrier_price = False
+        pack_model = self.env['stock.quant.package']
+        pack_operation_model = self.env['stock.pack.operation']
+        if not self.track_number:
+            return
 
-            pack = pack_model.search(
-                [('parcel_tracking', '=', claim.track_number)],
-                limit=1,
-            )
-            pack_op = pack_operation_model.search(
-                [('result_package_id', '=', pack.id)],
-                limit=1,
-            )
-            if not pack:
-                raise UserError(_('Not a valid tracking number!'))
-            picking = pack_op.picking_id
-            if not picking:
-                raise UserError(_('Delivery order not found '
-                                  'for this tracking number!'))
-            claim.return_source_location_id = picking.location_dest_id.id
-            claim.claim_delivery_address_id = picking.partner_id.id
-            claim.claim_carrier_price = picking.carrier_id.fixed_price
+        pack = pack_model.search(
+            [('parcel_tracking', '=', self.track_number)],
+            limit=1,
+        )
+        if not pack:
+            raise UserError(_('Not a valid tracking number!'))
 
-            sale = picking.sale_id
-            if not sale:
-                raise UserError(
-                    _('No sale associated to this tracking number!')
-                )
-            invoice = sale.invoice_ids and sale.invoice_ids[0] or False
-            if not invoice:
-                raise UserError(
-                    _('No invoice associated to this tracking number!')
-                )
-            if sale.partner_id and sale.partner_id.lang == 'de_DE':
-                claim_name = _('Ihre Bestellung Nr. %s') % (sale.name, )
-            else:
-                claim_name = _('Votre commande numéro %s en '
-                               'retour non-réclamé') % (sale.name, )
-            claim.claim_name = claim_name
-            claim.claim_invoice_id = invoice.id
-            claim.claim_sale_order_id = sale.id
-            claim.claim_partner_id = sale.partner_id.id
+        self.claim_package_id = pack.id
+        pack_op = pack_operation_model.search(
+            [('result_package_id', '=', pack.id)],
+            limit=1,
+        )
+        picking = pack_op.picking_id
+        if not picking:
+            raise UserError(_('Delivery order not found '
+                              'for this tracking number!'))
+
+        self.return_source_location_id = picking.location_dest_id.id
+        self.claim_delivery_address_id = picking.partner_id.id
+        self.claim_carrier_price = picking.carrier_id.fixed_price
+
+        sale = picking.sale_id
+        if not sale:
+            raise UserError(
+                _('No sale associated to this tracking number!')
+            )
+        invoice = sale.invoice_ids and sale.invoice_ids[0] or False
+        if not invoice:
+            raise UserError(
+                _('No invoice associated to this tracking number!')
+            )
+        if sale.partner_id and sale.partner_id.lang == 'de_DE':
+            claim_name = _('Ihre Bestellung Nr. %s') % (sale.name, )
+        else:
+            claim_name = _('Votre commande numéro %s en '
+                           'retour non-réclamé') % (sale.name, )
+        self.claim_name = claim_name
+        self.claim_invoice_id = invoice.id
+        self.claim_sale_order_id = sale.id
+        self.claim_partner_id = sale.partner_id.id
 
     @api.multi
     def create_claim(self):

@@ -92,6 +92,8 @@ class ClaimMakePicking(models.TransientModel):
             else:
                 res['picking_type_id'] = \
                     company.unclaimed_out_picking_type_id.id
+        if claim.unclaimed_package_id:
+            res['original_package_id'] = claim.unclaimed_package_id.id
         return res
 
     @api.multi

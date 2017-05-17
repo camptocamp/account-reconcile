@@ -200,3 +200,11 @@ migration:
       addons:
         upgrade:
           - qoqa_product
+    - version: 9.26.0
+      operations:
+        post:
+          - anthem songs.upgrade.9_26_0::main
+      addons:
+        upgrade:
+          - delivery_carrier_label_swiss_pp
+          - qoqa_claim_unclaimed_process

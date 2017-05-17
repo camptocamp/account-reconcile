@@ -25,15 +25,21 @@ latest (unreleased)
 
 **Bugfixes**
 
+**Build**
+
+**Documentation**
+
+
+9.26.0 (2017-05-17)
++++++++++++++++++++
+
+**Bugfixes**
+
 * Fix problem with complete_name on stock locations
 * Add new "Tous les stocks" location to only get stock info from it
 * Re-use original package in return for unclaimed claims
 * Correct workflows for IN/OUT from claims (unclaimed or not)
 * Fix Swiss PP PDF label formatting
-
-**Build**
-
-**Documentation**
 
 
 9.25.0 (2017-05-08)

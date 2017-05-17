@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Re-use original package in return for unclaimed claims
+* Correct workflows for IN/OUT from claims (unclaimed or not)
 * Fix Swiss PP PDF label formatting
 
 **Build**

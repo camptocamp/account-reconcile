@@ -21,6 +21,10 @@ class CrmClaim(models.Model):
     formatted_create_date = fields.Char(
         compute=_get_formatted_create_date,
         store=False)
+    unclaimed_package_id = fields.Many2one(
+        comodel_name='stock.quant.package',
+        string='Original unclaimed package'
+    )
 
     @api.model
     def _send_unclaimed_reminders(self):

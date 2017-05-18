@@ -69,7 +69,7 @@ class SaleOrderLineImportMapper(ImportMapper, FromAttributes):
         if date_delivery:
             date_delivery = iso8601_to_local_date(date_delivery)
             today = date.today()
-            values['delay'] = (date_delivery - today).days
+            values['customer_lead'] = (date_delivery - today).days
 
         return values
 

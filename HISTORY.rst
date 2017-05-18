@@ -40,6 +40,7 @@ latest (unreleased)
 * Re-use original package in return for unclaimed claims
 * Correct workflows for IN/OUT from claims (unclaimed or not)
 * Fix Swiss PP PDF label formatting
+* Use correct field name for delivery date
 
 
 9.25.0 (2017-05-08)

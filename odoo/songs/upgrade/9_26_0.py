@@ -8,6 +8,9 @@ import anthem
 @anthem.log
 def add_view_all_stocks_location(ctx):
     """ Add new "Tous les stocks" location to only get stock info from it """
+    if ctx.env.ref('scenario.all_stock_location', raise_if_not_found=False):
+        return
+
     old_location = ctx.env.ref('stock.stock_location_stock')
     Location = ctx.env['stock.location']
     new_location = Location.create({

@@ -74,30 +74,60 @@
                                         <caption>Not in a pack</caption>
                                     </t>
                                     <t t-foreach="operations" t-as="op">
-                                        <tr align="left">
-                                            <td width="16%">
-                                                <span t-esc="op.product_id.default_code"/>
-                                            </td>
-                                            <td width="18%">
-                                                <span t-esc="op.product_id.name"/>
-                                            </td>
-                                            <td width="12%">
-                                                <span t-esc="get_variants(op.product_id)"/>
-                                            </td>
-                                            <td width="24%">
-                                                <span t-esc="op.location_id.complete_name"/>
-                                            </td>
-                                            <td width="10%">
-                                                <span t-esc="op.picking_id.origin"/>
-                                            </td>
-                                            <td width="10%">
-                                                <span t-esc="op.product_qty"/>
-                                                <span t-esc="op.product_uom_id.name"/>
-                                            </td>
-                                            <td width="8%">
-                                                <span t-esc="op.picking_id.state"/>
-                                            </td>
-                                        </tr>
+                                        <t t-if="op.product_id">
+                                            <tr align="left">
+                                                <td width="16%">
+                                                    <span t-esc="op.product_id.default_code"/>
+                                                </td>
+                                                <td width="18%">
+                                                    <span t-esc="op.product_id.name"/>
+                                                </td>
+                                                <td width="12%">
+                                                    <span t-esc="get_variants(op.product_id)"/>
+                                                </td>
+                                                <td width="24%">
+                                                    <span t-esc="op.location_id.complete_name"/>
+                                                </td>
+                                                <td width="10%">
+                                                    <span t-esc="op.picking_id.origin"/>
+                                                </td>
+                                                <td width="10%">
+                                                    <span t-esc="op.product_qty"/>
+                                                    <span t-esc="op.product_uom_id.name"/>
+                                                </td>
+                                                <td width="8%">
+                                                    <span t-esc="op.picking_id.state"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="not op.product_id and op.package_id">
+                                            <t t-foreach="op.package_id.quant_ids" t-as="quant">
+                                                <tr align="left">
+                                                    <td width="16%">
+                                                        <span t-esc="quant.product_id.default_code"/>
+                                                    </td>
+                                                    <td width="18%">
+                                                        <span t-esc="quant.product_id.name"/>
+                                                    </td>
+                                                    <td width="12%">
+                                                        <span t-esc="get_variants(quant.product_id)"/>
+                                                    </td>
+                                                    <td width="24%">
+                                                        <span t-esc="op.location_id.complete_name"/>
+                                                    </td>
+                                                    <td width="10%">
+                                                        <span t-esc="op.picking_id.origin"/>
+                                                    </td>
+                                                    <td width="10%">
+                                                        <span t-esc="quant.qty"/>
+                                                        <span t-esc="quant.product_uom_id.name"/>
+                                                    </td>
+                                                    <td width="8%">
+                                                        <span t-esc="op.picking_id.state"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
                                     </t>
                                 </table>
                             </t>

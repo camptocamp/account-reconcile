@@ -54,31 +54,13 @@
   </template>
 
   <template id="report_label_swiss_pp_address">
-    <t t-set="company_partner" t-value="False"/>
-    <t t-if="partner.parent_id">
-      <t t-set="company_partner" t-value="partner.parent_id"/>
-    </t>
-
-    <t t-if="True or not partner.parent_id.qoqa_bind_ids">
-    <!--<t t-if="not partner.parent_id.qoqa_bind_ids">-->
-      <t t-if="company_partner">
-        <tr><td class="name"><span t-field="company_partner.name"/></td></tr>
-        <tr><td><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
-        <t t-set="address_lines" t-value="partner.contact_address.split('\n')[1:]"/>
-      </t>
-      <t t-if="not company_partner">
-        <tr><td class="name"><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
-        <t t-set="address_lines" t-value="partner.contact_address.split('\n')"/>
-      </t>
-    </t>
-    <t t-if="False and partner.parent_id.qoqa_bind_ids">
-    <!--<t t-if="partner.parent_id.qoqa_bind_ids">-->
-      <tr><td><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
-      <t t-set="address_lines" t-value="partner.contact_address.split('\n')[1:]"/>
-    </t>
-    <t t-foreach="address_lines" t-as="part">
-      <t t-if="part">
-        <tr><td><t t-esc="part"/></td></tr>
+    <t t-name="delivery_carrier_label_swiss_pp.report_label_swiss_pp_address">
+      <tr><td class="name"><span t-if="partner.title" t-field="partner.title.name"/> <span t-field="partner.name"/></td></tr>
+      <t t-set="address_lines" t-value="partner.contact_address.split('\n')"/>
+      <t t-foreach="address_lines" t-as="part">
+        <t t-if="part">
+          <tr><td><t t-esc="part"/></td></tr>
+        </t>
       </t>
     </t>
   </template>

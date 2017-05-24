@@ -208,3 +208,7 @@ migration:
         upgrade:
           - delivery_carrier_label_swiss_pp
           - qoqa_claim_unclaimed_process
+    - version: 9.26.1
+      addons:
+        upgrade:
+          - batch_picking_group

@@ -30,6 +30,14 @@ latest (unreleased)
 **Documentation**
 
 
+9.26.1 (2017-05-24)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Display product information on batch report lines
+
+
 9.26.0 (2017-05-17)
 +++++++++++++++++++
 

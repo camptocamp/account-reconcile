@@ -212,3 +212,7 @@ migration:
       addons:
         upgrade:
           - batch_picking_group
+    - version: 9.27.0
+      operations:
+        post:
+          - anthem songs.upgrade.9_27_0::main

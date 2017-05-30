@@ -30,6 +30,14 @@ latest (unreleased)
 **Documentation**
 
 
+9.27.0 (2017-05-30)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Fix stock levels and stock locations after migration
+
+
 9.26.1 (2017-05-24)
 +++++++++++++++++++
 

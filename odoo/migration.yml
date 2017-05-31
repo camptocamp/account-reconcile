@@ -216,3 +216,7 @@ migration:
       operations:
         post:
           - anthem songs.upgrade.9_27_0::main
+      addons:
+        upgrade:
+          - specific_fct
+          - specific_report

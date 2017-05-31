@@ -136,6 +136,29 @@ def fix_inventory_quants(ctx):
 
 
 @anthem.log
+def create_qoqa_logistic_partner(ctx):
+    """ Create QoQa Services - Logistique partner for PO """
+    Partner = ctx.env['res.partner']
+    qoqa_logistic_partner = Partner.create({
+        'name': 'QoQa Services SA - LOGISTIQUE',
+        'street': "Rue de l'Industrie 66",
+        'zip': '1030',
+        'city': 'Bussigny',
+        'phone': '+41 (0) 21 633 20 83'
+    })
+    ctx.env['ir.model.data'].create({
+        'module': 'scenario',
+        'name': 'qoqa_logistic_partner',
+        'model': 'res.partner',
+        'res_id': qoqa_logistic_partner.id
+    })
+    warehouse = ctx.env.ref('stock.warehouse0')
+    warehouse.write({
+        'partner_id': qoqa_logistic_partner.id
+    })
+
+@anthem.log
 def main(ctx):
     fix_location_hierarchy(ctx)
     fix_inventory_quants(ctx)
+    create_qoqa_logistic_partner(ctx)

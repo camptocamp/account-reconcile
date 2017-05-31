@@ -52,6 +52,12 @@ def fix_inventory_quants(ctx):
     inventory_obj = ctx.env['stock.inventory'].with_context(active_test=False)
     quant_obj = ctx.env['stock.quant'].with_context(active_test=False)
 
+    inventories = inventory_obj.search(
+        [('name', '=', 'Correction niveau de stock post-migration')]
+    )
+    if inventories:
+        return
+
     with ctx.log("Create inventory"):
         inventory = inventory_obj.create({
             'name': 'Correction niveau de stock post-migration',
@@ -138,6 +144,8 @@ def fix_inventory_quants(ctx):
 @anthem.log
 def create_qoqa_logistic_partner(ctx):
     """ Create QoQa Services - Logistique partner for PO """
+    if ctx.env.ref('scenario.qoqa_logistic_partner', raise_if_not_found=False):
+        return
     Partner = ctx.env['res.partner']
     qoqa_logistic_partner = Partner.create({
         'name': 'QoQa Services SA - LOGISTIQUE',
@@ -156,6 +164,7 @@ def create_qoqa_logistic_partner(ctx):
     warehouse.write({
         'partner_id': qoqa_logistic_partner.id
     })
+
 
 @anthem.log
 def main(ctx):

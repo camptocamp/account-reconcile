@@ -36,6 +36,9 @@ latest (unreleased)
 **Features and Improvements**
 
 * Fix stock levels and stock locations after migration
+* Set shipping address in PO
+* Fix reconcile cron order
+* Remove default check boxes in "Check Availability" wizard
 
 
 9.26.1 (2017-05-24)

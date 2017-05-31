@@ -11,3 +11,4 @@ from . import purchase
 from . import stock_batch_picking
 from . import ir_qweb
 from . import ir_attachment
+from . import hr_holidays

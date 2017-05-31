@@ -4,3 +4,4 @@
 
 from . import account_invoice_refund
 from . import apply_carrier
+from . import check_assign_all

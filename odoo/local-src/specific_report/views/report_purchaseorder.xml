@@ -9,6 +9,10 @@
       </div>
     </xpath>
 
+    <xpath expr="//div[@t-field='o.picking_type_id.warehouse_id.partner_id']" position="before">
+      <strong>Horaire: 8h-12h00 / 13h30-17h30</strong>
+    </xpath>
+
     <xpath expr="//div[@class='page']/table[1]" position="replace">
       <table class="table table-condensed">
         <thead>

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# This file has been generated with 'invoke project.sync'.
+# Do not modify. Any manual change will be lost.
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 from __future__ import print_function

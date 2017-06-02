@@ -1,3 +1,7 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # Pull requests and reviews
 
 Pull requests for new features are always proposed on `master`.
@@ -17,4 +21,4 @@ The pull requests must conform to the following points to be merged:
 * It contains tests
 * The changelog is updated (one or a few lines added in the
   `unreleased` section of [HISTORY.rst](../HISTORY.rst))
-* The [upgrade scripts](./docs/upgrade-scripts.md) have been updated
+* The [upgrade scripts](./upgrade-scripts.md) have been updated

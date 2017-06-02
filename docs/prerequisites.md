@@ -1,3 +1,7 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # Prerequisite
 
 Be sure to have a recent version of docker and docker-compose.

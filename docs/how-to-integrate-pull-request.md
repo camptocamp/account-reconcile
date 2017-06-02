@@ -1,3 +1,7 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # How to integrate an open pull request of an external repository
 
 First, ensure that you have `git-aggregator`:
@@ -8,10 +12,11 @@ pip install git-aggregator
 
 External addons repositories such as the OCA ones are integrated in the project
 using git submodules.  When we need to integrate a pull request that is not yet
-merged in the base branch, we create a consolidated branch that we push on
+merged in the base branch, we create a consolidated branch that we push on the fork
 github.com/camptocamp.
 
-In `odoo/pending-merges.yaml`, we keep the list of all the pending merges we need.
+In `odoo/pending-merges.yaml`, we keep the list of all the pending merges we
+need, so we can rebuild the branch at any moment.
 
 For each repository, we maintain a branch named
 `pending-merge-<project-id>-master` (look in `odoo/pending-merges.yaml` for the
@@ -19,28 +24,53 @@ exact name)  which must be updated by someone when we modify the pending merges
 reference file.  When we finalize a release, we create a new branch
 `pending-merge-<project-id>-<version>` to ensure we have a stable branch.
 
-## Proposing a new pending merge
+You can also create a `pending-merge-<project-id>-<branch-name>` for particular
+needs.
 
-If you don't have the access rights to push branches on `camptocamp`, you will
-need to create a pull request, otherwise, skip to ["Merging a new pending
-merge'](#merging-a-new-pending-merge).
+## Adding a new pending merge
 
-Say you have to add a add the pull request with the id 42 to OCA/sale-workflow.
-You'll have to edit `odoo/pending-merges.yaml` and add (or complete):
+We work on `master` for adding a new pending-merge, we don't use a pull
+request. The reason is that we override the existing pending-merge branch when
+we rebuild it, so if we don't push the update of the submodule on master, we
+break the other devs' submodules (they will refer to a commit that no longer exist).
 
-```yaml
-./external-src/sale-workflow:
-  remotes:
-    oca: https://github.com/OCA/sale-workflow.git
-    camptocamp: https://github.com/camptocamp/sale-workflow.git
-  merges:
-    - oca 9.0
-    - oca refs/pull/42/head
-  # you have to replace <project-id> here
-  target: camptocamp merge-branch-<project-id>-master
-```
 
-Note: we always want the same `target` for all the repositories, so you can use
+1. edit `odoo/pending-merge.yaml` file, add your pull request number in a section,
+   if the section does not exist, add it:
+
+  ```yaml
+  ./external-src/sale-workflow:
+    remotes:
+      oca: https://github.com/OCA/sale-workflow.git
+      camptocamp: https://github.com/camptocamp/sale-workflow.git
+    merges:
+      - oca 9.0
+      # comment explaining what the PR does (42 is the number of the PR
+      - oca refs/pull/42/head
+    # you have to replace <project-id> here
+    target: camptocamp merge-branch-<project-id>-master
+  ```
+
+2. rebuild and push the consolidation branch for the modified branch:
+
+  ```
+  cd odoo
+  gitaggregate -c pending-merges.yaml -d "./external-src/sale-workflow" -p
+  ```
+
+3. If there was no pending merge for that branch before, you have to edit the `.gitmodules` file
+   and replace the remote by the camptocamp's one
+
+   ```
+    [submodule "odoo/external-src/sale-workflow"]
+      path = odoo/external-src/sale-workflow
+    -   url = git@github.com:OCA/sale-workflow.git
+    +   url = git@github.com:camptocamp/sale-workflow.git
+    ```
+
+4. commit the git submodule change and push it on the `master` branch
+
+Note: we usually always want the same `target` name for all the repositories, so you can use
 YAML variables to write it only once, example:
 
 ```yaml
@@ -52,35 +82,6 @@ YAML variables to write it only once, example:
   target: *default_target
 ```
 
-You can try to create the consolidated branch locally:
-
-```bash
-gitaggregate -c pending-merges.yaml -d "*sale-workflow"
-```
-
-And if you are happy with that, create a new Pull Request for the modification
-of the `pending-merges.yaml` file.
-This pull request should contain only this modification.
-
-## Merging a new pending merge
-
-Once a new pull-request has been proposed with a change in `pending-merges.yaml`,
-we want to merge it as soon as possible in `master`, as it can be (and surely
-is) a prerequisite for local developments.
-
-If you are working on another branch than `master`, you'll want to use a
+Note: If you are working on another branch than `master`, you'll want to use a
 different name for the consolidation branch (the name of the consolidation
-branch is the attribute `target` in `pending-merges.yaml`).
-
-This type of change is not done with a pull request:
-
-1. on your local repository, merge the pull request having the
-   `pending-merge.yaml` change ([hub](https://hub.github.com) is a great plus
-   for that) (or change the `pending-merge.yaml` file)
-2. rebuild and push the consolidation branch for the modified branch:
-
-  ```
-  gitaggregate -c pending-merges.yaml -d "*sale-workflow" -p
-  ```
-
-3. commit the git submodule change and push it on the `master` branch
+branch is the `target` attribute in `pending-merges.yaml`).

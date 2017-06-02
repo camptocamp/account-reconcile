@@ -1,3 +1,7 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # Structure
 
 At the root level, there are mainly files related to docker-compose, Travis, Rancher and the project documentation.

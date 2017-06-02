@@ -1,31 +1,45 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # Releases
 
 ## Release process
 
-In the following order, at the end of a sprint, the release master will do:
+In the following order, at the end of a sprint, the release manager will:
 
-* merge all pending pull requests when possible
-* Generate the new 'pending-merge' branches with a name corresponding to the tag (`pending-merge-<project-id>-<version>`):
+* Merge all pending pull requests when possible, and for each corresponding card in Jira set the "Fix Version" field accordingly as well as change the status to "Waiting deploy"
+
+* Ensure that the migration scripts are complete and working (see [upgrade-scripts.md](upgrade-scripts.md#run-a-version-upgrade-again) on how to execute a specific version scripts)
+
+* Increase the version number (see [invoke.md](invoke.md#releasebump) for more information)
 
   ```bash
-  cd odoo
-  vi pending-merges.yml  # change target name
-  gitaggregate -c pending-merges.yml -p
-  git checkout -- pending-merges.yml
-  # revert the target name in odoo/pending-merges.yml, we don't want to write
-  # to those stable branches again
+  invoke release.bump --feature  # increment y number in x.y.z
+  # or --patch to increment z number in x.y.z
   ```
 
-* do the verifications: migration scripts, changelog
-* once all seems well, the release master adds a tag according to
-  the [versioning pattern] (#Versioning pattern) using:
+* The "bump" command also pushes the pending-merge branches to a new branch named after the tag (`pending-merge-<project-id>-<version>`), if needed, this push can be manually called again with
+
+  ```bash
+  invoke release.push-branches
+  ```
+
+* Do the verifications: migration scripts, [changelog](../HISTORY.rst) (remove empty sections, ...)
+
+* Commit the changes to [changelog](../HISTORY.rst), VERSION, ... on master with message 'Release x.y.z'
+
+* Add a tag with the new version number, copying the changelog information in the tag description
 
   ```
-  git tag -a x.y.z
-  git push --tags
+  git tag -a x.y.z  # here, copy the changelog in the annotated tag
+  git push --tags && git push
   ```
+
 When the tag is pushed on GitHub, Travis will build a new Docker image (as
 long as the build is green!) and push it on the registry as `camptocamp/qoqa_openerp:x.y.z`
+
+If everything went well it is worth informing the project manager that a new release is ready to be tested on the Minions.
 
 ## Versioning pattern
 
@@ -42,19 +56,19 @@ When there is an issue with a released image after the tag has been set, a
 patch branch is created from the tag and a new release is done from this
 branch; the patch number is incremented.
 
-Example of branches involving Paul as the Release Master and Liza and Greg as
+Example of branches involving Paul as the Release manager and Liza and Greg as
 developers, the current version is `9.3.2`:
 
 * Liza works on a new feature so she creates a branch for master:
 
 ```
-git branch origin/master -b impl-stock-split
+git checkout origin/master -b impl-stock-split
 git push liza/impl-stock-split
 ```
 
 * Greg works on a new feature too:
 ```
-git branch origin/master -b impl-crm-claim-email
+git checkout origin/master -b impl-crm-claim-email
 git push greg/impl-crm-claim-email
 ```
 * The end of sprint is close, both propose their branches as pull requests in
@@ -67,36 +81,17 @@ git push greg/impl-crm-claim-email
   `9.4.1`.
 * Liza works on another shiny feature:
 ```
-git branch origin/master -b impl-blue-css
+git checkout origin/master -b impl-blue-css
 git push liza/impl-blue-css
 ```
 * And Greg is assigned to fix a bug on the production server (now in `9.4.1`),
   so he will do 2 things:
   * create a patch branch *from* the production version:
   ```
-  git branch origin/9.4.1 -b patch-claim-typo
+  git checkout 9.4.1 -b patch-claim-typo
   git push greg/patch-claim-typo
   ```
   * ask Paul to create a new patch branch `patch-9.4.2`, on which he will
     propose his pull request
 * Paul prepare a new release on the `patch-9.4.2` branch. Once released, Paul merges `patch-9.4.2` in `master`.
 * At the end of the sprint, Paul prepares the next release `9.5.0` with the new Liza's feature and so on.
-
-## Release master
-
-At the end of a sprint, the release master will create a new release.
-There is one release master at a time, but the person assuming this role may
-change over the life of the project.
-
-The release master checks the following points before doing a release:
-
-* migration scripts are complete and working
-* there are no conflicts between the merged branches (but he might ask to the
-  other developers to resolve them)
-* complete and correct the [changelog](../HISTORY.rst).
-* check and update the docker-compose files if necessary
-* ensure Travis is green
-
-Then, he checks that the released Docker image works well.
-
-Overall, his role is to ensure that all is well and smooth for a release.

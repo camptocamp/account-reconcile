@@ -137,9 +137,7 @@ class CrmClaim(models.Model):
         msg, values = self._complete_from_sale(msg)
         if values:
             custom_values.update(values)
-        desc = html2plaintext(msg.get('body')) if msg.get('body') else ''
-        desc = re.sub(r'(\n){3,}', '\n\n', desc)
-        custom_values['description'] = desc
+        custom_values['description'] = False
         return super(CrmClaim, self).message_new(
             msg, custom_values=custom_values)
 

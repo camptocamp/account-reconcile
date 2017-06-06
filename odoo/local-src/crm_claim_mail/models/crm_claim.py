@@ -10,7 +10,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            )
 from openerp.addons.mail.models import html2text
 from string import Template
-from openerp.tools import html2plaintext
 from openerp.exceptions import UserError
 
 

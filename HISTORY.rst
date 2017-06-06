@@ -30,6 +30,14 @@ latest (unreleased)
 **Documentation**
 
 
+9.27.1 (2017-06-06)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Don't add email in claim body
+
+
 9.27.0 (2017-05-30)
 +++++++++++++++++++
 

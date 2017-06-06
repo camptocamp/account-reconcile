@@ -220,3 +220,4 @@ migration:
         upgrade:
           - specific_fct
           - specific_report
+    - version: 9.27.1

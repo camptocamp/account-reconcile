@@ -102,6 +102,13 @@ class StockPicking(models.Model):
                 _logger.info('%d / %d pickings done', count, total_pickings)
         return True
 
+    def force_transfer(self, force_qty=True):
+        """
+            We never want a "partial" batch so we force the qty_done to always
+            be equal to product_qty with force_qty=True in force_transfer
+        """
+        return super(StockPicking, self).force_transfer(force_qty=True)
+
 
 class StockLocation(models.Model):
     _inherit = 'stock.location'

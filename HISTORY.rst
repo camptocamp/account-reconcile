@@ -30,6 +30,15 @@ latest (unreleased)
 **Documentation**
 
 
+9.27.2 (2017-06-09)
++++++++++++++++++++
+
+**Bugfixes**
+
+* Forbid partial transfer of batch pickings (BIZ-117)
+
+
+
 9.27.1 (2017-06-06)
 +++++++++++++++++++
 

@@ -221,3 +221,4 @@ migration:
           - specific_fct
           - specific_report
     - version: 9.27.1
+    - version: 9.27.2

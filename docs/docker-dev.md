@@ -1,8 +1,15 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # Working on the project as developers
 
 ## Pre-requisite
 
 Be sure to [install Docker and docker-compose](prerequisites.md) before going any further.
+
+Before starting, be aware of [the documentation of the core
+image](https://github.com/camptocamp/docker-odoo-project).
 
 ## Starting, git submodules
 
@@ -10,20 +17,37 @@ Be sure to [install Docker and docker-compose](prerequisites.md) before going an
 
         git clone git@github.com:camptocamp/qoqa_openerp.git qoqa
 
-2. Clone the submodules
+2. Submodules
 
-```bash
-git submodule init
-git submodule update
-```
+    You have two options:
 
-If you have an error because a ref cannot be found, it is probably that the
-remote has change, you just need to run the following command that will update
-the remote:
+    1. Clone the submodules from scratch
 
-```bash
-git submodule sync
-```
+    ```bash
+    git submodule update --init
+    ```
+
+    If you have an error because a ref cannot be found, it is probably that the
+    remote has changes, you just need to run the following command that will update
+    the remote:
+
+    ```bash
+    git submodule sync
+    ```
+
+    2. Use existing cloned repositories
+
+    The Odoo repo `odoo/src` will take quite some time if pulled from scratch.
+    If you already have a local checkout of one or more submodules
+    you can save a lot of time avoiding to download the whole repos, by doing this:
+
+    ```
+    cp -r path/to/odoo odoo/src
+    cp -r path/to/server-tools odoo/external-src/
+    git submodule update --init
+    ```
+    Be aware that path/to/odoo (or path/to/server-tools) has to be a local clone
+    of a repository, because it won't work if you copy a submodule from another project.
 
 ## Docker
 
@@ -46,7 +70,7 @@ Building the image is a simple command:
 
 ```bash
 # build the docker image locally (--pull pulls the base images before building the local image)
-docker-compose build --pull   
+docker-compose build --pull
 ```
 
 You could also first pull the base images, then run the build:
@@ -109,33 +133,37 @@ Last but not least, we'll see other means to run Odoo, because `docker-compose
 up` is not really good when it comes to real development with inputs and
 interactions such as `pdb`.
 
-**docker exec** (or `docker-compose exec` in the last versions of docker-compose)
-allows to *enter* in a already running container, which can be handy to inspect
-files, check something, ... 
+**docker-compose exec** allows to *enter* in a already running container, which
+can be handy to inspect files, check something, ...
 
 ```bash
-# open the database (the container name is found using 'docker ps')
-docker exec -ti qoqa_db_1 psql -U odoo odoodb  
+# show odoo configuration file (the container name is found using 'docker ps')
+docker-compose exec odoo cat /opt/odoo/etc/odoo.cfg
 # run bash in the running odoo container
-docker exec -ti qoqa_openerp_1 bash
+docker exec odoo bash
 ```
 
 **docker run** spawns a new container for a given service, allowing the
 interactive mode, which is exactly what we want to run Odoo with pdb.
-This is probably the command you'll use the more often.
+This is probably the command you'll use the most often.
 
 The `--rm` option drops the container after usage, which is usually what we
 want.
 
 ```bash
-# start Odoo
-docker-compose run --rm odoo odoo.py --workers=0 ... additional arguments
-# start Odoo and expose the port 8069 to the host on the same port
-docker-compose run --rm -p 8069:8069 odoo odoo.py
+# start Odoo (use workers=0 for dev)
+docker-compose run --rm odoo odoo --workers=0 ... additional arguments
+# start Odoo and expose the port 8069 to the host on the port 80
+docker-compose run --rm -p 80:8069 odoo odoo
 # open an odoo shell
-docker-compose run --rm odoo odoo.py shell  
+docker-compose run --rm odoo odoo shell
 ```
 
+`workers=0` let you use your `pdb` interactive mode without trouble otherwise
+you will have to deal with one trace per worker that catched a breakpoint.
+Plus, it will stop the annoying `bus is not available` errors.
+
+### Handy aliases
 
 Finally, a few aliases suggestions:
 
@@ -143,8 +171,31 @@ Finally, a few aliases suggestions:
 alias doco='docker-compose'
 alias docu='docker-compose up -d'
 alias docl='docker-compose logs'
-alias docsh='docker-compose run --rm odoo ./src/odoo.py shell'
+alias docsh='docker-compose run --rm odoo odoo shell'
+alias dood='docker-compose run --rm odoo odoo'
 alias bro='chromium-browser --incognito $(docker-compose port odoo 8069)'
+# run anthem song. Just run `dood_anthem songs.install.foo::baz`
+alias dood_anthem='docker-compose run --rm odoo anthem'
+# run odoo w/ connector jobrunner. Just run `dood_conn` instead of dood (connector v9)
+alias dood_conn='docker-compose run --rm odoo odoo --workers=0 --load=web,connector'
+# run odoo w/ queue_job jobrunner. Just run `dood_queue` instead of dood (connector v10)
+alias dood_queue='docker-compose run --rm odoo odoo --workers=0 --load=web,queue_job'
+# run odoo without marabunta migration. Just run `dood_nomig`
+alias dood_nomig='docker-compose run --rm -e MIGRATE=False odoo odoo --workers=0'
+```
+
+and to speed up your testing sessions (see [core images' test doc](https://github.com/camptocamp/docker-odoo-project#running-tests)):
+
+```bash
+# setup test database. Just run `dood_test_setup`
+alias dood_test_setup='docker-compose run --rm -e DB_NAME=testdb odoo testdb-gen -i base'
+# reuse testdb and install or update modules on demand. Just run `dood_test_update -i/u something`
+alias dood_test_update='docker-compose run --rm -e DB_NAME=testdb odoo testdb-update'
+# run tests using pytest. Just run `dood_test_run path/to/your/module`
+# NOTE: you need to run dood_test_update 1st IF xml or models have been updated
+alias dood_test_run='docker-compose run --rm -e DB_NAME=testdb odoo pytest -s'
+# run tests using std odoo test machinery (eg: you need an HttpCase). Just run `dood_test_run_odoo -u module`
+alias dood_test_run_odoo='docker-compose run --rm -e DEMO=True -e DB_NAME=testdb -e MIGRATE=False odoo odoo --workers=0 --test-enable --stop-after-init'
 ```
 
 Usage of the aliases / commands:
@@ -169,13 +220,71 @@ bro
 # stop all the containers
 doco stop
 
+# upgrade module and or run tests
+dood -u my_module [--test-enable]
+
+# if you are using the `connector` remember to pass the `load` attribute
+dood --load=web,connector
 ```
 
-Note: if you get the following error when you do `docker-compose up`:
+### Working with several databases
 
-    ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?
+The Docker image only starts on one database and does not allow switching
+databases at runtime. However, you can and should use several databases on your
+postgres container for enabling databases for different usages or development.
 
-    If it's at a non-standard location, specify the URL with the DOCKER_HOST environment variable.
+This can be very well combined with [restoration of databases from
+dumps](how-to-backup-and-restore-volumes.md#backup-and-restore-with-dumps).
 
-Know that it has been reported: https://github.com/docker/compose/issues/3106
+The default database name will be the one configured in the variable `DB_NAME`
+in `docker-compose.yml` (usually `odoodb`).
 
+So if you just start a new odoo container:
+
+```
+docker-compose run --rm odoo
+```
+
+You will work on `odoodb`. Now let's say you want to work on a database with odoo demo data and no marabunta migration:
+
+```
+docker-compose run --rm -e MIGRATE=False -e DB_NAME=odoo_demo odoo
+```
+
+And then you restore a dump in a `prod` database. You can start it with:
+
+```
+docker-compose run --rm -e DB_NAME=prod odoo
+```
+
+If you inspect the databases, you should find your 3 databases:
+
+```
+$ docker-compose run --rm odoo psql -l
+[...]
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ odoo      | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ odoodb    | odoo     | UTF8     | en_US.utf8 | en_US.utf8 |
+ prod      | odoo     | UTF8     | en_US.utf8 | en_US.utf8 |
+ odoo_demo | odoo     | UTF8     | en_US.utf8 | en_US.utf8 |
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+```
+
+And you can work as you want on any of them by changing the `DB_NAME`.
+
+
+### Extra dev packages
+
+You might want to use additional python packages while developing (eg: pdbpp, ipdb, etc).
+You can easily add them in `odoo/dev_requirements.txt` and build again odoo container:
+
+```bash
+echo "pdbpp" >> odoo/dev_requirements.txt
+doco build odoo
+```

@@ -1,3 +1,7 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # Upgrade scripts
 
 ## Stack
@@ -194,3 +198,52 @@ When you don't want the migration to run at all, you can disable it with:
 ```
 $ docker-compose run --rm -e MIGRATE=False odoo
 ```
+
+### Upgrade all modules
+
+If you upgrade `odoo/src` and any other `odoo/external-src/*` repos,
+you might want to update all the installed modules.
+You should just declare `base` in the addons section, like this:
+
+```yaml
+  versions:
+    - version: 9.0.1
+      addons:
+        upgrade:
+          - base
+```
+
+### Load heavy files
+
+If you have to import huge files (eg: stock.location)
+you should delegate import to `importer.sh`.
+
+```python
+@anthem.log
+def setup_locations(ctx):
+    deferred_import(
+        ctx,
+        'stock.location',
+        'data/install/stock.location.csv',
+        defer_parent_computation=True)
+[...]
+@anthem.log
+def location_compute_parents(ctx):
+    deferred_compute_parents(ctx, 'stock.location')
+```
+
+```yaml
+modes:
+  full:
+    operations:
+      post:
+        - anthem songs.install.data_full::main
+        #### import heavy stuff
+        - importer.sh songs.install.inventory::setup_locations /opt/odoo/data/install/stock.location.csv
+        - anthem songs.install.inventory::location_compute_parents
+```
+
+#### WARNING
+
+If you want to import records w/ many parent/children relations (like product categories) it might fail.
+The import is done in parallel so is not granted that you'll have parents imported before children. ATM ;)

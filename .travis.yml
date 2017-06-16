@@ -17,8 +17,10 @@ env:
     - ADDONS_DIR=${TRAVIS_BUILD_DIR}/odoo/local-src
     - SONGS_DIR=${TRAVIS_BUILD_DIR}/odoo/songs
     - COMPOSE_PROJECT_NAME=qoqa
-    - RANCHER_STACK_NAME=qoqa-odoo-test
-    - secure: "WVXkE3u2qFd+EdAs2OAbgfxq2P+TuVQQ5nM+LYT1cS17m9nUjD6ZLt6PnaRM1Wtu9UQpSuYHygycmGTBiX+AwvbyWAn6ekKkszKvz77v6bugPreeON5pStLha+C9YXqzD7ZglH3GWfRPBidVhqJGTIU1l9h8cNfl+W/BSKH3ACE="
+    - GENERATED_IMAGE=${COMPOSE_PROJECT_NAME}_odoo
+    - DOCKER_HUB_REPO=camptocamp/${GENERATED_IMAGE}
+    - RANCHER_MINION_SERVER=https://${COMPOSE_PROJECT_NAME}.odoo-test.camptocamp.ch
+    - secure: "ncUR0XV5RFXJEWbWp42t1g2yiL+R45tXX+fyuRoxTPH8WzEFMuR3StE4rHHjqsqstxPhJoxSFKl3sPsOIz4Vtwiw6BUDl5scfcKPcUlxR9PdYKK6kSfzO31q3d5nWFlwnp4BB7Gonir8vdeXViKhA6Sj/dhVljwINoL7PCTfwRo="
 
 before_install:
   - sudo sh -c "echo '54.230.142.136 apt.dockerproject.org' > /etc/hosts"
@@ -31,6 +33,8 @@ before_install:
   - git config --global user.name "TravisCI"
   - git config --global user.email "travis@camptocamp.com"
   - if [ "$LINT_CHECK" == "1" ] ; then pip install --user -q flake8 ; fi
+  - if [ "$LINT_CHECK" == "0" ] ; then pip install --user -q gitpython requests pyyaml; fi
+
 install:
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule init ; fi
   - if [ "$LINT_CHECK" == "0" ] ; then git submodule update ; fi

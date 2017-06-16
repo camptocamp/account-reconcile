@@ -1,11 +1,18 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # How to set Odoo configuration values
 
-The template for the configuration (`openerp.cfg`) is in [the base Docker project image](https://github.com/camptocamp/docker-odoo-project/tree/master/9.0/etc/openerp.cfg.tmpl).
+The template for the configuration (`openerp.cfg`) is in [the base Docker project image]
+
+https://github.com/camptocamp/docker-odoo-project/tree/master/9.0/etc/openerp.cfg.tmpl
+
 
 Most of the values here are set by environment variables, which looks like:
 
 ```
-workers = {{ default .Env.WORKERS "4" }}
+workers = { default .Env.WORKERS "4" }
 ```
 
 In this example, the number of workers is taken from the `WORKERS` environment

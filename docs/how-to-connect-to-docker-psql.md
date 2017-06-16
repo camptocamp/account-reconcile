@@ -1,3 +1,7 @@
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+-->
 # How to connect to psql in Docker
 
 We'll describe 3 ways to connect to `psql` in the Docker container.
@@ -8,7 +12,14 @@ In the Odoo container, there is a `psql` client so you can start an one-off
 container running it:
 
 ```
-docker-compose run --rm -e PGPASSWORD=odoo odoo psql -h db -U odoo odoodb
+docker-compose run --rm odoo psql
+```
+
+It will automatically connect on the current database, but you can
+specify another database if wanted:
+
+```
+docker-compose run --rm odoo psql other_db
 ```
 
 ## Use the random docker port of the db container and your local `psql` client

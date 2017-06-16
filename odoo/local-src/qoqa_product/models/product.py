@@ -149,8 +149,17 @@ class ProductProduct(models.Model):
         for record in self:
             if not record.attribute_value_ids:
                 continue
+
+            attr_lines = record.product_tmpl_id.attribute_line_ids
+            lines_position = {}
+
+            for pos, line in enumerate(attr_lines):
+                for value in line.value_ids:
+                    lines_position[value] = pos
+
             attr_values = record.attribute_value_ids.sorted(
-                lambda av: (av.attribute_id.sequence,
+                lambda av: (lines_position[av],
+                            av.attribute_id.sequence,
                             av.attribute_id.id)
             )
             base = record.product_tmpl_id.base_default_code or ''
@@ -175,3 +184,10 @@ class ProductAttributeValueCode(models.Model):
     product_tmpl_id = fields.Many2one(
         'product.template', 'Product Template',
         required=True, ondelete='cascade')
+
+
+class ProductAttributeLine(models.Model):
+    _inherit = "product.attribute.line"
+    _order = 'sequence'
+
+    sequence = fields.Integer('Sequence')

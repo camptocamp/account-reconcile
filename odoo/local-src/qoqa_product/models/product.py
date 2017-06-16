@@ -191,3 +191,12 @@ class ProductAttributeLine(models.Model):
     _order = 'sequence'
 
     sequence = fields.Integer('Sequence')
+
+
+class ProductAttributeValue(models.Model):
+    _inherit = "product.attribute.value"
+
+    _order = 'attribute_id_seq,sequence'
+
+    attribute_id_seq = fields.Integer(related='attribute_id.sequence',
+                                      store=True)

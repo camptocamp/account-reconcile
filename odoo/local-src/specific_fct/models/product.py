@@ -71,7 +71,7 @@ class ProductProduct(models.Model):
     def create(self, vals):
         # Create default orderpoint for product
         product = super(ProductProduct, self).create(vals)
-        if 'orderpoint_ids' not in vals:
+        if product and 'orderpoint_ids' not in vals:
             orderpoint_obj = self.env['stock.warehouse.orderpoint']
             orderpoint_obj.create({'name': 'Approvisionnement Standard 1/1 U',
                                    'product_id': product.id,

@@ -229,3 +229,4 @@ migration:
       addons:
         upgrade:
           - product_variant_exclusion
+          - specific_fct

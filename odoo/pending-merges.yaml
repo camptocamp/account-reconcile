@@ -97,3 +97,12 @@
     # Add multi-company security rule for employees
     - oca refs/pull/533/head
   target: *default_target
+./external-src/product-attribute:
+  remotes:
+    oca: git@github.com:OCA/product-attribute.git
+    camptocamp: git@github.com:camptocamp/product-attribute.git
+  merges:
+    - oca 9.0
+    # module product_variant_exclusion
+    - oca refs/pull/275/head
+  target: *default_target

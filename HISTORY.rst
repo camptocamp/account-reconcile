@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Improve performance for invoice validation and batch picking display
+
 **Bugfixes**
 
 **Build**

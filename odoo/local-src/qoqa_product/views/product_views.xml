@@ -189,6 +189,10 @@
         <attribute name="required">True</attribute>
       </field>
 
+      <field name="attribute_id" position="before">
+        <field name="sequence" widget="handle" />
+      </field>
+
       <xpath expr="//field[@name='product_variant_count']//ancestor::button" position="after">
         <button name="%(qoqa_product.edit_product_variant_action)d" type="action"
           icon="fa-sitemap" class="oe_stat_button"

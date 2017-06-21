@@ -11,6 +11,7 @@
  'category': 'Sales',
  'depends': ['product',
              'product_brand',  # oca/product-attribute
+             'product_variant_exclusion',  # oca/product-attribute
              ],
  'website': 'http://www.camptocamp.com',
  'data': [

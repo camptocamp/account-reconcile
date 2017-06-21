@@ -222,3 +222,7 @@ migration:
           - specific_report
     - version: 9.27.1
     - version: 9.27.2
+    - version: 9.28.0
+      operations:
+        pre:
+          - anthem songs.upgrade.9_28_0::main

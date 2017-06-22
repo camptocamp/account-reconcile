@@ -181,6 +181,7 @@ class ProductProduct(models.Model):
 
 class ProductAttributeValueCode(models.Model):
     _name = 'product.attribute.value.code'
+    _order = 'attribute_line_seq'
 
     code = fields.Char(string='Code')
     value_id = fields.Many2one(
@@ -189,6 +190,16 @@ class ProductAttributeValueCode(models.Model):
     product_tmpl_id = fields.Many2one(
         'product.template', 'Product Template',
         required=True, ondelete='cascade')
+
+    attribute_line_seq = fields.Integer(compute='_get_attribute_line_seq',
+                                        store=True)
+
+    @api.depends('product_tmpl_id.attribute_line_ids.sequence')
+    def _get_attribute_line_seq(self):
+        for value_code in self:
+            attr_line = value_code.product_tmpl_id.attribute_line_ids.filtered(
+                lambda a: a.attribute_id == value_code.value_id.attribute_id)
+            value_code.attribute_line_seq = attr_line.sequence
 
 
 class ProductAttributeLine(models.Model):

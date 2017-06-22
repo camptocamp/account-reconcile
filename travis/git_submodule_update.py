@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # This file has been generated with 'invoke project.sync'.
 # Do not modify. Any manual change will be lost.
+# Please propose your modification on
+# https://github.com/camptocamp/odoo-template instead.
 # Download submodules from Github zip archive url
 # Keep standard update form private repositories
 # listed in `travis/private_repo`
@@ -69,7 +71,7 @@ for sub in submodules:
         try:
             with zipfile.ZipFile(ZIP_PATH) as zf:
                 zf.extractall(DL_DIR)
-        except zf.BadZipfile:
+        except zipfile.BadZipfile:
             # fall back to standard download
             use_archive = False
             with open(ZIP_PATH) as f:

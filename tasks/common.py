@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # This file has been generated with 'invoke project.sync'.
 # Do not modify. Any manual change will be lost.
+# Please propose your modification on
+# https://github.com/camptocamp/odoo-template instead.
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -19,8 +21,7 @@ def root_path():
 
 
 def build_path(path, from_root=True, from_file=None):
-    assert not (from_root and from_file)
-    if from_root:
+    if not from_file and from_root:
         base_path = root_path()
     else:
         if from_file is None:

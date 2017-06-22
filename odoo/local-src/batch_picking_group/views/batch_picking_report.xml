@@ -76,10 +76,10 @@
                                     <t t-foreach="operations" t-as="op">
                                         <t t-if="op.product_id">
                                             <tr align="left">
-                                                <td width="16%">
+                                                <td width="12%">
                                                     <span t-esc="op.product_id.default_code"/>
                                                 </td>
-                                                <td width="18%">
+                                                <td width="12%">
                                                     <span t-esc="op.product_id.name"/>
                                                 </td>
                                                 <td width="12%">
@@ -90,6 +90,9 @@
                                                 </td>
                                                 <td width="10%">
                                                     <span t-esc="op.picking_id.origin"/>
+                                                </td>
+                                                <td width="10%">
+                                                    <span t-esc="op.picking_id.note"/>
                                                 </td>
                                                 <td width="10%">
                                                     <span t-esc="op.product_qty"/>

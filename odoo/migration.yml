@@ -230,3 +230,4 @@ migration:
         upgrade:
           - product_variant_exclusion
           - specific_fct
+          - batch_picking_group

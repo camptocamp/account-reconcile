@@ -23,8 +23,24 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.28.0 (2017-06-22)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * Improve performance for invoice validation and batch picking display
 * Install module product_variant_exclusion
+* Improve report batch picking (dispay picking comment)
+* Improve mass reconcile avoid collision between jobs
+* Uninstall modules installed by mistake
+* Improve stock performance with index
 
 **Bugfixes**
 

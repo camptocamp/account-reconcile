@@ -23,13 +23,6 @@ env:
     - secure: "ncUR0XV5RFXJEWbWp42t1g2yiL+R45tXX+fyuRoxTPH8WzEFMuR3StE4rHHjqsqstxPhJoxSFKl3sPsOIz4Vtwiw6BUDl5scfcKPcUlxR9PdYKK6kSfzO31q3d5nWFlwnp4BB7Gonir8vdeXViKhA6Sj/dhVljwINoL7PCTfwRo="
 
 before_install:
-  - sudo sh -c "echo '54.230.142.136 apt.dockerproject.org' > /etc/hosts"
-  - sudo apt-get update
-  - sudo DEBIAN_FRONTEND=noninteractive apt-get install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" docker-engine --yes --force-yes
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
   - git config --global user.name "TravisCI"
   - git config --global user.email "travis@camptocamp.com"
   - if [ "$LINT_CHECK" == "1" ] ; then pip install --user -q flake8 ; fi

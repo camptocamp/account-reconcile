@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * Improve performance for invoice validation and batch picking display
+* Install module product_variant_exclusion
 
 **Bugfixes**
 

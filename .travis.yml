@@ -17,8 +17,8 @@ env:
     - ADDONS_DIR=${TRAVIS_BUILD_DIR}/odoo/local-src
     - SONGS_DIR=${TRAVIS_BUILD_DIR}/odoo/songs
     - COMPOSE_PROJECT_NAME=qoqa
-    - GENERATED_IMAGE=${COMPOSE_PROJECT_NAME}_openerp
-    - DOCKER_HUB_REPO=camptocamp/${GENERATED_IMAGE}
+    - GENERATED_IMAGE=${COMPOSE_PROJECT_NAME}_odoo
+    - DOCKER_HUB_REPO=camptocamp/qoqa_openerp
     - RANCHER_MINION_SERVER=https://${COMPOSE_PROJECT_NAME}.odoo-test.camptocamp.ch
     - secure: "ncUR0XV5RFXJEWbWp42t1g2yiL+R45tXX+fyuRoxTPH8WzEFMuR3StE4rHHjqsqstxPhJoxSFKl3sPsOIz4Vtwiw6BUDl5scfcKPcUlxR9PdYKK6kSfzO31q3d5nWFlwnp4BB7Gonir8vdeXViKhA6Sj/dhVljwINoL7PCTfwRo="
 

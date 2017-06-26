@@ -109,6 +109,17 @@ class StockPicking(models.Model):
         """
         return super(StockPicking, self).force_transfer(force_qty=True)
 
+    def _values_with_carrier_options(self, values):
+        values = super(StockPicking, self)._values_with_carrier_options(
+            values=values)
+        option_ids = values.get('option_ids')
+        # Fix to prevent problem when onchange is call
+        # the format of the options_ids is wrong
+        # we rewrite it
+        if option_ids and option_ids[0][1]:
+            values.update(option_ids=[(6, 0, [x[1] for x in option_ids])])
+        return values
+
 
 class StockLocation(models.Model):
     _inherit = 'stock.location'

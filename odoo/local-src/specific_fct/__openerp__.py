@@ -20,6 +20,7 @@
         'purchase_analytic_global',
         'delivery_carrier_label_postlogistics_shop_logo',
         'qoqa_offer',
+        'base_delivery_carrier_label',
         'delivery_carrier_label_batch',
         'base_transaction_id',
     ],

@@ -130,11 +130,6 @@ class ProductTemplate(models.Model):
             )
             value_codes_to_delete.unlink()
 
-    @api.multi
-    def compute_variant_ids(self):
-        self.create_variant_ids()
-        self.delete_variant_ids()
-
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'

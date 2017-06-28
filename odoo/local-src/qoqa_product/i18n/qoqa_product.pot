@@ -6,14 +6,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-06 16:07+0000\n"
-"PO-Revision-Date: 2017-04-06 16:07+0000\n"
+"POT-Creation-Date: 2017-06-28 11:18+0000\n"
+"PO-Revision-Date: 2017-06-28 11:18+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_variant_generator_view_form
+msgid "<b>This wizard allows you to generate a given subset of variants</b><br/>\n"
+"<br/>\n"
+"The availabe attributes are available below.<br/>\n"
+"You can remove the attribute that your are not interested in.<br/>\n"
+"<br/>\n"
+"During the variants generation process all the pre-existing variants will be ingored <br/>"
+msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_ageing
@@ -40,9 +50,34 @@ msgid "Appellation"
 msgstr ""
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_attribute_line_seq
+msgid "Attribute line seq"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_values_for_variants_ids
+msgid "Attributes for variant generation"
+msgstr ""
+
+#. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_base_default_code
 #: model:ir.model.fields,field_description:qoqa_product.field_product_template_base_default_code
 msgid "Base Reference"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_product_product_brand_id
+msgid "Brand"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_variant_generator_view_form
+msgid "Cancel"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_child_ids
+msgid "Children classes"
 msgstr ""
 
 #. module: qoqa_product
@@ -60,7 +95,20 @@ msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_code
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_code
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_code
 msgid "Code"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_complete_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_complete_name
+msgid "Complete name"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_template_only_form_view
+msgid "Compute All Variants"
 msgstr ""
 
 #. module: qoqa_product
@@ -70,12 +118,8 @@ msgid "Country"
 msgstr ""
 
 #. module: qoqa_product
-#: model:ir.ui.view,arch_db:qoqa_product.product_template_only_form_view
-msgid "Create Variants"
-msgstr ""
-
-#. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_create_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_create_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_create_uid
@@ -85,6 +129,7 @@ msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_create_date
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_create_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_create_date
@@ -93,7 +138,13 @@ msgid "Created on"
 msgstr ""
 
 #. module: qoqa_product
+#: model:ir.model.fields,help:qoqa_product.field_product_attribute_value_attribute_id_seq
+msgid "Determine the display order"
+msgstr ""
+
+#. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_display_name
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_display_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_display_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_display_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_display_name
@@ -113,7 +164,23 @@ msgid "General"
 msgstr ""
 
 #. module: qoqa_product
+#: model:ir.actions.act_window,name:qoqa_product.action_product_variant_generator_view_open
+msgid "Generate Variants"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_variant_generator_view_form
+msgid "Generate product variants"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.ui.view,arch_db:qoqa_product.product_variant_generator_view_form
+msgid "Generate variants"
+msgstr ""
+
+#. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_id
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_id
@@ -123,6 +190,7 @@ msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code___last_update
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class___last_update
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type___last_update
@@ -132,6 +200,7 @@ msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_write_uid
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_write_uid
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_write_uid
@@ -141,11 +210,17 @@ msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_code_write_date
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_class_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_write_date
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_left
+msgid "Left Parent"
 msgstr ""
 
 #. module: qoqa_product
@@ -163,9 +238,16 @@ msgid "Millesime"
 msgstr ""
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_name
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_type_name
 #: model:ir.model.fields,field_description:qoqa_product.field_wine_winemaker_name
 msgid "Name"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_id
+msgid "Parent class"
 msgstr ""
 
 #. module: qoqa_product
@@ -202,6 +284,32 @@ msgid "Product Variants (List)"
 msgstr ""
 
 #. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_class_parent_right
+msgid "Right Parent"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,help:qoqa_product.field_product_product_product_brand_id
+msgid "Select a brand for this product"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_line_sequence
+#: model:ir.model.fields,field_description:qoqa_product.field_product_attribute_value_attribute_id_seq
+msgid "Sequence"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_product_template
+msgid "Source product"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model.fields,field_description:qoqa_product.field_product_variant_generator_values_domain_ids
+msgid "Technical domain for values"
+msgstr ""
+
+#. module: qoqa_product
 #: model:ir.actions.act_window,help:qoqa_product.edit_product_variant_action
 msgid "The product form contains information to simplify the sale\n"
 "        process: price, notes in the quotation, accounting data,\n"
@@ -220,6 +328,8 @@ msgstr ""
 
 #. module: qoqa_product
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_bottle_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_bottle_id
+#: model:ir.model.fields,field_description:qoqa_product.field_wine_bottle_volume
 msgid "Volume"
 msgstr ""
 
@@ -251,6 +361,7 @@ msgstr ""
 #. module: qoqa_product
 #: model:ir.model,name:qoqa_product.model_wine_class
 #: model:ir.model.fields,field_description:qoqa_product.field_product_product_wine_class_id
+#: model:ir.model.fields,field_description:qoqa_product.field_product_template_wine_class_id
 msgid "Wine Class"
 msgstr ""
 
@@ -312,7 +423,22 @@ msgid "You must define a product for everything you sell, whether it's\n"
 msgstr ""
 
 #. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_attribute_line
+msgid "product.attribute.line"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_attribute_value
+msgid "product.attribute.value"
+msgstr ""
+
+#. module: qoqa_product
 #: model:ir.model,name:qoqa_product.model_product_attribute_value_code
 msgid "product.attribute.value.code"
+msgstr ""
+
+#. module: qoqa_product
+#: model:ir.model,name:qoqa_product.model_product_variant_generator
+msgid "product_variant_generator"
 msgstr ""
 

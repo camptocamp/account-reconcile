@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="product_variant_generator_view_form" model="ir.ui.view">
+      <field name="name">Product variant generator view form</field>
+      <field name="model">product_variant_generator</field>
+      <field name="arch" type="xml">
+        <form string="Generate product variants">
+          <div>
+<b>This wizard allows you to generate a given subset of variants</b><br/>
+<br/>
+The availabe attributes are available below.<br/>
+You can remove the attribute that your are not interested in.<br/>
+<br/>
+During the variants generation process all the pre-existing variants will be ingored <br/>
+          </div>
+          <group name="Source">
+              <field name="product_template"/>
+          </group>
+          <group name="Attribute choices">
+            <field name="values_domain_ids" invisible="1" />
+            <field colspan="4"
+                   name="values_for_variants_ids"
+                   widget="many2many_tags"
+                   domain="[('id', 'in', values_domain_ids and values_domain_ids[0] and values_domain_ids[0][2] or [])]"/>
+          </group>
+          <footer>
+            <button string="Generate variants" name="generate_variants"
+                    type="object" class="btn-primary" />
+            <button string="Cancel" class="btn-default" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_product_variant_generator_view_open" model="ir.actions.act_window">
+      <field name="name">Generate variants</field>
+      <field name="res_model">product_variant_generator</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="product_variant_generator_view_form"/>
+      <field name="target">new</field>
+    </record>
+
+    <record model="ir.values" id="action_product_variant_generator_view_menu">
+      <field name="model_id" ref="product.model_product_template"/>
+      <field name="name">Generate variants</field>
+      <field name="key2">client_action_multi</field>
+      <field name="value" eval="'ir.actions.act_window,' + str(ref('action_product_variant_generator_view_open'))" />
+
+      <field name="key">action</field>
+      <field name="model">product.template</field>
+    </record>
+
+  </data>
+</odoo>

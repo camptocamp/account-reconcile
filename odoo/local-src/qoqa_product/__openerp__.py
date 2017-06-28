@@ -18,6 +18,7 @@
      'data/wine_data.xml',
      'views/product_views.xml',
      'views/wine_views.xml',
+     'wizard/product_variant_generator_view.xml',
  ],
  'installable': True,
  }

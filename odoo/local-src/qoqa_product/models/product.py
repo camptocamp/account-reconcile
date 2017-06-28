@@ -2,7 +2,6 @@
 # © 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-
 from openerp import fields, models, api
 
 
@@ -130,10 +129,96 @@ class ProductTemplate(models.Model):
             )
             value_codes_to_delete.unlink()
 
-    @api.multi
-    def compute_variant_ids(self):
-        self.create_variant_ids()
-        self.delete_variant_ids()
+    def _product_exists(self, template, values):
+        """Predicate that test if a variant exists
+
+        :param template: product.template record
+              on which variants should exists
+        :param values: recordset of product.attribue.value
+              which should represent a variant
+        """
+        request = """SELECT att_id FROM
+                      product_attribute_value_product_product_rel
+                      WHERE prod_id = %s"""
+        cr = self.env.cr
+        cr.execute(request, (template.id,))
+        att_ids = cr.fetchall()
+        att_ids = set([x[0] for x in att_ids])
+        return set(x.id for x in values) == att_ids
+
+    def create_variant_subset_ids(self, values_subset):
+        """Create a subset of all variants filtered by the given value_subset.
+        If a variant proposed by the subset is already present we simply sckip
+        the creation of the variant.
+
+        As we are working on a subset we can not
+        detect if a variant must be deleted
+
+        From an implementation point of view, we do not override the original
+        `product.template.create_variant_ids` using named args detection.
+        It is not yet mandatory and we do not want to introduce unexpected
+        side effects.
+
+        :param values_subset: recordset of product.attribue.value
+            for wich we want to create variants
+        """
+        # We keep this context update in order
+        # to allows a later create_variant_ids direct override
+        if self.env.context.get("create_product_variant"):
+            return None
+        self = self.with_context(active_test=False,
+                                 create_product_variant=True)
+        product_obj = self.env["product.product"]
+        for tmpl in self:
+            # list of values combination
+            variant_alone = []
+            all_variants = [[]]
+            for variant in tmpl.attribute_line_ids:
+                values = variant.value_ids & values_subset
+                if len(values) == 1:
+                    variant_alone.append(values[0])
+                temp_variants = []
+                for variant in all_variants:
+                    for value in values:
+                        temp_variants.append(sorted(variant + [value]))
+                        continue
+                if temp_variants:
+                    all_variants = temp_variants
+
+            # adding an attribute with only one
+            # value should not recreate product
+            # write this attribute on every product
+            # to make sure we don't lose them
+            for variant in variant_alone:
+                products = product_obj
+                for product in tmpl.product_variant_ids:
+                    prod_attrs = product.mapped(
+                        'attribute_value_ids.attribute_id')
+                    if not variant.attribute_id <= prod_attrs:
+                        products |= product
+                products.write({'attribute_value_ids': [(4, variant.id)]})
+            # check product
+            variants_to_activate = product_obj
+            for product in tmpl.product_variant_ids:
+                variants = sorted(product.attribute_value_ids)
+                if variants in all_variants:
+                    all_variants.pop(all_variants.index(variants))
+                    if not product.active:
+                        variants_to_activate |= product
+            if variants_to_activate:
+                variants_to_activate.write({'active': True})
+
+            # create new product
+            for variants in all_variants:
+                if self._product_exists(tmpl, variants):
+                    continue
+                values = {
+                    'product_tmpl_id': tmpl.id,
+                    'attribute_value_ids': [(6, 0, [x.id for x in variants])]
+                }
+                product_obj.create(values)
+
+        return True
 
 
 class ProductProduct(models.Model):

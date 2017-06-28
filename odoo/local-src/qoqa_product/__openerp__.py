@@ -11,7 +11,6 @@
  'category': 'Sales',
  'depends': ['product',
              'product_brand',  # oca/product-attribute
-             'product_variant_exclusion',  # oca/product-attribute
              ],
  'website': 'http://www.camptocamp.com',
  'data': [
@@ -19,6 +18,7 @@
      'data/wine_data.xml',
      'views/product_views.xml',
      'views/wine_views.xml',
+     'wizard/product_variant_generator_view.xml',
  ],
  'installable': True,
  }

@@ -178,19 +178,16 @@ msgstr "Général"
 
 #. module: qoqa_product
 #: model:ir.actions.act_window,name:qoqa_product.action_product_variant_generator_view_open
-#, fuzzy
 msgid "Generate variants"
 msgstr "Créer les variantes"
 
 #. module: qoqa_product
 #: model:ir.ui.view,arch_db:qoqa_product.product_variant_generator_view_form
-#, fuzzy
 msgid "Generate product variants"
 msgstr "Variantes de produits"
 
 #. module: qoqa_product
 #: model:ir.ui.view,arch_db:qoqa_product.product_variant_generator_view_form
-#, fuzzy
 msgid "Generate variants"
 msgstr "Créer les variantes"
 

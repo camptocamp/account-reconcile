@@ -224,9 +224,10 @@ migration:
     - version: 9.27.2
     - version: 9.28.0
       operations:
-        pre:
+        post:
           - anthem songs.upgrade.9_28_0::main
       addons:
         upgrade:
           - specific_fct
           - batch_picking_group
+          - qoqa_product

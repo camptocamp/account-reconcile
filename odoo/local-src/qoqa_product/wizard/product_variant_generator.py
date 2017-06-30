@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 Camptocamp SA (Nicolas Bessi)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+from operator import attrgetter
 from openerp import models, fields, api
 
 
@@ -47,8 +48,8 @@ class VariantGenerator(models.TransientModel):
             product_template_id = self._get_active_id()
             product_template = self.env['product.template'].browse(
                 product_template_id)
-        ids = product_template.attribute_value_code_ids.mapped('value_id')
-        return ids
+        vals = product_template.attribute_value_code_ids.mapped('value_id')
+        return vals.sorted(key=attrgetter('attribute_id_seq', 'sequence'))
 
     product_template = fields.Many2one(
         'product.template',

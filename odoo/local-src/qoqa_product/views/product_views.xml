@@ -217,7 +217,7 @@
             </tree>
           </field>
         </group>
-        <button name="compute_variant_ids" type="object" string="Compute All Variants" class="oe_read_only"/>
+        <button name="create_variant_ids" type="object" string="Compute All Variants" class="oe_read_only"/>
       </xpath>
     </field>
   </record>

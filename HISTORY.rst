@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
+
 **Bugfixes**
 
 **Build**
@@ -507,7 +509,7 @@ templates.
 * Set server actions as writable (needed to update code)
 * Clean taxes
 * Update odoo-monitoring branch
-* CAMT.053: Fill partner id and label depending on free text 
+* CAMT.053: Fill partner id and label depending on free text
 
 **Bugfixes**
 

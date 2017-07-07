@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
+* Adaptation of cancellation of orders with service only BSQOQ-4
 
 **Bugfixes**
 

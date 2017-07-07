@@ -98,9 +98,20 @@ class CrmClaim(models.Model):
             # Delete after sending e-mail to avoid quoting it later on
             msg.unlink()
 
-    @api.multi
-    def notify_claim_only_specific_user(self, partner_id):
+    @api.constrains('user_id', 'team_id')
+    def notify_claim_only_specific_user(self):
+        """Manage user notification
+        tweaked usage of constraint as a post write hook.
+        We have to do this as a this function remove a message.
+        Because of the way mail thread reimplement the security
+        check and the MRO of chanined inherits we try
+        to read the id of the deleted message leading to
+        an acces error
+        """
         for claim in self:
+            partner_id = claim.user_id.partner_id
+            if not all([claim.team_id.notify, partner_id]):
+                continue
             # Get all followers of current claim
             partner_ids = claim.message_partner_ids.ids
             channel_ids = claim.message_channel_ids.ids
@@ -162,31 +173,6 @@ class CrmClaim(models.Model):
                             [claim.user_id.partner_id.id])
                 # We subcribe the selected partner to it
                 claim.message_subscribe([responsible.partner_id.id])
-
-            team = None
-            if vals.get('team_id'):
-                team_obj = self.env['crm.team']
-                team = team_obj.browse(vals['team_id'])
-            # Notification parts
-            # We only check notification if section or responsible is modified
-            if team or responsible:
-                # fill team and responsible information
-                if team:
-                    current_team = team
-                else:
-                    current_team = claim.team_id
-                if responsible:
-                    current_responsible = responsible
-                else:
-                    current_responsible = claim.user_id
-                # Check if the section need to be notify
-                if current_team.notify:
-                    notify_partner_id = current_responsible.partner_id.id
-                    if notify_partner_id:
-                        claim.notify_claim_only_specific_user(
-                            notify_partner_id
-                        )
-
         return super(CrmClaim, self).write(vals)
 
     """

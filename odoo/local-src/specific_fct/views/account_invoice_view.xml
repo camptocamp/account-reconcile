@@ -11,6 +11,11 @@
             <field name="reference" position="attributes">
               <attribute name="required">1</attribute>
             </field>
+            <xpath  expr="//notebook/page[2]//field[@name='name']" position="replace">
+            </xpath>
+            <xpath  expr="//field[@name='reference']" position="after">
+                <field name="name"/>
+            </xpath>
             <field name="state" position="after">
                 <button name="button_validate_agreement"
                         attrs="{'invisible': [('validation_agreement', '=', True)]}"

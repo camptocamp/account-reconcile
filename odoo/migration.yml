@@ -235,3 +235,4 @@ migration:
       addons:
         upgrade:
           - specific_fct
+          - qoqa_mail_message

@@ -236,3 +236,4 @@ migration:
         upgrade:
           - specific_fct
           - qoqa_mail_message
+          - account_mass_reconcile

@@ -27,6 +27,8 @@
     - oca refs/pull/175/head
     # correcty use temporary cursor in reconcile method
     - oca refs/pull/177/head
+    # Add analytic on mass reconcile rules 
+    - oca refs/pull/179/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

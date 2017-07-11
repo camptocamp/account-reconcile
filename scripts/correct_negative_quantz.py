@@ -48,7 +48,6 @@ def get_faulty_locations_and_products(conn, company_id):
     JOIN stock_location
         ON (stock_quant.location_id = stock_location.id)
     WHERE stock_location.company_id = %s
-       AND stock_location.active = true
        AND product_id in (
 
 SELECT product_id
@@ -58,7 +57,6 @@ SELECT product_id
         SELECT distinct product_id from stock_quant
             JOIN stock_location ON (stock_quant.location_id = stock_location.id)
                 WHERE stock_location.company_id = %s
-                AND stock_location.active = true
                 AND qty < 0
       )
       AND stock_location.company_id = %s
@@ -95,6 +93,7 @@ def fix_stock(config):
     cli = rpc_client(config)
     for user in ADMIN_USERS:
         cli.login(config['db'], user, config[user])
+        cli.env.context['active_test'] = False
         company_id = cli.env.user.company_id.id
         stock_to_fix = get_faulty_locations_and_products(conn, company_id)
         Inventory = cli.env['stock.inventory']

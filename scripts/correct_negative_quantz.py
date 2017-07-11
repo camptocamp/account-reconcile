@@ -99,6 +99,9 @@ def fix_stock(config):
         stock_to_fix = get_faulty_locations_and_products(conn, company_id)
         Inventory = cli.env['stock.inventory']
         Location = cli.env['stock.location']
+        logging.info('Removing in process inventory')
+        in_progress_inv_ids = Inventory.search([('state', '=', 'confirm')])
+        Inventory.unlink(in_progress_inv_ids)
         for location_id, product_ids in stock_to_fix.iteritems():
             location = Location.browse(location_id)
             logging.info(u"Creating inventory for location {}".format(
@@ -116,6 +119,7 @@ def fix_stock(config):
             inv = Inventory.browse(inv_id)
             inv.reset_real_qty()
             inv.action_done()
+
 
 if __name__ == '__main__':
 

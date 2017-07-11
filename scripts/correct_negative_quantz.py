@@ -54,14 +54,21 @@ def get_faulty_locations_and_products(conn, company_id):
 SELECT product_id
     FROM stock_quant JOIN stock_location
     ON (stock_quant.location_id = stock_location.id)
-      WHERE product_id = ANY (select distinct product_id from stock_quant where qty < 0)
+      WHERE product_id = ANY (
+        SELECT distinct product_id from stock_quant
+            JOIN stock_location ON (stock_quant.location_id = stock_location.id)
+                WHERE stock_location.company_id = %s
+                AND stock_location.active = true
+                AND qty < 0
+      )
       AND stock_location.company_id = %s
       AND stock_location.active = true
       GROUP BY product_id
-        HAVING sum(qty) = 0)"""
+        HAVING sum(qty) = 0
+          AND count(*) > 1)"""
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cr:
-        cr.execute(sql, (company_id, company_id))
+        cr.execute(sql, (company_id, company_id, company_id))
         for row in cr.fetchall():
             locations_and_products[row['location_id']].append(row['product_id'])
     return locations_and_products

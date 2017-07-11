@@ -21,6 +21,8 @@
     - oca refs/pull/162/head
     # Remove now non-existing "Display partial" button
     - oca refs/pull/167/head
+    # Use wirte-off limit even on partial reconcile case
+    - oca refs/pull/169/head
     # Use correct order if cron only does one reconcile at a time
     - oca refs/pull/175/head
     # correcty use temporary cursor in reconcile method

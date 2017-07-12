@@ -23,11 +23,25 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.29.0 (2017-07-12)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
 * Adaptation of cancellation of orders with service only BSQOQ-4
 
 **Bugfixes**
-
+* Fix mass reconcile : Check the write-off limit when dealing with a partial reconcile invoice
+* Add analytic account on mass reconcile rules
+* Show supplier invoice name, in order to set the supplier invoice reference on invoice
 **Build**
 
 **Documentation**

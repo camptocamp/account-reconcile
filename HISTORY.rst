@@ -37,7 +37,7 @@ latest (unreleased)
 
 * ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
 * Adaptation of cancellation of orders with service only BSQOQ-4
-
+* Add pagebreak per stock location and preparation report
 **Bugfixes**
 * Fix mass reconcile : Check the write-off limit when dealing with a partial reconcile invoice
 * Add analytic account on mass reconcile rules

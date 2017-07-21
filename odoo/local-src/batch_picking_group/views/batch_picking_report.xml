@@ -29,6 +29,9 @@
     </template>
 
     <template id="report_batch_picking" inherit_id="stock_batch_picking.report_batch_picking">
+        <xpath expr="//t[@t-foreach='get_location_datas(doc)']/table" position="attributes">
+            <attribute name="style">page-break-after:always;</attribute>
+        </xpath>
         <t t-call="report.external_layout" position="after">
             <t t-call="report.external_layout">
                 <div class="page">
@@ -44,6 +47,7 @@
                     </div>
 
                     <t t-foreach="docs" t-as="doc">
+                    <div  style="page-break-after:always;">
                         <table class="dispatch">
                             <tr>
                                 <td>
@@ -63,6 +67,7 @@
 
                         <div class="mb32">
                             <t t-foreach="get_packs(doc)" t-as="pack_data">
+
                                 <t t-set="pack" t-value="pack_data[0]"/>
                                 <t t-set="operations" t-value="pack_data[1]"/>
 
@@ -135,6 +140,7 @@
                                 </table>
                             </t>
                         </div>
+                      </div>
                     </t>
                 </div>
             </t>

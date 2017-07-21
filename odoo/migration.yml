@@ -237,3 +237,4 @@ migration:
           - specific_fct
           - qoqa_mail_message
           - account_mass_reconcile
+          - batch_picking_group

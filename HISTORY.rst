@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Delete product and variants on QoQa API when product is disabled on Odoo (BSQOQ-6)
+
 **Bugfixes**
 
 **Build**

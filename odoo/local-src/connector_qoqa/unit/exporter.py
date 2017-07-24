@@ -89,6 +89,9 @@ class QoQaBaseExporter(Exporter):
         """
         self.binding_id = binding_id
         self.binding_record = self._get_openerp_data()
+        if ('active' in self.binding_record._fields and
+                not self.binding_record.active):
+            return 'Export skipped: inactive record'
 
         self.qoqa_id = self.binder.to_backend(self.binding_id)
 

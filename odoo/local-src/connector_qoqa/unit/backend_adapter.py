@@ -281,3 +281,9 @@ class QoQaAdapter(CRUDAdapter):
         response = self.client.get(url, params=payload)
         records = self._handle_response(response)
         return [r['id'] for r in records['data']]
+
+    def delete(self, id):
+        url = "{0}{1}".format(self.url(), id)
+        response = self.client.delete(url)
+        result = self._handle_response(response)
+        return result

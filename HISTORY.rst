@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* When the authentication to Q4 API fails, shows the error message returned by the API
+
 **Bugfixes**
 
 **Build**

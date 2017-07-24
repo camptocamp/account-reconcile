@@ -51,10 +51,9 @@ class QoqaBackendAuth(models.TransientModel):
             auth.client.token = ''
             try:
                 token = auth.authenticate(self.login, self.password)
-            except QoQaAPIAuthError:
+            except QoQaAPIAuthError as err:
                 raise exceptions.UserError(
-                    _('Authentication failed, please verify '
-                      'your login and password.')
+                    _('Authentication failed:\n\n%s') % (err,)
                 )
             self.backend_id.write({
                 'token': token,

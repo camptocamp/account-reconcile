@@ -73,9 +73,9 @@ class ProductTemplate(models.Model):
     @api.multi
     def _delete_on_qoqa_shop(self):
         session = ConnectorSession.from_env(self.env)
-        message = _('Impossible to disable the product, it is '
-                    'used in an offer or it could not be deleted on '
-                    'the backend.')
+        message = _(u'Impossible to disable the product, it is '
+                    u'used in an offer or it could not be deleted on '
+                    u'the backend.')
         with api_handle_errors(message):
             for binding in self.qoqa_bind_ids:
                 export_delete_record(session, binding._name,

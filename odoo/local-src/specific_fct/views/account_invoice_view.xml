@@ -28,6 +28,18 @@
         </field>
     </record>
 
+
+    <record id="invoice_supplier_tree" model="ir.ui.view">
+        <field name="name">account.invoice.supplier.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+        <field name="arch" type="xml">
+            <field name="reference" position="after">
+                <field name="name"/>
+            </field>
+        </field>
+    </record>
+
     <record id="view_account_invoice_filter" model="ir.ui.view">
         <field name="name">account.invoice.select</field>
         <field name="model">account.invoice</field>
@@ -44,6 +56,9 @@
             </field>
             <field name="user_id" position="after">
                 <field name="refund_description_id"/>
+            </field>
+            <field name="journal_id" position="after">
+                <field name="name"/>
             </field>
         </field>
     </record>

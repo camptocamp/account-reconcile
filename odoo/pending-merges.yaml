@@ -29,6 +29,8 @@
     - oca refs/pull/177/head
     # Add analytic on mass reconcile rules 
     - oca refs/pull/179/head
+    # Update balance along the debit/credit values
+    - oca refs/pull/181/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

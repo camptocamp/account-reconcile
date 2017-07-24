@@ -45,6 +45,12 @@ class AccountInvoice(models.Model):
         # (default or purchase currency is already set)
         return
 
+    @api.onchange('reference')
+    def _onchange_reference(self):
+        # If name of the invoice is null we copy the value of reference
+        if not self.name and self.type in ('in_invoice', 'in_refund'):
+            self.name = self.reference
+
     @api.multi
     def button_validate_agreement(self):
         self.ensure_one()

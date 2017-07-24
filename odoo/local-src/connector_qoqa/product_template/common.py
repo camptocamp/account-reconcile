@@ -82,6 +82,9 @@ class ProductTemplate(models.Model):
                                      binding.backend_id.id,
                                      binding.qoqa_id)
                 binding.with_context(connector_no_export=True).qoqa_id = False
+                binding.with_context(active_test=False).mapped(
+                    'product_variant_ids.qoqa_bind_ids'
+                ).write({'qoqa_id': False})
 
     @api.multi
     def _write_with_disable(self, vals):
@@ -114,6 +117,15 @@ class ProductTemplate(models.Model):
                 template._write_with_disable(vals)
             return True
         else:
+            if vals.get('active'):
+                for record in self:
+                    if not record.active:
+                        # when we reactivate a template, reactivate all
+                        # variants
+                        variants = record.with_context(
+                            active_test=False
+                        ).product_variant_ids
+                        variants.write({'active': True})
             return super(ProductTemplate, self).write(vals)
 
     @api.depends('qoqa_bind_ids')

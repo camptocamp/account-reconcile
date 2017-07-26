@@ -5,6 +5,7 @@
 import logging
 from contextlib import contextmanager
 from datetime import datetime
+from random import randint
 import psycopg2
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -89,6 +90,9 @@ class QoQaBaseExporter(Exporter):
         """
         self.binding_id = binding_id
         self.binding_record = self._get_openerp_data()
+        if ('active' in self.binding_record._fields and
+                not self.binding_record.active):
+            return 'Export skipped: inactive record'
 
         self.qoqa_id = self.binder.to_backend(self.binding_id)
 
@@ -302,10 +306,14 @@ class QoQaExporter(QoQaBaseExporter):
             _logger.info('A concurrent job is already exporting the same '
                          'record (%s with id %s). Job delayed later.',
                          self.model._name, self.binding_id)
+            # retry between 5 and 20 seconds later, so if we have more
+            # than 1 record retried, they won't be retried at the same time
+            seconds = randint(5, 20)
             raise RetryableJobError(
                 'A concurrent job is already exporting the same record '
                 '(%s with id %s). The job will be retried later.' %
-                (self.model._name, self.binding_id))
+                (self.model._name, self.binding_id),
+                seconds=seconds)
 
     def _run(self, fields=None):
         """ Flow of the synchronization, implemented in inherited classes.

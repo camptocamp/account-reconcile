@@ -2,14 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import logging
 import argparse
 import ConfigParser
 import odoorpc
 import psycopg2
 import psycopg2.extras
 
-logging.basicConfig(filename='quants.log', level=logging.INFO)
 
 ADMIN_USERS = ('admin_ch', 'admin_fr')
 
@@ -200,8 +198,6 @@ def fix_reconcile(config):
         sale_order_ids = SaleOrder.browse(SO_LIST)
         AccountMassReconcile = cli.env['account.mass.reconcile']
 
-        logging.info('Unreconcile account.move.lines')
-
         for sale_order in sale_order_ids:
             for invoice in sale_order.invoice_ids:
                 if invoice.move_id:
@@ -212,8 +208,6 @@ def fix_reconcile(config):
         account_ids = cli.env['account.account'].browse()
         account_ids |= cli.env.ref('scenario.pcg_CH_11030').id
         account_ids |= cli.env.ref('scenario.pcg_CH_20410').id
-
-        logging.info('Force reconcile with account.mass.reconcile')
 
         for account in account_ids:
             mass_reconcile = AccountMassReconcile.search(

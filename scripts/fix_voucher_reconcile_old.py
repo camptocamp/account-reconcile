@@ -195,8 +195,12 @@ def fix_reconcile(config):
 
         # Select & remove reconcile on account.move.line from SO_LIST
         SaleOrder = cli.env['sale.order']
-        sale_order_ids = SaleOrder.browse(SO_LIST)
         AccountMassReconcile = cli.env['account.mass.reconcile']
+
+        # Filter SO only for the right admin user
+        sale_order_ids = SaleOrder.browse(SO_LIST)
+        company_id = cli.env.user.company_id.id
+        sale_order_ids.filtered(lambda r: r.company_id == company_id)
 
         for sale_order in sale_order_ids:
             for invoice in sale_order.invoice_ids:

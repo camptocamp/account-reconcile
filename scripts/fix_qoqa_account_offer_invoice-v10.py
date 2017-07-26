@@ -56,6 +56,7 @@ def fix_invoice_offer(offer_list=[], config=False):
         full_reconcile = []
         partial_reconcile = []
         partial_reconcile2 = []
+        skip_invoice = False
         if invoice.move_id:
             move = invoice.move_id
             for move_line in move.line_ids:
@@ -64,10 +65,21 @@ def fix_invoice_offer(offer_list=[], config=False):
                         [('full_reconcile_id', '=',
                           move_line.full_reconcile_id.id),
                          ('id', '!=', move_line.id)])
-                partial_reconcile = move_line.matched_credit_ids.ids
-                partial_reconcile2 = move_line.matched_debit_ids.ids
+                    # Check if full reconcilation is on the same
+                    all_account = [x.account_id.id for
+                                   x in MoveLine.browse(full_reconcile)]
+                    if len(list(set(all_account))) > 1:
+                        # If we have different account on move
+                        # it's an error so skip this reconcile
+                        print str("SKIP INVOICE")
+                        skip_invoice = True
+                partial_reconcile += move_line.matched_credit_ids.\
+                    credit_move_id.ids
+                partial_reconcile2 += move_line.matched_debit_ids.\
+                    debit_move_id.ids
                 # We will now inreconcile all-lines.
-                move_line.remove_move_reconcile()
+                if not skip_invoice:
+                    move_line.remove_move_reconcile()
         # trick the invoice as computed field is not updated on time
         invoice.action_cancel()
         invoice.action_cancel_draft()
@@ -85,7 +97,8 @@ def fix_invoice_offer(offer_list=[], config=False):
                % (full_reconcile,
                   partial_reconcile,
                   partial_reconcile2))
-        if full_reconcile or partial_reconcile or partial_reconcile2:
+        if not skip_invoice and (full_reconcile or
+                                 partial_reconcile or partial_reconcile2):
             # XXX get updated invoice as move has changed ??
             invoice = Invoice.browse(invoice.id)
             move_line_ids = MoveLine.search(

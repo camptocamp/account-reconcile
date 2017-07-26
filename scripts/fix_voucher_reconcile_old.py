@@ -9,7 +9,7 @@ import odoorpc
 import psycopg2
 import psycopg2.extras
 
-logging.basicConfig(filename='quants.log',level=logging.INFO)
+logging.basicConfig(filename='quants.log', level=logging.INFO)
 
 ADMIN_USERS = ('admin_ch', 'admin_fr')
 
@@ -195,7 +195,7 @@ def fix_reconcile(config):
         cli.login(config['db'], user, config[user])
         cli.env.context['active_test'] = False
 
-        # Select & remove reconcile on account.move.line
+        # Select & remove reconcile on account.move.line from SO_LIST
         SaleOrder = cli.env['sale.order']
         sale_order_ids = SaleOrder.browse(SO_LIST)
         AccountMassReconcile = cli.env['account.mass.reconcile']
@@ -224,7 +224,8 @@ def fix_reconcile(config):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env', choices=['dev', 'integration', 'prod'], required=True)
+    parser.add_argument('--env', choices=['dev', 'integration', 'prod'],
+                        required=True)
     parser.add_argument('--config', type=str, required=True)
     args = parser.parse_args()
     config = get_config(args.config, args.env)

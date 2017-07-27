@@ -28,7 +28,7 @@ REQUESTS_TIMEOUT = 30  # seconds
 
 
 @contextmanager
-def api_handle_errors(message=''):
+def api_handle_errors(message=u''):
     """ Handle error when calling the API
 
     It is meant to be used when a model does a direct
@@ -37,32 +37,32 @@ def api_handle_errors(message=''):
     instead, they are presented as :class:`openerp.exceptions.UserError`.
     """
     if message:
-        message = message + '\n\n'
+        message = message + u'\n\n'
     try:
         yield
     except NetworkRetryableError as err:
         raise exceptions.UserError(
-            _('{}Network Error:\n\n{}').format(message, err)
+            _(u'{}Network Error:\n\n{}').format(message, err)
         )
     except (HTTPError, RequestException, ConnectionError) as err:
         raise exceptions.UserError(
-            _('{}API / Network Error:\n\n{}').format(message, err)
+            _(u'{}API / Network Error:\n\n{}').format(message, err)
         )
     except QoQaAPIAuthError as err:
         raise exceptions.UserError(
-            _('{}Authentication Error:\n\n{}').format(message, err)
+            _(u'{}Authentication Error:\n\n{}').format(message, err)
         )
     except QoQaResponseError as err:
         raise exceptions.UserError(
-            _('{}Error(s) returned by QoQa:\n\n{}').format(message,
-                                                           unicode(err))
+            _(u'{}Error(s) returned by QoQa:\n\n{}').format(message,
+                                                            unicode(err))
         )
     except QoQaResponseNotParsable:
         # The response from the backend cannot be parsed, not a
         # JSON.  So we don't know what the error is.
         _logger.exception(message)
         raise exceptions.UserError(
-                _('{}Unknown Error').format(message)
+                _(u'{}Unknown Error').format(message)
         )
 
 
@@ -214,7 +214,7 @@ class QoQaAdapter(CRUDAdapter):
                               response.request.body,
                               response.status_code,
                               response.reason,
-                              response.content)
+                              response.content.decode('utf-8'))
                 errors = []
                 for err in parsed.get('errors', []):
                     if err['code'] == 17:  # Maintenance
@@ -274,3 +274,9 @@ class QoQaAdapter(CRUDAdapter):
         response = self.client.get(url, params=payload)
         records = self._handle_response(response)
         return [r['id'] for r in records['data']]
+
+    def delete(self, id):
+        url = "{0}{1}".format(self.url(), id)
+        response = self.client.delete(url)
+        result = self._handle_response(response)
+        return result

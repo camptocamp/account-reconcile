@@ -80,17 +80,6 @@ class ProductProduct(models.Model):
         return record
 
     @api.multi
-    def write(self, vals):
-        if 'active' in vals and not vals.get('active'):
-            if any(product.mapped('qoqa_bind_ids.qoqa_id')
-                   for product in self):
-                raise exceptions.UserError(
-                    _('One of the product has already been exported and '
-                      'cannot be disabled.')
-                )
-        return super(ProductProduct, self).write(vals)
-
-    @api.multi
     def unlink(self):
         # ensure we call the 'unlink' method of the binding,
         # the 'ondelete=cascade' would not

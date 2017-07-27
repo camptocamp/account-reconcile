@@ -4890,3 +4890,8 @@ msgstr ""
 msgid "{}Unknown Error"
 msgstr ""
 
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/product_template/common.py:76
+#, python-format
+msgid "Impossible to disable the product, it is used in an offer or it could not be deleted on the backend."
+msgstr ""

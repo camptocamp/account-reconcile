@@ -24,10 +24,13 @@ latest (unreleased)
 **Features and Improvements**
 
 * When the authentication to Q4 API fails, shows the error message returned by the API
+* Delete product and variants on QoQa API when product is disabled on Odoo (BSQOQ-6)
 
 **Bugfixes**
 
 **Build**
+
+* Use camptocamp/odoo-project:9.0-2.3.0
 
 **Documentation**
 
@@ -39,7 +42,8 @@ latest (unreleased)
 
 * ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
 * Adaptation of cancellation of orders with service only BSQOQ-4
-
+* Add pagebreak per stock location and preparation report
+* Add search on name of supplier invoice
 **Bugfixes**
 * Fix mass reconcile : Check the write-off limit when dealing with a partial reconcile invoice
 * Add analytic account on mass reconcile rules

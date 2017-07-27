@@ -235,6 +235,7 @@ migration:
       addons:
         upgrade:
     - version: 9.30.0
+      operations:
         pre:
           - anthem songs.upgrade.9_30_0::main
       addons:

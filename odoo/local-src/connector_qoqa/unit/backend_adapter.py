@@ -186,14 +186,12 @@ class QoQaAdapter(CRUDAdapter):
         if response.request.method == 'POST':
             _logger.debug("The POST body was: %s", response.request.body)
         if response.status_code in (401, 403):
-            msg = ("The call '%(method)s %(url)s' could not be completed "
-                   "due to: %(reason)s. Check the Auth token.")
-            vals = {'method': response.request.method,
-                    'url': response.url,
-                    'reason': response.reason,
-                    'base_url': self.client.base_url,
-                    }
-            raise QoQaAPIAuthError(msg % vals)
+            errors = []
+            if response.content:
+                parsed = self._parse_content(response)
+                for err in parsed.get('errors', []):
+                    errors.append((err['code'], err['title'], err['detail']))
+            raise QoQaAPIAuthError(errors)
         # Server error : retry later
         if response.status_code in (500, 502, 504):
             raise NetworkRetryableError(
@@ -203,12 +201,7 @@ class QoQaAdapter(CRUDAdapter):
         # When we request a new token with auth and the login/password is
         # wrong, the API returns a 302 redirect
         if response.is_redirect:
-            msg = ("The call '%(method)s %(url)s' could not be completed "
-                   "because it was not authenticated.")
-            vals = {'method': response.request.method,
-                    'url': response.url,
-                    }
-            raise QoQaAPIAuthError(msg % vals)
+            raise QoQaAPIAuthError([])
         try:
             response.raise_for_status()
         except:

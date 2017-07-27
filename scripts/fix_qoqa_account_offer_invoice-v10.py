@@ -38,7 +38,8 @@ def fix_invoice_offer(offer_list=[], config=False):
     offer_ids = QoqaOffer.search([('ref', 'in', offer_list)])
     invoice_ids = Invoice.search([('offer_id', 'in', offer_ids),
                                   ('company_id', '=', 3),
-                                  ('type', '=', 'out_invoice')])
+                                  ('type', '=', 'out_invoice'),
+                                  ('state', 'in', ['open','paid'])])
     cpt = 1
     len_invoices = len(invoice_ids)
     #  account_id
@@ -66,19 +67,20 @@ def fix_invoice_offer(offer_list=[], config=False):
                           move_line.full_reconcile_id.id),
                          ('id', '!=', move_line.id)])
                     # Check if full reconcilation is on the same
-                    all_account = [x.account_id.id for
-                                   x in MoveLine.browse(full_reconcile)]
-                    if len(list(set(all_account))) > 1:
-                        # If we have different account on move
-                        # it's an error so skip this reconcile
-                        print str("SKIP INVOICE")
-                        skip_invoice = True
                 partial_reconcile += move_line.matched_credit_ids.\
                     credit_move_id.ids
                 partial_reconcile2 += move_line.matched_debit_ids.\
                     debit_move_id.ids
-                # We will now inreconcile all-lines.
-                if not skip_invoice:
+                all_account = [x.account_id.id for
+                               x in MoveLine.browse(full_reconcile +
+                                                    partial_reconcile +
+                                                    partial_reconcile2)]
+                if len(list(set(all_account))) > 1:
+                    # If we have different account on move
+                    # it's an error so skip this reconcile
+                    print "SKIP INVOICE"
+                    skip_invoice = True
+                else:
                     move_line.remove_move_reconcile()
         # trick the invoice as computed field is not updated on time
         invoice.action_cancel()
@@ -107,6 +109,7 @@ def fix_invoice_offer(offer_list=[], config=False):
 
             to_reconcile_ids = move_line_ids + full_reconcile + \
                 partial_reconcile + partial_reconcile2
+            to_reconcile_ids = MoveLine.search([('id', 'in', to_reconcile_ids)])
             move_lines = MoveLine.browse(to_reconcile_ids)
             move_lines.reconcile()
         cpt += 1

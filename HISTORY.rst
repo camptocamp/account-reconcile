@@ -25,6 +25,7 @@ latest (unreleased)
 
 * When the authentication to Q4 API fails, shows the error message returned by the API
 * Delete product and variants on QoQa API when product is disabled on Odoo (BSQOQ-6)
+* Restrict the deletion of a payment order and allow his cancellation
 
 **Bugfixes**
 

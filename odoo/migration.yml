@@ -238,3 +238,8 @@ migration:
           - qoqa_mail_message
           - account_mass_reconcile
           - batch_picking_group
+    - version: 9.30.0
+      addons:
+        upgrade:
+          # OCA/bank-payment
+          - account_payment_order

@@ -132,17 +132,20 @@ def get_delivered_qty(line, odoo):
         return qty
 
 
-def fix_sale_order_swissbilling(picking_domain=[],to_add_order, config=False):
+def fix_sale_order_swissbilling(picking_domain=[],to_add_order=[], config=False):
     odoo = rpc_client(config)
     # We reconpute all refund
     SaleOrder = odoo.env['sale.order']
     Picking = odoo.env['stock.picking']
-    all_sale_orders_ids = SaleOrder.search([('payment_mode_id','=',15),('state','!=','done')])
+    print "Search Orders"
+    all_sale_orders_ids = SaleOrder.search([('payment_mode_id','=',15),('state','not in',['done','cancel'])])
     picking_domain += [('sale_id','in',all_sale_orders_ids)]
+    print "Search restricted order"
     all_picking_ids = Picking.search(picking_domain)
     print "Get all picking"
     all_sale_ids = []
     cpt = 1
+    print "Length %s" % (len(all_picking_ids))
     for picking_id in all_picking_ids:
         try:
             all_sale_ids.append(Picking.browse(picking_id).sale_id.id)
@@ -151,7 +154,6 @@ def fix_sale_order_swissbilling(picking_domain=[],to_add_order, config=False):
         cpt += 1
     # due to lsit index out of rang on some picking
     # I have add the sale order related manually
-    #all_sale_ids += [3718126,3721095,3728866]
     all_sale_ids += to_add_order
     print "Filter sale order"
     cpt = 1
@@ -162,8 +164,6 @@ def fix_sale_order_swissbilling(picking_domain=[],to_add_order, config=False):
     #   576 | 32000
     #  2702 | 32001
     #  2706 | 32005
-    import pdb
-    pdb.set_trace()
     rewrite_offer = []
     for sale_order_id in all_sale_ids:
         sale_order = SaleOrder.browse(sale_order_id)
@@ -174,11 +174,12 @@ def fix_sale_order_swissbilling(picking_domain=[],to_add_order, config=False):
             print '%s - %s' % (delivered_qty, line.qty_delivered)
             if delivered_qty != line.qty_delivered:
                 if sale_order.state == 'done':
+                    # Cela devrait jamais arrivé mais
                     print str("Rewrite state")
-                    #sale_order.write({'state': 'sale'})
+                    sale_order.write({'state': 'sale'})
                 print str("Rewrite QTY")
                 rewrite_offer.append(sale_order.id)
-                #line.write({'qty_delivered': delivered_qty})
+                line.write({'qty_delivered': delivered_qty})
         cpt += 1
     print "Order Rewrite : %s" % (rewrite_offer,)
 

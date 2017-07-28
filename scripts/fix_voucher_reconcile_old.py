@@ -9,8 +9,6 @@ import psycopg2
 import psycopg2.extras
 
 
-ADMIN_USERS = ('admin_ch', 'admin_fr')
-
 SO_LIST = ['03399162',
            '03397044',
            '03334543',
@@ -187,7 +185,6 @@ def fix_reconcile(config):
 
     # conn = db_conn(config)
     cli = rpc_client(config)
-    # for user in ADMIN_USERS:
     cli.login(config['db'], 'admin_ch', config['user'])
     cli.env.context['active_test'] = False
 

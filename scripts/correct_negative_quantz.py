@@ -10,7 +10,8 @@ import odoorpc
 import psycopg2
 import psycopg2.extras
 
-logging.basicConfig(filename='quants.log',level=logging.INFO)
+FORMAT = '%(asctime)s --  %(message)s'
+logging.basicConfig(filename='quants.log',level=logging.INFO, format=FORMAT)
 
 ADMIN_USERS = ('admin_ch', 'admin_fr')
 

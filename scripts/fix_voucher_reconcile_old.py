@@ -184,7 +184,7 @@ def db_conn(config):
 def fix_reconcile(config):
 
     cli = rpc_client(config)
-    cli.login(config['db'], admin_ch, config['admin_ch'])
+    cli.login(config['db'], 'admin_ch', config['admin_ch'])
     cli.env.context['active_test'] = False
 
     SaleOrder = cli.env['sale.order']

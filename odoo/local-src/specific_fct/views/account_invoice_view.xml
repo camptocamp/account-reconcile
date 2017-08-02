@@ -11,6 +11,11 @@
             <field name="reference" position="attributes">
               <attribute name="required">1</attribute>
             </field>
+            <xpath  expr="//notebook/page[2]//field[@name='name']" position="replace">
+            </xpath>
+            <xpath  expr="//field[@name='reference']" position="after">
+                <field name="name"/>
+            </xpath>
             <field name="state" position="after">
                 <button name="button_validate_agreement"
                         attrs="{'invisible': [('validation_agreement', '=', True)]}"
@@ -20,6 +25,18 @@
             <xpath expr="//button[@name='invoice_open']" position="after">
                 <button name="invoice_print" string="Print" type="object" groups="base.group_user"/>
             </xpath>
+        </field>
+    </record>
+
+
+    <record id="invoice_supplier_tree" model="ir.ui.view">
+        <field name="name">account.invoice.supplier.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+        <field name="arch" type="xml">
+            <field name="reference" position="after">
+                <field name="name"/>
+            </field>
         </field>
     </record>
 
@@ -39,6 +56,9 @@
             </field>
             <field name="user_id" position="after">
                 <field name="refund_description_id"/>
+            </field>
+            <field name="journal_id" position="after">
+                <field name="name"/>
             </field>
         </field>
     </record>

@@ -4,10 +4,15 @@
   remotes:
     oca: git@github.com:OCA/bank-payment.git
     camptocamp: git@github.com:camptocamp/bank-payment.git
+    mdietrich: git@github.com:mdietrichc2c/bank-payment.git
   merges:
     - oca 9.0
     # account_payment_sale : change debit account on invoice
     - oca refs/pull/298/head
+    # don't allow deletion of an uploaded payment order + allow to cancel an uploaded payment order
+    - oca refs/pull/376/head
+    # account_payment_order : Restrict deletion of lines, fix call to super
+    - mdietrich refs/pull/1/head
   target: &default_target camptocamp merge-branch-1151-master
 ./external-src/bank-statement-reconcile:
   remotes:
@@ -21,10 +26,16 @@
     - oca refs/pull/162/head
     # Remove now non-existing "Display partial" button
     - oca refs/pull/167/head
+    # Use wirte-off limit even on partial reconcile case
+    - oca refs/pull/169/head
     # Use correct order if cron only does one reconcile at a time
     - oca refs/pull/175/head
     # correcty use temporary cursor in reconcile method
     - oca refs/pull/177/head
+    # Add analytic on mass reconcile rules 
+    - oca refs/pull/179/head
+    # Update balance along the debit/credit values
+    - oca refs/pull/181/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:
@@ -96,6 +107,7 @@
     - oca 9.0
     # Add multi-company security rule for employees
     - oca refs/pull/533/head
+    - oca refs/pull/635/head
   target: *default_target
 ./external-src/product-attribute:
   remotes:

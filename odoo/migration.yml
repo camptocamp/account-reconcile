@@ -231,8 +231,18 @@ migration:
           - specific_fct
           - batch_picking_group
           - qoqa_product
-
     - version: 9.29.0
       addons:
         upgrade:
+    - version: 9.30.0
+      operations:
+        pre:
+          - anthem songs.upgrade.9_30_0::main
+      addons:
+        upgrade:
+          # OCA/bank-payment
+          - account_payment_order
+          - specific_fct
           - qoqa_mail_message
+          - account_mass_reconcile
+          - batch_picking_group

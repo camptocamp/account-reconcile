@@ -2,13 +2,15 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import openerp
 from openerp import models, fields, api, exceptions, _
 
 from openerp.addons.connector.session import ConnectorSession
 
-from ..unit.backend_adapter import QoQaAdapter
+from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
 from ..backend import qoqa
 from .importer import import_product_images
+from ..unit.deleter import export_delete_record
 
 
 class QoqaProductTemplate(models.Model):
@@ -67,6 +69,64 @@ class ProductTemplate(models.Model):
         string='Exportable on QoQa',
         compute='_compute_qoqa_exportable',
     )
+
+    @api.multi
+    def _delete_on_qoqa_shop(self):
+        session = ConnectorSession.from_env(self.env)
+        message = _(u'Impossible to disable the product, it is '
+                    u'used in an offer or it could not be deleted on '
+                    u'the backend.')
+        with api_handle_errors(message):
+            for binding in self.qoqa_bind_ids:
+                export_delete_record(session, binding._name,
+                                     binding.backend_id.id,
+                                     binding.qoqa_id)
+                binding.with_context(connector_no_export=True).qoqa_id = False
+                binding.with_context(active_test=False).mapped(
+                    'product_variant_ids.qoqa_bind_ids'
+                ).write({'qoqa_id': False})
+
+    @api.multi
+    def _write_with_disable(self, vals):
+        self.ensure_one()
+        already_inactive = not self.active
+        # we come from the write of this class, so we should not call it again,
+        # but instead call the super one
+        dbname = self.env.cr.dbname
+        db_registry = openerp.modules.registry.RegistryManager.new(dbname)
+        # use a new transaction, because if we are disabling more than
+        # one record at a time, or doing other things in the main transaction
+        # and there is failure, we'll lose the changes odoo's side, but the
+        # change Q4's side will be committed... so to keep the delete in sync
+        # we have to commit after every DELETE request sent to Q4
+        with api.Environment.manage(), db_registry.cursor() as cr:
+            env = self.env(cr=cr)
+            template = self.with_env(env)
+            super(ProductTemplate, template).write(vals)
+            if already_inactive:
+                return
+            try:
+                template._delete_on_qoqa_shop()
+            except exceptions.UserError:
+                raise
+
+    @api.multi
+    def write(self, vals):
+        if 'active' in vals and not vals['active']:
+            for template in self:
+                template._write_with_disable(vals)
+            return True
+        else:
+            if vals.get('active'):
+                for record in self:
+                    if not record.active:
+                        # when we reactivate a template, reactivate all
+                        # variants
+                        variants = record.with_context(
+                            active_test=False
+                        ).product_variant_ids
+                        variants.write({'active': True})
+            return super(ProductTemplate, self).write(vals)
 
     @api.depends('qoqa_bind_ids')
     def _compute_qoqa_exportable(self):

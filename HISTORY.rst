@@ -24,7 +24,49 @@ latest (unreleased)
 **Features and Improvements**
 
 **Bugfixes**
+
 Fix QoQa mail message en crm.claim
+
+**Build**
+
+**Documentation**
+
+
+9.30.0 (2017-07-27)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* When the authentication to Q4 API fails, shows the error message returned by the API
+* Delete product and variants on QoQa API when product is disabled on Odoo (BSQOQ-6)
+* Restrict the deletion of a payment order and allow his cancellation
+* ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
+* Adaptation of cancellation of orders with service only BSQOQ-4
+* Add pagebreak per stock location and preparation report
+* Add search on name of supplier invoice
+* Allow cancelling of Payment Order
+
+**Bugfixes**
+* Fix mass reconcile : Check the write-off limit when dealing with a partial reconcile invoice
+* Add analytic account on mass reconcile rules
+* Show supplier invoice name, in order to set the supplier invoice reference on invoice
+* Allow to auto-assign claim
+* Correction of balance in move line for reporting
+* Script to correct taxes on invoices and related sale order
+* Script to correct Quants
+**Build**
+* Use camptocamp/odoo-project:9.0-2.3.0
+
+**Documentation**
+
+
+9.29.0 (2017-07-12)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
 **Build**
 
 **Documentation**

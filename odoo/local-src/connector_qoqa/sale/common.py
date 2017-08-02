@@ -141,6 +141,8 @@ class SaleOrder(models.Model):
         actions = []
         for order in self:
             delivered = order.picking_ids.filtered(lambda r: r.state == 'done')
+            all_service = all(line.product_id.type == 'service'
+                              for line in order.order_line)
             cancel_direct = False
             if (order.qoqa_bind_ids and
                     order.payment_mode_id.payment_cancellable_on_qoqa):
@@ -155,6 +157,12 @@ class SaleOrder(models.Model):
                 if (not delivered and
                         order.payment_mode_id.payment_settlable_on_qoqa):
                     cancel_direct = True
+                if (all_service and
+                        order.payment_mode_id.payment_settlable_on_qoqa):
+                    if order.state != 'done':
+                        cancel_direct = True
+                    else:
+                        cancel_direct = False
 
             existing_invoices = order.invoice_ids
             if not cancel_direct and order.amount_total:

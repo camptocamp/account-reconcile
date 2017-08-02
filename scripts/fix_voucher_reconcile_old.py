@@ -217,7 +217,7 @@ def fix_reconcile(config):
 
 
 if __name__ == '__main__':
-
+    #fix issue https://jira.camptocamp.com/projects/BIZ/queues/custom/158/BIZ-180
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', choices=['dev', 'integration', 'prod'],
                         required=True)

@@ -23,10 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* ADD conditional "View in Odoo" link in mail message https://jira.camptocamp.com/browse/BIZ-27
-
 **Bugfixes**
-
+Fix QoQa mail message en crm.claim
 **Build**
 
 **Documentation**

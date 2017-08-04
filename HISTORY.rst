@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+Fix QoQa mail message en crm.claim
+
 **Build**
 
 **Documentation**
@@ -64,6 +66,7 @@ latest (unreleased)
 **Features and Improvements**
 
 **Bugfixes**
+
 **Build**
 
 **Documentation**

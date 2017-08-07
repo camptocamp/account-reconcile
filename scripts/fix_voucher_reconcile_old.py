@@ -184,7 +184,7 @@ def db_conn(config):
 def fix_reconcile(config):
 
     cli = rpc_client(config)
-    cli.login(config['db'], config['user'], config['password'])
+    cli.login(config['db'], 'admin_ch', config['admin_ch'])
     cli.env.context['active_test'] = False
 
     SaleOrder = cli.env['sale.order']
@@ -217,7 +217,7 @@ def fix_reconcile(config):
 
 
 if __name__ == '__main__':
-
+    #fix issue https://jira.camptocamp.com/projects/BIZ/queues/custom/158/BIZ-180
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', choices=['dev', 'integration', 'prod'],
                         required=True)

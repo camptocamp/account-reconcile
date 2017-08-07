@@ -55,16 +55,21 @@ class QoQaMessage(models.Model):
         in mail.message body.
 
         The link is added only if all followers on thread
-        only if all follower are internal users
+        are internal users
         """
         res_id = values.get('res_id')
         model = values.get('model')
         body = values.get('body')
+        is_comment = values.get('message_type') == 'comment'
         if model and res_id and body:
             origin = self.env[model].browse(res_id)
             origin_can_be_tested = hasattr(origin,
                                            'all_followers_are_users')
             if origin_can_be_tested and origin.all_followers_are_users():
+                url = self._get_qoqa_redirect_url(res_id, model)
+                values['body'] = self._extend_body_with_url(body, url)
+            elif is_comment and model == 'crm.claim':
+                # managing crm.claim custom mail message management
                 url = self._get_qoqa_redirect_url(res_id, model)
                 values['body'] = self._extend_body_with_url(body, url)
         return super(QoQaMessage, self).create(values)

@@ -1,149 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="assets_common" inherit_id="report.assets_common">
-        <xpath expr="." position="inside">
-            <style type="text/css">
-                .dispatch {
-                    width: 100%;
-                }
-                table.dispatch td {
-                    text-align: center;
-                }
-                table.pack {
-                    text-align: left;
-                    width: 96%;
-                    margin-left: 15px;
-                    margin-top: 30px;
-                    border-collapse: collapse;
-                }
-                table.pack caption {
-                    text-align: left;
-                    margin-left: -15px;
-                    font-weight: bold;
-                }
-                table.pack td {
-                    border-bottom: 1px solid;
-                }
-            </style>
-        </xpath>
-    </template>
+  <template id="assets_common" inherit_id="report.assets_common">
+    <xpath expr="." position="inside">
+      <style type="text/css">
+        .dispatch {
+        width: 100%;
+        }
+        table.dispatch td {
+        text-align: center;
+        }
+        table.pack {
+        text-align: left;
+        width: 96%;
+        margin-left: 15px;
+        margin-top: 30px;
+        border-collapse: collapse;
+        }
+        table.pack caption {
+        text-align: left;
+        margin-left: -15px;
+        font-weight: bold;
+        }
+        table.pack td {
+        border-bottom: 1px solid;
+        }
+      </style>
+    </xpath>
+  </template>
 
-    <template id="report_batch_picking" inherit_id="stock_batch_picking.report_batch_picking">
-        <xpath expr="//t[@t-foreach='get_location_datas(doc)']/table" position="attributes">
-            <attribute name="style">page-break-after:always;</attribute>
-        </xpath>
-        <t t-call="report.external_layout" position="after">
-            <t t-call="report.external_layout">
-                <div class="page">
-                    <div class="row mt32 mb32">
-                        <div class="col-xs-3">
-                            <strong>Date:</strong>
-                            <span t-esc="formatLang(time.strftime('%Y-%m-%d'), date=True)"/>
-                        </div>
-                        <div class="col-xs-3" style="float: right">
-                            <strong>Printed by:</strong>
-                            <span t-field="user.name"/>
-                        </div>
-                    </div>
 
-                    <t t-foreach="docs" t-as="doc">
-                    <div  style="page-break-after:always;">
-                        <table class="dispatch">
-                            <tr>
-                                <td>
-                                    <h2>
-                                        <span t-esc="doc.batch_name"/>
-                                    </h2>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Picked by:
-                                    <span t-esc="doc.batch_id.picker_id.name"/>
-                                </td>
-                            </tr>
-                        </table>
+  <template id="stock_batch_picking.report_batch_picking">
+    <t t-call="report.html_container">
+      <t t-call="report.external_layout">
+        <div class="page">
+          <t t-foreach="docs" t-as="doc">
+            <div class="row mt32 mb32">
+              <div class="col-xs-3">
+                <strong>Date:</strong>
+                <span t-esc="formatLang(time.strftime('%Y-%m-%d'), date=True)"/>
+              </div>
+              <div class="col-xs-3">
+                <strong>Printed by:</strong>
+                <span t-field="user.name"/>
+              </div>
+            </div>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>Pickings Order</th>
+                  <th></th>
+                  <th>Picked By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span t-esc="doc.batch_name"/>
+                  </td>
+                  <td>Visa:_________________</td>
+                  <td>
+                    <span t-esc="doc.picker_id.name"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br/>
+            <br/>
+            <p t-esc="batch_notes"/>
+            <br/>
+            <t t-foreach="get_location_datas(doc)" t-as="location_data">
+              <t t-set="locations" t-value="location_data[0]"/>
+              <t t-set="product_quantities" t-value="location_data[1]"/>
 
-                        <p t-esc="doc.batch_notes"/>
+              <table class="table table-condensed" style="page-break-after:always">
+                <caption>
+                  <b>
+                    <u>
+                      <span t-esc="locations[0]"/>
+                      &#x21E8;
+                      <span t-esc="locations[1]"/>
+                    </u>
+                  </b>
+                </caption>
+                <thead>
+                  <th>Product</th>
+                  <th>Carrier</th>
+                  <th class="text-right">QTY</th>
+                  <th>Explanation</th>
+                </thead>
+                <tbody>
+                  <t t-foreach="product_quantities" t-as="product_data">
+                    <t t-set="product" t-value="product_data[0]"/>
+                    <t t-set="qty" t-value="product_data[1]"/>
+                    <t t-set="carrier" t-value="product_data[2]"/>
 
-                        <div class="mb32">
-                            <t t-foreach="get_packs(doc)" t-as="pack_data">
+                    <tr>
+                      <td>
+                        <span t-field="product.display_name"/>
+                      </td>
+                      <td>
+                        <span t-esc="carrier"/>
+                      </td>
+                      <td class="text-right">
+                        <span t-esc="qty"/>
+                      </td>
+                      <td>stock error<br/>breakage
+                      </td>
+                      <tr align="left" t-if="product.description_warehouse">
+                        <td colspan="4">
+                          <pre class="description ">
+                            <span t-esc="product.description_warehouse"></span>
+                          </pre>
+                        </td>
+                      </tr>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
 
-                                <t t-set="pack" t-value="pack_data[0]"/>
-                                <t t-set="operations" t-value="pack_data[1]"/>
 
-                                <table class="pack">
-                                    <t t-if="pack">
-                                        <caption t-esc="pack.parcel_tracking"/>
-                                    </t>
-                                    <t t-if="not pack">
-                                        <caption>Not in a pack</caption>
-                                    </t>
-                                    <t t-foreach="operations" t-as="op">
-                                        <t t-if="op.product_id">
-                                            <tr align="left">
-                                                <td width="12%">
-                                                    <span t-esc="op.product_id.default_code"/>
-                                                </td>
-                                                <td width="12%">
-                                                    <span t-esc="op.product_id.name"/>
-                                                </td>
-                                                <td width="12%">
-                                                    <span t-esc="get_variants(op.product_id)"/>
-                                                </td>
-                                                <td width="24%">
-                                                    <span t-esc="op.location_id.complete_name"/>
-                                                </td>
-                                                <td width="10%">
-                                                    <span t-esc="op.picking_id.origin"/>
-                                                </td>
-                                                <td width="10%">
-                                                    <span t-esc="op.picking_id.note"/>
-                                                </td>
-                                                <td width="10%">
-                                                    <span t-esc="op.product_qty"/>
-                                                    <span t-esc="op.product_uom_id.name"/>
-                                                </td>
-                                                <td width="8%">
-                                                    <span t-esc="op.picking_id.state"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                        <t t-if="not op.product_id and op.package_id">
-                                            <t t-foreach="op.package_id.quant_ids" t-as="quant">
-                                                <tr align="left">
-                                                    <td width="16%">
-                                                        <span t-esc="quant.product_id.default_code"/>
-                                                    </td>
-                                                    <td width="18%">
-                                                        <span t-esc="quant.product_id.name"/>
-                                                    </td>
-                                                    <td width="12%">
-                                                        <span t-esc="get_variants(quant.product_id)"/>
-                                                    </td>
-                                                    <td width="24%">
-                                                        <span t-esc="op.location_id.complete_name"/>
-                                                    </td>
-                                                    <td width="10%">
-                                                        <span t-esc="op.picking_id.origin"/>
-                                                    </td>
-                                                    <td width="10%">
-                                                        <span t-esc="quant.qty"/>
-                                                        <span t-esc="quant.product_uom_id.name"/>
-                                                    </td>
-                                                    <td width="8%">
-                                                        <span t-esc="op.picking_id.state"/>
-                                                    </td>
-                                                </tr>
-                                            </t>
-                                        </t>
-                                    </t>
-                                </table>
-                            </t>
-                        </div>
-                      </div>
-                    </t>
+
+              <div class="row mt32 mb32">
+                <div class="col-xs-3">
+                  <strong>Date:</strong>
+                  <span t-esc="formatLang(time.strftime('%Y-%m-%d'), date=True)"/>
                 </div>
+                <div class="col-xs-3" style="float: right">
+                  <strong>Printed by:</strong>
+                  <span t-field="user.name"/>
+                </div>
+              </div>
+
+
+              <div style="page-break-after:always;">
+                <table class="dispatch">
+                  <tr>
+                    <td>
+                      <h2>
+                        <span t-esc="doc.batch_name"/>
+                      </h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Picked by:
+                    <span t-esc="doc.batch_id.picker_id.name"/>
+                    </td>
+                  </tr>
+                </table>
+
+                <p t-esc="doc.batch_notes"/>
+
+                <div class="mb32">
+                  <t t-foreach="get_packs(doc)" t-as="pack_data">
+
+                    <t t-set="pack" t-value="pack_data[0]"/>
+                    <t t-set="operations" t-value="pack_data[1]"/>
+
+                    <table class="pack">
+                      <t t-if="pack">
+                        <caption t-esc="pack.parcel_tracking"/>
+                      </t>
+                      <t t-if="not pack">
+                        <caption>Not in a pack</caption>
+                      </t>
+                      <t t-foreach="operations" t-as="op">
+                        <t t-if="op.product_id">
+                          <tr align="left">
+                            <td width="12%">
+                              <span t-esc="op.product_id.default_code"/>
+                            </td>
+                            <td width="12%">
+                              <span t-esc="op.product_id.name"/>
+                            </td>
+                            <td width="12%">
+                              <span t-esc="get_variants(op.product_id)"/>
+                            </td>
+                            <td width="24%">
+                              <span t-esc="op.location_id.complete_name"/>
+                            </td>
+                            <td width="10%">
+                              <span t-esc="op.picking_id.origin"/>
+                            </td>
+                            <td width="10%">
+                              <span t-esc="op.picking_id.note"/>
+                            </td>
+                            <td width="10%">
+                              <span t-esc="op.product_qty"/>
+                              <span t-esc="op.product_uom_id.name"/>
+                            </td>
+                            <td width="8%">
+                              <span t-esc="op.picking_id.state"/>
+                            </td>
+                          </tr>
+                        </t>
+                        <t t-if="not op.product_id and op.package_id">
+                          <t t-foreach="op.package_id.quant_ids" t-as="quant">
+                            <tr align="left">
+                              <td width="16%">
+                                <span t-esc="quant.product_id.default_code"/>
+                              </td>
+                              <td width="18%">
+                                <span t-esc="quant.product_id.name"/>
+                              </td>
+                              <td width="12%">
+                                <span t-esc="get_variants(quant.product_id)"/>
+                              </td>
+                              <td width="24%">
+                                <span t-esc="op.location_id.complete_name"/>
+                              </td>
+                              <td width="10%">
+                                <span t-esc="op.picking_id.origin"/>
+                              </td>
+                              <td width="10%">
+                                <span t-esc="quant.qty"/>
+                                <span t-esc="quant.product_uom_id.name"/>
+                              </td>
+                              <td width="8%">
+                                <span t-esc="op.picking_id.state"/>
+                              </td>
+                            </tr>
+                          </t>
+                        </t>
+                      </t>
+                    </table>
+                  </t>
+                </div>
+              </div>
+              <div style="page-break-after: always;">
+                <pre style="text-align:center">
+
+=( °w° )= SEPARATION =( °w° )=
+               </pre>
+             </div>
             </t>
-        </t>
-    </template>
+          </t>
+        </div>
+      </t>
+    </t>
+  </template>
 </odoo>

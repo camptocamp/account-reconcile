@@ -22,6 +22,7 @@ latest (unreleased)
 +++++++++++++++++++
 
 **Features and Improvements**
+* imporve batch_picking_group order and ass separation page
 
 **Bugfixes**
 

@@ -246,3 +246,8 @@ migration:
           - qoqa_mail_message
           - account_mass_reconcile
           - batch_picking_group
+
+    - version: 9.31.0
+      addons:
+        upgrade:
+          - batch_picking_group

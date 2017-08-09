@@ -22,11 +22,24 @@ latest (unreleased)
 +++++++++++++++++++
 
 **Features and Improvements**
-* imporve batch_picking_group order and ass separation page
 
 **Bugfixes**
 
-Fix QoQa mail message en crm.claim
+**Build**
+
+**Documentation**
+
+
+9.31.0 (2017-08-09)
++++++++++++++++++++
+
+**Features and Improvements**
+* Imporve batch_picking_group order and add separation page, biz 232
+* Remove pending merge in account payment
+
+**Bugfixes**
+
+* Fix QoQa mail message en crm.claim, biz 27
 
 **Build**
 

@@ -118,8 +118,6 @@
                 </tbody>
               </table>
 
-
-
               <div class="row mt32 mb32">
                 <div class="col-xs-3">
                   <strong>Date:</strong>
@@ -130,7 +128,6 @@
                   <span t-field="user.name"/>
                 </div>
               </div>
-
 
               <div style="page-break-after:always;">
                 <table class="dispatch">

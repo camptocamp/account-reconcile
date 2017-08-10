@@ -252,3 +252,8 @@ migration:
         upgrade:
           - batch_picking_group
           - account_payment_order
+
+    - version: 9.31.1
+      addons:
+        upgrade:
+          - batch_picking_group

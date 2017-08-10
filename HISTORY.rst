@@ -30,6 +30,19 @@ latest (unreleased)
 **Documentation**
 
 
+9.31.1 (2017-08-10)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+Fix merge error in batch_picking_report
+
+**Build**
+
+**Documentation**
+
+
 9.31.0 (2017-08-09)
 +++++++++++++++++++
 

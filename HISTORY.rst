@@ -30,6 +30,20 @@ latest (unreleased)
 **Documentation**
 
 
+9.31.2 (2017-08-16)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
+* Hot Fix of batch picking report
+
+**Build**
+
+**Documentation**
+
+
 9.31.1 (2017-08-10)
 +++++++++++++++++++
 

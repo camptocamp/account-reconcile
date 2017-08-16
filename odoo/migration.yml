@@ -257,3 +257,8 @@ migration:
       addons:
         upgrade:
           - batch_picking_group
+
+    - version: 9.31.2
+      addons:
+        upgrade:
+          - batch_picking_group

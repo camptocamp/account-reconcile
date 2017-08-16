@@ -72,7 +72,7 @@
               <t t-set="locations" t-value="location_data[0]"/>
               <t t-set="product_quantities" t-value="location_data[1]"/>
 
-              <table class="table table-condensed" style="page-break-after:always">
+              <table class="table table-condensed" >
                 <caption>
                   <b>
                     <u>
@@ -119,6 +119,7 @@
               </table>
             </t>
 
+            <div style="page-break-after:always"></div>
 
             <div class="row mt32 mb32">
               <div class="col-xs-3">

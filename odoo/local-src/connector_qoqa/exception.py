@@ -50,3 +50,9 @@ class QoQaAPIAuthError(QoQaResponseError):
 
 class OrderImportRuleRetry(RetryableJobError):
     """ The sale order import will be retried later. """
+
+
+class QoQaRecordDoesNotExist(QoQaResponseError):
+    """ The QoQa API returns that a record does not exists """
+
+    no_reason = u'Record does not exist on the QoQa side.'

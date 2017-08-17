@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+import cPickle
 import logging
 import argparse
 import ConfigParser
@@ -8,6 +10,33 @@ import odoorpc
 FORMAT = '%(asctime)s --  %(message)s'
 logging.basicConfig(filename='manual_invoice.log',
                     level=logging.INFO, format=FORMAT)
+
+SAVESTATE_PATH = 'processed_invoice.pickle'
+
+
+class SaveStateManger(object):
+
+    def __init__(self):
+        if os.path.exists(SAVESTATE_PATH):
+            with open(SAVESTATE_PATH, 'rb') as save_state_file:
+                processed_invoices = cPickle.load(save_state_file)
+        self.processed_invoices = processed_invoices
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.save()
+
+    def __contains__(self, key):
+        return key in self.processed_invoices
+
+    def add(self, invoice_id):
+        self.processed_invoices.append(invoice_id)
+
+    def save(self):
+        with open(SAVESTATE_PATH, 'wb') as save_state_file:
+            cPickle.dump(self.processed_invoices, save_state_file)
 
 
 def get_config(path, env):
@@ -33,17 +62,16 @@ def rpc_client(config):
     return client
 
 
-def unreconcile_from_invoice(invoice, accumulator):
+def unreconcile_from_invoice(invoice, save_manager):
     try:
         for move in invoice.payment_move_line_ids:
             move.remove_move_reconcile()
-            if (move.account_id.type in ('receivable', 'payable') and
-                    move.account_id.reconcile):
-                accumulator.append(move.account_id)
         invoice.action_cancel()
         invoice.action_cancel_draft()
     except:
-        logging.info("Invoice {} must be processed manually".format(invoice.number))
+        logging.info("Can not unreconcile - {} must be processed manually".format(invoice.number))
+    finally:
+        save_manager.add(invoice.id)
 
 
 def run_mass_reconcile(odoo, accounts):
@@ -56,9 +84,8 @@ def run_mass_reconcile(odoo, accounts):
         mass_reconcile.run_reconcile()
 
 
-def fix_invoice_offer(offer_list=[], config=False):
-    logging.info('---------START------------')
-    account_accumulator = []
+def fix_invoice_offer(offer_list, save_manager, config=False):
+    logging.debug('---------START------------')
     odoo = rpc_client(config)
     # We reconpute all refund
     Invoice = odoo.env['account.invoice']
@@ -79,6 +106,10 @@ def fix_invoice_offer(offer_list=[], config=False):
     #  2702 | 32001
     #  2706 | 32005
     for inv_id in invoice_ids:
+        if inv_id in save_manager:
+            print 'SKIPPED id {}'.format(inv_id)
+            cpt += 1
+            continue
         invoice = Invoice.browse(inv_id)
         print str("%s on %s: number %s" % (cpt, len_invoices, invoice.name))
         invoice_line_ids = InvoiceLine.search(
@@ -87,7 +118,6 @@ def fix_invoice_offer(offer_list=[], config=False):
         full_reconcile = []
         partial_reconcile = []
         partial_reconcile2 = []
-        skip_invoice = False
         if invoice.move_id:
             move = invoice.move_id
             for move_line in move.line_ids:
@@ -109,8 +139,10 @@ def fix_invoice_offer(offer_list=[], config=False):
                     # If we have different account on move
                     # it's an error so skip this reconcile
 
-                    logging.info("Invoice {} must be processed manually".format(invoice.number))
-                    skip_invoice = True
+                    logging.info(
+                        "Different accounts - Invoice {} must be processed manually".format(invoice.number)
+                    )
+                    save_manager.add(invoice.id)
                     continue
                 else:
                     move_line.remove_move_reconcile()
@@ -119,7 +151,7 @@ def fix_invoice_offer(offer_list=[], config=False):
             invoice.action_cancel()
             invoice.action_cancel_draft()
         except Exception:
-            unreconcile_from_invoice(invoice, account_accumulator)
+            unreconcile_from_invoice(invoice, save_manager)
             continue
 
         for invoice_line in invoice_lines:
@@ -132,70 +164,55 @@ def fix_invoice_offer(offer_list=[], config=False):
                 invoice_line.write({'invoice_line_tax_ids': [(6, 0, tax_tab)]})
 
         invoice.signal_workflow('invoice_open')
-        print ("Full: %s Credit Match: %s DEBIT MATCH: %s"
-               % (full_reconcile,
-                  partial_reconcile,
-                  partial_reconcile2))
-        if not skip_invoice and (full_reconcile or
-                                 partial_reconcile or partial_reconcile2):
-            # XXX get updated invoice as move has changed ??
-            invoice = Invoice.browse(invoice.id)
-            move_line_ids = MoveLine.search(
-                [('move_id', '=', invoice.move_id.id),
-                 ('account_id', '=', invoice.account_id.id)])
-
-            to_reconcile_ids = move_line_ids + full_reconcile + \
-                partial_reconcile + partial_reconcile2
-            to_reconcile_ids = MoveLine.search([('id', 'in', to_reconcile_ids)])
-            move_lines = MoveLine.browse(to_reconcile_ids)
-            move_lines.reconcile()
+        save_manager.add(invoice.id)
         cpt += 1
-    run_mass_reconcile(odoo, account_accumulator)
+        if not cpt % 1:
+            save_manager.save()
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--env',
                         choices=['dev', 'integration', 'prod'], required=True)
     parser.add_argument('--config', type=str, required=True)
     args = parser.parse_args()
-    config = get_config(args.config, args.env)
-    fix_invoice_offer(
-        offer_list=[
-            '12952',
-            '12989',
-            '13006',
-            '13110',
-            '13111',
-            '13133',
-            '13139',
-            '13623',
-            '13639',
-            '13640',
-            '13653',
-            '13780',
-            '13784',
-            '13787',
-            '13815',
-            '13822',
-            '13837',
-            '13838',
-            '13862',
-            '13886',
-            '13888',
-            '13890',
-            '13913',
-            '13930',
-            '13951',
-            '13958',
-            '13974',
-            '13990',
-            '13992',
-            '13994',
-            '14031',
-            '14035',
-            '14036',
-            '13201',
-            '13220'],
-        config=config)
+    with SaveStateManger() as save_manager:
+        config = get_config(args.config, args.env)
+        fix_invoice_offer(
+            ['12952',
+             '12989',
+             '13006',
+             '13110',
+             '13111',
+             '13133',
+             '13139',
+             '13623',
+             '13639',
+             '13640',
+             '13653',
+             '13780',
+             '13784',
+             '13787',
+             '13815',
+             '13822',
+             '13837',
+             '13838',
+             '13862',
+             '13886',
+             '13888',
+             '13890',
+             '13913',
+             '13930',
+             '13951',
+             '13958',
+             '13974',
+             '13990',
+             '13992',
+             '13994',
+             '14031',
+             '14035',
+             '14036',
+             '13201',
+             '13220'],
+            save_manager,
+            config=config)

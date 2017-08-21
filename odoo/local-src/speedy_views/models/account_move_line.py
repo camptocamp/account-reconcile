@@ -17,6 +17,7 @@ class AccountMoveLine(models.Model):
     debit = fields.Monetary(index=True)
     credit = fields.Monetary(index=True)
     amount_residual = fields.Monetary(index=True)
+    invoice_id = fields.Many2one(index=True)
 
     def init(self, cr):
         env = api.Environment(cr, SUPERUSER_ID, {})

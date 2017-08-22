@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
+from random import randint
 from Queue import Queue, Empty
 from threading import Thread, Lock
 import os
@@ -146,8 +147,10 @@ def unreconcile_worker(save_manager, config, work_queue):
             print 'SKIPPED id {}'.format(inv_id)
             work_queue.task_done()
             continue
+
+        time.sleep(randint(0, 5))
         invoice = Invoice.browse(inv_id)
-        print "working on: invoice number %s" % (invoice.name)
+        print "working on: invoice {} number {} on {}".format(inv_id, invoice.name, work_queue.qsize())
         if not move_lines_are_valid(odoo, invoice, save_manager):
             work_queue.task_done()
             continue
@@ -205,7 +208,10 @@ def fix_invoice_offer(offer_list, save_manager, config=False):
     #  2702 | 32001
     #  2706 | 32005
     for inv_id in invoice_ids:
-        work_queue.put(inv_id)
+        if inv_id in save_manager:
+            print 'SKIPPED id {}'.format(inv_id)
+        else:
+            work_queue.put(inv_id)
     workers = []
     for _ in range(WORKERS):
         worker = Thread(target=unreconcile_worker,
@@ -229,8 +235,7 @@ def fix_invoice_offer(offer_list, save_manager, config=False):
                 break
         for w in workers:
             w.join()
-        exit()
-
+        return
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

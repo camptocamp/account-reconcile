@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Validation of refund takes 1.5 seconds instead of 15
+
 **Build**
 
 **Documentation**

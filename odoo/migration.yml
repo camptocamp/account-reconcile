@@ -262,3 +262,7 @@ migration:
       addons:
         upgrade:
           - batch_picking_group
+    - version: 9.32.0
+      addons:
+        upgrade:
+          - speedy_views

@@ -27,7 +27,9 @@ class SaveStateManger(object):
         if os.path.exists(SAVESTATE_PATH):
             with open(SAVESTATE_PATH, 'rb') as save_state_file:
                 processed_invoices = cPickle.load(save_state_file)
-        self.processed_invoices = processed_invoices
+                self.processed_invoices = processed_invoices
+        else:
+            self.processed_invoices = []
 
     def __enter__(self):
         return self

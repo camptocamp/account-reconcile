@@ -13,6 +13,7 @@ from openerp.addons.connector.exception import NetworkRetryableError
 from ..exception import (QoQaResponseNotParsable,
                          QoQaAPIAuthError,
                          QoQaResponseError,
+                         QoQaRecordDoesNotExist,
                          )
 
 _logger = logging.getLogger(__name__)
@@ -225,6 +226,10 @@ class QoQaAdapter(CRUDAdapter):
                         )
 
                     errors.append((err['code'], err['title'], err['detail']))
+
+                    if err['code'] == 2:  # Record does not exist
+                        raise QoQaRecordDoesNotExist(errors)
+
                 raise QoQaResponseError(errors)
             else:
                 _logger.error(

@@ -78,6 +78,8 @@ class ProductTemplate(models.Model):
                     u'the backend.')
         with api_handle_errors(message):
             for binding in self.qoqa_bind_ids:
+                if not binding.qoqa_id:
+                    continue
                 export_delete_record(session, binding._name,
                                      binding.backend_id.id,
                                      binding.qoqa_id)

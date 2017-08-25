@@ -6,6 +6,7 @@ from openerp import _
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import Deleter
 from ..connector import get_environment
+from ..exception import QoQaRecordDoesNotExist
 
 
 class QoQaDeleteSynchronizer(Deleter):
@@ -16,7 +17,11 @@ class QoQaDeleteSynchronizer(Deleter):
 
         :param qoqa_id: identifier of the record to delete
         """
-        self.backend_adapter.delete(qoqa_id)
+        try:
+            self.backend_adapter.delete(qoqa_id)
+        except QoQaRecordDoesNotExist:
+            # record already deleted, ignore
+            return _('Record %s did not exist on QoQa') % qoqa_id
         return _('Record %s deleted on QoQa') % qoqa_id
 
 

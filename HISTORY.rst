@@ -25,6 +25,18 @@ latest (unreleased)
 
 **Bugfixes**
 
+**Build**
+
+**Documentation**
+
+
+9.32.0 (2017-08-28)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
 * Validation of refund takes 1.5 seconds instead of 15
 * Make the inactive/delete action of a product more robust:
   - do not try to delete a product on the API if we have no qoqa id

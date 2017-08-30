@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_crm_case_claims_filter_todo" model="ir.ui.view">
+        <field name="name">CRM - Claims Search</field>
+        <field name="model">crm.claim</field>
+        <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
+        <field name="arch" type="xml">
+            <separator position="after">
+                <filter string="ToDo" domain="[('last_message_date','&lt;=', (context_today() + datetime.timedelta(days=-2)).strftime('%Y-%m-%d')), ('last_message_date', '=', False')]" help="Claims without a message sent or received in the last 2 days."/>
+            </separator>
+        </field>
+    </record>
+</odoo>

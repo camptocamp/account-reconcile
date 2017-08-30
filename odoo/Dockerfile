@@ -38,6 +38,7 @@ ENV ADDONS_PATH="/opt/odoo/external-src/enterprise, \
   /opt/odoo/external-src/margin-analysis, \
   /opt/odoo/external-src/multi-company, \
   /opt/odoo/external-src/odoo-cloud-platform, \
+  /opt/odoo/external-src/odoo-usability, \
   /opt/odoo/external-src/partner-contact, \
   /opt/odoo/external-src/product-attribute, \
   /opt/odoo/external-src/purchase-workflow, \

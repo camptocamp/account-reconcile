@@ -91,3 +91,6 @@
 [submodule "odoo/external-src/odoo-cloud-platform"]
 	path = odoo/external-src/odoo-cloud-platform
 	url = git@github.com:camptocamp/odoo-cloud-platform.git
+[submodule "odoo/external-src/odoo-usability"]
+	path = odoo/external-src/odoo-usability
+	url = git@github.com:camptocamp/odoo-usability.git

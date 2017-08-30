@@ -113,3 +113,12 @@
     # module product_variant_exclusion
     - oca refs/pull/275/head
   target: *default_target
+./external-src/odoo-usability:
+  remotes:
+    oca: git@github.com:akretion/odoo-usability.git
+    camptocamp: git@github.com:camptocamp/odoo-usability.git
+  merges:
+    - oca 9.0
+    # [9.0] Port of module account_invoice_update_wizard
+    - oca refs/pull/42/head
+  target: *default_target

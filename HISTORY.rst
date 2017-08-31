@@ -11,6 +11,8 @@
 
 .. **Bugfixes**
 
+* Hot fix reverting support of biz 27 for crm.claim
+
 .. **Build**
 
 .. **Documentation**
@@ -19,6 +21,18 @@ Release History
 ---------------
 
 latest (unreleased)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.32.1 (2017-08-31)
 +++++++++++++++++++
 
 **Features and Improvements**

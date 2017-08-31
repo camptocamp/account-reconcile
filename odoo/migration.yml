@@ -266,3 +266,4 @@ migration:
       addons:
         upgrade:
           - speedy_views
+    - version: 9.32.1

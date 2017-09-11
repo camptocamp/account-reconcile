@@ -60,7 +60,7 @@ class QoQaMessage(models.Model):
         res_id = values.get('res_id')
         model = values.get('model')
         body = values.get('body')
-        if model and res_id and body:
+        if model and model != 'crm.claim' and res_id and body:
             origin = self.env[model].browse(res_id)
             origin_can_be_tested = hasattr(origin,
                                            'all_followers_are_users')

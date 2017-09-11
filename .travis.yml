@@ -26,11 +26,10 @@ before_install:
   - git config --global user.name "TravisCI"
   - git config --global user.email "travis@camptocamp.com"
   - if [ "$LINT_CHECK" == "1" ] ; then pip install --user -q flake8 ; fi
-  - if [ "$LINT_CHECK" == "0" ] ; then pip install --user -q gitpython requests pyyaml; fi
+  - if [ "$LINT_CHECK" == "0" ] ; then pip install --user -q gitpython requests pyOpenSSL ndg-httpsclient pyasn1 pyyaml; fi
 
 install:
-  - if [ "$LINT_CHECK" == "0" ] ; then git submodule init ; fi
-  - if [ "$LINT_CHECK" == "0" ] ; then git submodule update ; fi
+  - if [ "$LINT_CHECK" == "0" ] ; then ./travis/git_submodule_update.py ; fi
     # we always specify '-f docker-compose.yml' so 'docker-compose.override.yml'
     # is not used and so the volumes are not shared with the host
   - if [ "$LINT_CHECK" == "0" ] ; then docker-compose -f docker-compose.yml build --pull ; fi

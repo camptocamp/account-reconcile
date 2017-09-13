@@ -95,7 +95,8 @@ class QoQaMessage(models.Model):
                     url = self._get_qoqa_redirect_url(res_id, model)
                 except Exception as exc:
                     with safe_try():
-                        _logger.warning('can not obtain Mail message URL %s', repr(exc))
+                        _logger.warning('can not obtain Mail message URL %s',
+                                        repr(exc))
                 if url:
                     values['body'] = self._extend_body_with_url(body, url)
         return super(QoQaMessage, self).create(values)

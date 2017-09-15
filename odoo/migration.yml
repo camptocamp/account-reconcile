@@ -267,3 +267,10 @@ migration:
         upgrade:
           - speedy_views
     - version: 9.32.1
+    - version: 9.33.0
+      operations:
+        post:
+          - anthem songs.upgrade.9_33_0::main
+      addons:
+        upgrade:
+          - password_security

@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
         <field name="arch" type="xml">
             <separator position="after">
-                <filter string="ToDo" domain="[('last_message_date','&lt;=', (context_today() + datetime.timedelta(days=-2)).strftime('%Y-%m-%d')), ('last_message_date', '=', False')]" help="Claims without a message sent or received in the last 2 days."/>
+                <filter string="ToDo" domain="['|', ('last_message_date', '&lt;=', (context_today() + datetime.timedelta(days=-2)).strftime('%Y-%m-%d')), ('last_message_date', '=', False')]" help="Claims without a message sent or received in the last 2 days."/>
             </separator>
         </field>
     </record>

@@ -1,8 +1,21 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 Camptocamp SA (Nicolas Bessi)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import logging
+from contextlib import contextmanager
 from urlparse import urljoin
 from openerp import models, api, _
+
+_logger = logging.getLogger(__name__)
+
+
+@contextmanager
+def safe_try():
+    try:
+        yield
+    except:
+        # context should never fails
+        pass
 
 
 class QoQaMessage(models.Model):
@@ -46,7 +59,19 @@ class QoQaMessage(models.Model):
         :return: The current body extended with the url
         :return type: string
         """
-        body += _(u'<br/><a href="{}">View in Odoo</a>').format(url)
+        if isinstance(body, basestring):
+            try:
+                body += _(u'<br/><a href="{}">View in Odoo</a>').format(url)
+            except:
+                # we do not want to raise an error if we can note
+                # add the link, the action must finish
+                with safe_try():
+                    _logger.warning('Can not extend Mail message body %s',
+                                    repr(body))
+        else:
+            with safe_try():
+                _logger.warning('Mail message body is not a string %s',
+                                repr(body))
         return body
 
     @api.model
@@ -60,11 +85,18 @@ class QoQaMessage(models.Model):
         res_id = values.get('res_id')
         model = values.get('model')
         body = values.get('body')
-        if model and res_id and body:
+        if model and model != 'crm.claim' and res_id and body:
             origin = self.env[model].browse(res_id)
             origin_can_be_tested = hasattr(origin,
                                            'all_followers_are_users')
+            url = None
             if origin_can_be_tested and origin.all_followers_are_users():
-                url = self._get_qoqa_redirect_url(res_id, model)
-                values['body'] = self._extend_body_with_url(body, url)
+                try:
+                    url = self._get_qoqa_redirect_url(res_id, model)
+                except Exception as exc:
+                    with safe_try():
+                        _logger.warning('can not obtain Mail message URL %s',
+                                        repr(exc))
+                if url:
+                    values['body'] = self._extend_body_with_url(body, url)
         return super(QoQaMessage, self).create(values)

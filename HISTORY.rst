@@ -11,8 +11,6 @@
 
 .. **Bugfixes**
 
-* Hot fix reverting support of biz 27 for crm.claim
-
 .. **Build**
 
 .. **Documentation**
@@ -24,6 +22,24 @@ latest (unreleased)
 +++++++++++++++++++
 
 **Features and Improvements**
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.33.0 (2017-09-21)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Harden qoqa mail message to be resilient to faulty call to message_post BIZ-27
+* Installing account_invoice_update_wizard to allows edition of some fields of confirmed invoices  BIZ-243
+* Add custom time filter on CRM claim BIZ 403
+* Install password security addon BIZ-476
+ 
 
 **Bugfixes**
 

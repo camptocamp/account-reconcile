@@ -22,9 +22,9 @@ def rpc_client(config):
                           protocol=config['protocol'],
                           port=config['port'],
                           timeout=None)
-    client.login(config['database'],
-                 config['erp_user'],
-                 config['erp_pwd'])
+    client.login(config['db'],
+                 'admin_ch',
+                 config['admin_ch'])
     return client
 
 

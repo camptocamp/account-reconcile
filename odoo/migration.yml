@@ -274,3 +274,4 @@ migration:
       addons:
         upgrade:
           - password_security
+          - account_invoice_update_wizard

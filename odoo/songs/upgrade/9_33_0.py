@@ -27,6 +27,18 @@ def update_password_write_date(ctx):
 
 
 @anthem.log
+def add_twint_journal_xmlid(ctx):
+    """ Change password security parameters """
+    ctx.env['ir.model.data'].create({
+        'module': 'scenario',
+        'name': 'Import TWINT',
+        'model': 'account.journal',
+        'res_id': 86
+    })
+
+
+@anthem.log
 def main(ctx):
     modify_password_parameters(ctx)
     update_password_write_date(ctx)
+    add_twint_journal_xmlid(ctx)

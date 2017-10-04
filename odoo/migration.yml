@@ -275,3 +275,4 @@ migration:
         upgrade:
           - password_security
           - account_invoice_update_wizard
+          - crm_claim_mail

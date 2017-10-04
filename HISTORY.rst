@@ -39,6 +39,7 @@ latest (unreleased)
 * Installing account_invoice_update_wizard to allows edition of some fields of confirmed invoices  BIZ-243
 * Add custom time filter on CRM claim BIZ 403
 * Install password security addon BIZ-476
+* Add TWINT configuration BIZ-501
  
 
 **Bugfixes**

@@ -20,10 +20,10 @@
     'data': [
         'data/reopen_claim_on_mail.xml',
         'data/send_mail_on_new_claim.xml',
+        'data/claim_filter.xml',
         'views/qoqa_shop_view.xml',
         'views/res_company_view.xml',
         'views/mail_template.xml',
-        'views/crm_claim_view.xml',
     ],
     'installable': True,
     'auto_install': False,

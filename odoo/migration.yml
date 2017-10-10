@@ -276,3 +276,10 @@ migration:
           - password_security
           - account_invoice_update_wizard
           - crm_claim_mail
+    - version: 9.34.0
+      operations:
+        pre:
+          - anthem songs.upgrade.9_34_0::main
+      addons:
+        upgrade:
+          - auth_totp

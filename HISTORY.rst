@@ -30,6 +30,22 @@ latest (unreleased)
 **Documentation**
 
 
+9.34.0 (2017-10-10)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Install auth_totp
+* Uninstall password security
+* Transform crm.claim TODO filter into if.filter
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
 9.33.0 (2017-09-21)
 +++++++++++++++++++
 
@@ -40,7 +56,7 @@ latest (unreleased)
 * Add custom time filter on CRM claim BIZ 403
 * Install password security addon BIZ-476
 * Add TWINT configuration BIZ-501
- 
+
 
 **Bugfixes**
 

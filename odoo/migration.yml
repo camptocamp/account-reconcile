@@ -282,4 +282,9 @@ migration:
           - anthem songs.upgrade.9_34_0::main
       addons:
         upgrade:
+          - record_archiver
+          - server_environment
+          - base_technical_features
+          - date_range
+          - configuration_helper
           - auth_totp

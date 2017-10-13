@@ -7,8 +7,8 @@ import logging
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
                                                   )
+from openerp import fields
 from ..backend import qoqa
-from ..connector import iso8601_to_local_date
 from ..unit.importer import QoQaImporter
 from ..unit.mapper import FromAttributes, iso8601_to_utc
 
@@ -77,8 +77,7 @@ class VoucherPaymentImportMapper(ImportMapper, FromAttributes):
 
         """
         attributes = record['attributes']
-        date = iso8601_to_local_date(attributes['created_at'])
-
+        date = fields.datetime.now()
         order_binding = self.options.order_binding
         assert order_binding, \
             "need an order_binding to create a voucher payment"

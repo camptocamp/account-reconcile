@@ -288,3 +288,8 @@ migration:
           - date_range
           - configuration_helper
           - auth_totp
+    - version: 9.34.1
+      addons:
+        upgrade:
+          - crm_claim_mail
+          - qoqa_voucher_payment

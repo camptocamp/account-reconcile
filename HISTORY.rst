@@ -30,6 +30,21 @@ latest (unreleased)
 **Documentation**
 
 
+9.34.1 (2017-10-17)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
+* fix crm.claim TODO filter installation
+* Fix date in voucher BIZ-649
+
+**Build**
+
+**Documentation**
+
+
 9.34.0 (2017-10-10)
 +++++++++++++++++++
 

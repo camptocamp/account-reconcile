@@ -17,7 +17,7 @@ psql -p 9451 -h localhost -U postgres postgres
  
 * Second: We will need to rename database name
 ```
-ALTER database qoqa_odoo_prod RENAME TO qoqa_odoo_integration
+ALTER database qoqa_odoo_prod RENAME TO qoqa_odoo_integration;
 REASSIGN OWNED BY qoqa_odoo_prod TO qoqa_odoo_integration ;
 ```
 * Third: We will grand all privileges to database 

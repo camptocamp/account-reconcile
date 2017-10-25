@@ -111,4 +111,22 @@
         </button>
       </field>
     </record>
+
+    <record model="ir.actions.server" id="action_stock_move_unreserve_all">
+      <field name="name">Unreserve All</field>
+      <field name="model_id" ref="stock.model_stock_move"/>
+      <field name="code">
+        if context.get('active_model') == 'stock.move' and context.get('active_ids'):
+            batches = self.pool['stock.move'].do_unreserve(cr, uid, context['active_ids'], context=context)
+      </field>
+    </record>
+
+    <record model="ir.values" id="ir_stock_move_unreserve_all">
+      <field name="model_id" ref="stock.model_stock_move" />
+        <field name="name">Unreserve All</field>
+        <field name="key2">client_action_multi</field>
+        <field eval="'ir.actions.server,%d'%action_stock_move_unreserve_all" name="value"/>
+        <field name="key">action</field>
+        <field name="model">stock.move</field>
+    </record>
 </odoo>

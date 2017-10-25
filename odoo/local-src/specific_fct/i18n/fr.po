@@ -395,6 +395,11 @@ msgid "To modify the carrier, use the 'Apply a carrier and its options' action."
 msgstr "Pour changer le transporteur, merci de passer par l'action 'Appliquer un transporteur et ses options'."
 
 #. module: specific_fct
+#: model:ir.actions.server,name:specific_fct.action_stock_move_unreserve_all
+msgid "Unreserve All"
+msgstr "Annuler la disponibilité"
+
+#. module: specific_fct
 #: model:ir.model.fields,field_description:specific_fct.field_account_invoice_refund_warning
 msgid "Warning"
 msgstr "Warning"

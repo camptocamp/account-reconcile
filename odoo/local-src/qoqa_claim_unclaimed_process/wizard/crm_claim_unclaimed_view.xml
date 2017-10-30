@@ -48,9 +48,10 @@
             <field name="model">crm.claim.unclaimed.delivery</field>
             <field name="arch" type="xml">
                 <form string="Unclaimed Package Delivery">
-                    <group>
-                        <field name="claim_ids"/>
-                    </group>
+                    <div>
+                      <label for="claim_ids"/>
+                      <field name="claim_ids" nolabel="True"/>
+                    </div>
                     <footer>
                         <button string='Deliver Claims' name="deliver_claim" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>

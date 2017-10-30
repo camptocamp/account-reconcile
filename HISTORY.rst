@@ -23,6 +23,21 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Install auth_totp
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+9.35.0 (2017-10-17)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* Add unreserve all BIZ-714
+
 **Bugfixes**
 
 **Build**
@@ -50,7 +65,6 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* Install auth_totp
 * Uninstall password security
 * Transform crm.claim TODO filter into if.filter
 

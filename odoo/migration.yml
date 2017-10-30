@@ -278,8 +278,6 @@ migration:
           - crm_claim_mail
     - version: 9.34.0
       operations:
-        pre:
-          - anthem songs.upgrade.9_34_0::main
       addons:
         upgrade:
           - record_archiver
@@ -287,9 +285,19 @@ migration:
           - base_technical_features
           - date_range
           - configuration_helper
-          - auth_totp
     - version: 9.34.1
       addons:
         upgrade:
           - crm_claim_mail
           - qoqa_voucher_payment
+    - version: 9.35.0
+      addons:
+        upgrade:
+          - specific_fct
+    - version: 9.36.0
+      operations:
+        pre:
+          - anthem songs.upgrade.9_36_0::main
+      addons:
+        upgrade:
+          - auth_totp

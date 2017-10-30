@@ -14,6 +14,15 @@ class CrmClaimUnclaimedDelivery(models.TransientModel):
         required=True
     )
 
+    @api.model
+    def default_get(self, fields):
+        res = super(CrmClaimUnclaimedDelivery, self).default_get(fields)
+        if (self.env.context.get('active_model') == 'crm.claim' and
+                self.env.context.get('active_ids')):
+            claim_ids = self.env.context.get('active_ids')
+            res['claim_ids'] = claim_ids
+        return res
+
     @api.multi
     def _create_unclaimed_invoice(self, claim):
         invoice_obj = self.env['account.invoice']

@@ -71,5 +71,15 @@
         <menuitem name="Unclaimed Package Delivery" id="menu_crm_claim_unclaimed_delivery"
                   parent="base.menu_aftersale" action="action_crm_claim_unclaimed_delivery" sequence="4"/>
 
+        <!-- Action in "more" on crm.claim tree view -->
+        <act_window id="action_crm_claim_tree_unclaimed_delivery"
+          res_model="crm.claim.unclaimed.delivery"
+          src_model="crm.claim"
+          target="new"
+          multi="True"
+          key2="client_action_multi"
+          view_mode="form"
+          name="Unclaimed Package Delivery"/>
+
     </data>
 </openerp>

@@ -74,5 +74,5 @@ class IrAttachment(models.Model):
                                          attachment.name, attachment.id)
                             attachment.write({'datas': attachment.datas})
                             new_cr.commit()
-                        except:
+                        except Exception:
                             new_cr.rollback()

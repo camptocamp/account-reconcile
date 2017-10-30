@@ -238,7 +238,7 @@ class QoQaImporter(Importer):
                         connector_env=self.connector_env
                     )
                     yield connector_env
-                except:
+                except Exception:
                     cr.rollback()
                     raise
                 else:

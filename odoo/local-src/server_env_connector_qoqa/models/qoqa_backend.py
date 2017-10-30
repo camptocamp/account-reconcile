@@ -37,7 +37,7 @@ class QoqaBackend(models.Model):
                                              backend.name))
                     try:
                         value = serv_config.get(section_name, field_name)
-                    except:
+                    except Exception:
                         _logger.exception('error trying to read field %s '
                                           'in section %s', field_name,
                                           section_name)

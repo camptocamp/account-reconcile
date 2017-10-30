@@ -31,7 +31,7 @@ class StockBatchPicking(models.Model):
             try:
                 batch.action_transfer()
                 self.env.cr.commit()
-            except:
+            except Exception:
                 self.env.cr.rollback()
                 _logger.exception(
                     'Could not set batch picking with ID %s as done',

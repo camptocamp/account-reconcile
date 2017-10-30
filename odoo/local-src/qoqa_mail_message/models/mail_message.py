@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 def safe_try():
     try:
         yield
-    except:
+    except Exception:
         # context should never fails
         pass
 
@@ -39,7 +39,7 @@ class QoQaMessage(models.Model):
                 raise ValueError('The given res_id is not an int')
         try:
             self.env[model]
-        except:
+        except Exception:
             raise ValueError('Model {} is not known'.format(model))
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         action = "/mail/view?model={}&res_id={}".format(
@@ -62,7 +62,7 @@ class QoQaMessage(models.Model):
         if isinstance(body, basestring):
             try:
                 body += _(u'<br/><a href="{}">View in Odoo</a>').format(url)
-            except:
+            except Exception:
                 # we do not want to raise an error if we can note
                 # add the link, the action must finish
                 with safe_try():

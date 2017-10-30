@@ -205,7 +205,7 @@ class QoQaAdapter(CRUDAdapter):
             raise QoQaAPIAuthError([])
         try:
             response.raise_for_status()
-        except:
+        except Exception:
             if response.content:
                 # will raise an error with the content
                 parsed = self._parse_content(response)

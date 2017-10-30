@@ -24,7 +24,7 @@ class CrmClaimUnclaimed(models.TransientModel):
     @api.multi
     def _default_user_id(self):
         team = self._default_team_id()
-        return team.user_id or self.env['crm.team']
+        return team.user_id
 
     @api.multi
     def _default_categ_id(self):

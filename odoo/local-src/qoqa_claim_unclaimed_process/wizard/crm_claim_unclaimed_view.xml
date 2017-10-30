@@ -6,7 +6,7 @@
             <field name="name">crm.claim.unclaimed.form</field>
             <field name="model">crm.claim.unclaimed</field>
             <field name="arch" type="xml">
-                <form string="Unclaimed Package Return" version="7.0">
+                <form string="Unclaimed Package Return">
                     <group>
                         <field name="track_number"/>
                         <field name="unclaimed_type"/>
@@ -25,7 +25,6 @@
                     </group>
                     <footer>
                         <button string='Create Claim and Return' name="create_claim" type="object" class="oe_highlight"/>
-                        or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -48,13 +47,12 @@
             <field name="name">crm.claim.unclaimed.delivery.form</field>
             <field name="model">crm.claim.unclaimed.delivery</field>
             <field name="arch" type="xml">
-                <form string="Unclaimed Package Delivery" version="7.0">
+                <form string="Unclaimed Package Delivery">
                     <group>
                         <field name="claim_ids"/>
                     </group>
                     <footer>
                         <button string='Deliver Claims' name="deliver_claim" type="object" class="oe_highlight"/>
-                        or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>

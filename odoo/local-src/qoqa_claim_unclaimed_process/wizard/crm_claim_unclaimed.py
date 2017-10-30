@@ -177,6 +177,7 @@ class CrmClaimUnclaimed(models.TransientModel):
             'ref': 'sale.order,%s' % sale.id,
             'partner_id': self.claim_partner_id.id,
             'invoice_id': self.claim_invoice_id.id,
+            'qoqa_shop_id': self.claim_sale_order_id.qoqa_shop_id.id,
             'unclaimed_price': int(self.claim_carrier_price),
             'unclaimed_package_id': self.claim_package_id.id
         }

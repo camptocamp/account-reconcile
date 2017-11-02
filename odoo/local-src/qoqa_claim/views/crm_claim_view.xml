@@ -38,6 +38,13 @@
                 res_model="crm.claim"
                 src_model="crm.claim"/>
 
+        <act_window
+              id="act_crm_claim_rma_picking_out"
+              name="Outgoing Shipment"
+              res_model="stock.picking"
+              src_model="crm.claim"
+              context="{'active_test': False}"/>
+
         <record id="crm_claim_rma_form_view" model="ir.ui.view">
             <field name="name">crm.claim.rma.filter</field>
             <field name="model">crm.claim</field>
@@ -60,6 +67,16 @@
                             context="{'search_default_partner_id': partner_id}">
                         <field string="Claims" name="claim_count" widget="statinfo"/>
                     </button>
+                </button>
+                <!-- add picking out smart button after "Returns" -->
+                <button icon="fa-reply" position="after">
+                    <button class="oe_stat_button"
+                            icon="fa-truck"
+                            name="%(act_crm_claim_rma_picking_out)d"
+                            type="action"
+                            string="Deliveries"
+                            attrs="{'invisible': [('partner_id','=', False)]}"
+                            context="{'search_default_partner_id': partner_id, 'search_default_user_id':False}"/>
                 </button>
 
                 <field name="team_id" position="after">

@@ -193,19 +193,40 @@ class ClaimLine(models.Model):
     """
     _inherit = "claim.line"
 
+    warranty_return_address = fields.Many2one(
+        'res.partner',
+        compute='_compute_warranty_values',
+        help="Warranty return address of the product")
+
     return_instruction = fields.Many2one(
         'return.instruction',
         'Instructions',
-        compute='_compute_return_instruction',
+        compute='_compute_warranty_values',
         help="Instructions for product return"
     )
 
+    return_instruction_name = fields.Char(
+        'Instructions Title',
+        compute='_compute_warranty_values',
+        help="Instructions title for product return"
+    )
+    return_instruction_details = fields.Text(
+        'Instructions details',
+        compute='_compute_warranty_values',
+        help="Instructions details for product return"
+    )
+
     @api.multi
-    def _compute_return_instruction(self):
+    def _compute_warranty_values(self):
         for line in self:
-            if line.product_id and line.product_id.seller_ids:
-                supplier = line.product_id.seller_ids[0]
-                line.return_instruction = supplier.return_instructions
+            supplier_infos = line.product_id.seller_ids
+            if supplier_infos:
+                address = supplier_infos[0].warranty_return_address
+                instructions = supplier_infos[0].return_instructions
+                line.warranty_return_address = address
+                line.return_instruction = instructions
+                line.return_instruction_name = instructions.name
+                line.return_instruction_details = instructions.instructions
 
     @api.model
     def create(self, vals):

@@ -21,6 +21,7 @@
         'data/crm_claim_data.xml',
         'views/crm_claim_stage.xml',
         'views/crm_claim_view.xml',
+        'views/crm_claim_line.xml',
     ],
     'installable': True,
     'application': True,

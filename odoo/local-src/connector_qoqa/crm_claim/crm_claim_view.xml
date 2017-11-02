@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="crm_claim_rma_form_view" model="ir.ui.view">
+    <field name="name">crm.claim.rma.filter</field>
+    <field name="model">crm.claim</field>
+    <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
+    <field name="arch" type="xml">
+      <!-- add sales count -->
+      <button icon="fa-strikethrough" position="before">
+        <field name="qoqa_partner_url" invisible="1"/>
+        <button class="oe_stat_button"
+          icon="/qoqa_base_data/static/src/img/www_qoqa_ch.ico.png"
+          type="object"
+          name="open_qoqa_partner_url"
+          string="See on QoQa"
+          attrs="{'invisible': [('qoqa_partner_url', '=', False)]}"/>
+      </button>
+    </field>
+  </record>
+
+  <record id="crm_case_claims_tree_view" model="ir.ui.view">
+    <field name="name">CRM - Claims Tree</field>
+    <field name="model">crm.claim</field>
+    <field name="inherit_id" ref="qoqa_claim.crm_case_claims_tree_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='partner_id']" position="after">
+        <field name="qoqa_partner_url" invisible="1"/>
+        <!-- icon is concat to /web/static/src/img/icons and a .png is added at end of it -->
+        <button
+          type="object"
+          icon="../../../../../qoqa_base_data/static/src/img/www_qoqa_ch.ico"
+          name="open_qoqa_partner_url"
+          class=""
+          attrs="{'invisible': [('qoqa_partner_url', '=', False)]}">
+
+        </button>
+      </xpath>
+    </field>
+  </record>
+</odoo>

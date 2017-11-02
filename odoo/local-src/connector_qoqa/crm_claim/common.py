@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields
+from openerp import api, models, fields
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
@@ -33,6 +33,18 @@ class CrmClaim(models.Model):
         string='QBindings',
         context={'active_test': False},
     )
+    qoqa_partner_url = fields.Char(
+        related="partner_id.qoqa_url",
+    )
+
+    @api.multi
+    def open_qoqa_partner_url(self):
+        return {
+            'name': 'See QoQa User',
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'url': self.qoqa_partner_url,
+        }
 
 
 class QoQaClaimMedium(models.Model):

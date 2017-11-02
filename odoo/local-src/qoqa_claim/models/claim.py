@@ -77,6 +77,13 @@ class CrmClaim(models.Model):
     plain_text_description = fields.Text('Description in text form',
                                          compute='_get_plain_text_description')
 
+    sale_order_count = fields.Integer(
+        related="partner_id.sale_order_count"
+    )
+    claim_count = fields.Integer(
+        related='partner_id.claim_count',
+    )
+
     @api.depends('description')
     def _get_plain_text_description(self):
         for claim in self:

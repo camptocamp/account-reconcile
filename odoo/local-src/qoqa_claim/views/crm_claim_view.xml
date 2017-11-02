@@ -32,11 +32,36 @@
             </field>
         </record>
 
+        <act_window
+                id="act_crm_claim_rma_claim"
+                name="Claims"
+                res_model="crm.claim"
+                src_model="crm.claim"/>
+
         <record id="crm_claim_rma_form_view" model="ir.ui.view">
             <field name="name">crm.claim.rma.filter</field>
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">
+                <!-- add sales count -->
+                <button icon="fa-strikethrough" position="attributes">
+                  <attribute name="string"></attribute>
+                </button>
+                <button icon="fa-strikethrough" position="inside">
+                  <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                </button>
+                <!-- replace Purchase smart button by Claim smart button -->
+                <button icon="fa-shopping-cart" position="replace">
+                    <button class="oe_stat_button"
+                            icon="fa-comments"
+                            name="%(act_crm_claim_rma_claim)d"
+                            type="action"
+                            attrs="{'invisible': [('partner_id','=', False)]}"
+                            context="{'search_default_partner_id': partner_id}">
+                        <field string="Claims" name="claim_count" widget="statinfo"/>
+                    </button>
+                </button>
+
                 <field name="team_id" position="after">
                     <field name="categ_id"
                            options="{'no_create': True, 'no_open': True}"
@@ -94,7 +119,6 @@
                 </field>
             </field>
         </record>
-
 
      </data>
 </openerp>

@@ -68,6 +68,10 @@ class CrmClaim(models.Model):
         store=True,
         readonly=True
     )
+    partner_category_ids = fields.Many2many(
+        string="Partner tags",
+        related="partner_id.category_id"
+    )
 
     description = fields.Html('Description')
     plain_text_description = fields.Text('Description in text form',

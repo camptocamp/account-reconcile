@@ -46,7 +46,7 @@
               context="{'active_test': False}"/>
 
         <record id="crm_claim_rma_form_view" model="ir.ui.view">
-            <field name="name">crm.claim.rma.filter</field>
+            <field name="name">crm.claim.rma.form</field>
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">

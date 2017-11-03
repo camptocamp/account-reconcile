@@ -84,6 +84,11 @@ class CrmClaim(models.Model):
         related='partner_id.claim_count',
     )
 
+    # Add domain based on sales team
+    categ_id = fields.Many2one(
+        domain="[('team_id', '=', team_id)]",
+    )
+
     @api.depends('description')
     def _get_plain_text_description(self):
         for claim in self:

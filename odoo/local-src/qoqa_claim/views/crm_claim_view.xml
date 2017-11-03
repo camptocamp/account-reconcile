@@ -150,5 +150,22 @@
             </field>
         </record>
 
+        <!-- Add entry in the "More" drop down list in tree view -->
+        <record id="action_code_assign_current_user" model="ir.actions.server">
+          <field name="name">I take it!</field>
+          <field name="model_id" ref="crm_claim.model_crm_claim"/>
+          <field name="state">code</field>
+          <field name="condition">True</field>
+          <field name="code">self.write(cr, uid, context.get('active_ids', []), {'user_id': uid})</field>
+        </record>
+
+        <record id="assign_current_user_action" model="ir.values">
+          <field name="name">Action in more menu to assign current user</field>
+          <field name="model">crm.claim</field>
+          <field name="key">action</field>
+          <field name="key2">client_action_multi</field>
+          <field name="value" eval="'ir.actions.server,%d'%action_code_assign_current_user"/>
+        </record>
+
      </data>
 </openerp>

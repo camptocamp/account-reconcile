@@ -24,6 +24,7 @@
         'views/qoqa_shop_view.xml',
         'views/res_company_view.xml',
         'views/mail_template.xml',
+        'views/crm_claim.xml',
     ],
     'installable': True,
     'auto_install': False,

@@ -2,7 +2,7 @@
 # © 2014-2016 Camptocamp SA (Guewen Baconnier, Matthieu Dietrich)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from openerp import _, api, fields, models
 from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
                            DEFAULT_SERVER_TIME_FORMAT,
@@ -72,6 +72,21 @@ class CrmClaim(models.Model):
     )
     last_message_date = fields.Datetime(
         string='Date of last message sent or received')
+
+    # used to colorize the tree view
+    is_gt_48h = fields.Boolean(compute='_compute_is_gt_48h')
+    stage_state = fields.Selection(
+        related='stage_id.state'
+    )
+
+    @api.multi
+    def _compute_is_gt_48h(self):
+        now = datetime.now()
+        for rec in self:
+            if rec.last_message_date:
+                dt_48h_ago = now - timedelta(days=2)
+                dt_last = fields.Datetime.from_string(rec.last_message_date)
+                rec.is_gt_48h = dt_last < dt_48h_ago
 
     @api.multi
     def _complete_from_sale(self, message):

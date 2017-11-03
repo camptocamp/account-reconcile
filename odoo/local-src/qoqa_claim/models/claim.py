@@ -89,6 +89,14 @@ class CrmClaim(models.Model):
         domain="[('team_id', '=', team_id)]",
     )
 
+    # field for attrs on view form of button assign
+    is_user_current = fields.Boolean(compute='_compute_is_user_current')
+
+    @api.multi
+    def _compute_is_user_current(self):
+        for rec in self:
+            self.is_user_current = self.user_id == self.env.user
+
     @api.depends('description')
     def _get_plain_text_description(self):
         for claim in self:
@@ -139,6 +147,10 @@ class CrmClaim(models.Model):
             if partner_ids or channel_ids:
                 # Resuscribe all partner include customer
                 claim.message_subscribe(partner_ids, channel_ids)
+
+    @api.multi
+    def assign_current_user(self):
+        self.update({'user_id': self.env.uid})
 
     @api.model
     def create(self, vals):

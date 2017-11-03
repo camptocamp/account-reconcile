@@ -79,6 +79,19 @@
                             context="{'search_default_partner_id': partner_id, 'search_default_user_id':False}"/>
                 </button>
 
+                <field name="name" position="after">
+                  <field name="is_user_current" invisible="True"/>
+                </field>
+
+                <field name="user_id" position="replace">
+                  <label for="user_id"/>
+                  <div>
+                    <field name="user_id" class="oe_inline"/>
+                    <span attrs="{'invisible': [('is_user_current', '=', True)]}">
+                    ← <button string="I take it!" name="assign_current_user" type="object" class="oe_link"/>
+                    </span>
+                  </div>
+                </field>
                 <field name="team_id" position="after">
                     <field name="categ_id"
                            options="{'no_create': True, 'no_open': True}"

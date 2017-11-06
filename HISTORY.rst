@@ -25,6 +25,21 @@ latest (unreleased)
 
 * BIZ-677 Improve stock.picking & SO/quot tree views
 * Add "TWINT" in the list of partners imported from the CAMT.053 file
+* BSQOQ-24: Claim UI improvements
+
+  * Form - Remove useless column on product returns o2m
+  * Form - Add sale count and claims smart button in place of purchase
+  * Form - Add picking out smart button
+  * Tree and Form - Add buttons to link to backoffice
+  * Form - Add a button "I take it!" to assign current user
+  * Tree - Add an action "I take it!" to assign current user in "Action" menu
+  * Tree - Add line colors depending on last_message_date and state
+  * Search - filter on products of claim lines
+  * Picking Form - Always display initial demand in pickings - make it readonly instead of invisible
+  * Add warranty info on claim.line instructions and return address
+  * Add partner tags field on claim
+  * Add crm stage "Return received"
+  * Filter category field by sale team
 
 **Bugfixes**
 

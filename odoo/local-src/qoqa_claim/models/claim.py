@@ -84,6 +84,12 @@ class CrmClaim(models.Model):
         related='partner_id.claim_count',
     )
 
+    # Used to search per return products
+    product_id = fields.Many2one(
+        'product.product',
+        related='claim_line_ids.product_id',
+        string='Product')
+
     # Add domain based on sales team
     categ_id = fields.Many2one(
         domain="[('team_id', '=', team_id)]",

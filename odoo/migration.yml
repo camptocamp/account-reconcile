@@ -301,3 +301,4 @@ migration:
       addons:
         upgrade:
           - auth_totp
+          - specific_fct

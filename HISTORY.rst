@@ -23,7 +23,20 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.36.0 (2017-11-06)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * Install auth_totp
+* BIZ-711 improve reconciliation of future sales of gift cards
 
 **Bugfixes**
 

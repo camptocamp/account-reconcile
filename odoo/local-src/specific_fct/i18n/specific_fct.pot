@@ -448,3 +448,9 @@ msgstr ""
 #: model:ir.model,name:specific_fct.model_stock_batch_picking
 msgid "stock.batch.picking"
 msgstr ""
+
+#. module: specific_fct
+#: code:addons/specific_fct/models/stock_change_product_qty.py:23
+#, python-format
+msgid "The template \"{}\" has no active variant"
+msgstr ""

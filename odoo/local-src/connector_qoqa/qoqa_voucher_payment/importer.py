@@ -94,6 +94,7 @@ class VoucherPaymentImportMapper(ImportMapper, FromAttributes):
         description = u'%s (%s)' % (attributes['description'], record['id'])
         partner = order_binding.partner_id.commercial_partner_id
         amount = float(attributes['amount'])
+        transaction_ref = attributes['payment_id']
         voucher_journal = self.backend_record.property_voucher_journal_id
         values['journal_id'] = voucher_journal.id
         lines = [
@@ -103,6 +104,7 @@ class VoucherPaymentImportMapper(ImportMapper, FromAttributes):
              'partner_id': partner.id,
              'debit': amount,
              'credit': 0.0,
+             'transaction_ref': transaction_ref,
              },
             # receivable
             {'account_id': order_journal.default_credit_account_id.id,

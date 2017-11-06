@@ -27,6 +27,9 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Fix BIZ-709 on the change quantity wizard
+  that does not manage the use case of a template witout active variant
+
 **Build**
 
 **Documentation**

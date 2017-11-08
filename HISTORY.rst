@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BIZ-677 Improve stock.picking & SO/quot tree views
+
 **Bugfixes**
 
 **Build**

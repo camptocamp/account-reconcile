@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Map the payment_id on discount accounting group instead of payment voucher
+
 **Build**
 
 **Documentation**

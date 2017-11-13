@@ -27,6 +27,7 @@ Adds *Offer* models.
              'product_brand',  # oca/product-attribute
              # TODO: activate
              # 'picking_dispatch',  # stock-logistic-flows
+             'batch_picking_group',
              ],
  'data': ['sale_order_view.xml',
           'account_invoice_view.xml',

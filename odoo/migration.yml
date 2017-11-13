@@ -302,3 +302,7 @@ migration:
         upgrade:
           - auth_totp
           - specific_fct
+    - version: 9.37.0
+      addons:
+        upgrade:
+          - qoqa_offer

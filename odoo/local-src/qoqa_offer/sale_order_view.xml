@@ -19,6 +19,7 @@
     <field name="inherit_id" ref="sale.view_order_tree"/>
     <field name="arch" type="xml">
       <field name="name" position="after">
+        <field name="client_order_ref"/>
         <field name="offer_id"/>
         <field name="qoqa_shop_id"/>
       </field>
@@ -54,6 +55,17 @@
 
   <record id="sale.action_orders" model="ir.actions.act_window">
     <field name="context">{'search_default_favoritesshops': 1}</field>
+  </record>
+
+  <record id="view_quotation_tree_add_offer" model="ir.ui.view">
+    <field name="name">sale.order.form.add.offer</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_quotation_tree"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="client_order_ref"/>
+      </field>
+    </field>
   </record>
 
 </odoo>

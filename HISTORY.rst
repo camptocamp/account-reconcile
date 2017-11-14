@@ -120,7 +120,7 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* Add "TWINT" in the list of partners imported from the CAMT.053 file
+* Hot fix reverting support of biz 27 for crm.claim
 
 **Bugfixes**
 

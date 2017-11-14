@@ -42,26 +42,39 @@ class ResPartner(models.Model):
     def _compute_qoqa_url(self):
         """ Generate direct access link to backoffice user page
 
-        The base url is defined in ir.config_parameter "backoffice.user.url"
+        The base url is defined on qoqa backend.
+        The path is in ir.config_parameter "backend.user.path"
         The url will be filled with the qoqa user id by replacing "{user_id}"
         or if this string is not present in base url, at the end of the url
 
-        Ex: www.my_backoffice.com/user/{user_id}
+        Ex:
+        backend_url: www.my_backoffice.com
+        backend.user.path: /user/{user_id}
+        qoqa_id: 42
+
+        Result:
+        www.my_backoffice.com/user/42
 
         """
         ICP = self.env['ir.config_parameter']
-        base_url = ICP.get_param('backoffice.user.url')
-        if base_url:
-            if '{user_id}' not in base_url:
-                base_url += '{user_id}'
-            # ensure it starts with http(s)
-            # otherwise using it in link will make it local
-            if not base_url.startswith('http'):
-                base_url = 'http://' + base_url
+        path = ICP.get_param('backend.user.path')
+        if path:
+            if '{user_id}' not in path:
+                path += '{user_id}'
             for rec in self:
-                if rec.qoqa_bind_ids:
-                    user_id = rec.qoqa_bind_ids[0].qoqa_id
-                    rec.qoqa_url = base_url.format(user_id=user_id)
+                if not rec.qoqa_bind_ids:
+                    continue
+                qoqa_rec = rec.qoqa_bind_ids[0]
+                backend = qoqa_rec.backend_id
+                if not backend or not backend.backend_url:
+                    continue
+                base_url = backend.backend_url + path
+                # ensure it starts with http(s)
+                # otherwise using it in link will make it local
+                if not base_url.startswith('http'):
+                    base_url = 'http://' + base_url
+                user_id = qoqa_rec.qoqa_id
+                rec.qoqa_url = base_url.format(user_id=user_id)
 
 
 @qoqa

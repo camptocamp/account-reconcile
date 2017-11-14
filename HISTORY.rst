@@ -29,6 +29,8 @@ latest (unreleased)
 
 **Build**
 
+* Upgrade Dockerimage to 9.0-2.4.1
+
 **Documentation**
 
 

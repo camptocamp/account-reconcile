@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * BIZ-677 Improve stock.picking & SO/quot tree views
+* Add "TWINT" in the list of partners imported from the CAMT.053 file
 
 **Bugfixes**
 

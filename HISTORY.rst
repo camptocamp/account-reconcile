@@ -117,6 +117,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Add "TWINT" in the list of partners imported from the CAMT.053 file
+
 **Bugfixes**
 
 **Build**

@@ -61,6 +61,9 @@ class AccountBankStatementImport(models.TransientModel):
             elif "SWISSCARD" in entry_text:
                 # AmericanExpress partner
                 return (1052745, "Virement American Express")
+            elif "TWINT AG" in entry_text:
+                # TWINT partner
+                return (6789054, "Virement Twint")
             else:
                 return (False, entry_text)
 

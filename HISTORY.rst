@@ -47,6 +47,11 @@ latest (unreleased)
 
 * Fix BIZ-709 on the change quantity wizard
   that does not manage the use case of a template witout active variant
+* BSQOQ-22: Add Unclaimed Package Delivery as action on claim tree view
+
+**Bugfixes**
+
+* Pass qoqa_shop_id when creating claim from wizard Unclaimed Package Return
 
 **Build**
 

@@ -24,7 +24,7 @@ class CrmClaimUnclaimed(models.TransientModel):
     @api.multi
     def _default_user_id(self):
         team = self._default_team_id()
-        return team.user_id or self.env['crm.team']
+        return team.user_id
 
     @api.multi
     def _default_categ_id(self):
@@ -177,6 +177,7 @@ class CrmClaimUnclaimed(models.TransientModel):
             'ref': 'sale.order,%s' % sale.id,
             'partner_id': self.claim_partner_id.id,
             'invoice_id': self.claim_invoice_id.id,
+            'qoqa_shop_id': self.claim_sale_order_id.qoqa_shop_id.id,
             'unclaimed_price': int(self.claim_carrier_price),
             'unclaimed_package_id': self.claim_package_id.id
         }

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from base64 import b64encode
@@ -100,6 +100,18 @@ def set_web_base_url(ctx):
 
 
 @anthem.log
+def create_sale_teams(ctx):
+    """ Create sales team required in qoqa_claim_unclaimed_process
+
+    """
+    values = {
+        'name': "Livraisons",
+    }
+    create_or_update(
+        ctx, 'crm.team', 'scenario.section_sale_team_livr', values)
+
+
+@anthem.log
 def main(ctx):
     """ Main: creating demo data """
     req = Requirement.parse('qoqa-odoo')
@@ -107,4 +119,5 @@ def main(ctx):
     setup_language(ctx)
     default_values(ctx)
     set_web_base_url(ctx)
+    create_sale_teams(ctx)
     # TODO: generate demo data

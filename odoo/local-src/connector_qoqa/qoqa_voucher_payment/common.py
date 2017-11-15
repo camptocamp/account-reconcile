@@ -3,6 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from openerp import models, fields
+from ..backend import qoqa
+from ..unit.binder import QoQaInheritsBinder
+from ..exception import QoQaError
 
 
 class QoqaVoucherPayment(models.Model):
@@ -35,3 +38,17 @@ class AccountMove(models.Model):
         string='QBindings',
         context={'active_test': False},
     )
+
+
+@qoqa
+class VoucherBinder(QoQaInheritsBinder):
+    _model_name = ['qoqa.voucher.payment']
+
+    def bind(self, external_id, binding_id):
+        """ Validate that external id is a composite ID of following nature:
+        QoqaVoucherId__QoqaSaleOrderId
+        """
+        if '__' not in external_id:
+            raise QoQaError('External ID is not valid it does not seems to be '
+                            'composed of qoqa voucherid and qoqa sales id')
+        return super(VoucherBinder, self).bind(external_id, binding_id)

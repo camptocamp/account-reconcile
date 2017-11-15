@@ -14,7 +14,7 @@ interactions:
         false, "description": "Voucher admin 1", "created_at": "2016-06-27T13:42:58.000+02:00",
         "company_id": 1, "updated_at": "2016-06-27T13:42:58.000+02:00", "currency":
         "chf", "amount": "69.0", "accounting_website_id": 3, "main_type": "voucher",
-        "sub_type": "marketing"}, "type": "discount", "id": "10000007"}, {"attributes":
+        "sub_type": "marketing", "payment_id": "ABCD"}, "type": "discount", "id": "10000007"}, {"attributes":
         {"discount_accounting_group_id": 100000002, "created_at": "2016-06-27T13:42:58.000+02:00",
         "updated_at": "2016-06-27T13:42:58.000+02:00", "label": "Vente bons cadeaux",
         "vat_id": 6, "amount": "-100.0", "is_vat": false}, "type": "discount_accounting_line",

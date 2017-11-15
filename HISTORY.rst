@@ -28,6 +28,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Map the payment_id on discount accounting group instead of payment voucher
+
 **Build**
 
 * Upgrade Dockerimage to 9.0-2.4.1

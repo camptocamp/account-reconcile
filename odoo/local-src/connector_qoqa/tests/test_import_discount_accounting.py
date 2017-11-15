@@ -21,7 +21,7 @@ ExpectedDiscountAccounting = namedtuple(
 
 ExpectedDiscountAccountingLine = namedtuple(
     'ExpectedDiscountAccountingLine',
-    'debit credit account_id analytic_account_id name tax_ids'
+    'debit credit account_id analytic_account_id name tax_ids transaction_ref'
 )
 
 
@@ -168,6 +168,7 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
                 analytic_account_id=self.analytic_account,
                 name=u'Emission du bons de rabais SAV',
                 tax_ids=self.env['account.tax'],
+                transaction_ref="ABCD",
             ),
             ExpectedDiscountAccountingLine(
                 debit=92.59,
@@ -176,6 +177,7 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
                 analytic_account_id=self.analytic_account,
                 name=u'Frais service clientèle net',
                 tax_ids=self.tax_8,
+                transaction_ref="ABCD",
             ),
             ExpectedDiscountAccountingLine(
                 debit=7.41,
@@ -184,6 +186,7 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
                 analytic_account_id=self.env['account.analytic.account'],
                 name=u'Frais service clientèle net 8.0%',
                 tax_ids=self.env['account.tax'],
+                transaction_ref=False,
             ),
         ]
         self.assert_records(expected_lines, move_lines)
@@ -236,6 +239,7 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
                 analytic_account_id=self.env['account.analytic.account'],
                 name=u'Vente bons cadeaux',
                 tax_ids=self.env['account.tax'],
+                transaction_ref="ABCD",
             ),
             ExpectedDiscountAccountingLine(
                 debit=100.0,
@@ -245,6 +249,7 @@ class TestImportDiscountAccounting(QoQaTransactionCase):
                 analytic_account_id=self.env['account.analytic.account'],
                 name=u'Vente bons cadeaux',
                 tax_ids=self.env['account.tax'],
+                transaction_ref=False,
             ),
         ]
         self.assert_records(expected_lines, move_lines)

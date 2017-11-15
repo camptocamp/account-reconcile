@@ -162,10 +162,15 @@ class BaseAccountingImportMapper(ImportMapper, FromDataAttributes):
         assert shop, "Unknow shop_id, refresh the Backend's metadata"
         return shop.analytic_account_id
 
+    def _payment_id(self, map_record):
+        discount = _extract_discount_from_group(map_record)
+        return discount['attributes'].get('payment_id')
+
     def _line_options(self, map_record, values):
         options = self.options.copy()
         company = self._company(map_record.source)
         journal_id = values['journal_id']
+        payment_id = self._payment_id(map_record.source)
         options.update({
             'journal': self.env['account.journal'].browse(journal_id),
             'partner': self._partner(map_record),
@@ -173,6 +178,7 @@ class BaseAccountingImportMapper(ImportMapper, FromDataAttributes):
             'date': values['date'],
             'analytic_account': self._analytic_account(map_record),
             'ref': values['ref'],
+            'qoqa_payment_id': payment_id,
         })
         currency = self._currency(map_record, company)
         if currency:
@@ -420,6 +426,11 @@ class BaseLineMapper(ImportMapper, FromAttributes):
     def currency(self, record):
         if self.options.currency_id:
             return {'currency_id': self.options.currency.id}
+
+    @mapping
+    def transaction_ref(self, record):
+        if self.options.qoqa_payment_id:
+            return {'transaction_ref': self.options.qoqa_payment_id}
 
 
 @qoqa

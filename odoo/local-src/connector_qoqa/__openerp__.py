@@ -20,6 +20,7 @@
              'sale_stock',
              'qoqa_offer',
              'qoqa_product',
+             'base_delivery_carrier_label',
              'base_transaction_id',   # oca/bank-statement-reconcile
              'account_analytic_required',  # oca/account-analytic
              ],

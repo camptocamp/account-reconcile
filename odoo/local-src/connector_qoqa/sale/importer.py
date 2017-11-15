@@ -169,7 +169,7 @@ class SaleOrderImporter(QoQaImporter):
     def _import_vouchers(self, binding, vouchers):
         for voucher in vouchers:
             self._import_dependency(
-                voucher['id'],
+                "{}__{}".format(voucher['id'], binding.qoqa_id),
                 'qoqa.voucher.payment',
                 record=voucher,
                 order_binding=binding,

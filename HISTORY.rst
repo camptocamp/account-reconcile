@@ -44,6 +44,7 @@ latest (unreleased)
 **Bugfixes**
 
 * Map the payment_id on discount accounting group instead of payment voucher
+* Restore possibility to run connector_qoqa tests with pytest
 
 **Build**
 

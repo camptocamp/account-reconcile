@@ -40,8 +40,8 @@ latest (unreleased)
   * Add partner tags field on claim
   * Add crm stage "Return received"
   * Filter category field by sale team
+* Allows a giftcard to be used on many QoQa sale order in QoQa connector BIZ-712
 
-* Allows a giftcard to be used on many QoQa sale order in conncector BIZ-712
 **Bugfixes**
 
 * Map the payment_id on discount accounting group instead of payment voucher

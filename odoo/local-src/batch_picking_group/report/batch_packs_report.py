@@ -22,7 +22,7 @@ class PrintBatchPacks(PrintBatch):
     def _get_packs(self, batch_aggr):
         operations = sorted(
             batch_aggr.batch_id.pack_operation_ids,
-            key=attrgetter('result_package_id.name')
+            key=attrgetter('result_package_id.parcel_tracking')
         )
         for pack, operations in groupby(
                 operations, key=attrgetter('result_package_id')

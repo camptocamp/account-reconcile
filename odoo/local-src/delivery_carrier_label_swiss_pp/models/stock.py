@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # © 2014-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+from itertools import groupby
 from openerp import api, fields, models
 
 
@@ -24,7 +25,6 @@ class StockPicking(models.Model):
         """ Generate labels and write tracking numbers received """
         self.ensure_one()
         report_name = 'delivery_carrier_label_swiss_pp.report_label_swiss_pp'
-
         pdf = self.env['report'].get_pdf(self, report_name)
 
         return {'name': '%s.pdf' % report_name,
@@ -41,3 +41,26 @@ class StockPicking(models.Model):
             return [self._generate_swiss_pp_label(package_ids=package_ids)]
         return super(StockPicking, self
                      ).generate_shipping_labels(package_ids=package_ids)
+
+
+class DeliveryCarrierLabelGenerate(models.TransientModel):
+
+    _inherit = 'delivery.carrier.label.generate'
+
+    @api.model
+    def _get_packs(self, batch):
+        """Override to change sort order for QoQa"""
+        def _sort_key(rec):
+            return (rec.result_package_id.parcel_tracking or
+                    rec.result_package_id.name or
+                    rec.package_id.name)
+        operations = batch.pack_operation_ids
+        operations = sorted(
+            operations,
+            key=_sort_key
+        )
+        for pack, grp_operations in groupby(
+                operations,
+                key=lambda r: r.result_package_id or r.package_id):
+            pack_label = self._find_pack_label(pack)
+            yield pack, list(grp_operations), pack_label

@@ -1,16 +1,26 @@
-<odoo>
+<odoo noupdate="1">
     <record model="crm.claim.stage" id="crm_claim.stage_claim1">
         <field name="state">draft</field>
     </record>
     <record model="crm.claim.stage" id="crm_claim.stage_claim5">
         <field name="state">open</field>
+        <field name="sequence">27</field>
+    </record>
+    <!-- new stage inserted between "In progress" and "Settled" -->
+    <record model="crm.claim.stage" id="qoqa_stage_claim_return">
+        <field name="name">Return received</field>
+        <field name="state">open</field>
+        <field name="sequence">28</field>
+        <field name="claim_common" eval="True"/>
     </record>
     <record model="crm.claim.stage" id="crm_claim.stage_claim2">
         <field name="state">done</field>
+        <field name="sequence">29</field>
         <field name="claim_common" eval="True"/>
     </record>
     <record model="crm.claim.stage" id="crm_claim.stage_claim3">
         <field name="state">cancel</field>
+        <field name="sequence">30</field>
         <field name="claim_common" eval="True"/>
     </record>
     <record id="crm_case_categ_default_others" model="crm.claim.category">

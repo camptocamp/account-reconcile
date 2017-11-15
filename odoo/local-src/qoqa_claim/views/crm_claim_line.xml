@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+
+    <record model="ir.ui.view" id="crm_claim_line_form_view">
+      <field name="name">CRM - Claim product return line Form</field>
+      <field name="model">claim.line</field>
+      <field name="inherit_id" ref="crm_claim_rma.crm_claim_line_form_view"/>
+      <field name="arch" type="xml">
+        <field name="warranty_return_partner" position="after">
+          <separator string="Instructions" colspan="4"/>
+          <field name="return_instruction_details" nolabel="1" colspan="4"/>
+        </field>
+      </field>
+    </record>
+
+  </data>
+</openerp>

@@ -28,7 +28,7 @@ class QoqaBackend(models.Model):
     @api.multi
     def _compute_server_env(self):
         for backend in self:
-            for field_name in ('url', 'site_url', 'debug'):
+            for field_name in ('url', 'site_url', 'backend_url', 'debug'):
                 value = os.environ.get(
                     'CONNECTOR_QOQA_%s' % field_name.upper()
                 )
@@ -47,4 +47,5 @@ class QoqaBackend(models.Model):
 
     url = fields.Char(compute='_compute_server_env')
     site_url = fields.Char(compute='_compute_server_env')
+    backend_url = fields.Char(compute='_compute_server_env')
     debug = fields.Boolean(compute='_compute_server_env')

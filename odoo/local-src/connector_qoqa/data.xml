@@ -194,4 +194,9 @@
     <field eval="'()'" name="args"/>
   </record>
 
+  <record id="backend_user_path" model="ir.config_parameter">
+    <field name="key">backend.user.path</field>
+    <field name="value">/admin/users/{user_id}</field>
+  </record>
+
 </odoo>

@@ -211,6 +211,11 @@ msgid "Price for unclaimed return"
 msgstr "Prix pour retour non-réclamé"
 
 #. module: qoqa_claim
+#: model:crm.claim.stage,name:qoqa_claim.qoqa_stage_claim_return
+msgid "Return received"
+msgstr "Retour reçu"
+
+#. module: qoqa_claim
 #: field:crm.claim.unclaimed,claim_user_id:0
 #: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_user_id
 msgid "Responsible"

@@ -68,10 +68,40 @@ class CrmClaim(models.Model):
         store=True,
         readonly=True
     )
+    partner_category_ids = fields.Many2many(
+        string="Partner tags",
+        related="partner_id.category_id"
+    )
 
     description = fields.Html('Description')
     plain_text_description = fields.Text('Description in text form',
                                          compute='_get_plain_text_description')
+
+    sale_order_count = fields.Integer(
+        related="partner_id.sale_order_count"
+    )
+    claim_count = fields.Integer(
+        related='partner_id.claim_count',
+    )
+
+    # Used to search per return products
+    product_id = fields.Many2one(
+        'product.product',
+        related='claim_line_ids.product_id',
+        string='Product')
+
+    # Add domain based on sales team
+    categ_id = fields.Many2one(
+        domain="[('team_id', '=', team_id)]",
+    )
+
+    # field for attrs on view form of button assign
+    is_user_current = fields.Boolean(compute='_compute_is_user_current')
+
+    @api.multi
+    def _compute_is_user_current(self):
+        for rec in self:
+            self.is_user_current = self.user_id == self.env.user
 
     @api.depends('description')
     def _get_plain_text_description(self):
@@ -123,6 +153,10 @@ class CrmClaim(models.Model):
             if partner_ids or channel_ids:
                 # Resuscribe all partner include customer
                 claim.message_subscribe(partner_ids, channel_ids)
+
+    @api.multi
+    def assign_current_user(self):
+        self.update({'user_id': self.env.uid})
 
     @api.model
     def create(self, vals):
@@ -193,19 +227,40 @@ class ClaimLine(models.Model):
     """
     _inherit = "claim.line"
 
+    warranty_return_address = fields.Many2one(
+        'res.partner',
+        compute='_compute_warranty_values',
+        help="Warranty return address of the product")
+
     return_instruction = fields.Many2one(
         'return.instruction',
         'Instructions',
-        compute='_compute_return_instruction',
+        compute='_compute_warranty_values',
         help="Instructions for product return"
     )
 
+    return_instruction_name = fields.Char(
+        'Instructions Title',
+        compute='_compute_warranty_values',
+        help="Instructions title for product return"
+    )
+    return_instruction_details = fields.Text(
+        'Instructions details',
+        compute='_compute_warranty_values',
+        help="Instructions details for product return"
+    )
+
     @api.multi
-    def _compute_return_instruction(self):
+    def _compute_warranty_values(self):
         for line in self:
-            if line.product_id and line.product_id.seller_ids:
-                supplier = line.product_id.seller_ids[0]
-                line.return_instruction = supplier.return_instructions
+            supplier_infos = line.product_id.seller_ids
+            if supplier_infos:
+                address = supplier_infos[0].warranty_return_address
+                instructions = supplier_infos[0].return_instructions
+                line.warranty_return_address = address
+                line.return_instruction = instructions
+                line.return_instruction_name = instructions.name
+                line.return_instruction_details = instructions.instructions
 
     @api.model
     def create(self, vals):

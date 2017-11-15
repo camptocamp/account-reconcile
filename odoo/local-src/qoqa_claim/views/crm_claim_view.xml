@@ -10,6 +10,9 @@
                 <field name="name" position="before">
                     <field name="description"/>
                 </field>
+                <field name="user_id" position="after">
+                  <field name="product_id"/>
+                </field>
             </field>
         </record>
 
@@ -32,11 +35,66 @@
             </field>
         </record>
 
+        <act_window
+                id="act_crm_claim_rma_claim"
+                name="Claims"
+                res_model="crm.claim"
+                src_model="crm.claim"/>
+
+        <act_window
+              id="act_crm_claim_rma_picking_out"
+              name="Outgoing Shipment"
+              res_model="stock.picking"
+              src_model="crm.claim"
+              context="{'active_test': False}"/>
+
         <record id="crm_claim_rma_form_view" model="ir.ui.view">
-            <field name="name">crm.claim.rma.filter</field>
+            <field name="name">crm.claim.rma.form</field>
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">
+                <!-- add sales count -->
+                <button icon="fa-strikethrough" position="attributes">
+                  <attribute name="string"></attribute>
+                </button>
+                <button icon="fa-strikethrough" position="inside">
+                  <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                </button>
+                <!-- replace Purchase smart button by Claim smart button -->
+                <button icon="fa-shopping-cart" position="replace">
+                    <button class="oe_stat_button"
+                            icon="fa-comments"
+                            name="%(act_crm_claim_rma_claim)d"
+                            type="action"
+                            attrs="{'invisible': [('partner_id','=', False)]}"
+                            context="{'search_default_partner_id': partner_id}">
+                        <field string="Claims" name="claim_count" widget="statinfo"/>
+                    </button>
+                </button>
+                <!-- add picking out smart button after "Returns" -->
+                <button icon="fa-reply" position="after">
+                    <button class="oe_stat_button"
+                            icon="fa-truck"
+                            name="%(act_crm_claim_rma_picking_out)d"
+                            type="action"
+                            string="Deliveries"
+                            attrs="{'invisible': [('partner_id','=', False)]}"
+                            context="{'search_default_partner_id': partner_id, 'search_default_user_id':False}"/>
+                </button>
+
+                <field name="name" position="after">
+                  <field name="is_user_current" invisible="True"/>
+                </field>
+
+                <field name="user_id" position="replace">
+                  <label for="user_id"/>
+                  <div>
+                    <field name="user_id" class="oe_inline"/>
+                    <span attrs="{'invisible': [('is_user_current', '=', True)]}">
+                    ← <button string="I take it!" name="assign_current_user" type="object" class="oe_link"/>
+                    </span>
+                  </div>
+                </field>
                 <field name="team_id" position="after">
                     <field name="categ_id"
                            options="{'no_create': True, 'no_open': True}"
@@ -47,6 +105,9 @@
                 <field name="partner_id" position="attributes">
                     <attribute name="domain">[('parent_id', '=', False)]</attribute>
                 </field>
+                <field name="partner_id" position="after">
+                    <field name="partner_category_ids" widget="many2many_tags"/>
+                </field>
                 <field name="partner_phone" position="attributes">
                     <attribute name="required">0</attribute>
                 </field>
@@ -56,6 +117,21 @@
                 <field name="delivery_address_id" position="attributes">
                     <attribute name="attrs">{'invisible': [('pick', '=', True)]}</attribute>
                 </field>
+                <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='state']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='name']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='claim_origin']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='claim_diagnosis']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='warranty_type']" position="after">
+                  <field name="warranty_return_address"/>
+                </xpath>
                 <xpath expr="//field[@name='claim_line_ids']/tree/field[@name='prodlot_id']" position="replace">
                     <field name="return_instruction"/>
                 </xpath>
@@ -77,6 +153,22 @@
             </field>
         </record>
 
+        <!-- Add entry in the "More" drop down list in tree view -->
+        <record id="action_code_assign_current_user" model="ir.actions.server">
+          <field name="name">I take it!</field>
+          <field name="model_id" ref="crm_claim.model_crm_claim"/>
+          <field name="state">code</field>
+          <field name="condition">True</field>
+          <field name="code">self.write(cr, uid, context.get('active_ids', []), {'user_id': uid})</field>
+        </record>
+
+        <record id="assign_current_user_action" model="ir.values">
+          <field name="name">Action in more menu to assign current user</field>
+          <field name="model">crm.claim</field>
+          <field name="key">action</field>
+          <field name="key2">client_action_multi</field>
+          <field name="value" eval="'ir.actions.server,%d'%action_code_assign_current_user"/>
+        </record>
 
      </data>
 </openerp>

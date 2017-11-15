@@ -2,7 +2,7 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields
+from openerp import api, models, fields
 
 from ..unit.backend_adapter import QoQaAdapter
 from ..backend import qoqa
@@ -33,6 +33,48 @@ class ResPartner(models.Model):
         inverse_name='openerp_id',
         copy=False,
         string='QBindings')
+
+    qoqa_url = fields.Char(
+        compute="_compute_qoqa_url"
+    )
+
+    @api.multi
+    def _compute_qoqa_url(self):
+        """ Generate direct access link to backoffice user page
+
+        The base url is defined on qoqa backend.
+        The path is in ir.config_parameter "backend.user.path"
+        The url will be filled with the qoqa user id by replacing "{user_id}"
+        or if this string is not present in base url, at the end of the url
+
+        Ex:
+        backend_url: www.my_backoffice.com
+        backend.user.path: /user/{user_id}
+        qoqa_id: 42
+
+        Result:
+        www.my_backoffice.com/user/42
+
+        """
+        ICP = self.env['ir.config_parameter']
+        path = ICP.get_param('backend.user.path')
+        if path:
+            if '{user_id}' not in path:
+                path += '{user_id}'
+            for rec in self:
+                if not rec.qoqa_bind_ids:
+                    continue
+                qoqa_rec = rec.qoqa_bind_ids[0]
+                backend = qoqa_rec.backend_id
+                if not backend or not backend.backend_url:
+                    continue
+                base_url = backend.backend_url + path
+                # ensure it starts with http(s)
+                # otherwise using it in link will make it local
+                if not base_url.startswith('http'):
+                    base_url = 'http://' + base_url
+                user_id = qoqa_rec.qoqa_id
+                rec.qoqa_url = base_url.format(user_id=user_id)
 
 
 @qoqa

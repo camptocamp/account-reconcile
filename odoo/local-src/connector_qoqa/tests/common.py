@@ -4,6 +4,7 @@
 
 import json
 import urlparse
+import threading
 
 from collections import namedtuple
 from os.path import dirname, exists, join
@@ -78,6 +79,7 @@ class QoQaTransactionCase(common.TransactionCase):
 
     def setUp(self):
         super(QoQaTransactionCase, self).setUp()
+        setattr(threading.currentThread(), 'testing', True)
         self.session = ConnectorSession.from_env(self.env)
         self.backend_record = self.env['qoqa.backend'].get_singleton()
         self.lang_fr = self.env['res.lang'].search([('code', '=', 'fr_FR')])

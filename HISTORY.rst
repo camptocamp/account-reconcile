@@ -23,8 +23,21 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.37.0 (2017-11-15)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BIZ-677 Improve stock.picking & SO/quot tree views
 * Add "TWINT" in the list of partners imported from the CAMT.053 file
+* BSQOQ-22: Add Unclaimed Package Delivery as action on claim tree view
 * BSQOQ-24: Claim UI improvements
 
   * Form - Remove useless column on product returns o2m
@@ -47,6 +60,7 @@ latest (unreleased)
 
 * Map the payment_id on discount accounting group instead of payment voucher
 * Restore possibility to run connector_qoqa tests with pytest
+* Pass qoqa_shop_id when creating claim from wizard Unclaimed Package Return
 
 **Build**
 
@@ -67,11 +81,8 @@ latest (unreleased)
 
 * Fix BIZ-709 on the change quantity wizard
   that does not manage the use case of a template witout active variant
-* BSQOQ-22: Add Unclaimed Package Delivery as action on claim tree view
 
 **Bugfixes**
-
-* Pass qoqa_shop_id when creating claim from wizard Unclaimed Package Return
 
 **Build**
 

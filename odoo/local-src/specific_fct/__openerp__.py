@@ -11,6 +11,7 @@
         'account_analytic_required',
         'account_mass_reconcile',
         'account_move_base_import',
+        'account_payment_mode',
         'hr_holidays',
         'sale',
         'stock_batch_picking',

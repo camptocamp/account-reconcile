@@ -26,6 +26,25 @@ from openerp.addons.crm_claim_rma.wizards.claim_make_picking\
 class ClaimMakePicking(models.TransientModel):
     _inherit = 'claim_make_picking.wizard'
 
+    @api.returns('res.partner')
+    def _get_common_partner_from_line(self, lines):
+        """ If all the lines have the same warranty return partner return that,
+        else return an empty recordset. However, If the product return is to
+        the company, and the chosen location has a partner, use this partner
+        as the return address
+        """
+        dest_location = self.claim_line_dest_location_id
+        dest_location_partner = dest_location.partner_id
+        if dest_location_partner:
+            warranties = lines.mapped('warranty_type')
+            warranties = list(set(warranties))
+            if len(warranties) == 1 and warranties[0] == 'company':
+                return dest_location_partner
+
+        partners = lines.mapped('warranty_return_partner')
+        partners = list(set(partners))
+        return partners[0] if len(partners) == 1 else self.env['res.partner']
+
     @api.model
     def _default_claim_line_source_location_id(self):
         super_wiz = super(ClaimMakePicking, self)

@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* Allow to use location's partner for product return BIZ-736
+
 **Bugfixes**
 
 **Build**

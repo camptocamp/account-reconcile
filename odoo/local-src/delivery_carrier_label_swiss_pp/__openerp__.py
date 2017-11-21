@@ -10,6 +10,7 @@
  'depends': [
      'report',
      'base_delivery_carrier_label',
+     'delivery_carrier_label_batch',
      'configuration_helper',
      'crm_claim_rma',
      'qoqa_offer',

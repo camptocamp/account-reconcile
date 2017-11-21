@@ -23,14 +23,26 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* BIZ-736 Allow to use location's partner for product return
-* BIZ-478 only admin can edit field mfa_enable to de/activate double auth
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.37.1 (2017-11-21)
++++++++++++++++++++
+
+**Features and Improvements**
+
 
 **Bugfixes**
 
 * BIZ-712 fix missing git add on last PR
      voucher sould be removed for generic binders as we created a dedicatred one
 * BIZ-425 preparation label must be ordered by tracking number
+* BIZ-736 Allow to use location's partner for product return
+* BIZ-478 only admin can edit field mfa_enable to de/activate double auth
 
 
 **Build**

@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BIZ-425 preparation label must be ordered by tracking number
+
 **Build**
 
 **Documentation**

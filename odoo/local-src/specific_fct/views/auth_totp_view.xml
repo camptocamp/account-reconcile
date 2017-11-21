@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="base_auth_totp_view_users_form" model="ir.ui.view">
+        <field name="name">only_admin_can_enable</field>
+        <field name="model">res.users</field>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_user') ])]" />
+        <field name="inherit_id" ref="auth_totp.view_users_form"/>
+        <field name="arch" type="xml">
+          <field name="mfa_enabled" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </field>
+        </field>
+    </record>
+
+    <record id="base_totp_view_users_form_simple_modif" model="ir.ui.view">
+      <field name="name">ony_admin_can_enable</field>
+      <field name="groups_id" eval="[(6, 0, [ref('base.group_user') ])]" />
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="auth_totp.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+          <field name="mfa_enabled" position="attributes">
+            <attribute name="readonly">1</attribute>
+          </field>
+        </field>
+    </record>
+
+    <record id="auth_totp_view_users_form" model="ir.ui.view">
+        <field name="name">only_admin_can_enable</field>
+        <field name="model">res.users</field>
+        <field name="groups_id" eval="[(6, 0, [ref('specific_fct.group_admin_user') ])]" />
+        <field name="inherit_id" ref="auth_totp.view_users_form"/>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+          <field name="mfa_enabled" position="attributes">
+            <attribute name="readonly">0</attribute>
+          </field>
+        </field>
+    </record>
+
+    <record id="auth_totp_view_users_form_simple_modif" model="ir.ui.view">
+      <field name="name">ony_admin_can_enable</field>
+        <field name="model">res.users</field>
+        <field name="groups_id" eval="[(6, 0, [ref('specific_fct.group_admin_user') ])]" />
+        <field name="inherit_id" ref="auth_totp.view_users_form_simple_modif"/>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+          <field name="mfa_enabled" position="attributes">
+            <attribute name="readonly">0</attribute>
+          </field>
+        </field>
+    </record>
+</odoo>

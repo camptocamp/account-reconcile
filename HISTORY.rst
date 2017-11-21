@@ -23,7 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* Allow to use location's partner for product return BIZ-736
+* BIZ-736 Allow to use location's partner for product return
+* BIZ-478 only admin can edit field mfa_enable to de/activate double auth
 
 **Bugfixes**
 

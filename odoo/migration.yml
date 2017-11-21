@@ -313,3 +313,7 @@ migration:
           - qoqa_claim
           - crm_claim_mail
           - connector_qoqa
+    - version: 9.37.1
+      addons:
+        upgrade:
+          - specific_fct

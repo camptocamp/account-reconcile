@@ -27,6 +27,9 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BIZ-712 fix missing git add on last PR
+     voucher sould be removed for generic binders as we created a dedicatred one
+
 **Build**
 
 **Documentation**

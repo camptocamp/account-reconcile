@@ -2,6 +2,10 @@
 
 Empty. You can add an index for the documentation specific to this project.
 
+# Launch local script
+
+Local scripts are launched from qoqa_sync_small_ec2
+
 # How to copy the RDS of production to integration
 
 * Before starting: Ask the infrastructure Team to make a snapshot of the production to integration.

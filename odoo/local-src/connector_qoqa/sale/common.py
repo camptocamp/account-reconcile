@@ -100,33 +100,29 @@ class SaleOrder(models.Model):
         return values
 
     @api.multi
-    def _call_cancel(self, cancel_direct=False):
+    def _call_cancel(self):
+        """ Synchronus cancel call on sale orders
+
+        Only cancel on qoqa if all the cancellations succeeded
+        canceled_in_backend means already canceled on QoQa.
+
+        Should be called at the very end of the 'cancel' method so we
+        won't call 'cancel' on qoqa if something failed before
+        """
         self.ensure_one()
-        # only cancel on qoqa if all the cancellations succeeded
-        # canceled_in_backend means already canceled on QoQa
         if not self.canceled_in_backend:
             session = ConnectorSession.from_env(self.env)
             for binding in self.qoqa_bind_ids:
-                # should be called at the very end of the 'cancel' method so we
-                # won't call 'cancel' on qoqa if something failed before
-                if cancel_direct:
-                    # we want to do a direct call to the API when the payment
-                    # can be canceled before midnight because the job may take
-                    # too long time to be executed
-                    _logger.info("Cancel order %s directly on QoQa",
-                                 binding.name)
-                    message = _('Impossible to cancel the sales order '
-                                'on the backend now.')
-                    with api_handle_errors(message):
-                        cancel_sales_order(session, binding._model._name,
-                                           binding.id)
-                else:
-                    # no timing issue in this one, the sales order must be
-                    # canceled but it can be done later
-                    _logger.info("Cancel order %s later (job) on QoQa",
-                                 binding.name)
-                    cancel_sales_order.delay(session, binding._model._name,
-                                             binding.id, priority=1)
+                # we want to do a direct call to the API so we validate that
+                # the order could well be cancelled on Qoqa before commiting
+                # the change in Odoo
+                _logger.info("Cancel order %s directly on QoQa",
+                             binding.name)
+                message = _('Impossible to cancel the sales order '
+                            'on the backend now.')
+                with api_handle_errors(message):
+                    cancel_sales_order(session, binding._model._name,
+                                       binding.id)
 
     @api.multi
     def action_cancel(self):
@@ -143,7 +139,7 @@ class SaleOrder(models.Model):
             delivered = order.picking_ids.filtered(lambda r: r.state == 'done')
             all_service = all(line.product_id.type == 'service'
                               for line in order.order_line)
-            cancel_direct = False
+            payment_cancellable = False
             if (order.qoqa_bind_ids and
                     order.payment_mode_id.payment_cancellable_on_qoqa):
                 binding = order.qoqa_bind_ids[0]
@@ -152,20 +148,20 @@ class SaleOrder(models.Model):
                     binding.qoqa_payment_date
                 )
                 if payment_date == date.today():
-                    cancel_direct = True
+                    payment_cancellable = True
 
                 if (not delivered and
                         order.payment_mode_id.payment_settlable_on_qoqa):
-                    cancel_direct = True
+                    payment_cancellable = True
                 if (all_service and
                         order.payment_mode_id.payment_settlable_on_qoqa):
                     if order.state != 'done':
-                        cancel_direct = True
+                        payment_cancellable = True
                     else:
-                        cancel_direct = False
+                        payment_cancellable = False
 
             existing_invoices = order.invoice_ids
-            if not cancel_direct and order.amount_total:
+            if not payment_cancellable and order.amount_total:
                 # create the invoice, so we'll be able to create the refund
                 # later, we'll cancel the invoice
                 try:
@@ -183,7 +179,7 @@ class SaleOrder(models.Model):
                     _('Order Cancellation')
                 )
 
-            if cancel_direct:
+            if payment_cancellable:
                 # When the order can be canceled on QoQa, the
                 # voucher usage can be canceled on QoQa so we
                 # delete the move lines generated for the voucher
@@ -203,7 +199,7 @@ class SaleOrder(models.Model):
                 order.picking_ids.action_cancel()
 
             super(SaleOrder, order).action_cancel()
-            order._call_cancel(cancel_direct=cancel_direct)
+            order._call_cancel()
 
         if actions:
             action_res = self._parse_refund_action(actions)

@@ -11,6 +11,7 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     claim_id = fields.Many2one(index=True)
+    partner_id = fields.Many2one(index=True)
     batch_picking_id = fields.Many2one(index=True)
 
     def init(self, cr):

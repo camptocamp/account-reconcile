@@ -6,8 +6,6 @@ import json
 
 from datetime import date, timedelta
 
-import mock
-
 from openerp import fields
 
 from .common import recorder, QoQaTransactionCase
@@ -56,34 +54,25 @@ class TestCancelOrder(QoQaTransactionCase):
         self.payment_mode.payment_cancellable_on_qoqa = False
         # if payment_cancellable_on_qoqa is False we can delay the
         # cancellation
-        cancel_job_path = ('openerp.addons.connector_qoqa.sale'
-                           '.common.cancel_sales_order')
-        with mock.patch(cancel_job_path) as cancel_order_mock:
+
+        with recorder.use_cassette('test_cancel_order_direct') as cassette:
             self.order.action_cancel()
-            # an export job has been generated
-            cancel_order_mock.delay.assert_called_with(
-                mock.ANY, 'qoqa.sale.order', self.order_binding.id,
-                priority=1
-            )
+            response_body = cassette.responses[0]['body']['string']
+            self.assertEqual(json.loads(response_body), {'cancelled': True})
 
         self.assertEqual(self.order.state, 'cancel')
 
     def test_cancel_order_not_today(self):
-        """ Order delayed not today delay cancellation on QoQa """
+        """ Order not delayed anymore if not from today"""
         self.payment_mode.payment_cancellable_on_qoqa = True
-        # if date_order is before today, we can delay the
-        # cancellation
+        # if date_order is before today, we still whant to cancell it on Qoqa
         self.order_binding.qoqa_payment_date = fields.Date.to_string(
             date.today() - timedelta(days=1)
         )
-        cancel_job_path = ('openerp.addons.connector_qoqa.sale'
-                           '.common.cancel_sales_order')
-        with mock.patch(cancel_job_path) as cancel_order_mock:
+
+        with recorder.use_cassette('test_cancel_order_direct') as cassette:
             self.order.action_cancel()
-            # an export job has been generated
-            cancel_order_mock.delay.assert_called_with(
-                mock.ANY, 'qoqa.sale.order', self.order_binding.id,
-                priority=1
-            )
+            response_body = cassette.responses[0]['body']['string']
+            self.assertEqual(json.loads(response_body), {'cancelled': True})
 
         self.assertEqual(self.order.state, 'cancel')

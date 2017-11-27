@@ -59,12 +59,6 @@ class QoqaSaleOrder(models.Model):
     qoqa_transaction = fields.Char(string='Transaction number of the payment '
                                           'on QoQa',
                                    readonly=True)
-    qoqa_voucher_payment_ids = fields.One2many(
-        comodel_name='qoqa.voucher.payment',
-        inverse_name='qoqa_order_id',
-        readonly=True,
-    )
-
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A sales order can be exported only once on the same backend"),
@@ -180,17 +174,6 @@ class SaleOrder(models.Model):
                 )
 
             if payment_cancellable:
-                # When the order can be canceled on QoQa, the
-                # voucher usage can be canceled on QoQa so we
-                # delete the move lines generated for the voucher
-                move_line_bindings = order.mapped(
-                    'qoqa_bind_ids.qoqa_voucher_payment_ids'
-                )
-                move_line = move_line_bindings.mapped('openerp_id')
-                move_line_bindings.write({'qoqa_id': False})
-                move_line_bindings.unlink()
-                move_line.unlink()
-
                 existing_invoices.filtered(
                     lambda r: r.state not in ('paid', 'cancel')
                 ).signal_workflow('invoice_cancel')

@@ -317,3 +317,7 @@ migration:
       addons:
         upgrade:
           - specific_fct
+    - version: 9.38.0
+      addons:
+        upgrade:
+          - connector_qoqa

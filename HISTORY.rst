@@ -25,6 +25,8 @@ latest (unreleased)
 
 * BIZ-878: Make cancellation of sales orders only synchronous
 
+* BIZ-711 BIZ-712 Remove discount import from connector_qoqa
+
 **Bugfixes**
 
 **Build**

@@ -48,17 +48,34 @@
               src_model="crm.claim"
               context="{'active_test': False}"/>
 
+        <act_window
+            id="act_crm_claim_rma_sale_orders_inactive"
+            context="{'active_test': False}"
+            name="Quotations and Sales"
+            res_model="sale.order"
+            src_model="crm.claim"/>
+
+
         <record id="crm_claim_rma_form_view" model="ir.ui.view">
             <field name="name">crm.claim.rma.form</field>
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">
                 <!-- add sales count -->
-                <button icon="fa-strikethrough" position="attributes">
-                  <attribute name="string"></attribute>
-                </button>
-                <button icon="fa-strikethrough" position="inside">
-                  <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                <button icon="fa-strikethrough" position="replace">
+                    <button class="oe_stat_button"
+                            name="%(act_crm_claim_rma_sale_orders_inactive)d"
+                            type="action"
+                            icon="fa-strikethrough"
+                            string=""
+                            help="The counter shows SO from all companies but the action only open SO from current users companies"
+                            attrs="{'invisible': ['|',('partner_id','=', False)]}"
+                            context="{'search_default_partner_id': [partner_id], 'search_default_user_id':False, 'active_test': False}">
+                  <field string="Sales (inactive included)"
+                         name="sale_order_count"
+                         context="{'active_test': False}"
+                         widget="statinfo"/>
+                    </button>
                 </button>
                 <!-- replace Purchase smart button by Claim smart button -->
                 <button icon="fa-shopping-cart" position="replace">

@@ -69,6 +69,10 @@ class QoqaBackend(models.Model):
         inverse_name='backend_id',
         string='Promo Types',
     )
+    voucher_product_id = fields.Many2one(
+        comodel_name='product.product',
+        string='Product for vouchers'
+    )
 
     import_res_partner_from_date = fields.Datetime(
         compute='_compute_last_import_date',

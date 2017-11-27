@@ -71,6 +71,10 @@ recorder = VCR(
     filter_headers=['Authorization'],
     before_record=scrub_login_request,
     before_record_response=scrub_login_response,
+    # ignore scheme, host, port
+    match_on=('method', 'path', 'query'),
+    # allow to read and edit content in cassettes
+    decode_compressed_response=True,
 )
 
 

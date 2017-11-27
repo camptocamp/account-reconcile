@@ -27,6 +27,7 @@ from ..unit.mapper import (iso8601_to_utc,
                            backend_to_m2o,
                            )
 from ..connector import iso8601_to_local_date
+from ..sale_line.importer import QoQaPromoLineBuilder
 
 _logger = logging.getLogger(__name__)
 
@@ -352,8 +353,50 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
                                     options=self.options)
         values['qoqa_order_line_ids'] = items
 
+        # vouchers are not send in lines by the qoqa4 api, only in a 'discount'
+        # node, add a new line for them if any
+        values['order_line'] = self.voucher_lines(map_record)
+
         onchange = self.unit_for(SaleOrderOnChange)
         return onchange.play(values, values['qoqa_order_line_ids'])
+
+    def voucher_lines(self, map_record):
+        """ Return list of voucher lines to include as sale order lines
+
+        All the other types of lines (product, promo, shipping) are represented
+        as invoice items in the response from the API. Vouchers are not in the
+        lines given by QoQa4 API but yet we want a line in Odoo. We don't have
+        a ``qoqa.sale.order.line`` as we can't map it with a line on the other
+        side, so this mapping is done directly here.
+
+        """
+        vouchers = self.extract_vouchers(map_record)
+        lines = []
+        builder = self.unit_for(QoQaPromoLineBuilder,
+                                model='qoqa.sale.order.line')
+        product = self.backend_record.voucher_product_id
+        if not product:
+            raise QoQaError(_('No voucher product configured on the backend'))
+        for voucher in vouchers:
+            builder.price_unit = -float(voucher['attributes']['amount'])
+            # choose product according to the promo type
+            builder.product = product
+            builder.code = voucher['id']
+            values = builder.get_line()
+            values.update({
+                'discount_code_name': voucher['id'],
+                'discount_description': voucher['attributes']['description'],
+            })
+            lines.append((0, 0, values))
+        return lines
+
+    def extract_vouchers(self, map_record):
+        vouchers = []
+        for row in map_record.source['included']:
+            if (row['type'] == 'discount'
+                    and row['attributes']['main_type'] == 'voucher'):
+                vouchers.append(row)
+        return vouchers
 
     def extract_lines(self, map_record):
         """ Lines are read in the invoice of the sales order """

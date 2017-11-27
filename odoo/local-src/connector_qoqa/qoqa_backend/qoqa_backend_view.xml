@@ -140,6 +140,9 @@
               <group string="Website" name="website">
                 <field name="site_url"/>
               </group>
+              <group string="Vouchers" name="voucher">
+                <field name="voucher_product_id"/>
+              </group>
               <group string="Promo Types" name="promo">
                 <field name="promo_type_ids" nolabel="1">
                   <tree string="Promo Types" editable="bottom">

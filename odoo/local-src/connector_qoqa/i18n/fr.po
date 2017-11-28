@@ -1,15 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* connector_qoqa
+# 	* connector_qoqa
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-27 08:24+0000\n"
+"POT-Creation-Date: 2017-11-28 10:42+0000\n"
 "PO-Revision-Date: 2017-11-27 08:24+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -17,41 +18,50 @@ msgstr ""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_state
-msgid "\n"
-"                * Draft: not confirmed yet and will not be scheduled until confirmed\n"
+msgid ""
 "\n"
-"                * Waiting Another Operation: waiting for another move to proceed before it becomes automatically available (e.g. in Make-To-Order flows)\n"
+"                * Draft: not confirmed yet and will not be scheduled until "
+"confirmed\n"
 "\n"
-"                * Waiting Availability: still waiting for the availability of products\n"
+"                * Waiting Another Operation: waiting for another move to "
+"proceed before it becomes automatically available (e.g. in Make-To-Order "
+"flows)\n"
 "\n"
-"                * Partially Available: some products are available and reserved\n"
+"                * Waiting Availability: still waiting for the availability "
+"of products\n"
 "\n"
-"                * Ready to Transfer: products reserved, simply waiting for confirmation.\n"
+"                * Partially Available: some products are available and "
+"reserved\n"
 "\n"
-"                * Transferred: has been processed, can't be modified or cancelled anymore\n"
+"                * Ready to Transfer: products reserved, simply waiting for "
+"confirmation.\n"
+"\n"
+"                * Transferred: has been processed, can't be modified or "
+"cancelled anymore\n"
 "\n"
 "                * Cancelled: has been cancelled, can't be confirmed anymore"
-msgstr "\n"
-"                * Brouillon : non confirmé et ne sera pas planifié avant d'être confirmé\n"
+msgstr ""
 "\n"
-"                * En attente d'une autre opération : en attente d'un autre mouvement avant de devenir automatiquement disponible (p. ex. dans un flux de production à la demande)\n"
+"                * Brouillon : non confirmé et ne sera pas planifié avant "
+"d'être confirmé\n"
 "\n"
-"                * En attente de disponibilité : encore en attente de la disponibilité des articles\n"
+"                * En attente d'une autre opération : en attente d'un autre "
+"mouvement avant de devenir automatiquement disponible (p. ex. dans un flux "
+"de production à la demande)\n"
 "\n"
-"                * Partiellement disponibles : certains articles sont disponibles et réservés\n"
+"                * En attente de disponibilité : encore en attente de la "
+"disponibilité des articles\n"
 "\n"
-"                * Disponible : les articles sont réservés, simplement en attente de confirmation.\n"
+"                * Partiellement disponibles : certains articles sont "
+"disponibles et réservés\n"
 "\n"
-"                * Transféré : a été traité, ne peut plus être modifié ou annulé\n"
+"                * Disponible : les articles sont réservés, simplement en "
+"attente de confirmation.\n"
+"\n"
+"                * Transféré : a été traité, ne peut plus être modifié ou "
+"annulé\n"
 "\n"
 "                * Annulé : a été annulé, ne peut plus être confirmé"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_bom_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_bom_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_bom_count
-msgid "# Bill of Material"
-msgstr "Nb. nomenclatures"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_claim_count
@@ -59,13 +69,6 @@ msgstr "Nb. nomenclatures"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_claim_count
 msgid "# Claims"
 msgstr "Nb. de réclamations"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_mo_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_mo_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_mo_count
-msgid "# Manufacturing Orders"
-msgstr "Nb. ordres de fabrication"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_meeting_count
@@ -86,12 +89,6 @@ msgstr "Nb. d'achats"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sales_count
 msgid "# Sales"
 msgstr "Nb Ventes"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_task_count
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_task_count
-msgid "# Tasks"
-msgstr "Nb de tâches"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_supplier_invoice_count
@@ -136,21 +133,15 @@ msgid "<span class=\"o_stat_text\">QoQa</span>"
 msgstr "<span class=\"o_stat_text\">QoQa</span>"
 
 #. module: connector_qoqa
-#: sql_constraint:qoqa.address:0
-#: sql_constraint:qoqa.binding:0
-#: sql_constraint:qoqa.crm.claim:0
-#: sql_constraint:qoqa.crm.claim.category:0
+#: sql_constraint:qoqa.address:0 sql_constraint:qoqa.binding:0
+#: sql_constraint:qoqa.crm.claim:0 sql_constraint:qoqa.crm.claim.category:0
 #: sql_constraint:qoqa.crm.claim.medium:0
 #: sql_constraint:qoqa.product.attribute:0
 #: sql_constraint:qoqa.product.attribute.value:0
-#: sql_constraint:qoqa.product.product:0
-#: sql_constraint:qoqa.product.template:0
-#: sql_constraint:qoqa.promo.type:0
-#: sql_constraint:qoqa.res.partner:0
-#: sql_constraint:qoqa.sale.order:0
-#: sql_constraint:qoqa.sale.order.line:0
-#: sql_constraint:qoqa.shipping.fee:0
-#: sql_constraint:qoqa.shop:0
+#: sql_constraint:qoqa.product.product:0 sql_constraint:qoqa.product.template:0
+#: sql_constraint:qoqa.promo.type:0 sql_constraint:qoqa.res.partner:0
+#: sql_constraint:qoqa.sale.order:0 sql_constraint:qoqa.sale.order.line:0
+#: sql_constraint:qoqa.shipping.fee:0 sql_constraint:qoqa.shop:0
 #: sql_constraint:qoqa.stock.picking:0
 msgid "A binding already exists for this QoQa record"
 msgstr "Un binding avec le BO QoQa existe déjà pour cet enregistrement"
@@ -160,32 +151,54 @@ msgstr "Un binding avec le BO QoQa existe déjà pour cet enregistrement"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_product_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_type
-msgid "A consumable is a product for which you don't manage stock, a service is a non-material product provided by a company or an individual."
-msgstr "Un consommable est un article pour lequel vous ne gérez pas de stock, un service est un article non-matériel fourni par une entreprise ou un individu."
+msgid ""
+"A consumable is a product for which you don't manage stock, a service is a "
+"non-material product provided by a company or an individual."
+msgstr ""
+"Un consommable est un article pour lequel vous ne gérez pas de stock, un "
+"service est un article non-matériel fourni par une entreprise ou un individu."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.stock.picking:0
 msgid "A delivery order can be exported only once on the same backend"
-msgstr "Un bulletin de livraison ne peut être exporté qu'une fois sur le même backend."
+msgstr ""
+"Un bulletin de livraison ne peut être exporté qu'une fois sur le même "
+"backend."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_description_sale
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_description_sale
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_description_sale
-msgid "A description of the Product that you want to communicate to your customers. This description will be copied to every Sale Order, Delivery Order and Customer Invoice/Refund"
-msgstr "Une description du produit que vous voulez communiquer à vos clients. Cette description sera inscrites sur tous les bons de commande, les bons de livraison et les factures/avoirs client."
+msgid ""
+"A description of the Product that you want to communicate to your customers. "
+"This description will be copied to every Sale Order, Delivery Order and "
+"Customer Invoice/Refund"
+msgstr ""
+"Une description du produit que vous voulez communiquer à vos clients. Cette "
+"description sera inscrites sur tous les bons de commande, les bons de "
+"livraison et les factures/avoirs client."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_description_purchase
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_description_purchase
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_description_purchase
-msgid "A description of the Product that you want to communicate to your vendors. This description will be copied to every Purchase Order, Receipt and Vendor Bill/Refund."
-msgstr "Une description de l'article que vous souhaitez communiquer à vos fournisseurs . Cette description sera recopiée sur chaque bon de commande, chaque bon de réception et chaque facture/avoir fournisseur."
+msgid ""
+"A description of the Product that you want to communicate to your vendors. "
+"This description will be copied to every Purchase Order, Receipt and Vendor "
+"Bill/Refund."
+msgstr ""
+"Une description de l'article que vous souhaitez communiquer à vos "
+"fournisseurs . Cette description sera recopiée sur chaque bon de commande, "
+"chaque bon de réception et chaque facture/avoir fournisseur."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_parent_need_cancel
-msgid "A parent sales order has been canceled on the backend and needs to be canceled."
-msgstr "A parent sales order has been canceled on the backend and needs to be canceled."
+msgid ""
+"A parent sales order has been canceled on the backend and needs to be "
+"canceled."
+msgstr ""
+"A parent sales order has been canceled on the backend and needs to be "
+"canceled."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_parent_id
@@ -200,18 +213,23 @@ msgstr "A parent sales order needs cancel"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_description
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_description
-msgid "A precise description of the Product, used only for internal information purposes."
+msgid ""
+"A precise description of the Product, used only for internal information "
+"purposes."
 msgstr "Une description précise du produit uniquement utilisée en interne."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.attribute:0
 msgid "A product attribute can be exported only once on the same backend"
-msgstr "Une caractéristique ne peut être exportée qu'une fois sur le même backend."
+msgstr ""
+"Une caractéristique ne peut être exportée qu'une fois sur le même backend."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.attribute.value:0
 msgid "A product attribute value can be exported only once on the same backend"
-msgstr "Un valeur de caractéristique ne peut être exportée qu'une fois sur le même backend."
+msgstr ""
+"Un valeur de caractéristique ne peut être exportée qu'une fois sur le même "
+"backend."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.product:0
@@ -221,17 +239,20 @@ msgstr "Un article ne peut être exporté qu'une fois sur le même backend."
 #. module: connector_qoqa
 #: sql_constraint:qoqa.product.template:0
 msgid "A product template can be exported only once on the same backend"
-msgstr "Un modèle d'article ne peut être exporté qu'une fois sur le même backend."
+msgstr ""
+"Un modèle d'article ne peut être exporté qu'une fois sur le même backend."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.sale.order:0
 msgid "A sales order can be exported only once on the same backend"
-msgstr "Un bulletin de commande ne peut être exporté qu'une fois sur le même backend."
+msgstr ""
+"Un bulletin de commande ne peut être exporté qu'une fois sur le même backend."
 
 #. module: connector_qoqa
 #: sql_constraint:qoqa.sale.order.line:0
 msgid "A sales order line can be exported only once on the same backend"
-msgstr "Une ligne de commande ne peut être exporté qu'une fois sur le même backend."
+msgstr ""
+"Une ligne de commande ne peut être exporté qu'une fois sur le même backend."
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
@@ -242,11 +263,6 @@ msgstr "Configuration de l'API"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_version
 msgid "API Version"
 msgstr "Version de l'API"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_account_move
-msgid "Account Entry"
-msgstr "Entrée comptable"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_property_account_payable_id
@@ -332,21 +348,15 @@ msgstr "Configuration avancée"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_ageing
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_ageing
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_ageing
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_ageing
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_ageing
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_ageing
 msgid "Ageing"
 msgstr "Maturation"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_abv
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_abv
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_abv
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_abv
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_abv
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_abv
 msgid "Alcohol by volume"
 msgstr "Volume"
 
@@ -355,17 +365,13 @@ msgstr "Volume"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_base_default_code
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_base_default_code
 msgid "All generated variants' internal code will begin with this code."
-msgstr "Les références internes des variantes générées vont commencer par ce code."
+msgstr ""
+"Les références internes des variantes générées vont commencer par ce code."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_all_qty_delivered
 msgid "All quantities delivered"
 msgstr "All quantities delivered"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_allowed_option_ids
-msgid "Allowed options"
-msgstr "Options compatibles"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/invoice/exporter.py:23
@@ -386,8 +392,12 @@ msgstr "Montant"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_amount
-msgid "Amount of the order to benefit from a free shipping, expressed in the company currency"
-msgstr "Montant de la commande pour bénéficier de la livraison gratuite, exprimé dans la devise de la société"
+msgid ""
+"Amount of the order to benefit from a free shipping, expressed in the "
+"company currency"
+msgstr ""
+"Montant de la commande pour bénéficier de la livraison gratuite, exprimé "
+"dans la devise de la société"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_payment_amount
@@ -407,11 +417,8 @@ msgstr "Compte analytique"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_appellation
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_appellation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_appellation
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_appellation
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_appellation
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_appellation
 msgid "Appellation"
 msgstr "Appellation"
 
@@ -431,7 +438,6 @@ msgid "Attachment URL"
 msgstr "Lien de la pièce jointe"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_attribute_attribute
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_attribute_openerp_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_attribute_value_attribute_id
 msgid "Attribute"
@@ -444,11 +450,6 @@ msgstr "Attribut"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_attribute_value_qoqa_bind_ids
 msgid "Attribute Bindings"
 msgstr "Binding d'attribut"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_attribute_option
-msgid "Attribute Option"
-msgstr "Option d'attribut"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_attribute_value_price_extra
@@ -479,10 +480,12 @@ msgstr "Authentification"
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/wizard/qoqa_backend_auth.py:56
 #, python-format
-msgid "Authentication failed:\n"
+msgid ""
+"Authentication failed:\n"
 "\n"
 "%s"
-msgstr "Authentication failed:\n"
+msgstr ""
+"Authentication failed:\n"
 "\n"
 "%s"
 
@@ -495,13 +498,6 @@ msgstr "Flux automatique"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_available
 msgid "Available"
 msgstr "Disponible"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_produce_delay
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_produce_delay
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_produce_delay
-msgid "Average delay in days to produce this product. In the case of multi-level BOM, the manufacturing lead times of the components will be added."
-msgstr "Délai moyen pour produire cet article. Dans le cas d'une nomenclature à plusieurs niveaux, les délais de fabrication des composants seront ajoutés."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_backorder_id
@@ -520,12 +516,6 @@ msgid "Bank"
 msgstr "Banque"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_bank_statement_label
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_bank_statement_label
-msgid "Bank Statement Label"
-msgstr "Description de relevé bancaire"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_bank_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_bank_ids
 msgid "Banks"
@@ -541,11 +531,6 @@ msgid "Barcode"
 msgstr "Code Barre"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking__barcode_scanned
-msgid "Barcode Scanned"
-msgstr "Code barre scanné"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_base_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_base_default_code
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_base_default_code
@@ -556,13 +541,10 @@ msgstr "Référence de base"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_list_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_list_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_list_price
-msgid "Base price to compute the customer price. Sometimes called the catalog price."
-msgstr "Prix de base pour calculer le prix client. Parfois appelé prix catalogue."
-
-#. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_postlogistics_basic_service_ids
-msgid "Basic Service defines the available additional options for this delivery method"
-msgstr "Le service de base défini les options disponibles pour cette méthode de livraison"
+msgid ""
+"Base price to compute the customer price. Sometimes called the catalog price."
+msgstr ""
+"Prix de base pour calculer le prix client. Parfois appelé prix catalogue."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_batch_picking_id
@@ -576,19 +558,13 @@ msgid "Big-sized image"
 msgstr "Image de grande taille"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_bom_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_bom_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_bom_ids
-msgid "Bill of Materials"
-msgstr "Nomenclature"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_birthdate
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_birthdate
 msgid "Birthdate"
 msgstr "Date de Naissance"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_brand
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_brand
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_product_brand_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_brand
@@ -605,15 +581,18 @@ msgstr "Poids du vrac"
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
-msgid "By clicking on the buttons,\n"
+msgid ""
+"By clicking on the buttons,\n"
 "                you will initiate the synchronizations\n"
 "                with QoQa.\n"
 "                Note that the import or exports\n"
 "                won't be done directly,\n"
 "                they will create 'Jobs'\n"
 "                executed as soon as possible."
-msgstr "En cliquant sur les boutons,\n"
-"                                    vous allez déclencher les synchronisations\n"
+msgstr ""
+"En cliquant sur les boutons,\n"
+"                                    vous allez déclencher les "
+"synchronisations\n"
 "                                    avec QoQa.\n"
 "                                    Les imports et exports\n"
 "                                    ne sont pas immédiats,\n"
@@ -676,8 +655,12 @@ msgstr "Annulation depuis le backend résolue"
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/invoice/exporter.py:36
 #, python-format
-msgid "Cannot be refund on the QoQa backend because no payment ID could be retrieved for the sales order %s"
-msgstr "Impossible de créer la note de crédit sur le BO QoQa parce qu'il n'y a pas d'id de paiement sur la commande."
+msgid ""
+"Cannot be refund on the QoQa backend because no payment ID could be "
+"retrieved for the sales order %s"
+msgstr ""
+"Impossible de créer la note de crédit sur le BO QoQa parce qu'il n'y a pas "
+"d'id de paiement sur la commande."
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_delivery_carrier
@@ -754,8 +737,12 @@ msgstr "Cochez cette case si le contact est un client."
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_supplier
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_supplier
-msgid "Check this box if this contact is a vendor. If it's not checked, purchase people will not see it when encoding a purchase order."
-msgstr "Cocher cette case si ce contact est un fournisseur. Si elle n'est pas cochée, les acheteurs ne le verront pas lors de la saisie d'un ordre d'achat."
+msgid ""
+"Check this box if this contact is a vendor. If it's not checked, purchase "
+"people will not see it when encoding a purchase order."
+msgstr ""
+"Cocher cette case si ce contact est un fournisseur. Si elle n'est pas "
+"cochée, les acheteurs ne le verront pas lors de la saisie d'un ordre d'achat."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_employee
@@ -773,12 +760,6 @@ msgstr "Somme de Contrôle/SHA1"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_city
 msgid "City"
 msgstr "Ville"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_zip_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_zip_id
-msgid "City/Location"
-msgstr "Ville/location"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_crm_claim
@@ -897,11 +878,6 @@ msgid "Completion Date of Transfer"
 msgstr "Date de réalisation du transfert"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_allowed_option_ids
-msgid "Compute allowed options according to selected options."
-msgstr "Déterminer les options permise en fonction des options sélectionnées."
-
-#. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_company_form_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_delivery_carrier_form
 msgid "Connector"
@@ -943,13 +919,21 @@ msgstr "Coût"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_standard_price
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_standard_price
-msgid "Cost of the product template used for standard stock valuation in accounting and used as a base price on purchase orders. Expressed in the default unit of measure of the product."
-msgstr "Prix de revient utilisé en comptabilité pour la valorisation standard des stocks et en achat comme prix de base. Exprimé dans l'unité de mesure par défaut de l'article."
+msgid ""
+"Cost of the product template used for standard stock valuation in accounting "
+"and used as a base price on purchase orders. Expressed in the default unit "
+"of measure of the product."
+msgstr ""
+"Prix de revient utilisé en comptabilité pour la valorisation standard des "
+"stocks et en achat comme prix de base. Exprimé dans l'unité de mesure par "
+"défaut de l'article."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_standard_price
 msgid "Cost of the product, in the default unit of measure of the product."
-msgstr "Le prix de revient calculé est exprimé dans l'unité de mesure par défaut de l'article."
+msgstr ""
+"Le prix de revient calculé est exprimé dans l'unité de mesure par défaut de "
+"l'article."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_cost_method
@@ -957,6 +941,12 @@ msgstr "Le prix de revient calculé est exprimé dans l'unité de mesure par dé
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_property_cost_method
 msgid "Costing Method"
 msgstr "Méthode de coût"
+
+#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_payment_method_count
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_payment_method_count
+msgid "Count Payment Method"
+msgstr "Nombre de méthodes de paiement"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_country_ids
@@ -967,12 +957,9 @@ msgstr "Pays"
 #: model:ir.model,name:connector_qoqa.model_res_country
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_country_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_country_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_country_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_country_id
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_country_id
 msgid "Country"
 msgstr "Pays"
 
@@ -1066,16 +1053,26 @@ msgstr "Devise"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_qty_available
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_qty_available
-msgid "Current quantity of products.\n"
-"In a context with a single Stock Location, this includes goods stored at this Location, or any of its children.\n"
-"In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
-"stored in the Stock Location of the Warehouse of this Shop, or any of its children.\n"
-"Otherwise, this includes goods stored in any Stock Location with 'internal' type."
-msgstr "Quantité actuelle d'articles en stock.\n"
-"Dans le contexte d'un seul emplacement de stock, ceci inclue les marchandises stockées dans cet emplacement et ses enfants.\n"
-"Dans le contexte d'un seul entrepôt, ceci inclue les marchandises stockées dans l'emplacement de l'entrepôt et ses enfants.\n"
-"Dans le contexte d'un magasin, ceci inclue les marchandises stockées dans l'entrepôt de ce magasin et ses enfants.\n"
-"Dans les autres contextes, ceci inclue les marchandises stockées dans n'importe quel emplacement de type 'interne'."
+msgid ""
+"Current quantity of products.\n"
+"In a context with a single Stock Location, this includes goods stored at "
+"this Location, or any of its children.\n"
+"In a context with a single Warehouse, this includes goods stored in the "
+"Stock Location of this Warehouse, or any of its children.\n"
+"stored in the Stock Location of the Warehouse of this Shop, or any of its "
+"children.\n"
+"Otherwise, this includes goods stored in any Stock Location with 'internal' "
+"type."
+msgstr ""
+"Quantité actuelle d'articles en stock.\n"
+"Dans le contexte d'un seul emplacement de stock, ceci inclue les "
+"marchandises stockées dans cet emplacement et ses enfants.\n"
+"Dans le contexte d'un seul entrepôt, ceci inclue les marchandises stockées "
+"dans l'emplacement de l'entrepôt et ses enfants.\n"
+"Dans le contexte d'un magasin, ceci inclue les marchandises stockées dans "
+"l'entrepôt de ce magasin et ses enfants.\n"
+"Dans les autres contextes, ceci inclue les marchandises stockées dans "
+"n'importe quel emplacement de type 'interne'."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_openerp_id
@@ -1191,14 +1188,19 @@ msgstr "Propriétaire par défaut"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_uom_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_uom_id
 msgid "Default Unit of Measure used for all stock operation."
-msgstr "Unité de mesure par défaut utilisée pour toutes les opérations de stock"
+msgstr ""
+"Unité de mesure par défaut utilisée pour toutes les opérations de stock"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_uom_po_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_uom_po_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_uom_po_id
-msgid "Default Unit of Measure used for purchase orders. It must be in the same category than the default unit of measure."
-msgstr "Unité de mesure par défaut pour les ordres d'achat. Elle doit appartenir à la même catégorie que l'unité de mesure par défaut."
+msgid ""
+"Default Unit of Measure used for purchase orders. It must be in the same "
+"category than the default unit of measure."
+msgstr ""
+"Unité de mesure par défaut pour les ordres d'achat. Elle doit appartenir à "
+"la même catégorie que l'unité de mesure par défaut."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qty_delivered
@@ -1247,11 +1249,6 @@ msgid "Delivery Orders"
 msgstr "Livraisons"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_delivery_place
-msgid "Delivery Place"
-msgstr "Delivery Place"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_product_id
 msgid "Delivery Product"
 msgstr "Article de livraison"
@@ -1265,8 +1262,13 @@ msgstr "Adresse de livraison du bon de commande en cours."
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_route_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_route_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_route_ids
-msgid "Depending on the modules installed, this will allow you to define the route of the product: whether it will be bought, manufactured, MTO/MTS,..."
-msgstr "En fonction des modules installés, ceci vous permet de définir la route de l'article : s'il doit être acheté ou produit, produit sur stock ou la demande, ..."
+msgid ""
+"Depending on the modules installed, this will allow you to define the route "
+"of the product: whether it will be bought, manufactured, MTO/MTS,..."
+msgstr ""
+"En fonction des modules installés, ceci vous permet de définir la route de "
+"l'article : s'il doit être acheté ou produit, produit sur stock ou la "
+"demande, ..."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_description
@@ -1314,24 +1316,6 @@ msgstr "Détermine l'ordre d'affichage"
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_digicode
 msgid "Digicode"
 msgstr "Digicode"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_dimension_big
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_dimension_big
-msgid "Dimension big"
-msgstr "Dimension big"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_dimension_medium
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_dimension_medium
-msgid "Dimension medium"
-msgstr "Dimension medium"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_dimension_small
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_dimension_small
-msgid "Dimension small"
-msgstr "Dimension small"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_discount
@@ -1407,12 +1391,6 @@ msgid "Employee"
 msgstr "Employé"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_bank_statement_label
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_bank_statement_label
-msgid "Enter the various label found on your bank statement separated by a ; If one of this label is include in the bank statement line, the partner will be automatically filled (as long as you use this method/rules in your statement profile)."
-msgstr "Enter the various label found on your bank statement separated by a ; If one of this label is include in the bank statement line, the partner will be automatically filled (as long as you use this method/rules in your statement profile)."
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_delivery_price
 msgid "Estimated Delivery Price"
 msgstr "Prix de livraison estimé"
@@ -1462,8 +1440,11 @@ msgstr "Exporté"
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/qoqa_offer/common.py:96
 #, python-format
-msgid "Exported Offers can no longer be deleted (ref: %s).They can still be deactivated using the \"active\" checkbox."
-msgstr "Les offres exportées ne peuvent plus être supprimées (ref: %s).\n"
+msgid ""
+"Exported Offers can no longer be deleted (ref: %s).They can still be "
+"deactivated using the \"active\" checkbox."
+msgstr ""
+"Les offres exportées ne peuvent plus être supprimées (ref: %s).\n"
 " Elles peuvent toutefois être désactivées avec la case à cocher \"actif\"."
 
 #. module: connector_qoqa
@@ -1496,12 +1477,9 @@ msgstr "Taille du Fichier"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_carrier_id
 msgid "Fill this field if you plan to invoice the shipping based on picking."
-msgstr "Complétez ce champ si vous envisagez de facturer l'expédition en fonction du ramassage."
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_first_package_name
-msgid "First Package Name"
-msgstr "First Package Name"
+msgstr ""
+"Complétez ce champ si vous envisagez de facturer l'expédition en fonction du "
+"ramassage."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_property_account_position_id
@@ -1514,11 +1492,6 @@ msgstr "Position fiscale"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_fixed_price
 msgid "Fixed Price"
 msgstr "Forfait"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_delivery_fixed_date
-msgid "Fixed delivery date"
-msgstr "Fixed delivery date"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_message_follower_ids
@@ -1557,17 +1530,6 @@ msgid "Followers (Partners)"
 msgstr "Abonnés (Partenaires)"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_delivery_place
-msgid "For Deposit item service (ZAW3219)"
-msgstr "For Deposit item service (ZAW3219)"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_delivery_mobile
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_delivery_phone
-msgid "For notify delivery by telephone (ZAW3213)"
-msgstr "For notify delivery by telephone (ZAW3213)"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_virtual_available
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_virtual_available
 msgid "Forecast Quantity"
@@ -1576,14 +1538,22 @@ msgstr "Quantité prévue"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_virtual_available
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_virtual_available
-msgid "Forecast quantity (computed as Quantity On Hand - Outgoing + Incoming)\n"
-"In a context with a single Stock Location, this includes goods stored in this location, or any of its children.\n"
-"In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
-"Otherwise, this includes goods stored in any Stock Location with 'internal' type."
-msgstr "Quantité prévue (calculée comme quantité en stock - sortante + entrante)\n"
-"Dans le contexte d'un emplacement de stock seul, cela comprend les marchandises stockées dans cet emplacement et ses enfants.\n"
-"Dans le contexte d'un entrepôt seul, cela comprend les marchandises stockées dans l'emplacement de stock de cet entrepôt et ses enfants.\n"
-"Dans les autres cas, cela comprend les marchandises stockées dans tous les emplacements de type \"interne\""
+msgid ""
+"Forecast quantity (computed as Quantity On Hand - Outgoing + Incoming)\n"
+"In a context with a single Stock Location, this includes goods stored in "
+"this location, or any of its children.\n"
+"In a context with a single Warehouse, this includes goods stored in the "
+"Stock Location of this Warehouse, or any of its children.\n"
+"Otherwise, this includes goods stored in any Stock Location with 'internal' "
+"type."
+msgstr ""
+"Quantité prévue (calculée comme quantité en stock - sortante + entrante)\n"
+"Dans le contexte d'un emplacement de stock seul, cela comprend les "
+"marchandises stockées dans cet emplacement et ses enfants.\n"
+"Dans le contexte d'un entrepôt seul, cela comprend les marchandises stockées "
+"dans l'emplacement de stock de cet entrepôt et ses enfants.\n"
+"Dans les autres cas, cela comprend les marchandises stockées dans tous les "
+"emplacements de type \"interne\""
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_virtual_available
@@ -1624,8 +1594,13 @@ msgstr "Bon cadeau"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_packaging_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_packaging_ids
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_packaging_ids
-msgid "Gives the different ways to package the same product. This has no impact on the picking order and is mainly used if you use the EDI module."
-msgstr "Indique les différentes façons d'emballer un même article. Ceci n'a pas d'impact sur les ordres de préparation, et sert principalement si vous activez le module d'EDI."
+msgid ""
+"Gives the different ways to package the same product. This has no impact on "
+"the picking order and is mainly used if you use the EDI module."
+msgstr ""
+"Indique les différentes façons d'emballer un même article. Ceci n'a pas "
+"d'impact sur les ordres de préparation, et sert principalement si vous "
+"activez le module d'EDI."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_sequence
@@ -1641,6 +1616,7 @@ msgid "Gross Weight"
 msgstr "Poids brut"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_has_checkpoint
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_has_checkpoint
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_has_checkpoint
 msgid "Has Checkpoint"
@@ -1666,13 +1642,6 @@ msgstr "A des quants déjà réservés"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_has_unreconciled_entries
 msgid "Has unreconciled entries"
 msgstr "A des écritures non lettrées"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_highlights
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_highlights
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_highlights
-msgid "Highlights"
-msgstr "Highlights"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_id
@@ -1744,9 +1713,13 @@ msgstr "Identifiant"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_backend_default_lang_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shop_lang_id
-msgid "If a default language is selected, the records will be imported in the translation of this language.\n"
+msgid ""
+"If a default language is selected, the records will be imported in the "
+"translation of this language.\n"
 "Note that a similar configuration exists for each shop."
-msgstr "Si une langue par défaut est sélectionné, les enregistrements vont être importé dans cette langue.\n"
+msgstr ""
+"Si une langue par défaut est sélectionné, les enregistrements vont être "
+"importé dans cette langue.\n"
 "Une configuration similaire existe pour chaque magasin."
 
 #. module: connector_qoqa
@@ -1776,38 +1749,73 @@ msgstr "Si coché, de nouveaux messages demandent votre attention."
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_opt_out
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_opt_out
-msgid "If opt-out is checked, this contact has refused to receive emails for mass mailing and marketing campaign. Filter 'Available for Mass Mailing' allows users to filter the partners when performing mass mailing."
-msgstr "Si l’option de retrait est cochée, ce contact a refusé de recevoir des e-mails pour l'envoi de masse et de la campagne de commercialisation. Le filtre « Disponible pour l'envoi de masse » permet aux utilisateurs de filtrer les partenaires lors de l'exécution de l'envoi de masse"
+msgid ""
+"If opt-out is checked, this contact has refused to receive emails for mass "
+"mailing and marketing campaign. Filter 'Available for Mass Mailing' allows "
+"users to filter the partners when performing mass mailing."
+msgstr ""
+"Si l’option de retrait est cochée, ce contact a refusé de recevoir des e-"
+"mails pour l'envoi de masse et de la campagne de commercialisation. Le "
+"filtre « Disponible pour l'envoi de masse » permet aux utilisateurs de "
+"filtrer les partenaires lors de l'exécution de l'envoi de masse"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_valuation
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_valuation
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_valuation
-msgid "If perpetual valuation is enabled for a product, the system will automatically create journal entries corresponding to stock moves, with product price as specified by the 'Costing Method'The inventory variation account set on the product category will represent the current inventory value, and the stock input and stock output account will hold the counterpart moves for incoming and outgoing products."
-msgstr "Si l'évaluation permanente est activée pour un produit, le système créera automatiquement les entrées de journal correspondant aux mouvements de stock, avec un prix de produit conforme à la méthode des coûts. La variation du compte de stock établie sur la catégorie de produit représentera la valeur actuelle des stocks, le compte d'entrée et de sortie en stock présenteront la contrepartie des mouvements."
+msgid ""
+"If perpetual valuation is enabled for a product, the system will "
+"automatically create journal entries corresponding to stock moves, with "
+"product price as specified by the 'Costing Method'The inventory variation "
+"account set on the product category will represent the current inventory "
+"value, and the stock input and stock output account will hold the "
+"counterpart moves for incoming and outgoing products."
+msgstr ""
+"Si l'évaluation permanente est activée pour un produit, le système créera "
+"automatiquement les entrées de journal correspondant aux mouvements de "
+"stock, avec un prix de produit conforme à la méthode des coûts. La variation "
+"du compte de stock établie sur la catégorie de produit représentera la "
+"valeur actuelle des stocks, le compte d'entrée et de sortie en stock "
+"présenteront la contrepartie des mouvements."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_free_if_more_than
-msgid "If the order is more expensive than a certain amount, the customer can benefit from a free shipping"
-msgstr "Si la commande dépasse un certain montant, le client peut bénéficier d'une livraison gratuite"
+msgid ""
+"If the order is more expensive than a certain amount, the customer can "
+"benefit from a free shipping"
+msgstr ""
+"Si la commande dépasse un certain montant, le client peut bénéficier d'une "
+"livraison gratuite"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_lang
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_lang
-msgid "If the selected language is loaded in the system, all documents related to this contact will be printed in this language. If not, it will be English."
-msgstr "Si la langue sélectionnée est chargée dans le système, tous les documents de ce contact seront imprimés dans cette langue. Dans le cas contraire, ils le seront en anglais."
+msgid ""
+"If the selected language is loaded in the system, all documents related to "
+"this contact will be printed in this language. If not, it will be English."
+msgstr ""
+"Si la langue sélectionnée est chargée dans le système, tous les documents de "
+"ce contact seront imprimés dans cette langue. Dans le cas contraire, ils le "
+"seront en anglais."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_backorder_id
-msgid "If this shipment was split, then this field links to the shipment which contains the already processed part."
-msgstr "Si cette livraison est divisée, alors ce champs indique la livraison qui contient la partie déjà envoyée."
+msgid ""
+"If this shipment was split, then this field links to the shipment which "
+"contains the already processed part."
+msgstr ""
+"Si cette livraison est divisée, alors ce champs indique la livraison qui "
+"contient la partie déjà envoyée."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_active
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_active
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_active
-msgid "If unchecked, it will allow you to hide the product without removing it."
-msgstr "En décochant cette case, il est possible de masquer l'article sans le supprimer."
+msgid ""
+"If unchecked, it will allow you to hide the product without removing it."
+msgstr ""
+"En décochant cette case, il est possible de masquer l'article sans le "
+"supprimer."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_ignore_exception
@@ -1824,20 +1832,34 @@ msgstr "Image"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image
-msgid "Image of the product variant (Big-sized image of product template if false). It is automatically resized as a 1024x1024px image, with aspect ratio preserved."
-msgstr "Image de la variante d'article (si  non renseigné, image de grandes dimensions du modèle d'article). Automatiquement redimensionné en image de 1024x1024px, en conservant les proportions."
+msgid ""
+"Image of the product variant (Big-sized image of product template if false). "
+"It is automatically resized as a 1024x1024px image, with aspect ratio "
+"preserved."
+msgstr ""
+"Image de la variante d'article (si  non renseigné, image de grandes "
+"dimensions du modèle d'article). Automatiquement redimensionné en image de "
+"1024x1024px, en conservant les proportions."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image_medium
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image_medium
-msgid "Image of the product variant (Medium-sized image of product template if false)."
-msgstr "Image de la variante d'article (si non renseigné, image de dimensions moyennes du modèle d'article)"
+msgid ""
+"Image of the product variant (Medium-sized image of product template if "
+"false)."
+msgstr ""
+"Image de la variante d'article (si non renseigné, image de dimensions "
+"moyennes du modèle d'article)"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image_small
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image_small
-msgid "Image of the product variant (Small-sized image of product template if false)."
-msgstr "Image de la variante d'article (si non renseigné, image de petites dimensions du modèle d'article)"
+msgid ""
+"Image of the product variant (Small-sized image of product template if "
+"false)."
+msgstr ""
+"Image de la variante d'article (si non renseigné, image de petites "
+"dimensions du modèle d'article)"
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
@@ -1956,7 +1978,7 @@ msgid "Impossible to cancel a refund on the backend."
 msgstr "Impossible d'annuler un avoir sur QoQa."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:112
+#: code:addons/connector_qoqa/sale/common.py:135
 #, python-format
 msgid "Impossible to cancel the sales order on the backend now."
 msgstr "Impossible d'annuler la commande sur QoQa maintenant."
@@ -1964,8 +1986,12 @@ msgstr "Impossible d'annuler la commande sur QoQa maintenant."
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/product_template/common.py:76
 #, python-format
-msgid "Impossible to disable the product, it is used in an offer or it could not be deleted on the backend."
-msgstr "Impossible de désactiver l'article, il est utilisé par une offre ou n'a pas pu être supprimé sur QoQa4."
+msgid ""
+"Impossible to disable the product, it is used in an offer or it could not be "
+"deleted on the backend."
+msgstr ""
+"Impossible de désactiver l'article, il est utilisé par une offre ou n'a pas "
+"pu être supprimé sur QoQa4."
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/invoice/common.py:72
@@ -2028,12 +2054,17 @@ msgstr "Référence interne"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_barcode
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_barcode
 msgid "International Article Number used for product identification."
-msgstr "Numéro d'article international (IAN) utilisé pour identifier cet article."
+msgstr ""
+"Numéro d'article international (IAN) utilisé pour identifier cet article."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_incoterm
-msgid "International Commercial Terms are a series of predefined commercial terms used in international transactions."
-msgstr "Les Incoterms sont une série de termes commerciaux prédéfinie utilisés dans les transactions internationales."
+msgid ""
+"International Commercial Terms are a series of predefined commercial terms "
+"used in international transactions."
+msgstr ""
+"Les Incoterms sont une série de termes commerciaux prédéfinie utilisés dans "
+"les transactions internationales."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_property_stock_inventory
@@ -2141,6 +2172,12 @@ msgid "Is a Vendor"
 msgstr "Est un Fournisseur"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_is_voucher
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_line_is_voucher
+msgid "Is a Voucher"
+msgstr "Est un bon cadeau"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_is_product_variant
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_is_product_variant
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_is_product_variant
@@ -2160,7 +2197,9 @@ msgstr "Is user current"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_move_type
 msgid "It specifies goods to be deliver partially or all at once"
-msgstr "Indique si les marchandises doivent être livrées partiellement ou en une seule fois."
+msgstr ""
+"Indique si les marchandises doivent être livrées partiellement ou en une "
+"seule fois."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_function
@@ -2174,7 +2213,6 @@ msgid "Journal"
 msgstr "Journal"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_account_move_line
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_issued_total
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_journal_item_count
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_issued_total
@@ -2184,19 +2222,16 @@ msgstr "Ècritures comptable"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_fixed_price
-msgid "Keep empty if the pricing depends on the advanced pricing per destination"
-msgstr "Gardez vide si le prix dépend de la tarification avancée par destination"
+msgid ""
+"Keep empty if the pricing depends on the advanced pricing per destination"
+msgstr ""
+"Gardez vide si le prix dépend de la tarification avancée par destination"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_lang
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_lang
 msgid "Language"
 msgstr "Langue"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_res_lang
-msgid "Languages"
-msgstr "Langues"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_message_last_post
@@ -2309,8 +2344,14 @@ msgstr "Dernière date de synchronisation"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_last_time_entries_checked
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_last_time_entries_checked
-msgid "Last time the invoices & payments matching was performed for this partner. It is set either if there's not at least an unreconciled debit and an unreconciled credit or if you click the \"Done\" button."
-msgstr "La dernière fois que la correspondance des factures et des paiements a été faite pour ce partenaire. C'est configuré que s'il n'y a pas au moins un débit et un crédit non lettré ou si vous cliquez sur le bouton \"Fait\"."
+msgid ""
+"Last time the invoices & payments matching was performed for this partner. "
+"It is set either if there's not at least an unreconciled debit and an "
+"unreconciled credit or if you click the \"Done\" button."
+msgstr ""
+"La dernière fois que la correspondance des factures et des paiements a été "
+"faite pour ce partenaire. C'est configuré que s'il n'y a pas au moins un "
+"débit et un crédit non lettré ou si vous cliquez sur le bouton \"Fait\"."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_last_time_entries_checked
@@ -2370,13 +2411,6 @@ msgid "Main Exception"
 msgstr "Restriction principale"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_produce_delay
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_produce_delay
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_produce_delay
-msgid "Manufacturing Lead Time"
-msgstr "Délai de fabrication"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_max_date
 msgid "Max. Expected Date"
 msgstr "Date prévue maxi"
@@ -2397,14 +2431,27 @@ msgstr "Image de taille moyenne"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_image_medium
-msgid "Medium-sized image of the product. It is automatically resized as a 128x128px image, with aspect ratio preserved, only when the image exceeds one of those sizes. Use this field in form views or some kanban views."
-msgstr "Image de taille moyenne de l'article. Elle sera automatiquement redimensionnée à 128 x 128 px, en préservent le rapport hauteur/largeur, si l'image dépasse une de ces dimensions. Utilisez ce champ dans les vues formulaire ou certaines vues kanban."
+msgid ""
+"Medium-sized image of the product. It is automatically resized as a "
+"128x128px image, with aspect ratio preserved, only when the image exceeds "
+"one of those sizes. Use this field in form views or some kanban views."
+msgstr ""
+"Image de taille moyenne de l'article. Elle sera automatiquement "
+"redimensionnée à 128 x 128 px, en préservent le rapport hauteur/largeur, si "
+"l'image dépasse une de ces dimensions. Utilisez ce champ dans les vues "
+"formulaire ou certaines vues kanban."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_image_medium
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_image_medium
-msgid "Medium-sized image of this contact. It is automatically resized as a 128x128px image, with aspect ratio preserved. Use this field in form views or some kanban views."
-msgstr "Image de taille moyenne de ce contact. Elle est automatiquement redimensionnée en 128x128px, avec un ratio d'aspect préservé. Utiliser ce champ dans les vues formulaires ou dans certaines vues kanban."
+msgid ""
+"Medium-sized image of this contact. It is automatically resized as a "
+"128x128px image, with aspect ratio preserved. Use this field in form views "
+"or some kanban views."
+msgstr ""
+"Image de taille moyenne de ce contact. Elle est automatiquement "
+"redimensionnée en 128x128px, avec un ratio d'aspect préservé. Utiliser ce "
+"champ dans les vues formulaires ou dans certaines vues kanban."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_meeting_ids
@@ -2426,11 +2473,8 @@ msgstr "Messages"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_millesime
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_millesime
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_millesime
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_millesime
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_millesime
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_millesime
 msgid "Millesime"
 msgstr "Millésime"
 
@@ -2448,7 +2492,6 @@ msgstr "Règles de stock minimum"
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_mobile
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_mobile
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_delivery_mobile
 msgid "Mobile"
 msgstr "Portable"
 
@@ -2496,6 +2539,12 @@ msgstr "Date de la prochaine action"
 #, python-format
 msgid "No origin invoice"
 msgstr "No origin invoice"
+
+#. module: connector_qoqa
+#: code:addons/connector_qoqa/sale/importer.py:381
+#, python-format
+msgid "No voucher product configured on the backend"
+msgstr "Pas de produit pour bon cadeau configuré sur le backend"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_pack_operation_product_ids
@@ -2548,8 +2597,12 @@ msgstr "Nombre de colis"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_line_customer_lead
-msgid "Number of days between the order confirmation and the shipping of the products to the customer"
-msgstr "Nombre de jours entre la confirmation de la commande et l'expédition des articles au client."
+msgid ""
+"Number of days between the order confirmation and the shipping of the "
+"products to the customer"
+msgstr ""
+"Nombre de jours entre la confirmation de la commande et l'expédition des "
+"articles au client."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_message_needaction_counter
@@ -2588,14 +2641,16 @@ msgstr "ID d'offre"
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
-msgid "Once imported,\n"
+msgid ""
+"Once imported,\n"
 "                some types of records,\n"
 "                like the products or categories,\n"
 "                need a manual review.\n"
 "                You will find the list\n"
 "                of the new records to review\n"
 "                in the menu 'Connectors &gt; Checkpoint'."
-msgstr "Une fois importés,\n"
+msgstr ""
+"Une fois importés,\n"
 "                                    certains types d'enregistrements,\n"
 "                                    comme les articles ou catégories,\n"
 "                                    peuvent nécessiter une revue manuelle.\n"
@@ -2604,7 +2659,7 @@ msgstr "Une fois importés,\n"
 "                                    dans le menu 'Connectors > Checkpoint'."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_backend/common.py:212
+#: code:addons/connector_qoqa/qoqa_backend/common.py:216
 #, python-format
 msgid "Only 1 QoQa configuration is allowed."
 msgstr "Impossible de créer plusieurs configurations QoQa."
@@ -2639,7 +2694,7 @@ msgid "Options"
 msgstr "Options"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/common.py:177
+#: code:addons/connector_qoqa/sale/common.py:200
 #, python-format
 msgid "Order Cancellation"
 msgstr "Annulation de commande"
@@ -2757,9 +2812,10 @@ msgid "Payable Limit"
 msgstr "Limite de débit"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_payment_method
-msgid "Payment Method"
-msgstr "Méthode de paiement"
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_payment_method_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_payment_method_ids
+msgid "Payment Methods"
+msgstr "Méthodes de paiement"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_payment_mode_id
@@ -2780,7 +2836,6 @@ msgstr "Condition de règlement"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_phone
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_partner_phone
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_phone
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_delivery_phone
 msgid "Phone"
 msgstr "Téléphone"
 
@@ -2788,11 +2843,6 @@ msgstr "Téléphone"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_pick
 msgid "Pick the product in the store"
 msgstr "Pick the product in the store"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_stock_picking
-msgid "Picking List"
-msgstr "Picking List"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_picking_type_id
@@ -2807,28 +2857,22 @@ msgstr "Livraison associée à cette commande"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_notify_email
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_notify_email
-msgid "Policy to receive emails for new messages pushed to your personal Inbox:\n"
+msgid ""
+"Policy to receive emails for new messages pushed to your personal Inbox:\n"
 "- Never: no emails are sent\n"
 "- All Messages: for every notification you receive in your Inbox"
-msgstr "Politique de réception d'emails pour des nouveaux messages envoyé à votre boite de réception personnelle:\n"
+msgstr ""
+"Politique de réception d'emails pour des nouveaux messages envoyé à votre "
+"boite de réception personnelle:\n"
 "- Jamais: aucuns emails ne seront envoyés\n"
-"- Tous les message: pour chaque notofocation, vous la recevez dans votre boite de réception"
+"- Tous les message: pour chaque notofocation, vous la recevez dans votre "
+"boite de réception"
 
 #. module: connector_qoqa
 #: model:product.product,name:connector_qoqa.product_product_shipping_postlogistics
+#: model:product.template,name:connector_qoqa.product_product_shipping_postlogistics_product_template
 msgid "PostLogistics CH : Basic"
 msgstr "PostLogistics CH : Basic"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_postlogistics_license_id
-msgid "PostLogistics Franking License"
-msgstr "Licence d'affranchissement PostLogistics"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_postlogistics_basic_service_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_postlogistics_service_group_id
-msgid "PostLogistics Service Group"
-msgstr "Groupe de service PostLogistics"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_price
@@ -2852,8 +2896,12 @@ msgstr "Compte d'écart de prix"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_attribute_value_price_extra
-msgid "Price Extra: Extra price for the variant with this attribute value on sale price. eg. 200 price extra, 1000 + 200 = 1200."
-msgstr "Supplément : supplément de prix pour la variante ayant cette valeur de caractéristique.\n"
+msgid ""
+"Price Extra: Extra price for the variant with this attribute value on sale "
+"price. eg. 200 price extra, 1000 + 200 = 1200."
+msgstr ""
+"Supplément : supplément de prix pour la variante ayant cette valeur de "
+"caractéristique.\n"
 "Ex.: Supplément de prix de 200, 1000 + 200 = 1200"
 
 #. module: connector_qoqa
@@ -2899,8 +2947,12 @@ msgstr "Priorité"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_priority
-msgid "Priority for this picking. Setting manually a value here would set it as priority for all the moves"
-msgstr "Priorité pour cette préparation. En saisissant une date manuellement, on fixe la priorité de tous les mouvements"
+msgid ""
+"Priority for this picking. Setting manually a value here would set it as "
+"priority for all the moves"
+msgstr ""
+"Priorité pour cette préparation. En saisissant une date manuellement, on "
+"fixe la priorité de tous les mouvements"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_procurement_group_id
@@ -2974,6 +3026,11 @@ msgid "Product Type"
 msgstr "Type d'article"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_voucher_product_id
+msgid "Product for vouchers"
+msgstr "Produit pour les bons cadeaux"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipping_fee_product_id
 msgid "Product id"
 msgstr "Article"
@@ -2997,11 +3054,6 @@ msgstr "Produits"
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
 msgid "Promo Types"
 msgstr "Types de promotions"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_property_ids
-msgid "Properties"
-msgstr "Propriétés"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_lst_price
@@ -3035,6 +3087,7 @@ msgstr "Unité de mesure d'achat"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_bind_ids
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_line_qoqa_bind_ids
 #: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_qoqa_bind_ids
 #: model:ir.ui.view,arch_db:connector_qoqa.crm_claim_category_form
 #: model:ir.ui.view,arch_db:connector_qoqa.product_template_form_view
@@ -3067,11 +3120,6 @@ msgstr "Liens QoQa pour les bulletins de livraison"
 #: model:ir.ui.view,arch_db:connector_qoqa.view_tax_form
 msgid "QoQa"
 msgstr "QoQa"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_accounting_issuance
-msgid "QoQa Accounting Issuance"
-msgstr "Émission de bon ou promotion QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_active
@@ -3124,11 +3172,6 @@ msgid "QoQa Backend Import Timestamps"
 msgstr "QoQa Backend Import Timestamps"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_backend_oauth
-msgid "QoQa Backend OAuth Wizard"
-msgstr "Assistant Oauth"
-
-#. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_backend_auth
 msgid "QoQa Backend Token Auth Wizard"
 msgstr "Assistant Auth"
@@ -3160,11 +3203,6 @@ msgid "QoQa Bindings (Package Types)"
 msgstr "Liens QoQa (Package Types)"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_buyphrase
-msgid "QoQa Buyphrase"
-msgstr "QoQa Buyphrase"
-
-#. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_crm_claim
 msgid "QoQa Claim"
 msgstr "Réclamation QoQa"
@@ -3187,16 +3225,6 @@ msgid "QoQa Delivery Order"
 msgstr "Bulletin de livraison QoQa"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_discount_accounting
-msgid "QoQa Discount Accounting"
-msgstr "Émission de bon ou promotion QoQa"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_discount_accounting_line
-msgid "QoQa Discount Accounting Line"
-msgstr "Émission de bon ou promotion QoQa"
-
-#. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_shipping_fee_form
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_shipping_fee_tree
 msgid "QoQa Fees"
@@ -3211,16 +3239,6 @@ msgstr "Nom QoQa"
 #: model:ir.model,name:connector_qoqa.model_qoqa_offer
 msgid "QoQa Offer"
 msgstr "Offre QoQa"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position
-msgid "QoQa Offer Position"
-msgstr "Position d'offre"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_offer_position_variant
-msgid "QoQa Offer Position Variant"
-msgstr "QoQa Offer Position Variant"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_qoqa_order_line_ids
@@ -3250,11 +3268,6 @@ msgid "QoQa Product Attribute Value"
 msgstr "Valeur d'attribut de produit QoQa"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_promo_issuance_line
-msgid "QoQa Promo Issuance"
-msgstr "Émission de promotion QoQa"
-
-#. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_promo_type
 msgid "QoQa Promo Type"
 msgstr "Type de promotion QoQa"
@@ -3266,6 +3279,7 @@ msgid "QoQa Sale"
 msgstr "Vente QoQa"
 
 #. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_qoqa_order_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_stock_picking_qoqa_sale_binding_id
 msgid "QoQa Sale Order"
@@ -3280,16 +3294,6 @@ msgstr "Lignes de commandes QoQa"
 #: model:ir.model,name:connector_qoqa.model_qoqa_shipper_package_type
 msgid "QoQa Shipper Package Type"
 msgstr "Types de colis QoQa"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_rate
-msgid "QoQa Shipper Rate"
-msgstr "Frais de livraison QoQa"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_shipper_service
-msgid "QoQa Shipper Service"
-msgstr "Service de livraison QoQa"
 
 #. module: connector_qoqa
 #: model:ir.actions.act_window,name:connector_qoqa.action_qoqa_shipping_fee
@@ -3311,7 +3315,6 @@ msgstr "Modèle d'article QoQa"
 
 #. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_qoqa_res_partner
-#: model:ir.model,name:connector_qoqa.model_qoqa_sale_order
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_res_partner_form
 msgid "QoQa User"
 msgstr "Utilisateur QoQa"
@@ -3323,19 +3326,11 @@ msgid "QoQa Variant"
 msgstr "Client QoQa"
 
 #. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_voucher_issuance_line
-msgid "QoQa Voucher Issuance Line"
-msgstr "Émision de bon QoQa"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_qoqa_voucher_payment
-msgid "QoQa Voucher Payment"
-msgstr "Bon cadeau QoQa"
-
-#. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_crm_claim_qoqa_partner_url
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_qoqa_url
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_qoqa_partner_url
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_qoqa_url
+#: model:ir.model.fields,field_description:connector_qoqa.field_res_partner_qoqa_url
 msgid "Qoqa url"
 msgstr "Qoqa url"
 
@@ -3356,26 +3351,42 @@ msgstr "Quantité en stock"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_incoming_qty
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_incoming_qty
-msgid "Quantity of products that are planned to arrive.\n"
-"In a context with a single Stock Location, this includes goods arriving to this Location, or any of its children.\n"
-"In a context with a single Warehouse, this includes goods arriving to the Stock Location of this Warehouse, or any of its children.\n"
-"Otherwise, this includes goods arriving to any Stock Location with 'internal' type."
-msgstr "Quantité d'articles dont l'arrivée est prévue.\n"
-"Dans le contexte d'un emplacement de stock seul, cela comprend les marchandises arrivant dans cet emplacement, ou dans un de ses enfants.\n"
-"Dans le contexte d'un entrepôt seul, cela comprend les marchandises arrivant dans l'emplacement de stock de cet entrepôt, ou dans de ses enfants.\n"
-"Dans les autres cas cela comprend toutes les marchandises arrivant dans des emplacements de type \"interne\"."
+msgid ""
+"Quantity of products that are planned to arrive.\n"
+"In a context with a single Stock Location, this includes goods arriving to "
+"this Location, or any of its children.\n"
+"In a context with a single Warehouse, this includes goods arriving to the "
+"Stock Location of this Warehouse, or any of its children.\n"
+"Otherwise, this includes goods arriving to any Stock Location with "
+"'internal' type."
+msgstr ""
+"Quantité d'articles dont l'arrivée est prévue.\n"
+"Dans le contexte d'un emplacement de stock seul, cela comprend les "
+"marchandises arrivant dans cet emplacement, ou dans un de ses enfants.\n"
+"Dans le contexte d'un entrepôt seul, cela comprend les marchandises arrivant "
+"dans l'emplacement de stock de cet entrepôt, ou dans de ses enfants.\n"
+"Dans les autres cas cela comprend toutes les marchandises arrivant dans des "
+"emplacements de type \"interne\"."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_outgoing_qty
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_outgoing_qty
-msgid "Quantity of products that are planned to leave.\n"
-"In a context with a single Stock Location, this includes goods leaving this Location, or any of its children.\n"
-"In a context with a single Warehouse, this includes goods leaving the Stock Location of this Warehouse, or any of its children.\n"
-"Otherwise, this includes goods leaving any Stock Location with 'internal' type."
-msgstr "Quantité d'articles dont le départ est prévu.\n"
-"Dans le contexte d'un emplacement de stock seul, cela comprend les marchandises partant de cet emplacement, ou d'un de ses enfants.\n"
-"Dans le contexte d'un entrepôt seul, cela comprend les marchandises partant de l'emplacement de stock de cet entrepôt, ou de l'un de ses enfants.\n"
-"Dans les autres cas cela comprend toutes les marchandises partant d'un des emplacements de type \"interne\"."
+msgid ""
+"Quantity of products that are planned to leave.\n"
+"In a context with a single Stock Location, this includes goods leaving this "
+"Location, or any of its children.\n"
+"In a context with a single Warehouse, this includes goods leaving the Stock "
+"Location of this Warehouse, or any of its children.\n"
+"Otherwise, this includes goods leaving any Stock Location with 'internal' "
+"type."
+msgstr ""
+"Quantité d'articles dont le départ est prévu.\n"
+"Dans le contexte d'un emplacement de stock seul, cela comprend les "
+"marchandises partant de cet emplacement, ou d'un de ses enfants.\n"
+"Dans le contexte d'un entrepôt seul, cela comprend les marchandises partant "
+"de l'emplacement de stock de cet entrepôt, ou de l'un de ses enfants.\n"
+"Dans les autres cas cela comprend toutes les marchandises partant d'un des "
+"emplacements de type \"interne\"."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_picking_ids
@@ -3383,23 +3394,9 @@ msgid "RMA"
 msgstr "RMA"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_rma_virtual_available
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_rma_virtual_available
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_rma_virtual_available
-msgid "RMA Forecasted Quantity"
-msgstr "Quantité RMA prévue"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_crm_claim_rma_number
 msgid "RMA Number provided by supplier"
 msgstr "RMA Number provided by supplier"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_rma_qty_available
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_rma_qty_available
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_rma_qty_available
-msgid "RMA Quantity On Hand"
-msgstr "Quantité RMA en stock"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_real_cost
@@ -3486,13 +3483,6 @@ msgid "Refunds"
 msgstr "Avoirs"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_wine_region
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_wine_region
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_wine_region
-msgid "Region"
-msgstr "Region"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_parent_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_parent_id
 msgid "Related Company"
@@ -3552,8 +3542,12 @@ msgstr "Responsable"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_crm_claim_team_id
-msgid "Responsible sales team. Define Responsible user and Email account for mail gateway."
-msgstr "Responsible sales team. Define Responsible user and Email account for mail gateway."
+msgid ""
+"Responsible sales team. Define Responsible user and Email account for mail "
+"gateway."
+msgstr ""
+"Responsible sales team. Define Responsible user and Email account for mail "
+"gateway."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_claim_line_ids
@@ -3605,6 +3599,11 @@ msgid "Sale Order"
 msgstr "Bon de commande"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_account_invoice_sale_order_ids
+msgid "Sale Orders"
+msgstr "Bons de commande"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_list_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_lst_price
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_list_price
@@ -3653,13 +3652,13 @@ msgid "Sales Team"
 msgstr "Équipe commerciale"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/importer.py:115
+#: code:addons/connector_qoqa/sale/importer.py:116
 #, python-format
 msgid "Sales order %s has been marked as \"to cancel\"."
 msgstr "Le bulletin de commande %s a été marqué comme \"à annuler\"."
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/sale/importer.py:108
+#: code:addons/connector_qoqa/sale/importer.py:109
 #, python-format
 msgid "Sales order %s is not imported because it has been canceled."
 msgstr "La commande %s n'a pas été importée parce qu'elle est annulée."
@@ -3697,8 +3696,12 @@ msgstr "Date prévue"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_min_date
-msgid "Scheduled time for the first part of the shipment to be processed. Setting manually a value here would set it as expected date for all the stock moves."
-msgstr "Heure prévue de la première partie à expédier. Préciser une date ici revient à spécifier la date prévue pour tout les mouvements de stocks."
+msgid ""
+"Scheduled time for the first part of the shipment to be processed. Setting "
+"manually a value here would set it as expected date for all the stock moves."
+msgstr ""
+"Heure prévue de la première partie à expédier. Préciser une date ici revient "
+"à spécifier la date prévue pour tout les mouvements de stocks."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_max_date
@@ -3739,7 +3742,9 @@ msgstr "Sélectionnez le mode de paiement par défaut pour ce fournisseur."
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_use_parent_address
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_use_parent_address
-msgid "Select this if you want to set company's address information  for this contact"
+msgid ""
+"Select this if you want to set company's address information  for this "
+"contact"
 msgstr "Sélectionner ceci pour indiquer l'adresse de la société de ce contact."
 
 #. module: connector_qoqa
@@ -3753,11 +3758,6 @@ msgstr "Sélectionner ceci pour indiquer l'adresse de la société de ce contact
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_sequence
 msgid "Sequence"
 msgstr "Séquence"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_postlogistics_service_group_id
-msgid "Service group defines the available options for this delivery method."
-msgstr "Groupe de service pour définir les options disponibles pour cette méthode de livraison."
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_delivery_carrier_form
@@ -3790,36 +3790,6 @@ msgid "Shops"
 msgstr "Magasins"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_signup_expiration
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_signup_expiration
-msgid "Signup Expiration"
-msgstr "Expiration de la session de connexion"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_signup_token
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_signup_token
-msgid "Signup Token"
-msgstr "Session de connexion"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_signup_type
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_signup_type
-msgid "Signup Token Type"
-msgstr "Type de jeton de connexion"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_signup_valid
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_signup_valid
-msgid "Signup Token is Valid"
-msgstr "La session d'authentification est valide"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_signup_url
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_signup_url
-msgid "Signup URL"
-msgstr "Url d'authentification"
-
-#. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
 msgid "Single Imports"
 msgstr "Imports unitaires (debug)"
@@ -3840,14 +3810,26 @@ msgstr "Image de petite taille"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_image_small
-msgid "Small-sized image of the product. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
-msgstr "Vignette de l'article. Elle sera automatiquement redimensionnée à 64 x 64 px, en préservent le rapport hauteur/largeur. Utilisez ce champ partout où une petite image est nécessaire."
+msgid ""
+"Small-sized image of the product. It is automatically resized as a 64x64px "
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
+msgstr ""
+"Vignette de l'article. Elle sera automatiquement redimensionnée à 64 x 64 "
+"px, en préservent le rapport hauteur/largeur. Utilisez ce champ partout où "
+"une petite image est nécessaire."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_image_small
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_image_small
-msgid "Small-sized image of this contact. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
-msgstr "La miniature de l'image de ce contact. Elle est automatiquement retaillée en 64x64px tout en conservant le ratio. Utilisez ce champ à chaque fois qu'une miniature est nécessaire."
+msgid ""
+"Small-sized image of this contact. It is automatically resized as a 64x64px "
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
+msgstr ""
+"La miniature de l'image de ce contact. Elle est automatiquement retaillée en "
+"64x64px tout en conservant le ratio. Utilisez ce champ à chaque fois qu'une "
+"miniature est nécessaire."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_source_id
@@ -3866,17 +3848,13 @@ msgid "Source Location Zone"
 msgstr "Zone d'emplacement source"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_delivery_fixed_date
-msgid "Specific delivery date (ZAW3217)"
-msgstr "Specific delivery date (ZAW3217)"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_sale_ok
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_sale_ok
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_product_sale_ok
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_sale_ok
 msgid "Specify if the product can be selected in a sales order line."
-msgstr "Indique si l'article peut être mis dans une ligne de commande de vente."
+msgstr ""
+"Indique si l'article peut être mis dans une ligne de commande de vente."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_stage_id
@@ -3887,12 +3865,20 @@ msgstr "Étape"
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_cost_method
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_cost_method
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_cost_method
-msgid "Standard Price: The cost price is manually updated at the end of a specific period (usually once a year).\n"
-"                    Average Price: The cost price is recomputed at each incoming shipment and used for the product valuation.\n"
-"                    Real Price: The cost price displayed is the price of the last outgoing product (will be use in case of inventory loss for example)."
-msgstr "Prix standard : Le prix de revient est mis à jour manuellement à la fin d'une période donnée (généralement une fois par an).\n"
-"Prix moyen : Le prix de revient est recalculé à chaque réception et utilisé pour la valorisation du produit.\n"
-"Prix réel : Le prix de revient affiché est le prix du dernier produit sortant (il sera utilisé en cas de perte de stocks par exemple)."
+msgid ""
+"Standard Price: The cost price is manually updated at the end of a specific "
+"period (usually once a year).\n"
+"                    Average Price: The cost price is recomputed at each "
+"incoming shipment and used for the product valuation.\n"
+"                    Real Price: The cost price displayed is the price of the "
+"last outgoing product (will be use in case of inventory loss for example)."
+msgstr ""
+"Prix standard : Le prix de revient est mis à jour manuellement à la fin "
+"d'une période donnée (généralement une fois par an).\n"
+"Prix moyen : Le prix de revient est recalculé à chaque réception et utilisé "
+"pour la valorisation du produit.\n"
+"Prix réel : Le prix de revient affiché est le prix du dernier produit "
+"sortant (il sera utilisé en cas de perte de stocks par exemple)."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_state_id
@@ -3986,17 +3972,12 @@ msgid "Tags"
 msgstr "Étiquettes"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_task_ids
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_task_ids
-msgid "Tasks"
-msgstr "Tâches"
-
-#. module: connector_qoqa
 #: model:ir.model,name:connector_qoqa.model_account_tax
 msgid "Tax"
 msgstr "Taxe"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_tax_group_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_tax_group_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_tax_group_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_tax_group_id
@@ -4006,10 +3987,15 @@ msgstr "Groupe de taxes"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_vat
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_vat
-msgid "Tax Identification Number. Fill it if the company is subjected to taxes. Used by the some of the legal statements."
-msgstr "Numéro fiscal. Remplissez cette case si ce contact est soumis au paiement de taxe. Utilisé dans certaines déclarations légales."
+msgid ""
+"Tax Identification Number. Fill it if the company is subjected to taxes. "
+"Used by the some of the legal statements."
+msgstr ""
+"Numéro fiscal. Remplissez cette case si ce contact est soumis au paiement de "
+"taxe. Utilisé dans certaines déclarations légales."
 
 #. module: connector_qoqa
+#: model:ir.model.fields,help:connector_qoqa.field_delivery_carrier_tax_group_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_tax_group_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_tax_group_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_tax_group_id
@@ -4026,8 +4012,22 @@ msgstr "Taxes"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_company_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_company_type
-msgid "Technical field, used only to display a boolean using a radio button. As for Odoo v9 RadioButton cannot be used on boolean fields, this one serves as interface. Due to the old API limitations with interface function field, we implement it by hand instead of a true function field. When migrating to the new API the code should be simplified. Changing thecompany_type of a company contact into a company will not displaythis contact as a company contact but as a standalone company."
-msgstr "Technical field, used only to display a boolean using a radio button. As for Odoo v9 RadioButton cannot be used on boolean fields, this one serves as interface. Due to the old API limitations with interface function field, we implement it by hand instead of a true function field. When migrating to the new API the code should be simplified. Changing thecompany_type of a company contact into a company will not displaythis contact as a company contact but as a standalone company."
+msgid ""
+"Technical field, used only to display a boolean using a radio button. As for "
+"Odoo v9 RadioButton cannot be used on boolean fields, this one serves as "
+"interface. Due to the old API limitations with interface function field, we "
+"implement it by hand instead of a true function field. When migrating to the "
+"new API the code should be simplified. Changing thecompany_type of a company "
+"contact into a company will not displaythis contact as a company contact but "
+"as a standalone company."
+msgstr ""
+"Technical field, used only to display a boolean using a radio button. As for "
+"Odoo v9 RadioButton cannot be used on boolean fields, this one serves as "
+"interface. Due to the old API limitations with interface function field, we "
+"implement it by hand instead of a true function field. When migrating to the "
+"new API the code should be simplified. Changing thecompany_type of a company "
+"contact into a company will not displaythis contact as a company contact but "
+"as a standalone company."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_openerp_id
@@ -4052,11 +4052,6 @@ msgid "Terms and conditions"
 msgstr "Conditions de vente"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_url_template
-msgid "The '%(tracking_number)s' sequence will be replaced by the tracking number and the '%(lang)s' sequence will be replaced by the language code (en, fr, de)"
-msgstr "La séquence '%(tracking_number)s' sera remplacée par le numéro de tracking et la séquence '%(lang)s' sera remplacée par la langue (en, fr, de)"
-
-#. module: connector_qoqa
 #: sql_constraint:product.product:0
 msgid "The Internal Reference must be unique"
 msgstr "The Internal Reference must be unique"
@@ -4069,7 +4064,8 @@ msgstr "The amount computed in Odoo doesn't match with the amount in QoQa."
 #. module: connector_qoqa
 #: model:sale.exception,description:connector_qoqa.excep_wrong_paid_amount
 msgid "The amount computed in Odoo doesn't match with the paid amount in QoQa."
-msgstr "Le montant calculé par Odoo ne correspond pas au montant payé sur QoQa."
+msgstr ""
+"Le montant calculé par Odoo ne correspond pas au montant payé sur QoQa."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_line_project_id
@@ -4078,17 +4074,26 @@ msgid "The analytic account related to a sales order."
 msgstr "Le compte analytique lié au bon de commandes"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_backend/common.py:185
+#: code:addons/connector_qoqa/qoqa_backend/common.py:189
 #, python-format
-msgid "The authentication failed. Use the \"Get Authentication Tokens\" button to request access."
-msgstr "The authentication failed. Use the \"Get Authentication Tokens\" button to request access."
+msgid ""
+"The authentication failed. Use the \"Get Authentication Tokens\" button to "
+"request access."
+msgstr ""
+"The authentication failed. Use the \"Get Authentication Tokens\" button to "
+"request access."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_sale_delay
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_sale_delay
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_sale_delay
-msgid "The average delay in days between the confirmation of the customer order and the delivery of the finished products. It's the time you promise to your customers."
-msgstr "Le délai moyen en jours entre la confirmation de la commande de vente et la livraison des produits finis. C'est le délai promis à vos clients."
+msgid ""
+"The average delay in days between the confirmation of the customer order and "
+"the delivery of the finished products. It's the time you promise to your "
+"customers."
+msgstr ""
+"Le délai moyen en jours entre la confirmation de la commande de vente et la "
+"livraison des produits finis. C'est le délai promis à vos clients."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_crm_claim_medium_res_model
@@ -4104,21 +4109,30 @@ msgstr "La date avant laquelle aucune action ne devrait être lancée."
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_account_position_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_account_position_id
-msgid "The fiscal position will determine taxes and accounts used for the partner."
-msgstr "La position fiscale déterminera les taxes et les comptes comptables utilisés par le partneraire"
+msgid ""
+"The fiscal position will determine taxes and accounts used for the partner."
+msgstr ""
+"La position fiscale déterminera les taxes et les comptes comptables utilisés "
+"par le partneraire"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_user_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_user_id
-msgid "The internal user that is in charge of communicating with this contact if any."
-msgstr "L'utilisateur interne qui est en charge de la communication avec ce contact, le cas échéant."
+msgid ""
+"The internal user that is in charge of communicating with this contact if "
+"any."
+msgstr ""
+"L'utilisateur interne qui est en charge de la communication avec ce contact, "
+"le cas échéant."
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/product_attribute_value/common.py:52
 #, python-format
-msgid "The limit for an attribute value is 25 characters.\n"
+msgid ""
+"The limit for an attribute value is 25 characters.\n"
 "'%s' should therefore be shorter."
-msgstr "La limite pour une valeur d'attribut est de 25 caractères.\n"
+msgstr ""
+"La limite pour une valeur d'attribut est de 25 caractères.\n"
 "'%s' doit donc être raccourci."
 
 #. module: connector_qoqa
@@ -4130,8 +4144,12 @@ msgstr "L'offre n'existe pas sur le backend."
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_has_unreconciled_entries
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_has_unreconciled_entries
-msgid "The partner has at least one unreconciled debit and credit since last time the invoices & payments matching was performed."
-msgstr "Le partenaire a au moins un débit et un crédit non lettré depuis le dernier lettrage des factures et des paiements."
+msgid ""
+"The partner has at least one unreconciled debit and credit since last time "
+"the invoices & payments matching was performed."
+msgstr ""
+"Le partenaire a au moins un débit et un crédit non lettré depuis le dernier "
+"lettrage des factures et des paiements."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_partner_id
@@ -4141,8 +4159,17 @@ msgstr "Le partenaire qui assure la livraison"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_tz
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_tz
-msgid "The partner's timezone, used to output proper date and time values inside printed reports. It is important to set a value for this field. You should use the same timezone that is otherwise used to pick and render date and time values: your computer's timezone."
-msgstr "Le fuseau horaire du partenaire, utilisé pour les valeurs de sortie de date et d'heure correcte à l'intérieur de rapports imprimés. Il est important de définir une valeur pour ce champ. Vous devez utiliser le même fuseau horaire qui est par ailleurs utilisé pour sélectionner et afficher les  valeurs de date et d'heure : le fuseau horaire de votre ordinateur."
+msgid ""
+"The partner's timezone, used to output proper date and time values inside "
+"printed reports. It is important to set a value for this field. You should "
+"use the same timezone that is otherwise used to pick and render date and "
+"time values: your computer's timezone."
+msgstr ""
+"Le fuseau horaire du partenaire, utilisé pour les valeurs de sortie de date "
+"et d'heure correcte à l'intérieur de rapports imprimés. Il est important de "
+"définir une valeur pour ce champ. Vous devez utiliser le même fuseau horaire "
+"qui est par ailleurs utilisé pour sélectionner et afficher les  valeurs de "
+"date et d'heure : le fuseau horaire de votre ordinateur."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_account_payment_mode_payment_cancellable_on_qoqa
@@ -4166,10 +4193,14 @@ msgid "The refund has been cancelled."
 msgstr "Les paiements peuvent être annulés le même jour"
 
 #. module: connector_qoqa
-#: code:addons/connector_qoqa/qoqa_backend/common.py:239
+#: code:addons/connector_qoqa/qoqa_backend/common.py:243
 #, python-format
-msgid "The synchronization timestamp %s is currently locked, probably due to an ongoing synchronization."
-msgstr "The synchronization timestamp %s is currently locked, probably due to an ongoing synchronization."
+msgid ""
+"The synchronization timestamp %s is currently locked, probably due to an "
+"ongoing synchronization."
+msgstr ""
+"The synchronization timestamp %s is currently locked, probably due to an "
+"ongoing synchronization."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_volume
@@ -4187,41 +4218,63 @@ msgstr "Le poids du contenu en kilogrammes, sans compter tout emballage, etc."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_crm_claim_email_cc
-msgid "These email addresses will be added to the CC field of all inbound and outbound emails for this record before being sent. Separate multiple email addresses with a comma"
-msgstr "Ces adresses courriels seront ajoutées par défaut au champ \"Copie à\" de tous les courriels entrants et sortants de cet enregistrement. Séparez les adresses multiples avec une virgule."
+msgid ""
+"These email addresses will be added to the CC field of all inbound and "
+"outbound emails for this record before being sent. Separate multiple email "
+"addresses with a comma"
+msgstr ""
+"Ces adresses courriels seront ajoutées par défaut au champ \"Copie à\" de "
+"tous les courriels entrants et sortants de cet enregistrement. Séparez les "
+"adresses multiples avec une virgule."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_account_expense_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_account_expense_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_account_expense_id
-msgid "This account will be used for invoices instead of the default one to value expenses for the current product."
-msgstr "Ce compte sera utilisé pour les factures au lieu de celui par défaut pour valoriser les dépenses pour l'article actuel."
+msgid ""
+"This account will be used for invoices instead of the default one to value "
+"expenses for the current product."
+msgstr ""
+"Ce compte sera utilisé pour les factures au lieu de celui par défaut pour "
+"valoriser les dépenses pour l'article actuel."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_account_income_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_account_income_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_account_income_id
-msgid "This account will be used for invoices instead of the default one to value sales for the current product."
-msgstr "Ce compte sera utilisé pour les factures au lieu de celui par défaut pour valoriser les ventes pour l'article actuel."
+msgid ""
+"This account will be used for invoices instead of the default one to value "
+"sales for the current product."
+msgstr ""
+"Ce compte sera utilisé pour les factures au lieu de celui par défaut pour "
+"valoriser les ventes pour l'article actuel."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_account_payable_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_account_payable_id
-msgid "This account will be used instead of the default one as the payable account for the current partner"
+msgid ""
+"This account will be used instead of the default one as the payable account "
+"for the current partner"
 msgstr "Ce compte de tiers remplacera le compte par défaut du partenaire. "
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_account_receivable_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_account_receivable_id
-msgid "This account will be used instead of the default one as the receivable account for the current partner"
+msgid ""
+"This account will be used instead of the default one as the receivable "
+"account for the current partner"
 msgstr "Ce compte remplacera le compte de tiers par défaut pour ce partenaire."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_account_creditor_price_difference
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_account_creditor_price_difference
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_account_creditor_price_difference
-msgid "This account will be used to value price difference between purchase price and cost price."
-msgstr "Ce compte sera utilisé pour valoriser l'écart de prix entre le prix d'achat et le prix de revient de l'article."
+msgid ""
+"This account will be used to value price difference between purchase price "
+"and cost price."
+msgstr ""
+"Ce compte sera utilisé pour valoriser l'écart de prix entre le prix d'achat "
+"et le prix de revient de l'article."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_crm_claim_delivery_address_id
@@ -4231,103 +4284,167 @@ msgstr "This address will be used to deliver repaired or replacement products."
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_purchase_currency_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_purchase_currency_id
-msgid "This currency will be used, instead of the default one, for purchases from the current partner"
-msgstr "Cette devise sera utilisée, au lieu de celle par défaut, pour les achats depuis ce partenaire actuel."
+msgid ""
+"This currency will be used, instead of the default one, for purchases from "
+"the current partner"
+msgstr ""
+"Cette devise sera utilisée, au lieu de celle par défaut, pour les achats "
+"depuis ce partenaire actuel."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_delivery_carrier_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_delivery_carrier_id
 msgid "This delivery method will be used when invoicing from picking."
-msgstr "Cette méthode de livraison sera utilisée lorsqu'on facturera sur base du colisage."
+msgstr ""
+"Cette méthode de livraison sera utilisée lorsqu'on facturera sur base du "
+"colisage."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_image
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_image
-msgid "This field holds the image used as avatar for this contact, limited to 1024x1024px"
-msgstr "Ce champ contient l'image utilisée comme photo d'identité pour ce contact, limitée à 1024x1024px."
+msgid ""
+"This field holds the image used as avatar for this contact, limited to "
+"1024x1024px"
+msgstr ""
+"Ce champ contient l'image utilisée comme photo d'identité pour ce contact, "
+"limitée à 1024x1024px."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_image_variant
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_image_variant
-msgid "This field holds the image used as image for the product variant, limited to 1024x1024px."
-msgstr "Ce champ contient l'image utilisée pour la variante d'article, limitée à 1024x1024 px."
+msgid ""
+"This field holds the image used as image for the product variant, limited to "
+"1024x1024px."
+msgstr ""
+"Ce champ contient l'image utilisée pour la variante d'article, limitée à "
+"1024x1024 px."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_image
-msgid "This field holds the image used as image for the product, limited to 1024x1024px."
-msgstr "Ce champ contient l'image utilisée pour cet article, limitée à 1024x1024 px."
+msgid ""
+"This field holds the image used as image for the product, limited to "
+"1024x1024px."
+msgstr ""
+"Ce champ contient l'image utilisée pour cet article, limitée à 1024x1024 px."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_campaign_id
-msgid "This is a name that helps you keep track of your different campaign efforts Ex: Fall_Drive, Christmas_Special"
-msgstr "C'est le nom qui vous permet de conserver la trace de vos campagnes. Par exemple : Commercialisation_Automne, Spécial_Noël"
+msgid ""
+"This is a name that helps you keep track of your different campaign efforts "
+"Ex: Fall_Drive, Christmas_Special"
+msgstr ""
+"C'est le nom qui vous permet de conserver la trace de vos campagnes. Par "
+"exemple : Commercialisation_Automne, Spécial_Noël"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_medium_id
 msgid "This is the method of delivery. Ex: Postcard, Email, or Banner Ad"
-msgstr "Ceci est le mode de transmission. Ex: carte postale, courriel, bannière publicitaire"
+msgstr ""
+"Ceci est le mode de transmission. Ex: carte postale, courriel, bannière "
+"publicitaire"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_sale_order_source_id
-msgid "This is the source of the link Ex: Search Engine, another domain, or name of email list"
-msgstr "Ceci est la source du lien. Ex: moteur de recherche, autre domaine, ou nom d'une liste de courriel"
+msgid ""
+"This is the source of the link Ex: Search Engine, another domain, or name of "
+"email list"
+msgstr ""
+"Ceci est la source du lien. Ex: moteur de recherche, autre domaine, ou nom "
+"d'une liste de courriel"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_price_extra
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_price_extra
 msgid "This is the sum of the extra price of all attributes"
-msgstr "Ceci est la somme des suppléments de prix de toutes les caractéristique."
+msgstr ""
+"Ceci est la somme des suppléments de prix de toutes les caractéristique."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_supplier_payment_term_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_supplier_payment_term_id
-msgid "This payment term will be used instead of the default one for purchase orders and vendor bills"
-msgstr "Ce délai de paiement sera utilisé à la place de celui par défaut pour les bons de commande et les factures fournisseurs"
+msgid ""
+"This payment term will be used instead of the default one for purchase "
+"orders and vendor bills"
+msgstr ""
+"Ce délai de paiement sera utilisé à la place de celui par défaut pour les "
+"bons de commande et les factures fournisseurs"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_payment_term_id
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_payment_term_id
-msgid "This payment term will be used instead of the default one for sale orders and customer invoices"
-msgstr "Ce délai de paiement sera utilisé à la place de celui par défaut pour les commandes et les factures clients"
+msgid ""
+"This payment term will be used instead of the default one for sale orders "
+"and customer invoices"
+msgstr ""
+"Ce délai de paiement sera utilisé à la place de celui par défaut pour les "
+"commandes et les factures clients"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_product_pricelist
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_product_pricelist
-msgid "This pricelist will be used, instead of the default one, for sales to the current partner"
-msgstr "Cette liste de prix sera utilisée, à la place de la liste par défaut, pour les ventes faites au partenaire actuel."
+msgid ""
+"This pricelist will be used, instead of the default one, for sales to the "
+"current partner"
+msgstr ""
+"Cette liste de prix sera utilisée, à la place de la liste par défaut, pour "
+"les ventes faites au partenaire actuel."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_stock_customer
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_stock_customer
-msgid "This stock location will be used, instead of the default one, as the destination location for goods you send to this partner"
-msgstr "Cette emplacement de stock sera utilisée au lieu de celui par défaut en tant que l'emplacement de destination pour les biens que vous envoyez à ce partenaire."
+msgid ""
+"This stock location will be used, instead of the default one, as the "
+"destination location for goods you send to this partner"
+msgstr ""
+"Cette emplacement de stock sera utilisée au lieu de celui par défaut en tant "
+"que l'emplacement de destination pour les biens que vous envoyez à ce "
+"partenaire."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_property_stock_supplier
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_property_stock_supplier
-msgid "This stock location will be used, instead of the default one, as the source location for goods you receive from the current partner"
-msgstr "Cet emplacement de stock sera utilisé au lieu de celle par défaut, comme emplacement source pour les biens reçus du partenaire courant"
+msgid ""
+"This stock location will be used, instead of the default one, as the source "
+"location for goods you receive from the current partner"
+msgstr ""
+"Cet emplacement de stock sera utilisé au lieu de celle par défaut, comme "
+"emplacement source pour les biens reçus du partenaire courant"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_production
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_production
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_production
-msgid "This stock location will be used, instead of the default one, as the source location for stock moves generated by manufacturing orders."
-msgstr "Cet emplacement de stock sera utilisé, à la place de l'emplacement par défaut, comme emplacement source des mouvements de stock générés par les ordres de fabrication."
+msgid ""
+"This stock location will be used, instead of the default one, as the source "
+"location for stock moves generated by manufacturing orders."
+msgstr ""
+"Cet emplacement de stock sera utilisé, à la place de l'emplacement par "
+"défaut, comme emplacement source des mouvements de stock générés par les "
+"ordres de fabrication."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_procurement
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_procurement
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_procurement
-msgid "This stock location will be used, instead of the default one, as the source location for stock moves generated by procurements."
-msgstr "Cet emplacement de stock sera utilisé, à la place de l'emplacement par défaut, comme emplacement source des mouvements de stock générés par les approvisionnements."
+msgid ""
+"This stock location will be used, instead of the default one, as the source "
+"location for stock moves generated by procurements."
+msgstr ""
+"Cet emplacement de stock sera utilisé, à la place de l'emplacement par "
+"défaut, comme emplacement source des mouvements de stock générés par les "
+"approvisionnements."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_inventory
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_inventory
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_inventory
-msgid "This stock location will be used, instead of the default one, as the source location for stock moves generated when you do an inventory."
-msgstr "Cet emplacement de stock sera utilisé, à la place de l'emplacement par défaut, comme emplacement source pour les mouvements de stock générés quand vous faites un inventaire."
+msgid ""
+"This stock location will be used, instead of the default one, as the source "
+"location for stock moves generated when you do an inventory."
+msgstr ""
+"Cet emplacement de stock sera utilisé, à la place de l'emplacement par "
+"défaut, comme emplacement source pour les mouvements de stock générés quand "
+"vous faites un inventaire."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_tz
@@ -4409,6 +4526,12 @@ msgid "Total amount you have to pay to this vendor."
 msgstr "Montant total à payer au fournisseur."
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_amount_total_without_voucher
+#: model:ir.model.fields,field_description:connector_qoqa.field_sale_order_amount_total_without_voucher
+msgid "Total without Voucher"
+msgstr "Total sans les bons cadeaux"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_track_service
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_track_service
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_track_service
@@ -4438,6 +4561,11 @@ msgid "Transaction number of the payment on QoQa"
 msgstr "Numéro de transaction du paiement sur QoQa"
 
 #. module: connector_qoqa
+#: model:ir.model,name:connector_qoqa.model_stock_picking
+msgid "Transfer"
+msgstr "Transfert"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_partner_id
 msgid "Transporter Company"
 msgstr "Société de transport"
@@ -4449,8 +4577,12 @@ msgstr "Responsable de l'incident"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking_recompute_pack_op
-msgid "True if reserved quants changed, which mean we might need to recompute the package operations"
-msgstr "Vrai si les quants réservés ont changé, ce qui signifie qu'il est peut-être nécessaire de recalculer les colisages"
+msgid ""
+"True if reserved quants changed, which mean we might need to recompute the "
+"package operations"
+msgstr ""
+"Vrai si les quants réservés ont changé, ce qui signifie qu'il est peut-être "
+"nécessaire de recalculer les colisages"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_medium_type
@@ -4465,8 +4597,11 @@ msgstr "URL"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_shipping_enabled
-msgid "Uncheck this box to disable package shipping while validating Delivery Orders"
-msgstr "Décochez cette case pour désactiver l'expédition de colis lors de la validation des ordonnances de livraison"
+msgid ""
+"Uncheck this box to disable package shipping while validating Delivery Orders"
+msgstr ""
+"Décochez cette case pour désactiver l'expédition de colis lors de la "
+"validation des ordonnances de livraison"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_sale_order_line_price_unit
@@ -4537,11 +4672,6 @@ msgid "Url"
 msgstr "Url"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_url_template
-msgid "Url template"
-msgstr "Template d'url"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_use_parent_address
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_res_partner_use_parent_address
 msgid "Use Company Address"
@@ -4550,8 +4680,12 @@ msgstr "Utiliser l'adresse de la société"
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_address_type
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_res_partner_type
-msgid "Used to select automatically the right address according to the context in sales and purchases documents."
-msgstr "Utilisé pour sélectionner automatiquement la bonne adresse selon le contexte des documents de vente et d'achats"
+msgid ""
+"Used to select automatically the right address according to the context in "
+"sales and purchases documents."
+msgstr ""
+"Utilisé pour sélectionner automatiquement la bonne adresse selon le contexte "
+"des documents de vente et d'achats"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_backend_auth_login
@@ -4576,11 +4710,6 @@ msgid "Value"
 msgstr "Valeur"
 
 #. module: connector_qoqa
-#: model:ir.model.fields,help:connector_qoqa.field_qoqa_stock_picking__barcode_scanned
-msgid "Value of the last barcode scanned."
-msgstr "Valeur du dernier code-barres scanné"
-
-#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_attribute_value_ids
 msgid "Values"
 msgstr "Valeurs"
@@ -4601,12 +4730,6 @@ msgstr "ID de variante"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_image_variant
 msgid "Variant Image"
 msgstr "Image de la variante"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_variant_weight
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_variant_weight
-msgid "Variant Weight"
-msgstr "Variant Weight"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/product_product/common.py:32
@@ -4657,6 +4780,11 @@ msgid "Volume"
 msgstr "Volume"
 
 #. module: connector_qoqa
+#: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
+msgid "Vouchers"
+msgstr "Bons cadeaux"
+
+#. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_crm_claim_warehouse_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_warehouse_id
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_warehouse_id
@@ -4666,6 +4794,7 @@ msgid "Warehouse"
 msgstr "Entrepôt"
 
 #. module: connector_qoqa
+#: model:ir.model.fields,field_description:connector_qoqa.field_delivery_carrier_description_warehouse
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_description_warehouse
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_description_warehouse
 msgid "Warehouse Description"
@@ -4703,23 +4832,48 @@ msgstr "Poids brut"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_account_payment_mode_sequence
-msgid "When a sales order has been paid with several payment methods, the sales order will be assigned to the first method found, according to their priority.\n"
+msgid ""
+"When a sales order has been paid with several payment methods, the sales "
+"order will be assigned to the first method found, according to their "
+"priority.\n"
 "This impacts the automatic workflow applied to the sales order."
-msgstr "Quand un bulletin de commande a été payé avec plusieurs méthodes de paiement, la commande sera liée à la première méthode trouvée, selon leur priorité.Le flux automatisé de la commande sera donc déterminé par la méthode de paiement prioritaire."
+msgstr ""
+"Quand un bulletin de commande a été payé avec plusieurs méthodes de "
+"paiement, la commande sera liée à la première méthode trouvée, selon leur "
+"priorité.Le flux automatisé de la commande sera donc déterminé par la "
+"méthode de paiement prioritaire."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_account_input
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_account_input
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_account_input
-msgid "When doing real-time inventory valuation, counterpart journal items for all incoming stock moves will be posted in this account, unless there is a specific valuation account set on the source location. When not set on the product, the one from the product category is used."
-msgstr "Quand vous faites de la valorisation d'inventaire en temps réel, les écritures comptables de contrepartie pour toutes les entrées en stock seront faites dans ce compte, à moins qu'il y ait un compte de valorisation spécifique défini sur l'emplacement source. Quand il n'est pas défini sur l'article, celui de la catégorie est utilisé."
+msgid ""
+"When doing real-time inventory valuation, counterpart journal items for all "
+"incoming stock moves will be posted in this account, unless there is a "
+"specific valuation account set on the source location. When not set on the "
+"product, the one from the product category is used."
+msgstr ""
+"Quand vous faites de la valorisation d'inventaire en temps réel, les "
+"écritures comptables de contrepartie pour toutes les entrées en stock seront "
+"faites dans ce compte, à moins qu'il y ait un compte de valorisation "
+"spécifique défini sur l'emplacement source. Quand il n'est pas défini sur "
+"l'article, celui de la catégorie est utilisé."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_product_property_stock_account_output
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_product_template_property_stock_account_output
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_shipper_package_type_property_stock_account_output
-msgid "When doing real-time inventory valuation, counterpart journal items for all outgoing stock moves will be posted in this account, unless there is a specific valuation account set on the destination location. When not set on the product, the one from the product category is used."
-msgstr "Lorsque la valorisation du stock est faite en temps réel, les écritures de contrepartie de toutes les livraisons seront passées sur ce compte, à moins qu'un compte de valorisation particulier soit défini sur l'emplacement destination. Lorsqu'il n'est pas précisé sur l'article, celui de la catégorie d'article est utilisé."
+msgid ""
+"When doing real-time inventory valuation, counterpart journal items for all "
+"outgoing stock moves will be posted in this account, unless there is a "
+"specific valuation account set on the destination location. When not set on "
+"the product, the one from the product category is used."
+msgstr ""
+"Lorsque la valorisation du stock est faite en temps réel, les écritures de "
+"contrepartie de toutes les livraisons seront passées sur ce compte, à moins "
+"qu'un compte de valorisation particulier soit défini sur l'emplacement "
+"destination. Lorsqu'il n'est pas précisé sur l'article, celui de la "
+"catégorie d'article est utilisé."
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_is_wine
@@ -4734,13 +4888,6 @@ msgstr "Vin"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_wine_class_id
 msgid "Wine Class"
 msgstr "Classe de vin"
-
-#. module: connector_qoqa
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_x_wine_short_name
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_template_x_wine_short_name
-#: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_x_wine_short_name
-msgid "Wine Name"
-msgstr "Wine Name"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_product_product_wine_type_id
@@ -4772,8 +4919,12 @@ msgstr "Vigneron"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,help:connector_qoqa.field_qoqa_crm_claim_medium_type
-msgid "You can either upload a file from your computer or copy/paste an internet link to your file"
-msgstr "Vous pouvez, soit télécharger un fichier à partir de votre ordinateur soit copier / coller un lien Internet vers votre fichier"
+msgid ""
+"You can either upload a file from your computer or copy/paste an internet "
+"link to your file"
+msgstr ""
+"Vous pouvez, soit télécharger un fichier à partir de votre ordinateur soit "
+"copier / coller un lien Internet vers votre fichier"
 
 #. module: connector_qoqa
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_address_zip
@@ -4790,11 +4941,6 @@ msgstr "À partir de"
 #: model:ir.model.fields,field_description:connector_qoqa.field_qoqa_shipper_package_type_zip_to
 msgid "Zip To"
 msgstr "Destinataire"
-
-#. module: connector_qoqa
-#: model:ir.model,name:connector_qoqa.model_connector_qoqa_installed
-msgid "connector_qoqa.installed"
-msgstr "connector_qoqa.installed"
 
 #. module: connector_qoqa
 #: model:ir.ui.view,arch_db:connector_qoqa.view_qoqa_backend_form
@@ -4838,40 +4984,48 @@ msgstr "inconnu"
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/backend_adapter.py:50
 #, python-format
-msgid "{}API / Network Error:\n"
+msgid ""
+"{}API / Network Error:\n"
 "\n"
 "{}"
-msgstr "{}Erreur d'API ou réseau :\n"
+msgstr ""
+"{}Erreur d'API ou réseau :\n"
 "\n"
 "{}"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/backend_adapter.py:54
 #, python-format
-msgid "{}Authentication Error:\n"
+msgid ""
+"{}Authentication Error:\n"
 "\n"
 "{}"
-msgstr "{}Erreur d'authentification :\n"
+msgstr ""
+"{}Erreur d'authentification :\n"
 "\n"
 "{}"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/backend_adapter.py:58
 #, python-format
-msgid "{}Error(s) returned by QoQa:\n"
+msgid ""
+"{}Error(s) returned by QoQa:\n"
 "\n"
 "{}"
-msgstr "{}Erreurs retournées par QoQa :\n"
+msgstr ""
+"{}Erreurs retournées par QoQa :\n"
 "\n"
 "{}"
 
 #. module: connector_qoqa
 #: code:addons/connector_qoqa/unit/backend_adapter.py:46
 #, python-format
-msgid "{}Network Error:\n"
+msgid ""
+"{}Network Error:\n"
 "\n"
 "{}"
-msgstr "{}Erreur réseau :\n"
+msgstr ""
+"{}Erreur réseau :\n"
 "\n"
 "{}"
 
@@ -4880,3 +5034,204 @@ msgstr "{}Erreur réseau :\n"
 #, python-format
 msgid "{}Unknown Error"
 msgstr "{}Erreur inconnue"
+
+#~ msgid "# Bill of Material"
+#~ msgstr "Nb. nomenclatures"
+
+#~ msgid "# Manufacturing Orders"
+#~ msgstr "Nb. ordres de fabrication"
+
+#~ msgid "# Tasks"
+#~ msgstr "Nb de tâches"
+
+#~ msgid "Account Entry"
+#~ msgstr "Entrée comptable"
+
+#~ msgid "Allowed options"
+#~ msgstr "Options compatibles"
+
+#~ msgid "Attribute Option"
+#~ msgstr "Option d'attribut"
+
+#~ msgid ""
+#~ "Average delay in days to produce this product. In the case of multi-level "
+#~ "BOM, the manufacturing lead times of the components will be added."
+#~ msgstr ""
+#~ "Délai moyen pour produire cet article. Dans le cas d'une nomenclature à "
+#~ "plusieurs niveaux, les délais de fabrication des composants seront "
+#~ "ajoutés."
+
+#~ msgid "Bank Statement Label"
+#~ msgstr "Description de relevé bancaire"
+
+#~ msgid "Barcode Scanned"
+#~ msgstr "Code barre scanné"
+
+#~ msgid ""
+#~ "Basic Service defines the available additional options for this delivery "
+#~ "method"
+#~ msgstr ""
+#~ "Le service de base défini les options disponibles pour cette méthode de "
+#~ "livraison"
+
+#~ msgid "Bill of Materials"
+#~ msgstr "Nomenclature"
+
+#~ msgid "City/Location"
+#~ msgstr "Ville/location"
+
+#~ msgid "Compute allowed options according to selected options."
+#~ msgstr ""
+#~ "Déterminer les options permise en fonction des options sélectionnées."
+
+#~ msgid "Delivery Place"
+#~ msgstr "Delivery Place"
+
+#~ msgid "Dimension big"
+#~ msgstr "Dimension big"
+
+#~ msgid "Dimension medium"
+#~ msgstr "Dimension medium"
+
+#~ msgid "Dimension small"
+#~ msgstr "Dimension small"
+
+#~ msgid ""
+#~ "Enter the various label found on your bank statement separated by a ; If "
+#~ "one of this label is include in the bank statement line, the partner will "
+#~ "be automatically filled (as long as you use this method/rules in your "
+#~ "statement profile)."
+#~ msgstr ""
+#~ "Enter the various label found on your bank statement separated by a ; If "
+#~ "one of this label is include in the bank statement line, the partner will "
+#~ "be automatically filled (as long as you use this method/rules in your "
+#~ "statement profile)."
+
+#~ msgid "First Package Name"
+#~ msgstr "First Package Name"
+
+#~ msgid "Fixed delivery date"
+#~ msgstr "Fixed delivery date"
+
+#~ msgid "For Deposit item service (ZAW3219)"
+#~ msgstr "For Deposit item service (ZAW3219)"
+
+#~ msgid "For notify delivery by telephone (ZAW3213)"
+#~ msgstr "For notify delivery by telephone (ZAW3213)"
+
+#~ msgid "Highlights"
+#~ msgstr "Highlights"
+
+#~ msgid "Languages"
+#~ msgstr "Langues"
+
+#~ msgid "Manufacturing Lead Time"
+#~ msgstr "Délai de fabrication"
+
+#~ msgid "Picking List"
+#~ msgstr "Picking List"
+
+#~ msgid "PostLogistics Franking License"
+#~ msgstr "Licence d'affranchissement PostLogistics"
+
+#~ msgid "PostLogistics Service Group"
+#~ msgstr "Groupe de service PostLogistics"
+
+#~ msgid "Properties"
+#~ msgstr "Propriétés"
+
+#~ msgid "QoQa Accounting Issuance"
+#~ msgstr "Émission de bon ou promotion QoQa"
+
+#~ msgid "QoQa Backend OAuth Wizard"
+#~ msgstr "Assistant Oauth"
+
+#~ msgid "QoQa Buyphrase"
+#~ msgstr "QoQa Buyphrase"
+
+#~ msgid "QoQa Discount Accounting"
+#~ msgstr "Émission de bon ou promotion QoQa"
+
+#~ msgid "QoQa Discount Accounting Line"
+#~ msgstr "Émission de bon ou promotion QoQa"
+
+#~ msgid "QoQa Offer Position"
+#~ msgstr "Position d'offre"
+
+#~ msgid "QoQa Offer Position Variant"
+#~ msgstr "QoQa Offer Position Variant"
+
+#~ msgid "QoQa Promo Issuance"
+#~ msgstr "Émission de promotion QoQa"
+
+#~ msgid "QoQa Shipper Rate"
+#~ msgstr "Frais de livraison QoQa"
+
+#~ msgid "QoQa Shipper Service"
+#~ msgstr "Service de livraison QoQa"
+
+#~ msgid "QoQa Voucher Issuance Line"
+#~ msgstr "Émision de bon QoQa"
+
+#~ msgid "QoQa Voucher Payment"
+#~ msgstr "Bon cadeau QoQa"
+
+#~ msgid "RMA Forecasted Quantity"
+#~ msgstr "Quantité RMA prévue"
+
+#~ msgid "RMA Quantity On Hand"
+#~ msgstr "Quantité RMA en stock"
+
+#~ msgid "Region"
+#~ msgstr "Region"
+
+#~ msgid ""
+#~ "Service group defines the available options for this delivery method."
+#~ msgstr ""
+#~ "Groupe de service pour définir les options disponibles pour cette méthode "
+#~ "de livraison."
+
+#~ msgid "Signup Expiration"
+#~ msgstr "Expiration de la session de connexion"
+
+#~ msgid "Signup Token"
+#~ msgstr "Session de connexion"
+
+#~ msgid "Signup Token Type"
+#~ msgstr "Type de jeton de connexion"
+
+#~ msgid "Signup Token is Valid"
+#~ msgstr "La session d'authentification est valide"
+
+#~ msgid "Signup URL"
+#~ msgstr "Url d'authentification"
+
+#~ msgid "Specific delivery date (ZAW3217)"
+#~ msgstr "Specific delivery date (ZAW3217)"
+
+#~ msgid "Tasks"
+#~ msgstr "Tâches"
+
+#~ msgid ""
+#~ "The '%(tracking_number)s' sequence will be replaced by the tracking "
+#~ "number and the '%(lang)s' sequence will be replaced by the language code "
+#~ "(en, fr, de)"
+#~ msgstr ""
+#~ "La séquence '%(tracking_number)s' sera remplacée par le numéro de "
+#~ "tracking et la séquence '%(lang)s' sera remplacée par la langue (en, fr, "
+#~ "de)"
+
+#~ msgid "Url template"
+#~ msgstr "Template d'url"
+
+#~ msgid "Value of the last barcode scanned."
+#~ msgstr "Valeur du dernier code-barres scanné"
+
+#~ msgid "Variant Weight"
+#~ msgstr "Variant Weight"
+
+#~ msgid "Wine Name"
+#~ msgstr "Wine Name"
+
+#~ msgid "connector_qoqa.installed"
+#~ msgstr "connector_qoqa.installed"

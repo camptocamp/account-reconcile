@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BIZ-878: Make cancellation of sales orders only synchronous
+
 **Bugfixes**
 
 **Build**

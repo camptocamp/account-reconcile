@@ -3,6 +3,7 @@
 * Before starting: Ask the infrastructure Team to make a snapshot of the production to integration.
   In that copy you shall find the prod db `qoqa_odoo_prod`
   NB: They have been asking to stop INT before they make the copy
+  NB2: We have now access 3 commands for snapshot "management" go to next chapter
 
 1. Stop the services
 
@@ -50,3 +51,20 @@ REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
 3. Restart Integration
 
  In the qoqa-rancher-template repo start services
+
+
+# Usefull RDS commands
+
+aws --profile foo rds describe-db-snapshots --db-instance-identifier <NAME>
+aws --profile foo rds create-db-snapshot --db-instance-identifier <NAME>
+--db-snapshot-identifier <NAME>
+aws --profile foo rds delete-db-snapshot --db-snapshot-identifier <NAME>
+
+Contenu de ~/.aws/config:
+[profile foo]
+region = eu-west-1
+
+Contenu de ~/.aws/credentials
+[foo]
+aws_access_key_id = key_id
+aws_secret_access_key = private_key

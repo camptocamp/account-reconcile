@@ -1,60 +1,11 @@
 # Local Documentation
 
-Empty. You can add an index for the documentation specific to this project.
+## How-to
 
-# Launch local script
+* [How to copy the RDS of production to integration](./qoqa_how-to-copy-the-rds-of-prod-to-int.md)
+
+<!-- This one has to be completed and moved -->
+## Launch local script
 
 Local scripts are launched from qoqa_sync_small_ec2
 
-# How to copy the RDS of production to integration
-
-* Before starting: Ask the infrastructure Team to make a snapshot of the production to integration.
-  In that copy you shall find the prod db `qoqa_odoo_prod`
-  NB: They have been asking to stop INT before they make the copy
-
-1. Stop the services
-
-  In the qoqa-rancher-template repo, stop the services
-
-2. Connect to the environment. N.B: unless the cloud-platform, you won't have a promt opening
-```
-qoqa-platform-int-db 9451
-```
-in another shell
-```
-psql -p 9451 -h localhost -U postgres postgres
-```
-Launch the following commands
-
-```
-\c template1
-```
-- terminate connections on integration
-```
-SELECT pg_terminate_backend(pg_stat_activity.pid)
-FROM pg_stat_activity
-WHERE pg_stat_activity.datname = 'qoqa_odoo_integration'
-  AND pid <> pg_backend_pid();
-```
-- terminate connections on prod
-```
-SELECT pg_terminate_backend(pg_stat_activity.pid)
-FROM pg_stat_activity
-WHERE pg_stat_activity.datname = 'qoqa_odoo_prod'
-AND pid <> pg_backend_pid();
-```
-- rename to have a new one
-```
-ALTER DATABASE qoqa_odoo_prod RENAME TO qoqa_odoo_integration;
-```
-- Give access back to the right user
-```
-GRANT ALL ON DATABASE qoqa_odoo_integration to qoqa_odoo_integration;
-GRANT ALL ON SCHEMA public to qoqa_odoo_integration;
-REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
-\c qoqa_odoo_integration
-REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
-```
-3. Restart Integration
-
- In the qoqa-rancher-template repo start services

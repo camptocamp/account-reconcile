@@ -18,6 +18,7 @@ class ResCompany(models.Model):
                                         string='Connector User',
                                         copy=False)
 
+
 @qoqa
 class CompanyBinder(QoQaDirectBinder):
     _model_name = ['res.company']

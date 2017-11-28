@@ -22,7 +22,10 @@ ExpectedOrder = namedtuple(
 )
 ExpectedOrderLine = namedtuple(
     'ExpectedOrderLine',
-    'product_id name price_unit product_uom_qty'
+    'product_id name price_unit product_uom_qty is_voucher'
+)
+ExpectedOrderLine.__new__.__defaults__ = (
+    (False,) * len(ExpectedOrderLine._fields)
 )
 
 
@@ -278,6 +281,7 @@ class TestImportOrder(QoQaTransactionCase):
                 name='Bon Cadeau (562614)',
                 price_unit=-50.,
                 product_uom_qty=1.,
+                is_voucher=True,
             ),
         ]
         self.assert_records(expected, order.order_line)

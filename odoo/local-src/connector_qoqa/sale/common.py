@@ -76,6 +76,29 @@ class SaleOrder(models.Model):
         context={'active_test': False},
     )
     active = fields.Boolean(string='Active', default=True)
+    amount_total_without_voucher = fields.Monetary(
+        string='Total without Voucher',
+        store=False,
+        readonly=True,
+        compute='_compute_amount_total_without_voucher',
+    )
+
+    @api.depends('order_line.price_total', 'order_line.is_voucher')
+    def _compute_amount_total_without_voucher(self):
+        for record in self:
+            voucher_total = 0.
+            for line in record.order_line:
+                if not line.is_voucher:
+                    continue
+                # We don't have taxes on the vouchers, so we don't care
+                # about them
+                voucher_total += line.price_subtotal
+            total = record.amount_total - voucher_total
+            # We use this amount to check if we have the same total on the
+            # QoQa4 website and in Odoo. On their side, they don't have the
+            # negative lines for the voucher and we do.
+            # Used for the sales exception.
+            record.amount_total_without_voucher = total
 
     @api.model
     def _prepare_invoice(self):

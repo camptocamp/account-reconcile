@@ -372,6 +372,8 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
         """
         vouchers = self.extract_vouchers(map_record)
         lines = []
+        if not vouchers:
+            return lines
         builder = self.unit_for(QoQaPromoLineBuilder,
                                 model='qoqa.sale.order.line')
         product = self.backend_record.voucher_product_id
@@ -386,6 +388,7 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
             values.update({
                 'discount_code_name': voucher['id'],
                 'discount_description': voucher['attributes']['description'],
+                'is_voucher': True,
             })
             lines.append((0, 0, values))
         return lines

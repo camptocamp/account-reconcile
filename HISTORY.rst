@@ -35,6 +35,9 @@ latest (unreleased)
 
 **Build**
 
+* After multiple fixes, steps of 9.37.0 and 9.37.1 have been moved to 9.38.0
+     in order to have a clean release while putting it in production
+
 **Documentation**
 
 

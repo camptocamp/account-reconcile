@@ -303,26 +303,21 @@ migration:
           - auth_totp
           - specific_fct
     - version: 9.37.0
+      # Moved to 9.38.0 after cleaning
+    - version: 9.37.1
+      # Moved to 9.38.0 after cleaning
+    - version: 9.38.0
       operations:
         pre:
           - anthem songs.upgrade.9_37_0::main
+        post:
+          - anthem songs.upgrade.9_38_0::main
       addons:
         upgrade:
+          - speedy_views
           - qoqa_offer
           - qoqa_claim_unclaimed_process
           - qoqa_claim
           - crm_claim_mail
           - connector_qoqa
-    - version: 9.37.1
-      addons:
-        upgrade:
           - specific_fct
-    - version: 9.38.0
-      addons:
-        upgrade:
-          - connector_qoqa
-          - speedy_views
-          - qoqa_claim
-      operations:
-        post:
-          - anthem songs.upgrade.9_38_0::main

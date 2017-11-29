@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.38.0 (2017-11-29)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BIZ-878: Make cancellation of sales orders only synchronous
 * Changes Sales button on claim to include inactive SO
 * BIZ-736 add scenario to modify locations' partners

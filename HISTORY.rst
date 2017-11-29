@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * BIZ-878: Make cancellation of sales orders only synchronous
+* Changes Sales button on claim to include inactive SO
 
 * BIZ-711 BIZ-712 Remove discount import from connector_qoqa
 * BIZ-711 BIZ-712 Remove import of voucher issuances from connector_qoqa

@@ -321,3 +321,5 @@ migration:
       addons:
         upgrade:
           - connector_qoqa
+          - speedy_views
+          - qoqa_claim

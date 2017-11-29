@@ -322,3 +322,6 @@ migration:
         upgrade:
           - speedy_views
           - qoqa_claim
+      operations:
+        post:
+          - anthem songs.upgrade.9_38_0::main

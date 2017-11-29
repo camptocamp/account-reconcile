@@ -27,6 +27,10 @@ latest (unreleased)
 * Changes Sales button on claim to include inactive SO
 * BIZ-736 add scenario to modify locations' partners
 
+* BIZ-711 BIZ-712 Remove discount import from connector_qoqa
+* BIZ-711 BIZ-712 Remove import of voucher issuances from connector_qoqa
+* BIZ-711 BIZ-712 Import vouchers as negative line in sales orders
+
 **Bugfixes**
 
 **Build**

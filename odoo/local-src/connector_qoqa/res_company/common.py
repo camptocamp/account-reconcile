@@ -17,10 +17,6 @@ class ResCompany(models.Model):
     connector_user_id = fields.Many2one(comodel_name='res.users',
                                         string='Connector User',
                                         copy=False)
-    voucher_account_id = fields.Many2one(
-        comodel_name='account.account',
-        string='Account used for voucher counterpart',
-    )
 
 
 @qoqa

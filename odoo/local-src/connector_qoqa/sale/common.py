@@ -59,12 +59,6 @@ class QoqaSaleOrder(models.Model):
     qoqa_transaction = fields.Char(string='Transaction number of the payment '
                                           'on QoQa',
                                    readonly=True)
-    qoqa_voucher_payment_ids = fields.One2many(
-        comodel_name='qoqa.voucher.payment',
-        inverse_name='qoqa_order_id',
-        readonly=True,
-    )
-
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A sales order can be exported only once on the same backend"),
@@ -82,6 +76,29 @@ class SaleOrder(models.Model):
         context={'active_test': False},
     )
     active = fields.Boolean(string='Active', default=True)
+    amount_total_without_voucher = fields.Monetary(
+        string='Total without Voucher',
+        store=False,
+        readonly=True,
+        compute='_compute_amount_total_without_voucher',
+    )
+
+    @api.depends('order_line.price_total', 'order_line.is_voucher')
+    def _compute_amount_total_without_voucher(self):
+        for record in self:
+            voucher_total = 0.
+            for line in record.order_line:
+                if not line.is_voucher:
+                    continue
+                # We don't have taxes on the vouchers, so we don't care
+                # about them
+                voucher_total += line.price_subtotal
+            total = record.amount_total - voucher_total
+            # We use this amount to check if we have the same total on the
+            # QoQa4 website and in Odoo. On their side, they don't have the
+            # negative lines for the voucher and we do.
+            # Used for the sales exception.
+            record.amount_total_without_voucher = total
 
     @api.model
     def _prepare_invoice(self):
@@ -180,17 +197,6 @@ class SaleOrder(models.Model):
                 )
 
             if payment_cancellable:
-                # When the order can be canceled on QoQa, the
-                # voucher usage can be canceled on QoQa so we
-                # delete the move lines generated for the voucher
-                move_line_bindings = order.mapped(
-                    'qoqa_bind_ids.qoqa_voucher_payment_ids'
-                )
-                move_line = move_line_bindings.mapped('openerp_id')
-                move_line_bindings.write({'qoqa_id': False})
-                move_line_bindings.unlink()
-                move_line.unlink()
-
                 existing_invoices.filtered(
                     lambda r: r.state not in ('paid', 'cancel')
                 ).signal_workflow('invoice_cancel')

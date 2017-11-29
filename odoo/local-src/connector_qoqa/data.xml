@@ -88,7 +88,7 @@
     <field name="description">The amount computed in Odoo doesn't match with the amount in QoQa.</field>
     <field name="sequence">30</field>
     <field name="model">sale.order</field>
-    <field name="code">if order.qoqa_bind_ids and abs(order.amount_total - order.qoqa_bind_ids[0].qoqa_amount_total) >= 0.01:
+    <field name="code">if order.qoqa_bind_ids and abs(order.amount_total_without_voucher - order.qoqa_bind_ids[0].qoqa_amount_total) >= 0.01:
       failed = True</field>
     <field name="active" eval="True"/>
   </record>
@@ -98,7 +98,7 @@
     <field name="description">The amount computed in Odoo doesn't match with the paid amount in QoQa.</field>
     <field name="sequence">30</field>
     <field name="model">sale.order</field>
-    <field name="code">if order.qoqa_bind_ids and abs(order.amount_total - order.qoqa_bind_ids[0].qoqa_payment_amount) >= 0.01:
+    <field name="code">if order.qoqa_bind_ids and abs(order.amount_total_without_voucher - order.qoqa_bind_ids[0].qoqa_payment_amount) >= 0.01:
       failed = True</field>
     <field name="active" eval="True"/>
   </record>
@@ -139,19 +139,6 @@
     <field eval="False" name="doall"/>
     <field eval="'qoqa.backend'" name="model"/>
     <field eval="'_scheduler_import_address'" name="function"/>
-    <field eval="'()'" name="args"/>
-  </record>
-
-  <record forcecreate="True" id="ir_cron_qoqa_import_discount_accounting" model="ir.cron">
-    <field name="name">QoQa - Import Discount Accounting</field>
-    <field eval="False" name="active"/>
-    <field name="user_id" ref="base.user_root"/>
-    <field name="interval_number">1</field>
-    <field name="interval_type">days</field>
-    <field name="numbercall">-1</field>
-    <field eval="False" name="doall"/>
-    <field eval="'qoqa.backend'" name="model"/>
-    <field eval="'_scheduler_discount_accounting'" name="function"/>
     <field eval="'()'" name="args"/>
   </record>
 

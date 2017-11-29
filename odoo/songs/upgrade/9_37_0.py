@@ -13,19 +13,5 @@ def update_crm_stage_sequences(ctx):
 
 
 @anthem.log
-def recompute_qoqa_voucher_external_id(ctx):
-    """Recompute new voucher composite external id"""
-    for voucher in ctx.env['qoqa.voucher.payment'].search([]):
-        if voucher.qoqa_order_id and voucher.qoqa_order_id.qoqa_id:
-            if '__' in voucher.qoqa_id:
-                print "Voucher with id {} already composed".format(voucher.id)
-            else:
-                new_qoqa_id = "{}__{}".format(voucher.qoqa_id,
-                                              voucher.qoqa_order_id.qoqa_id)
-                voucher.qoqa_id = new_qoqa_id
-
-
-@anthem.log
 def main(ctx):
-    recompute_qoqa_voucher_external_id(ctx)
     update_crm_stage_sequences(ctx)

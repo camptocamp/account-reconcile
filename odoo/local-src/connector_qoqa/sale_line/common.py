@@ -51,3 +51,4 @@ class SaleOrderLine(models.Model):
         string='QBindings',
         context={'active_test': False},
     )
+    is_voucher = fields.Boolean(string='Is a Voucher')

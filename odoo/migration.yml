@@ -320,6 +320,7 @@ migration:
     - version: 9.38.0
       addons:
         upgrade:
+          - connector_qoqa
           - speedy_views
           - qoqa_claim
       operations:

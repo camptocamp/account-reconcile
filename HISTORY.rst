@@ -33,13 +33,9 @@ latest (unreleased)
 9.38.1 (2017-11-30)
 +++++++++++++++++++
 
-**Features and Improvements**
-
 **Bugfixes**
 
-**Build**
-
-**Documentation**
+* BIZ-946 Fix voucher calculation
 
 
 9.38.0 (2017-11-29)
@@ -54,14 +50,10 @@ latest (unreleased)
 * BIZ-711 BIZ-712 Remove import of voucher issuances from connector_qoqa
 * BIZ-711 BIZ-712 Import vouchers as negative line in sales orders
 
-**Bugfixes**
-
 **Build**
 
 * After multiple fixes, steps of 9.37.0 and 9.37.1 have been moved to 9.38.0
      in order to have a clean release while putting it in production
-
-**Documentation**
 
 
 9.37.1 (2017-11-21)

@@ -243,9 +243,7 @@ class TestImportOrder(QoQaTransactionCase):
         ]
         self.assert_records(expected, order.order_line)
 
-    @freeze_time('2016-04-28 00:00:00')
-    @recorder.use_cassette()
-    def test_import_sale_order_with_voucher(self):
+    def _setup_voucher(self):
         voucher_product = self.env['product.product'].create({
             'name': 'Bon Cadeau',
             'default_code': 'BC',
@@ -257,7 +255,14 @@ class TestImportOrder(QoQaTransactionCase):
             'company_id': self.env.ref('base.main_company').id,
             'bank_account_link': 'variable',
             'qoqa_id': '9',
+            'gift_card': True,
         })
+        return voucher_product
+
+    @freeze_time('2016-04-28 00:00:00')
+    @recorder.use_cassette()
+    def test_import_sale_order_with_voucher(self):
+        voucher_product = self._setup_voucher()
         import_record(self.session, 'qoqa.sale.order',
                       self.backend_record.id, 4260998)
         domain = [('qoqa_id', '=', '4260998')]
@@ -280,6 +285,39 @@ class TestImportOrder(QoQaTransactionCase):
                 product_id=voucher_product,
                 name='Bon Cadeau (562614)',
                 price_unit=-50.,
+                product_uom_qty=1.,
+                is_voucher=True,
+            ),
+        ]
+        self.assert_records(expected, order.order_line)
+
+    @freeze_time('2016-04-28 00:00:00')
+    @recorder.use_cassette()
+    def test_import_sale_order_with_voucher_partial(self):
+        """ When a voucher/gift card is partially used """
+        voucher_product = self._setup_voucher()
+        import_record(self.session, 'qoqa.sale.order',
+                      self.backend_record.id, 4260998)
+        domain = [('qoqa_id', '=', '4260998')]
+        order = self.env['qoqa.sale.order'].search(domain)
+        order.ensure_one()
+        expected = [
+            ExpectedOrderLine(
+                product_id=self.product_1_binding.openerp_id,
+                name='[product_1] Product 1',
+                price_unit=79.,
+                product_uom_qty=1,
+            ),
+            ExpectedOrderLine(
+                product_id=self.drone_product,
+                name='Drone delivery',
+                price_unit=9,
+                product_uom_qty=1,
+            ),
+            ExpectedOrderLine(
+                product_id=voucher_product,
+                name='Bon Cadeau (562614)',
+                price_unit=-33.,
                 product_uom_qty=1.,
                 is_voucher=True,
             ),

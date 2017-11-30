@@ -321,3 +321,7 @@ migration:
           - crm_claim_mail
           - connector_qoqa
           - specific_fct
+    - version: 9.38.1
+      operations:
+        pre:
+          - anthem songs.upgrade.9_38_1::pre

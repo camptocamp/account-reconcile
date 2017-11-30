@@ -374,13 +374,26 @@ class SaleOrderImportMapper(ImportMapper, FromDataAttributes):
         lines = []
         if not vouchers:
             return lines
+        qpayments = get_payments(self, map_record.source)
+
+        payment_mode_binder = self.binder_for('account.payment.mode')
+        voucher_amount = 0.
+        for qpayment in qpayments:
+            payment_mode = payment_mode_binder.to_openerp(
+                qpayment['attributes']['payment_method_id'],
+                company_id=self.env.user.company_id.id,
+            )
+            if not payment_mode.gift_card:
+                continue
+            voucher_amount += float(qpayment['attributes']['amount'])
+
         builder = self.unit_for(QoQaPromoLineBuilder,
                                 model='qoqa.sale.order.line')
         product = self.backend_record.voucher_product_id
         if not product:
             raise QoQaError(_('No voucher product configured on the backend'))
         for voucher in vouchers:
-            builder.price_unit = -float(voucher['attributes']['amount'])
+            builder.price_unit = -voucher_amount
             # choose product according to the promo type
             builder.product = product
             builder.code = voucher['id']

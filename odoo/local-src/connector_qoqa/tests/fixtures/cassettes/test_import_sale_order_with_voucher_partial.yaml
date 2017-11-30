@@ -1,0 +1,278 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://api.qoqa.ninja/v1/admin/orders/4260998
+  response:
+    body: {string: !!python/unicode '{"included": [{"attributes": {"free_shipping":
+        false, "description": "test bon cadeau", "created_at": "2017-11-27T11:37:20.819+01:00",
+        "company_id": 1, "updated_at": "2017-11-27T11:37:20.819+01:00", "currency":
+        "chf", "amount": "50.0", "accounting_website_id": 3, "main_type": "voucher",
+        "sub_type": "customer_service"}, "type": "discount", "id": "562614"}, {"attributes":
+        {"lot_price": "79.0", "created_at": "2017-11-27T11:54:55.647+01:00", "variation_id":
+        100001, "updated_at": "2017-11-27T11:54:55.647+01:00", "lot_size": 1, "lot_quantity":
+        1}, "type": "order_item", "id": "12868874"}, {"relationships": {"invoice":
+        {"data": {"type": "invoice", "id": "2947841"}}}, "attributes": {"status":
+        "confirmed", "kind": "standard", "payment_url": null, "created_at": "2017-11-27T11:54:55.842+01:00",
+        "payment_provider_id": 7, "updated_at": "2017-11-27T11:55:43.127+01:00", "parent_id":
+        null, "amount": "55.0", "transaction_id": "171127115456156626", "payment_method_id":
+        1}, "type": "payment", "id": "3967625"}, {"relationships": {"invoice": {"data":
+        {"type": "invoice", "id": "2947841"}}}, "attributes": {"status": "confirmed",
+        "kind": "standard", "payment_url": null, "created_at": "2017-11-27T11:54:55.764+01:00",
+        "payment_provider_id": 6, "updated_at": "2017-11-27T11:55:42.991+01:00", "parent_id":
+        null, "amount": "33.0", "transaction_id": null, "payment_method_id": 9}, "type":
+        "payment", "id": "3967624"}, {"relationships": {"invoice_items": {"data":
+        [{"type": "invoice_item", "id": "6462005"}, {"type": "invoice_item", "id":
+        "6462003"}]}}, "attributes": {"status": "confirmed", "kind": "standard", "created_at":
+        "2017-11-27T11:55:42.907+01:00", "reference": "HCQG9Q6U44", "updated_at":
+        "2017-11-27T11:55:42.907+01:00"}, "type": "invoice", "id": "2947841"}, {"attributes":
+        {"category": "shipping", "lot_price": "9.0", "updated_at": "2017-11-27T11:55:42.948+01:00",
+        "created_at": "2017-11-27T11:55:42.948+01:00", "variation_id": null, "ignore_credit":
+        false, "discount_id": null, "vat_id": 6, "lot_size": 1, "lot_quantity": 1},
+        "type": "invoice_item", "id": "6462005"}, {"attributes": {"category": "product",
+        "lot_price": "79.0", "updated_at": "2017-11-27T11:55:42.925+01:00", "created_at":
+        "2017-11-27T11:55:42.925+01:00", "variation_id": 100001, "ignore_credit": false,
+        "discount_id": null, "vat_id": 6, "lot_size": 1, "lot_quantity": 1}, "type":
+        "invoice_item", "id": "6462003"}, {"relationships": {"invoice_items": {"data":
+        [{"type": "invoice_item", "id": "6462004"}, {"type": "invoice_item", "id":
+        "6462002"}]}}, "attributes": {"status": "confirmed", "kind": "standard", "created_at":
+        "2017-11-27T11:55:42.900+01:00", "reference": "T2S3ZF90VN", "updated_at":
+        "2017-11-27T11:55:42.900+01:00"}, "type": "invoice", "id": "2947840"}, {"attributes":
+        {"category": "shipping", "lot_price": "9.0", "updated_at": "2017-11-27T11:55:42.939+01:00",
+        "created_at": "2017-11-27T11:55:42.939+01:00", "variation_id": null, "ignore_credit":
+        false, "discount_id": null, "vat_id": 6, "lot_size": 1, "lot_quantity": 1},
+        "type": "invoice_item", "id": "6462004"}, {"attributes": {"category": "product",
+        "lot_price": "79.0", "updated_at": "2017-11-27T11:55:42.916+01:00", "created_at":
+        "2017-11-27T11:55:42.916+01:00", "variation_id": 100001, "ignore_credit": false,
+        "discount_id": null, "vat_id": 6, "lot_size": 1, "lot_quantity": 1}, "type":
+        "invoice_item", "id": "6462002"}], "data": {"relationships": {"billing_address":
+        {"data": {"type": "address", "id": "7598321"}}, "invoices": {"data": [{"type":
+        "invoice", "id": "2947841"}, {"type": "invoice", "id": "2947840"}]}, "order_items":
+        {"data": [{"type": "order_item", "id": "12868874"}]}, "discount": {"data":
+        {"type": "discount", "id": "562614"}}, "payments": {"data": [{"type": "payment",
+        "id": "3967625"}, {"type": "payment", "id": "3967624"}]}, "shipping_address":
+        {"data": {"type": "address", "id": "7598321"}}, "user": {"data": {"type":
+        "user", "id": "1807"}}}, "attributes": {"status": "confirmed", "delivery_on":
+        "2017-10-27", "reference": "171127-K8Z2J1", "offer_id": 14691, "website_id":
+        3, "updated_at": "2017-11-27T11:55:43.153+01:00", "currency": "chf", "shipping_carrier_id":
+        1, "total": "88.0", "subtotal": "79.0", "created_at": "2017-11-27T11:54:55.623+01:00",
+        "shipping_fee_id": 1000001}, "type": "order", "id": "4260998"}, "jsonapi": {"version":
+        "1.0"}}'}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      cache-control: ['max-age=0, private, must-revalidate']
+      content-length: ['3955']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Nov 2017 11:24:29 GMT']
+      etag: [W/"f586d3bf3499451c9fba7c835bec65b9"]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      via: [1.1 varnish (Varnish/5.0)]
+      x-cache: [MISS]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [80B34204_8994_5A1BF5EC_33A4_0011]
+      x-runtime: ['0.109047']
+      x-varnish: ['86552814']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://api.qoqa.ninja/v1/admin/offers/14691
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"vat_id": 6, "created_at":
+        "2017-10-13T16:37:32.360+02:00", "website_id": 3, "name": "JOORNUI MARIEODILE
+        Lampe LED design en bois", "updated_at": "2017-11-15T15:01:52.025+01:00"},
+        "type": "offer", "id": "14691"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      cache-control: ['max-age=0, private, must-revalidate']
+      content-length: ['250']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Nov 2017 11:24:29 GMT']
+      etag: [W/"09752e51a685dd6b2f05feaaa3f905ae"]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      via: [1.1 varnish (Varnish/5.0)]
+      x-cache: [MISS]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [80B34204_8996_5A1BF5ED_33A7_0011]
+      x-runtime: ['0.023778']
+      x-varnish: ['39833232']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://api.qoqa.ninja/v1/admin/shipping_fees/88
+  response:
+    body: {string: !!python/unicode '{"included": [{"attributes": {"min_quantity":
+        1, "price": "9.0"}, "type": "shipping_fee_price", "id": "244"}, {"attributes":
+        {"min_quantity": 2, "price": "12.0"}, "type": "shipping_fee_price", "id":
+        "245"}, {"attributes": {"min_quantity": 3, "price": "15.0"}, "type": "shipping_fee_price",
+        "id": "246"}], "data": {"relationships": {"website": {"data": {"type": "website",
+        "id": "3"}}, "shipping_fee_prices": {"data": [{"type": "shipping_fee_price",
+        "id": "244"}, {"type": "shipping_fee_price", "id": "245"}, {"type": "shipping_fee_price",
+        "id": "246"}]}}, "attributes": {"name": "9-12-15 | QoQa Standard "}, "type":
+        "shipping_fee", "id": "88"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      cache-control: ['max-age=0, private, must-revalidate']
+      content-length: ['616']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Nov 2017 11:24:29 GMT']
+      etag: [W/"39ed059470eadc0d39afbce4a72d231b"]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      via: [1.1 varnish (Varnish/5.0)]
+      x-cache: [MISS]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [80B34204_8998_5A1BF5ED_33AA_0011]
+      x-runtime: ['0.038656']
+      x-varnish: ['86552817']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://api.qoqa.ninja/v1/admin/users/1807
+  response:
+    body: {string: !!python/unicode '{"data": {"relationships": {"mailing_config":
+        {"data": {"type": "mailing_config", "id": "1807"}}, "user_extension": {"data":
+        {"type": "user_extension", "id": "1807"}}}, "attributes": {"notification_website_names":
+        ["Qjazz", "Qsport", "Qbeer", "Qooking", "QoQa", "Qwine", "Qids", "Qwineprimeurs"],
+        "description": null, "has_avatar": true, "author": null, "locale": "fr", "created_at":
+        "2006-07-19T00:00:00.000+02:00", "pseudo": "taQule", "language_id": 1, "profile_image_url":
+        null, "expert_avatar_url": "https://static.qoqa.ninja/users/avatars/000/001/807/big/Gaetan.gif?1511458959",
+        "updated_at": "2017-11-23T18:42:51.779+01:00", "newsletters_website_names":
+        ["Qwineprimeurs"], "avatar_url": "https://static.qoqa.ninja/users/avatars/000/001/807/thumb/Gaetan.gif?1511458959",
+        "watchword": null, "expert_profile_available": false, "client_type": "client",
+        "is_supplier": false, "is_admin": true, "bo_options": {"can_flag_comment_off_topic":
+        true, "can_edit_comment": true, "can_preview_offer": true}, "email": "gaetan.sauser@qoqa.com",
+        "first_order_date": "2007-01-25T00:00:00.000+01:00"}, "type": "user", "id":
+        "1807"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      cache-control: ['max-age=0, private, must-revalidate']
+      content-length: ['1075']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Nov 2017 11:24:30 GMT']
+      etag: [W/"5789098c147e8b029aadaa9918033dd8"]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      via: [1.1 varnish (Varnish/5.0)]
+      x-cache: [MISS]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [80B34204_899A_5A1BF5ED_33AD_0011]
+      x-runtime: ['0.120179']
+      x-varnish: ['39833235']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://api.qoqa.ninja/v1/admin/addresses/7598321
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
+        "city": "Bussigny", "kind": "professional", "order_user_id": 1807, "user_id":
+        null, "zip": "1030", "firstname": "Ga\u00ebtan", "alias": "QoQa", "lastname":
+        "sauser", "street2": "Arc-en-Ciel 14", "country_id": 1, "service_client_number":
+        "", "updated_at": "2017-11-03T16:25:07.454+01:00", "phone": "", "street":
+        "QoQa Services SA", "company_name": "QoQa Services SA", "gender": 1, "country":
+        "Suisse", "digicode": "", "created_at": "2015-09-08T09:44:46.000+02:00"},
+        "type": "address", "id": "7598321"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      cache-control: ['max-age=0, private, must-revalidate']
+      content-length: ['528']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Nov 2017 11:24:30 GMT']
+      etag: [W/"741b0ea8a4971f9a42bd549c9b6b3070"]
+      vary: [Accept-Encoding]
+      via: [1.1 varnish (Varnish/5.0)]
+      x-cache: [MISS]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [80B34204_899C_5A1BF5EE_33B1_0011]
+      x-runtime: ['0.029053']
+      x-varnish: ['39833238']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://api.qoqa.ninja/v1/admin/addresses/7598321
+  response:
+    body: {string: !!python/unicode '{"data": {"attributes": {"service": "standard",
+        "city": "Bussigny", "kind": "professional", "order_user_id": 1807, "user_id":
+        null, "zip": "1030", "firstname": "Ga\u00ebtan", "alias": "QoQa", "lastname":
+        "sauser", "street2": "Arc-en-Ciel 14", "country_id": 1, "service_client_number":
+        "", "updated_at": "2017-11-03T16:25:07.454+01:00", "phone": "", "street":
+        "QoQa Services SA", "company_name": "QoQa Services SA", "gender": 1, "country":
+        "Suisse", "digicode": "", "created_at": "2015-09-08T09:44:46.000+02:00"},
+        "type": "address", "id": "7598321"}, "jsonapi": {"version": "1.0"}}'}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      cache-control: ['max-age=0, private, must-revalidate']
+      content-length: ['528']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 27 Nov 2017 11:24:30 GMT']
+      etag: [W/"741b0ea8a4971f9a42bd549c9b6b3070"]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      via: [1.1 varnish (Varnish/5.0)]
+      x-cache: [MISS]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [80B34204_899E_5A1BF5EE_33B4_0011]
+      x-runtime: ['0.027570']
+      x-varnish: ['86552821']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

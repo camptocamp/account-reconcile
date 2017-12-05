@@ -332,3 +332,9 @@ migration:
         upgrade:
           - sale_automatic_workflow_split
     - version: 9.39.0
+    - version: 9.40.0
+      addons:
+        upgrade:
+          - account_fiscal_position_rule
+          - account_fiscal_position_rule_purchase
+          - account_fiscal_position_rule_sale

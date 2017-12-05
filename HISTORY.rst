@@ -23,6 +23,12 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BIZ-895:
+
+  * Install module account_fiscal_position_rule
+  * Install module account_fiscal_position_rule_purchase
+  * Install module account_fiscal_position_rule_sale
+
 **Bugfixes**
 
 **Build**

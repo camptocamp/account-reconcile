@@ -28,6 +28,7 @@ latest (unreleased)
   * Install module account_fiscal_position_rule
   * Install module account_fiscal_position_rule_purchase
   * Install module account_fiscal_position_rule_sale
+  * Create fiscal position and rule for swiss VAT 2018
 
 **Bugfixes**
 

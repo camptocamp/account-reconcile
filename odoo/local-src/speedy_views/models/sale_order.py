@@ -3,8 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
-from openerp import fields, models, api
-from .utils import create_index
+from openerp import fields, models, api, SUPERUSER_ID
+from .utils import install_trgm_extension, create_index
 
 
 class SaleOrder(models.Model):
@@ -100,6 +100,15 @@ class SaleOrder(models.Model):
         # would in general not be used.
         index_name = 'sale_order_active_true_index'
         create_index(cr, index_name, self._table, '(active) where active')
+
+        env = api.Environment(cr, SUPERUSER_ID, {})
+        trgm_installed = install_trgm_extension(env)
+        cr.commit()
+
+        if trgm_installed:
+            index_name = 'sale_order_client_order_ref_trgm_index'
+            create_index(cr, index_name, self._table,
+                         'USING gin (client_order_ref gin_trgm_ops)')
 
 
 class SaleOrderLine(models.Model):

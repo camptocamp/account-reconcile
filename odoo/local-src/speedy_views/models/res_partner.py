@@ -25,6 +25,9 @@ class ResPartner(models.Model):
                 create_index(cr, index_name, self._table,
                              'USING gin (%s gin_trgm_ops)' % field)
 
+        index_name = 'res_partner_active_index'
+        create_index(cr, index_name, self._table, '(active)')
+
         # this query is issued every time the list view of partners
         # is displayed
         # SELECT count ( 1 ) FROM "res_partner" WHERE ( ( (

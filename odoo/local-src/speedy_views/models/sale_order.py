@@ -101,6 +101,14 @@ class SaleOrder(models.Model):
         index_name = 'sale_order_active_true_index'
         create_index(cr, index_name, self._table, '(active) where active')
 
+        index_name = 'sale_order_state_qoqa_shop_id_true_index'
+        create_index(cr, index_name, self._table,
+                     '(state, qoqa_shop_id) where active')
+
+        index_name = 'sale_order_state_qoqa_shop_id_company_id_true_index'
+        create_index(cr, index_name, self._table,
+                     '(state, qoqa_shop_id, company_id) where active')
+
         env = api.Environment(cr, SUPERUSER_ID, {})
         trgm_installed = install_trgm_extension(env)
         cr.commit()

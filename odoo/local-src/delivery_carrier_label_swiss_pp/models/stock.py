@@ -50,6 +50,9 @@ class DeliveryCarrierLabelGenerate(models.TransientModel):
     @api.model
     def _get_packs(self, batch):
         """Override to change sort order for QoQa"""
+
+        batch = self.env['stock.batch.picking'].browse(batch.id)
+
         def _sort_key(rec):
             return (rec.result_package_id.parcel_tracking or
                     rec.result_package_id.name or

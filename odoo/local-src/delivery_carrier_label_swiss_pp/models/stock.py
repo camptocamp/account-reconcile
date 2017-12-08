@@ -50,7 +50,7 @@ class DeliveryCarrierLabelGenerate(models.TransientModel):
     @api.model
     def _get_packs(self, batch):
         """Override to change sort order for QoQa"""
-        # reload ?
+
         batch = self.env['stock.batch.picking'].browse(batch.id)
 
         def _sort_key(rec):
@@ -62,11 +62,8 @@ class DeliveryCarrierLabelGenerate(models.TransientModel):
             operations,
             key=_sort_key
         )
-
-        packs = []
         for pack, grp_operations in groupby(
                 operations,
                 key=lambda r: r.result_package_id or r.package_id):
             pack_label = self._find_pack_label(pack)
-            packs.append((pack, list(grp_operations), pack_label))
-        return packs
+            yield pack, list(grp_operations), pack_label

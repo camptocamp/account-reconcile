@@ -11,6 +11,8 @@
 
 .. **Bugfixes**
 
+* BIZ-425 Labels with unsorted tracking numbers
+
 .. **Build**
 
 .. **Documentation**

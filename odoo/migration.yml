@@ -331,3 +331,4 @@ migration:
       addons:
         upgrade:
           - sale_automatic_workflow_split
+    - version: 9.39.0

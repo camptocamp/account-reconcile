@@ -11,8 +11,6 @@
 
 .. **Bugfixes**
 
-* BIZ-425 Labels with unsorted tracking numbers
-
 .. **Build**
 
 .. **Documentation**
@@ -26,6 +24,20 @@ latest (unreleased)
 **Features and Improvements**
 
 **Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.39.0 (2017-12-11)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
+* BIZ-425 Labels with unsorted tracking numbers
 
 **Build**
 

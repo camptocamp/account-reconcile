@@ -332,3 +332,14 @@ migration:
         upgrade:
           - sale_automatic_workflow_split
     - version: 9.39.0
+    - version: 9.40.0
+      modes:
+        full:
+          operations:
+            post:
+              - anthem songs.upgrade.9_39_0::main
+      addons:
+        upgrade:
+          - account_fiscal_position_rule
+          - account_fiscal_position_rule_purchase
+          - account_fiscal_position_rule_sale

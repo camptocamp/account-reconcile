@@ -29,6 +29,7 @@ latest (unreleased)
 
 **Documentation**
 
+* BIZ-902: Update local doc and add base for aws commands
 
 9.40.0 (2017-12-14)
 +++++++++++++++++++

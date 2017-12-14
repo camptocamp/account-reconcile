@@ -48,9 +48,17 @@ REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
 \c qoqa_odoo_integration
 REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
 ```
+
 3. Restart Integration
 
  In the qoqa-rancher-template repo start services
+
+
+4. Into the Integration databse we need to update the optimizations
+
+```
+VACUUM ANALYZE;
+```
 
 
 # Usefull RDS commands

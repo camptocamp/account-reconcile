@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.40.0 (2017-12-14)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BIZ-895:
 
   * Install module account_fiscal_position_rule

@@ -25,7 +25,20 @@ latest (unreleased)
 
 **Bugfixes**
 
+**Build**
+
+**Documentation**
+
+
+9.40.1 (2017-12-21)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
 * BIZ-895: update connector import for new VAT
+* BIZ-1020: Fix automatic reconciliation
 
 **Build**
 

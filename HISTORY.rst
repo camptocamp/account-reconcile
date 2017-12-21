@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BIZ-895: update connector import for new VAT
+
 **Build**
 
 **Documentation**

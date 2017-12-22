@@ -16,19 +16,11 @@
     camptocamp: git@github.com:camptocamp/bank-statement-reconcile.git
   merges:
     - oca 9.0
-    # Don't write company_id on counterpart move line as it is a related on account
-    - oca refs/pull/152/head
-    # Add field to optionally define analytic account on commission line
-    - oca refs/pull/162/head
     # Remove now non-existing "Display partial" button
     - oca refs/pull/167/head
-    # Use correct order if cron only does one reconcile at a time
-    - oca refs/pull/175/head
-    # Add analytic on mass reconcile rules
-    - oca refs/pull/179/head
     # Update balance along the debit/credit values
     - oca refs/pull/181/head
-    # [9.0] Fix partial commit perf
+    # Optimize mass reconcile
     - oca refs/pull/196/head
   target: *default_target
 ./external-src/carrier-delivery:

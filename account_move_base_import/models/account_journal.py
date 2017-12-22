@@ -118,6 +118,7 @@ class AccountJournal(models.Model):
             'date_maturity': date,
             'credit': credit,
             'debit': debit,
+            'balance': amount,
             'partner_id': self.partner_id.id,
             'move_id': move.id,
             'account_id': account_id,

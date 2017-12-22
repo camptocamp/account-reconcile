@@ -344,3 +344,7 @@ migration:
           - account_fiscal_position_rule_purchase
           - account_fiscal_position_rule_sale
     - version: 9.40.1
+    - version: 9.40.2
+      addons:
+        upgrade:
+          - account_mass_reconcile_as_job

@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BIZ-1020: execute automatic mass reconciliation as asynchronous jobs
+
 **Bugfixes**
 
 **Build**
@@ -38,7 +40,7 @@ latest (unreleased)
 **Bugfixes**
 
 * BIZ-895: update connector import for new VAT
-* BIZ-1020: Fix automatic reconciliation
+* BIZ-1020: apply some optimizations during automatic mass reconciliation
 
 **Build**
 

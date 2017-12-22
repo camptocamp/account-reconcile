@@ -23,13 +23,20 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* BIZ-1020: execute automatic mass reconciliation as asynchronous jobs
-
 **Bugfixes**
 
 **Build**
 
 **Documentation**
+
+
+9.40.2 (2017-12-22)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* BIZ-1020: execute automatic mass reconciliation as asynchronous jobs
+* BIZ-1020: disable cash basis which improves a lot the time required to reconcile
 
 
 9.40.1 (2017-12-21)

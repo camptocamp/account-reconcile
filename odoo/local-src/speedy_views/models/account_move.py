@@ -12,18 +12,13 @@ class AccountMove(models.Model):
     name = fields.Char(index=True)  # used for reconciliation
     journal_id = fields.Many2one(index=True)
 
+    # disable costly and useless computation for this field that
+    # we don't need (cash basis)
+    matched_percentage = fields.Float(
+        compute=lambda self: None, store=False
+    )
+
     def init(self, cr):
         # index for the default _order of account.move
         index_name = 'account_move_order_list_sort_index'
         create_index(cr, index_name, self._table, '(date DESC, id DESC)')
-
-    # QoQa does not use the cash basis and the
-    # computation of these fields (cash basis and matched percentage)
-    # is slow as hell. For instance, it takes up to 60-70% of the time
-    # of a reconciliation.
-    # Cut off their computation.
-    def _compute_cash_basis(self):
-        return
-
-    def _compute_matched_percentage(self):
-        return

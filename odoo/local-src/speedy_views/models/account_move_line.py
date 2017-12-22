@@ -19,6 +19,14 @@ class AccountMoveLine(models.Model):
     amount_residual = fields.Monetary(index=True)
     invoice_id = fields.Many2one(index=True)
 
+    # QoQa does not use the cash basis and the
+    # computation of these fields (cash basis and matched percentage)
+    # is slow as hell. For instance, it takes up to 60-70% of the time
+    # of a reconciliation.
+    # Cut off their computation.
+    debit_cash_basis = fields.Monetary(compute=lambda self: None, store=False)
+    credit_cash_basis = fields.Monetary(compute=lambda self: None, store=False)
+
     def init(self, cr):
         env = api.Environment(cr, SUPERUSER_ID, {})
         trgm_installed = install_trgm_extension(env)

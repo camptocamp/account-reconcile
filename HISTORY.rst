@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BIZ-478 : fix Double authentification QR-code generation for user with special chars
+
 **Build**
 
 **Documentation**

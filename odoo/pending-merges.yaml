@@ -73,6 +73,8 @@
     - oca refs/pull/409/head
     # Add default values for smtp_user and smtp_pass
     - oca refs/pull/589/head
+    # [9.0][FIX] Auth_totp : ensure no special chars are passed to totp.provisioning_uri
+    - oca refs/pull/1103/head
   target: *default_target
 ./external-src/stock-logistics-workflow:
   remotes:

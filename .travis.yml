@@ -12,7 +12,7 @@ env:
     - LINT_CHECK="1"
     - TESTS="1"
   global:
-    - DOCKER_COMPOSE_VERSION="1.7.1"
+    - DOCKER_COMPOSE_VERSION="1.17.1"
     - TESTS="0" LINT_CHECK="0"
     - ADDONS_DIR=${TRAVIS_BUILD_DIR}/odoo/local-src
     - SONGS_DIR=${TRAVIS_BUILD_DIR}/odoo/songs

@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BIZ-1109: fix mass reconcile run several times on the same account
+
 **Build**
 
 **Documentation**

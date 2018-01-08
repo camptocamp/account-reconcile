@@ -29,13 +29,13 @@ class AccountMassReconcile(models.Model):
             if as_job:
                 _super = super(
                     AccountMassReconcile,
-                    self.with_context(
+                    rec.with_context(
                         mass_reconcile_as_job=True,
                         mass_reconcile_id=rec.id,
                     )
                 )
             else:
-                _super = super(AccountMassReconcile, self)
+                _super = super(AccountMassReconcile, rec)
             _super.run_reconcile()
         return True
 

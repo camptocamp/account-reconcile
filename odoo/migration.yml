@@ -339,3 +339,4 @@ migration:
       addons:
         upgrade:
           - account_mass_reconcile_as_job
+    - version: 9.40.3

@@ -25,6 +25,18 @@ latest (unreleased)
 
 **Bugfixes**
 
+**Build**
+
+**Documentation**
+
+
+9.40.3 (2018-01-08)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
 * BIZ-478 : fix Double authentification QR-code generation for user with special chars
 
 **Build**

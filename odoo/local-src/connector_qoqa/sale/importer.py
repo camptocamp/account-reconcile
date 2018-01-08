@@ -432,5 +432,4 @@ class QoQaSaleOrderOnChange(SaleOrderOnChange):
 
     order_onchange_fields = SaleOrderOnChange.order_onchange_fields + [
         'qoqa_shop_id',
-        'partner_invoice_id',  # Added to trigger fiscal position rule
     ]

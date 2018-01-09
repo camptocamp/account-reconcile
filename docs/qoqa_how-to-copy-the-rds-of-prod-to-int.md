@@ -63,16 +63,21 @@ VACUUM ANALYZE;
 
 # Usefull RDS commands
 
+```
 aws --profile foo rds describe-db-snapshots --db-instance-identifier <NAME>
-aws --profile foo rds create-db-snapshot --db-instance-identifier <NAME>
---db-snapshot-identifier <NAME>
+aws --profile foo rds create-db-snapshot --db-instance-identifier <NAME> --db-snapshot-identifier <NAME>
 aws --profile foo rds delete-db-snapshot --db-snapshot-identifier <NAME>
+```
 
 Contenu de ~/.aws/config:
+```
 [profile foo]
 region = eu-west-1
+```
 
 Contenu de ~/.aws/credentials
+```
 [foo]
 aws_access_key_id = key_id
 aws_secret_access_key = private_key
+```

@@ -25,25 +25,25 @@ latest (unreleased)
 
 **Bugfixes**
 
-* BIZ-1109: fix mass reconcile run several times on the same account
-
 **Build**
 
 **Documentation**
+
+
+9.40.4 (2018-01-09)
++++++++++++++++++++
+
+**Bugfixes**
+
+* BIZ-1109: fix mass reconcile run several times on the same account
 
 
 9.40.3 (2018-01-08)
 +++++++++++++++++++
 
-**Features and Improvements**
-
 **Bugfixes**
 
 * BIZ-478 : fix Double authentification QR-code generation for user with special chars
-
-**Build**
-
-**Documentation**
 
 
 9.40.2 (2017-12-22)

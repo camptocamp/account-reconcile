@@ -340,3 +340,4 @@ migration:
         upgrade:
           - account_mass_reconcile_as_job
     - version: 9.40.3
+    - version: 9.40.4

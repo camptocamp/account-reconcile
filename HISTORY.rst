@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Add some indices used in slow queries
+
 **Build**
 
 **Documentation**

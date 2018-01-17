@@ -6,11 +6,15 @@
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from __future__ import print_function
+
 import errno
 import os
 import shutil
 import tempfile
 import yaml
+
+from builtins import input
 
 from contextlib import contextmanager
 from invoke import exceptions
@@ -34,10 +38,11 @@ def build_path(path, from_root=True, from_file=None):
 VERSION_FILE = build_path('odoo/VERSION')
 HISTORY_FILE = build_path('HISTORY.rst')
 PENDING_MERGES = build_path('odoo/pending-merges.yaml')
-GIT_REMOTE_NAME = 'camptocamp'
 MIGRATION_FILE = build_path('odoo/migration.yml')
-TEMPLATE_GIT = 'git@github.com:camptocamp/odoo-template.git'
 COOKIECUTTER_CONTEXT = build_path('.cookiecutter.context.yml')
+
+GIT_REMOTE_NAME = 'camptocamp'
+TEMPLATE_GIT = 'git@github.com:camptocamp/odoo-template.git'
 
 
 def cookiecutter_context():
@@ -66,6 +71,12 @@ def current_version():
     return version
 
 
+def ask_or_abort(message):
+    r = input(message + ' (y/N) ')
+    if r not in ('y', 'Y', 'yes'):
+        exit_msg('Aborted')
+
+
 def check_git_diff(ctx, direct_abort=False):
     try:
         ctx.run('git diff --quiet --exit-code')
@@ -73,10 +84,8 @@ def check_git_diff(ctx, direct_abort=False):
     except exceptions.Failure:
         if direct_abort:
             exit_msg('Your repository has local changes. Abort.')
-        r = raw_input('Your repository has local changes, '
-                      'are you sure you want to continue? (y/N) ')
-        if r not in ('y', 'Y', 'yes'):
-            exit_msg('Aborted')
+        ask_or_abort('Your repository has local changes, '
+                     'are you sure you want to continue?')
 
 
 @contextmanager
@@ -91,3 +100,12 @@ def tempdir():
             # already deleted
             if e.errno != errno.ENOENT:
                 raise
+
+
+def search_replace(file_path, old, new):
+    """ Replace a text in a file on each lines """
+    shutil.move(file_path, file_path + '.bak')
+    with open(file_path + '.bak', 'r') as f_r:
+        with open(file_path, 'w') as f_w:
+            for line in f_r:
+                f_w.write(line.replace(old, new))

@@ -19,12 +19,12 @@ It can be customized to [install dependencies](./how-to-add-dependency.md)
 
 **[data/](../odoo/data)**
 
-Directory used to hold files that'll be used by scenario / upgrade scripts to load data in Odoo. It might be images, CSV files, ... The files concerning the installation go in `setup`, the ones used for loading demo data go in `story`.
+Directory used to hold files that'll be used by scenario / upgrade scripts to load data in Odoo. It might be images, CSV files, ... The files concerning the installation go in `install`, the ones used for loading a sample dataset go in `sample`.
 
-**[features/](../odoo/features)**
+**[songs/](../odoo/songs)**
 
-Contains the Scenario steps and features used for the migration of the databases.
-It itself contains for subdirectories: **setup** which holds the installation scenario, **story** for the demo ones, **upgrade** will be used for migration scripts after the go-live, and **steps** holds the Python steps supporting the scenario.
+Contains the setup and upgrade stripts used for the setup and the migration of the databases.
+It itself contains the following subdirectories: **install** which holds the installation scripts, **sample** for the steps used only when using an excerpt of the data for dev/test and **upgrade** will be used for migration steps between releases after the go-live.
 
 **[src/](../odoo/src)**
 

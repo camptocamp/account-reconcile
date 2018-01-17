@@ -67,6 +67,70 @@ installed, so we guaranteed to have clean terms.
 invoke translate.generate odoo/local-src/my_addon
 # or
 invoke translate.generate odoo/external-src/sale-workflow/my_addon
+
+```
+
+### submodule.init
+
+Add git submodules from the `.gitmodules` file configuration.
+Instead of using `git submodule add -b 9.0 {url}`
+{path}, for every branch you need to add, you can edit the `.gitmodules` file,
+add the entries you want, and run this command.
+
+
+```
+invoke submodule.init
+```
+
+### submodule.list
+
+List submodules paths which can be directly used to directly copy-paste the
+addons paths in the Dockerfile. The order depends of the order in the
+.gitmodules file.
+
+```
+invoke submodule.list
+```
+
+### submodule.merges
+
+Generate and push a branch including the pending pull requests.
+
+```
+invoke submodule.merges odoo/external-src/sale-workflow
+```
+
+
+### submodule.show-closed-prs
+
+Show a list of closed pull requests in the pending merges.
+
+```
+invoke submodule.show-closed-prs
+```
+
+### songs.rip
+
+Copy generated songs of a dj.compilation
+They come as a zip file which can loaded from a local path or from an odoo url
+Files will be placed according to their path in zip file with ./odoo as the root.
+
+When providing an url you can set authentication parameters for the odoo from which
+you want to download the compilation.
+
+Usually songs and csv data will be copied in:
+
+odoo/songs/install/generated
+and
+odoo/data/install/generated
+
+See https://github.com/camptocamp/odoo-prototyper for more details about dj.compilation
+
+
+```
+invoke songs.rip http://127.0.0.1:8888/dj/download/compilation/account-default-1 [--login admin] [--password admin] [--db odoodb]
+# or
+invoke songs.rip /tmp/songs.zip
 ```
 
 ## Custom tasks

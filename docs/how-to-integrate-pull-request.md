@@ -24,22 +24,18 @@ to integrate. It is used to rebuild the consolidated branches at any moment usin
 
 For each repository, we maintain a branch named
 `merge-branch-<project-id>-master` (look in `odoo/pending-merges.yaml` for the
-exact name)  which must be updated by someone each time the pending merges
+exact name) which must be updated by someone each time the pending merges
 reference file has been modified.
 When we finalize a release, we create a new branch
-`pending-merge-<project-id>-<version>` to ensure we have a stable branch.
+`pending-merge-<project-id>-<version>` to ensure we keep a stable branch.
 
 You can also create a `pending-merge-<project-id>-<branch-name>` for particular
 needs.
 
 ## Adding a new pending merge
 
-We work on `master` for adding a new pending-merge, we don't use a pull
-request. The reason is that we override the existing pending-merge branch when
-we rebuild it, so if we don't push the update of the submodule on master, we
-break the other devs' submodules (they will refer to a commit that no longer exist).
-One exception to this rule is if the changes to `odoo/pending-merge.yaml` are done in
-a new section of the file (no pre-existing pending-merge branch).
+Beware with pending merge branches. It is easy to override a previously pushed
+branch and have a submodule referencing a commit that do no longer exist.
 
 1. Edit `odoo/pending-merge.yaml` file, add your pull request number in a section,
    if the section does not exist, add it:
@@ -51,7 +47,7 @@ a new section of the file (no pre-existing pending-merge branch).
       camptocamp: https://github.com/camptocamp/sale-workflow.git
     merges:
       - oca 9.0
-      # comment explaining what the PR does (42 is the number of the PR
+      # comment explaining what the PR does (42 is the number of the PR)
       - oca refs/pull/42/head
     # you have to replace <project-id> here
     target: camptocamp merge-branch-<project-id>-master
@@ -60,8 +56,7 @@ a new section of the file (no pre-existing pending-merge branch).
 2. Rebuild and push the consolidation branch for the modified branch:
 
   ```
-  cd odoo
-  gitaggregate -c pending-merges.yaml -d "./external-src/sale-workflow" -p
+  invoke submodule.merges odoo/external-src/sale-workflow
   ```
 
 3. If there was no pending merge for that branch before, you have to edit the `.gitmodules` file,
@@ -77,7 +72,7 @@ a new section of the file (no pre-existing pending-merge branch).
     +   branch = merge-branch-<project id>-master
     ```
 
-4. Commit the changes and push them on the `master` branch
+4. Commit the changes and create a pull request for the change
 
 ## Notes
 
@@ -93,6 +88,28 @@ a new section of the file (no pre-existing pending-merge branch).
      target: *default_target
    ```
 
-2. If you are working on another branch than `master`, you'll want to use a
-   different name for the consolidation branch (the name of the consolidation
-   branch is the `target` attribute in `pending-merges.yaml`).
+2. If you are working on another branch than `master`, you'll need to change the name of the branch in the target.
+
+## Merging only one distinct commit (cherry-pick)
+
+Sometimes you only want to merge one commit into the consolidated branch (after
+merging pull requests or not). To do so you have to add a `shell_command_after` block
+in the corresponding section. Here is an example :
+
+  ```yaml
+  ./external-src/enterprise:
+    remotes:
+      odoo: git@github.com:odoo/enterprise.git
+      camptocamp: git@github.com:camptocamp/enterprise.git
+    merges:
+      - odoo <branch-name or initial commit>
+    target: *default_target
+    shell_command_after:
+      # Commit from ? Doing what ?
+      -  git am "$(git format-patch -1 6563606f066792682a16936f704d0bdf4bc8429f -o ../patches)"
+  ```
+
+In the previous example the commit numbered 6563606... is searched in all the remotes of the section,
+then a patch file is made and apply to the consolidated branch.
+A file containing the patch will be saved in the patches directory and needs to be added in the commit
+of the project.

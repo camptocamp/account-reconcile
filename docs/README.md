@@ -24,12 +24,14 @@ https://github.com/camptocamp/odoo-template instead.
 
 * [How to add a new addons repository](./how-to-add-repo.md)
 * [How to add a Python or Debian dependency](./how-to-add-dependency.md)
+* [How to add a language in Odoo](./how-to-add-odoo-language.md)
 * [How to integrate an open pull request of an external repository](./how-to-integrate-pull-request.md)
 * [How to connect to psql in Docker](./how-to-connect-to-docker-psql.md)
 * [How to change Odoo configuration values](./how-to-set-odoo-configuration-values.md)
 * [How to backup and restore volumes](./how-to-backup-and-restore-volumes.md)
 * [How to use a PROD DB dump in DEV mode](./how-to-use-a-prod-db-in-dev.md)
 * [How to pgBadger](./how-to-pgbadger.md)
+* [How to test CUPS printing](../cups-test-server/README.md)
 
 ## Local Documentation
 

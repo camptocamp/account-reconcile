@@ -57,7 +57,12 @@ for sub in submodules:
             "In .gitmodules %s :\n"
             "    remote url %s does not match \n"
             "    target url %s \n"
-            "in pending-merges.yaml"
+            "in pending-merges.yaml\n"
+            "\n"
+            "If you added pending merges entries you probably forgot to edit"
+            " target in .gitmodules file to match the fork repository\n"
+            "or if your intent is to clean up entries in pending-merges.yaml"
+            " something went wrong in that file"
         ) % (sub.path, target_remote, sub.url)
 
 

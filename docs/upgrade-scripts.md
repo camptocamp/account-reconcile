@@ -34,7 +34,7 @@ The upgrade instructions are composed of:
  * A list of commands executed after the installation/upgrade of the addons
 
 Further, we can configure *modes* which allow to run additional commands when a
-mode is activated (e.g. the 'demo' mode would load some demo data).
+mode is activated (e.g. the 'sample' mode would load some sample data).
 
 See [an example of yaml
 file](https://github.com/camptocamp/marabunta/blob/master/marabunta/parser.py#L14-L61)
@@ -108,7 +108,7 @@ run as argument. So we can run a container the command line to execute the
 desired function:
 
 ```
-$ docker-compose run --rm odoo anthem songs.install.data_demo::create_partners
+$ docker-compose run --rm odoo anthem songs.sample.data_sample::create_partners
 ```
 
 ### Run a version upgrade again
@@ -150,17 +150,17 @@ Modes allow to run additional commands.
               - anthem songs.install.pre_full::main
             post:
               - anthem songs.install.data_full::main
-        demo:
+        sample:
           operations:
             post:
-              - anthem songs.install.data_demo::main
+              - anthem songs.sample.data_sample::main
           addons:
             upgrade:
-              - demo_addon
+              - dev_addon
 ```
 
-In the example above, we have 2 modes: `full` and `demo`. We use them to spawn
-different types of instances, `demo` might be used for a development instance
+In the example above, we have 2 modes: `full` and `sample`. We use them to spawn
+different types of instances, `sample` might be used for a development instance
 or a test server, the full one for the production (possibly with a lot of
 data).
 
@@ -171,12 +171,12 @@ The order of execution when no mode is used will be:
 2. `-i account` (or `-u` if it is already installed)
 3. `anthem songs.install.post::main`
 
-When the demo mode is used (`MARABUNTA_MODE=demo`):
+When the sample mode is used (`MARABUNTA_MODE=sample`):
 
 1. `anthem songs.install.pre::main`
-2. `-i account,demo_addon` (or `-u` if it is already installed)
+2. `-i account,dev_addon` (or `-u` if it is already installed)
 3. `anthem songs.install.post::main`
-4. `anthem songs.install.data_demo::main`
+4. `anthem songs.sample.data_sample::main`
 
 When the full mode is used (`MARABUNTA_MODE=full`):
 
@@ -190,7 +190,7 @@ Usually, the `MARABUNTA_MODE` will be set in the `docker-compose.yml`
 composition files, but you can also set in when running a container:
 
 ```
-$ docker-compose run --rm -e MARABUNTA_MODE=demo odoo
+$ docker-compose run --rm -e MARABUNTA_MODE=sample odoo
 ```
 
 ### Disable the migration

@@ -11,15 +11,18 @@ https://github.com/camptocamp/odoo-template instead.
 If you already have a local dump on your computer, you can skip this section.
 If the project is not hosted on our cloud-platform, you should ask a dump to the support team or the project manager.
 
-1. Connect to production replication server on odoo-platform-db-replication
+1. Connect to production replication server on odoo-platform-none-db-replication
 
     Make sure you're in C2C VPN and open a terminal.
 
     ```
-    odoo-platform-db-replication 5555
+    odoo-platform-none-db-replication 5555
     ```
 
     This will create a connection to DB server on localhost:5555
+
+    * Should you need a dump from Integration, use : `odoo-platform-none-int-db 5555`
+    * Should you need a dump from Production, use : `odoo-platform-none-db 5555`
 
 2. Create and download the dump
 

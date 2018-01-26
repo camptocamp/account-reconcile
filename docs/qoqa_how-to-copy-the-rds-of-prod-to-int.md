@@ -43,9 +43,9 @@ ALTER DATABASE qoqa_odoo_prod RENAME TO qoqa_odoo_integration;
 - Give access back to the right user
 ```
 GRANT ALL ON DATABASE qoqa_odoo_integration to qoqa_odoo_integration;
-GRANT ALL ON SCHEMA public to qoqa_odoo_integration;
 REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
 \c qoqa_odoo_integration
+GRANT ALL ON SCHEMA public to qoqa_odoo_integration;
 REASSIGN owned by qoqa_odoo_prod to qoqa_odoo_integration ;
 ```
 

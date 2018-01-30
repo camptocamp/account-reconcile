@@ -15,7 +15,7 @@
 	url = git@github.com:oca/account-financial-reporting
 [submodule "odoo/external-src/account-financial-tools"]
 	path = odoo/external-src/account-financial-tools
-	url = git@github.com:oca/account-financial-tools
+	url = git@github.com:camptocamp/account-financial-tools
 [submodule "odoo/external-src/account-fiscal-rule"]
 	path = odoo/external-src/account-fiscal-rule
 	url = git@github.com:oca/account-fiscal-rule

@@ -400,6 +400,8 @@ Fix merge error in batch_picking_report
 
 **Features and Improvements**
 
+* BIZ-898: Installation module
+
 **Bugfixes**
 
 **Build**

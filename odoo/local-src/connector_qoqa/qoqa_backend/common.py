@@ -329,6 +329,12 @@ class QoqaBackend(models.Model):
         return True
 
     @api.multi
+    def import_discount_accounting(self):
+        self._import_from_date('qoqa.discount.accounting',
+                               'import_discount_accounting_from_date')
+        return True
+
+    @api.multi
     def import_offer(self):
         self._import_from_date('qoqa.offer', 'import_offer_from_date')
         return True
@@ -369,6 +375,12 @@ class QoqaBackend(models.Model):
     @api.multi
     def import_one_offer(self):
         self._import_one('qoqa.offer', 'import_offer_id')
+        return True
+
+    @api.multi
+    def import_one_discount_accounting(self):
+        self._import_one('qoqa.discount.accounting',
+                         'import_discount_accounting_id')
         return True
 
     @api.multi

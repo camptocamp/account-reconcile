@@ -142,6 +142,19 @@
     <field eval="'()'" name="args"/>
   </record>
 
+  <record forcecreate="True" id="ir_cron_qoqa_import_discount_accounting" model="ir.cron">
+    <field name="name">QoQa - Import Discount Accounting</field>
+    <field eval="False" name="active"/>
+    <field name="user_id" ref="base.user_root"/>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="numbercall">-1</field>
+    <field eval="False" name="doall"/>
+    <field eval="'qoqa.backend'" name="model"/>
+    <field eval="'_scheduler_discount_accounting'" name="function"/>
+    <field eval="'()'" name="args"/>
+  </record>
+
   <record forcecreate="True" id="ir_cron_qoqa_import_offer" model="ir.cron">
     <field name="name">QoQa - Import Offers</field>
     <field eval="False" name="active"/>

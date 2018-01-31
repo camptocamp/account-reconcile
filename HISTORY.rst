@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Reactivate import of discounting issuances for promo, but not for vouchers (BIZ-1248)
+
 **Build**
 
 * Update odoo-cloud-platform (BIZ-1093)

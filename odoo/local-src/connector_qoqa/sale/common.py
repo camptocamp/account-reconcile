@@ -59,6 +59,7 @@ class QoqaSaleOrder(models.Model):
     qoqa_transaction = fields.Char(string='Transaction number of the payment '
                                           'on QoQa',
                                    readonly=True)
+
     _sql_constraints = [
         ('openerp_uniq', 'unique(backend_id, openerp_id)',
          "A sales order can be exported only once on the same backend"),

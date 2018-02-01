@@ -341,3 +341,10 @@ migration:
           - account_mass_reconcile_as_job
     - version: 9.40.3
     - version: 9.40.4
+    - version: 9.41.0
+      operations:
+        post:
+          - anthem songs.upgrade.9_41_0::post
+      addons:
+        upgrade:
+          - connector_qoqa

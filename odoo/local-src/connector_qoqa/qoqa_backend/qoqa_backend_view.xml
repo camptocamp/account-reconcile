@@ -98,6 +98,19 @@
               </group>
               <group>
                 <div>
+                  <label string="Import discount accounting since"
+                    class="oe_inline"/>
+                  <field name="import_discount_accounting_from_date"
+                    class="oe_inline"
+                    nolabel="1"/>
+                </div>
+                <button name="import_discount_accounting"
+                  type="object"
+                  class="oe_highlight"
+                  string="Import in background"/>
+              </group>
+              <group>
+                <div>
                   <label string="Import offers since"
                     class="oe_inline"/>
                   <field name="import_offer_from_date"
@@ -190,6 +203,19 @@
                     nolabel="1"/>
                 </div>
                 <button name="import_one_offer"
+                  type="object"
+                  class="oe_highlight"
+                  string="Import"/>
+              </group>
+              <group>
+                <div>
+                  <label string="Import 1 discount accounting group"
+                    class="oe_inline"/>
+                  <field name="import_discount_accounting_id"
+                    class="oe_inline"
+                    nolabel="1"/>
+                </div>
+                <button name="import_one_discount_accounting"
                   type="object"
                   class="oe_highlight"
                   string="Import"/>

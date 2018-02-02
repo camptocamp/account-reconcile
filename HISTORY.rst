@@ -26,10 +26,11 @@ latest (unreleased)
 **Bugfixes**
 
 * Reactivate import of discounting issuances for promo, but not for vouchers (BIZ-1248)
+* BIZ-403: Filtre SAV
 
 **Build**
 
-* Update odoo-cloud-platform (BIZ-1093)
+* BIZ-1093: Update odoo-cloud-platform
 
 **Documentation**
 

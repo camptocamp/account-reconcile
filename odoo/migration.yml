@@ -343,8 +343,11 @@ migration:
     - version: 9.40.4
     - version: 9.41.0
       operations:
+        pre:
+          - anthem songs.upgrade.9_41_0::pre
         post:
           - anthem songs.upgrade.9_41_0::post
       addons:
         upgrade:
           - connector_qoqa
+          - crm_claim_mail

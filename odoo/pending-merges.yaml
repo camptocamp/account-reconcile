@@ -91,12 +91,19 @@
   remotes:
     oca: git@github.com:OCA/OCB.git
     camptocamp: git@github.com:camptocamp/odoo.git
+    odoo: git@github.com:odoo/odoo.git
   merges:
-    - oca 9.0
+    # removed, as I just wanted to add a patch
+    # - oca 9.0
+    - oca 68323322196cd409b4111445b788e7a3ee1c6a89
     # Add multi-company security rule for employees
     - oca refs/pull/533/head
+    # test for refund base on amount total
     - oca refs/pull/635/head
   target: *default_target
+  shell_command_after:
+    # js bug correct check of property 'rules'
+    - git am "$(git format-patch -1 33349ed34e45b7e06281c5947645c38b3b29e8b6 -o ../patches)"
 ./external-src/product-attribute:
   remotes:
     oca: git@github.com:OCA/product-attribute.git

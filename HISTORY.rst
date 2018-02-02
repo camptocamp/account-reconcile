@@ -27,6 +27,7 @@ latest (unreleased)
 
 * Reactivate import of discounting issuances for promo, but not for vouchers (BIZ-1248)
 * BIZ-403: Filtre SAV
+* BIZ-1266: Fix Check of property rules
 
 **Build**
 

@@ -25,6 +25,18 @@ latest (unreleased)
 
 **Bugfixes**
 
+**Build**
+
+**Documentation**
+
+
+9.41.0 (2018-02-02)
++++++++++++++++++++
+
+**Features and Improvements**
+
+**Bugfixes**
+
 * Reactivate import of discounting issuances for promo, but not for vouchers (BIZ-1248)
 * BIZ-403: Filtre SAV
 * BIZ-1266: Fix Check of property rules

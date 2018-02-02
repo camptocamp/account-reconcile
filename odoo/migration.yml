@@ -351,3 +351,4 @@ migration:
         upgrade:
           - connector_qoqa
           - crm_claim_mail
+          - account_move_batch_validate

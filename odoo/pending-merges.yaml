@@ -124,3 +124,12 @@
     # [9.0] Port of module account_invoice_update_wizard
     - oca refs/pull/42/head
   target: *default_target
+./external-src/account-financial-tools:
+  remotes:
+    oca: git@github.com:OCA/account-financial-tools.git
+    camptocamp: git@github.com:camptocamp/account-financial-tools.git
+  merges:
+    - oca 9.0
+    # module account_move_batch_validate
+    - oca refs/pull/602/head
+  target: *default_target

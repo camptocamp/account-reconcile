@@ -22,6 +22,8 @@
     - oca refs/pull/181/head
     # Optimize mass reconcile
     - oca refs/pull/196/head
+    # Fix problem when a file has no records.
+    - oca refs/pull/198/head
   target: *default_target
 ./external-src/carrier-delivery:
   remotes:

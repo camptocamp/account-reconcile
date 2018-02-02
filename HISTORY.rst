@@ -29,6 +29,8 @@ latest (unreleased)
 * BIZ-403: Filtre SAV
 * BIZ-1266: Fix Check of property rules
 
+* Add some indices used in slow queries
+
 **Build**
 
 * BIZ-1093: Update odoo-cloud-platform

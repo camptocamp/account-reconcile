@@ -342,6 +342,7 @@ migration:
     - version: 9.40.3
     - version: 9.40.4
     - version: 9.41.0
+    - version: 9.41.1
       operations:
         pre:
           - anthem songs.upgrade.9_41_0::pre

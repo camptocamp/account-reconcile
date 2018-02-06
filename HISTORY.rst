@@ -30,24 +30,23 @@ latest (unreleased)
 **Documentation**
 
 
-9.41.0 (2018-02-02)
+9.41.1 (2018-02-06)
 +++++++++++++++++++
 
 **Features and Improvements**
+
 * BIZ-747 : Wizard to modify VAT and Account on offer
+
 **Bugfixes**
 
 * Reactivate import of discounting issuances for promo, but not for vouchers (BIZ-1248)
 * BIZ-403: Filtre SAV
 * BIZ-1266: Fix Check of property rules
-
 * Add some indices used in slow queries
 
 **Build**
 
 * BIZ-1093: Update odoo-cloud-platform
-
-**Documentation**
 
 
 9.40.4 (2018-01-09)

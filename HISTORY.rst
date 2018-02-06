@@ -34,7 +34,7 @@ latest (unreleased)
 +++++++++++++++++++
 
 **Features and Improvements**
-
+* BIZ-747 : Wizard to modify VAT and Account on offer
 **Bugfixes**
 
 * Reactivate import of discounting issuances for promo, but not for vouchers (BIZ-1248)

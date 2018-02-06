@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="qoqa_offer_update_view" model="ir.ui.view">
+    <field name="name">qoqa.offer.update.view</field>
+    <field name="model">qoqa.offer.update.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Update VAT Qoqa Offer">
+        <group>
+          <field name="offer_ids"/>
+        </group>
+        <footer>
+          <button string="Update VAT" name="update_vat" type="object" class="oe_highlight"/>
+          <button string="Update account" name="update_account" type="object" class="oe_highlight"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record id="act_qoqa_offer_update" model="ir.actions.act_window">
+    <field name="name">Update existing Offers</field>
+    <field name="res_model">qoqa.offer.update.wizard</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="qoqa_offer_update_view"/>
+    <field name="domain">[]</field>
+    <field name="target">new</field>
+  </record>
+
+  <act_window id="act_qoqa_offer_tree_update"
+    res_model="qoqa.offer.update.wizard"
+    src_model="qoqa.offer"
+    target="new"
+    multi="True"
+    key2="client_action_multi"
+    view_mode="form"
+    name="Update Qoqa Offers"/>
+
+</odoo>

@@ -50,7 +50,8 @@ class OfferUpdateWizard(models.TransientModel):
 
         for invoice in all_invoices:
             recompute_one_invoice_tax.delay(session,
-                                            'account.invoice', invoice.id)
+                                            'account.invoice', invoice.id,
+                                            priority=40)
 
     @api.multi
     def update_vat(self):
@@ -81,6 +82,7 @@ class OfferUpdateWizard(models.TransientModel):
         for invoice in all_invoices:
             recompute_one_invoice_account.delay(session,
                                                 'account.invoice', invoice.id,
+                                                priority=40
                                                 )
 
 
@@ -104,6 +106,7 @@ def recompute_one_invoice_tax(session, model_name, invoice_id):
                     {'invoice_line_tax_ids': [(6, 0, tax_tab)]}
                 )
                 _logger.info("REWRITE TAXES for invoice %s done", invoice.name)
+        invoice.compute_taxes()
         invoice.signal_workflow('invoice_open')
 
 

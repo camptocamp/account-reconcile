@@ -50,7 +50,8 @@ class OfferUpdateWizard(models.TransientModel):
 
         for invoice in all_invoices:
             recompute_one_invoice_tax.delay(session,
-                                            'account.invoice', invoice.id)
+                                            'account.invoice', invoice.id,
+                                            priority=40)
 
     @api.multi
     def update_vat(self):
@@ -81,6 +82,7 @@ class OfferUpdateWizard(models.TransientModel):
         for invoice in all_invoices:
             recompute_one_invoice_account.delay(session,
                                                 'account.invoice', invoice.id,
+                                                priority=40
                                                 )
 
 

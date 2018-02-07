@@ -33,13 +33,9 @@ latest (unreleased)
 9.41.2 (2018-02-07)
 +++++++++++++++++++
 
-**Features and Improvements**
-
 **Bugfixes**
-* BIZ-747 : Missing recompute taxes* BIZ-747
-**Build**
 
-**Documentation**
+* BIZ-747 : Missing recompute taxes
 
 
 9.41.1 (2018-02-06)

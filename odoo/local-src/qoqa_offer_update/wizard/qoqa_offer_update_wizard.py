@@ -104,6 +104,7 @@ def recompute_one_invoice_tax(session, model_name, invoice_id):
                     {'invoice_line_tax_ids': [(6, 0, tax_tab)]}
                 )
                 _logger.info("REWRITE TAXES for invoice %s done", invoice.name)
+        invoice.compute_taxes()
         invoice.signal_workflow('invoice_open')
 
 

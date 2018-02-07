@@ -24,7 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 **Bugfixes**
-
+* BIZ-747 : Missing recompute taxes* BIZ-747
 **Build**
 
 **Documentation**

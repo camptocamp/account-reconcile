@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BIZ-898: Set job priority to 40
+
 **Bugfixes**
 
 **Build**

@@ -355,3 +355,4 @@ migration:
           - crm_claim_mail
           - qoqa_offer_update
           - account_move_batch_validate
+    - version: 9.41.3

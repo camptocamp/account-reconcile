@@ -135,3 +135,12 @@
     # module account_move_batch_validate
     - oca refs/pull/602/head
   target: *default_target
+./external-src/connector:
+  remotes:
+    oca: git@github.com:OCA/connector.git
+    camptocamp: git@github.com:camptocamp/connector.git
+  merges:
+    - oca 9.0
+    # Use a requests session to limit opened sessions
+    - oca refs/pull/270/head
+  target: *default_target

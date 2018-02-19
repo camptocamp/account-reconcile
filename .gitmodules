@@ -36,7 +36,7 @@
 	url = git@github.com:camptocamp/carrier-delivery
 [submodule "odoo/external-src/connector"]
 	path = odoo/external-src/connector
-	url = git@github.com:oca/connector
+	url = git@github.com:camptocamp/connector
 [submodule "odoo/external-src/connector-ecommerce"]
 	path = odoo/external-src/connector-ecommerce
 	url = git@github.com:camptocamp/connector-ecommerce

@@ -364,4 +364,5 @@ migration:
     - version: 9.43.0
       addons:
         upgrade:
+          - connector
           - connector_qoqa

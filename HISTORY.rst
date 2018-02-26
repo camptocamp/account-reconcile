@@ -119,6 +119,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-35: Fix qoqa_offer_update invoice with total at 0.0
+
 **Build**
 
 **Documentation**

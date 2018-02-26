@@ -198,3 +198,9 @@ msgstr ""
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "<strong>Validated By:</strong>"
 msgstr "<strong>Validé par:</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+#, fuzzy
+msgid "<strong>Total Quantity</strong>"
+msgstr "<strong>Quantité totale</strong>"

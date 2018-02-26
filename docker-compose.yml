@@ -35,7 +35,7 @@ services:
       - "data-db:/var/lib/postgresql/data"
 
   nginx:
-    image: camptocamp/odoo-nginx:9.0
+    image: camptocamp/odoo-nginx:9.0-1.2.1
     depends_on:
       - odoo
 

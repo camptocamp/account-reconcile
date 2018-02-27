@@ -113,7 +113,8 @@ class AccountInvoice(models.Model):
     @api.multi
     def action_cancel(self):
         result = super(AccountInvoice, self).action_cancel()
-        self.cancel_refund_on_qoqa()
+        if not self.env.context.get('no_cancel_refund'):
+            self.cancel_refund_on_qoqa()
         return result
 
     @api.multi

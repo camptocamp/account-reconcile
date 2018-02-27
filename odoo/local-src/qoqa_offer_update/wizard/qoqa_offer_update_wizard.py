@@ -140,5 +140,5 @@ def unreconcile_from_invoice(invoice):
         move = invoice.move_id
         for move_line in move.line_ids:
             move_line.remove_move_reconcile()
-        invoice.action_cancel()
+        invoice.with_context(no_cancel_refund=True).action_cancel()
         invoice.action_cancel_draft()

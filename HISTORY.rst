@@ -27,6 +27,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-36: Don't cancel refund when using qoqa_offer_update
+
 **Build**
 
 **Documentation**

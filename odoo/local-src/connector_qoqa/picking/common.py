@@ -2,8 +2,12 @@
 # © 2013-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields
+import logging
+
+from openerp import api, fields, models
 from openerp.addons.connector_ecommerce.models.event import on_picking_out_done
+
+_logger = logging.getLogger(__name__)
 
 
 class QoqaStockPicking(models.Model):
@@ -41,6 +45,27 @@ class StockPicking(models.Model):
         context={'active_test': False},
     )
 
+    @api.model
+    def create(self, vals):
+        res = super(StockPicking, self).create(vals)
+        if vals.get('batch_picking_id'):
+            self.mapped('sale_id').create_disable_address_change_job()
+        return res
+
+    @api.multi
+    def write(self, vals):
+        res = super(StockPicking, self).write(vals)
+        if vals.get('batch_picking_id'):
+            self.mapped('sale_id').create_disable_address_change_job()
+        return res
+
+    @api.multi
+    def generate_labels(self, package_ids=None):
+        res = super(StockPicking, self).generate_labels(package_ids)
+        if not self.env.context.get('__called_from_batch_picking'):
+            self.mapped('sale_id').create_disable_address_change_job()
+        return res
+
 
 @on_picking_out_done
 def picking_done_create_binding(session, model_name, record_id,
@@ -59,3 +84,13 @@ def picking_done_create_binding(session, model_name, record_id,
             'openerp_id': picking.id,
             'qoqa_sale_binding_id': sale_binding.id,
         })
+
+
+class DeliveryCarrierLabelGenerate(models.TransientModel):
+    _inherit = 'delivery.carrier.label.generate'
+
+    def _do_generate_labels(self, group):
+        with api.Environment.manage():
+            super(DeliveryCarrierLabelGenerate, self.with_context(
+                __called_from_batch_picking=True,
+            ))._do_generate_labels(group)

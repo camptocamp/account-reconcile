@@ -32,3 +32,5 @@ from . import sale
 from . import sale_line
 from . import unit
 from . import wizard
+
+from . import controllers

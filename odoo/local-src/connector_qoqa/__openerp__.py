@@ -12,6 +12,9 @@
              'qoqa_base_data',
              'qoqa_claim',
              'delivery',
+             'delivery_carrier_label_batch',  # oca/carrier-delivery
+             'stock_batch_picking',  # oca/stock-logistics-workflow
+             'delivery_carrier_label_swiss_pp',
              'connector_base_product',
              'account_payment_mode',  # oca/bank-payment
              'account_payment_sale',  # oca/bank-payment

@@ -23,6 +23,9 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-34: Add controller for changing the shipping addresses of sale orders
+* BSQOQ-34: Add job to disable change of shipping address on sale orders
+
 **Bugfixes**
 
 **Build**

@@ -42,6 +42,16 @@ class SettleSalesOrder(Exporter):
         return _('Sales order settled on QoQa')
 
 
+@qoqa
+class DisableShippingModificationSalesOrder(Exporter):
+    _model_name = 'qoqa.sale.order'
+
+    def run(self, binding_ids):
+        """ Disable shipping modification on SO"""
+        self.backend_adapter.disable_shipping_address_modification(binding_ids)
+        return _('Sales order shipping modification disabled on QoQa')
+
+
 @job(default_channel='root.connector_qoqa.fast')
 @related_action(action=unwrap_binding)
 def cancel_sales_order(session, model_name, record_id):
@@ -62,3 +72,15 @@ def settle_sales_order(session, model_name, record_id):
     with get_environment(session, model_name, backend_id) as connector_env:
         settler = connector_env.get_connector_unit(SettleSalesOrder)
         return settler.run(record_id)
+
+
+@job(default_channel='root.connector_qoqa.fast')
+def disable_shipping_address_modification(session, model_name, record_ids):
+    """ Disable shipping address modification """
+    binding = session.env[model_name].browse(record_ids)
+    backend_id = binding.backend_id.id
+    with get_environment(session, model_name, backend_id) as connector_env:
+        disabler = connector_env.get_connector_unit(
+            DisableShippingModificationSalesOrder
+        )
+        return disabler.run(record_ids)

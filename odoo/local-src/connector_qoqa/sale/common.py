@@ -12,6 +12,7 @@ from openerp.addons.connector.session import ConnectorSession
 from ..unit.backend_adapter import QoQaAdapter, api_handle_errors
 from ..backend import qoqa
 from .exporter import cancel_sales_order, settle_sales_order
+from .exporter import disable_shipping_address_modification as disable
 
 
 _logger = logging.getLogger(__name__)
@@ -83,6 +84,14 @@ class SaleOrder(models.Model):
         readonly=True,
         compute='_compute_amount_total_without_voucher',
     )
+
+    def create_disable_address_change_job(self):
+        bindings = self.mapped('qoqa_bind_ids').ids
+        session = ConnectorSession.from_env(self.env)
+        _logger.info("Disable shipping address change on "
+                     "orders %s later (job) on QoQa",
+                     bindings)
+        disable.delay(session, 'qoqa.sale.order', bindings, priority=1)
 
     @api.depends('order_line.price_total', 'order_line.is_voucher')
     def _compute_amount_total_without_voucher(self):
@@ -258,6 +267,34 @@ class SaleOrder(models.Model):
                                              binding.id, priority=1)
         return res
 
+    @api.multi
+    def can_change_shipping_address(self):
+        self.ensure_one()
+        # no address switcherooni after pickings are added to batch
+        if self.picking_ids.mapped('batch_picking_id'):
+            return False
+        else:
+            for picking in self.picking_ids:
+                try:
+                    picking.sudo()._check_existing_shipping_label()
+                except exceptions.UserError:
+                    return False
+            return True
+
+    @api.multi
+    def _change_shipping_address(self, address):
+        """ Change shipping address for the sale order.
+
+        :param address: res.partner recordset with one value
+        """
+        self.ensure_one()
+        self.partner_shipping_id = address
+        if self.picking_ids:
+            self.picking_ids.write({
+                'partner_id': address.id,
+            })
+        return True
+
 
 @qoqa
 class QoQaSaleOrderAdapter(QoQaAdapter):
@@ -303,6 +340,18 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         response = self.client.post(url,
                                     data=json.dumps(packages),
+                                    headers=headers)
+        self._handle_response(response)
+
+    def disable_shipping_address_modification(self, sale_orders):
+        """ Disable changing of shipping address on qoqa SO
+
+        :param sale_orders: list of ids
+        """
+        url = '%s%s/disable_modification' % (self.url(), )
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+        response = self.client.post(url,
+                                    data=json.dumps(sale_orders),
                                     headers=headers)
         self._handle_response(response)
 

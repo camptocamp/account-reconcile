@@ -8,9 +8,10 @@ import logging
 
 from dateutil import parser
 
-from openerp import fields, _
+from openerp import exceptions, fields, _
 from openerp.tools.float_utils import float_is_zero
 
+from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper,
@@ -433,3 +434,31 @@ class QoQaSaleOrderOnChange(SaleOrderOnChange):
     order_onchange_fields = SaleOrderOnChange.order_onchange_fields + [
         'qoqa_shop_id',
     ]
+
+
+@qoqa
+class QoQaSaleShippingAddressChanger(ConnectorUnit):
+    _model_name = 'qoqa.sale.order'
+
+    def try_change(self, qoqa_id, address):
+        binder = self.binder_for()
+        binding = binder.to_openerp(qoqa_id)
+        sale = binding.openerp_id
+        if not sale:
+            raise exceptions.UserError(
+                'No sale order with id {}'.format(qoqa_id)
+            )
+        if not sale.can_change_shipping_address():
+            raise exceptions.UserError(
+                'Impossible to change shipping address'
+            )
+        address_qoqa_id = address['data']['id']
+        importer = self.unit_for(QoQaImporter,
+                                 model='qoqa.address')
+        importer.run(address_qoqa_id, record=address)
+        address_binder = self.binder_for('qoqa.address')
+        address = address_binder.to_openerp(
+            address_qoqa_id,
+            unwrap=True,
+        )
+        sale._change_shipping_address(address)

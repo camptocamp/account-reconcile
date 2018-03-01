@@ -91,21 +91,44 @@ class ProductTemplate(models.Model):
 
     @api.model
     def create(self, vals):
-        # Add the variable to the context to "skip" variant creation
-        result = super(ProductTemplate, self.with_context(
-            create_product_variant=True)).create(vals)
+        if vals.get('attribute_line_ids'):
+            # Add the variable to the context to "skip" variant creation
+            result = super(ProductTemplate, self.with_context(
+                create_product_variant=True)).create(vals)
+        else:
+            # We don't have attributes, so we want to generate a variant
+            result = super(ProductTemplate, self).create(vals)
         # Fill value codes
         result.fill_value_codes()
         return result
 
     @api.multi
     def write(self, vals):
-        # Add the variable to the context to "skip" variant creation
-        result = super(ProductTemplate, self.with_context(
-            create_product_variant=True)).write(vals)
+        for template in self:
+            if (
+                (
+                    'attribute_line_ids' in vals and
+                    vals.get('attribute_line_ids')
+                )
+                or
+                (
+                    'attribute_line_ids' not in vals and
+                    template.attribute_line_ids
+                )
+            ):
+                # Add the variable to the context to "skip" variant creation
+                super(ProductTemplate, template.with_context(
+                    create_product_variant=True)).write(vals)
+            else:
+                # We don't have attributes, so we want to generate a variant
+                super(ProductTemplate, template).write(vals)
+                if 'default_code' in vals:
+                    template.product_variant_ids.write({
+                        'default_code': vals['default_code']
+                    })
         # Fill value codes
         self.fill_value_codes()
-        return result
+        return True
 
     @api.multi
     def fill_value_codes(self):

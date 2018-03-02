@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * BIZ-898: Set job priority to 40
+* BIZ-1337: Propagate internal reference on product variant
 
 **Bugfixes**
 

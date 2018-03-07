@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.42.0 (2018-03-07)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BIZ-898: Set job priority to 40
 * BIZ-1337: Propagate internal reference on product variant
 * BIZ-1342: Add Total Quantity to PO and pdf report
@@ -35,8 +47,6 @@ latest (unreleased)
 
 * Upgrade nginx to 9.0-1.2.1
 
-**Documentation**
-
 
 9.41.2 (2018-02-07)
 +++++++++++++++++++
@@ -44,6 +54,7 @@ latest (unreleased)
 **Bugfixes**
 
 * BIZ-747 : Missing recompute taxes
+* BSQOQ-27: S3 import indexError
 
 
 9.41.1 (2018-02-06)

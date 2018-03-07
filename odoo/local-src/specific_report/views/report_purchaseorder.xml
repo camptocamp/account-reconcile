@@ -68,6 +68,19 @@
       </table>
     </xpath>
 
+    <xpath expr="//span[@t-field='o.amount_total']/ancestor::div[contains(@class, 'col-xs-4') and contains(@class, 'pull-right')]" position="after">
+        <div name="quantity_total" class="col-xs-4 pull-right">
+            <table class="table table-condensed">
+                <tr class="border-black">
+                    <td><strong>Total Quantity</strong></td>
+                    <td class="text-right">
+                        <span t-field="o.quantity_total"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </xpath>
+
     <xpath expr="//p[@t-field='o.notes']" position="after">
       <t t-if="o.picking_type_id.warehouse_id">
         <p style="page-break-before:always"/>

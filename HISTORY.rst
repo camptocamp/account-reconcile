@@ -25,6 +25,7 @@ latest (unreleased)
 
 * BIZ-898: Set job priority to 40
 * BIZ-1337: Propagate internal reference on product variant
+* BIZ-1342: Add Total Quantity to PO and pdf report
 
 **Bugfixes**
 

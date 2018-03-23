@@ -20,6 +20,7 @@
              'connector_qoqa',
              'specific_fct',
              'delivery_carrier_label_default',
+             'delivery_carrier_label_batch',
              'account_payment_partner',
              ],
  'data': [

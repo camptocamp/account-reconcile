@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-15 11:25+0000\n"
+"POT-Creation-Date: 2018-03-23 16:12+0000\n"
 "PO-Revision-Date: 2013-12-11 15:08+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -17,12 +17,22 @@ msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "1030 Bussigny"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "5606 Dintikon"
 msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "<b>Information pour la livraison</b>"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "<span>Horaire: 8h-12h00 / 13h30-17h30</span>"
 msgstr ""
 
 #. module: specific_report
@@ -57,6 +67,12 @@ msgstr "<strong>Description</strong>"
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+#, fuzzy
+msgid "<strong>EAN13</strong>"
+msgstr "<strong>Nom</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "<strong>Name</strong>"
 msgstr "<strong>Nom</strong>"
 
@@ -64,6 +80,11 @@ msgstr "<strong>Nom</strong>"
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "<strong>Net Price</strong>"
 msgstr "<strong>Prix net</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_invoice_payment_mode
+msgid "<strong>Our VAT number:</strong>"
+msgstr "<strong>Notre N° TVA</strong>"
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
@@ -77,18 +98,19 @@ msgstr "<strong>Taxes</strong>"
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+#, fuzzy
+msgid "<strong>Total Quantity</strong>"
+msgstr "<strong>Quantité totale</strong>"
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "<strong>Unit Price</strong>"
 msgstr "<strong>Prix unitaire</strong>"
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "<strong>UoM</strong>"
-msgstr "<strong>UdM</strong>"
-
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_invoice_payment_mode
-msgid "<strong>Our VAT number:</strong>"
-msgstr "<strong>Notre N° TVA</strong>"
+msgid "<strong>Validated By:</strong>"
+msgstr "<strong>Validé par:</strong>"
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
@@ -96,13 +118,13 @@ msgid "CH-1306 Daillens"
 msgstr ""
 
 #. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Centre logistique"
-msgstr ""
+#: model:ir.actions.report.xml,name:specific_report.report_batch_picking_labels
+msgid "Carrier Delivery Label(s)"
+msgstr "Étiquette(s) d'expédition"
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Contacts logistique QoQa : Serkan Kilinc"
+msgid "Centre logistique"
 msgstr ""
 
 #. module: specific_report
@@ -112,17 +134,7 @@ msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Hauteur max palettes : 220cm"
-msgstr ""
-
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Hauteur minimum du véhicule pour livraison : 70cm"
-msgstr ""
-
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Heures d’ouverture : 8h-12h et 13h30-17h30"
+msgid "Horaire 8h-12h00 / 13h30-17h30"
 msgstr ""
 
 #. module: specific_report
@@ -132,7 +144,17 @@ msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "Info logistique team: logistique@qoqa.ch / +41 (0) 21 633 20 83"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
 msgid "Lagerstrasse 12"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "Merci de contacter"
 msgstr ""
 
 #. module: specific_report
@@ -140,16 +162,6 @@ msgstr ""
 msgid ""
 "Merci de contacter Sylvain Ecoffey, Responsable d’exploitation pour les "
 "livraisons et informations supplémentaires."
-msgstr ""
-
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Plan d'accès :"
-msgstr ""
-
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Portable : +41 (0)79 606 22 28"
 msgstr ""
 
 #. module: specific_report
@@ -176,12 +188,27 @@ msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Service de montage"
+msgid "QoQa Services SA - Entrepôt"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.model,name:specific_report.model_report
+msgid "Report"
 msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "Téléphone : 021/633.20.83"
+msgid "Rue de l'Industrie 66"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "Serkan Kilinc: serkan.kilinc@qoqa.com"
+msgstr ""
+
+#. module: specific_report
+#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
+msgid "Service de montage"
 msgstr ""
 
 #. module: specific_report
@@ -191,16 +218,8 @@ msgstr ""
 
 #. module: specific_report
 #: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "e-mail : logistique@qoqa.ch"
+msgid "ou Nathan Aubert:  nathan.aubert@qoqa.com"
 msgstr ""
 
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-msgid "<strong>Validated By:</strong>"
-msgstr "<strong>Validé par:</strong>"
-
-#. module: specific_report
-#: model:ir.ui.view,arch_db:specific_report.report_purchaseorder_document
-#, fuzzy
-msgid "<strong>Total Quantity</strong>"
-msgstr "<strong>Quantité totale</strong>"
+#~ msgid "<strong>UoM</strong>"
+#~ msgstr "<strong>UdM</strong>"

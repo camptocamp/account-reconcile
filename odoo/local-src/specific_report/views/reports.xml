@@ -23,4 +23,13 @@
     <field name="groups_id"
            eval="[(6, 0, [ref('specific_fct.hidden_menu_group')])]"/>
   </record>
+
+  <report
+    id="report_batch_picking_labels"
+    string="Carrier Delivery Label(s)"
+    model="stock.batch.picking"
+    report_type="qweb-pdf"
+    menu="True"
+    name="specific_reports.report_batch_picking_labels"
+  />
 </odoo>

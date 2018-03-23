@@ -365,3 +365,4 @@ migration:
       addons:
         upgrade:
           - connector_qoqa
+          - specific_report

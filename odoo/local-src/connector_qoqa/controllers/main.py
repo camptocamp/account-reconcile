@@ -4,11 +4,48 @@ update the local records with the content of the request.
 
 Change a sales order shipping address
 
-$ curl -X POST \
-        -H "Content-Type: application/json" \
-        -d '{"jsonrpc": "2.0", "id": 1, "method": "call", "params": \
-             {"sale_id": 4242, "address": {...}}}' \
-        http://localhost/connector_qoqa/sale/change_shipping_address
+$ curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -H "Cookie:session_id=0822d81781d248e7a8e556be2eb5c3b1d98e3408" \
+   -d \
+'{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": {
+        "order_id": 4268735,
+        "address": {
+            "data": {
+                "attributes": {
+                    "service": "standard",
+                    "city": "Hauterive",
+                    "kind": "personal",
+                    "user_id": 4545,
+                    "order_user_id": null,
+                    "zip": "2068",
+                    "firstname": "John",
+                    "alias": null,
+                    "lastname": "Doe",
+                    "street2": null,
+                    "country_id": 1,
+                    "service_client_number": null,
+                    "updated_at": "2016-06-28T17:32:24.000+02:00",
+                    "phone": "0781733455",
+                    "street": "Chemin du bois 17",
+                    "company_name": null,
+                    "gender": 1,
+                    "country": "Suisse",
+                    "digicode": null,
+                    "created_at": "2016-06-28T17:32:24.000+02:00"
+                },
+                "type": "address",
+                "id": "900000001"
+            }
+        }
+    }
+}
+' \
+ 'http://localhost/connector_qoqa/sale/change_shipping_address'
 
 """
 

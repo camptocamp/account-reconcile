@@ -77,9 +77,8 @@ def settle_sales_order(session, model_name, record_id):
 @job(default_channel='root.connector_qoqa.fast')
 def disable_shipping_address_modification(session, model_name, record_ids):
     """ Disable shipping address modification """
-    binding = session.env[model_name].browse(record_ids)
-    backend_id = binding.backend_id.id
-    with get_environment(session, model_name, backend_id) as connector_env:
+    backend = session.env['qoqa.backend'].get_singleton()
+    with get_environment(session, model_name, backend.id) as connector_env:
         disabler = connector_env.get_connector_unit(
             DisableShippingModificationSalesOrder
         )

@@ -86,12 +86,13 @@ class SaleOrder(models.Model):
     )
 
     def create_disable_address_change_job(self):
-        bindings = self.mapped('qoqa_bind_ids').ids
+        binding_ids = self.mapped('qoqa_bind_ids').ids
         session = ConnectorSession.from_env(self.env)
         _logger.info("Disable shipping address change on "
                      "orders %s later (job) on QoQa",
-                     bindings)
-        disable.delay(session, 'qoqa.sale.order', bindings, priority=1)
+                     binding_ids)
+        if binding_ids:
+            disable.delay(session, 'qoqa.sale.order', binding_ids, priority=1)
 
     @api.depends('order_line.price_total', 'order_line.is_voucher')
     def _compute_amount_total_without_voucher(self):
@@ -348,7 +349,7 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
 
         :param sale_orders: list of ids
         """
-        url = '%s%s/disable_modification' % (self.url(), )
+        url = '%sdisable_modification' % (self.url(), )
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         response = self.client.post(url,
                                     data=json.dumps(sale_orders),

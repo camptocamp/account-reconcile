@@ -26,6 +26,9 @@ latest (unreleased)
 * BSQOQ-34: Add controller for changing the shipping addresses of sale orders
 * BSQOQ-34: Add job to disable change of shipping address on sale orders
 * BSQOQ-40: Batch print of carrier delivery labels
+* Include patch https://github.com/OCA/connector/pull/270 to prevent job runner
+  to create one anonymous session for each executed job, which puts a lot of
+  pressure on Redis
 
 **Bugfixes**
 

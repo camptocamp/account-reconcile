@@ -47,15 +47,33 @@ $ curl -i -X POST \
 ' \
  'http://localhost/connector_qoqa/sale/change_shipping_address'
 
+Disable an address
+
+$ curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -H "Cookie:session_id=0822d81781d248e7a8e556be2eb5c3b1d98e3408" \
+   -d \
+'{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": {
+      "id": "900000001"
+    }
+}
+' \
+ 'http://localhost/connector_qoqa/address/disable'
+
 """
 
 import logging
 
-from openerp import http
+from openerp import _, exceptions, http
 from openerp.http import request
 from openerp.addons.web.controllers.main import ensure_db
 
 from openerp.addons.connector.session import ConnectorSession
+from openerp.addons.connector.connector import Binder
 
 from ..sale.importer import QoQaSaleShippingAddressChanger
 from ..connector import get_environment
@@ -76,3 +94,20 @@ class QoQaController(http.Controller):
             connector_env.get_connector_unit(
                 QoQaSaleShippingAddressChanger
             ).try_change(order_id, address)
+
+    @http.route('/connector_qoqa/address/disable',
+                type='json', auth='user', csrf=True)
+    def disable_address(self, id):
+        ensure_db()
+        backend = request.env['qoqa.backend'].get_singleton()
+        session = ConnectorSession.from_env(request.env)
+        with get_environment(session, 'qoqa.address',
+                             backend.id) as connector_env:
+            binder = connector_env.get_connector_unit(Binder)
+            address = binder.to_openerp(id)
+            address = address.exists()
+            if not address:
+                raise exceptions.MissingError(
+                    _("Record does not exist or has been deleted.")
+                )
+            address.active = False

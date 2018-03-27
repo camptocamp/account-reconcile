@@ -16,7 +16,7 @@ RUN chmod +x odoo/before-migrate-entrypoint.d/* \
 
 # Install additional python packages if needed
 COPY ./requirements.txt /opt/odoo
-RUN cd /opt/odoo && pip install -r requirements.txt
+RUN pip install --upgrade pip setuptools && cd /opt/odoo && pip install -r requirements.txt
 
 ENV ADDONS_PATH="/opt/odoo/external-src/enterprise, \
   /opt/odoo/src/addons, \

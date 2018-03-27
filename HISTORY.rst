@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.43.0 (2018-03-27)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BSQOQ-43: Add controller for disabling an address
 * BSQOQ-34: Add controller for changing the shipping addresses of sale orders
 * BSQOQ-34: Add job to disable change of shipping address on sale orders
@@ -30,12 +42,6 @@ latest (unreleased)
 * Include patch https://github.com/OCA/connector/pull/270 to prevent job runner
   to create one anonymous session for each executed job, which puts a lot of
   pressure on Redis
-
-**Bugfixes**
-
-**Build**
-
-**Documentation**
 
 
 9.42.0 (2018-03-07)

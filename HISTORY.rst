@@ -23,6 +23,9 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-45: replace Explanation and state with EAN in Batch picking report.
+  fix report printing issue.
+
 **Bugfixes**
 
 **Build**

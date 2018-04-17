@@ -445,7 +445,7 @@ class QoQaSaleShippingAddressChanger(ConnectorUnit):
         binding = binder.to_openerp(qoqa_id)
         sale = binding.openerp_id
         if not sale:
-            raise exceptions.UserError(
+            raise exceptions.MissingError(
                 'No sale order with id {}'.format(qoqa_id)
             )
         if not sale.can_change_shipping_address():

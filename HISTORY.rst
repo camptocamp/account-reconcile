@@ -25,11 +25,17 @@ latest (unreleased)
 
 **Bugfixes**
 
-* BSQOQ-43: API returns a "missing_error" if the address doesn't exist instead of "user_error"
-
 **Build**
 
 **Documentation**
+
+
+9.43.1 (2018-04-17)
++++++++++++++++++++
+
+**Bugfixes**
+
+* BSQOQ-43: API returns a "missing_error" if the address doesn't exist instead of "user_error"
 
 
 9.43.0 (2018-03-27)

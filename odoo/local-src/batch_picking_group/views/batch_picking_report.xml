@@ -86,13 +86,14 @@
                   <th>Product</th>
                   <th>Carrier</th>
                   <th class="text-right">QTY</th>
-                  <th>Explanation</th>
+                  <th>EAN</th>
                 </thead>
                 <tbody>
                   <t t-foreach="product_quantities" t-as="product_data">
                     <t t-set="product" t-value="product_data[0]"/>
                     <t t-set="qty" t-value="product_data[1]"/>
                     <t t-set="carrier" t-value="product_data[2]"/>
+                    <t t-set="ean" t-value="product.barcode"/>
 
                     <tr>
                       <td>
@@ -104,7 +105,8 @@
                       <td class="text-right">
                         <span t-esc="qty"/>
                       </td>
-                      <td>stock error<br/>breakage
+                      <td>
+                        <span t-esc="ean"/>
                       </td>
                       <tr align="left" t-if="product.description_warehouse">
                         <td colspan="4">
@@ -189,7 +191,7 @@
                             <span t-esc="op.product_uom_id.name"/>
                           </td>
                           <td width="8%">
-                            <span t-esc="op.picking_id.state"/>
+                            <span t-esc="op.product_id.barcode"/>
                           </td>
                         </tr>
                       </t>
@@ -216,7 +218,7 @@
                               <span t-esc="quant.product_uom_id.name"/>
                             </td>
                             <td width="8%">
-                              <span t-esc="op.picking_id.state"/>
+                              <span t-esc="quant.product_id.barcode"/>
                             </td>
                           </tr>
                         </t>

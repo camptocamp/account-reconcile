@@ -28,6 +28,7 @@ Adds *Offer* models.
              # TODO: activate
              # 'picking_dispatch',  # stock-logistic-flows
              'batch_picking_group',
+             'base_delivery_carrier_label',
              ],
  'data': ['sale_order_view.xml',
           'account_invoice_view.xml',

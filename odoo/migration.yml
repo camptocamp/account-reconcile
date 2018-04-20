@@ -374,3 +374,5 @@ migration:
         upgrade:
           - batch_picking_group
           - qoqa_claim
+          - qoqa_offer
+          - qoqa_claim_unclaimed_process

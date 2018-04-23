@@ -1,45 +1,47 @@
-# -*- coding: utf-8 -*-
 # Author: Guewen Baconnier
 # © 2014-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp.tests.common import TransactionCase
+from odoo.tests.common import SavepointCase
 
 
-class AccountOperationTestCase(TransactionCase):
+class AccountReconciliationModelTestCase(SavepointCase):
 
-    def setUp(self):
-        super(AccountOperationTestCase, self).setUp()
-        self.cash_journal = self.env['account.journal'].create({
+    @classmethod
+    def setUpClass(cls):
+        super(AccountReconciliationModelTestCase, cls).setUpClass()
+        cls.reconcile_model_obj = cls.env['account.reconcile.model']
+        cls.rule_obj = cls.env['account.reconcile.rule']
+        cls.cash_journal = cls.env['account.journal'].create({
             'name': 'Unittest Cash journal',
             'code': 'CASH',
             'type': 'cash',
         })
 
-        self.sale_journal = self.env['account.journal'].create({
+        cls.sale_journal = cls.env['account.journal'].create({
             'name': 'Unittest Customer Invoices',
             'code': 'INV',
             'type': 'sale',
         })
 
-        receivable_type = self.env['account.account.type'].create({
+        receivable_type = cls.env['account.account.type'].create({
             'name': 'Receivable',
             'type': 'receivable'
         })
 
-        self.account_receivable = self.env['account.account'].create({
+        cls.account_receivable = cls.env['account.account'].create({
             'name': 'Unittest Account Receivable',
             'user_type_id': receivable_type.id,
             'code': 'TEST101200',
             'reconcile': True,
         })
 
-        income_type = self.env['account.account.type'].create({
+        income_type = cls.env['account.account.type'].create({
             'name': 'Unittest Income',
             'type': 'other'
         })
 
-        self.account_sale = self.env['account.account'].create({
+        cls.account_sale = cls.env['account.account'].create({
             'name': 'Unittest Account Sale',
             'user_type_id': income_type.id,
             'code': 'TEST200000',

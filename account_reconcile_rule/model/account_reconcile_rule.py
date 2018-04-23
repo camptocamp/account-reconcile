@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # Author: Guewen Baconnier
 # © 2014-2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp import models, fields, api
-from openerp.addons import decimal_precision as dp
+from odoo import models, fields, api
+from odoo.addons import decimal_precision as dp
 
 
-class AccountOperationRule(models.Model):
-    _name = 'account.operation.rule'
+class AccountReconcileRule(models.Model):
+    _name = 'account.reconcile.rule'
 
     _order = 'sequence ASC, id ASC'
 
@@ -20,8 +19,9 @@ class AccountOperationRule(models.Model):
         default='rounding',
         required=True,
     )
-    operations = fields.Many2many(
-        comodel_name='account.operation.template',
+    reconcile_model_ids = fields.Many2many(
+        comodel_name='account.reconcile.model',
+        string='Operations'
     )
     amount_min = fields.Float(
         string='Min. Amount',
@@ -31,7 +31,7 @@ class AccountOperationRule(models.Model):
         string='Max. Amount',
         digits=dp.get_precision('Account'),
     )
-    currencies = fields.Many2many(
+    currency_ids = fields.Many2many(
         comodel_name='res.currency',
         string='Currencies',
         help="For 'Currencies' rules, you can choose for which currencies "
@@ -88,7 +88,7 @@ class AccountOperationRule(models.Model):
         if not self._is_multicurrency(statement_line):
             return False
         currency = statement_line.currency_for_rules()
-        if currency not in self.currencies:
+        if currency not in self.currency_ids:
             return False
         amount_currency = statement_line.amount_currency
         for move_line in move_lines:
@@ -152,10 +152,10 @@ class AccountOperationRule(models.Model):
         return self.browse()
 
     @api.model
-    @api.returns('account.operation.template')
-    def operations_for_reconciliation(self, statement_line_id, move_line_ids):
+    @api.returns('account.reconcile.model')
+    def models_for_reconciliation(self, statement_line_id, move_line_ids):
         """ Find the rule for the current reconciliation and returns the
-        ``account.operation.template`` of the found rule.
+        ``account.reconcile.model`` of the found rule.
 
         Called from the javascript reconciliation view.
 
@@ -165,4 +165,4 @@ class AccountOperationRule(models.Model):
         statement_line = line_obj.browse(statement_line_id)
         move_lines = move_line_obj.browse(move_line_ids)
         rules = self.find_first_rule(statement_line, move_lines)
-        return rules.operations
+        return rules.reconcile_model_ids

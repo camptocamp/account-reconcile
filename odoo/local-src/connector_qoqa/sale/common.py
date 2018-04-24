@@ -351,9 +351,12 @@ class QoQaSaleOrderAdapter(QoQaAdapter):
         """
         url = '%sdisable_modification' % (self.url(), )
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        response = self.client.post(url,
-                                    data=json.dumps(sale_orders),
-                                    headers=headers)
+        payload = {
+            'order_ids': sale_orders,
+        }
+        response = self.client.put(url,
+                                   data=json.dumps(payload),
+                                   headers=headers)
         self._handle_response(response)
 
 

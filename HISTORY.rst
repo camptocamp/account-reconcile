@@ -33,6 +33,15 @@ latest (unreleased)
 **Documentation**
 
 
+9.43.2 (2018-04-25)
++++++++++++++++++++
+
+**Bugfixes**
+
+* BSQOQ-34: Send QoQa Ids to the API instead of the binding records ids
+* BSQOQ-34: Fix call to disable_modifications api (PUT instead of POST + change to JSON content)
+
+
 9.43.1 (2018-04-17)
 +++++++++++++++++++
 

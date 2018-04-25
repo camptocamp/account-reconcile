@@ -368,6 +368,7 @@ migration:
           - connector_qoqa
           - specific_report
     - version: 9.43.1
+    - version: 9.43.2
     - version: 9.44.0
       addons:
         upgrade:

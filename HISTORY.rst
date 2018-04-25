@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-34: Send QoQa Ids to the API instead of the binding records ids
+
 **Build**
 
 **Documentation**

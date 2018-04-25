@@ -48,8 +48,14 @@ class DisableShippingModificationSalesOrder(Exporter):
 
     def run(self, binding_ids):
         """ Disable shipping modification on SO"""
-        self.backend_adapter.disable_shipping_address_modification(binding_ids)
-        return _('Sales order shipping modification disabled on QoQa')
+        bindings = self.model.browse(binding_ids)
+        qoqa_ids = bindings.mapped('qoqa_id')
+        if qoqa_ids:
+            self.backend_adapter.disable_shipping_address_modification(
+                qoqa_ids
+            )
+            return _('Sales order shipping modification disabled on QoQa')
+        return _('No sales orders to disable')
 
 
 @job(default_channel='root.connector_qoqa.fast')

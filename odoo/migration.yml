@@ -368,3 +368,4 @@ migration:
           - connector_qoqa
           - specific_report
     - version: 9.43.1
+    - version: 9.43.2

@@ -373,3 +373,4 @@ migration:
       addons:
         upgrade:
           - batch_picking_group
+          - qoqa_claim

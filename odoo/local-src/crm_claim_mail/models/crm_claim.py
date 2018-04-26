@@ -285,7 +285,11 @@ class CrmClaim(models.Model):
 
         # Use case : only close if email, if not the "assigned to you" email,
         # and if it does not come from the catchall
-        if message_type == 'comment' and 'subtype_id' not in kwargs:
+        if (
+            message_type == 'comment' and
+            'subtype_id' not in kwargs
+            and not self.env.context.get('no_case_close')
+        ):
             self.case_close()
             # Also write the field "last_message_date".
             self.write({'last_message_date': fields.datetime.now()})

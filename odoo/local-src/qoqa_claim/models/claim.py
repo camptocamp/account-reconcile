@@ -2,7 +2,7 @@
 # © 2013-2016 Camptocamp SA (Joël Grandguillaume, Matthieu Dietrich)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 import re
-from openerp import _, api, fields, models
+from openerp import api, fields, models
 from openerp.tools import html2plaintext
 
 
@@ -109,50 +109,39 @@ class CrmClaim(models.Model):
             desc = html2plaintext(claim.description)
             claim.plain_text_description = re.sub(r'(\n){3,}', '\n\n', desc)
 
-    @api.multi
-    def notify_user(self, partner_id):
-        for claim in self:
-            body = _('A new CRM claim (%s) has been assigned to you'
-                     % (claim.name))
-            subject = _('A new CRM claim has been assigned to you')
-            # Add variable to context so that we know not to change the status
-            msg = claim.message_post(
-                body=body,
-                subject=subject,
-                message_type='email',
-                subtype='mail.mt_comment',
-                parent_id=False,
-                attachments=None,
-                partner_ids=[partner_id]
-            )
-            # Delete after sending e-mail to avoid quoting it later on
-            msg.unlink()
-
-    @api.constrains('user_id', 'team_id')
     def notify_claim_only_specific_user(self):
-        """Manage user notification
-        tweaked usage of constraint as a post write hook.
-        We have to do this as a this function remove a message.
-        Because of the way mail thread reimplement the security
-        check and the MRO of chanined inherits we try
-        to read the id of the deleted message leading to
-        an acces error
-        """
         for claim in self:
-            partner_id = claim.user_id.partner_id
-            if not all([claim.team_id.notify, partner_id]):
-                continue
-            # Get all followers of current claim
-            partner_ids = claim.message_partner_ids.ids
-            channel_ids = claim.message_channel_ids.ids
-            if partner_ids or channel_ids:
+
+            mail_template = self.env.ref(
+                'qoqa_claim.mail_template_crm_claim_change_user'
+            )
+            if mail_template:
+                # Get all followers of current claim
+                partner_ids = claim.message_partner_ids.ids
+                channel_ids = claim.message_channel_ids.ids
+                if partner_ids or channel_ids:
                     # Remove followers on the message
                     # to not send an unuseful message to the related customer
                     claim.message_unsubscribe(partner_ids, channel_ids)
-            claim.notify_user(partner_id)
-            if partner_ids or channel_ids:
-                # Resuscribe all partner include customer
-                claim.message_subscribe(partner_ids, channel_ids)
+
+                base_url = self.env['ir.config_parameter'].get_param(
+                    'web.base.url')
+
+                message = self.env['mail.compose.message'].with_context(
+                    base_url=base_url,
+                    no_case_close=True,
+                ).create({
+                    'model': 'crm.claim',
+                    'res_id': claim.id,
+                    'partner_ids': claim.user_id.partner_id.ids,
+                    'template_id': mail_template.id,
+                })
+                message.onchange_template_id_wrapper()
+                message.send_mail_action()
+
+                if partner_ids or channel_ids:
+                    # Resuscribe all partner include customer
+                    claim.message_subscribe(partner_ids, channel_ids)
 
     @api.multi
     def assign_current_user(self):
@@ -169,14 +158,6 @@ class CrmClaim(models.Model):
                                         ('res_id', '=', claim.id)])
             old = [fol.partner_id.id for fol in followers]
             claim.message_unsubscribe(old)
-            user_obj = self.env['res.users']
-            responsible = user_obj.browse(vals['user_id'])
-            claim.message_subscribe([responsible.partner_id.id])
-            if vals.get('team_id'):
-                team_obj = self.env['crm.team']
-                team = team_obj.browse(vals['team_id'])
-                if team.notify:
-                    claim.notify_user(responsible.partner_id.id)
         if vals.get('partner_id'):
             claim.message_subscribe([vals['partner_id']])
         return claim
@@ -207,7 +188,10 @@ class CrmClaim(models.Model):
                             [claim.user_id.partner_id.id])
                 # We subcribe the selected partner to it
                 claim.message_subscribe([responsible.partner_id.id])
-        return super(CrmClaim, self).write(vals)
+        result = super(CrmClaim, self).write(vals)
+        if vals.get('user_id'):
+            self.notify_claim_only_specific_user()
+        return result
 
     """
         Methods to set claims to specific stages

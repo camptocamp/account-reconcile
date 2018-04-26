@@ -1,19 +1,42 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * qoqa_claim
+#	* qoqa_claim
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-01 11:17+0000\n"
-"PO-Revision-Date: 2016-02-01 11:17+0000\n"
+"POT-Creation-Date: 2018-04-26 15:27+0000\n"
+"PO-Revision-Date: 2018-04-26 15:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: qoqa_claim
+#: model:mail.template,body_html:qoqa_claim.mail_template_crm_claim_change_user
+msgid "\n"
+"            	<p>\n"
+"                    A new CRM claim (${object.code or ''}) has been assigned to you ${object.user_id.name or ''},\n"
+"                </p>\n"
+"                <p>\n"
+"                    Access directly to this document in OpenERP\n"
+"                    <a href=\"${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form\">${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form</a>\n"
+"                </p>\n"
+"            \n"
+"        "
+msgstr "\n"
+"            	<p>\n"
+"                    Une nouvelle réclamation (${object.code or ''}) vous a été assignée ${object.user_id.name or ''},\n"
+"                </p>\n"
+"                <p>\n"
+"                    Accéder à ce document directement dans OpenERP\n"
+"                    <a href=\"${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form\">${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form</a>\n"
+"                </p>\n"
+"            \n"
+"        "
 
 #. module: qoqa_claim
 #: view:crm.claim.unclaimed:0
@@ -192,6 +215,11 @@ msgstr "Pas de mouvement de stock associé à ce numéro de colis !"
 #, python-format
 msgid "Not a valid tracking number!"
 msgstr "Numéro de colis invalide !"
+
+#. module: qoqa_claim
+#: model:mail.template,subject:qoqa_claim.mail_template_crm_claim_change_user
+msgid "New CRM claim assigned"
+msgstr "Nouvelle réclamation assignée"
 
 #. module: qoqa_claim
 #: model:crm.claim.category,name:qoqa_claim.crm_case_categ_default_others

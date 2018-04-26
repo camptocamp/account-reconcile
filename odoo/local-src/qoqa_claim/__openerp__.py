@@ -19,6 +19,7 @@
     'demo': [],
     'data': [
         'data/crm_claim_data.xml',
+        'data/mail_template.xml',
         'views/crm_claim_stage.xml',
         'views/crm_claim_view.xml',
         'views/crm_claim_line.xml',

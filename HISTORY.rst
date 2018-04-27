@@ -29,6 +29,8 @@ latest (unreleased)
 **Bugfixes**
 
 **Build**
+* Update from odoo-template
+* Update Dockerimage to X-2.6.1
 
 **Documentation**
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # © 2016 Camptocamp SA (Matthieu Dietrich)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+from collections import defaultdict
+
 from openerp import api, fields, models
 
 
@@ -26,6 +28,30 @@ class StockQuantPackage(models.Model):
                                    compute='_compute_pickings',
                                    string='Pickings')
 
+    @api.multi
+    def unpack(self):
+        package_data = defaultdict(dict)
+        for package in self:
+            pack_id = package.id
+            pickings = package.picking_ids.filtered(
+                lambda x: x.state != 'done'
+            )
+            product_dict = defaultdict(dict)
+            for quant in package.quant_ids:
+                product_dict[quant.product_id.id].update({
+                    'qty': quant.qty + product_dict[
+                        quant.product_id.id
+                    ].get('qty', 0),
+                    'uom': quant.product_id.uom_id.id,
+                    'name': quant.product_id.partner_ref,
+                })
+            package_data[pack_id]['data'] = product_dict
+            package_data[pack_id]['pickings'] = pickings.ids
+        res = super(StockQuantPackage, self).unpack()
+        self.unlink()
+        self.env["stock.picking"]._get_items_from_unpack(package_data)
+        return res
+
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
@@ -34,6 +60,32 @@ class StockPicking(models.Model):
         comodel_name='stock.quant.package',
         string='Original unclaimed package (re-use for reservation)'
     )
+
+    @api.model
+    def _get_items_from_unpack(self, package_data):
+        for pack_id, items in package_data.iteritems():
+            pickings = self.browse(items['pickings'])
+            for picking in pickings:
+                picking.pack_operation_pack_ids.filtered(
+                    lambda x: x.package_id.id in (pack_id, False)
+                ).unlink()
+                move_lines = [
+                    (0, 0, {
+                        'product_id': x,
+                        'name': y.get('name', ''),
+                        'product_uom_qty': y.get('qty', 0),
+                        'product_uom': y.get('uom', False),
+                        'location_id': picking.location_id.id,
+                        'location_dest_id': picking.location_dest_id.id,
+                    })
+                    for x, y in items['data'].iteritems()
+                ]
+                picking.update({
+                    'move_lines': move_lines,
+                })
+            pickings.do_unreserve()
+            pickings.action_assign()
+            pickings.invalidate_cache()
 
     @api.multi
     def action_assign(self):

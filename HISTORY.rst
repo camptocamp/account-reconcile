@@ -25,6 +25,7 @@ latest (unreleased)
 
 * BSQOQ-45: replace Explanation and state with EAN in Batch picking report.
   fix report printing issue.
+* BSQOQ-47: Manage responsible notifications on claim creation/update
 
 **Bugfixes**
 

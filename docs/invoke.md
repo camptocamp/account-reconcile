@@ -12,7 +12,7 @@ First, install it with:
 
 ```bash
 
-$ sudo pip install invoke
+$ pip install -r tasks/requirements.txt
 
 ```
 
@@ -124,7 +124,7 @@ odoo/songs/install/generated
 and
 odoo/data/install/generated
 
-See https://github.com/camptocamp/odoo-prototyper for more details about dj.compilation
+See https://github.com/camptocamp/odoo-dj for more details about dj.compilation
 
 
 ```

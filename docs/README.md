@@ -32,6 +32,7 @@ https://github.com/camptocamp/odoo-template instead.
 * [How to use a PROD DB dump in DEV mode](./how-to-use-a-prod-db-in-dev.md)
 * [How to pgBadger](./how-to-pgbadger.md)
 * [How to test CUPS printing](../cups-test-server/README.md)
+* [How to test SMTP in dev](./how-to-test-smtp.md)
 
 ## Local Documentation
 

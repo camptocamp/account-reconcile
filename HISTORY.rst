@@ -22,19 +22,25 @@ latest (unreleased)
 +++++++++++++++++++
 
 **Features and Improvements**
-* BSQOQ-49: Add filters for empty locations
-
-* BSQOQ-45: replace Explanation and state with EAN in Batch picking report.
-  fix report printing issue.
-* BSQOQ-47: Manage responsible notifications on claim creation/update
-* BSQOQ-44: Unpack of package now deletes the package and fills
-  it's picking with products
 
 **Bugfixes**
 
 **Build**
 
 **Documentation**
+
+
+9.44.0 (2018-04-27)
++++++++++++++++++++
+
+**Features and Improvements**
+
+* BSQOQ-49: Add filters for empty locations
+* BSQOQ-45: replace Explanation and state with EAN in Batch picking report.
+  fix report printing issue.
+* BSQOQ-47: Manage responsible notifications on claim creation/update
+* BSQOQ-44: Unpack of package now deletes the package and fills
+  it's picking with products
 
 
 9.43.2 (2018-04-25)

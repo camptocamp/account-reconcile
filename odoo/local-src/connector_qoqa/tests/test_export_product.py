@@ -38,6 +38,7 @@ class TestExportProduct(QoQaTransactionCase):
             'product_tmpl_id': self.product_template.id,
             'default_code': 'MRSAFE-variant',
             'wine_bottle_id': wine_bottle.id,
+            'barcode': '0190893412216'
         })
 
     def _check_product_body(self, path, query_json, saved_json):
@@ -76,6 +77,7 @@ class TestExportProduct(QoQaTransactionCase):
             self.assertEqual('MRSAFE-variant', test_product['sku'])
             self.assertEqual(0.75, test_product['liters_capacity'])
             self.assertEqual(12, test_product['months_warranty'])
+            self.assertEqual('0190893412216', test_product['ean'])
 
         return True
 

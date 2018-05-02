@@ -52,7 +52,8 @@ class ProductExportMapper(ExportMapper):
 
     direct = [
         ('default_code', 'sku'),
-        (convert('warranty', int), 'months_warranty')
+        (convert('warranty', int), 'months_warranty'),
+        ('barcode', 'ean')
     ]
 
     def _get_template_qoqa_id(self, record):

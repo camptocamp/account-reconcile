@@ -1,10 +1,9 @@
 # Copyright 2016 Cyril Gaudin (Camptocamp)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 
 class AccountReconcileRule(models.Model):
@@ -42,10 +41,6 @@ class AccountReconcileRule(models.Model):
                     statement_line, invoice, balance
                 )
 
-    @staticmethod
-    def _parse_date(str_date):
-        return datetime.strptime(str_date, DEFAULT_SERVER_DATE_FORMAT)
-
     @api.multi
     def _check_early_payment_discount(self, statement_line, invoice,
                                       balance):
@@ -59,11 +54,11 @@ class AccountReconcileRule(models.Model):
         """
         payment_term = invoice.payment_term_id
 
-        max_date = self._parse_date(invoice.date_invoice) + timedelta(
+        max_date = fields.Date.from_string(invoice.date_invoice) + timedelta(
             days=payment_term.epd_nb_days
         )
 
-        if self._parse_date(statement_line.date) > max_date:
+        if fields.Date.from_string(statement_line.date) > max_date:
             return False
 
         percent = payment_term.epd_discount / 100.0

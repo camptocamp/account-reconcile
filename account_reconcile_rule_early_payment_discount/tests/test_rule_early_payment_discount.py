@@ -12,9 +12,10 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
         super().setUpClass()
 
         # Customer Partner
-        cls.partner = cls.env['res.partner'].create({
-            'name': 'Customer partner',
-        })
+        cls.partner = cls.env['res.partner'].with_context(
+            tracking_disable=True).create({
+                'name': 'Customer partner',
+            })
 
         cls.rule_model = cls.env['account.reconcile.rule']
         # Delete existing rules
@@ -27,17 +28,14 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
             'amount_type': 'percentage',
             'amount': 100.0,
         })
-
         cls.reconciliation_rule = cls.rule_model.create({
             'name': 'Unittest Early Payment Discount',
             'rule_type': 'early_payment_discount',
             'operations': [(6, 0, (cls.operation.id, ))],
             'sequence': 1,
         })
-
         # Accounts creation
         account_model = cls.env['account.account']
-
         cls.account_early_payment = account_model.create({
             'name': 'Unittest Account Early Payment Discount',
             'user_type_id':
@@ -45,7 +43,6 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
             'code': 'TEST4090',
             'reconcile': False,
         })
-
         cls.account_sale = account_model.create({
             'name': 'Unittest Account Sale',
             'user_type_id':
@@ -53,7 +50,6 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
             'code': 'TEST200000',
             'reconcile': False,
         })
-
         cls.account_customer = account_model.create({
             'code': 'TEST1100',
             'name': 'Customer account',
@@ -61,19 +57,16 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
                 cls.env.ref('account.data_account_type_receivable').id,
             'reconcile': True,
         })
-
         cls.cash_journal = cls.env['account.journal'].create({
             'name': 'Unittest Cash journal',
             'code': 'CASH',
             'type': 'cash',
         })
-
         cls.sale_journal = cls.env['account.journal'].create({
             'name': 'Unittest Customer Invoices',
             'code': 'INV',
             'type': 'sale',
         })
-
         # Early payment discount payment term.
         cls.payment_term = cls.env['account.payment.term'].create({
             'name': '10 days 2% discount',
@@ -81,12 +74,10 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
             'epd_nb_days': 10,
             'epd_discount': 2,
         })
-
         # Product and invoice with price = 1000
         product_test = cls.env['product.product'].create({
             'name': 'Unittest product',
         })
-
         cls.date_invoice = date(2016, 5, 10)
         cls.invoice = cls.env['account.invoice'].create({
             'name': "Test Customer Invoice",
@@ -104,7 +95,6 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
                 })
             ]
         })
-
         # Create move
         debit_line_vals = {
             'name': '001',
@@ -121,7 +111,6 @@ class TestEarlyPaymentDiscountRule(SavepointCase):
             'journal_id': cls.sale_journal.id,
             'line_ids': [(0, 0, debit_line_vals), (0, 0, credit_line_vals)],
         })
-
         cls.debit_move = cls.move.line_ids.filtered(
             lambda l: l.debit != 0.0
         )

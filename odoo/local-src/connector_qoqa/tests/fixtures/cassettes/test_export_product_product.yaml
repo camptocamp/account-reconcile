@@ -34,7 +34,7 @@ interactions:
 - request:
     body: '{"locale": "fr", "variation": {"sku": "MRSAFE-variant", "months_warranty":
       12, "product_attribute_variations_attributes": [], "product_id": "1000017",
-      "liters_capacity": 0.75}}'
+      "liters_capacity": 0.75, "ean": "0190893412216"}}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']

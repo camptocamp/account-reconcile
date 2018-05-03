@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-52: Add barcode attribute in product export
+
 **Bugfixes**
 
 **Build**

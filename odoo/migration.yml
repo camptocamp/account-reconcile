@@ -381,3 +381,6 @@ migration:
       addons:
         upgrade:
           - qoqa_claim
+          - delivery_carrier_label_batch
+          - delivery_carrier_label_postlogistics
+          - delivery_carrier_label_postlogistics_shop_logo

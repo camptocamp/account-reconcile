@@ -26,6 +26,8 @@ latest (unreleased)
 * BSQOQ-52: Add barcode attribute in product export
 * BSQOQ-65: Add archive functionality to crm.claim.category, crm.team, mail.alias
 * BSQOQ-66: Add qoqa.teams and its views
+* BSQOQ-54: Do not regenerate existing carrier labels unless forced +
+  Store generated carrier labels when using the print action
 
 **Bugfixes**
 

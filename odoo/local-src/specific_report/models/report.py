@@ -18,24 +18,30 @@ class Report(models.Model):
     def get_pdf(self, cr, uid, docids, report_name, html=None, data=None,
                 context=None):
         if report_name == 'specific_reports.report_batch_picking_labels':
-            batches = self.pool.get('stock.batch.picking').browse(
-                cr, uid, docids
-            )
-            if context is None:
-                context = {}
-            context.update({
+            ctx = (context and context.copy() or {})
+            ctx.update({
                 'active_model': 'stock.batch.picking',
                 'active_ids': docids,
             })
-            label_generate_id = self.pool.get(
+
+            label_generate_wiz = self.pool.get(
                 'delivery.carrier.label.generate'
-            ).create(cr, uid, {}, context=context)
-            label_generate = self.pool.get(
-                'delivery.carrier.label.generate'
-            ).browse(
-                cr, uid, label_generate_id, context
             )
-            return self.process_report(batches, label_generate)
+            label_generate_id = label_generate_wiz.create(
+                cr, uid, {}, ctx)
+            label_generate = label_generate_wiz.browse(
+                cr, uid, label_generate_id, ctx
+            )
+            label_generate.action_generate_labels()
+
+            att_obj = self.pool.get('ir.attachment')
+            attachment_ids = att_obj.search(
+                cr, uid, [('res_id', 'in', docids),
+                          ('res_model', '=', 'stock.batch.picking')],
+                context=context
+            )
+            attachments = att_obj.browse(cr, uid, attachment_ids, context)
+            return self.process_report(attachments)
         else:
             return super(Report, self).get_pdf(
                 cr, uid, docids, report_name,
@@ -45,27 +51,32 @@ class Report(models.Model):
     @api.v8  # noqa
     def get_pdf(self, docids, report_name, html=None, data=None):
         if report_name == 'specific_reports.report_batch_picking_labels':
-            batches = self.env['stock.batch.picking'].browse(docids)
-            label_generate = self.env[
+            self.env[
                 'delivery.carrier.label.generate'
             ].with_context(
-                active_model='stock.batch.picking', active_ids=docids
-            ).create({})
-            return self.process_report(batches, label_generate)
+                active_model='stock.batch.picking',
+                active_ids=docids
+            ).create(
+                {}
+            ).action_generate_labels()
+
+            attachments = self.env['ir.attachment'].search(
+                [('res_id', 'in', docids),
+                 ('res_model', '=', 'stock.batch.picking')]
+            )
+            return self.process_report(attachments)
         else:
             return super(Report, self).get_pdf(docids, report_name, html, data)
 
-    def process_report(self, batches, label_generate):
-        pdf_to_print = []
-        for batch in batches:
-            labels = label_generate._get_all_pdf(batch)
-            # `+ [None]` The goal is to add a blank page between each
-            # set of carrier labels
-            pdf_to_print += [label.decode('base64') for label in labels if
-                             label] + [None]
-        # the last None was removed to avoid having a blank page at the end
-        # of the document
-        return self.merge_pdf_in_memory(pdf_to_print[:-1])
+    def process_report(self, attachments):
+        pdfs = [att.datas.decode('base64') for att in attachments]
+
+        # Add `None` in between each attachment
+        # to have a blank page between each carrier label set
+        pdf_to_print = [None] * (len(pdfs) * 2 - 1)
+        pdf_to_print[0::2] = pdfs
+
+        return self.merge_pdf_in_memory(pdf_to_print)
 
     def merge_pdf_in_memory(self, docs):
         streams = []

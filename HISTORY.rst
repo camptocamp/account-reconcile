@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * BSQOQ-52: Add barcode attribute in product export
+* BSQOQ-65: Add archive functionality to crm.claim.category, crm.team, mail.alias
 
 **Bugfixes**
 

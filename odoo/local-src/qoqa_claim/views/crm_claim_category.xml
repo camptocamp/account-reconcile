@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="crm_claim_category_form" model="ir.ui.view">
+        <field name="name">crm.claim.category.form.qoqa_claim</field>
+        <field name="model">crm.claim.category</field>
+        <field name="inherit_id" ref="crm_claim.crm_claim_category_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']/.." position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                        <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_claim_category_search_qoqa_claim" model="ir.ui.view">
+        <field name="name">crm.claim.category.search.qoqa_claim</field>
+        <field name="model">crm.claim.category</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Archived" name="active" domain="[('active', '=', False),]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

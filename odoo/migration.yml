@@ -386,6 +386,7 @@ migration:
           - "sh -c 'psql -f odoo/songs/migration/add_product_product_seller_price.sql'"
       addons:
         upgrade:
+          - qoqa_claim_unclaimed_process
           - qoqa_claim
           - delivery_carrier_label_batch
           - delivery_carrier_label_postlogistics

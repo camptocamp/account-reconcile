@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_mail_alias_form_qoqa_claim" model="ir.ui.view">
+        <field name="name">mail.alias.form.qoqa_claim</field>
+        <field name="model">mail.alias</field>
+        <field name="inherit_id" ref="mail.view_mail_alias_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                    <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mail_alias_search_qoqa_claim" model="ir.ui.view">
+        <field name="name">mail.alias.search.qoqa_claim</field>
+        <field name="model">mail.alias</field>
+        <field name="inherit_id" ref="mail.view_mail_alias_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='active']" position="after">
+                <filter string="Archived" name="archived" domain="[('active', '=', False),]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

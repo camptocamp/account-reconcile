@@ -6,6 +6,17 @@ from openerp import api, fields, models
 from openerp.tools import html2plaintext
 
 
+class CrmClaimCategory(models.Model):
+    _inherit = 'crm.claim.category'
+
+    active = fields.Boolean(
+        string='Active',
+        default=True,
+        help="The active field allows you to hide the record without "
+             "removing it."
+    )
+
+
 class CrmClaimStage(models.Model):
     """ re-add states (to know which to
         use for cancel/close/draft/pending) """
@@ -15,8 +26,8 @@ class CrmClaimStage(models.Model):
         ('draft', 'New'),
         ('open', 'In Progress'),
         ('done', 'Closed'),
-        ('cancel', 'Cancelled')],
-        string="State")
+        ('cancel', 'Cancelled')
+    ], string="State")
 
 
 class CrmTeam(models.Model):

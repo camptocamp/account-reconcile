@@ -158,18 +158,6 @@
             </field>
         </record>
 
-
-        <record id="sales_team_form_view_in_crm-notify" model="ir.ui.view">
-            <field name="name">crm.team.form.notify</field>
-            <field name="model">crm.team</field>
-            <field name="inherit_id" ref="crm.sales_team_form_view_in_crm"/>
-            <field name="arch" type="xml">
-                <field name="active" position="after">
-                    <field name="notify"/>
-                </field>
-            </field>
-        </record>
-
         <!-- Add entry in the "More" drop down list in tree view -->
         <record id="action_code_assign_current_user" model="ir.actions.server">
           <field name="name">I take it!</field>

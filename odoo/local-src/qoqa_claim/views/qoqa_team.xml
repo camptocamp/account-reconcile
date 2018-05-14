@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<openerp>
+
+    <record id="view_qoqa_team_form_qoqa_claim" model="ir.ui.view">
+        <field name="name">qoqa.team.form.qoqa_claim</field>
+        <field name="model">qoqa.team</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
+                    <group name="main">
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_qoqa_team_tree_qoqa_claim" model="ir.ui.view">
+        <field name="name">qoqa.team.tree.qoqa_claim</field>
+        <field name="model">qoqa.team</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="qoqa_team_action_qoqa_claim" model="ir.actions.act_window">
+        <field name="name">QoQa Team</field>
+        <field name="res_model">qoqa.team</field>
+        <field name="group_ids" eval="[(4, ref('base.group_system'))]" />
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="qoqa_team_menu"
+        string="QoQa Team"
+        parent="base.menu_sale_config"
+        action="qoqa_team_action_qoqa_claim"
+        sequence="99"/>
+
+</openerp>

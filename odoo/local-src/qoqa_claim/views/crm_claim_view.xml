@@ -61,6 +61,9 @@
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim_rma.crm_claim_rma_form_view"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='team_id']" position="before">
+                    <field name="qoqa_team_id"/>
+                </xpath>
                 <!-- add sales count -->
                 <button icon="fa-strikethrough" position="replace">
                     <button class="oe_stat_button"
@@ -155,6 +158,20 @@
                 <button name="%(account.action_account_invoice_refund)d" position="attributes">
                     <attribute name="context">{'invoice_ids': [invoice_id], 'description': name, 'claim_id': id}</attribute>
                 </button>
+            </field>
+        </record>
+
+        <record id="view_crm_claim_search_qoqa_claim" model="ir.ui.view">
+            <field name="name">crm.claim.search.qoqa_claim</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="qoqa_team_id"/>
+                </xpath>
+                <xpath expr="//group[@expand='0']" position="inside">
+                    <filter string="QoQa Teams" name="qoqa_team_id" domain="[]" context="{'group_by': 'qoqa_team_id'}"/>
+                </xpath>
             </field>
         </record>
 

@@ -30,18 +30,16 @@ class CrmClaimStage(models.Model):
     ], string="State")
 
 
-class CrmTeam(models.Model):
-    """ Category of Case """
-    _inherit = "crm.team"
-
-    notify = fields.Boolean('Notify on change')
-
-
 class CrmClaim(models.Model):
     """ Crm claim
     """
     _inherit = "crm.claim"
 
+    qoqa_team_id = fields.Many2one(
+        related="team_id.qoqa_team_id",
+        readonly=True,
+        store=True,
+    )
     priority = fields.Selection(
         [('0', 'Low'),
          ('1', 'Normal'),

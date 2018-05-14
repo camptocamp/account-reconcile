@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"ir_model_access_qoqa_team_settings","access qoqa team administration settings","model_qoqa_team","base.group_system",1,1,1,1
+"ir_model_access_qoqa_team_employee","access qoqa team employee","model_qoqa_team","base.group_user",1,0,0,0

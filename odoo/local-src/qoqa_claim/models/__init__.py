@@ -4,3 +4,5 @@
 from . import claim
 from . import sale
 from . import alias
+from . import qoqa_team
+from . import crm_team

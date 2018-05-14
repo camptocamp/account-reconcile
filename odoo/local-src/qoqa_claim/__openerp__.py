@@ -20,6 +20,7 @@
     'demo': [],
     'data': [
         'security/claim_groups.xml',
+        'security/ir.model.access.csv',
         'data/crm_claim_data.xml',
         'data/mail_template.xml',
         'views/crm_claim_stage.xml',
@@ -30,6 +31,7 @@
         'views/crm_team.xml',
         'views/mail_alias.xml',
         'views/claim_menus.xml',
+        'views/qoqa_team.xml',
     ],
     'installable': True,
     'application': True,

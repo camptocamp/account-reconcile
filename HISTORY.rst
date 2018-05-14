@@ -25,6 +25,7 @@ latest (unreleased)
 
 * BSQOQ-52: Add barcode attribute in product export
 * BSQOQ-65: Add archive functionality to crm.claim.category, crm.team, mail.alias
+* BSQOQ-66: Add qoqa.teams and its views
 
 **Bugfixes**
 

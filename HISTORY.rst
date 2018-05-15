@@ -28,6 +28,12 @@ latest (unreleased)
 * BSQOQ-66: Add qoqa.teams and its views
 * BSQOQ-54: Do not regenerate existing carrier labels unless forced +
   Store generated carrier labels when using the print action
+* BSQOQ-70: The "Update QoQa Offers" action now works totally in background, no
+  longer blocks the UI
+* BSQOQ-70: Improve performance of the "Update QoQa Offers" action when
+  changing the accounts
+* BSQOQ-70: When using "Update QoQa Offers" action to change the VAT, it will
+  be faster if the taxes are already correct
 
 **Bugfixes**
 

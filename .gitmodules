@@ -58,6 +58,10 @@
 [submodule "odoo/external-src/product-attribute"]
 	path = odoo/external-src/product-attribute
 	url = git@github.com:camptocamp/product-attribute
+[submodule "odoo/external-src/product-variant"]
+	path = odoo/external-src/product-variant
+	url = git@github.com:oca/product-variant
+	branch = 9.0
 [submodule "odoo/external-src/purchase-workflow"]
 	path = odoo/external-src/purchase-workflow
 	url = git@github.com:camptocamp/purchase-workflow

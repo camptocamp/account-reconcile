@@ -2,7 +2,8 @@
 # © 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import fields, models, api
+from openerp import api, fields, models, _
+from openerp.exceptions import UserError
 
 
 class ProductTemplate(models.Model):
@@ -246,6 +247,48 @@ class ProductTemplate(models.Model):
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
+
+    seller_price = fields.Float(
+        string='Supplier Price',
+        compute='_compute_seller_price',
+        inverse='_inverse_seller_price',
+        store=True,
+    )
+
+    @api.depends('variant_seller_ids.price',
+                 'product_tmpl_id.seller_ids.price')
+    def _compute_seller_price(self):
+        for record in self:
+            supplierinfo = record.variant_seller_ids
+            if len(supplierinfo) == 1 and supplierinfo[0].price:
+                record.seller_price = supplierinfo[0].price
+            else:
+                supplierinfo = record.tmpl_seller_ids
+                if len(supplierinfo) == 1 and supplierinfo[0].price:
+                    record.seller_price = supplierinfo[0].price
+                else:
+                    record.seller_price = False
+
+    def _inverse_seller_price(self):
+        for record in self:
+            # Update supplierinfo if any
+            supplierinfo = record.variant_seller_ids
+            if len(supplierinfo) == 1:
+                supplierinfo.write({'price': record.seller_price})
+            else:
+                # Else create supplierinfo using template data if any
+                tmpl_supplierinfo = record.tmpl_seller_ids
+                if len(tmpl_supplierinfo) == 1:
+                    tmpl_supplierinfo.copy({
+                        'product_id': record.id,
+                        'price': record.seller_price,
+                    })
+                else:
+                    raise UserError(_(
+                        'Failed setting variant supplier price because no '
+                        'single supplier info are available either for the '
+                        'variant or the product template.'
+                    ))
 
     # We set the default_code required in views and not in db, so we do compute
     # the default code for variants after they have been inserted in db

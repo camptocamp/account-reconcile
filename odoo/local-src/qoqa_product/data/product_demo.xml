@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="template_0" model="product.template">
+            <field name="name">Template 0</field>
+        </record>
+
+        <record id="template_1" model="product.template">
+            <field name="name">Template 1</field>
+        </record>
+
+        <record id="variant_1" model="product.product">
+            <field name="default_code">Variant 1</field>
+            <field name="product_tmpl_id" ref="template_0"/>
+        </record>
+
+        <record id="variant_2" model="product.product">
+            <field name="default_code">Variant 2</field>
+            <field name="product_tmpl_id" ref="template_0"/>
+        </record>
+
+        <record id="variant_3" model="product.product">
+            <field name="default_code">Variant 3</field>
+            <field name="product_tmpl_id" ref="template_1"/>
+        </record>
+
+        <record id="supplierinfo_1" model="product.supplierinfo">
+            <field name="product_tmpl_id" ref="template_0"/>
+            <field name="product_id" ref="variant_1"/>
+            <field name="name" ref="base.res_partner_1"/>
+            <field name="delay">3</field>
+            <field name="min_qty">1</field>
+            <field name="price">750</field>
+        </record>
+
+        <record id="supplierinfo_2" model="product.supplierinfo">
+            <field name="product_tmpl_id" ref="template_0"/>
+            <field name="name" ref="base.res_partner_4"/>
+            <field name="delay">4</field>
+            <field name="min_qty">2</field>
+            <field name="price">790</field>
+        </record>
+
+        <record id="supplierinfo_3" model="product.supplierinfo">
+            <field name="product_tmpl_id" ref="template_1"/>
+            <field name="name" ref="base.res_partner_4"/>
+            <field name="delay">5</field>
+            <field name="min_qty">3</field>
+            <field name="price">850</field>
+        </record>
+
+        <record id="supplierinfo_4" model="product.supplierinfo">
+            <field name="product_tmpl_id" ref="template_1"/>
+            <field name="name" ref="base.res_partner_4"/>
+            <field name="delay">6</field>
+            <field name="min_qty">4</field>
+            <field name="price">900</field>
+        </record>
+    </data>
+</openerp>

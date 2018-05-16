@@ -74,8 +74,11 @@ migration:
           - l10n_ch_zip
           #---- OCA/product-attributes ---------------------#
           - product_brand
+          #---- OCA/product-variant ------------------------#
+          - product_variant_supplierinfo
           #---- OCA/purchase-workflow ----------------------#
           - purchase_discount
+          - purchase_order_variant_mgmt
           #---- OCA/reporting-engine -----------------------#
           - report_custom_filename
           #---- OCA/rma ------------------------------------#
@@ -378,9 +381,15 @@ migration:
           - qoqa_claim_unclaimed_process
           - stock_location
     - version: 9.45.0
+      operations:
+        pre:
+          - "sh -c 'psql -f odoo/songs/migration/add_product_product_seller_price.sql'"
       addons:
         upgrade:
           - qoqa_claim
           - delivery_carrier_label_batch
           - delivery_carrier_label_postlogistics
           - delivery_carrier_label_postlogistics_shop_logo
+          - product_variant_supplierinfo
+          - purchase_order_variant_mgmt
+          - qoqa_product

@@ -47,6 +47,7 @@ latest (unreleased)
 * BSQOQ-47: Manage responsible notifications on claim creation/update
 * BSQOQ-44: Unpack of package now deletes the package and fills
   it's picking with products
+* BSQOQ-51: Allow per-variant prices
 
 
 9.43.2 (2018-04-25)

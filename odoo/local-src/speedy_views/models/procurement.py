@@ -6,6 +6,12 @@
 from openerp import fields, api, models
 
 
+class ProcurementGroup(models.Model):
+    _inherit = 'procurement.group'
+
+    claim_id = fields.Many2one(index=True)
+
+
 class ProcurementOrder(models.Model):
     _inherit = 'procurement.order'
 

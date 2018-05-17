@@ -51,6 +51,14 @@ latest (unreleased)
 * BSQOQ-56: Add shipping address change API
 * BSQOQ-51: Allow per-variant prices
 
+* Add a couple of indexes for slow queries spotted with pgbadger
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
 
 9.44.0 (2018-04-27)
 +++++++++++++++++++

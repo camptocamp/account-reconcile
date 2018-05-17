@@ -20,7 +20,7 @@ class ResPartner(models.Model):
         cr.commit()
 
         if trgm_installed:
-            for field in ('email', 'display_name', 'ref'):
+            for field in ('name', 'email', 'display_name', 'ref'):
                 index_name = 'res_partner_%s_trgm_index' % field
                 create_index(cr, index_name, self._table,
                              'USING gin (%s gin_trgm_ops)' % field)

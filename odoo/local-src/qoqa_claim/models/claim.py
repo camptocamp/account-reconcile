@@ -39,6 +39,7 @@ class CrmClaim(models.Model):
         related="team_id.qoqa_team_id",
         readonly=True,
         store=True,
+        index=True,
     )
     priority = fields.Selection(
         [('0', 'Low'),

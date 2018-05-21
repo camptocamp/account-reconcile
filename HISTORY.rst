@@ -34,6 +34,7 @@ latest (unreleased)
   changing the accounts
 * BSQOQ-70: When using "Update QoQa Offers" action to change the VAT, it will
   be faster if the taxes are already correct
+* BSQOQ-44_update: add unpack buttons to stock pack operation form
 
 **Bugfixes**
 

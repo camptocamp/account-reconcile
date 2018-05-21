@@ -15,14 +15,15 @@ class StockQuantPackage(models.Model):
     # Inverse field of stock.picking.package_ids
     @api.depends('quant_ids')
     def _compute_pickings(self):
-        self.ensure_one()
-        packs = self.env['stock.pack.operation'].search(
-            ['|',
-             ('result_package_id', '=', self.id),
-             '&',
-             ('product_id', '=', False),
-             ('package_id', '=', self.id)])
-        self.picking_ids = packs.mapped('picking_id')
+        for package in self:
+            packs = package.env['stock.pack.operation'].search([
+                '|',
+                ('result_package_id', '=', package.id),
+                '&',
+                ('product_id', '=', False),
+                ('package_id', '=', package.id),
+            ])
+            package.picking_ids = packs.mapped('picking_id')
 
     picking_ids = fields.Many2many('stock.picking',
                                    compute='_compute_pickings',

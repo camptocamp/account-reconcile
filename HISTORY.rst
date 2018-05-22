@@ -36,6 +36,7 @@ latest (unreleased)
   be faster if the taxes are already correct
 * BSQOQ-44_update: add unpack buttons to stock pack operation form
 * BSQOQ-67: Add kanban dashboard for crm.team
+* BSQOQ-56: Add shipping address change API
 
 **Bugfixes**
 

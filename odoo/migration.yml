@@ -396,3 +396,4 @@ migration:
           - product_variant_supplierinfo
           - purchase_order_variant_mgmt
           - qoqa_product
+          - connector_qoqa

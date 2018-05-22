@@ -75,7 +75,10 @@ from openerp.addons.web.controllers.main import ensure_db
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.connector import Binder
 
-from ..sale.importer import QoQaSaleShippingAddressChanger
+from ..sale.importer import (
+    QoQaSaleShippingAddressChanger,
+    QoQaSaleShippingDateChanger,
+)
 from ..connector import get_environment
 
 _logger = logging.getLogger(__name__)
@@ -111,3 +114,15 @@ class QoQaController(http.Controller):
                     _("Record does not exist or has been deleted.")
                 )
             address.active = False
+
+    @http.route('/connector_qoqa/sale/change_shipping_date',
+                type='json', auth='user', csrf=True)
+    def change_shipping_date(self, order_id, shipping_date):
+        ensure_db()
+        backend = request.env['qoqa.backend'].get_singleton()
+        session = ConnectorSession.from_env(request.env)
+        with get_environment(session, 'qoqa.sale.order',
+                             backend.id) as connector_env:
+            connector_env.get_connector_unit(
+                QoQaSaleShippingDateChanger
+            ).try_change(order_id, shipping_date)

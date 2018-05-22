@@ -462,3 +462,27 @@ class QoQaSaleShippingAddressChanger(ConnectorUnit):
             unwrap=True,
         )
         sale._change_shipping_address(address)
+
+
+@qoqa
+class QoQaSaleShippingDateChanger(ConnectorUnit):
+    _model_name = 'qoqa.sale.order'
+
+    def try_change(self, qoqa_id, date):
+        binder = self.binder_for()
+        binding = binder.to_openerp(qoqa_id)
+        sale = binding.openerp_id
+        if not sale:
+            raise exceptions.MissingError(
+                'No sale order with id {}'.format(qoqa_id)
+            )
+        if not sale.can_change_shipping_date():
+            raise exceptions.UserError(
+                'Impossible to change shipping date'
+            )
+        if not sale.picking_ids:
+            raise exceptions.MissingError(
+                'Sale order with id {} has no pickings'.format(qoqa_id)
+            )
+        odoo_date = "{} 12:00:00".format(date)
+        sale._change_shipping_date(odoo_date)

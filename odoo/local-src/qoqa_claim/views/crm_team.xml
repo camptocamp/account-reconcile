@@ -33,4 +33,128 @@
             </field>
         </field>
     </record>
+
+    <record id="view_crm_team_kanban_qoqa_claim" model="ir.ui.view">
+        <field name="name">crm.team.kanban.qoqa_claim</field>
+        <field name="model">crm.team</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="qoqa_team_id" class="oe_background_grey o_kanban_dashboard o_stock_kanban" create="0" >
+                <field name="name"/>
+                <field name="qoqa_team_id"/>
+                <field name="color"/>
+                <field name="non_assigned_claims_qty"/>
+                <field name="new_claims_qty"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary"><field name="name"/></div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content o_visible">
+                                <div class="row">
+                                    <div class="col-xs-6 o_kanban_primary_left">
+                                        <button class="btn btn-primary" name="get_unassigned_claims_action" type="object">
+                                            <span><field name="non_assigned_claims_qty"/> non-assigned</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-6 o_kanban_primary_right">
+                                        <div t-if="record.new_claims_qty.value > 0" class="row">
+                                            <div class="col-xs-9">
+                                                <a name="get_new_claims_action" type="object">
+                                                    New
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <field name="new_claims_qty"/>
+                                            </div>
+                                        </div>
+                                        <div t-if="record.response_received_claims_qty.value > 0" class="row">
+                                            <div class="col-xs-9">
+                                                <a name="get_response_recieved_claims_action" type="object">
+                                                    Response Recieved
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <field name="response_received_claims_qty"/>
+                                            </div>
+                                        </div>
+                                        <div t-if="record.in_progress_claims_qty.value > 0" class="row">
+                                            <div class="col-xs-9">
+                                                <a name="get_in_progress_claims_action" type="object">
+                                                    In Progress
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <field name="in_progress_claims_qty"/>
+                                            </div>
+                                        </div>
+                                        <div t-if="record.settled_claims_qty.value > 0" class="row">
+                                            <div class="col-xs-9">
+                                                <a name="get_settled_claims_action" type="object">
+                                                    Settled
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <field name="settled_claims_qty"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Trust me, I'm an odoo developer -->
+                                <!-- If you place newline here it will get broken -->
+                            </div><div class="container o_kanban_card_manage_pane o_invisible">
+                                <div class="row">
+                                    <div class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                        <div class="o_kanban_card_manage_title">
+                                            <span>View</span>
+                                        </div>
+                                        <div>
+                                            <a name="get_all_claims_action" type="object">All</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_new">
+                                        <div class="o_kanban_card_manage_title">
+                                            <span>New</span>
+                                        </div>
+                                        <div>
+                                            <a name="%(crm_claim_action_new)d" type="action" >Claim</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                    <div class="col-xs-8">
+                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                    </div>
+                                    <div class="col-xs-4 text-right">
+                                        <a type="edit">Settings</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="crm_team_action_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard SAV</field>
+        <field name="res_model">crm.team</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+
+    <menuitem
+        id="dashboard_sav"
+        string="Dashboard SAV"
+        parent="base.menu_aftersale"
+        action="crm_team_action_dashboard"
+        groups="sav_qoqa_resposible"
+        sequence="99"/>
+
 </odoo>

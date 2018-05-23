@@ -83,8 +83,10 @@ class CrmClaim(models.Model):
     )
 
     description = fields.Html('Description')
-    plain_text_description = fields.Text('Description in text form',
-                                         compute='_get_plain_text_description')
+    plain_text_description = fields.Text(
+        string='Description in text form',
+        compute='_get_plain_text_description',
+    )
 
     sale_order_count = fields.Integer(
         related="partner_id.sale_order_count"
@@ -106,6 +108,9 @@ class CrmClaim(models.Model):
 
     # field for attrs on view form of button assign
     is_user_current = fields.Boolean(compute='_compute_is_user_current')
+    team_id = fields.Many2one(
+        required=True,
+    )
 
     @api.multi
     def _compute_is_user_current(self):

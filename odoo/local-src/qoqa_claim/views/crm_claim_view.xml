@@ -165,12 +165,26 @@
             <field name="name">crm.claim.search.qoqa_claim</field>
             <field name="model">crm.claim</field>
             <field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
+            <field name="sequence">0</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="qoqa_team_id"/>
                 </xpath>
-                <xpath expr="//group[@expand='0']" position="inside">
-                    <filter string="QoQa Teams" name="qoqa_team_id" domain="[]" context="{'group_by': 'qoqa_team_id'}"/>
+                <!-- Big thanks to the author of this code in core as there are no names on filters -->
+                <!-- I use sequence 0 to be the first view who inherits the original to -->
+                <!-- replace the group and give names to filters -->
+                <xpath expr="//group[@expand='0']" position="replace">
+                    <group expand="0" string="Group By" name="group_by">
+                        <filter name="group_partner_id" string="Partner" domain="[]" help="Partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_user_id" string="Responsible" domain="[]" help="Responsible User" context="{'group_by':'user_id'}"/>
+                        <filter name="group_stage_id" string="Stage" domain="[]" context="{'group_by':'stage_id'}"/>
+                        <filter name="group_categ_id" string="Type" domain="[]" context="{'group_by':'categ_id'}"/>
+                        <filter name="group_date" string="Claim Month" domain="[]" help="Claim Date by Month" context="{'group_by':'date'}"/>
+                        <filter name="group_date_deadline" string="Deadline" domain="[]" context="{'group_by':'date_deadline'}"/>
+                        <filter name="group_date_closed" string="Closure" domain="[]" help="Date Closed" context="{'group_by':'date_closed'}" groups="base.group_no_one" invisible="1"/>
+                        <!-- This is a custom filter -->
+                        <filter string="QoQa Teams" name="qoqa_team_id" domain="[]" context="{'group_by': 'qoqa_team_id'}"/>
+                    </group>
                 </xpath>
             </field>
         </record>
@@ -190,6 +204,16 @@
           <field name="key">action</field>
           <field name="key2">client_action_multi</field>
           <field name="value" eval="'ir.actions.server,%d'%action_code_assign_current_user"/>
+        </record>
+
+        <record id="crm_claim_action_new" model="ir.actions.act_window">
+            <field name="name">New Claim</field>
+            <field name="res_model">crm.claim</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="context">{
+                'default_team_id': active_id,
+                }</field>
         </record>
 
      </data>

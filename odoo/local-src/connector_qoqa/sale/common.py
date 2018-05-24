@@ -270,8 +270,24 @@ class SaleOrder(models.Model):
 
     @api.multi
     def can_change_shipping_address(self):
+        """Hook on checking the shipping address.
+        """
         self.ensure_one()
         # no address switcherooni after pickings are added to batch
+        return self._can_be_changed_by_eshop()
+
+    @api.multi
+    def can_change_shipping_date(self):
+        """Hook on checking the shipping date.
+        """
+        self.ensure_one()
+        # no date switcherooni after pickings are added to batch
+        return self._can_be_changed_by_eshop()
+
+    @api.multi
+    def _can_be_changed_by_eshop(self):
+        """Check if sale.order is available for change.
+        """
         if self.picking_ids.mapped('batch_picking_id'):
             return False
         else:
@@ -293,6 +309,18 @@ class SaleOrder(models.Model):
         if self.picking_ids:
             self.picking_ids.write({
                 'partner_id': address.id,
+            })
+        return True
+
+    @api.multi
+    def _change_shipping_date(self, shipping_date):
+        """Change shipping date of the sale order.
+
+        :param shipping_date: string of YY-MM-DD hh:mm:ss format"""
+        self.ensure_one()
+        if self.picking_ids:
+            self.picking_ids.write({
+                'min_date': shipping_date,
             })
         return True
 

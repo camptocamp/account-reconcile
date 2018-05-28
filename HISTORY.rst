@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.45.0 (2018-05-28)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BSQOQ-52: Add barcode attribute in product export
 * BSQOQ-65: Add archive functionality to crm.claim.category, crm.team, mail.alias
 * BSQOQ-66: Add qoqa.teams and its views
@@ -37,12 +49,6 @@ latest (unreleased)
 * BSQOQ-44_update: add unpack buttons to stock pack operation form
 * BSQOQ-67: Add kanban dashboard for crm.team
 * BSQOQ-56: Add shipping address change API
-
-**Bugfixes**
-
-**Build**
-
-**Documentation**
 
 
 9.44.0 (2018-04-27)

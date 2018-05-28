@@ -49,6 +49,7 @@ latest (unreleased)
 * BSQOQ-44_update: add unpack buttons to stock pack operation form
 * BSQOQ-67: Add kanban dashboard for crm.team
 * BSQOQ-56: Add shipping address change API
+* BSQOQ-51: Allow per-variant prices
 
 
 9.44.0 (2018-04-27)
@@ -62,7 +63,6 @@ latest (unreleased)
 * BSQOQ-47: Manage responsible notifications on claim creation/update
 * BSQOQ-44: Unpack of package now deletes the package and fills
   it's picking with products
-* BSQOQ-51: Allow per-variant prices
 
 
 9.43.2 (2018-04-25)

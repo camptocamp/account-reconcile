@@ -2,6 +2,8 @@
 # Copyright 2016-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import os
+
 from base64 import b64encode
 from pkg_resources import Requirement, resource_string
 
@@ -92,14 +94,6 @@ def default_values(ctx):
 
 
 @anthem.log
-def set_web_base_url(ctx):
-    """ Configuring web.base.url """
-    url = 'http://localhost:8069'
-    ctx.env['ir.config_parameter'].set_param('web.base.url', url)
-    ctx.env['ir.config_parameter'].set_param('web.base.url.freeze', 'True')
-
-
-@anthem.log
 def create_sale_teams(ctx):
     """ Create sales team required in qoqa_claim_unclaimed_process
 
@@ -112,12 +106,27 @@ def create_sale_teams(ctx):
 
 
 @anthem.log
+def admin_user_password(ctx):
+    """ Changing admin password """
+    # Password is in lastpass:
+    # [odoo-test] qoqa test admin user
+    # In the lastpass directory: Shared-C2C-Odoo-External
+    if os.environ.get('RUNNING_ENV') == 'dev':
+        ctx.log_line('Not changing password for dev RUNNING_ENV')
+        return
+    ctx.env.user.password_crypt = (
+        '$pbkdf2-sha512$12000$713rXct5730PQag1JmTs3Q$YqcgolwDaum.5jaqkltnE'
+        '/Vv75r7C6cf7KfAufUeVqz4AwJePjqRQeb4IK8ciid91DpuwE0VMGlCFovKhv4I/w'
+    )
+
+
+@anthem.log
 def main(ctx):
     """ Main: creating demo data """
     req = Requirement.parse('qoqa-odoo')
     setup_company(ctx, req)
     setup_language(ctx)
     default_values(ctx)
-    set_web_base_url(ctx)
     create_sale_teams(ctx)
+    admin_user_password(ctx)
     # TODO: generate demo data

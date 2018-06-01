@@ -377,3 +377,7 @@ migration:
           - qoqa_offer
           - qoqa_claim_unclaimed_process
           - stock_location
+    - version: 9.44.1
+      addons:
+        upgrade:
+          - stock_location

@@ -145,7 +145,7 @@ class CrmClaim(models.Model):
 
     @api.multi
     def assign_current_user(self):
-        self.update({'user_id': self.env.uid})
+        self.with_context(no_notify=True).update({'user_id': self.env.uid})
 
     @api.model
     def create(self, vals):
@@ -164,6 +164,9 @@ class CrmClaim(models.Model):
 
     @api.multi
     def write(self, vals):
+        users_to_notify = set()
+        user_obj = self.env['res.users']
+
         for claim in self:
             # Remove previous partner
             if vals.get('partner_id'):
@@ -178,8 +181,9 @@ class CrmClaim(models.Model):
             # Make the same for the Responsible (user_id):
             responsible = False
             if vals.get('user_id'):
-                user_obj = self.env['res.users']
                 responsible = user_obj.browse(vals['user_id'])
+                if responsible.notify_email != 'none':
+                    users_to_notify.add(responsible.id)
                 # If the partner selected differ from the partner
                 # previously selected:
                 if claim.user_id:
@@ -189,8 +193,12 @@ class CrmClaim(models.Model):
                 # We subcribe the selected partner to it
                 claim.message_subscribe([responsible.partner_id.id])
         result = super(CrmClaim, self).write(vals)
-        if vals.get('user_id'):
-            self.notify_claim_only_specific_user()
+        if (vals.get('user_id') and
+                not (self._context and self._context.get('no_notify')) and
+                users_to_notify):
+            self.filtered(
+                lambda c: c.user_id.id in users_to_notify
+            ).notify_claim_only_specific_user()
         return result
 
     """

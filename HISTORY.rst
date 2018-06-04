@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-74: Improve filters for empty locations
+
 **Bugfixes**
 
 **Build**

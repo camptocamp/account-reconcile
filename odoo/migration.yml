@@ -401,3 +401,4 @@ migration:
       addons:
         upgrade:
           - speedy_views
+          - qoqa_claim_unclaimed_process

@@ -1,0 +1,6 @@
+[dev]
+host=localhost
+protocol=jsonrpc
+port=80
+db=odoodb
+admin_ch=admin_ch

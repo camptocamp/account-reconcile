@@ -35,8 +35,10 @@ class StockQuantPackage(models.Model):
         for package in self:
             pack_id = package.id
             pickings = package.picking_ids.filtered(
-                lambda x: x.state != 'done'
+                lambda x: x.state not in ['done', 'cancel']
             )
+            if not pickings:
+                continue
             product_dict = defaultdict(dict)
             for quant in package.quant_ids:
                 product_dict[quant.product_id.id].update({

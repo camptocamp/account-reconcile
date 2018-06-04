@@ -25,6 +25,8 @@ latest (unreleased)
 
 * BSQOQ-77: Improve SAV Dashboard loading time
 
+* BSQOQ-62: add script to unpack packages from several locations
+
 **Bugfixes**
 
 **Build**

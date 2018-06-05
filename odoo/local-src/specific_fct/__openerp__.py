@@ -25,6 +25,7 @@
         'base_delivery_carrier_label',
         'delivery_carrier_label_batch',
         'base_transaction_id',
+        'connector_qoqa',
     ],
     'author': 'Camptocamp',
     'license': 'AGPL-3',

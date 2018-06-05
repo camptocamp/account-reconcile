@@ -402,3 +402,5 @@ migration:
         upgrade:
           - speedy_views
           - qoqa_claim_unclaimed_process
+          - specific_fct
+          - purchase_autoconfirm

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record id="ir_cron_po_set_done" model="ir.cron">
+            <field name="name">Automatically set "Done" to payed POs</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall"
+                   eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d 20:00:00')"
+            />
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'purchase.order'"/>
+            <field name="function" eval="'mass_set_done_status'"/>
+            <field name="args" eval="'([], )'"/>
+        </record>
+    </data>
+</openerp>

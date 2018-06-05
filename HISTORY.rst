@@ -24,8 +24,8 @@ latest (unreleased)
 **Features and Improvements**
 
 * BSQOQ-77: Improve SAV Dashboard loading time
-
 * BSQOQ-62: add script to unpack packages from several locations
+* BSQOQ-61: Add cron to autoconfirm PO
 
 **Bugfixes**
 
@@ -57,6 +57,12 @@ latest (unreleased)
 * BSQOQ-67: Add kanban dashboard for crm.team
 * BSQOQ-56: Add shipping address change API
 * BSQOQ-51: Allow per-variant prices
+
+**Bugfixes**
+
+**Build**
+
+**Documentation**
 
 
 9.44.0 (2018-04-27)

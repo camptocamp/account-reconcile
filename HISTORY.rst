@@ -24,6 +24,7 @@ latest (unreleased)
 **Features and Improvements**
 
 * BSQOQ-74: Improve filters for empty locations
+* BSQOQ-76: Do not send claim notifications when using "I take it" button or if user mail setting is `none`
 
 **Bugfixes**
 

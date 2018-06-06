@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-77: Improve SAV Dashboard loading time
+
 **Bugfixes**
 
 **Build**

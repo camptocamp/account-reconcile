@@ -48,33 +48,37 @@ class CrmTeam(models.Model):
     @api.depends('claim_ids', 'claim_ids.stage_id')
     def _compute_claims_by_stages_qty(self):
         stages = {
-            "new": self.env.ref("crm_claim.stage_claim1"),
-            "responce": self.env.ref("qoqa_claim.stage_response_received"),
-            "progress": self.env.ref("crm_claim.stage_claim5"),
-            "settled": self.env.ref("crm_claim.stage_claim2"),
+            "new_claims_qty":
+                self.env.ref("crm_claim.stage_claim1").id,
+            "response_received_claims_qty":
+                self.env.ref("qoqa_claim.stage_response_received").id,
+            "in_progress_claims_qty":
+                self.env.ref("crm_claim.stage_claim5").id,
+            "settled_claims_qty":
+                self.env.ref("crm_claim.stage_claim2").id,
         }
+        self.env.cr.execute("""
+            SELECT team_id, stage_id, count(id) FROM crm_claim
+            WHERE team_id IN %s AND active = true AND stage_id IN %s
+            GROUP BY team_id, stage_id;
+        """, (tuple(self.ids), tuple(stages.values()))
+        )
+        res = dict(((t_id, s_id), c)
+                   for t_id, s_id, c in self.env.cr.fetchall())
+
         for record in self:
-            record.new_claims_qty = len(record.claim_ids.filtered(
-                lambda x: x.stage_id == stages["new"]
-            ))
-            record.response_received_claims_qty = len(
-                record.claim_ids.filtered(
-                    lambda x: x.stage_id == stages["responce"]
-                )
-            )
-            record.in_progress_claims_qty = len(record.claim_ids.filtered(
-                lambda x: x.stage_id == stages["progress"]
-            ))
-            record.settled_claims_qty = len(record.claim_ids.filtered(
-                lambda x: x.stage_id == stages["settled"]
-            ))
+            for field_name, stage_id in stages.iteritems():
+                setattr(record, field_name, res.get((record.id, stage_id), 0))
 
     @api.depends('claim_ids', 'claim_ids.user_id')
     def _compute_non_assigned_claims_qty(self):
+        self.env.cr.execute("""
+            SELECT team_id, count(id) FROM crm_claim
+            WHERE team_id IN %s AND user_id IS NULL AND active = true
+            GROUP BY team_id;""", (tuple(self.ids),))
+        res = dict(self.env.cr.fetchall())
         for record in self:
-            record.non_assigned_claims_qty = len(record.claim_ids.filtered(
-                lambda x: not x.user_id
-            ))
+            record.non_assigned_claims_qty = res.get(record.id, 0)
 
     @api.multi
     def get_unassigned_claims_action(self):

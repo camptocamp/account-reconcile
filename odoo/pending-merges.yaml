@@ -108,6 +108,8 @@
   shell_command_after:
     # js bug correct check of property 'rules'
     - git am "$(git format-patch -1 33349ed34e45b7e06281c5947645c38b3b29e8b6 -o ../patches)"
+    # orm: re-create constraints of extended fields (index, ...) https://github.com/odoo/odoo/pull/25069
+    -  git am "$(git format-patch -1 ea23a1ac8c6c68520f4f02a2f35ef7ab474b868a -o ../patches)"
 ./external-src/product-attribute:
   remotes:
     oca: git@github.com:OCA/product-attribute.git

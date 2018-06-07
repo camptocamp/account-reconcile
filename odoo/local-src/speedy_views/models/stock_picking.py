@@ -13,6 +13,7 @@ class StockPicking(models.Model):
     claim_id = fields.Many2one(index=True)
     partner_id = fields.Many2one(index=True)
     batch_picking_id = fields.Many2one(index=True)
+    group_id = fields.Many2one(index=True)
 
     def init(self, cr):
 

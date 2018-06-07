@@ -397,3 +397,7 @@ migration:
           - purchase_order_variant_mgmt
           - qoqa_product
           - connector_qoqa
+    - version: 9.46.0
+      addons:
+        upgrade:
+          - speedy_views

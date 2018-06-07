@@ -11,6 +11,7 @@ class CrmClaim(models.Model):
     _inherit = 'crm.claim'
 
     partner_id = fields.Many2one(index=True)
+    user_id = fields.Many2one(index=True)
 
     def init(self, cr):
         # active is mostly used with 'true' so this partial index improves

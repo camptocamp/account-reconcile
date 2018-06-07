@@ -12,6 +12,7 @@ class AccountInvoice(models.Model):
 
     partner_id = fields.Many2one(index=True)
     claim_id = fields.Many2one(index=True)
+    team_id = fields.Many2one(index=True)
 
     def init(self, cr):
         env = api.Environment(cr, SUPERUSER_ID, {})

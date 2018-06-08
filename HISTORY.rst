@@ -27,6 +27,9 @@ latest (unreleased)
 
 **Bugfixes**
 
+* Apply Odoo fix for the bug dropping indexes and constraints during some upgrades
+  (https://github.com/odoo/odoo/pull/25069)
+
 **Build**
 
 **Documentation**

@@ -8,17 +8,17 @@
             <field name="arch" type="xml">
                 <form string="Unclaimed Package Return">
                     <group>
-                        <field name="track_number"/>
-                        <field name="unclaimed_type"/>
-                        <field name="claim_name"/>
-                        <field name="return_source_location_id"/>
-                        <field name="return_dest_location_id"/>
-                        <field name="claim_invoice_id" invisible="1"/>
+                        <field name="track_number" required="1" />
+                        <field name="unclaimed_type" required="1" />
+                        <field name="claim_name" required="1" />
+                        <field name="return_source_location_id" required="1" />
+                        <field name="return_dest_location_id" required="1" />
+                        <field name="claim_invoice_id" invisible="1" />
                         <field name="claim_sale_order_id" invisible="1"/>
                         <field name="claim_carrier_price" invisible="1"/>
                         <field name="claim_delivery_address_id" invisible="1"/>
                         <field name="claim_partner_id" invisible="1"/>
-                        <field name="claim_user_id"/>
+                        <field name="claim_user_id" required="1" />
                         <field name="claim_team_id" readonly="1"/>
                         <field name="claim_categ_id" readonly="1"/>
                         <field name="claim_package_id" invisible="1"/>

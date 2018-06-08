@@ -36,72 +36,58 @@ class CrmClaimUnclaimed(models.TransientModel):
         [('invalid_address', 'Invalid Address'),
          ('unclaimed', 'Unclaimed')],
         default='unclaimed',
-        required=True
     )
     track_number = fields.Char(
         string='Tracking Number',
-        required=True
     )
     claim_name = fields.Char(
         string='Claim Subject',
-        required=True
     )
     return_source_location_id = fields.Many2one(
         comodel_name='stock.location',
         string='Source Location',
-        required=True
     )
     return_dest_location_id = fields.Many2one(
         comodel_name='stock.location',
         string='Dest. Location',
-        required=True
     )
     claim_carrier_price = fields.Float(
         string='Delivery Carrier Price',
-        required=True
     )
     claim_invoice_id = fields.Many2one(
         comodel_name='account.invoice',
         string='Invoice',
-        required=True
     )
     claim_package_id = fields.Many2one(
         comodel_name='stock.quant.package',
         string='Unclaimed Package',
-        required=True
     )
     claim_sale_order_id = fields.Many2one(
         comodel_name='sale.order',
         string='Sale Order',
-        required=True
     )
     claim_partner_id = fields.Many2one(
         comodel_name='res.partner',
         string='Customer',
-        required=True
     )
     claim_delivery_address_id = fields.Many2one(
         comodel_name='res.partner',
         string='Delivery Address',
-        required=True
     )
     claim_user_id = fields.Many2one(
         comodel_name='res.users',
         string='Responsible',
         default=_default_user_id,
-        required=True
     )
     claim_team_id = fields.Many2one(
         comodel_name='crm.team',
         string='Sales Team',
         default=_default_team_id,
-        required=True
     )
     claim_categ_id = fields.Many2one(
         comodel_name='crm.claim.category',
         string='Category',
         default=_default_categ_id,
-        required=True
     )
 
     @api.multi
@@ -308,6 +294,25 @@ class CrmClaimUnclaimed(models.TransientModel):
 
     @api.multi
     def create_claim(self):
+        if not all([
+                self.track_number,
+                self.unclaimed_type,
+                self.claim_name,
+                self.return_source_location_id,
+                self.return_dest_location_id,
+                self.claim_invoice_id,
+                self.claim_sale_order_id,
+                self.claim_carrier_price,
+                self.claim_delivery_address_id,
+                self.claim_partner_id,
+                self.claim_user_id,
+                self.claim_team_id,
+                self.claim_categ_id,
+                self.claim_package_id,
+        ]):
+            raise UserError(_(
+                "Not all fields are filled!"
+            ))
         # Function to create claim and return with given parameters
         self.ensure_one()
         claim_obj = self.env['crm.claim']

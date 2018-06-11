@@ -38,7 +38,6 @@ latest (unreleased)
 
 
 9.45.0 (2018-05-28)
-9.44.1 (2018-06-06)
 +++++++++++++++++++
 
 **Features and Improvements**
@@ -58,6 +57,13 @@ latest (unreleased)
 * BSQOQ-67: Add kanban dashboard for crm.team
 * BSQOQ-56: Add shipping address change API
 * BSQOQ-51: Allow per-variant prices
+
+
+9.44.1 (2018-06-06)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BSQOQ-74: Improve filters for empty locations
 * BSQOQ-76: Do not send claim notifications when using "I take it" button or if user mail setting is `none`
 

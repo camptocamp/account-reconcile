@@ -384,11 +384,12 @@ migration:
       addons:
         upgrade:
           - stock_location
-    - version: 9.45.0
+    # version 9.45.0
+    - version: 9.45.1
       operations:
         pre:
           - "sh -c 'psql -f odoo/songs/migration/add_product_product_seller_price.sql'"
-          - "sh -c 'PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -f odoo/songs/upgrade/9_45_0.sql $DB_NAME'"
+          - "sh -c 'PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -f odoo/songs/upgrade/9_45_1.sql $DB_NAME'"
       addons:
         upgrade:
           - qoqa_claim_unclaimed_process
@@ -401,8 +402,5 @@ migration:
           - purchase_order_variant_mgmt
           - qoqa_product
           - connector_qoqa
-    - version: 9.46.0
-      addons:
-        upgrade:
           - speedy_views
           - qoqa_claim_unclaimed_process

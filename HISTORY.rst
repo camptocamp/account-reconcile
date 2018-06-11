@@ -23,21 +23,14 @@ latest (unreleased)
 
 **Features and Improvements**
 
-* BSQOQ-77: Improve SAV Dashboard loading time
-
-* BSQOQ-62: add script to unpack packages from several locations
-
 **Bugfixes**
-
-* Apply Odoo fix for the bug dropping indexes and constraints during some upgrades
-  (https://github.com/odoo/odoo/pull/25069)
 
 **Build**
 
 **Documentation**
 
 
-9.45.0 (2018-05-28)
+9.45.1 (2018-06-11)
 +++++++++++++++++++
 
 **Features and Improvements**
@@ -57,6 +50,20 @@ latest (unreleased)
 * BSQOQ-67: Add kanban dashboard for crm.team
 * BSQOQ-56: Add shipping address change API
 * BSQOQ-51: Allow per-variant prices
+* BSQOQ-77: Improve SAV Dashboard loading time
+
+* BSQOQ-62: add script to unpack packages from several locations
+
+**Bugfixes**
+
+* Apply Odoo fix for the bug dropping indexes and constraints during some upgrades
+  (https://github.com/odoo/odoo/pull/25069)
+
+
+9.45.0 (2018-05-28)
++++++++++++++++++++
+
+Moved to 9.45.1
 
 
 9.44.1 (2018-06-06)

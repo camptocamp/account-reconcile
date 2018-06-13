@@ -78,12 +78,6 @@ Moved to 9.45.1
 * BSQOQ-74: Improve filters for empty locations
 * BSQOQ-76: Do not send claim notifications when using "I take it" button or if user mail setting is `none`
 
-**Bugfixes**
-
-**Build**
-
-**Documentation**
-
 
 9.44.0 (2018-04-27)
 +++++++++++++++++++

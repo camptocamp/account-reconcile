@@ -188,3 +188,22 @@ class TestExportProduct(QoQaTransactionCase):
             self.assertEqual(len(cassette.requests), 2)
             response = cassette.responses[1]
             self.assert_cassette_record_exported(response, binding)
+
+    def test_export_product_product_ean_null(self):
+        product_no_export = self.env['qoqa.product.product'].with_context(
+            connector_no_export=True
+        )
+        binding = product_no_export.create({
+            'backend_id': self.backend_record.id,
+            'openerp_id': self.product_variant.id,
+        })
+
+        self.product_variant.barcode = False
+        vcr_name = 'test_export_product_product_ean_null'
+        match_on = recorder.match_on + ('json_body',)
+        with recorder.use_cassette(vcr_name, match_on=match_on) as cassette:
+            export_record(self.session, 'qoqa.product.product', binding.id)
+            # 1 request for template creation, 1 for variant creation
+            self.assertEqual(len(cassette.requests), 2)
+            response = cassette.responses[1]
+            self.assert_cassette_record_exported(response, binding)

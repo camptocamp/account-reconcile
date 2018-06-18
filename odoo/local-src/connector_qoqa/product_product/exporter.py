@@ -53,7 +53,6 @@ class ProductExportMapper(ExportMapper):
     direct = [
         ('default_code', 'sku'),
         (convert('warranty', int), 'months_warranty'),
-        ('barcode', 'ean')
     ]
 
     def _get_template_qoqa_id(self, record):
@@ -65,6 +64,10 @@ class ProductExportMapper(ExportMapper):
     @mapping
     def template(self, record):
         return {'product_id': self._get_template_qoqa_id(record)}
+
+    @mapping
+    def ean(self, record):
+        return {'ean': record.barcode or None}
 
     @mapping
     def wine_bottle(self, record):

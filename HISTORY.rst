@@ -25,6 +25,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-82: Return None if barcode is empty
+
 **Build**
 
 **Documentation**

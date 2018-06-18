@@ -404,3 +404,6 @@ migration:
           - connector_qoqa
           - speedy_views
           - qoqa_claim_unclaimed_process
+          - specific_fct
+          - purchase_autoconfirm
+    - version: 9.45.2

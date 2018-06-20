@@ -195,7 +195,9 @@
           <field name="model_id" ref="crm_claim.model_crm_claim"/>
           <field name="state">code</field>
           <field name="condition">True</field>
-          <field name="code">self.write(cr, uid, context.get('active_ids', []), {'user_id': uid})</field>
+          <field name="code">
+            ctx = context.copy(); ctx.update(no_notify=True); self.write(cr, uid, ctx.get('active_ids', []), {'user_id': uid}, context=ctx)
+          </field>
         </record>
 
         <record id="assign_current_user_action" model="ir.values">

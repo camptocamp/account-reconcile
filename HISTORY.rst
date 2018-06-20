@@ -23,6 +23,8 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-81: On the crm_claim notification, we removed the notification when
+  "I take it" is triggered on the form and list view.
 * BSQOQ-77: Improve SAV Dashboard loading time
 * BSQOQ-62: add script to unpack packages from several locations
 * BSQOQ-61: Add cron to autoconfirm PO

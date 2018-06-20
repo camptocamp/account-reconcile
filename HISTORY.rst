@@ -50,6 +50,7 @@ latest (unreleased)
 * BSQOQ-88: Fix Claim Categories search by add active_test False context
   to `name` field in search view
 * BSQOQ-78: Fix style overlap on PO Form view
+* BSQOQ-89: SAV Dashboard corrections
 
 * Apply Odoo fix for the bug dropping indexes and constraints during some upgrades
   (https://github.com/odoo/odoo/pull/25069)

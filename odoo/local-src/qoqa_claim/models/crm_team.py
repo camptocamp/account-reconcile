@@ -36,6 +36,10 @@ class CrmTeam(models.Model):
         string="Response Received Claims",
         compute="_compute_claims_by_stages_qty",
     )
+    return_received_claims_qty = fields.Integer(
+        string="Return Received Claims",
+        compute="_compute_claims_by_stages_qty",
+    )
     in_progress_claims_qty = fields.Integer(
         string="In Progress Claims",
         compute="_compute_claims_by_stages_qty",
@@ -52,6 +56,8 @@ class CrmTeam(models.Model):
                 self.env.ref("crm_claim.stage_claim1").id,
             "response_received_claims_qty":
                 self.env.ref("qoqa_claim.stage_response_received").id,
+            "return_received_claims_qty":
+                self.env.ref("qoqa_claim.qoqa_stage_claim_return").id,
             "in_progress_claims_qty":
                 self.env.ref("crm_claim.stage_claim5").id,
             "settled_claims_qty":
@@ -113,6 +119,22 @@ class CrmTeam(models.Model):
             ('team_id', '=', self.id),
             ('stage_id', '=', self.env.ref(
                 "qoqa_claim.stage_response_received"
+            ).id),
+        ]
+        action["context"] = {
+            'search_default_group_categ_id': 1,
+            'search_default_group_user_id': 1,
+        }
+        return action
+
+    @api.multi
+    def get_return_received_claims_action(self):
+        self.ensure_one()
+        action = self.env.ref("qoqa_claim.act_crm_claim_rma_claim").read()[0]
+        action["domain"] = [
+            ('team_id', '=', self.id),
+            ('stage_id', '=', self.env.ref(
+                "qoqa_claim.qoqa_stage_claim_return"
             ).id),
         ]
         action["context"] = {

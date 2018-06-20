@@ -21,6 +21,7 @@
         <field name="model">crm.claim.category</field>
         <field name="arch" type="xml">
             <search>
+                <field name="name" context="{'active_test': False}"/>
                 <filter string="Archived" name="active" domain="[('active', '=', False),]"/>
             </search>
         </field>

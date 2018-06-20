@@ -3,10 +3,10 @@
     <data noupdate="1">
 
         <record id="crm_claim.menu_config_claim" model="ir.ui.menu">
-            <field name="groups_id" eval="[(6, 0, [ref('qoqa_claim.sav_qoqa_resposible')])]"/>
+            <field name="groups_id" eval="[(6, 0, [ref('qoqa_claim.sav_qoqa_responsible')])]"/>
         </record>
         <record id="crm_claim.menu_crm_case_claim-act" model="ir.ui.menu">
-            <field name="groups_id" eval="[(6, 0, [ref('qoqa_claim.sav_qoqa_resposible')])]"/>
+            <field name="groups_id" eval="[(6, 0, [ref('qoqa_claim.sav_qoqa_responsible')])]"/>
         </record>
 
     </data>

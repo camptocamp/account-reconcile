@@ -154,7 +154,7 @@
         string="Dashboard SAV"
         parent="base.menu_aftersale"
         action="crm_team_action_dashboard"
-        groups="sav_qoqa_resposible"
+        groups="sav_qoqa_responsible"
         sequence="99"/>
 
 </odoo>

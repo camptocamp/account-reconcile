@@ -23,24 +23,6 @@ latest (unreleased)
 
 **Features and Improvements**
 
-**Bugfixes**
-
-* BSQOQ-82: Return None if barcode is empty
-* BSQOQ-84: Replace `sav_qoqa_resposible` to `__export__.res_groups_65` group.
-  Remove `sav_qoqa_resposible` group.
-* BSQOQ-88: Fix Claim Categories search by add active_test False context
-  to `name` field in search view
-
-**Build**
-
-**Documentation**
-
-
-9.45.1 (2018-06-11)
-+++++++++++++++++++
-
-**Features and Improvements**
-
 * BSQOQ-52: Add barcode attribute in product export
 * BSQOQ-65: Add archive functionality to crm.claim.category, crm.team, mail.alias
 * BSQOQ-66: Add qoqa.teams and its views
@@ -62,8 +44,25 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-82: Return None if barcode is empty
+* BSQOQ-84: Replace `sav_qoqa_resposible` to `__export__.res_groups_65` group.
+  Remove `sav_qoqa_resposible` group.
+* BSQOQ-88: Fix Claim Categories search by add active_test False context
+  to `name` field in search view
+* BSQOQ-78: Fix style overlap on PO Form view
+
 * Apply Odoo fix for the bug dropping indexes and constraints during some upgrades
   (https://github.com/odoo/odoo/pull/25069)
+
+**Build**
+
+**Documentation**
+
+
+9.45.1 (2018-06-11)
++++++++++++++++++++
+
+Moved to 9.45.2
 
 
 9.45.0 (2018-05-28)

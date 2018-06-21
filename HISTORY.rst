@@ -26,6 +26,8 @@ latest (unreleased)
 **Bugfixes**
 
 * BSQOQ-82: Return None if barcode is empty
+* BSQOQ-84: Replace `sav_qoqa_resposible` to `__export__.res_groups_65` group.
+  Remove `sav_qoqa_resposible` group.
 
 **Build**
 

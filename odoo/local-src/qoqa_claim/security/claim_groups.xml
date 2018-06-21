@@ -1,18 +1,11 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
-
-        <record model="ir.module.category" id="sav_category">
-            <field name="name">SAV</field>
-            <field name="sequence">99</field>
-        </record>
-
-        <record id="sav_qoqa_resposible" model="res.groups">
-            <field name="name">SAV QoQa Responsible</field>
-            <field name="category_id" ref="sav_category"/>
+    <data noupdate="1">
+        <record id="sav_qoqa_responsible" model="res.groups">
+            <field name="name">SAV QoQa Responsable</field>
+            <field name="category_id" ref="base.module_category_sales_management"/>
             <field name="users" eval="[(4, ref('base.user_root'))]"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         </record>
-
     </data>
 </openerp>

@@ -406,3 +406,7 @@ migration:
           - qoqa_claim_unclaimed_process
           - specific_fct
           - purchase_autoconfirm
+    - version: 9.46.0
+      addons:
+        upgrade:
+          - qoqa_claim

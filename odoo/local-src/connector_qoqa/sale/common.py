@@ -321,6 +321,8 @@ class SaleOrder(models.Model):
         if self.picking_ids:
             self.picking_ids.write({
                 'min_date': shipping_date,
+                'picking_type_id':
+                'connector_qoqa.picking_type_postpone_delivery',
             })
         return True
 

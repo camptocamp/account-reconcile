@@ -44,6 +44,7 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-94: Delivery orders delayed by the e-shop are now also moved to a "Postpone" picking type
 * BSQOQ-82: Return None if barcode is empty
 * BSQOQ-84: Replace `sav_qoqa_resposible` to `__export__.res_groups_65` group.
   Remove `sav_qoqa_resposible` group.

@@ -24,6 +24,7 @@ as the attribute sets, ...
  'demo': [],
  'data': [
      'lang_install.xml',
+     'picking_type.xml',
      'product.xml',
      'product_category.xml',
      'res_company_view.xml',

@@ -95,6 +95,9 @@ class CrmClaim(models.Model):
     claim_count = fields.Integer(
         related='partner_id.claim_count',
     )
+    picking_count = fields.Integer(
+        compute='_compute_picking_count',
+    )
 
     # Used to search per return products
     product_id = fields.Many2one(
@@ -116,7 +119,13 @@ class CrmClaim(models.Model):
     @api.multi
     def _compute_is_user_current(self):
         for rec in self:
-            self.is_user_current = self.user_id == self.env.user
+            rec.is_user_current = rec.user_id == self.env.user
+
+    @api.depends('partner_id')
+    def _compute_picking_count(self):
+        for rec in self:
+            rec.picking_count = self.env['stock.picking'].search_count(
+                [('partner_id', '=', rec.partner_id.id)])
 
     @api.depends('description')
     def _get_plain_text_description(self):

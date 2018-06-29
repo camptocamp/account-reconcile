@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.45.2 (2018-06-29)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BSQOQ-52: Add barcode attribute in product export
 * BSQOQ-65: Add archive functionality to crm.claim.category, crm.team, mail.alias
 * BSQOQ-66: Add qoqa.teams and its views
@@ -56,9 +68,6 @@ latest (unreleased)
 * Apply Odoo fix for the bug dropping indexes and constraints during some upgrades
   (https://github.com/odoo/odoo/pull/25069)
 
-**Build**
-
-**Documentation**
 
 
 9.45.1 (2018-06-11)

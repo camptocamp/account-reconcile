@@ -319,10 +319,13 @@ class SaleOrder(models.Model):
         :param shipping_date: string of YY-MM-DD hh:mm:ss format"""
         self.ensure_one()
         if self.picking_ids:
+            postpone_type = self.env.ref(
+                'qoqa_base_data.picking_type_postpone_delivery'
+            )
+
             self.picking_ids.write({
                 'min_date': shipping_date,
-                'picking_type_id':
-                'connector_qoqa.picking_type_postpone_delivery',
+                'picking_type_id': postpone_type.id,
             })
         return True
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="seq_picking_type_postpone" model="ir.sequence">
+            <field name="name">Postpone</field>
+            <field name="prefix">WH/OUT/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="picking_type_postpone_delivery" model="stock.picking.type">
+            <field name="name">Postpone Delivery</field>
+            <field name="code">outgoing</field>
+            <field name="sequence_id" ref="seq_picking_type_postpone"/>
+        </record>
+
+    </data>
+</openerp>

@@ -20,6 +20,7 @@
         'product',
         'purchase',
         'purchase_analytic_global',
+        'purchase_order_variant_mgmt',
         'delivery_carrier_label_postlogistics_shop_logo',
         'qoqa_offer',
         'base_delivery_carrier_label',

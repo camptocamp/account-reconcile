@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: '{"locale": "fr", "product": {"category": "Test Category",
+    "translations_attributes":
+    [{"locale": "en", "brand": "Things", "name": "MRSAFE"},
+     {"locale": "fr", "brand": "Things", "name": "MRSAFE"},
+     {"locale": "de", "brand": "Things", "name": "MRSAFE"}]}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['214']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.10.0]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/products/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 1000017}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 12:02:19 GMT']
+      etag: [W/"ba2a613e0c130d2b9ea10c2a630a5435"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [24c06bba-37d1-4dff-a7cd-3e3f541a60bb]
+      x-runtime: ['0.062365']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"locale": "fr", "variation": {"sku": "MRSAFE-variant", "months_warranty":
+      12, "product_attribute_variations_attributes": [], "product_id": "1000017",
+      "liters_capacity": 0.75, "ean": null}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['176']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.10.0]
+    method: POST
+    uri: https://api-sprint.qoqa.com/v1/admin/variations/
+  response:
+    body: {string: !!python/unicode '{"data": {"id": 100019}}'}
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [close]
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 31 May 2016 12:02:19 GMT']
+      etag: [W/"b7121995a81187a20eebc1acd7fb1c93"]
+      server: [Cowboy]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 vegur]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-request-id: [487b2ce8-0375-4550-a0d0-6d7a8b555b20]
+      x-runtime: ['0.038381']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

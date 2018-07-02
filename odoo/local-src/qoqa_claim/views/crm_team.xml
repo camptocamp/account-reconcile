@@ -83,6 +83,16 @@
                                                 <field name="response_received_claims_qty"/>
                                             </div>
                                         </div>
+                                        <div t-if="record.return_received_claims_qty.value > 0" class="row">
+                                            <div class="col-xs-9">
+                                                <a name="get_return_received_claims_action" type="object">
+                                                    Return received
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <field name="return_received_claims_qty"/>
+                                            </div>
+                                        </div>
                                         <div t-if="record.in_progress_claims_qty.value > 0" class="row">
                                             <div class="col-xs-9">
                                                 <a name="get_in_progress_claims_action" type="object">
@@ -91,16 +101,6 @@
                                             </div>
                                             <div class="col-xs-3">
                                                 <field name="in_progress_claims_qty"/>
-                                            </div>
-                                        </div>
-                                        <div t-if="record.settled_claims_qty.value > 0" class="row">
-                                            <div class="col-xs-9">
-                                                <a name="get_settled_claims_action" type="object">
-                                                    Settled
-                                                </a>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <field name="settled_claims_qty"/>
                                             </div>
                                         </div>
                                     </div>
@@ -154,7 +154,7 @@
         string="Dashboard SAV"
         parent="base.menu_aftersale"
         action="crm_team_action_dashboard"
-        groups="sav_qoqa_resposible"
+        groups="sav_qoqa_responsible"
         sequence="99"/>
 
 </odoo>

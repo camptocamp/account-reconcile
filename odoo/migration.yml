@@ -385,11 +385,13 @@ migration:
         upgrade:
           - stock_location
     # version 9.45.0
-    - version: 9.45.1
+    # version: 9.45.1
+    - version: 9.45.2
       operations:
         pre:
           - "sh -c 'psql -f odoo/songs/migration/add_product_product_seller_price.sql'"
           - "sh -c 'PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -f odoo/songs/upgrade/9_45_1.sql $DB_NAME'"
+          - anthem songs.upgrade.9_45_2::pre
       addons:
         upgrade:
           - qoqa_claim_unclaimed_process

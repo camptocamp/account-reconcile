@@ -17,4 +17,5 @@ from . import test_import_product_images
 from . import test_iso8601
 from . import test_settle_order
 from . import test_change_shipping_address
+from . import test_change_shipping_date
 from . import test_disable_change_address

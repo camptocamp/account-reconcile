@@ -97,6 +97,10 @@ class TestChangeShippingAddress(QoQaTransactionCase):
             self.order.picking_ids.mapped("min_date"),
             ['2018-09-09 12:00:00'],
         )
+        self.assertEqual(
+            self.order.picking_ids.mapped("picking_type_id"),
+            self.env.ref('qoqa_base_data.picking_type_postpone_delivery'),
+        )
 
     def test_change_shipping_address_batch(self):
         self.order.action_confirm()

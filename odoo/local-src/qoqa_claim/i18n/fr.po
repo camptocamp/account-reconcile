@@ -1,15 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* qoqa_claim
+# 	* qoqa_claim
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-26 15:27+0000\n"
+"POT-Creation-Date: 2018-06-22 08:05+0000\n"
 "PO-Revision-Date: 2018-04-26 15:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -17,204 +18,266 @@ msgstr ""
 
 #. module: qoqa_claim
 #: model:mail.template,body_html:qoqa_claim.mail_template_crm_claim_change_user
-msgid "\n"
-"            	<p>\n"
-"                    A new CRM claim (${object.code or ''}) has been assigned to you ${object.user_id.name or ''},\n"
+msgid ""
+"\n"
+"            \t<p>\n"
+"                    A new CRM claim (${object.code or ''}) has been assigned "
+"to you ${object.user_id.name or ''},\n"
 "                </p>\n"
 "                <p>\n"
 "                    Access directly to this document in OpenERP\n"
-"                    <a href=\"${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form\">${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form</a>\n"
+"                    <a href=\"${ctx[\"base_url\"]}/web#id=${object.id}"
+"&view_type=form&model=crm.claim&view_type=form\">${ctx[\"base_url\"]}/web#id="
+"${object.id}&view_type=form&model=crm.claim&view_type=form</a>\n"
 "                </p>\n"
 "            \n"
 "        "
-msgstr "\n"
-"            	<p>\n"
-"                    Une nouvelle réclamation (${object.code or ''}) vous a été assignée ${object.user_id.name or ''},\n"
+msgstr ""
+"\n"
+"            \t<p>\n"
+"                    Une nouvelle réclamation (${object.code or ''}) vous a "
+"été assignée ${object.user_id.name or ''},\n"
 "                </p>\n"
 "                <p>\n"
 "                    Accéder à ce document directement dans OpenERP\n"
-"                    <a href=\"${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form\">${ctx[\"base_url\"]}/web#id=${object.id}&view_type=form&model=crm.claim&view_type=form</a>\n"
+"                    <a href=\"${ctx[\"base_url\"]}/web#id=${object.id}"
+"&view_type=form&model=crm.claim&view_type=form\">${ctx[\"base_url\"]}/web#id="
+"${object.id}&view_type=form&model=crm.claim&view_type=form</a>\n"
 "                </p>\n"
 "            \n"
 "        "
 
 #. module: qoqa_claim
-#: view:crm.claim.unclaimed:0
-#: view:crm.claim.unclaimed.delivery:0
-msgid "Cancel"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_claim_count
+msgid "# Claims"
+msgstr "Réclamations"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_sale_order_count
+msgid "# of Sales Order"
+msgstr "# de Bons de commande"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "<span>New</span>"
+msgstr "<span>Nouveau</span>"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "<span>View</span>"
+msgstr "<span>Vue</span>"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_category_active
+#: model:ir.model.fields,field_description:qoqa_claim.field_mail_alias_active
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_active
+msgid "Active"
+msgstr "Actif"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "All"
+msgstr "Tous"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_category_search_qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_search_qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_mail_alias_search_qoqa_claim
+msgid "Archived"
+msgstr "Archivé"
+
+#. module: qoqa_claim
+#: selection:crm.claim.stage,state:0
+msgid "Cancelled"
 msgstr "Annuler"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_categ_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_categ_id
-msgid "Category"
-msgstr "Catégorie"
+#: model:ir.model,name:qoqa_claim.model_crm_claim_category
+msgid "Category of claim"
+msgstr "Catégorie de réclamation"
 
 #. module: qoqa_claim
-#: code:_description:0
 #: model:ir.model,name:qoqa_claim.model_crm_claim
-#, python-format
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
 msgid "Claim"
 msgstr "Réclamation"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_name:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_name
-msgid "Claim Subject"
-msgstr "Sujet de réclamation"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Claim Date by Month"
+msgstr "Date de réclamation par mois"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed.delivery,claim_ids:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_delivery_claim_ids
-msgid "Claims to be delivered"
-msgstr "Réclamations à livrer"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Claim Month"
+msgstr "Mois de réclamation"
 
 #. module: qoqa_claim
-#: code:_description:0
-#: model:ir.model,name:qoqa_claim.model_res_company
-#, python-format
-msgid "Companies"
-msgstr "Sociétés"
+#: model:ir.model,name:qoqa_claim.model_crm_claim_stage
+msgid "Claim stages"
+msgstr "Etapes de réclamations"
 
 #. module: qoqa_claim
-#: view:crm.claim.unclaimed:0
-msgid "Create Claim and Return"
-msgstr "Créer réclamation et retour"
+#: model:ir.actions.act_window,name:qoqa_claim.act_crm_claim_rma_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_claim_ids
+#: model:ir.ui.view,arch_db:qoqa_claim.crm_claim_rma_form_view
+msgid "Claims"
+msgstr "Réclamations"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_partner_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_partner_id
-msgid "Customer"
-msgstr "Client"
+#: selection:crm.claim.stage,state:0
+msgid "Closed"
+msgstr "Fermé"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_account_id
-#: field:res.company,unclaimed_invoice_account_id:0
-msgid "Default account for invoices for sent back unclaimed packages"
-msgstr "Compte par défaut pour factures des colis non-réclamés après renvoi"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Closure"
+msgstr "Fermeture"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_initial_categ_id
-#: field:res.company,unclaimed_initial_categ_id:0
-msgid "Default category for new unclaimed packages"
-msgstr "Catégorie par défaut pour colis non-réclamés"
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_create_uid
+msgid "Created by"
+msgstr "Créé par"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_final_categ_id
-#: field:res.company,unclaimed_final_categ_id:0
-msgid "Default category for sent back unclaimed packages"
-msgstr "Catégorie par défaut pour colis non-réclamés après renvoi"
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_create_date
+msgid "Created on"
+msgstr "Créé le"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_first_reminder_categ_id
-#: field:res.company,unclaimed_first_reminder_categ_id:0
-msgid "Default category for unclaimed packages after first reminder"
-msgstr "Catégorie par défaut pour colis non-réclamés après premier rappel"
+#: model:ir.actions.act_window,name:qoqa_claim.crm_team_action_dashboard
+#: model:ir.ui.menu,name:qoqa_claim.dashboard_sav
+msgid "Dashboard SAV"
+msgstr "Dashboard SAV"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_second_reminder_categ_id
-#: field:res.company,unclaimed_second_reminder_categ_id:0
-msgid "Default category for unclaimed packages after second reminder"
-msgstr "Catégorie par défaut pour colis non-réclamés après deuxième rappel"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Date Closed"
+msgstr "Date fermeture"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_journal_id
-#: field:res.company,unclaimed_invoice_journal_id:0
-msgid "Default journal for invoices for sent back unclaimed packages"
-msgstr "Journal par défaut pour factures des colis non-réclamés après renvoi"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Deadline"
+msgstr "Délai"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_invoice_product_id
-#: field:res.company,unclaimed_invoice_product_id:0
-msgid "Default product for invoices for sent back unclaimed packages"
-msgstr "Produit par défaut pour factures des colis non-réclamés après renvoi"
+#: model:ir.ui.view,arch_db:qoqa_claim.crm_claim_rma_form_view
+msgid "Deliveries"
+msgstr "Livraisons"
 
 #. module: qoqa_claim
-#: model:ir.model.fields,field_description:qoqa_claim.field_res_company_unclaimed_stock_journal_id
-#: field:res.company,unclaimed_stock_journal_id:0
-msgid "Default stock journal for unclaimed packages"
-msgstr "Journal par défaut pour colis non-réclamés"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_plain_text_description
+msgid "Description in text form"
+msgstr "Description sous forme de texte"
 
 #. module: qoqa_claim
-#: view:crm.claim.unclaimed.delivery:0
-msgid "Deliver Claims"
-msgstr "Livrer réclamations"
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_display_name
+msgid "Display Name"
+msgstr "Nom affiché"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_delivery_address_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_delivery_address_id
-msgid "Delivery Address"
-msgstr "Adresse de livraison"
+#: model:ir.model,name:qoqa_claim.model_mail_alias
+msgid "Email Aliases"
+msgstr "Alias d'Email"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_carrier_price:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_carrier_price
-msgid "Delivery Carrier Price"
-msgstr "Coût de la méthode de livraison"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Group By"
+msgstr "Groupé par"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,return_dest_location_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_return_dest_location_id
-msgid "Dest. Location"
-msgstr "Emplacement de destination"
+#: model:ir.actions.server,name:qoqa_claim.action_code_assign_current_user
+#: model:ir.ui.view,arch_db:qoqa_claim.crm_claim_rma_form_view
+msgid "I take it!"
+msgstr "I take it!"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:232
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:239
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:249
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:255
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:266
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:272
-#, python-format
-msgid "Error"
-msgstr "Erreur"
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_id
+msgid "ID"
+msgstr "ID"
 
 #. module: qoqa_claim
-#: selection:crm.claim.unclaimed,unclaimed_type:0
-msgid "Invalid Address"
-msgstr "Adresse non-valide"
+#: selection:crm.claim.stage,state:0
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "In Progress"
+msgstr "En cours"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_invoice_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_invoice_id
-msgid "Invoice"
-msgstr "Facture"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_in_progress_claims_qty
+msgid "In Progress Claims"
+msgstr "Réclamations en cours"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:250
-#, python-format
-msgid "No delivery carrier associated to this tracking number!"
-msgstr "Pas de méthode de livraison associée à ce numéro de colis !"
+#: model:ir.model.fields,field_description:qoqa_claim.field_claim_line_return_instruction
+#: model:ir.ui.view,arch_db:qoqa_claim.crm_claim_line_form_view
+msgid "Instructions"
+msgstr "Instructions"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:273
-#, python-format
-msgid "No invoice associated to this tracking number!"
-msgstr "Pas de facture associée à ce numéro de colis !"
+#: model:ir.model.fields,field_description:qoqa_claim.field_claim_line_return_instruction_name
+msgid "Instructions Title"
+msgstr "Titre des instructions"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:256
-#, python-format
-msgid "No price set on delivery carrier %s!"
-msgstr "Prix non-défini sur la méthode de livraison %s !"
+#: model:ir.model.fields,field_description:qoqa_claim.field_claim_line_return_instruction_details
+msgid "Instructions details"
+msgstr "Détails des instructions"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:267
-#, python-format
-msgid "No sale associated to this tracking number!"
-msgstr "Pas de bon de commande associé à ce numéro de colis !"
+#: model:ir.model.fields,help:qoqa_claim.field_claim_line_return_instruction_details
+msgid "Instructions details for product return"
+msgstr "Détails des instructions pour retour produit"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:240
-#, python-format
-msgid "No stock move associated to this tracking number!"
-msgstr "Pas de mouvement de stock associé à ce numéro de colis !"
+#: model:ir.model.fields,help:qoqa_claim.field_claim_line_return_instruction
+msgid "Instructions for product return"
+msgstr "Instructions pour retour produit"
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:233
-#, python-format
-msgid "Not a valid tracking number!"
-msgstr "Numéro de colis invalide !"
+#: model:ir.model.fields,help:qoqa_claim.field_claim_line_return_instruction_name
+msgid "Instructions title for product return"
+msgstr "Titre de l'instruction pour retour produit"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_is_user_current
+msgid "Is user current"
+msgstr "Est l'utilisateur courant"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team___last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_write_uid
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_write_date
+msgid "Last Updated on"
+msgstr "Dernière modification le"
+
+#. module: qoqa_claim
+#: model:ir.model,name:qoqa_claim.model_claim_line
+msgid "List of product to return"
+msgstr "Liste des articles à renvoyer"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "More <i class=\"fa fa-caret-down\"/>"
+msgstr "Plus <i class=\"fa fa-caret-down\"/>"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_qoqa_team_name
+msgid "Name"
+msgstr "Nom"
+
+#. module: qoqa_claim
+#: selection:crm.claim.stage,state:0
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "New"
+msgstr "Nouveau"
 
 #. module: qoqa_claim
 #: model:mail.template,subject:qoqa_claim.mail_template_crm_claim_change_user
@@ -222,114 +285,209 @@ msgid "New CRM claim assigned"
 msgstr "Nouvelle réclamation assignée"
 
 #. module: qoqa_claim
+#: model:ir.actions.act_window,name:qoqa_claim.crm_claim_action_new
+msgid "New Claim"
+msgstr "Nouvelle réclamation"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_new_claims_qty
+msgid "New Claims"
+msgstr "Nouvelles réclamations"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_non_assigned_claims_qty
+msgid "Non-assigned Claims"
+msgstr "Réclamations non-assignées"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_notify
+msgid "Notify on change"
+msgstr "Notifier le changement"
+
+#. module: qoqa_claim
 #: model:crm.claim.category,name:qoqa_claim.crm_case_categ_default_others
 msgid "Others"
 msgstr "Autres"
 
 #. module: qoqa_claim
-#: field:crm.claim,pay_by_email_url:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_pay_by_email_url
-msgid "Pay by e-mail URL"
-msgstr ""
+#: model:ir.actions.act_window,name:qoqa_claim.act_crm_claim_rma_picking_out
+msgid "Outgoing Shipment"
+msgstr "Expéditions"
 
 #. module: qoqa_claim
-#: field:crm.claim,unclaimed_price:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_price
-msgid "Price for unclaimed return"
-msgstr "Prix pour retour non-réclamé"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Partner"
+msgstr "Partenaire"
 
 #. module: qoqa_claim
-#: model:crm.claim.stage,name:qoqa_claim.qoqa_stage_claim_return
-msgid "Return received"
-msgstr "Retour reçu"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_partner_city
+msgid "Partner City"
+msgstr "Ville du partenaire"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_user_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_user_id
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_partner_street
+msgid "Partner Street"
+msgstr "Rue du partenaire"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_partner_zip
+msgid "Partner ZIP code"
+msgstr "Code postal du partenaire"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_partner_category_ids
+msgid "Partner tags"
+msgstr "Etiquettes du partenaire"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_product_id
+msgid "Product"
+msgstr "Article"
+
+#. module: qoqa_claim
+#: model:ir.actions.act_window,name:qoqa_claim.qoqa_team_action_qoqa_claim
+#: model:ir.ui.menu,name:qoqa_claim.qoqa_team_menu
+msgid "QoQa Team"
+msgstr "QoQa Team"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "QoQa Teams"
+msgstr "QoQa Teams"
+
+#. module: qoqa_claim
+#: model:ir.actions.act_window,name:qoqa_claim.act_crm_claim_rma_sale_orders_inactive
+msgid "Quotations and Sales"
+msgstr "Devis et ventes"
+
+#. module: qoqa_claim
+#: model:crm.claim.stage,name:qoqa_claim.stage_response_received
+msgid "Response Received"
+msgstr "Réponse reçue"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_response_received_claims_qty
+msgid "Response Received Claims"
+msgstr "Réponse reçue réclamations"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "Response Recieved"
+msgstr "Réponse reçue"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
 msgid "Responsible"
 msgstr "Responsable"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_sale_order_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_sale_order_id
-msgid "Sale Order"
-msgstr "Bon de commande"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Responsible User"
+msgstr "Responsable"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,claim_section_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_claim_section_id
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_return_received_claims_qty
+msgid "Return Received Claims"
+msgstr "Retour reçu"
+
+#. module: qoqa_claim
+#: model:crm.claim.stage,name:qoqa_claim.qoqa_stage_claim_return
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "Return received"
+msgstr "Retour reçu"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,help:qoqa_claim.field_crm_claim_product_id
+msgid "Returned product"
+msgstr "Article renvoyé"
+
+#. module: qoqa_claim
+#: model:res.groups,name:qoqa_claim.sav_qoqa_responsible
+msgid "SAV QoQa Responsable"
+msgstr "SAV QoQa Responsable"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.crm_claim_rma_form_view
+msgid "Sales (inactive included)"
+msgstr "Ventes (inclus inactifs)"
+
+#. module: qoqa_claim
+#: model:ir.model,name:qoqa_claim.model_sale_order
+msgid "Sales Order"
+msgstr "Bons de commande"
+
+#. module: qoqa_claim
+#: model:ir.model,name:qoqa_claim.model_crm_team
 msgid "Sales Team"
 msgstr "Equipe commerciale"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,return_source_location_id:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_return_source_location_id
-msgid "Source Location"
-msgstr "Emplacement d'origine"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "Settings"
+msgstr "Configurations"
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,track_number:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_track_number
-msgid "Tracking Number"
-msgstr "Numéro de suivi"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_settled_claims_qty
+msgid "Settled Claims"
+msgstr "Livrer réclamations"
 
 #. module: qoqa_claim
-#: selection:crm.claim.unclaimed,unclaimed_type:0
-msgid "Unclaimed"
-msgstr "Non-réclamé"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Stage"
+msgstr "Etape"
 
 #. module: qoqa_claim
-#: view:crm.claim.unclaimed.delivery:0
-#: model:ir.actions.act_window,name:qoqa_claim.action_crm_claim_unclaimed_delivery
-#: model:ir.ui.menu,name:qoqa_claim.menu_crm_claim_unclaimed_delivery
-msgid "Unclaimed Package Delivery"
-msgstr "Livraison de colis non-réclamé"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_stage_state
+msgid "State"
+msgstr "Etat"
 
 #. module: qoqa_claim
-#: view:crm.claim.unclaimed:0
-#: model:ir.actions.act_window,name:qoqa_claim.action_crm_claim_unclaimed
-#: model:ir.ui.menu,name:qoqa_claim.menu_crm_claim_unclaimed
-msgid "Unclaimed Package Return"
-msgstr "Retour de colis non-réclamé"
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_qoqa_team_id
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_team_qoqa_team_id
+msgid "Team QoQa"
+msgstr "Team QoQa"
 
 #. module: qoqa_claim
-#: view:res.company:0
-msgid "Unclaimed Returns"
-msgstr "Retours non-réclamés"
+#: model:ir.model.fields,help:qoqa_claim.field_qoqa_team_active
+msgid "The active field allows you to hide the picking without removing it."
+msgstr "Le champ actif permet de cacher le picking sans l'enlever."
 
 #. module: qoqa_claim
-#: field:crm.claim.unclaimed,unclaimed_type:0
-#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_unclaimed_unclaimed_type
-msgid "Unclaimed Type"
-msgstr "Type de non-réclamé"
+#: model:ir.model.fields,help:qoqa_claim.field_crm_claim_category_active
+#: model:ir.model.fields,help:qoqa_claim.field_mail_alias_active
+msgid "The active field allows you to hide the record without removing it."
+msgstr "Le champ actif permet de cacher le record sans l'enlever."
 
 #. module: qoqa_claim
-#: code:addons/qoqa_claim/wizard/crm_claim_unclaimed.py:275
-#, python-format
-msgid "Votre commande numéro %s en retour non-réclamé"
-msgstr "Votre commande numéro %s en retour non-réclamé"
-
-#. module: qoqa_claim
-#: code:_description:0
-#: model:ir.model,name:qoqa_claim.model_crm_claim_unclaimed
-#, python-format
-msgid "crm.claim.unclaimed"
+#: model:ir.ui.view,arch_db:qoqa_claim.crm_claim_rma_form_view
+msgid ""
+"The counter shows SO from all companies but the action only open SO from "
+"current users companies"
 msgstr ""
+"Le compteur indique les ventes de toutes les sociétés, mais l'action "
+"ouvre seulement les ventes des sociétés de l'utilisateur actif."
 
 #. module: qoqa_claim
-#: code:_description:0
-#: model:ir.model,name:qoqa_claim.model_crm_claim_unclaimed_delivery
-#, python-format
-msgid "crm.claim.unclaimed.delivery"
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim
+msgid "Type"
+msgstr "Type"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_claim_line_warranty_return_address
+msgid "Warranty return address"
+msgstr "Adresse pour retours sous garantie"
+
+#. module: qoqa_claim
+#: model:ir.model.fields,help:qoqa_claim.field_claim_line_warranty_return_address
+msgid "Warranty return address of the product"
+msgstr "Adresse pour retours sous garantie de l'article"
+
+#. module: qoqa_claim
+#: model:ir.ui.view,arch_db:qoqa_claim.view_crm_team_kanban_qoqa_claim
+msgid "non-assigned"
+msgstr "non-assignés"
+
+#. module: qoqa_claim
+#: model:ir.model,name:qoqa_claim.model_qoqa_team
+msgid "qoqa.team"
 msgstr ""
-
-#. module: qoqa_claim
-#: view:crm.claim.unclaimed:0
-#: view:crm.claim.unclaimed.delivery:0
-msgid "or"
-msgstr "ou"
-
-#. module: crm_claim
-#: model:ir.model.fields,field_description:crm_claim.field_crm_claim_priority
-msgid "Customer Satisfaction"
-msgstr "Satisfaction client"

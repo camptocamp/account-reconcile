@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record id="account_postfinance" model="res.partner">
+            <field name="name">Postfinance (PF)</field>
+        </record>
+
+        <record id="account_six_payment_services" model="res.partner">
+            <field name="name">SIX Payment Services</field>
+        </record>
+
+        <record id="account_paypal" model="res.partner">
+            <field name="name">PayPal Pte. Ltd (AR)</field>
+        </record>
+
+        <record id="account_swissbilling" model="res.partner">
+            <field name="name">Swissbilling (organisme financier)</field>
+        </record>
+
+        <record id="account_swisscard" model="res.partner">
+            <field name="name">American Express</field>
+        </record>
+
+        <record id="account_twint" model="res.partner">
+            <field name="name">TWINT Acquiring AG</field>
+        </record>
+    </data>
+</openerp>

@@ -412,7 +412,9 @@ migration:
       operations:
         pre:
           - anthem songs.upgrade.9_46_0::pre
+          - "sh -c 'psql -q -f odoo/songs/upgrade/9_46_0.sql'"
       addons:
         upgrade:
+          - account_bank_statement_import_camt
           - qoqa_claim
           - specific_report

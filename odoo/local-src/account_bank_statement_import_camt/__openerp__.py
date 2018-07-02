@@ -17,7 +17,11 @@ THIS MODULE IS A BACKPORT OF A MODULE IN ODOO ENTERPRISE 10.0. IT SHOULD NOT BE 
 THE LICENSE FORBIDS IT.
     """,
     'data': [
-        'data/account_bank_statement_import_data.xml'
+        'security/ir.model.access.csv',
+        'data/camt_partners.xml',
+        'data/account_bank_statement_camt.xml',
+        'data/account_bank_statement_import_data.xml',
+        'views/account_bank_statement_camt.xml',
     ],
     'license': 'OEEL-1',
     'installable': True,

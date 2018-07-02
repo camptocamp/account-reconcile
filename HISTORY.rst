@@ -30,6 +30,7 @@ latest (unreleased)
 * BSQOQ-62: add script to unpack packages from several locations
 * BSQOQ-61: Add cron to autoconfirm PO
 * BSQOQ-63: Display deliveries counter on smart button on claims
+* BSQOQ-91: update the account_bank_statement_import_camt partner management
 
 **Bugfixes**
 

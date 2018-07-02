@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<openerp>
+
+    <record id="view_account_bank_statement_camt_tree_statement_import" model="ir.ui.view">
+        <field name="name">account_bank_statement_camt.tree.statement_import</field>
+        <field name="model">account.bank.statement.camt</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="memo_text"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_bank_statement_camt_form_statement_import" model="ir.ui.view">
+        <field name="name">account_bank_statement_camt.form.statement_import</field>
+        <field name="model">account.bank.statement.camt</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="main">
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="memo_text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="account_bank_statement_camt_action" model="ir.actions.act_window">
+        <field name="name">CAMT: configuration partenaires</field>
+        <field name="res_model">account.bank.statement.camt</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="account_bank_statement_camt"
+        string="CAMT: configuration partenaires"
+        parent="account.account_management_menu"
+        action="account_bank_statement_camt_action"
+        sequence="99"/>
+
+</openerp>

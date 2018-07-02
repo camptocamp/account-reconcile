@@ -31,6 +31,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-90: Fix unnamed packages preventing the unpack script from running
+
 **Build**
 
 **Documentation**

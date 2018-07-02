@@ -107,6 +107,8 @@
     # [9.0][FIX] fix kanban dashboard column settings menu popup
     # https://github.com/OCA/OCB/pull/760
     - oca refs/pull/760/head
+    # fix stock package _complete_name
+    - oca refs/pull/761/head
   target: *default_target
   shell_command_after:
     # js bug correct check of property 'rules'

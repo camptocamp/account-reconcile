@@ -31,6 +31,8 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-85: Check if picking have move_line before assign
+
 **Build**
 
 **Documentation**

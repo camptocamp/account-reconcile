@@ -32,6 +32,7 @@ latest (unreleased)
 
 **Bugfixes**
 
+* BSQOQ-90: Fix unnamed packages preventing the unpack script from running
 * BSQOQ-85: Check if picking have move_line before assign
 
 **Build**

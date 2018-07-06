@@ -97,9 +97,14 @@
                             icon="fa-truck"
                             name="%(act_crm_claim_rma_picking_out)d"
                             type="action"
-                            string="Deliveries"
+                            string=""
                             attrs="{'invisible': [('partner_id','=', False)]}"
-                            context="{'search_default_partner_id': partner_id, 'search_default_user_id':False}"/>
+                            context="{'search_default_partner_id': partner_id, 'search_default_user_id':False}">
+                      <field string="Deliveries"
+                             name="picking_count"
+                             context="{'active_test': False}"
+                             widget="statinfo"/>
+                    </button>
                 </button>
 
                 <field name="name" position="after">

@@ -87,7 +87,9 @@ class StockPicking(models.Model):
                     'move_lines': move_lines,
                 })
             pickings.do_unreserve()
-            pickings.action_assign()
+            for picking in pickings:
+                if picking.move_lines:
+                    picking.action_assign()
             pickings.invalidate_cache()
 
     @api.multi

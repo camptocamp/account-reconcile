@@ -28,6 +28,7 @@ latest (unreleased)
 * BSQOQ-77: Improve SAV Dashboard loading time
 * BSQOQ-62: add script to unpack packages from several locations
 * BSQOQ-61: Add cron to autoconfirm PO
+* BSQOQ-63: Display deliveries counter on smart button on claims
 
 **Bugfixes**
 

@@ -111,7 +111,7 @@ def demo_to_sample(ctx):
 
     folder = 'odoo/data/sample'
     try:
-        os.mkdir(folder, 0775)
+        os.mkdir(folder, 0o775)
     except OSError:
         print("odoo/data/sample directory already exists")
     # move odoo/data/demo to odoo/data/sample
@@ -126,7 +126,7 @@ def demo_to_sample(ctx):
     # move odoo/songs/install/data_demo.py to odoo/songs/sample/data_sample.py
     folder = 'odoo/songs/sample'
     try:
-        os.mkdir(folder, 0775)
+        os.mkdir(folder, 0o775)
         with open(folder + '/__init__.py', 'w') as f:
             f.write('')
     except OSError:

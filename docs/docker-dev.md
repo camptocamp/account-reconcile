@@ -82,7 +82,6 @@ docker-compose pull
 docker-compose build
 ```
 
-
 ### Usage
 
 When you need to launch the services of the composition, you can either run them in foreground or in background.
@@ -289,4 +288,21 @@ You can easily add them in `odoo/dev_requirements.txt` and build again odoo cont
 ```bash
 echo "pdbpp" >> odoo/dev_requirements.txt
 doco build odoo
+```
+
+
+
+### Troubleshooting
+
+
+```
+pkg_resources.DistributionNotFound: The 'odoo==10.0' distribution was not found and is required by the application
+```
+
+This error can happen after switching Odoo version in the same project.
+You should then manually delete the `.egg-info` and `__pycache__` folders :
+
+```
+sudo rm -rf 'find -name *.egg-info'
+sudo rm -rf 'find -name __pycache__'
 ```

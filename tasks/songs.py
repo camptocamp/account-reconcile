@@ -7,28 +7,27 @@
 # Do not modify. Any manual change will be lost.
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
-from __future__ import print_function
-
-from StringIO import StringIO
-import urllib2
+import io
 import zipfile
-from urlparse import urlparse
+
 try:
-    from requests import Request, Session
+    # Python 2
+    from urlparse import urlparse
 except ImportError:
-    print('Please install requests')
-import json
+    # Python 3
+    from urllib.parse import urlparse
+try:
+    import requests
+except ImportError:
+    print('Please install `requests`')
 
 from invoke import task
-
 from .common import exit_msg
 
 
 def odoo_login(base_url, login, password, db):
     """ Get a session_id from Odoo """
     url = "%s/web/session/authenticate" % base_url
-
-    s = Session()
 
     data = {
         'jsonrpc': '2.0',
@@ -44,25 +43,24 @@ def odoo_login(base_url, login, password, db):
         'Content-type': 'application/json'
     }
 
-    req = Request('POST', url, data=json.dumps(data), headers=headers)
-    prepped = req.prepare()
-    resp = s.send(prepped)
-
-    r_data = json.loads(resp.text)
+    resp = requests.post(url, json=data, headers=headers)
+    r_data = resp.json()
     return r_data['result']['session_id']
 
 
 @task(name='rip')
 def rip(ctx, location, login='admin', password='admin',
-        db='odoodb'):
-    """ Open or download a zipfile containing songs
+        db='odoodb', dryrun=False, data_path='./odoo/data'):
+    """Open or download a zipfile containing songs.
 
-    Unzip and copy the files into current project path
+    Unzip and copy the files into current project path.
 
-    location: url or file path
-
-    url is meant for an odoo url you can set login, password and db
-
+    :param location: compilation URL or file path
+    :param login: odoo username required if location is an URL
+    :param password: odoo username password required if location is an URL
+    :param odoodb: odoo database required if location is an URL
+    :param dry_run: just print the compilation content
+        do not add files to project.
     """
     if not location:
         exit_msg(
@@ -77,27 +75,45 @@ def rip(ctx, location, login='admin', password='admin',
         url = urlparse(location)
         base_url = "%s://%s" % (url.scheme, url.netloc)
         session_id = odoo_login(base_url, login, password, db)
-        req = urllib2.Request(location)
-        req.add_header('cookie', "session_id=%s" % session_id)
-        response = urllib2.urlopen(req)
-        zipdata = StringIO()
-        zipdata.write(response.read())
+        cookies = {
+            "session_id": session_id,
+        }
+        resp = requests.get(location, cookies=cookies)
+        resp.raise_for_status()
+        zipdata = io.BytesIO()
+        zipdata.write(resp.content)
     else:
-        zipdata = open(location)
+        zipdata = location
+    handle_zip_data(zipdata, dryrun=dryrun, data_path=data_path)
+
+
+def handle_zip_data(zipdata, dryrun=False, data_path='./odoo/data'):
+    if dryrun:
+        print("Dry-run mode activated: no file will be extracted.")
     zf = zipfile.ZipFile(zipdata)
 
     # Unzip file and push files at the right path
     readme_path = None
     for path in zf.namelist():
+        if dryrun:
+            print(path)
         # Ignore dj metadata zip file
         if path.endswith('zip'):
             continue
         if 'DEV_README.rst' in path:
             readme_path = path
         else:
-            print("Extracting ./odoo/%s" % path)
-            zf.extract(path, './odoo')
+            if not dryrun:
+                dest_path = data_path[:]
+                if path.startswith('songs'):
+                    # TODO: we assume songs path
+                    # is on the same level of data path
+                    dest_path = '/'.join(data_path.split('/')[:2])
+                print("Extracting %s/%s" % (dest_path, path))
+                zf.extract(path, dest_path)
 
     print('-' * 79)
     # Print README file
-    print(zf.open(readme_path).read())
+    readme_content = zf.open(readme_path).read()
+    readme_content = readme_content.decode('utf-8')
+    print(readme_content)

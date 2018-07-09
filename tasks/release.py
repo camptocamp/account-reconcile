@@ -8,10 +8,17 @@
 from __future__ import print_function
 
 import fileinput
-from builtins import input
 from datetime import date
 
-import yaml
+try:
+    from builtins import input
+except ImportError:
+    print('Please install future')
+
+try:
+    import yaml
+except ImportError:
+    print('Please install pyyaml')
 
 from distutils.version import StrictVersion
 

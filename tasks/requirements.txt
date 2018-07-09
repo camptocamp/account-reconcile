@@ -1,0 +1,7 @@
+cookiecutter
+future
+git-aggregator
+invoke
+pyyaml
+requests
+ruamel.yaml

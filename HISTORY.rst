@@ -36,6 +36,8 @@ latest (unreleased)
 * BSQOQ-85: Check if picking have move_line before assign
 
 **Build**
+* Update from odoo-template
+* Update Dockerimage to X-2.6.1
 
 **Documentation**
 

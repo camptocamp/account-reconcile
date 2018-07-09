@@ -82,12 +82,26 @@ def _add_comment_sh(path, comment):
         f.write(''.join(content))
 
 
+def _add_comment_xml(path, comment):
+    with open(path, 'rU') as f:
+        content = f.readlines()
+    insert_at = 0
+    for index, line in enumerate(content):
+        if line.startswith('<?xml version="1.0" encoding="utf-8"?>'):
+            insert_at = index + 1
+    comment = '<!--\n{}-->\n'.format(comment)
+    content.insert(insert_at, comment)
+    with open(path, 'w') as f:
+        f.write(''.join(content))
+
+
 def add_comment(path, comment):
     __, ext = os.path.splitext(path)
     funcs = {
         '.py': _add_comment_py,
         '.md': _add_comment_md,
         '.sh': _add_comment_sh,
+        '.xml': _add_comment_xml,
     }
     if not ext:
         with open(path, 'rU') as f:

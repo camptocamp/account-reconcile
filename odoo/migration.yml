@@ -412,3 +412,4 @@ migration:
       addons:
         upgrade:
           - qoqa_claim
+          - specific_report

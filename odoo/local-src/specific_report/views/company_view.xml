@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="specific_report_configuration" model="ir.ui.view">
+        <field name="name">specific.report.configuration</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='custom_footer']" position="after">
+              <field name="number_empty_labels"/>
+            </xpath>
+        </field>
+
+     </record>
+</odoo>

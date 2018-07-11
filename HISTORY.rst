@@ -23,6 +23,7 @@ latest (unreleased)
 
 **Features and Improvements**
 
+* BSQOQ-86: Configure 8 empty labels instead of one between 2 batch pickings
 * BSQOQ-81: On the crm_claim notification, we removed the notification when
   "I take it" is triggered on the form and list view.
 * BSQOQ-77: Improve SAV Dashboard loading time

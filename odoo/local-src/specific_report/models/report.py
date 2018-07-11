@@ -41,7 +41,10 @@ class Report(models.Model):
                 context=context
             )
             attachments = att_obj.browse(cr, uid, attachment_ids, context)
-            return self.process_report(attachments)
+            number_empty_labels = self.pool.get('res.users').browse(
+                cr, uid, uid, context=context
+            ).company_id.number_empty_labels
+            return self.process_report(attachments, number_empty_labels)
         else:
             return super(Report, self).get_pdf(
                 cr, uid, docids, report_name,
@@ -64,17 +67,23 @@ class Report(models.Model):
                 [('res_id', 'in', docids),
                  ('res_model', '=', 'stock.batch.picking')]
             )
-            return self.process_report(attachments)
+            number_empty_labels = self.env.user.company_id.number_empty_labels
+            return self.process_report(attachments, number_empty_labels)
         else:
             return super(Report, self).get_pdf(docids, report_name, html, data)
 
-    def process_report(self, attachments):
+    def process_report(self, attachments, number_empty_labels):
+        number_empty_labels_one_more = number_empty_labels + 1
         pdfs = [att.datas.decode('base64') for att in attachments]
 
         # Add `None` in between each attachment
-        # to have a blank page between each carrier label set
-        pdf_to_print = [None] * (len(pdfs) * 2 - 1)
-        pdf_to_print[0::2] = pdfs
+        # to have a number_empty_labels blank page
+        # between each carrier label set
+        pdf_size_one_over = len(pdfs) * number_empty_labels_one_more
+        pdf_right_size = pdf_size_one_over - number_empty_labels
+
+        pdf_to_print = [None] * pdf_right_size
+        pdf_to_print[0::number_empty_labels_one_more] = pdfs
 
         return self.merge_pdf_in_memory(pdf_to_print)
 

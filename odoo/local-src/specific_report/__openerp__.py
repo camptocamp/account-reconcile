@@ -24,6 +24,7 @@
              'account_payment_partner',
              ],
  'data': [
+          'views/company_view.xml',
           'views/report_purchaseorder.xml',
           'views/report_accountinvoice.xml',
           'views/report_default_shipping_label.xml',

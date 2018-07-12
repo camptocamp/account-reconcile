@@ -35,6 +35,7 @@ latest (unreleased)
 
 * BSQOQ-90: Fix unnamed packages preventing the unpack script from running
 * BSQOQ-85: Check if picking have move_line before assign
+* BSQOQ-98: Add code to log crm.stage creation
 
 **Build**
 * Update from odoo-template

@@ -13,3 +13,8 @@ from . import ir_qweb
 from . import ir_attachment
 from . import hr_holidays
 from . import stock_change_product_qty
+
+#
+# REMOVE crm_stage WHEN `BSQOQ-98` IS CLOSED
+#
+from . import crm_stage

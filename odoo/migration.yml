@@ -409,6 +409,9 @@ migration:
           - specific_fct
           - purchase_autoconfirm
     - version: 9.46.0
+      operations:
+        pre:
+          - anthem songs.upgrade.9_46_0::pre
       addons:
         upgrade:
           - qoqa_claim

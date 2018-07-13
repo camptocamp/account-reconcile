@@ -1,13 +1,13 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* crm_claim_mail
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-23 14:29+0000\n"
-"PO-Revision-Date: 2014-10-23 14:29+0000\n"
+"POT-Creation-Date: 2018-07-09 11:03+0000\n"
+"PO-Revision-Date: 2018-07-09 11:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,16 +16,51 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: crm_claim_mail
-#: code:_description:0
+#: model:mail.template,body_html:crm_claim_mail.email_template_rma_received
+msgid "\n"
+"            <div>\n"
+"              <div>Bonjour,</div>\n"
+"              <div><br></div>\n"
+"              <div>Notre service clients a bien enregistré votre demande et\n"
+"                s'efforce de la traiter le plus rapidement possible. Pour\n"
+"                tout suivi concernant votre demande, nous vous prions de\n"
+"                répondre directement au message concerné en laissant le\n"
+"                numéro de ticket dans le sujet.</div>\n"
+"              <div><br></div>\n"
+"              <div><b>Votre numéro de ticket est : [${object.code}]</b></div>\n"
+"              <div><br></div>\n"
+"              <div>Merci d'indiquer ce numéro également si vous devez nous\n"
+"                contacter par téléphone au sujet de votre demande. Cela nous\n"
+"                aidera à vous servir plus rapidement et efficacement.</div>\n"
+"              <div><br></div>\n"
+"              <div>Voici un aperçu de votre demande :</div>\n"
+"              <div><b><pre>${object.plain_text_description or '' | trim}</pre></b></div>\n"
+"              <div><br></div>\n"
+"              <div>Merci de votre patience et meilleures salutations,</div>\n"
+"              <div><br></div><div>Votre équipe <a href=\"http://qoqa.ch\" target=\"_blank\">qoqa.ch</a></div>\n"
+"              <div><a href=\"http://www.qoqa.ch\" target=\"_blank\">http://www.qoqa.ch</a></div></div>\n"
+"              <div><br></div>\n"
+"          \n"
+"          "
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:mail.template,subject:crm_claim_mail.email_template_rma_received
+msgid "${object.name_get()[0][1]|safe}"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.ui.view,arch_db:crm_claim_mail.email_template_form
+msgid "By default"
+msgstr ""
+
+#. module: crm_claim_mail
 #: model:ir.model,name:crm_claim_mail.model_crm_claim
-#, python-format
 msgid "Claim"
 msgstr ""
 
 #. module: crm_claim_mail
-#: code:_description:0
 #: model:ir.model,name:crm_claim_mail.model_res_company
-#, python-format
 msgid "Companies"
 msgstr ""
 
@@ -35,43 +70,62 @@ msgid "Confirmation Email sent"
 msgstr ""
 
 #. module: crm_claim_mail
-#: field:crm.claim,confirmation_email_sent:0
 #: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_confirmation_email_sent
 msgid "Confirmation Mail Sent"
 msgstr ""
 
 #. module: crm_claim_mail
-#: code:_description:0
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_confirmation_email_template
+msgid "Confirmation Mail Template"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_last_message_date
+msgid "Date of last message sent or received"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.model,name:crm_claim_mail.model_mail_template
+msgid "Email Templates"
+msgstr ""
+
+#. module: crm_claim_mail
 #: model:ir.model,name:crm_claim_mail.model_mail_compose_message
-#, python-format
 msgid "Email composition wizard"
 msgstr ""
 
 #. module: crm_claim_mail
-#: view:res.company:0
+#: model:ir.model.fields,field_description:crm_claim_mail.field_mail_template_is_default
+msgid "Is default"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_is_gt_48h
+msgid "Is gt 48h"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.ui.view,arch_db:crm_claim_mail.view_company_form_qoqa
 msgid "Mail"
 msgstr ""
 
 #. module: crm_claim_mail
-#: field:crm.claim,mail_signature:0
 #: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_mail_signature
 msgid "Mail signature"
 msgstr ""
 
 #. module: crm_claim_mail
+#: model:ir.model.fields,field_description:crm_claim_mail.field_qoqa_shop_mail_signature_template
 #: model:ir.model.fields,field_description:crm_claim_mail.field_res_company_mail_signature_template
-#: field:res.company,mail_signature_template:0
 msgid "Mail signature template"
 msgstr ""
 
 #. module: crm_claim_mail
-#: field:crm.claim,merged_numbers:0
 #: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_merged_numbers
 msgid "Merged claims numbers"
 msgstr ""
 
 #. module: crm_claim_mail
-#: field:crm.claim,message_quote_for_email:0
 #: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_message_quote_for_email
 msgid "Message quote"
 msgstr ""
@@ -82,7 +136,29 @@ msgid "No confirmation email sent"
 msgstr ""
 
 #. module: crm_claim_mail
-#: view:res.company:0
+#: code:addons/crm_claim_mail/models/crm_claim.py:270
+#, python-format
+msgid "No partner set with email \"loutres@qoqa.com\""
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.filters,name:crm_claim_mail.not_treated_since_48h_filter
+msgid "Non traité depuis 48h"
+msgstr ""
+
+#. module: crm_claim_mail
+#: code:addons/crm_claim_mail/models/crm_claim.py:229
+#, python-format
+msgid "On %s at %s, %s wrote:"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.model,name:crm_claim_mail.model_qoqa_shop
+msgid "QoQa Shop"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.ui.view,arch_db:crm_claim_mail.view_company_form_qoqa
 msgid "RMA"
 msgstr ""
 
@@ -93,18 +169,12 @@ msgstr ""
 
 #. module: crm_claim_mail
 #: model:ir.model.fields,field_description:crm_claim_mail.field_res_company_claim_sale_order_regexp
-#: field:res.company,claim_sale_order_regexp:0
 msgid "Regular Expression for sale number"
 msgstr ""
 
 #. module: crm_claim_mail
-#: help:res.company,claim_sale_order_regexp:0
+#: model:ir.model.fields,help:crm_claim_mail.field_res_company_claim_sale_order_regexp
 msgid "Regular expression used to extract the sales order's number from the body of the emails."
-msgstr ""
-
-#. module: crm_claim_mail
-#: model:crm.claim.stage,name:crm_claim_mail.stage_response_received
-msgid "Response Received"
 msgstr ""
 
 #. module: crm_claim_mail
@@ -113,7 +183,20 @@ msgid "Send an email when a claim is created"
 msgstr ""
 
 #. module: crm_claim_mail
-#: help:res.company,mail_signature_template:0
-msgid "This is the mail signature template. You can add some variables :$user_signature : the current user signature$user_email : the current user email"
+#: model:ir.model.fields,field_description:crm_claim_mail.field_crm_claim_stage_state_6371
+msgid "State"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.model.fields,help:crm_claim_mail.field_qoqa_shop_mail_signature_template
+#: model:ir.model.fields,help:crm_claim_mail.field_res_company_mail_signature_template
+msgid "This is the mail signature template. You can add some variables :\n"
+"$user_signature : the current user signature\n"
+"$user_email : the current user email"
+msgstr ""
+
+#. module: crm_claim_mail
+#: model:ir.filters,name:crm_claim_mail.todo_filter
+msgid "ToDo"
 msgstr ""
 

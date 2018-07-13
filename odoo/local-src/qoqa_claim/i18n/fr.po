@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-22 08:05+0000\n"
+"POT-Creation-Date: 2018-07-09 10:59+0000\n"
 "PO-Revision-Date: 2018-04-26 15:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -340,6 +340,11 @@ msgid "Partner tags"
 msgstr "Etiquettes du partenaire"
 
 #. module: qoqa_claim
+#: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_picking_count
+msgid "Picking count"
+msgstr ""
+
+#. module: qoqa_claim
 #: model:ir.model.fields,field_description:qoqa_claim.field_crm_claim_product_id
 msgid "Product"
 msgstr "Article"
@@ -464,8 +469,8 @@ msgid ""
 "The counter shows SO from all companies but the action only open SO from "
 "current users companies"
 msgstr ""
-"Le compteur indique les ventes de toutes les sociétés, mais l'action "
-"ouvre seulement les ventes des sociétés de l'utilisateur actif."
+"Le compteur indique les ventes de toutes les sociétés, mais l'action ouvre "
+"seulement les ventes des sociétés de l'utilisateur actif."
 
 #. module: qoqa_claim
 #: model:ir.ui.view,arch_db:qoqa_claim.view_crm_claim_search_qoqa_claim

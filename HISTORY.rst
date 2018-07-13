@@ -36,6 +36,8 @@ latest (unreleased)
 * BSQOQ-90: Fix unnamed packages preventing the unpack script from running
 * BSQOQ-85: Check if picking have move_line before assign
 * BSQOQ-98: Add code to log crm.stage creation
+* BSQOQ-96: Fix xmlid for `stage_response_received`.
+  Set noupdate = false to `stage_response_received` record.
 
 **Build**
 * Update from odoo-template

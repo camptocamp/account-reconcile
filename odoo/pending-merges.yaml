@@ -86,8 +86,6 @@
     - oca 9.0
     # port stock_split_picking
     - oca refs/pull/201/head
-    # batch picking : add product information on lines containing a package
-    - oca refs/pull/334/head
   target: *default_target
 ./src:
   remotes:

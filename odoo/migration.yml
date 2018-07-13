@@ -417,3 +417,6 @@ migration:
           - qoqa_claim
           - specific_report
           - account_financial_report_qweb
+          # OCA/stock-logistics-workflow
+          - stock_batch_picking
+          - stock_picking_mass_assign

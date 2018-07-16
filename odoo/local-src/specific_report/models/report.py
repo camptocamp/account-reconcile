@@ -38,6 +38,8 @@ class Report(models.Model):
             attachment_ids = att_obj.search(
                 cr, uid, [('res_id', 'in', docids),
                           ('res_model', '=', 'stock.batch.picking')],
+                order='create_date DESC',
+                limit=len(docids),
                 context=context
             )
             attachments = att_obj.browse(cr, uid, attachment_ids, context)
@@ -65,7 +67,9 @@ class Report(models.Model):
 
             attachments = self.env['ir.attachment'].search(
                 [('res_id', 'in', docids),
-                 ('res_model', '=', 'stock.batch.picking')]
+                 ('res_model', '=', 'stock.batch.picking')],
+                order='create_date DESC',
+                limit=len(docids),
             )
             number_empty_labels = self.env.user.company_id.number_empty_labels
             return self.process_report(attachments, number_empty_labels)

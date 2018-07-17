@@ -142,6 +142,15 @@
     # module account_move_batch_validate
     - oca refs/pull/602/head
   target: *default_target
+./external-src/account-financial-reporting:
+  remotes:
+    oca: git@github.com:OCA/account-financial-reporting.git
+    camptocamp: git@github.com:camptocamp/account-financial-reporting.git
+  merges:
+    - oca 2792cb216e93dd04f5655e1fee19285dd4af4b46
+    # Improve transient models cleaning
+    - oca refs/pull/441/head
+  target: *default_target
 ./external-src/connector:
   remotes:
     oca: git@github.com:OCA/connector.git

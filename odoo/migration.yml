@@ -416,3 +416,4 @@ migration:
         upgrade:
           - qoqa_claim
           - specific_report
+          - account_financial_report_qweb

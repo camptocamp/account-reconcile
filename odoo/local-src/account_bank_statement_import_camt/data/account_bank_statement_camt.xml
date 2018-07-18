@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<openerp>
+
+    <record id="camt_pfyp" model="account.bank.statement.camt">
+        <field name="name">PFYP</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_postfinance"/>
+        <field name="memo_text">Virement Postfinance</field>
+    </record>
+
+    <record id="camt_pfaq" model="account.bank.statement.camt">
+        <field name="name">PFAQ</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_postfinance"/>
+        <field name="memo_text">Virement Postfinance</field>
+    </record>
+
+    <record id="camt_six_payment_services" model="account.bank.statement.camt">
+        <field name="name">SIX PAYMENT SERVICES</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_six_payment_services"/>
+        <field name="memo_text">Virement Six</field>
+    </record>
+
+    <record id="camt_paypal" model="account.bank.statement.camt">
+        <field name="name">PAYPAL</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_paypal"/>
+        <field name="memo_text">Virement Paypal</field>
+    </record>
+
+    <record id="camt_swissbilling" model="account.bank.statement.camt">
+        <field name="name">SWISSBILLING</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_swissbilling"/>
+        <field name="memo_text">Virement Swissbilling</field>
+    </record>
+
+    <record id="camt_swisscard" model="account.bank.statement.camt">
+        <field name="name">SWISSCARD</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_swisscard"/>
+        <field name="memo_text">Virement American Express</field>
+    </record>
+
+    <record id="camt_twint_ag" model="account.bank.statement.camt">
+        <field name="name">TWINT AG</field>
+        <field name="partner_id" ref="account_bank_statement_import_camt.account_twint"/>
+        <field name="memo_text">Virement Twint</field>
+    </record>
+
+</openerp>

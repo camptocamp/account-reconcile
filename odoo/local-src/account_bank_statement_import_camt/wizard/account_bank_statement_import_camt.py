@@ -46,26 +46,12 @@ class AccountBankStatementImport(models.TransientModel):
     def _parse_file_camt(self, root):
 
         def find_partner_and_name(entry_text):
-            if "PFYP" in entry_text:
-                # PostFinance partner
-                return (667295, "Virement Postfinance")
-            elif "SIX PAYMENT SERVICES" in entry_text:
-                # Visa/MasterCard partner
-                return (667296, "Virement Six")
-            elif "PAYPAL" in entry_text:
-                # PayPal partner
-                return (667297, "Virement Paypal")
-            elif "SWISSBILLING" in entry_text:
-                # Swissbilling partner
-                return (865751, "Virement Swissbilling")
-            elif "SWISSCARD" in entry_text:
-                # AmericanExpress partner
-                return (1052745, "Virement American Express")
-            elif "TWINT AG" in entry_text:
-                # TWINT partner
-                return (6789054, "Virement Twint")
-            else:
-                return (False, entry_text)
+            camt = self.env['account.bank.statement.camt'].search([
+                ('name', 'ilike', entry_text),
+            ], limit=1)
+            if camt:
+                return (camt.partner_id.id, camt.memo_text)
+            return (False, entry_text)
 
         ns = {k or 'ns': v for k, v in root.nsmap.iteritems()}
         statement_list = []

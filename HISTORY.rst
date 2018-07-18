@@ -23,6 +23,18 @@ latest (unreleased)
 
 **Features and Improvements**
 
+**Bugfixes**
+
+**Build**
+
+**Documentation**
+
+
+9.46.0 (2018-07-18)
++++++++++++++++++++
+
+**Features and Improvements**
+
 * BSQOQ-101: When "Carrier Delivery labels" is printed just print last attachment from batch pickings
 * BSQOQ-86: Configure 8 empty labels instead of one between 2 batch pickings
 * BSQOQ-81: On the crm_claim notification, we removed the notification when
@@ -45,8 +57,6 @@ latest (unreleased)
 **Build**
 * Update from odoo-template
 * Update Dockerimage to X-2.6.1
-
-**Documentation**
 
 
 9.45.2 (2018-06-29)

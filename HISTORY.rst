@@ -39,6 +39,7 @@ latest (unreleased)
 * BSQOQ-96: Fix xmlid for `stage_response_received`.
   Set noupdate = false to `stage_response_received` record.
 * BSQOQ-97: Fix transient cleaning in OCA module `account_financial_report_qweb`
+* BSQOQ-92: Fix cancelled pickings appearing in the batch pickings report
 
 **Build**
 * Update from odoo-template

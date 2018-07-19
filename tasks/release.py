@@ -59,12 +59,12 @@ def push_branches(ctx, force=False):
     if not force:
         check_git_diff(ctx)
     print('Pushing pending-merge branches...')
-    with open(PENDING_MERGES, 'ru') as f:
+    with open(PENDING_MERGES, 'rU') as f:
         merges = yaml.load(f.read())
         if not merges:
             print('Nothing to push')
             return
-        for path, setup in merges.iteritems():
+        for path, setup in merges.items():
             print('pushing {}'.format(path))
             with cd(build_path(path, from_file=PENDING_MERGES)):
                 try:

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+This file has been generated with 'invoke project.sync'.
+Do not modify. Any manual change will be lost.
+Please propose your modification on
+https://github.com/camptocamp/odoo-template instead.
+-->
 <odoo>
     <record id="action_camptocamp_versions" model="ir.actions.act_url">
         <field name="name">Camptocamp Versions</field>

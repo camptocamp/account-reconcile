@@ -22,3 +22,13 @@ If the container does not exist on this project because it's older than this, yo
 * Add the `server_environment_file` config in the `dev` profile
 
 Using this commit as reference: https://github.com/guewen/odoo-template/commit/0645e82ac104c444015ba54fbe9706dce4c4d2bf
+
+## MailTrap
+
+In integration and test environment, [mailtrap.io](https://mailtrap.io) is used.
+
+To create a new account for a project, use the email address that can be found on the specific project page (tab "Other Info") of our Odoo instance and a random password.
+
+The confirmation email of mailtrap.io will appear in the issues of the corresponding project.
+
+Don't forget to add an entry in lastpass.

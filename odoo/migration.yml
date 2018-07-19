@@ -409,6 +409,7 @@ migration:
           - specific_fct
           - purchase_autoconfirm
     - version: 9.46.0
+    - version: 9.46.1
       operations:
         pre:
           - anthem songs.upgrade.9_46_0::pre
@@ -422,3 +423,5 @@ migration:
           # OCA/stock-logistics-workflow
           - stock_batch_picking
           - stock_picking_mass_assign
+          - specific_fct
+          - purchase_autoconfirm

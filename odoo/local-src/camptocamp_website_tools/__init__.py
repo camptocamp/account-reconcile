@@ -3,4 +3,4 @@
 # Please propose your modification on
 # https://github.com/camptocamp/odoo-template instead.
 from . import controllers
-from . import models
+from .hooks import post_init_hook, uninstall_hook

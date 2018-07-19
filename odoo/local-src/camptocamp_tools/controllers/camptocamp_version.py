@@ -5,9 +5,10 @@
 # https://github.com/camptocamp/odoo-template instead.
 #  Copyright 2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import http, _
-from odoo.http import request
-from odoo.exceptions import UserError
+
+from openerp import http, _
+from openerp.http import request
+from openerp.exceptions import UserError
 
 
 class CamptocampVersionController(http.Controller):

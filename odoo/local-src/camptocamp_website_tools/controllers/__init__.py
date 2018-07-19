@@ -2,5 +2,4 @@
 # Do not modify. Any manual change will be lost.
 # Please propose your modification on
 # https://github.com/camptocamp/odoo-template instead.
-from . import controllers
-from . import models
+from . import disable_website_info

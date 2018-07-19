@@ -52,11 +52,12 @@ def demo_to_sample(ctx):
 
     # docker-compose.overide.yml
     path = build_path('docker-compose.override.yml')
-    search_replace(
-        path,
-        '- MARABUNTA_MODE=demo',
-        '- MARABUNTA_MODE=sample')
-    change_list.append(path)
+    if os.path.exists(path):
+        search_replace(
+            path,
+            '- MARABUNTA_MODE=demo',
+            '- MARABUNTA_MODE=sample')
+        change_list.append(path)
 
     # odoo/migration.yml
     path = MIGRATION_FILE
@@ -74,7 +75,6 @@ def demo_to_sample(ctx):
     with open(MIGRATION_FILE) as f:
         data = yaml.load(f.read())
 
-    data['migration']['versions']
     for x in data['migration']['versions']:
         if 'modes' in x and 'demo' in x['modes']:
             x['modes']['sample'] = x['modes']['demo']
@@ -85,27 +85,30 @@ def demo_to_sample(ctx):
 
     # test.yml
     path = build_path('odoo/songs/install/data_all.py')
-    search_replace(
-         path,
-         "The data loaded here will be loaded in the 'demo' and",
-         "The data loaded here will be loaded in the 'sample' and")
-    change_list.append(path)
+    if os.path.exists(path):
+        search_replace(
+             path,
+             "The data loaded here will be loaded in the 'demo' and",
+             "The data loaded here will be loaded in the 'sample' and")
+        change_list.append(path)
 
     # test.yml
     path = build_path('test.yml')
-    search_replace(
-        path,
-        '- MARABUNTA_MODE=demo',
-        '- MARABUNTA_MODE=sample')
-    change_list.append(path)
+    if os.path.exists(path):
+        search_replace(
+            path,
+            '- MARABUNTA_MODE=demo',
+            '- MARABUNTA_MODE=sample')
+        change_list.append(path)
 
     # travis/minion-files/rancher.list
     path = build_path('travis/minion-files/rancher.list')
-    search_replace(
-         path,
-         'MARABUNTA_MODE=demo',
-         'MARABUNTA_MODE=sample')
-    change_list.append(path)
+    if os.path.exists(path):
+        search_replace(
+             path,
+             'MARABUNTA_MODE=demo',
+             'MARABUNTA_MODE=sample')
+        change_list.append(path)
 
     ctx.run('git add {}'.format(' '.join(change_list)))
 
@@ -141,11 +144,12 @@ def demo_to_sample(ctx):
 
     # Change strings referencing 'data/demo' to 'data/sample'
     path = build_path('odoo/songs/sample/data_sample.py')
-    search_replace(
-         path,
-         'data/demo',
-         'data/sample')
-    change_list.append(path)
+    if os.path.exists(path):
+        search_replace(
+             path,
+             'data/demo',
+             'data/sample')
+        change_list.append(path)
 
     ctx.run('git add odoo/songs/sample')
 

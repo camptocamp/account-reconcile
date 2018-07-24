@@ -31,6 +31,7 @@ latest (unreleased)
 * BSQOQ-61: Add cron to autoconfirm PO
 * BSQOQ-63: Display deliveries counter on smart button on claims
 * BSQOQ-91: update the account_bank_statement_import_camt partner management
+* BSQOQ-105: Fix for BSQOQ-63 : correct picking counter
 
 **Bugfixes**
 

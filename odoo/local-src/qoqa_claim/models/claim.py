@@ -121,11 +121,24 @@ class CrmClaim(models.Model):
         for rec in self:
             rec.is_user_current = rec.user_id == self.env.user
 
+    def _get_top_company(self, partner_id):
+        while partner_id.parent_id:
+            partner_id = partner_id.parent_id
+        return partner_id
+
     @api.depends('partner_id')
     def _compute_picking_count(self):
         for rec in self:
-            rec.picking_count = self.env['stock.picking'].search_count(
-                [('partner_id', '=', rec.partner_id.id)])
+            top_partner_id = self._get_top_company(rec.partner_id)
+            full_partner_list = self.env['res.partner'].with_context(
+                active_test=False).search(
+                    [('parent_id', 'child_of', [top_partner_id.id])])
+            if full_partner_list:
+                rec.picking_count = self.env['stock.picking'].with_context(
+                    active_test=False).search_count(
+                    [('partner_id', 'in', full_partner_list.ids)])
+            else:
+                rec.picking_count = 0.0
 
     @api.depends('description')
     def _get_plain_text_description(self):

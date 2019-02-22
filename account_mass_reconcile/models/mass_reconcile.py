@@ -4,11 +4,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime
-from openerp import models, api, fields, _
+from openerp import models, api, fields, exceptions, _
 from openerp.exceptions import Warning as UserError
 from openerp import sql_db
 
+import psycopg2
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -162,6 +164,14 @@ class AccountMassReconcile(models.Model):
                 'filter': rec_method.filter}
 
     @api.multi
+    def _run_reconcile_method(self, reconcile_method):
+        rec_model = self.env[reconcile_method.name]
+        auto_rec_id = rec_model.create(
+            self._prepare_run_transient(reconcile_method)
+        )
+        return auto_rec_id.automatic_reconcile()
+
+    @api.multi
     def run_reconcile(self):
         def find_reconcile_ids(fieldname, move_line_ids):
             if not move_line_ids:
@@ -178,28 +188,36 @@ class AccountMassReconcile(models.Model):
         # often. We have to create it here and not later to avoid problems
         # where the new cursor sees the lines as reconciles but the old one
         # does not.
-
         for rec in self:
+            # SELECT FOR UPDATE the mass reconcile row ; this is done in order
+            # to avoid 2 processes on the same mass reconcile method.
+            try:
+                self.env.cr.execute('SELECT id FROM account_mass_reconcile'
+                                    ' WHERE id = %s'
+                                    ' FOR UPDATE NOWAIT', (rec.id,))
+            except psycopg2.OperationalError:
+                raise exceptions.UserError(
+                    'A mass reconcile is already ongoing for this account, '
+                    'please try again later.')
+
             ctx = self.env.context.copy()
             ctx['commit_every'] = (
                 rec.account.company_id.reconciliation_commit_every
             )
             if ctx['commit_every']:
                 new_cr = sql_db.db_connect(self.env.cr.dbname).cursor()
+                new_env = api.Environment(new_cr, self.env.uid, ctx)
             else:
                 new_cr = self.env.cr
+                new_env = self.env
 
             try:
                 all_ml_rec_ids = []
 
                 for method in rec.reconcile_method:
-                    rec_model = self.env[method.name]
-                    auto_rec_id = rec_model.create(
-                        self._prepare_run_transient(method)
-                        )
-
-                    ml_rec_ids = auto_rec_id.automatic_reconcile()
-
+                    ml_rec_ids = self.with_env(new_env)._run_reconcile_method(
+                        method
+                    )
                     all_ml_rec_ids += ml_rec_ids
 
                 reconcile_ids = find_reconcile_ids(
@@ -220,10 +238,10 @@ class AccountMassReconcile(models.Model):
                 # the cron will just loop on this reconcile task.
                 _logger.exception(
                     "The reconcile task %s had an exception: %s",
-                    rec.name, e.message
+                    rec.name, e
                 )
                 message = _("There was an error during reconciliation : %s") \
-                    % e.message
+                    % e
                 rec.message_post(body=message)
                 self.env['mass.reconcile.history'].create(
                     {

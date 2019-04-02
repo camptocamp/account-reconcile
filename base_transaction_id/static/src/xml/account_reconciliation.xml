@@ -2,10 +2,24 @@
 
 <templates xml:space="preserve">
 
-  <t t-name="reconciliation.line.mv_line" t-inherit="account.reconciliation.line.mv_line">
-    <xpath expr="//td[@class='cell_label']" position="inside">
-      <t t-if="line.transaction_ref"> (<t t-esc="line.transaction_ref"/>)</t>
-    </xpath>
+  <t t-extend="reconciliation.line.mv_line">
+    <t t-jquery=".cell_label" t-operation="replace">
+      <!-- I am replacing this, as there is no component inside, that I can find with jquery -->
+      <td class="cell_label">
+        <span id="cell_label_value">
+          <t t-if="line.partner_id &amp;&amp; line.partner_id !== state.st_line.partner_id">
+            <t t-if="line.partner_name.length">
+              <t t-esc="line.partner_name"/>:
+            </t>
+          </t>
+          <t t-esc="line.label || line.name"/>
+          <t t-if="line.ref &amp;&amp; line.ref.length"> : </t>
+          <t t-esc="line.ref"/>
+        <!-- Added line here -->
+        <t t-if="line.transaction_ref"> (<t t-esc="line.transaction_ref"/>)</t>
+        </span>
+      </td>
+    </t>
   </t>
 
 </templates>

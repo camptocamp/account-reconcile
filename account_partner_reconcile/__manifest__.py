@@ -12,7 +12,7 @@
     'category': 'Finance',
     'license': 'AGPL-3',
     'data': [
-        'report/account_move_lines_report.xml'
+        'report/account_move_lines_report.xml',
     ],
     'installable': True,
 }

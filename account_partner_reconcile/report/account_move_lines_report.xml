@@ -1,0 +1,24 @@
+<odoo>
+        <record id="view_account_move_reconciled_report_tree" model="ir.ui.view">
+            <field name="name">Account Move Lines</field>
+            <field name="model">account.move.reconciled.report</field>
+            <field name="arch" type="xml">
+                <tree string="Account Move Lines">
+                <!-- links are not clickable in tree view 
+                only after open form view -->
+                    <field name="account_move_id" widget="many2one"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_move_reconciled_report" model="ir.actions.act_window">
+            <field name="name">Reconciled Journal Items above the rules</field>
+            <field name="res_model">account.move.reconciled.report</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_account_move_reconciled_report"
+                  parent="account.menu_finance_entries" sequence="80"
+                  action="action_account_move_reconciled_report"
+                  name="Reconciled move lines under the rule"/>
+</odoo>

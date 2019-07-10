@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2011 Akretion
 # © 2011-2016 Camptocamp SA
 # © 2013 Savoir-faire Linux

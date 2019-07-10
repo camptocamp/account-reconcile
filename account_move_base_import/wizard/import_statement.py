@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2011-2016 Akretion
 # © 2011-2016 Camptocamp SA
 # © 2013 Savoir-faire Linux
@@ -19,8 +18,8 @@ class CreditPartnerStatementImporter(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        ctx = self._context
-        res = {}
+        res = super().default_get(fields)
+        ctx = self.env.context
         if (
                 ctx.get('active_model') == 'account.journal' and
                 ctx.get('active_ids')):

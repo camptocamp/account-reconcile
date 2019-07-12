@@ -12,7 +12,8 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def reconcile(self, writeoff_acc_id=False, writeoff_journal_id=False):
-        if config['test_enable']:
+        if (config['test_enable']
+                and not self.env.context.get('specific_tests')):
             return super(AccountMoveLine, self).reconcile(
                 writeoff_acc_id, writeoff_journal_id)
 
@@ -26,7 +27,7 @@ class AccountMoveLine(models.Model):
         if len(partners) > 1:
             raise UserError(_('The partner has to be the same on all'
                               ' lines for receivable and payable accounts!'))
-        if len(partners) and not all([l.partner_id for l in self]):
+        if len(partners) > 1 and not all([l.partner_id for l in self]):
             raise UserError(_('You cannot match entries with and '
                               'without partner!'))
         return super(AccountMoveLine, self).reconcile(

@@ -7,11 +7,8 @@ import traceback
 import sys
 import logging
 
-import psycopg2
-
-from odoo import _, api, fields, models, registry
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_repr
 
 
 _logger = logging.getLogger(__name__)

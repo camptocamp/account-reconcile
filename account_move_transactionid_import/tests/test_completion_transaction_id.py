@@ -144,4 +144,4 @@ class TestCompletionTransactionId(SingleTransactionCase):
         invoice.action_invoice_open()
         self.assertEqual(invoice.state, 'open')
         self.move.button_auto_completion()
-        self.assertEqual(self.move_line.partner_id.name, self.partner.name)
+        self.assertEqual(self.move_line.partner_id, self.partner)

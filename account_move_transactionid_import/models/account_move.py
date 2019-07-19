@@ -40,8 +40,7 @@ class AccountMoveCompletionRule(models.Model):
                 _('Line named "%s" was matched by more than '
                   'one partner.') % line.name)
         if len(sales) == 1:
-            sale = sales[0]
-            res['partner_id'] = sale.partner_id.id
+            res['partner_id'] = sales[0].partner_id.id
         return res
 
     def get_from_transaction_id_and_invoice(self, line):

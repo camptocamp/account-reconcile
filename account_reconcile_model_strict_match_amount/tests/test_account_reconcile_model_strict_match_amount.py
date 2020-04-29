@@ -16,7 +16,7 @@ class TestAccountReconcileModelStrictMatchAmount(TestReconciliationMatchingRules
         self.invoice_line_6 = self._create_invoice_line(
             300, self.partner_4, 'out_invoice'
         )
-        self.invoice_line_5.name = 'ABC002XYZ'
+        self.invoice_line_6.name = 'ABC002XYZ'
 
         self.bank_st_2 = self.env['account.bank.statement'].create({
             'name': 'test bank journal 2', 'journal_id': self.bank_journal.id,

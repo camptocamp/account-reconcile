@@ -19,6 +19,9 @@ class AccountInvoice(models.Model):
         """Propagate the transaction_id from the invoice to the move ref."""
         res = super().action_move_create()
         for invoice in self:
-            if invoice.transaction_id:
+            if invoice.transaction_id and invoice.move_id.ref:
+                # TODO add a test
+                invoice.move_id.ref += ' ' + invoice.transaction_id
+            elif invoice.transaction_id:
                 invoice.move_id.ref = invoice.transaction_id
         return res

@@ -1,4 +1,4 @@
-# Copyright 2017-2019 Camptocamp SA
+# Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
 import ast
@@ -59,24 +59,10 @@ def _rec_as_job(self, lines, allow_partial=False):
                     priority=40)
     return True, False
 
-
 class MassReconcileAdvancedRef(models.TransientModel):
     _inherit = 'mass.reconcile.advanced.ref'
 
     # TODO move method to a base class since it's the same for all classes?
-    @api.multi
-    def _reconcile_lines(self, lines, allow_partial=False):
-        if self.env.context.get('mass_reconcile_as_job'):
-            return _rec_as_job(self, lines, allow_partial=allow_partial)
-        else:
-            return super()._reconcile_lines(
-                lines, allow_partial=allow_partial
-            )
-
-
-class MassReconcileAdvancedTransactionRef(models.TransientModel):
-    _inherit = 'mass.reconcile.advanced.transaction_ref'
-
     @api.multi
     def _reconcile_lines(self, lines, allow_partial=False):
         if self.env.context.get('mass_reconcile_as_job'):
@@ -100,18 +86,18 @@ class MassReconcileAdvancedTransRefvsRef(models.TransientModel):
             )
 
 
-class MassReconcileReconcileRefDeepSearch(models.TransientModel):
-    # account_mass_reconcile_ref_deep_search
-    _inherit = 'mass.reconcile.advanced.ref.deep.search'
+# move to glue addon?
+# class MassReconcileReconcileRefDeepSearch(models.TransientModel):
+#     _inherit = 'mass.reconcile.advanced.ref.deep.search'
 
-    @api.multi
-    def _reconcile_lines(self, lines, allow_partial=False):
-        if self.env.context.get('mass_reconcile_as_job'):
-            return _rec_as_job(self, lines, allow_partial=allow_partial)
-        else:
-            return super()._reconcile_lines(
-                lines, allow_partial=allow_partial
-            )
+#     @api.multi
+#     def _reconcile_lines(self, lines, allow_partial=False):
+#         if self.env.context.get('mass_reconcile_as_job'):
+#             return _rec_as_job(self, lines, allow_partial=allow_partial)
+#         else:
+#             return super()._reconcile_lines(
+#                 lines, allow_partial=allow_partial
+#             )
 
 
 @job(default_channel='root.mass_reconcile')

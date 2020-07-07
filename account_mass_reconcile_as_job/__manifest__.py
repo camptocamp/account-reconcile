@@ -1,4 +1,4 @@
-# Copyright 2017-2019 Camptocamp SA
+# Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 {
     'name': 'Account Mass Reconcile as Jobs',
@@ -7,10 +7,8 @@
     'depends': [
         'connector',
         'account_mass_reconcile',
-        #  TODO: not yet migrated to 12.0
-        'account_mass_reconcile_transaction_ref',
-        #  TODO: not yet migrated to 12.0
-        'account_mass_reconcile_ref_deep_search',
+        # 'account_mass_reconcile_transaction_ref', # disable
+        'account_mass_reconcile_ref_deep_search', # move to glue addon
     ],
     'author': 'Camptocamp, '
               'Odoo Community Association (OCA)',

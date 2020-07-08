@@ -2,6 +2,7 @@
 <odoo noupdate="1">
     <record id="config_param_mass_reconcile_as_job" model="ir.config_parameter">
         <field name="key">account.mass.reconcile.as.job</field>
-        <field name="value">True</field>
+        <!-- keep key creation with False to avoid test conflicts -->
+        <field name="value">False</field>
     </record>
 </odoo>

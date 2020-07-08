@@ -7,8 +7,6 @@
     'depends': [
         'connector',
         'account_mass_reconcile',
-        # 'account_mass_reconcile_transaction_ref', # disable
-        'account_mass_reconcile_ref_deep_search', # move to glue addon
     ],
     'author': 'Camptocamp, '
               'Odoo Community Association (OCA)',

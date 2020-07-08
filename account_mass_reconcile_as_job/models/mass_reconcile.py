@@ -1,16 +1,16 @@
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
+import ast
 import logging
+
+_logger = logging.getLogger(__name__)
 
 from odoo import api, models
 try:
     from odoo.addons.queue_job.job import job
 except ImportError:
     _logger.debug('Can not `import queue_job`.')
-
-
-_logger = logging.getLogger(__name__)
 
 
 class AccountMassReconcile(models.Model):

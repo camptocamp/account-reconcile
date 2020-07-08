@@ -4,9 +4,10 @@
 import ast
 import logging
 
+from odoo import api, models
+
 _logger = logging.getLogger(__name__)
 
-from odoo import api, models
 try:
     from odoo.addons.queue_job.job import job
 except ImportError:

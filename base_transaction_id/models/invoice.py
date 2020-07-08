@@ -20,5 +20,6 @@ class AccountInvoice(models.Model):
         res = super().action_move_create()
         for invoice in self:
             if invoice.transaction_id:
-                invoice.move_id.ref = invoice.transaction_id
+                # TODO add a test
+                invoice.move_id.ref += ' ' + invoice.transaction_id
         return res

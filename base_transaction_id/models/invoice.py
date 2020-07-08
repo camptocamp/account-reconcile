@@ -22,6 +22,6 @@ class AccountInvoice(models.Model):
             if invoice.transaction_id and invoice.move_id.ref:
                 # TODO add a test
                 invoice.move_id.ref += ' ' + invoice.transaction_id
-            else:
+            elif invoice.transaction_id:
                 invoice.move_id.ref = invoice.transaction_id
         return res

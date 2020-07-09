@@ -5,7 +5,7 @@
     'version': '12.0.0.1.0',
     'category': 'Accounting',
     'depends': [
-        'connector',
+        'queue_job',
         'account_mass_reconcile',
     ],
     'author': 'Camptocamp, '

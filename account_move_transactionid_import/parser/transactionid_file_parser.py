@@ -15,7 +15,7 @@ class TransactionIDFileParser(FileParser):
 
     def __init__(
             self,
-            profile,
+            journal,
             ftype="csv",
             extra_fields=None,
             header=None,
@@ -36,20 +36,19 @@ class TransactionIDFileParser(FileParser):
             "commission_amount": float_or_zero,
         }
         super().__init__(
-            profile,
+            journal,
             extra_fields=conversion_dict,
             ftype=ftype,
             header=header,
             **kwargs
         )
-        self.support_multi_moves = True
 
     @classmethod
     def parser_for(cls, parser_name):
         """Used by the new_bank_statement_parser class factory. Return true if
         the providen name is generic_csvxls_transaction
         """
-        return parser_name == "generic_csvxls_transaction"
+        return False
 
     def get_move_line_vals(self, line, *args, **kwargs):
         """This method must return a dict of vals that can be passed to create
@@ -72,13 +71,15 @@ class TransactionIDFileParser(FileParser):
         store it for each one.
         """
         amount = line.get("amount", 0.0)
-        return {
+        vals = {
             "name": line.get("label", "/"),
             "date_maturity": line.get("date", datetime.datetime.now().date()),
             "credit": amount > 0.0 and amount or 0.0,
             "debit": amount < 0.0 and -amount or 0.0,
-            "ref": line.get("transaction_id", "/"),
         }
+        if self.support_multi_moves is not None:
+            vals["ref"] = line.get("transaction_id", "/")
+        return vals
 
     def get_move_vals(self):
         res = super().get_move_vals()
@@ -86,4 +87,47 @@ class TransactionIDFileParser(FileParser):
             res.pop("ref")
         if res.get("name") == "/":
             res["name"] = self.move_ref
+        if self.support_multi_moves is None and self.result_row_list is not None:
+            transaction_ids = [
+                row.get("transaction_id") for row in self.result_row_list
+            ]
+            if transaction_ids:
+                res["ref"] = " ".join(transaction_ids)
         return res
+
+
+class TransactionIDFileParserMulti(TransactionIDFileParser):
+
+    def __init__(
+        self,
+        journal,
+        ftype="csv",
+        extra_fields=None,
+        header=None,
+        **kwargs
+    ):
+        super().__init__(
+            journal,
+            extra_fields=extra_fields,
+            ftype=ftype,
+            header=header,
+            **kwargs
+        )
+        self.support_multi_moves = True
+
+    @classmethod
+    def parser_for(cls, parser_name):
+        """Used by the new_bank_statement_parser class factory. Return true if
+        the providen name is generic_csvxls_transaction
+        """
+        return parser_name == "generic_csvxls_transaction"
+
+
+class TransactionIDFileParserSingle(TransactionIDFileParser):
+
+    @classmethod
+    def parser_for(cls, parser_name):
+        """Used by the new_bank_statement_parser class factory. Return true if
+        the providen name is generic_csvxls_transaction_single
+        """
+        return parser_name == "generic_csvxls_transaction_single"

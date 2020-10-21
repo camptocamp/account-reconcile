@@ -9,8 +9,8 @@ from odoo.addons.account_move_base_import.parser.file_parser import (
 
 
 class TransactionIDFileParser(FileParser):
-    """TransactionID parser that use a define format in csv or xls to import
-    bank statement.
+    """Abstract TransactionID parser that use a define format in csv or xls to
+    import bank statement.
     """
 
     def __init__(
@@ -42,13 +42,6 @@ class TransactionIDFileParser(FileParser):
             header=header,
             **kwargs
         )
-
-    @classmethod
-    def parser_for(cls, parser_name):
-        """Used by the new_bank_statement_parser class factory. Return true if
-        the providen name is generic_csvxls_transaction
-        """
-        return False
 
     def get_move_line_vals(self, line, *args, **kwargs):
         """This method must return a dict of vals that can be passed to create
@@ -88,6 +81,7 @@ class TransactionIDFileParser(FileParser):
 
 
 class TransactionIDFileParserMulti(TransactionIDFileParser):
+    """TransactionID File parser to generate multiple moves per import"""
 
     def __init__(
         self,
@@ -120,6 +114,7 @@ class TransactionIDFileParserMulti(TransactionIDFileParser):
 
 
 class TransactionIDFileParserSingle(TransactionIDFileParser):
+    """TransactionID File parser to generate a single move per import"""
 
     @classmethod
     def parser_for(cls, parser_name):

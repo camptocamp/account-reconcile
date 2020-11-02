@@ -131,3 +131,8 @@ class TransactionIDFileParserSingle(TransactionIDFileParser):
         if transaction_ids:
             res["ref"] = " ".join(transaction_ids)
         return res
+
+    def get_move_line_vals(self, line, *args, **kwargs):
+        res = super().get_move_line_vals(line, *args, **kwargs)
+        res["name"] = line.get("transaction_id", "/")
+        return res

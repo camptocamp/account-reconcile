@@ -19,9 +19,18 @@ class AccountInvoice(models.Model):
         """Propagate the transaction_id from the invoice to the move ref."""
         res = super().action_move_create()
         for invoice in self:
-            if invoice.transaction_id and invoice.move_id.ref:
-                # TODO add a test
-                invoice.move_id.ref += ' ' + invoice.transaction_id
-            elif invoice.transaction_id:
-                invoice.move_id.ref = invoice.transaction_id
+            if invoice.transaction_id:
+                if invoice.move_id.ref:
+                    # TODO add a test
+                    invoice.move_id.ref += ' ' + invoice.transaction_id
+                else:
+                    invoice.move_id.ref = invoice.transaction_id
+                # change the 'name' of the account move line on the total
+                # balance line of the invoice. This is generally the last line
+                # -> start from the end to find a line with the account set to
+                # invoice.account_id
+                for line in invoice.move_id.line_ids.sorted(reverse=True):
+                    if line.account_id == invoice.account_id:
+                        line.name = invoice.transaction_id
+                        break
         return res

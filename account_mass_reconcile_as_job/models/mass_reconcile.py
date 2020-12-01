@@ -36,6 +36,5 @@ class AccountMassReconcile(models.Model):
 
     @job(default_channel='root.mass_reconcile')
     def reconcile_as_job(self):
-        """Run reconciliation with appropriate context key to interapt new job
-        creation"""
+        """Run reconciliation on a single account"""
         self.with_context(mass_reconcile_as_job=False).run_reconcile()

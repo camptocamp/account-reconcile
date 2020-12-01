@@ -29,7 +29,7 @@ class AccountMassReconcile(models.Model):
 
         for rec in self:
             if as_job and self.env.context.get('mass_reconcile_as_job', True):
-                self.with_delay().reconcile_as_job()
+                rec.with_delay().reconcile_as_job()
                 return True
             else:
                 return super(AccountMassReconcile, rec).run_reconcile()

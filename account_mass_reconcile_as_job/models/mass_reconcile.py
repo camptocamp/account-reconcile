@@ -27,12 +27,12 @@ class AccountMassReconcile(models.Model):
         except ValueError:
             as_job = False
 
-        for rec in self:
-            if as_job and self.env.context.get('mass_reconcile_as_job', True):
+        if as_job and self.env.context.get('mass_reconcile_as_job', True):
+            for rec in self:
                 rec.with_delay().reconcile_as_job()
-                return True
-            else:
-                return super(AccountMassReconcile, rec).run_reconcile()
+            return True
+        else:
+            return super().run_reconcile()
 
     @job(default_channel='root.mass_reconcile')
     def reconcile_as_job(self):

@@ -94,14 +94,14 @@ class MassReconcileAdvancedRef(models.TransientModel):
         yield ('ref', (move_line['ref'], move_line['name'])
 
         An OR is used between the values for the same key.
-        An AND is used between the differents keys.
+        An AND is used between the different keys.
 
         :param dict move_line: values of the move_line
         :yield: matchers as tuple ('matcher key', value(s))
         """
         yield ('partner_id', move_line['partner_id'])
         yield ('ref', ((move_line['name'] or '').lower().strip(),
-                       move_line['ref'].lower().strip()))
+                       (move_line['ref'] or '').lower().strip()))
 
 
 class MassReconcileAdvancedLabel(models.TransientModel):

@@ -1,6 +1,6 @@
 # Copyright 2020 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class AccountReconcileModel(models.Model):
@@ -13,11 +13,13 @@ class AccountReconcileModel(models.Model):
         "statement line communication matching exactly existing entries.",
     )
 
+    # flake8: noqa
+
     def _get_select_communication_flag(self):
         if not self.match_total_amount or not self.strict_match_total_amount:
             return super()._get_select_communication_flag()
         else:
-            return r'''
+            return r"""
                 -- Determine a matching or not with the statement line communication using the aml.name, move.name or move.ref.
                 COALESCE(
                 (
@@ -47,13 +49,15 @@ class AccountReconcileModel(models.Model):
                     WHEN abs(st_line.amount) > abs(aml.balance) THEN abs(aml.balance) / abs(st_line.amount) * 100
                     ELSE 100
                 END >= {match_total_amount_param} AS communication_flag
-            '''.format(match_total_amount_param=self.match_total_amount_param)
+            """.format(
+                match_total_amount_param=self.match_total_amount_param
+            )
 
     def _get_select_payment_reference_flag(self):
         if not self.match_total_amount or not self.strict_match_total_amount:
             return super()._get_select_payment_reference_flag()
         else:
-            return r'''
+            return r"""
                 -- Determine a matching or not with the statement line communication using the move.invoice_payment_ref.
                 COALESCE
                 (
@@ -67,4 +71,6 @@ class AccountReconcileModel(models.Model):
                     WHEN abs(st_line.amount) > abs(aml.balance) THEN abs(aml.balance) / abs(st_line.amount) * 100
                     ELSE 100
                 END >= {match_total_amount_param} AS payment_reference_flag
-            '''.format(match_total_amount_param=self.match_total_amount_param)
+            """.format(
+                match_total_amount_param=self.match_total_amount_param
+            )

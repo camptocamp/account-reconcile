@@ -13,26 +13,18 @@ class TestAccountReconcileModelStrictMatchAmount(TestReconciliationMatchingRules
         cls.partner_4 = cls.env["res.partner"].create({"name": "partner_4"})
         cls.partner_5 = cls.env["res.partner"].create({"name": "partner_5"})
         cls.partner_6 = cls.env["res.partner"].create({"name": "partner_6"})
-        cls.invoice_line_5 = cls._create_invoice_line(
-            150, cls.partner_3, "out_invoice"
-        )
+        cls.invoice_line_5 = cls._create_invoice_line(150, cls.partner_3, "out_invoice")
         cls.invoice_line_5.ref = "ABC001XYZ"
-        cls.invoice_line_6 = cls._create_invoice_line(
-            300, cls.partner_4, "out_invoice"
-        )
+        cls.invoice_line_6 = cls._create_invoice_line(300, cls.partner_4, "out_invoice")
         cls.invoice_line_6.name = "ABC002XYZ"
-        cls.invoice_line_7 = cls._create_invoice_line(
-            450, cls.partner_5, "out_invoice"
-        )
+        cls.invoice_line_7 = cls._create_invoice_line(450, cls.partner_5, "out_invoice")
         cls.invoice_line_7.move_id.ref = "ABC003XYZ"
-        cls.invoice_line_8 = cls._create_invoice_line(
-            600, cls.partner_6, "out_invoice"
-        )
+        cls.invoice_line_8 = cls._create_invoice_line(600, cls.partner_6, "out_invoice")
         cls.invoice_line_8.move_id.invoice_payment_ref = "ABC004XYZ"
         cls.bank_st_2 = cls.env["account.bank.statement"].create(
             {
                 "name": "test bank journal 2",
-                "journal_id": cls.company_data['default_journal_bank'].id,
+                "journal_id": cls.company_data["default_journal_bank"].id,
             }
         )
 

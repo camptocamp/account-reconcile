@@ -207,11 +207,10 @@ class AccountMassReconcile(models.Model):
         # does not.
 
         for rec in self:
-            ctx = self.env.context.copy()
-            ctx['commit_every'] = (
+            commit_every = (
                 rec.account.company_id.reconciliation_commit_every
             )
-            if ctx['commit_every']:
+            if commit_every:
                 new_cr = sql_db.db_connect(self.env.cr.dbname).cursor()
             else:
                 new_cr = self.env.cr
@@ -260,7 +259,7 @@ class AccountMassReconcile(models.Model):
                     }
                 )
             finally:
-                if ctx['commit_every']:
+                if commit_every:
                     new_cr.commit()
                     new_cr.close()
 

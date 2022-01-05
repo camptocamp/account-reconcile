@@ -5,7 +5,8 @@
 import logging
 from itertools import product
 
-from odoo import models, api
+import odoo
+from odoo import models, api, sql_db
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
@@ -214,16 +215,43 @@ class MassReconcileAdvanced(models.AbstractModel):
         """
         return False
 
+    def _rec_group(self, reconcile_groups, lines_by_id):
+        reconciled_ids = []
+        for group_count, reconcile_group_ids \
+                in enumerate(reconcile_groups, start=1):
+
+            _logger.debug("Reconciling group %d/%d with ids %s",
+                          group_count, len(reconcile_groups),
+                          reconcile_group_ids)
+            group_lines = [lines_by_id[lid]
+                           for lid in reconcile_group_ids]
+            reconciled, full = self._reconcile_lines(group_lines,
+                                                     allow_partial=True)
+            if reconciled and full:
+                reconciled_ids += reconcile_group_ids
+        return reconciled_ids
+
+    def _rec_group_by_chunk(self, reconcile_groups, lines_by_id, chunk_size):
+        """Commit after each chunk"""
+        reconciled_ids = []
+
+        _logger.info("Reconciling by chunk of %d", chunk_size)
+        for i in range(0, len(reconcile_groups), chunk_size):
+            with odoo.api.Environment.manage():
+                with odoo.registry(self.env.cr.dbname).cursor() as new_cr:
+                    new_env = api.Environment(new_cr, self.env.uid, self.env.context)
+                    chunk = reconcile_groups[i:i + chunk_size]
+                    self_env = self.with_env(new_env)
+                    reconciled_ids += self_env._rec_group(chunk, lines_by_id)
+        return reconciled_ids
+
     @api.multi
     def _rec_auto_lines_advanced(self, credit_lines, debit_lines):
         """ Advanced reconciliation main loop """
         reconciled_ids = []
         for rec in self:
+            commit_every = rec.account_id.company_id.reconciliation_commit_every
             reconcile_groups = []
-            ctx = self.env.context.copy()
-            ctx['commit_every'] = (
-                rec.account_id.company_id.reconciliation_commit_every
-            )
             _logger.info("%d credit lines to reconcile", len(credit_lines))
             for idx, credit_line in enumerate(credit_lines, start=1):
                 if idx % 50 == 0:
@@ -250,22 +278,9 @@ class MassReconcileAdvanced(models.AbstractModel):
                                 for l in credit_lines + debit_lines])
             _logger.info("Found %d groups to reconcile",
                          len(reconcile_groups))
-            for group_count, reconcile_group_ids \
-                    in enumerate(reconcile_groups, start=1):
-                _logger.debug("Reconciling group %d/%d with ids %s",
-                              group_count, len(reconcile_groups),
-                              reconcile_group_ids)
-                group_lines = [lines_by_id[lid]
-                               for lid in reconcile_group_ids]
-                reconciled, full = self._reconcile_lines(group_lines,
-                                                         allow_partial=True)
-                if reconciled and full:
-                    reconciled_ids += reconcile_group_ids
-
-                if (ctx['commit_every'] and
-                        group_count % ctx['commit_every'] == 0):
-                    self.env.cr.commit()
-                    _logger.info("Commit the reconciliations after %d groups",
-                                 group_count)
+            if commit_every:
+                reconciled_ids = self._rec_group_by_chunk(reconcile_groups, lines_by_id, commit_every)
+            else:
+                reconciled_ids = self._rec_group(reconcile_groups, lines_by_id)
             _logger.info("Reconciliation is over")
         return reconciled_ids

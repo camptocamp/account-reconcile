@@ -1,0 +1,1 @@
+odoo14-addon-account_mass_reconcile @git+https://github.com/OCA/account-reconcile@refs/pull/371/head#subdirectory=setup/account_mass_reconcile

@@ -1,1 +1,2 @@
 odoo14-addon-account_mass_reconcile @git+https://github.com/OCA/account-reconcile@refs/pull/371/head#subdirectory=setup/account_mass_reconcile
+odoo14-addon-base_transaction_id @git+https://github.com/OCA/account-reconcile@refs/pull/422/head#subdirectory=setup/base_transaction_id

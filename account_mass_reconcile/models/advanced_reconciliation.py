@@ -60,7 +60,7 @@ class MassReconcileAdvancedRef(models.TransientModel):
         """
         return (
             ("partner_id", move_line["partner_id"]),
-            ("ref", move_line["ref"].lower().strip()),
+            ("ref", (move_line["ref"] or "").lower().strip()),
         )
 
     @staticmethod
@@ -135,7 +135,7 @@ class MassReconcileAdvancedLabel(models.TransientModel):
             "name",
             (
                 (move_line["ref"] or "").lower().strip(),
-                move_line["name"].lower().strip(),
+                (move_line["name"] or "").lower().strip(),
             ),
         )
 
@@ -195,7 +195,7 @@ class MassReconcileAdvancedName(models.TransientModel):
         """
         return (
             ("partner_id", move_line["partner_id"]),
-            ("name", move_line["name"].lower().strip()),
+            ("name", (move_line["name"] or "").lower().strip()),
         )
 
     @staticmethod
@@ -240,5 +240,5 @@ class MassReconcileAdvancedName(models.TransientModel):
         yield ("partner_id", move_line["partner_id"])
         yield (
             "name",
-            (move_line["name"].lower().strip(),),
+            ((move_line["name"] or "").lower().strip(),),
         )

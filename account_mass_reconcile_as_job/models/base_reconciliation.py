@@ -42,6 +42,5 @@ class MassReconcileBase(models.AbstractModel):
         else:
             return super()._reconcile_lines(lines, allow_partial=allow_partial)
 
-    @job(default_channel='root.mass_reconcile')
     def reconcile_lines_as_job(self, lines, allow_partial=False):
         self.with_context(reconcile_lines_as_job=False)._reconcile_lines(lines, allow_partial=allow_partial)

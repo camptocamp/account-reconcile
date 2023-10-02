@@ -103,12 +103,12 @@ class AccountReconciliation(models.AbstractModel):
             mode=mode,
         )
 
-        from_clause, where_clause, where_clause_params = (
-            self.env["account.move.line"]._where_calc(domain).get_sql()
+        cte_clause, from_clause, where_clause, where_clause_params = (
+            self.env["account.move.line"]._where_calc(domain, with_cte=True).get_sql()
         )
         query_str = sql.SQL(
             """
-            SELECT "account_move_line".id, COUNT(*) OVER() FROM {from_clause}
+            {cte_clause} SELECT "account_move_line".id, COUNT(*) OVER() FROM {from_clause}
             {where_str}
             ORDER BY ("account_move_line".debit -
                       "account_move_line".credit) = {amount} DESC,
@@ -116,6 +116,7 @@ class AccountReconciliation(models.AbstractModel):
                 "account_move_line".id ASC
             {limit_str}
         """.format(
+                cte_clause=cte_clause
                 from_clause=from_clause,
                 where_str=where_clause and (" WHERE %s" % where_clause) or "",
                 amount=st_line.amount,
@@ -149,7 +150,7 @@ class AccountReconciliation(models.AbstractModel):
     @api.model
     def _get_bank_statement_line_partners(self, st_lines):
         params = []
-
+        ctes = []
         # Add the res.partner.ban's IR rules. In case partners are not shared
         # between companies, identical bank accounts may exist in a company we
         # don't have access to.

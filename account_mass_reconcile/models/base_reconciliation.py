@@ -62,7 +62,13 @@ class MassReconcileBase(models.AbstractModel):
         return self._base_columns()
 
     def _select_query(self, *args, **kwargs):
-        return "SELECT %s" % ", ".join(self._selection_columns())
+        ml_obj = self.env["account.move.line"]
+        where = ""
+        cte_clause = ''
+        if self._filter:
+            cte_clause, dummy, where, params = ml_obj._where_calc(safe_eval(self._filter, with_cte=True)).get_sql()
+        
+        return "%s SELECT %s" % (cte_clause, ", ".join(self._selection_columns()))
 
     def _from_query(self, *args, **kwargs):
         return "FROM account_move_line "
@@ -90,7 +96,7 @@ class MassReconcileBase(models.AbstractModel):
         where = ""
         params = []
         if self._filter:
-            dummy, where, params = ml_obj._where_calc(safe_eval(self._filter)).get_sql()
+            cte_clause, dummy, where, params = ml_obj._where_calc(safe_eval(self._filter, with_cte=True)).get_sql()
             if where:
                 where = " AND %s" % where
         return where, params
